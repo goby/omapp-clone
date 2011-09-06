@@ -1,0 +1,86 @@
+﻿body{ background:#fff;font-size:12px;font-family:"Helvetica Neue","Lucida Grande","Segoe UI",Arial,Helvetica,Verdana,sans-serif;margin:0px;padding:0px;color:#696969}
+a:link, a:visited{ color:#034af3}
+a:hover{ color:#1d60ff;  text-decoration:none}
+a:active{ color:#034af3}
+
+p{ margin-bottom:10px;  line-height:1.6em}
+h1, h2, h3, h4, h5, h6{ font-size:1.5em;  color:#666;  font-variant:small-caps;  text-transform:none;  font-weight:200;  margin-bottom:0px}
+h1{ font-size:1.6em;  padding-bottom:0px;  margin-bottom:0px}
+h2{ font-size:1.5em;  font-weight:600}
+h3{ font-size:1.2em}
+h4{ font-size:1.1em}
+h5, h6{ font-size:1em}
+
+.title{font-weight:bold;border-bottom:solid 1px #999;padding:5px 0}
+.clear{ clear:both}
+.red{color:#ff0000}
+.failureNotification{ font-size:1.2em;  color:Red}
+.bold{ font-weight:bold}
+.copyright{width:100%;height:18px;font-size:12px;color:#888;text-align:center;margin:auto;}
+.load{height:20px;line-height:20px;padding-left:20px;background:url(images/indicator.gif) no-repeat 1px center;text-align:left;color:#008080;}
+.error{height:20px;line-height:20px;padding-left:20px;background:url(images/exclamation.gif) no-repeat 1px center;text-align:left;color:#dc123c}
+.button{padding:5px 15px 3px 15px;cursor:pointer;border:outset 1px #a5b6c8;background:#eef3f7}
+.text{border:inset 1px #ccc;padding:2px 1px;background-color:#f5f5f5;width:150px;}
+.text-err{background-image:url(images/error-border.gif);background-repeat:repeat-x;background-position:0 bottom;}
+.underline{border:0;border-bottom:solid 1px #000;background:transparent}
+#calendarSelector{width:22px;height:22px;display:block;background:url(images/calendar-blue.png) no-repeat center center;cursor:pointer;}
+
+table.f{ border-collapse:collapse;border:0;}
+table.f th{color:#000;font-weight:normal;text-align:right;padding:5px 2px;border:0;}
+table.f td{color:#888;text-align:left;padding:5px 2px;border:0;}
+
+.editable{word-break:break-all;word-wrap:break-word;overflow-y:auto}
+.editable p{margin:0;padding:0;}
+
+/*************modal dialog************/
+.jrbx_layer{position:absolute;left:0;top:0;right:-1px;bottom:0;z-index:999;background:#888;display:none;}
+.jrbx_modal{position:absolute;z-index:1000;background-color:#DCDCDC;border:1px solid #888;display:none;zoom:1;width:400px;height:150px;}
+.jrbx_modal_shadow{position:absolute;background:#000;}
+.jrbx_modal_title{height:30px;line-height:30px;text-align:center;font-size:12px;font-weight:bold;}
+.jrbx_modal_content{border:solid 1px #888;position:absolute;left:5px;top:30px;padding:5px;overflow:auto;font-size:12px;overflow:auto;background:#fff;}
+.jrbx_modal_footer{padding:5px 0; text-align:center;width:100%;position:absolute;left:0;bottom:0;right:0}
+.jrbx_modal_footer button{border:solid 1px #7b9ebd;padding:4px 15px 2px 15px;cursor:pointer;color:#001;font-size:12px;filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#cecfde);}
+
+/***datepick***/
+#jquery-datepick{position:absolute;width:159px;height:184px;z-index:100;overflow:visible}
+#jquery-datepick .datepick-ctnx{position:absolute;width:159px;left:0;top:0;height:184px;z-index:2;background:url(images/calendar.gif) no-repeat 0 0;color:#0597db}
+#jquery-datepick .datepick-shadow{filter:alpha(opacity=80);opacity:.8;-moz-opacity:.8;background:#888;position:absolute;left:5px;top:5px;width:159px;height:184px;}
+#jquery-datepick .datepick-title{position:absolute;top:9px;left:2px;right:2px;height:30px;color:#000}
+#jquery-datepick .datepick-prev{position:absolute;top:9px;left:4px;width:12px;height:12px;background:url(images/calendar.gif) no-repeat -159px -84px;display:block;}
+#jquery-datepick a:hover.datepick-prev{background-position:-159px -96px}
+#jquery-datepick .datepick-current{width:100px;height:28px;line-height:28px;position:absolute;left:30px;top:1px;text-align:center}
+#jquery-datepick .datepick-next{position:absolute;top:9px;left:140px;width:12px;height:12px;background:url(images/calendar.gif) no-repeat -159px -108px;display:block;}
+#jquery-datepick a:hover.datepick-next{background-position:-159px -120px}
+#jquery-datepick .datepick-body{position:absolute;top:32px;left:2px;right:2px;}
+#jquery-datepick .datepick-body .datepick-weeks{height:22px;}
+#jquery-datepick .datepick-body .datepick-weeks span{display:block;height:22px;float:left;width:22px;text-align:center;line-height:22px;}
+#jquery-datepick .datepick-main{margin:auto}
+#jquery-datepick .datepick-main td{width:21px;height:21px;text-align:center;line-height:21px;padding:0;margin:0}
+#jquery-datepick .datepick-main td a{display:block;background:url(images/calendar.gif) -159px -42px;width:21px;height:21px;text-decoration:none;overflow:hidden}
+#jquery-datepick .datepick-main td a.otherDay{color:#ccc}
+#jquery-datepick .datepick-main td a.days{background-position:-159px 0}
+#jquery-datepick .datepick-main td a:hover.days,
+#jquery-datepick .datepick-main td a.today,
+#jquery-datepick .datepick-main td a:hover.today{background-position:-159px -21px;}
+
+/**box**/
+.box .b-r1c1{background:url(images/border-lt.gif) no-repeat 0 0;padding-left:12px;}
+.box .b-r1c2{background:url(images/border-rt.gif) no-repeat right 0;padding-right:12px;}
+.box .b-r1c3{border-top:solid 1px #cacaca;height:8px;}
+.box .b-r2c1{border-left:solid 1px #cacaca;padding-left:12px;}
+.box .b-r2c2{background:url(images/border-rc.gif) repeat-y right 0;padding-right:12px;}
+.box .b-r2c3{height:auto;padding:0 50px 0 40px;}
+.box .b-r3c1{background:url(images/border-lb.gif) no-repeat 0 0;padding-left:12px;}
+.box .b-r3c2{background:url(images/border-rb.gif) no-repeat right 0;padding-right:12px;}
+.box .b-r3c3{background:url(images/border-bc.gif) repeat-x 0 0;height:40px;text-align:left;padding-left:40px;}
+
+/***login***/
+.login{width:500px;margin:100px auto;}
+.box .b-r2c3 .l-c-r1{height:40px;background:url(images/logo.gif) no-repeat -4px center}
+.box .b-r2c3 .l-c-r2{padding:10px 0 20px 2px;}
+.box .b-r2c3 .l-c-r2 div{padding:5px 0}
+
+/***error***/
+.error-box{width:500px;margin:150px auto;}
+.error-box .eb-c{padding-top:20px}
+.error-box .eb-c .eb-c-r1{font-size:20px;font-weight:bold}

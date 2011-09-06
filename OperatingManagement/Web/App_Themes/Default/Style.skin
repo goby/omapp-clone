@@ -1,0 +1,4 @@
+﻿<om:CollectionPager runat="server" ResultsStyle="font-weight:normal;color:#888;text-indent:5px;"             
+                PageNumbersDisplay="Numbers" PageNumbersSeparator="" ResultsLocation="Top" SliderSize="10"
+                ResultsFormat="显示{0}-{1}条记录（共{2}条）" ShowFirstLast="True" BackNextLocation="None" ShowLabel="False" 
+                ShowPageNumbers="True" UseSlider="True" HideOnSinglePage="false"></om:CollectionPager>
