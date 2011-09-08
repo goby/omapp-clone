@@ -63,19 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\siteSetting.xml" />
-    <Content Include="App_Themes\Default\Images\border-bc.gif" />
-    <Content Include="App_Themes\Default\Images\border-lb.gif" />
-    <Content Include="App_Themes\Default\Images\border-lt.gif" />
-    <Content Include="App_Themes\Default\Images\border-rb.gif" />
-    <Content Include="App_Themes\Default\Images\border-rc.gif" />
-    <Content Include="App_Themes\Default\Images\border-rt.gif" />
-    <Content Include="App_Themes\Default\Images\calendar-blue.png" />
-    <Content Include="App_Themes\Default\Images\calendar.gif" />
-    <Content Include="App_Themes\Default\Images\error-border.gif" />
-    <Content Include="App_Themes\Default\Images\exclamation.gif" />
-    <Content Include="App_Themes\Default\Images\indicator.gif" />
-    <Content Include="App_Themes\Default\Images\logo.gif" />
-    <Content Include="App_Themes\Default\Style.css" />
     <Content Include="Scripts\Core\jquery-datepick.js" />
     <Content Include="Scripts\Core\jquery-min.js" />
     <Content Include="Scripts\Core\jquery-plugins.js" />
@@ -122,6 +109,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Themes\Default\" />
     <Folder Include="Scripts\Pages\" />
   </ItemGroup>
   <ItemGroup>
@@ -141,9 +129,6 @@
       <Project>{C3A23001-F7C2-4174-BB54-7A60A1A20F46}</Project>
       <Name>WebKernel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_Themes\Default\Style.skin" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Privacy.config" />
