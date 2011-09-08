@@ -63,6 +63,35 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\siteSetting.xml" />
+    <Content Include="App_Themes\Default\Images\arrow-right.gif" />
+    <Content Include="App_Themes\Default\Images\background.gif" />
+    <Content Include="App_Themes\Default\Images\body-bot.png" />
+    <Content Include="App_Themes\Default\Images\body-content-border.png" />
+    <Content Include="App_Themes\Default\Images\body-title.png" />
+    <Content Include="App_Themes\Default\Images\border-bc.gif" />
+    <Content Include="App_Themes\Default\Images\border-lb.gif" />
+    <Content Include="App_Themes\Default\Images\border-lt.gif" />
+    <Content Include="App_Themes\Default\Images\border-rb.gif" />
+    <Content Include="App_Themes\Default\Images\border-rc.gif" />
+    <Content Include="App_Themes\Default\Images\border-rt.gif" />
+    <Content Include="App_Themes\Default\Images\chart-line.png" />
+    <Content Include="App_Themes\Default\Images\date.png" />
+    <Content Include="App_Themes\Default\Images\error-border.gif" />
+    <Content Include="App_Themes\Default\Images\exclamation.gif" />
+    <Content Include="App_Themes\Default\Images\head.png" />
+    <Content Include="App_Themes\Default\Images\indicator.gif" />
+    <Content Include="App_Themes\Default\Images\left-menu-bot.png" />
+    <Content Include="App_Themes\Default\Images\left-menu-layer.png" />
+    <Content Include="App_Themes\Default\Images\left-menu-title.png" />
+    <Content Include="App_Themes\Default\Images\link.png" />
+    <Content Include="App_Themes\Default\Images\login-logo.png" />
+    <Content Include="App_Themes\Default\Images\logo.png" />
+    <Content Include="App_Themes\Default\Images\navigator.png" />
+    <Content Include="App_Themes\Default\Images\note.png" />
+    <Content Include="App_Themes\Default\Images\split.png" />
+    <Content Include="App_Themes\Default\Images\top-menu-layer.png" />
+    <Content Include="App_Themes\Default\Images\top-menu.png" />
+    <Content Include="App_Themes\Default\Site.css" />
     <Content Include="Scripts\Core\jquery-datepick.js" />
     <Content Include="Scripts\Core\jquery-min.js" />
     <Content Include="Scripts\Core\jquery-plugins.js" />
@@ -109,7 +138,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Themes\Default\" />
     <Folder Include="Scripts\Pages\" />
   </ItemGroup>
   <ItemGroup>
