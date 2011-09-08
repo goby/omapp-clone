@@ -28,6 +28,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow", "Workflow\Workflow.csproj", "{9346BE0A-7EA5-4FC2-936C-1AC18D743808}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{775AB9A5-FC47-46B3-814F-E3D9D4930E4C}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\DT_01_序列.sql = Scripts\DT_01_序列.sql
+		Scripts\FN_01_序列生成.sql = Scripts\FN_01_序列生成.sql
+		Scripts\read me.txt = Scripts\read me.txt
+		Scripts\TB_01_自增序列.sql = Scripts\TB_01_自增序列.sql
+		Scripts\TB_02_用户及角色.sql = Scripts\TB_02_用户及角色.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,9 +112,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C301ECEB-1C07-4A0C-8F66-6BE801CECA02} = {4D524B9A-85C0-42E5-98B6-164264897140}
-		{C3A23001-F7C2-4174-BB54-7A60A1A20F46} = {4D524B9A-85C0-42E5-98B6-164264897140}
 		{2F26ECB8-6AE6-44CC-9C03-8A23B6D8CB37} = {4D524B9A-85C0-42E5-98B6-164264897140}
+		{C3A23001-F7C2-4174-BB54-7A60A1A20F46} = {4D524B9A-85C0-42E5-98B6-164264897140}
+		{C301ECEB-1C07-4A0C-8F66-6BE801CECA02} = {4D524B9A-85C0-42E5-98B6-164264897140}
 		{55B5B8DB-EED4-42F1-9715-A9DC3A35A406} = {C1CEB9FC-6953-46CE-B219-268ED854132F}
 		{9E179023-3E98-4E91-BC38-0329FC4A640F} = {EB0B86E6-DB65-4229-A29F-E52CD0E3E978}
 	EndGlobalSection
