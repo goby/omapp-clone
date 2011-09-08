@@ -22,7 +22,6 @@ namespace OperatingManagement.Framework.Core
     {
         #region -Properties-
         public static readonly string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        private static readonly string encryptKey = AspNetConfig.Config["encryptKey"].ToString();
         private static char[] splitChars = new char[] { ';', ',', '.', '?', ' ', '，', '；', '。', '？' };
         #endregion
 
@@ -121,26 +120,55 @@ namespace OperatingManagement.Framework.Core
         }
         #endregion
 
-        #region -Compress-
-        /// <summary>
-        /// 是否压缩javascript
-        /// </summary>
-        public static bool CompressJs
+        #region  -Password-
+        private static string GenerateSalt()
         {
-            get
-            {
-                return bool.Parse(AspNetConfig.Config["compressJs"].ToString());
-            }
+            byte[] buffer = Encoding.Unicode.GetBytes(AspNetConfig.Config["encryptSalt"].ToString());
+            return Convert.ToBase64String(buffer);
         }
         /// <summary>
-        /// 是否压缩Css
+        /// Encrypt the password with salt and encryptType.
         /// </summary>
-        public static bool CompressCss
+        /// <param name="password">Password</param>
+        /// <returns></returns>
+        public static string EncryptPassword(string password)
         {
-            get
+            string hashAlgorithmType = AspNetConfig.Config["encryptType"] != null ?
+                AspNetConfig.Config["encryptType"].ToString() : "SHA1";
+            return EncryptPassword(password, PasswordFormat.Hashed, hashAlgorithmType);
+        }
+
+        /// <summary>
+        /// Encrypt the password.
+        /// </summary>
+        /// <param name="password">Password</param>
+        /// <param name="passwordFormat">Password format type.</param>
+        /// <param name="hashAlgorithmType">md5/sha1/clear</param>
+        /// <returns></returns>
+        public static string EncryptPassword(string password, PasswordFormat passwordFormat, string hashAlgorithmType)
+        {
+            if (passwordFormat == PasswordFormat.Clear)
+                return password;
+            if (string.IsNullOrEmpty(password))
+                return string.Empty;
+            string salt = GenerateSalt();
+            byte[] bIn = Encoding.Unicode.GetBytes(password);
+            byte[] bSalt = Convert.FromBase64String(salt);
+            byte[] bAll = new byte[bSalt.Length + bIn.Length];
+            byte[] bRet = null;
+
+            Buffer.BlockCopy(bSalt, 0, bAll, 0, bSalt.Length);
+            Buffer.BlockCopy(bIn, 0, bAll, bSalt.Length, bIn.Length);
+            if (passwordFormat == PasswordFormat.Hashed)
             {
-                return bool.Parse(AspNetConfig.Config["compressCss"].ToString());
+                HashAlgorithm s = HashAlgorithm.Create(hashAlgorithmType);
+
+                if (s == null)
+                    throw new ProviderException("Could not create a hash algorithm");
+
+                bRet = s.ComputeHash(bAll);
             }
+            return Convert.ToBase64String(bRet);
         }
         #endregion
 
@@ -219,20 +247,20 @@ namespace OperatingManagement.Framework.Core
         #endregion
 
         #region -Encrypt-
-        static readonly string plusReplacer = "______IMP_________________";
+        static readonly string plusReplacer = "______OM_________________";
         /// <summary>
-        /// 加密字符串 MD5+TRIPLE DES
+        /// Encrypt the specific string with MD5+TRIPLE DES.
         /// </summary>
-        /// <param name="planText"></param>
+        /// <param name="planText">The specific string</param>
         /// <returns></returns>
         public static string Encrypt(string planText)
         {
             return Encrypt(planText, true);
         }
         /// <summary>
-        /// Encrypt the text with MD5+TRIPLE DES.
+        /// Encrypt the specific string with MD5+TRIPLE DES.
         /// </summary>
-        /// <param name="planText">Text</param>
+        /// <param name="planText">The specific string</param>
         /// <param name="filterPlus">Whether replace the special word such as '+'，in order to avoid the mistake in Url transfer.</param>
         /// <returns></returns>
         public static string Encrypt(string planText, bool filterPlus)
@@ -241,7 +269,7 @@ namespace OperatingManagement.Framework.Core
             {
                 byte[] inputs = ASCIIEncoding.ASCII.GetBytes(planText);
                 MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-                byte[] buffer = md5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(encryptKey));
+                byte[] buffer = md5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(AspNetConfig.Config["encryptKey"].ToString()));
                 TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider();
                 des.Key = buffer;
                 des.Mode = CipherMode.ECB;
@@ -259,10 +287,9 @@ namespace OperatingManagement.Framework.Core
             }
         }
         /// <summary>
-        /// Decrypt the text with MD5+TRIPLE DES.
+        /// Decrypt the specific string with MD5+TRIPLE DES.
         /// </summary>
-        /// <param name="planText">Text</param>
-        /// <returns></returns>
+        /// <param name="planText">The specific string</param>
         public static string Decrypt(string planText)
         {
             try
@@ -271,7 +298,7 @@ namespace OperatingManagement.Framework.Core
                 planText = planText.Replace(plusReplacer, "+");
                 byte[] inputs = Convert.FromBase64String(planText);
                 MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-                byte[] buffer = md5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(encryptKey));
+                byte[] buffer = md5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(AspNetConfig.Config["encryptKey"].ToString()));
                 TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider();
                 des.Key = buffer;
                 des.Mode = CipherMode.ECB;
