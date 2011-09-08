@@ -1,4 +1,4 @@
-create or replace function generateseqnumber(SEQTYPE   IN VARCHAR2)
+create or replace function fn_genseqnum(SEQTYPE   IN VARCHAR2)
  return varchar2 as
   SEQNUMBER varchar2(50);
   CVALUE     NUMBER(20) := 0;
@@ -56,4 +56,4 @@ begin
 
   COMMIT;
   return(SEQNUMBER);
-end generateseqnumber;
+end fn_genseqnum;

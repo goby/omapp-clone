@@ -31,13 +31,13 @@ namespace Web
         }
         void RegisterRoutes()
         {
-            RouteTable.Routes.Add("Login",
-                new Route("Login",
-                    new RouteHandler("~/Account/Login.aspx")));
+            //RouteTable.Routes.Add("Login",
+            //    new Route("Login",
+            //        new RouteHandler("~/Account/Login.aspx")));
 
-            RouteTable.Routes.Add("OM",
-                new Route("OM/{name}",
-                    new RouteHandler("~/Default.aspx")));
+            //RouteTable.Routes.Add("OM",
+            //    new Route("OM/{name}",
+            //        new RouteHandler("~/Default.aspx")));
 
             //RouteTable.Routes.Add("Error", 
             //    new Route("Error/{code}", 
