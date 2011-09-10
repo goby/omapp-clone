@@ -6,6 +6,7 @@ using System.Web.Profile;
 using System.Configuration;
 using OperatingManagement.Framework;
 using OperatingManagement.Framework.Core;
+using OperatingManagement.DataAccessLayer;
 
 namespace OperatingManagement.Security
 {
@@ -40,7 +41,7 @@ namespace OperatingManagement.Security
                         if (isAuthenticated)
                         {
                             //Gets the specific Account by userName.
-                            //spv.PropertyValue = GetAccountInfo(userName);
+                            spv.PropertyValue = GetAccountInfo(userName);
                         }
                         break;
                 }
@@ -99,27 +100,11 @@ namespace OperatingManagement.Security
 
         #region -Private Method-
         //Gets the specific Account by userName.
-        //Account GetAccountInfo(string userName)
-        //{
-        //    LdapHelper helper = new LdapHelper();
-        //    string exMsg = string.Empty;
-        //    SearchResult result = helper.FindOne(userName,out exMsg);
-        //    if (result == null)
-        //    {
-        //        throw new AspNetException(exMsg);
-        //    }
-        //    else
-        //    {
-        //        ResultPropertyValueCollection rpvc = result.Properties["displayName"];
-        //        string displayName = string.Empty;
-        //        if (rpvc != null && rpvc.Count > 0)
-        //            displayName = rpvc[0].ToString();
-        //        return new Account() {
-        //            UserName = userName ,
-        //            DisplayName = displayName
-        //        };
-        //    }
-        //}
+        User GetAccountInfo(string userName)
+        {
+            User u = new User() { LoginName = userName };
+            return u.SelectByLoginName();
+        }
         #endregion
     }
 }
