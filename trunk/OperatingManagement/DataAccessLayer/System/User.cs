@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using OperatingManagement.Framework.Basic;
 using OperatingManagement.Framework;
-using System.Data.OracleClient;
 using OperatingManagement.Framework.Core;
 using System.Data;
+using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer
 {
