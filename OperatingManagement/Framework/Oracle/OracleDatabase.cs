@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 using System.Data;
-using System.Data.OracleClient;
+using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.Framework
 {
@@ -171,7 +171,8 @@ namespace OperatingManagement.Framework
             command.CommandType = CommandType.StoredProcedure;
             if (parameters != null)
             {
-                command.Parameters.AddRange(parameters);
+                foreach (OracleParameter p in parameters)
+                    command.Parameters.Add(p);
             }
 
             return command;
