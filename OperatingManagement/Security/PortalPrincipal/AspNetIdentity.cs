@@ -56,14 +56,6 @@ namespace OperatingManagement.Security
         {
             get { return this.ticket.Name; }
         }
-        /// <summary>
-        /// Gets the password of current login user.
-        /// </summary>
-        public string Password
-        {
-            get { return this.ticket.UserData; }
-        }
-
         #endregion
 
         #region -Custom Fields eg.-

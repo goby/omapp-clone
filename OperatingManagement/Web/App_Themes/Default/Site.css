@@ -30,7 +30,6 @@ legend{ font-size:14px;font-weight:600;padding:2px 4px 8px 4px}
 ----------------------------------------------------------*/
 .clear{ clear:both}
 .red{color:#ff0000}
-.failureNotification{ font-size:1.2em;  color:Red}
 .bold{ font-weight:bold}
 .copyright{height:18px;font-size:12px;color:#888;text-align:center;margin:auto;}
 .load{height:20px;line-height:20px;padding-left:20px;background:url(images/indicator.gif) no-repeat 1px center;text-align:left;color:#008080;}

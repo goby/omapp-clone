@@ -26,17 +26,20 @@
                             <b>用户名 </b>
                         </div>
                         <div>
-                            <input type="text" class="text" style="width: 300px;" />
+                            <asp:TextBox ID="txtLoginName" runat="server" Width="300px" CssClass="text" ></asp:TextBox>
                         </div>
                         <div>
                             <b>密码 </b>
                         </div>
                         <div>
-                            <input type="password" class="text" style="width: 300px;" />
+                            <asp:TextBox ID="txtPassword" runat="server" Width="300px" CssClass="text" TextMode="Password" ></asp:TextBox>
                         </div>
                         <div>
-                            <button class="button">
-                                登录</button>
+                            <asp:Label CssClass="error" ID="lblMessage" runat="server" Visible="false"></asp:Label>
+                        </div>
+                        <div>
+                            <asp:Button ID="btnLogin" runat="server" Text="登录" CssClass="button" 
+                                onclick="btnLogin_Click" />
                         </div>
                     </div>
                 </div>

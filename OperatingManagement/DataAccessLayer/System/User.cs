@@ -55,13 +55,13 @@ namespace OperatingManagement.DataAccessLayer
                 return null;
             }
         }
-        public UserVerifyResult Verify(string password)
+        public UserVerifyResult Verify()
         {
             User u = this.SelectByLoginName();
             if (u == null)
                 return UserVerifyResult.NotExist;
 
-            if (u.Password != GlobalSettings.EncryptPassword(password))
+            if (u.Password != GlobalSettings.EncryptPassword(this.Password))
                 return UserVerifyResult.PasswordIncorrect;
 
             if (u.Status != FieldStatus.Active)

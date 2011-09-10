@@ -7,6 +7,9 @@ using System.Web.UI.WebControls;
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.WebKernel.Route;
 using OperatingManagement.Framework.Core;
+using OperatingManagement.DataAccessLayer;
+using OperatingManagement.Framework;
+using System.Web.Security;
 
 namespace OperatingManagement.Web.Account
 {
@@ -20,6 +23,52 @@ namespace OperatingManagement.Web.Account
         {
             this.ShortTitle = "用户登录";
             base.OnPageLoaded();
+        }
+
+        protected void btnLogin_Click(object sender, EventArgs e)
+        {
+            User u = new User()
+            {
+                LoginName = txtLoginName.Text.Trim(),
+                Password = txtPassword.Text.Trim()
+            };
+            if (!u.IsValid) {
+                lblMessage.Text = u.FirstValidationMessage;
+                lblMessage.Visible = true;
+            }
+            UserVerifyResult result = u.Verify();
+            string outMsg = string.Empty;
+            switch (result)
+            {
+                case UserVerifyResult.NotExist:
+                    outMsg = "不存在此用户。";
+                    break;
+                case UserVerifyResult.PasswordIncorrect:
+                    outMsg = "用户名和密码不匹配。";
+                    break;
+                case UserVerifyResult.Inactive:
+                    outMsg = "用户状态不正常，无法登陆。";
+                    break;
+                case UserVerifyResult.Error:
+                    outMsg = "内部错误，无法登录。";
+                    break;
+                case UserVerifyResult.Success:
+                    HttpCookie cookie = FormsAuthentication.GetAuthCookie(u.LoginName, true);
+                    FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(cookie.Value);
+                    FormsAuthenticationTicket newticket = new FormsAuthenticationTicket(
+                                                                                    ticket.Version,
+                                                                                    ticket.Name,
+                                                                                    ticket.IssueDate,
+                                                                                    ticket.Expiration,
+                                                                                    ticket.IsPersistent,
+                                                                                    DateTime.Now.ToShortDateString());
+                    cookie.Value = FormsAuthentication.Encrypt(newticket);
+                    AspNetCookie.AddCookie(cookie);
+                    FormsAuthentication.RedirectFromLoginPage(u.LoginName, true);
+                    return;
+            }
+            lblMessage.Text = outMsg;
+            lblMessage.Visible = true;
         }
     }
 }
