@@ -41,7 +41,7 @@ namespace OperatingManagement.Web.PlanManage
         {
             DateTime startDate = new DateTime();
             DateTime endDate = new DateTime();
-            DataSet objDs = new DataSet();
+            DataSet objDs = new DataSet(); 
             objDs = (new SYCX()).GetSYCXListByDate(startDate,endDate);
             gvList.DataSource = objDs;
             gvList.DataBind();
