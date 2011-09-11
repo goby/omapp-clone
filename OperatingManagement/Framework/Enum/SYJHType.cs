@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OperatingManagement.Framework.Enum
+namespace OperatingManagement.Framework
 {
     /// <summary>
-    /// Enumeration of SYJH's type.
+    /// Enumeration of SYJH's type. 
     /// </summary>
-    public enum SYCXType : int
+    public enum SYJHType : int
     {
         /// <summary>
         /// It means normal user.
