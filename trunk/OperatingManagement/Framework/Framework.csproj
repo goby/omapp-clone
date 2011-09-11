@@ -73,6 +73,7 @@
     <Compile Include="Core\GlobalSettings.cs" />
     <Compile Include="Enum\FieldStatus.cs" />
     <Compile Include="Enum\PasswordFormat.cs" />
+    <Compile Include="Enum\SYCXType.cs" />
     <Compile Include="Enum\UserType.cs" />
     <Compile Include="Enum\UserVerifyResult.cs" />
     <Compile Include="Helper\HtmlHelper.cs" />
