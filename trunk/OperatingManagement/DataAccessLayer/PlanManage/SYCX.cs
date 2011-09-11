@@ -41,7 +41,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
 
         #region -Methods-
         /// <summary>
-        /// 根据用户区域属性得到角色列表
+        /// 根据时间获取试验程序列表
         /// </summary>
         /// <param name="provinceCode"></param>
         /// <param name="areaCode"></param>
@@ -74,7 +74,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 {
                     ds.Tables[0].Load(reader);
                 }
-
+                
             }
             catch (Exception ex)
             {
