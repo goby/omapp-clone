@@ -38,6 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{775A
 		Scripts\read me.txt = Scripts\read me.txt
 		Scripts\TB_01_自增序列.sql = Scripts\TB_01_自增序列.sql
 		Scripts\TB_02_用户及角色.sql = Scripts\TB_02_用户及角色.sql
+		Scripts\UP_01_用户及角色.sql = Scripts\UP_01_用户及角色.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{7BCFCF29-0B2F-4036-AF46-3BBEFC8D8C2E}"
