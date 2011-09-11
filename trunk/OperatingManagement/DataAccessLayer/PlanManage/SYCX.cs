@@ -49,7 +49,6 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         public DataSet GetSYCXListByDate(DateTime startDate, DateTime endDate)
         {
             DataSet ds = null;
-
             try
             {
                 ds = new DataSet();
