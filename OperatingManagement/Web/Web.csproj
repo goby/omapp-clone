@@ -139,12 +139,14 @@
     </Compile>
     <Compile Include="PlanManage\ExperimentPlanList.aspx.cs">
       <DependentUpon>ExperimentPlanList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="PlanManage\ExperimentPlanList.aspx.designer.cs">
       <DependentUpon>ExperimentPlanList.aspx</DependentUpon>
     </Compile>
     <Compile Include="PlanManage\ExperimentProgramList.aspx.cs">
       <DependentUpon>ExperimentProgramList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="PlanManage\ExperimentProgramList.aspx.designer.cs">
       <DependentUpon>ExperimentProgramList.aspx</DependentUpon>
