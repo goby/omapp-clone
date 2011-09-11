@@ -34,7 +34,11 @@ namespace OperatingManagement.DataAccessLayer
         #region -Methods-
         public User SelectByLoginName()
         {
-            using (IDataReader reader = _database.SpExecuteReader("up_user_selectbyloginname", new OracleParameter("LoginName", this.LoginName)))
+            OracleCommand command = _database.GetStoreProcCommand("up_user_selectbyloginname");
+            _database.AddInParameter(command, "p_LoginName", OracleDbType.Varchar2,this.LoginName);
+            _database.AddOutParameter(command, "o_cursor", OracleDbType.RefCursor, 0);
+            //using (IDataReader reader = _database.SpExecuteReader("up_user_selectbyloginname", new OracleParameter("LoginName", this.LoginName)))
+            using (IDataReader reader = _database.ExecuteReader(command))
             {
                 while (reader.Read())
                 {
