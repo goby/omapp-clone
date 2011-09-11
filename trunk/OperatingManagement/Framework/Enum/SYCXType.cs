@@ -13,10 +13,10 @@ namespace OperatingManagement.Framework
         /// <summary>
         /// It means normal user.
         /// </summary>
-        BiaoCheng = 1,
+        Nominal = 1,
         /// <summary>
         /// It means administrative.
         /// </summary>
-        ZhengShi = 2
+        Formal = 2
     }
 }
