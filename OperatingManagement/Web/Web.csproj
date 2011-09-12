@@ -101,6 +101,7 @@
     <Content Include="Index.aspx" />
     <Content Include="PlanManage\ExperimentPlanList.aspx" />
     <Content Include="PlanManage\ExperimentProgramList.aspx" />
+    <Content Include="PlanManage\PlanList.aspx" />
     <Content Include="Scripts\Core\jquery-datepick.js" />
     <Content Include="Scripts\Core\jquery-min.js" />
     <Content Include="Scripts\Core\jquery-plugins.js" />
@@ -150,6 +151,13 @@
     </Compile>
     <Compile Include="PlanManage\ExperimentProgramList.aspx.designer.cs">
       <DependentUpon>ExperimentProgramList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PlanManage\PlanList.aspx.cs">
+      <DependentUpon>PlanList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PlanManage\PlanList.aspx.designer.cs">
+      <DependentUpon>PlanList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">
