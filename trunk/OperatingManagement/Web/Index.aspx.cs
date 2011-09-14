@@ -4,14 +4,20 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using OperatingManagement.WebKernel.Basic;
 
 namespace OperatingManagement.Web
 {
-    public partial class Index : System.Web.UI.Page
+    public partial class Index : AspNetPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
 
+        }
+        public override void OnPageLoaded()
+        {
+            this.ShortTitle = "首页";
+            base.OnPageLoaded();
         }
     }
 }

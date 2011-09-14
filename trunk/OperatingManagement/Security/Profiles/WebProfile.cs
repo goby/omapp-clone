@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Profile;
 using System.Configuration;
+using OperatingManagement.DataAccessLayer;
 
 namespace OperatingManagement.Security
 {
@@ -22,22 +23,21 @@ namespace OperatingManagement.Security
         }
         private ProfileBase CurrentProfile = null;
 
-        /* This shows how to get the Accoun information
+        //This shows how to get the Account information
         /// <summary>
         /// Gets/Sets the account information(login)
         /// </summary>
-        public Account Account
+        public User Account
         {
             get
             {
-                return (Account)CurrentProfile.GetPropertyValue("Account");
+                return (User)CurrentProfile.GetPropertyValue("Account");
             }
             set
             {
                 CurrentProfile.SetPropertyValue("Account", value);
             }
         }
-         * */
         /// <summary>
         /// Gets user name.
         /// </summary>

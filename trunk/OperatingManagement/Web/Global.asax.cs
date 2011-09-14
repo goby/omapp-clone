@@ -24,8 +24,8 @@ namespace Web
             // Validate the certificate and return true or false as appropriate.
             // Note that it not a good practice to always return true because not
             // all certificates should be trusted.
-            System.Net.ServicePointManager.ServerCertificateValidationCallback =
-                (obj, certificate, chain, sslPolicyErrors) => true;
+            //System.Net.ServicePointManager.ServerCertificateValidationCallback =
+            //    (obj, certificate, chain, sslPolicyErrors) => true;
 
             RegisterRoutes();
         }

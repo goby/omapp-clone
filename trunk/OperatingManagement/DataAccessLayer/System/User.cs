@@ -10,6 +10,7 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer
 {
+    [Serializable]
     public class User : BaseEntity<double,User>
     {
         /// <summary>
@@ -34,44 +35,57 @@ namespace OperatingManagement.DataAccessLayer
         #region -Methods-
         public User SelectByLoginName()
         {
-            OracleCommand command = _database.GetStoreProcCommand("up_user_selectbyloginname");
-            _database.AddInParameter(command, "p_LoginName", OracleDbType.Varchar2,this.LoginName);
-            _database.AddOutParameter(command, "o_cursor", OracleDbType.RefCursor, 0);
-            //using (IDataReader reader = _database.SpExecuteReader("up_user_selectbyloginname", new OracleParameter("LoginName", this.LoginName)))
-            using (IDataReader reader = _database.ExecuteReader(command))
+            OracleParameter p = new OracleParameter(){
+                ParameterName = "o_cursor",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.RefCursor
+            };
+
+            DataSet ds = _database.SpExecuteDataSet("up_user_selectbyloginname", new OracleParameter[]{
+                new OracleParameter("p_LoginName", this.LoginName), 
+                p
+            });
+
+            if (ds != null && ds.Tables.Count == 1)
             {
-                while (reader.Read())
+                foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     return new User()
                     {
-                        Id = Convert.ToDouble(reader["UserID"].ToString()),
-                        CreatedTime = Convert.ToDateTime(reader["CTIME"].ToString()),
-                        DisplayName = reader["DisplayName"].ToString(),
-                        LoginName = reader["LoginName"].ToString(),
-                        Mobile = reader["Mobile"].ToString(),
-                        Note = reader["Note"].ToString(),
-                        Password = reader["Password1"].ToString(),
-                        UpdatedTime = Convert.ToDateTime(reader["LastUpdatedTime"].ToString()),
-                        Status = (FieldStatus)(Convert.ToInt32(reader["Status"].ToString())),
-                        UserType = (UserType)(Convert.ToInt32(reader["UserType"].ToString()))
+                        Id = Convert.ToDouble(dr["UserID"].ToString()),
+                        CreatedTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        DisplayName = dr["DisplayName"].ToString(),
+                        LoginName = dr["LoginName"].ToString(),
+                        Mobile = dr["Mobile"].ToString(),
+                        Note = dr["Note"].ToString(),
+                        Password = dr["Password1"].ToString(),
+                        UpdatedTime = Convert.ToDateTime(dr["LastUpdatedTime"].ToString()),
+                        Status = (FieldStatus)(Convert.ToInt32(dr["Status"].ToString())),
+                        UserType = (UserType)(Convert.ToInt32(dr["UserType"].ToString()))
                     };
                 }
-                return null;
             }
+            return null;
         }
         public UserVerifyResult Verify()
         {
-            User u = this.SelectByLoginName();
-            if (u == null)
-                return UserVerifyResult.NotExist;
+            try
+            {
+                User u = this.SelectByLoginName();
+                if (u == null)
+                    return UserVerifyResult.NotExist;
 
-            if (u.Password != GlobalSettings.EncryptPassword(this.Password))
-                return UserVerifyResult.PasswordIncorrect;
+                if (u.Password != GlobalSettings.EncryptPassword(this.Password))
+                    return UserVerifyResult.PasswordIncorrect;
 
-            if (u.Status != FieldStatus.Active)
-                return UserVerifyResult.Inactive;
-
-            return UserVerifyResult.Error;
+                if (u.Status != FieldStatus.Active)
+                    return UserVerifyResult.Inactive;
+                return UserVerifyResult.Success;
+            }
+            catch
+            {
+                return UserVerifyResult.Error;
+            }
         }
         #endregion
 
