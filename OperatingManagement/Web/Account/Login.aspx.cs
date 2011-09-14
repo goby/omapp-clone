@@ -64,7 +64,11 @@ namespace OperatingManagement.Web.Account
                                                                                     DateTime.Now.ToShortDateString());
                     cookie.Value = FormsAuthentication.Encrypt(newticket);
                     AspNetCookie.AddCookie(cookie);
-                    FormsAuthentication.RedirectFromLoginPage(u.LoginName, true);
+                    string url = FormsAuthentication.GetRedirectUrl(u.LoginName, true);
+                    if (string.IsNullOrEmpty(url))
+                        Response.Redirect("index.aspx");
+                    else
+                        Response.Redirect(url);
                     return;
             }
             lblMessage.Text = outMsg;

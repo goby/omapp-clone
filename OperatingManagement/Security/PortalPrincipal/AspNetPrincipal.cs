@@ -33,7 +33,7 @@ namespace OperatingManagement.Security
         /// <returns></returns>
         public bool IsInRole(string role)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         #endregion

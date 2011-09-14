@@ -112,20 +112,7 @@ legend{ font-size:14px;font-weight:600;padding:2px 4px 8px 4px}
 #leftMenuIndicator{width:170px;height:30px;line-height:30px;padding-left:30px;background:#fff url(images/left-menu-layer.png) no-repeat right 0;position:absolute;left:-179px;top:359px;z-index:10;color:#fff;}
 
 .ctnx h5{padding-left:40px;height:35px;line-height:35px;margin:0;color:#000;}
-.ctnx .ctnx-r1 h5{background:url(images/chart-line.png) no-repeat 0 center;}
-.ctnx .ctnx-r2{text-align:right;}
-.ctnx .ctnx-r2 table{float:right}
-.ctnx .ctnx-r3 table th.x{border-right:solid 4px #0079E1;width:auto;}
-.ctnx .ctnx-r3 table th.y{border-top:solid 4px #0079E1;height:auto;font-family:@Arial}
-.ctnx .ctnx-r3 table th,.ctnx .ctnx-r3 table td{width:24px;height:24px;text-align:center; vertical-align:middle;font-weight:bold;}
-.ctnx .ctnx-r3 td.green{color:#008000;}
-.ctnx .ctnx-r3 td.red{color:#ff0000;}
-.ctnx .ctnx-r3 table tr.odd{background:#F5F5F5}
-.ctnx .ctnx-r3 table tr.even{background:#F5DEB3}
-.ctnx .ctnx-r4 h5{background:url(images/note.png) no-repeat 2px center;}
-.ctnx .ctnx-r4 p{padding:10px;margin:0;}
-.ctnx .ctnx-r4 span.green{color:#008000;font-weight:bold;letter-spacing:5px;}
-.ctnx .ctnx-r4 span.red{color:#ff0000;font-weight:bold;letter-spacing:5px;}
+
 
 /* MODAL DIALOG  
 ----------------------------------------------------------*/
