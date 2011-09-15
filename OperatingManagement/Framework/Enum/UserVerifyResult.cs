@@ -6,9 +6,9 @@ using System.Text;
 namespace OperatingManagement.Framework
 {
     /// <summary>
-    /// Enumerates result of user verify.
+    /// Enumerates result of data-field verify.
     /// </summary>
-    public enum UserVerifyResult : int
+    public enum FieldVerifyResult : int
     {
         /// <summary>
         /// The specific user doesnt exist.

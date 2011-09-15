@@ -7,6 +7,7 @@ using System.Configuration;
 using OperatingManagement.Framework;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
+using OperatingManagement.DataAccessLayer.System;
 
 namespace OperatingManagement.Security
 {

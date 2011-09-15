@@ -8,6 +8,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuIndex" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
+    首页
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
 </asp:Content>
