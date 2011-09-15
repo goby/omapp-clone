@@ -26,7 +26,7 @@ namespace OperatingManagement.Framework.Reflector
         {
             if (string.IsNullOrEmpty(fileName))
                 fileName = typeof(T).Name;
-            string cacheKey = "Setting." + fileName;
+            string cacheKey = "Settings/" + fileName;
             if (AspNetCache.Instance.Get(cacheKey) != null)
                 return AspNetCache.Instance.Get(cacheKey) as T;
             string fullFileName = GlobalSettings.MapPath(string.Format(AspNetConfig.Config["settingPattern"].ToString(), fileName));

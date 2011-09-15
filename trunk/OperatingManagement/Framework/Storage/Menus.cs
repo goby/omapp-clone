@@ -35,6 +35,7 @@ namespace OperatingManagement.Framework.Storage
                                                from q1 in q.Elements("item")
                                                select new CstMenuItem()
                                                {
+                                                   Id = q1.Attribute("id").Value,
                                                    Title = q1.Attribute("title").Value,
                                                    Href = q1.Attribute("href").Value,
                                                    Roles = q1.Attribute("roles").Value

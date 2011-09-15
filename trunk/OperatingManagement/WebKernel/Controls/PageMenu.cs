@@ -20,7 +20,7 @@ namespace OperatingManagement.WebKernel.Controls
         /// </summary>
         public string XmlFileName { get; set; }
         private static readonly string _HTML_MENU = "<li><span>{0}</span><ul>{1}</ul></li>";
-        private static readonly string _HTML_ITEM = "<li _c=\"{2}\"><a href=\"{0}\">{1}</a></li>";
+        private static readonly string _HTML_ITEM = "<li _c=\"{2}\" id=\"menu-{3}\"><a href=\"{0}\">{1}</a></li>";
 
         private string RenderMenu()
         {
@@ -54,7 +54,8 @@ namespace OperatingManagement.WebKernel.Controls
                             (item.Href.StartsWith("javascript:") ?
                                 item.Href : (GlobalSettings.RelativeWebRoot + item.Href)),
                             item.Title,
-                            totalCount + currentCount);
+                            totalCount + currentCount,
+                            item.Id);
                     }
                 }
                 if (shouldBeDisplayed)
