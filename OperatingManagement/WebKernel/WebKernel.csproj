@@ -48,6 +48,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\CollectionPager.cs" />
+    <Compile Include="Controls\PageNavigator.cs" />
     <Compile Include="Controls\PageMenu.cs" />
     <Compile Include="Permission\PermissionEventHandlers.cs" />
     <Compile Include="HttpHandlers\AbHttpHandler.cs" />

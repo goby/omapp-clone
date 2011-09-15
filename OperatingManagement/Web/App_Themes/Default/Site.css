@@ -70,9 +70,12 @@ legend{ font-size:14px;font-weight:600;padding:2px 4px 8px 4px}
 .head .menu-top{position:absolute;right:300px;bottom:0;list-style:none;list-style-position:outside;margin:0;padding:0;}
 .head .menu-top li{cursor:pointer;list-style:none;margin:0;padding:0;float:left;width:90px;display:block;height:36px;line-height:36px;text-align:center;}
 .head .menu-top li{background:none;color:#000;font-size:12px;font-weight:normal;}
+.head .menu-top li a,.head .menu-top li a:hover{text-decoration:none;color:#000;display:block;}
 .head .menu-top li.split{background:url(images/split.png) no-repeat right 0;width:1px;overflow:hidden;margin:0 1px;}
 .head .menu-top li:hover{background:url(images/top-menu-layer.png) no-repeat 0 0;color:#2f559b;font-size:12px;font-weight:bold;}
+.head .menu-top li:hover a{color:#2f559b}
 .head .menu-top li.selected{background:url(images/top-menu.png) no-repeat 0 0;color:#2f559b;font-size:14px;font-weight:bold;}
+.head .menu-top li.selected a,.head .menu-top li:hover.selected a{color:#2f559b;font-weight:bold;}
 
 .head .navigator{position:absolute;bottom:6px;right:0;}
 .head .navigator .nav{height:36px;background:url(images/navigator.png) no-repeat 0 0;}
