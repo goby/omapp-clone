@@ -17,7 +17,6 @@ namespace OperatingManagement.Web
         public override void OnPageLoaded()
         {
             this.ShortTitle = "首页";
-            base.OnPageLoaded();
         }
     }
 }

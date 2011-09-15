@@ -15,7 +15,7 @@ namespace OperatingManagement.WebKernel.Basic
     /// <summary>
     /// Basic sealed class for master pages.
     /// </summary>
-    public class TMGMasterPage : MasterPage
+    public class AspNetMasterPage : MasterPage
     {
         protected override void OnLoad(EventArgs e)
         {

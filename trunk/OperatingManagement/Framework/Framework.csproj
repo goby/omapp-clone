@@ -65,6 +65,7 @@
     <Compile Include="Cache\CacheStrategy.cs" />
     <Compile Include="Cache\DefaultCacheStrategy.cs" />
     <Compile Include="Cache\ICacheStrategy.cs" />
+    <Compile Include="Components\Navigator.cs" />
     <Compile Include="Components\CstMenu.cs" />
     <Compile Include="Components\SiteSetting.cs" />
     <Compile Include="Core\AspNetConfig.cs" />

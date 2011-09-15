@@ -4,10 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using OperatingManagement.Web;
+using OperatingManagement.WebKernel.Basic;
 
 namespace Web
 {
-    public partial class SiteMaster : System.Web.UI.MasterPage
+    public partial class SiteMaster : AspNetMasterPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
