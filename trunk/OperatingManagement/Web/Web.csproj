@@ -113,8 +113,12 @@
     <Content Include="Scripts\Core\util.js" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
+    <Content Include="Scripts\Pages\roles.aspx.js" />
+    <Content Include="Scripts\Pages\users.aspx.js" />
     <Content Include="Views\Exp\Exp.aspx" />
     <Content Include="Views\Exp\PNF404.aspx" />
+    <Content Include="Views\UserAndRole\Roles.aspx" />
+    <Content Include="Views\UserAndRole\Users.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -186,10 +190,22 @@
     <Compile Include="Views\Exp\PNF404.aspx.designer.cs">
       <DependentUpon>PNF404.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserAndRole\Roles.aspx.cs">
+      <DependentUpon>Roles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\UserAndRole\Roles.aspx.designer.cs">
+      <DependentUpon>Roles.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserAndRole\Users.aspx.cs">
+      <DependentUpon>Users.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\UserAndRole\Users.aspx.designer.cs">
+      <DependentUpon>Users.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\Pages\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Site.Master" />
   </ItemGroup>

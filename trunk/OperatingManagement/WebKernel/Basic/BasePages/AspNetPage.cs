@@ -85,9 +85,19 @@ namespace OperatingManagement.WebKernel.Basic
         {
             get
             {
+                return SiteSetting.CopyRight;
+            }
+        }
+        /// <summary>
+        /// Gets the site setting.
+        /// </summary>
+        public SiteSetting SiteSetting
+        {
+            get
+            {
                 if (_settings == null)
                     _settings = AspNetSetting.Load<SiteSetting>();
-                return _settings.CopyRight;
+                return _settings;
             }
         }
         /// <summary>

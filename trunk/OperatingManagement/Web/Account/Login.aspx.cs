@@ -27,7 +27,7 @@ namespace OperatingManagement.Web.Account
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            User u = new User()
+            DataAccessLayer.System.User u = new DataAccessLayer.System.User()
             {
                 LoginName = txtLoginName.Text.Trim(),
                 Password = txtPassword.Text.Trim()
@@ -35,24 +35,25 @@ namespace OperatingManagement.Web.Account
             if (!u.IsValid) {
                 lblMessage.Text = u.FirstValidationMessage;
                 lblMessage.Visible = true;
+                return;
             }
-            UserVerifyResult result = u.Verify();
+            FieldVerifyResult result = u.Verify();
             string outMsg = string.Empty;
             switch (result)
             {
-                case UserVerifyResult.NotExist:
+                case FieldVerifyResult.NotExist:
                     outMsg = "不存在此用户。";
                     break;
-                case UserVerifyResult.PasswordIncorrect:
+                case FieldVerifyResult.PasswordIncorrect:
                     outMsg = "用户名和密码不匹配。";
                     break;
-                case UserVerifyResult.Inactive:
+                case FieldVerifyResult.Inactive:
                     outMsg = "用户状态不正常，无法登陆。";
                     break;
-                case UserVerifyResult.Error:
+                case FieldVerifyResult.Error:
                     outMsg = "内部错误，无法登录。";
                     break;
-                case UserVerifyResult.Success:
+                case FieldVerifyResult.Success:
                     HttpCookie cookie = FormsAuthentication.GetAuthCookie(u.LoginName, true);
                     FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(cookie.Value);
                     FormsAuthenticationTicket newticket = new FormsAuthenticationTicket(

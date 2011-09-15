@@ -52,7 +52,7 @@
     <Compile Include="Controls\PageMenu.cs" />
     <Compile Include="Permission\PermissionEventHandlers.cs" />
     <Compile Include="HttpHandlers\AbHttpHandler.cs" />
-    <Compile Include="HttpHandlers\LoginHandler.cs" />
+    <Compile Include="HttpHandlers\DataHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Route\Handlers\RouteHandler.cs" />
     <Compile Include="Route\Interfaces\IRouteContext.cs" />

@@ -22,29 +22,29 @@ $.extend($.fn, {
             me.cache.shadow.hide();
         };
         if (!me.cache || !me.cache.modal) {
-            var html = '<div class="jrbx_layer" />\
-                        <div class="jrbx_modal">\
-                            <div class="jrbx_modal_title" />\
-                            <div class="jrbx_modal_content" />\
-                            <div class="jrbx_modal_footer">\
+            var html = '<div class="jrbx-layer" />\
+                        <div class="jrbx-modal">\
+                            <div class="jrbx-modal-title" />\
+                            <div class="jrbx-modal-content" />\
+                            <div class="jrbx-modal-footer">\
                                 <button disabled></button>&nbsp;&nbsp;<button></button>\
                             </div>\
                         </div>\
-                        <div class="jrbx_modal_shadow" />';
+                        <div class="jrbx-modal-shadow" />';
             me.doms = $(html);
             me.doms.appendTo('body:eq(0)');
             me.cache = {
-                layer: me.doms.filter('.jrbx_layer').eq(0).css('opacity', .1),
-                modal: me.doms.filter('.jrbx_modal').eq(0).fadeOut(),
-                shadow: me.doms.filter('.jrbx_modal_shadow').eq(0).css('opacity', .2).hide()
+                layer: me.doms.filter('.jrbx-layer').eq(0).css('opacity', .1),
+                modal: me.doms.filter('.jrbx-modal').eq(0).fadeOut(),
+                shadow: me.doms.filter('.jrbx-modal-shadow').eq(0).css('opacity', .2).hide()
             };
-            me.cache.modal.title = me.cache.modal.find('.jrbx_modal_title').eq(0);
-            me.cache.modal.content = me.cache.modal.find('.jrbx_modal_content').eq(0);
-            me.cache.modal.footer = me.cache.modal.find('.jrbx_modal_footer').eq(0);
+            me.cache.modal.title = me.cache.modal.find('.jrbx-modal-title').eq(0);
+            me.cache.modal.content = me.cache.modal.find('.jrbx-modal-content').eq(0);
+            me.cache.modal.footer = me.cache.modal.find('.jrbx-modal-footer').eq(0);
             me.cache.modal.btn1 = me.cache.modal.footer.find('button:eq(0)');
             me.cache.modal.btn2 = me.cache.modal.footer.find('button:eq(1)').click(function () { me.hideModal() });
         }
-        me.settings = { width: document.body.scrollWidth, height: document.body.scrollHeight };
+        me.settings = { width: document.body.clientWidth, height: document.body.clientHeight };
         ps.width = ps.width < 1 ? ps.width * me.settings.width : ps.width;
         ps.height = ps.height < 1 ? ps.height * me.settings.height : ps.height;
         var modal = me.cache.modal,

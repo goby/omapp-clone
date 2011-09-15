@@ -116,12 +116,34 @@ legend{ font-size:14px;font-weight:600;padding:2px 4px 8px 4px}
 
 .ctnx h5{padding-left:40px;height:35px;line-height:35px;margin:0;color:#000;}
 
+/* LIST 
+----------------------------------------------------------*/
+.listTitle{background:#d2dbea;width:100%;border-collapse:collapse}
+.listTitle-c1,.listTitle-c2{width:50%;padding:5px 0}
+.listTitle-c1{text-align:left;text-indent:5px;}
+.listTitle-c2{text-align:right}
+.listTitle-c2 div{float:right;display:block;padding-right:5px;line-height:22px;}
+.listTitle-c2 div div span{padding:3px;text-align:center}
+.listTitle-c2 div div span a{padding:2px 5px;color:#000090;text-decoration:underline;border:solid 1px #d2dbea}
+.listTitle-c2 div div span a:hover{border:solid 1px #000090;color:#000}
+.listTitle-c2 div div span b {color: #000;padding:2px 5px;}
+table.list{width:100%;padding:0;margin:0;border:solid 1px #dedede}
+table.list th{background:#f3f4f6;text-align:left;padding:2px 5px;color:#000;font-weight:normal;border-right:solid 1px #d0d4e0;border-bottom:solid 1px #d0d4e0}
+table.list td{background:#fff;text-align:left;padding:2px 5px;border-bottom:solid 1px #f3f3f3}
+
+table.edit {border:solid 1px #ccc;width:100%;}
+table.edit th,table.edit td{border:solid 1px #ccc}
+table.edit th{color:#4682b4;text-align:right;padding:3px 5px;}
+table.edit td{text-align:left;padding:3px 5px;}
+
+.gray,.gray th,.gray td{background:#f8f8ff;}
 
 /* MODAL DIALOG  
 ----------------------------------------------------------*/
 .jrbx-layer{position:absolute;left:0;top:0;right:-1px;bottom:0;z-index:999;background:#888;display:none;}
-.jrbx-modal{position:absolute;z-index:1000;background-color:#DCDCDC;border:1px solid #888;display:none;zoom:1;width:400px;height:150px;}
-.jrbx-modal-shadow{position:absolute;background:#000;}
+.jrbx-modal{position:absolute;z-index:1000;background-color:#DCDCDC;border:1px solid #888;display:none;zoom:1;width:400px;height:150px;z-index:1001}
+.jrbx-modal-shadow{position:absolute;background:#000;z-index:1000;}
 .jrbx-modal-title{height:30px;line-height:30px;text-align:center;font-size:12px;font-weight:bold;}
 .jrbx-modal-content{border:solid 1px #888;position:absolute;left:5px;top:30px;padding:5px;overflow:auto;font-size:12px;overflow:auto;background:#fff;}
 .jrbx-modal-footer{padding:5px 0; text-align:center;width:100%;position:absolute;left:0;bottom:0;right:0}
+.jrbx-modal-footer button{padding:5px 15px 3px 15px;cursor:pointer;border:outset 1px #a5b6c8;background:#eef3f7}
