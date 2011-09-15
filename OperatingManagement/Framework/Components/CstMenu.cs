@@ -33,6 +33,10 @@ namespace OperatingManagement.Framework.Components
         /// </summary>
         public CstMenuItem() { }
         /// <summary>
+        /// Identification
+        /// </summary>
+        public string Id { get; set; }
+        /// <summary>
         /// Title 
         /// </summary>
         public string Title { get; set; }
