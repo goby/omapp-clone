@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlanManage\OribitalQuantity.cs" />
+    <Compile Include="PlanManage\Plan.cs" />
+    <Compile Include="PlanManage\YDSJ.cs" />
     <Compile Include="PlanManage\SYCX.cs" />
     <Compile Include="PlanManage\SYJH.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -11,14 +11,14 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
-    public class SYCX : BaseEntity<int, SYCX>
+    public class YDSJ : BaseEntity<int, YDSJ>
     {
-        private static readonly string GET_SYCXList_ByDate = "";
+        private static readonly string GET_YDSJList_ByDate = "up_ydsj_getlist";
 
-        /// <summary>
+                /// <summary>
         /// Create a new instance of <see cref="SYCX"/> class.
         /// </summary>
-        public SYCX()
+        public YDSJ()
         {
             _database = OracleDatabase.FromConfiguringNode("ApplicationServices");
         }
@@ -26,35 +26,40 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         #region -Properties-
         private OracleDatabase _database = null;
 
-        public int ID {get;set;}
-        public DateTime CTime {get;set;}
+        public int YDSJID { get; set; }
+        public DateTime CTime { get; set; }
+        public string Source { get; set; }
+        public string Destination { get; set; }
         public string TaskID { get; set; }
-        public SYCXType PType { get; set; }
-        public string PName { get; set; }
-        public int PNID { get; set; }
-        public int PlanID { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public string InfoType { get; set; }
+        /// <summary>
+        /// SpaceType 1:空间机动任务;2:非空间机动任务;
+        /// </summary>
+        public string SpaceType { get; set; }
+        public int LineCount { get; set; }
         public string FileIndex { get; set; }
         public string Reserve { get; set; }
         #endregion
 
         #region -Methods-
         /// <summary>
-        /// 根据时间获取试验程序列表
+        /// 获取引导数据（空间机动任务，非空间机动任务）
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
+        /// <param name="spaceType">1:空间机动任务;2:非空间机动任务</param>
         /// <returns></returns>
-        public DataSet GetSYCXListByDate(DateTime startDate, DateTime endDate)
+        public DataSet GetYDSJListByDate(DateTime startDate, DateTime endDate,string spaceType)
         {
             DataSet ds = null;
             try
             {
                 ds = new DataSet();
                 ds.Tables.Add();
-                OracleCommand command = _database.GetStoreProcCommand(GET_SYCXList_ByDate);
-                if (startDate != DateTime.MinValue )
+                OracleCommand command = _database.GetStoreProcCommand(GET_YDSJList_ByDate);
+
+                _database.AddInParameter(command, "p_spaceType", OracleDbType.Varchar2, spaceType);
+                if (startDate != DateTime.MinValue)
                 {
                     _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
                 }
@@ -74,7 +79,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 {
                     ds.Tables[0].Load(reader);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -91,6 +96,5 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             //this.AddValidRules("ID", "序号不能为空。", string.IsNullOrEmpty(ID));
         }
         #endregion
-
     }
 }

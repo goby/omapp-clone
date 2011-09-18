@@ -75,5 +75,6 @@ namespace OperatingManagement.Web.Account
             lblMessage.Text = outMsg;
             lblMessage.Visible = true;
         }
+
     }
 }

@@ -1,5 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ExperimentProgramList.aspx.cs" Inherits="OperatingManagement.Web.PlanManage.ExperimentProgramList" %>
-<asp:Content ID="Content3" ContentPlaceHolderID="HeadContent" runat="server">
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="SpaceTaskList.aspx.cs" Inherits="OperatingManagement.Web.PlanManage.SpaceTaskList" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
         .style1
         {
@@ -28,18 +28,20 @@
         {
             height: 18px;
         }
+        .style7
+        {
+            width: 100%;
+        }
     </style>
 </asp:Content>
-<asp:Content ID="Content4" ContentPlaceHolderID="NavigatorContent" runat="server">
-    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
+<asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
 </asp:Content>
-<asp:Content ID="Content5" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuIndex" />
+<asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
 </asp:Content>
-<asp:Content ID="Content6" ContentPlaceHolderID="MapPathContent" runat="server">
-    首页
+<asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
 </asp:Content>
-<asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
+<asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
+    <asp:Panel ID="pnlData" runat="server">
     <table cellpadding="0" class="style1">
         <tr>
             <td align="right" class="style2">
@@ -77,15 +79,16 @@
             <td class="style2" colspan="4">
                 <asp:GridView ID="gvList" runat="server" AutoGenerateColumns="False" 
                     BackColor="White" BorderColor="#E7E7FF" BorderStyle="None" BorderWidth="1px" 
-                    CellPadding="3" GridLines="Horizontal" Width="100%">
+                    CellPadding="3" GridLines="Horizontal" Width="100%" DataKeyNames="ydsjid" 
+                    onrowcommand="gvList_RowCommand">
                     <AlternatingRowStyle BackColor="#F7F7F7" />
                     <Columns>
-                        <asp:BoundField DataField="pname" HeaderText="项目名称" />
-                        <asp:BoundField DataField="ptype" HeaderText="类型" />
-                        <asp:BoundField DataField="pnid" HeaderText="编号" />
-                        <asp:BoundField DataField="starttime" HeaderText="开始时间" />
-                        <asp:BoundField FooterText="endtime" HeaderText="结束时间" />
-                        <asp:CommandField DeleteText="生成计划" HeaderText="生成计划" ShowDeleteButton="True" />
+                        <asp:CheckBoxField />
+                        <asp:BoundField DataField="source" HeaderText="信源" />
+                        <asp:BoundField DataField="destination" HeaderText="信宿" />
+                        <asp:BoundField DataField="taskid" HeaderText="任务代码" />
+                        <asp:BoundField DataField="ctime" HeaderText="生成时间" />
+                         <asp:ButtonField CommandName="ShowDetail" HeaderText="明细" Text="明细" />
                     </Columns>
                     <FooterStyle BackColor="#B5C7DE" ForeColor="#4A3C8C" />
                     <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#F7F7F7" />
@@ -99,5 +102,30 @@
                 </asp:GridView>
             </td>
         </tr>
+        <tr>
+            <td  colspan="4" align="center">
+                <asp:Button ID="btnSend" runat="server" Text="发送数据" onclick="btnSend_Click" />
+            </td>
+        </tr>
     </table>
+    </asp:Panel>
+
+    <asp:Panel ID="pnlDestination" runat="server">
+        <table class="style7">
+            <tr>
+                <td align="center">
+                    <asp:RadioButtonList ID="rbtDestination" runat="server">
+                    </asp:RadioButtonList>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center">
+                    <asp:Button ID="btnSubmit" runat="server" onclick="btnSubmit_Click" Text="发送" />
+                    &nbsp;&nbsp;
+                    <asp:Button ID="btnCancel" runat="server" onclick="btnCancel_Click" Text="取消" />
+                </td>
+            </tr>
+        </table>
+    </asp:Panel>
+    
 </asp:Content>

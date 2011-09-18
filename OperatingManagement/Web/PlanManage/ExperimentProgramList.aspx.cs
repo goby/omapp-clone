@@ -22,7 +22,7 @@ namespace OperatingManagement.Web.PlanManage
         public override void OnPageLoaded()
         {
             this.ShortTitle = "试验程序列表";
-            base.OnPageLoaded();
+            this.SetTitle();
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -36,7 +36,7 @@ namespace OperatingManagement.Web.PlanManage
             BindGridView();
         }
 
-        //绑定角色列表
+        //绑定列表
         void BindGridView()
         {
             DateTime startDate = new DateTime();
