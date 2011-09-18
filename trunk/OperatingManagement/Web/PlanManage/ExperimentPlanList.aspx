@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ExperimentPlanList.aspx.cs" Inherits="OperatingManagement.Web.PlanManage.ExperimentPlanList" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+<asp:Content ID="Content3" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
         .style1
         {
@@ -29,9 +29,17 @@
             height: 18px;
         }
     </style>
-
-</asp:Content> 
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+</asp:Content>
+<asp:Content ID="Content4" ContentPlaceHolderID="NavigatorContent" runat="server">
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
+</asp:Content>
+<asp:Content ID="Content5" ContentPlaceHolderID="MenuContent" runat="server">
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuIndex" />
+</asp:Content>
+<asp:Content ID="Content6" ContentPlaceHolderID="MapPathContent" runat="server">
+    首页
+</asp:Content>
+<asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
     <table cellpadding="0" class="style1">
         <tr>
             <td align="right" class="style2">

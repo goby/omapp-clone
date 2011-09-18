@@ -16,20 +16,20 @@ using System.Data;
 
 namespace OperatingManagement.Web.PlanManage
 {
-    public partial class PlanList : AspNetPage, IRouteContext
+    public partial class OribitalQuantityList : AspNetPage, IRouteContext
     {
-        public override void OnPageLoaded()
-        {
-            this.ShortTitle = "计划列表";
-            this.SetTitle();
-        }
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                btnSend.Attributes.Add("onclick", "javascript:return confirm('确定要发送所选计划吗?');");
+                btnSend.Attributes.Add("onclick", "javascript:return confirm('确定要发送所选轨道数据吗?');");
             }
+        }
+
+        public override void OnPageLoaded()
+        {
+            this.ShortTitle = "查看卫星轨道根数";
+            this.SetTitle();
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
@@ -43,10 +43,8 @@ namespace OperatingManagement.Web.PlanManage
         {
             DateTime startDate = new DateTime();
             DateTime endDate = new DateTime();
-            string planType = rbtType.Text;
-            string planAging = ddlAging.SelectedValue;
             DataSet objDs = new DataSet();
-            objDs = (new SYCX()).GetSYCXListByDate(startDate, endDate);
+            objDs = (new OribitalQuantity()).GetOribitalQuantityListByDate(startDate, endDate);
             gvList.DataSource = objDs;
             gvList.DataBind();
             if (objDs.Tables[0].Rows.Count > 0)
@@ -60,8 +58,8 @@ namespace OperatingManagement.Web.PlanManage
         }
 
         void BindRadDestination()
-        { 
-            
+        {
+
         }
 
         protected void btnSend_Click(object sender, EventArgs e)
@@ -87,15 +85,9 @@ namespace OperatingManagement.Web.PlanManage
             if ("ShowDetail" == e.CommandName)
             {
                 int idx = Int32.Parse(e.CommandArgument.ToString());
-                int planID = Convert.ToInt32(gvList.DataKeys[idx][0]);
+                int gdID = Convert.ToInt32(gvList.DataKeys[idx][0]);
 
-                Response.Redirect(string.Format("PlanDetail.aspx?planid={0}", planID));
-            }
-            else if ("EditPlan" == e.CommandName)
-            {
-                int idx = Int32.Parse(e.CommandArgument.ToString());
-                string planID = gvList.DataKeys[idx][0].ToString();
-                Response.Redirect(string.Format("PlanEdit.aspx?planid={0}", planID));
+                Response.Redirect(string.Format("OribitalQuantityDetail.aspx?gdid={0}", gdID));
             }
         }
     }

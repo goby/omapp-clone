@@ -6,7 +6,7 @@ using System.Text;
 namespace OperatingManagement.Framework
 {
     /// <summary>
-    /// Enumeration of SYJH's type. 
+    /// Enumeration of SYJH's type.
     /// </summary>
     public enum SYJHType : int
     {

@@ -314,6 +314,28 @@ namespace OperatingManagement.WebKernel.Basic
                 }
             }
         }
+
+        /// <summary>
+        /// 检测QueryString的值是否为有效值
+        /// </summary>
+        /// <param name="QueryStringName"></param>
+        /// <returns></returns>
+        public bool QueryStringObserver(params string[] QueryStringName)
+        {
+            for (int i = 0; i < QueryStringName.Length; i++)
+            {
+                if (Request.QueryString[QueryStringName[i]] != null)
+                {
+                    //string s = DecryptString(Request.QueryString[QueryStringName[i]]);
+                    string s = Request.QueryString[QueryStringName[i]];
+                    if (s == null)
+                        return false;
+                    //else
+                    //    Response.Write("<script>alert('发生了意外的错误,您所请求的页面即将关闭！\\n请确保您没有在地址栏手动输入无效的Url或者QueryString！');window.opener=null;window.close();</script>");
+                }
+            }
+            return true;
+        }
         #endregion
 
         #region -Permission-
