@@ -34,7 +34,7 @@ namespace OperatingManagement.WebKernel.Controls
 
             List<CstMenu> menus = Menus.ReadMenu(fullFileName, "Menus/" + XmlFileName);
             AspNetPrincipal principal = (AspNetPrincipal)HttpContext.Current.User;
-
+            WebProfile profile = new WebProfile(HttpContext.Current.Profile);
             StringBuilder sbMenu = new StringBuilder();
             bool shouldBeDisplayed = false;
             StringBuilder sbItem = new StringBuilder();
@@ -46,7 +46,8 @@ namespace OperatingManagement.WebKernel.Controls
                 currentCount = 1;
                 foreach (CstMenuItem item in m.MenuItems)
                 {
-                    if (item.Roles == "Anyone" || principal.IsInRole(item.Roles))
+                    if (profile.Account.UserType == Framework.UserType.Admin
+                        || item.Roles == "Anyone" || principal.IsInRole(item.Roles))
                     {
                         shouldBeDisplayed = true;
                         currentCount++;

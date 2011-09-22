@@ -54,12 +54,38 @@ stringBuilder.prototype.appendNewLine = function (value) {
 stringBuilder.prototype.toString = function (splitExp) {
     return (typeof splitExp != 'undefined' ? this.__S_B.join(splitExp) : this.__S_B.join(''));
 };
-//String Formater
+
 String.prototype.format = function() {
     var args = arguments;
     return this.replace(/{(\d{1})}/g, function() {
         return args[arguments[1]];
     });
+};
+String.prototype.ltrim = function (s) {
+    if (!s) {
+        return this.replace(/(^\s*)/g, '');
+    }
+    var i, l = this.length;
+    for (i = 0; i < l; i++) {
+        if (this.charAt(i) != s) break;
+    }
+    return this.substring(i, l);
+};
+String.prototype.rtrim = function (s) {
+    if (!s) {
+        return this.replace(/(\s*$)/g, ''); 
+    }
+    var i, l = this.length;
+    for (i = l - 1; i >= 0; i--) {
+        if (this.charAt(i) != s) break;
+    }
+    return this.substring(0, i + 1);
+};
+String.prototype.trim = function (s) {
+    if (!s) {
+        return this.replace(/(^\s*)|(\s*$)/g, ''); 
+    }
+    return this.ltrim(s).rtrim(s);
 };
 String.prototype.quoted = function () {
     return this.replace(/\'/g, '\\\'').replace(/\"/g, '\\"').replace(/\n/g, '').replace(/\r/g, '').replace(/\t/g, '');

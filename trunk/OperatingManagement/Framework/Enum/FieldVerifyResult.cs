@@ -33,6 +33,10 @@ namespace OperatingManagement.Framework
         /// <summary>
         /// Succecced.
         /// </summary>
-        Success = 5
+        Success = 5,
+        /// <summary>
+        /// The other name was exist in database(some field should be unique).
+        /// </summary>
+        NameDuplicated2 = 6
     }
 }

@@ -120,11 +120,19 @@
     <Content Include="Scripts\Core\util.js" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
+    <Content Include="Scripts\Pages\userroleedit.aspx.js" />
+    <Content Include="Scripts\Pages\roleadd.aspx.js" />
     <Content Include="Scripts\Pages\roles.aspx.js" />
     <Content Include="Scripts\Pages\users.aspx.js" />
     <Content Include="Views\Exp\Exp.aspx" />
     <Content Include="Views\Exp\PNF404.aspx" />
+    <Content Include="Views\UserAndRole\RoleAdd.aspx" />
+    <Content Include="Views\UserAndRole\RoleEdit.aspx" />
     <Content Include="Views\UserAndRole\Roles.aspx" />
+    <Content Include="Views\UserAndRole\UserAdd.aspx" />
+    <Content Include="Views\UserAndRole\UserEdit.aspx" />
+    <Content Include="Views\UserAndRole\UserNRole.aspx" />
+    <Content Include="Views\UserAndRole\UserRoleEdit.aspx" />
     <Content Include="Views\UserAndRole\Users.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -144,6 +152,7 @@
     <Compile Include="Account\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Assembly\StaticExtend\DynamicLinq.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -246,12 +255,54 @@
     <Compile Include="Views\Exp\PNF404.aspx.designer.cs">
       <DependentUpon>PNF404.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserAndRole\RoleAdd.aspx.cs">
+      <DependentUpon>RoleAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\UserAndRole\RoleAdd.aspx.designer.cs">
+      <DependentUpon>RoleAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserAndRole\RoleEdit.aspx.cs">
+      <DependentUpon>RoleEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\UserAndRole\RoleEdit.aspx.designer.cs">
+      <DependentUpon>RoleEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserAndRole\Roles.aspx.cs">
       <DependentUpon>Roles.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\UserAndRole\Roles.aspx.designer.cs">
       <DependentUpon>Roles.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserAndRole\UserAdd.aspx.cs">
+      <DependentUpon>UserAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\UserAndRole\UserAdd.aspx.designer.cs">
+      <DependentUpon>UserAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserAndRole\UserEdit.aspx.cs">
+      <DependentUpon>UserEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\UserAndRole\UserEdit.aspx.designer.cs">
+      <DependentUpon>UserEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserAndRole\UserNRole.aspx.cs">
+      <DependentUpon>UserNRole.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\UserAndRole\UserNRole.aspx.designer.cs">
+      <DependentUpon>UserNRole.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserAndRole\UserRoleEdit.aspx.cs">
+      <DependentUpon>UserRoleEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\UserAndRole\UserRoleEdit.aspx.designer.cs">
+      <DependentUpon>UserRoleEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\UserAndRole\Users.aspx.cs">
       <DependentUpon>Users.aspx</DependentUpon>
