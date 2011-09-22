@@ -21,7 +21,7 @@
                     <div class="nav nav-c2">
                         <div class="nav nav-c3">
                             欢迎您的访问，<b><%= this.Profile.Account.DisplayName %></b>！ [
-                            <asp:LoginStatus ID="LoginStatus1" runat="server" LogoutText="注销" ForeColor="DarkRed" />
+                            <asp:LoginStatus ID="LoginStatus1" runat="server" LogoutText="注销" ForeColor="#E9967A" />
                             ]
                         </div>
                     </div>

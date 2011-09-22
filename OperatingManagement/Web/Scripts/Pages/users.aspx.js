@@ -15,8 +15,8 @@ function selectAll() {
 function checkAll(o) {
     $('#tbUsers').find('input:checkbox:not([disabled])').attr('checked', o.checked);
 }
-function editUser(userName) {
-    window.location.href = "/views/userandrole/useredit.aspx?UserName=" + userName;
+function editUser(id) {
+    window.location.href = "/views/userandrole/useredit.aspx?id=" + id;
     return false;
 }
 function deleteUsers() {

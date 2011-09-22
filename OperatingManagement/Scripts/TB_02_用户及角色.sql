@@ -6,7 +6,7 @@ create table TB_USER
   USERID         NUMBER(10) not null,
   LOGINNAME      VARCHAR2(50) not null,
   DISPLAYNAME       VARCHAR2(20) not null,
-  PASSWORD1       VARCHAR2(50) not null,
+  PASSWORD1       VARCHAR2(200) not null,
   USERTYPE       NUMBER(1) not null,
   STATUS         NUMBER(1) not null,
   MOBILE         VARCHAR2(15),
@@ -144,13 +144,32 @@ alter table TB_ACTION
   );
 
 /*========================================*/
-/* Table: TB_PERMISSION                                      */
+/* Table: 权限表                                      */
 /*========================================*/
 create table TB_PERMISSION
 (
-  ROLEID    NUMBER(10) not null,
+  PERMISSIONID    NUMBER(10) not null,
   MODULEID    NUMBER(10) not null,
   ACTIONID   NUMBER(10) not null
+)
+tablespace TSHTC
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64
+    minextents 1
+    maxextents unlimited
+  );
+
+/*========================================*/
+/* Table: 角色权限关联表                                      */
+/*========================================*/
+create table TB_ROLEPERMISSION
+(
+  ROLEID    NUMBER(10) not null,
+  PERMISSIONID   NUMBER(10) not null
 )
 tablespace TSHTC
   pctfree 10

@@ -27,6 +27,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
         }
         public override void OnPageLoaded()
         {
+            this.PagePermission = "UserManage.List";
             this.ShortTitle = "用户列表";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/users.aspx.js");

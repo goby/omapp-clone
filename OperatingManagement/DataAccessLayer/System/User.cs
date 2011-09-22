@@ -98,6 +98,107 @@ namespace OperatingManagement.DataAccessLayer.System
             }
             return users;
         }
+        public List<Role> SelectRolesById()
+        {
+            OracleParameter p = PrepareRefCursor();
+            DataSet ds = _database.SpExecuteDataSet("up_user_selectrolesbyid", new OracleParameter[]{
+                new OracleParameter("p_UserId",this.Id),
+                p
+            });
+            List<Role> roles = new List<Role>();
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    roles.Add(new Role()
+                    {
+                        Id = Convert.ToDouble(dr["RoleId"].ToString()),
+                        CreatedTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        RoleName = dr["RoleName"].ToString(),
+                        Note = dr["Note"].ToString()
+                    });
+                }
+            }
+            return roles;
+        }
+        /// <summary>
+        /// Inserts a new record into database.
+        /// </summary>
+        /// <returns></returns>
+        public FieldVerifyResult Add()
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            OracleParameter opId = new OracleParameter()
+            {
+                ParameterName = "v_UserId",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _database.SpExecuteNonQuery("up_user_insert", new OracleParameter[]{
+                new OracleParameter("p_LoginName",this.LoginName),
+                new OracleParameter("p_DisplayName",this.DisplayName),
+                new OracleParameter("p_Password",GlobalSettings.EncryptPassword(this.Password)),
+                new OracleParameter("p_UserType",(int)this.UserType),
+                new OracleParameter("p_Status",(int)this.Status),
+                new OracleParameter("p_Mobile",this.Mobile),
+                new OracleParameter("p_Note",this.Note),
+                opId,
+                p
+            });
+            if (opId.Value != null && opId.Value != DBNull.Value)
+                this.Id = Convert.ToDouble(opId.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+        }
+        /// <summary>
+        /// Updates the User object in database.
+        /// </summary>
+        /// <returns></returns>
+        public FieldVerifyResult Update()
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _database.SpExecuteNonQuery("up_user_update", new OracleParameter[]{
+                new OracleParameter("p_UserId",this.Id),
+                new OracleParameter("p_DisplayName",this.DisplayName),
+                new OracleParameter("p_Password",
+                    string.IsNullOrEmpty(this.Password)?string.Empty:
+                        GlobalSettings.EncryptPassword(this.Password)),
+                new OracleParameter("p_UserType",(int)this.UserType),
+                new OracleParameter("p_Status",(int)this.Status),
+                new OracleParameter("p_Mobile",this.Mobile),
+                new OracleParameter("p_Note",this.Note),
+                p
+            });
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+        }
+        /// <summary>
+        /// Add the specific user to roles.
+        /// </summary>
+        /// <param name="roles">The roles identifications, e.g.: [1][2][3]...</param>
+        /// <returns></returns>
+        public bool AddToRoles(string roles) {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _database.SpExecuteNonQuery("up_user_addtorole", new OracleParameter[]{
+                new OracleParameter("p_UserId",this.Id),
+                new OracleParameter("p_Roles",roles),
+                p
+            });
+            return Convert.ToDouble(p.Value) > 0;
+        }
         /// <summary>
         /// Selects the specific user by login name.
         /// </summary>
@@ -108,6 +209,40 @@ namespace OperatingManagement.DataAccessLayer.System
 
             DataSet ds = _database.SpExecuteDataSet("up_user_selectbyloginname", new OracleParameter[]{
                 new OracleParameter("p_LoginName", this.LoginName), 
+                p
+            });
+
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    return new User()
+                    {
+                        Id = Convert.ToDouble(dr["UserID"].ToString()),
+                        CreatedTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        DisplayName = dr["DisplayName"].ToString(),
+                        LoginName = dr["LoginName"].ToString(),
+                        Mobile = dr["Mobile"].ToString(),
+                        Note = dr["Note"].ToString(),
+                        Password = dr["Password1"].ToString(),
+                        UpdatedTime = Convert.ToDateTime(dr["LastUpdatedTime"].ToString()),
+                        Status = (FieldStatus)(Convert.ToInt32(dr["Status"].ToString())),
+                        UserType = (UserType)(Convert.ToInt32(dr["UserType"].ToString()))
+                    };
+                }
+            }
+            return null;
+        }
+        /// <summary>
+        /// Selects the specific user by identification.
+        /// </summary>
+        /// <returns><see cref="User"/> object.</returns>
+        public User SelectById()
+        {
+            OracleParameter p = PrepareRefCursor();
+
+            DataSet ds = _database.SpExecuteDataSet("up_user_selectbyid", new OracleParameter[]{
+                new OracleParameter("p_UserId", this.Id), 
                 p
             });
 

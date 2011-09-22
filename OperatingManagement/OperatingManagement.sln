@@ -35,6 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{775A
 		Scripts\DT_01_序列.sql = Scripts\DT_01_序列.sql
 		Scripts\DT_02_用户及角色.sql = Scripts\DT_02_用户及角色.sql
 		Scripts\FN_01_序列生成.sql = Scripts\FN_01_序列生成.sql
+		Scripts\FN_02_分割函数.sql = Scripts\FN_02_分割函数.sql
 		Scripts\read me.txt = Scripts\read me.txt
 		Scripts\TB_01_自增序列.sql = Scripts\TB_01_自增序列.sql
 		Scripts\TB_02_用户及角色.sql = Scripts\TB_02_用户及角色.sql

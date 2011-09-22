@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -360,7 +361,12 @@ namespace OperatingManagement.WebKernel.Basic
         private string _PagePermission = string.Empty;
         /// <summary>
         /// Gets/Sets the page permission.
-        /// <remarks>if the accessor has no permission to visit this page, it ll throw an exception to deny accessors' operations.</remarks>
+        /// <remarks>
+        /// 
+        /// PagePermission is combined as 
+        /// ModuleName.TaskName1,ModuleName.TaskName2..., e.g.: SystemManage.Add,SystemManage.Edit...
+        /// 
+        /// if the accessor has no permission to visit this page, it will throw an exception to deny accessors' operations.</remarks>
         /// </summary>
         public virtual string PagePermission
         {
@@ -368,33 +374,19 @@ namespace OperatingManagement.WebKernel.Basic
             set { _PagePermission = value; }
         }
         /// <summary>
-        /// Gets all the roles of accessor.
-        /// <remarks>it was initialized in the 'Application_OnPostAuthenticateRequest' event in 'Global.asax'.</remarks>
-        /// </summary>
-        //public List<Role> Roles
-        //{
-        //    get
-        //    {
-        //        if (_principal == null)
-        //            return null;
-        //        else
-        //            return _principal.Roles;
-        //    }
-        //}
-        /// <summary>
         /// Gets all the permissions of accessor.
         /// <remarks>it was initialized in the 'Application_OnPostAuthenticateRequest' event in 'Global.asax'.</remarks>
         /// </summary>
-        //public List<Permission> Permissions
-        //{
-        //    get
-        //    {
-        //        if (_principal == null)
-        //            return null;
-        //        else
-        //            return _principal.Permissions;
-        //    }
-        //}
+        public List<DataAccessLayer.System.Permission> Permissions
+        {
+            get
+            {
+                if (_principal == null)
+                    return null;
+                else
+                    return _principal.Permissions;
+            }
+        }
         private static object _ControlPermissionChecked;
         /// <summary>
         /// Add/Remove the 'ControlPermissionEventHandler' event.
@@ -448,10 +440,7 @@ namespace OperatingManagement.WebKernel.Basic
         {
             if (!HasPermission())
             {
-                if (!this.IsPopOrIframe)
-                    throw new AspNetException("Accessor deny, you have no permissions!");
-                else
-                    throw new AspNetException("Accessor deny, you have no permissions!");
+                throw new AspNetException("Accessor deny, you have no permissions!");
             }
         }
         /// <summary>
@@ -462,30 +451,33 @@ namespace OperatingManagement.WebKernel.Basic
         /// </summary>
         protected virtual bool HasPermission()
         {
-            //if (this.Profile.Account.IsAdmin) { return true; }
-            //if (string.IsNullOrEmpty(this.PagePermission))
-            //    return true;
-            //else
-            //{
-            //    if (Permissions == null || Permissions.Count == 0)
-            //        return false;
-            //    else
-            //    {
-            //        return IsInPermission(this.PagePermission);
-            //    }
-            //}
-            return true;
+            if (this.Profile.Account.UserType == Framework.UserType.Admin) { return true; }
+            if (string.IsNullOrEmpty(this.PagePermission))
+                return true;
+            else
+            {
+                if (this.Permissions == null || this.Permissions.Count == 0)
+                    return false;
+
+                string[] ps = this.PagePermission.Split(',');
+                bool hasPermission = false;
+                foreach (string p in ps)
+                {
+                    hasPermission =  IsInPermission(this.PagePermission);
+                    if (hasPermission) return true;
+                }
+                return hasPermission;
+            }
         }
         private bool IsInPermission(string permission)
         {
-            //if (!permission.StartsWith(",")) permission = "," + permission;
-            //if (!permission.EndsWith(",")) permission += ",";
-            //foreach (Permission p in this.Permissions)
-            //{
-            //    if (permission.IndexOf(","+p.Name+",") >= 0)
-            //        return true;
-            //}
-            return false;
+            if (string.IsNullOrEmpty(permission))
+                return false;
+            var ps = permission.Split('.');
+            if (ps.Length != 2)
+                return false;
+            
+            return this.Permissions.Any(o => o.Module.ModuleName == ps[0] && o.Task.TaskName == ps[1]);
         }
         private bool HandleControlPermissionChecked(PermissionCheckingArgs e)
         {
@@ -540,8 +532,8 @@ namespace OperatingManagement.WebKernel.Basic
 
         protected override void OnInit(EventArgs e)
         {
-            this.ControlPermissionChecking += new PermissionCheckingEventHandler(TMGPage_ControlPermissionChecking);
-            this.ControlPermissionChecked += new ControlPermissionEventHandler(TMGPage_ControlPermissionChecked);
+            this.ControlPermissionChecking += new PermissionCheckingEventHandler(AspNetPage_ControlPermissionChecking);
+            this.ControlPermissionChecked += new ControlPermissionEventHandler(AspNetPage_ControlPermissionChecked);
             base.OnInit(e);
         }
         /// <summary>
@@ -549,13 +541,13 @@ namespace OperatingManagement.WebKernel.Basic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public virtual void TMGPage_ControlPermissionChecked(object sender, ControlPermissionEventArgs e) { }
+        public virtual void AspNetPage_ControlPermissionChecked(object sender, ControlPermissionEventArgs e) { }
         /// <summary>
         /// The event was registered, so you can override this to change the behavior of control permission checking
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public virtual void TMGPage_ControlPermissionChecking(object sender, PermissionCheckingArgs e) { }
+        public virtual void AspNetPage_ControlPermissionChecking(object sender, PermissionCheckingArgs e) { }
         #endregion
     }
 }

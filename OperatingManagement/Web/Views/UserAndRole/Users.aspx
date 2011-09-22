@@ -41,7 +41,7 @@
                 <td><%# Eval("DisplayName") %></td>
                 <td><%# Eval("CreatedTime","{0:"+this.SiteSetting.DateTimeFormat+"}") %></td>
                 <td>
-                    <button class="button" onclick="return editUser('<%# Eval("LoginName") %>')"
+                    <button class="button" onclick="return editUser('<%# Eval("Id") %>')"
                     <%# Eval("LoginName").ToString().Equals(this.Profile.UserName,StringComparison.InvariantCultureIgnoreCase)?"disabled=\"true\"":"" %>>编辑</button>
                 </td>
             </tr>            

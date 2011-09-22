@@ -19,7 +19,7 @@
             <div class="b-r2c2">
                 <div class="b-r2c3">
                      <div class="eb-c">
-                        <div class="eb-c-r1">AspNet Exceptions</div>
+                        <div class="eb-c-r1"><b>AspNet Exceptions</b></div>
                         <hr />
                         <div class="eb-c-r2"><asp:Literal ID="ltError" runat="server"></asp:Literal></div>
                      </div>

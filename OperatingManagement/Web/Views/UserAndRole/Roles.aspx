@@ -32,7 +32,7 @@
                     <th style="width:150px;">创建时间</th>
                     <th style="width:70px;">操作</th>
                 </tr>  
-                <tbody id="tbUsers">        
+                <tbody id="tbRoles">        
         </HeaderTemplate>
         <ItemTemplate>
             <tr>
@@ -54,7 +54,7 @@
         <tr>
             <td class="listTitle-c1">
                 <button class="button" onclick="return selectAll();">全选</button>&nbsp;&nbsp;
-                <button class="button" onclick="return deleteUsers();">删除</button>          
+                <button class="button" onclick="return deleteRoles();">删除</button>          
             </td>
             <td class="listTitle-c2">
                 <om:CollectionPager ID="cpPager" runat="server" ></om:CollectionPager>

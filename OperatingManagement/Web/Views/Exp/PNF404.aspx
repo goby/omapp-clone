@@ -19,7 +19,7 @@
             <div class="b-r2c2">
                 <div class="b-r2c3">
                      <div class="eb-c">
-                        <div class="eb-c-r1">404 Page not found</div>
+                        <div class="eb-c-r1"><b>404 Page not found</b></div>
                         <hr />
                         <div class="eb-c-r2">您所请求的页面不存在。</div>
                      </div>

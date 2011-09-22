@@ -30,12 +30,11 @@ legend{ font-size:14px;font-weight:600;padding:2px 4px 8px 4px}
 ----------------------------------------------------------*/
 .clear{ clear:both}
 .red{color:#ff0000}
+.darkgray{color:#888}
 .bold{ font-weight:bold}
 .copyright{height:18px;font-size:12px;color:#888;text-align:center;margin:auto;}
 .load{height:20px;line-height:20px;padding-left:20px;background:url(images/indicator.gif) no-repeat 1px center;text-align:left;color:#008080;}
-.error{height:20px;line-height:20px;padding-left:20px;background:url(images/exclamation.gif) no-repeat 1px center;text-align:left;color:#dc123c}
-.button{padding:5px 15px 3px 15px;cursor:pointer;border:outset 1px #a5b6c8;background:#eef3f7}
-.text{border:inset 1px #ccc;padding:2px 1px;background-color:#f5f5f5;width:150px;}
+.error{display:block;height:24px;line-height:24px;padding-left:20px;background:url(images/exclamation.gif) no-repeat 1px center;text-align:left;color:#dc123c}
 .text-err{background-image:url(images/error-border.gif);background-repeat:repeat-x;background-position:0 bottom;}
 .underline{border:0;border-bottom:solid 1px #000;background:transparent}
 .date-pick{width:22px;height:22px;display:block;background:url(images/date.png) no-repeat center center;cursor:pointer;text-decoration:none}
@@ -52,6 +51,8 @@ legend{ font-size:14px;font-weight:600;padding:2px 4px 8px 4px}
 .box .b-r3c1{background:url(images/border-lb.gif) no-repeat 0 0;padding-left:12px;}
 .box .b-r3c2{background:url(images/border-rb.gif) no-repeat right 0;padding-right:12px;}
 .box .b-r3c3{background:url(images/border-bc.gif) repeat-x 0 0;height:40px;text-align:left;padding-left:40px;}
+
+.error-box{width:500px;margin:150px auto;}
 
 /* LOGIN  
 ----------------------------------------------------------*/
@@ -131,13 +132,17 @@ table.list{width:100%;padding:0;margin:0;border:solid 1px #dedede}
 table.list th{background:#f3f4f6;text-align:left;padding:2px 5px;color:#000;font-weight:normal;border-right:solid 1px #d0d4e0;border-bottom:solid 1px #d0d4e0}
 table.list td{background:#fff;text-align:left;padding:2px 5px;border-bottom:solid 1px #f3f3f3}
 
-table.edit {border:solid 1px #ccc;width:100%;}
-table.edit th,table.edit td{border:solid 1px #ccc}
-table.edit th{color:#4682b4;text-align:right;padding:3px 5px;}
-table.edit td{text-align:left;padding:3px 5px;}
+table.edit {border:solid 1px #ccc;width:auto;}
+table.edit th,table.edit td{border:solid 1px #ccc;font-weight:normal; vertical-align:middle;padding:3px 5px;}
+table.edit th{color:#4682b4;text-align:right;background:#f3f4f6;}
+table.edit td{text-align:left;}
 
 .gray,.gray th,.gray td{background:#f8f8ff;}
 
+.taskList,.taskList li{margin:0;padding:0; list-style:none; list-style-position:outside}
+.taskList li{float:left;height:26px;}
+.taskList li input{width:16px;height:16px;float:left;margin:4px 1px;}
+.taskList li span{display:block;width:50px;height:26px;line-height:26px;float:left;cursor:default;}
 /* MODAL DIALOG  
 ----------------------------------------------------------*/
 .jrbx-layer{position:absolute;left:0;top:0;right:-1px;bottom:0;z-index:999;background:#888;display:none;}
@@ -147,3 +152,55 @@ table.edit td{text-align:left;padding:3px 5px;}
 .jrbx-modal-content{border:solid 1px #888;position:absolute;left:5px;top:30px;padding:5px;overflow:auto;font-size:12px;overflow:auto;background:#fff;}
 .jrbx-modal-footer{padding:5px 0; text-align:center;width:100%;position:absolute;left:0;bottom:0;right:0}
 .jrbx-modal-footer button{padding:5px 15px 3px 15px;cursor:pointer;border:outset 1px #a5b6c8;background:#eef3f7}
+
+/* INPUT BUTTON(GOOGLE STYLE)
+----------------------------------------------------------*/
+.button {
+    text-align: center;
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    height: 27px;
+    padding: 0 10px;
+    line-height: 27px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    border: 1px solid #3079ED;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+    background-color: #4D90FE;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#4d90fe),to(#4787ed));
+    background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
+    background-image: -moz-linear-gradient(top,#4d90fe,#4787ed);
+    background-image: -ms-linear-gradient(top,#4d90fe,#4787ed);
+    background-image: -o-linear-gradient(top,#4d90fe,#4787ed);
+    background-image: linear-gradient(top,#4d90fe,#4787ed);
+    user-select: none;
+    cursor: pointer;
+}
+.button:hover {
+    text-decoration: none;
+    -webkit-transition: all 0.0s;
+    -moz-transition: all 0.0s;
+    -ms-transition: all 0.0s;
+    -o-transition: all 0.0s;
+    transition: all 0.0s;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    border: 1px solid #2F5BB7;
+    color: #fff;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    background-color: #357AE8;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#4d90fe),to(#357ae8));
+    background-image: -webkit-linear-gradient(top,#4d90fe,#357ae8);
+    background-image: -moz-linear-gradient(top,#4d90fe,#357ae8);
+    background-image: -ms-linear-gradient(top,#4d90fe,#357ae8);
+    background-image: -o-linear-gradient(top,#4d90fe,#357ae8);
+    background-image: linear-gradient(top,#4d90fe,#357ae8);
+}
+/* INPUT TEXT
+----------------------------------------------------------*/
+.text{border:inset 1px #ccc;padding:2px 1px;background-color:#f5f5f5;width:150px;}

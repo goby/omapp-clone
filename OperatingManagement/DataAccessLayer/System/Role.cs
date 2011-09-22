@@ -32,6 +32,10 @@ namespace OperatingManagement.DataAccessLayer.System
         /// Gets/Sets the description/note.
         /// </summary>
         public string Note { get; set; }
+        /// <summary>
+        /// Gets/Sets the permissions of this role.
+        /// </summary>
+        public List<Permission> Permissions { get; set; }
         #endregion
 
         #region -Private methods-
@@ -47,6 +51,10 @@ namespace OperatingManagement.DataAccessLayer.System
         #endregion
 
         #region -Public methods-
+        /// <summary>
+        /// Selects all Roles from database.
+        /// </summary>
+        /// <returns></returns>
         public List<Role> SelectAll()
         {
             OracleParameter p = PrepareRefCursor();
@@ -68,6 +76,82 @@ namespace OperatingManagement.DataAccessLayer.System
                 }
             }
             return roles;
+        }
+        /// <summary>
+        /// Selects the specific Role by identification.
+        /// </summary>
+        /// <returns></returns>
+        public Role SelectById()
+        {
+            OracleParameter p = PrepareRefCursor();
+            DataSet ds = _database.SpExecuteDataSet("up_role_selectbyid", new OracleParameter[]{
+                new OracleParameter("p_RoleId",this.Id),
+                p
+            });
+            Role role = null;
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                DataRow first = ds.Tables[0].Rows[0];
+                role = new Role()
+                {
+                    Id = Convert.ToDouble(first["RoleId"].ToString()),
+                    RoleName = first["RoleName"].ToString(),
+                    Note = first["Note"].ToString()
+                };
+                List<Permission> permissions = new List<Permission>();
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    permissions.Add(new Permission()
+                    {
+                        Id = Convert.ToDouble(dr["PermissionId"].ToString())
+                    });
+                }
+                role.Permissions = permissions;
+            }
+            return role;
+        }
+        /// <summary>
+        /// Inserts a new record into database.
+        /// </summary>
+        /// <param name="permissions">The permission identifications, e.g.: [1][2][3]...</param>
+        /// <returns></returns>
+        public FieldVerifyResult Add(string permissions)
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName="v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType= OracleDbType.Double
+            }; 
+            _database.SpExecuteNonQuery("up_role_insert", new OracleParameter[]{
+                new OracleParameter("p_RoleName",this.RoleName),
+                new OracleParameter("p_Note",this.Note),
+                new OracleParameter("p_Permissions",permissions),
+                p
+            });
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+        }
+        /// <summary>
+        /// UPdates the specific record in database.
+        /// </summary>
+        /// <param name="permissions">The permission identifications, e.g.: [1][2][3]...</param>
+        /// <returns></returns>
+        public FieldVerifyResult Update(string permissions)
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _database.SpExecuteNonQuery("up_role_update", new OracleParameter[]{
+                new OracleParameter("p_RoleId",this.Id),
+                new OracleParameter("p_RoleName",this.RoleName),
+                new OracleParameter("p_Note",this.Note),
+                new OracleParameter("p_Permissions",permissions),
+                p
+            });
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
         #endregion
         
