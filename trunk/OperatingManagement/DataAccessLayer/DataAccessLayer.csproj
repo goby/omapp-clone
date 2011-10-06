@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessManage\CenterOutputPolicy.cs" />
     <Compile Include="PlanManage\OribitalQuantity.cs" />
     <Compile Include="PlanManage\Plan.cs" />
     <Compile Include="PlanManage\YDSJ.cs" />

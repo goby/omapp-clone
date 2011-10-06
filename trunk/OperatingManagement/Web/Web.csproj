@@ -103,6 +103,7 @@
     <Content Include="App_Themes\Default\Images\top-menu-layer.png" />
     <Content Include="App_Themes\Default\Images\top-menu.png" />
     <Content Include="App_Themes\Default\Site.css" />
+    <Content Include="BusinessManage\CenterOutputPolicyManage.aspx" />
     <Content Include="Index.aspx" />
     <Content Include="PlanManage\ExperimentPlanList.aspx" />
     <Content Include="PlanManage\ExperimentProgramList.aspx" />
@@ -153,6 +154,13 @@
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Assembly\StaticExtend\DynamicLinq.cs" />
+    <Compile Include="BusinessManage\CenterOutputPolicyManage.aspx.cs">
+      <DependentUpon>CenterOutputPolicyManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BusinessManage\CenterOutputPolicyManage.aspx.designer.cs">
+      <DependentUpon>CenterOutputPolicyManage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
