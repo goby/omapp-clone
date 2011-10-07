@@ -18,7 +18,7 @@
     <item id="3-3" title="卫星综合状态监控" roles="Anyone" href="#" />
   </menu>
   <menu title="业务管理">
-    <item id="4-1" title="中心输出策略" roles="Anyone" href="./BusinessManage/CenterOutputPolicyManage.aspx" />
+    <item id="4-1" title="中心输出策略" roles="Anyone" href="BusinessManage/CenterOutputPolicyManage.aspx" />
     <item id="4-2" title="卫星监视数据" roles="Anyone" href="#" />
     <item id="4-3" title="文件服务器" roles="Anyone" href="#" />
     <item id="4-4" title="实验数据分发" roles="Anyone" href="#" />
