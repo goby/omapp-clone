@@ -1,0 +1,91 @@
+
+create or replace procedure UP_COP_SelectByID
+(
+       p_COPID TB_CenterOutputPolicy.COPID%type,
+       o_Cursor out sys_refcursor
+)
+is
+begin
+       open o_Cursor for
+            Select * From TB_CenterOutputPolicy Where COPID=p_COPID;
+end;
+
+
+create or replace procedure UP_COP_SelectAll
+(
+       o_Cursor out sys_refcursor
+)
+is
+begin
+       open o_Cursor for
+            Select * From TB_CenterOutputPolicy Order By CreatedTime Desc;
+end;
+
+
+create or replace procedure UP_COP_Insert
+(
+       p_InfoFrom TB_CenterOutputPolicy.Infofrom%type,
+       p_InfoType TB_CenterOutputPolicy.Infotype%type,
+       p_InfoTo TB_CenterOutputPolicy.Infoto%type,
+       p_Note TB_CenterOutputPolicy.Note%type,
+       p_CreatedTime TB_CenterOutputPolicy.Createdtime%type,
+       p_CreatedUserID TB_CenterOutputPolicy.Createduserid%type,
+       p_UpdatedTime TB_CenterOutputPolicy.Updatedtime%type,
+       p_UpdatedUserID TB_CenterOutputPolicy.Updateduserid%type,
+       v_COPID out TB_CenterOutputPolicy.COPID%type,
+       v_Result out number
+)
+is
+begin  
+       savepoint p1;
+       v_COPID:=to_number(fn_genseqnum('4001'));
+       Insert into TB_CenterOutputPolicy Values(v_COPID,p_InfoFrom,p_InfoType,p_InfoTo,p_Note,p_CreatedTime,p_CreatedUserID,p_UpdatedTime,p_UpdatedUserID);
+       commit;
+       v_Result:=5; -- Success
+       
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK TO SAVEPOINT p1;
+          COMMIT;
+       v_Result:=4; --Error
+end;
+
+
+create or replace procedure UP_COP_Update
+(
+    p_COPID TB_CenterOutputPolicy.Copid%type,
+    p_InfoFrom TB_CenterOutputPolicy.Infofrom%type,
+    p_InfoType TB_CenterOutputPolicy.Infotype%type,
+    p_InfoTo TB_CenterOutputPolicy.Infoto%type,
+    p_Note TB_CenterOutputPolicy.Note%type,
+    p_CreatedTime TB_CenterOutputPolicy.Createdtime%type,
+    p_CreatedUserID TB_CenterOutputPolicy.Createduserid%type,
+    p_UpdatedTime TB_CenterOutputPolicy.Updatedtime%type,
+    p_UpdatedUserID TB_CenterOutputPolicy.Updateduserid%type,
+    v_Result out number
+)
+is
+begin
+     savepoint p1;
+     
+     update TB_CenterOutputPolicy 
+        set InfoFrom=p_InfoFrom
+           ,InfoType=p_InfoType
+           ,InfoTo=p_InfoTo
+           ,Note=p_Note
+           ,CreatedTime=p_CreatedTime
+           ,CreatedUserID=p_CreatedUserID
+           ,UpdatedTime=p_UpdatedTime
+           ,UpdatedUserID=p_UpdatedUserID
+        where COPID=p_COPID;
+        commit;
+        v_Result:=5; -- Success
+       
+        EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK TO SAVEPOINT p1;
+          COMMIT;
+        v_Result:=4; --Error
+end;
+
+
