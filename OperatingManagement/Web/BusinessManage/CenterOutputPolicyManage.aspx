@@ -68,7 +68,7 @@
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" onclick="btnSubmit_Click" />
                 <asp:Button ID="btnCancel" runat="server" CssClass="button" Text="取消" 
-                    onclick="btnCancel_Click"/>
+                    onclick="btnCancel_Click" CausesValidation="false"/>
             </td>
         </tr>
     </table>
