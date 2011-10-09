@@ -20,8 +20,10 @@ namespace OperatingManagement.Web.PlanManage
     {
         public override void OnPageLoaded()
         {
+            this.PagePermission = "Plan.List";
             this.ShortTitle = "计划列表";
             this.SetTitle();
+            this.AddJavaScriptInclude("scripts/pages/PlanList.aspx.js");
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -43,6 +45,14 @@ namespace OperatingManagement.Web.PlanManage
         {
             DateTime startDate = new DateTime();
             DateTime endDate = new DateTime();
+            if (!string.IsNullOrEmpty(txtStartDate.Text))
+            {
+                startDate = Convert.ToDateTime(txtStartDate.Text);
+            }
+            if (!string.IsNullOrEmpty(txtEndDate.Text))
+            {
+                endDate = Convert.ToDateTime(txtEndDate);
+            }
             string planType = rbtType.Text;
             string planAging = ddlAging.SelectedValue;
             DataSet objDs = new DataSet();

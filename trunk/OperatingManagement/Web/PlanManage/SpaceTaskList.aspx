@@ -47,22 +47,23 @@
             <td align="right" class="style2">
                 开始日期：</td>
             <td class="style3">
-                <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+                <asp:TextBox ID="txtStartDate" runat="server"  onclick="new WdatePicker(this);"></asp:TextBox>
             </td>
             <td align="right" class="style4">
                 结束日期：</td>
             <td>
-                <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+                <asp:TextBox ID="txtEndDate" runat="server"  onclick="new WdatePicker(this);"></asp:TextBox>
             </td>
         </tr>
         <tr>
             <td class="style5">
             </td>
             <td class="style6" colspan="3">
-                <asp:Button ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
+                <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
                     Width="69px" />
 &nbsp;&nbsp;
-                <asp:Button ID="btnReset" runat="server" Text="重置" Width="65px" />
+                <%--<asp:Button ID="btnReset" runat="server" Text="重置" Width="65px" />--%>
+                <button class="button" onclick="return reset();" style="width:65px;">重置</button>
             </td>
         </tr>
         <tr>

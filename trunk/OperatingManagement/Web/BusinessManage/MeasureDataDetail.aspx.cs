@@ -13,18 +13,18 @@ using OperatingManagement.Framework;
 using System.Web.Security;
 using System.Xml;
 
-namespace OperatingManagement.Web.PlanManage
+namespace OperatingManagement.Web.BusinessManage
 {
-    public partial class YDSJDetail : AspNetPage, IRouteContext
+    public partial class MeasureDataDetail : AspNetPage, IRouteContext
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                if (this.QueryStringObserver("ydsjid"))
+                if (this.QueryStringObserver("gdid"))
                 {
-                    //string sID = this.DecryptString(Request.QueryString["ydsjid"]);
-                    string sID = Request.QueryString["ydsjid"];
+                    //string sID = this.DecryptString(Request.QueryString["gdid"]);
+                    string sID = Request.QueryString["gdid"];
                     int id = 0;
                     Int32.TryParse(sID, out id);
                     BindFileInfo();
@@ -41,8 +41,8 @@ namespace OperatingManagement.Web.PlanManage
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "YDSJ.Detail";
-            this.ShortTitle = "引导数据明细";
+            this.PagePermission = "XiAnCeKongData.Detail";
+            this.ShortTitle = "轨道根数明细";
             base.OnPageLoaded();
             //this.AddJavaScriptInclude("scripts/pages/");
         }

@@ -21,8 +21,10 @@ namespace OperatingManagement.Web.PlanManage
     {
         public override void OnPageLoaded()
         {
+            this.PagePermission = "ExperimentProgram.List";
             this.ShortTitle = "试验程序列表";
             this.SetTitle();
+            this.AddJavaScriptInclude("scripts/pages/ExperimentProgramList.aspx.js");
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -41,6 +43,14 @@ namespace OperatingManagement.Web.PlanManage
         {
             DateTime startDate = new DateTime();
             DateTime endDate = new DateTime();
+            if (!string.IsNullOrEmpty(txtStartDate.Text))
+            {
+                startDate = Convert.ToDateTime(txtStartDate.Text);
+            }
+            if (!string.IsNullOrEmpty(txtEndDate.Text))
+            {
+                endDate = Convert.ToDateTime(txtEndDate);
+            }
             DataSet objDs = new DataSet(); 
             objDs = (new SYCX()).GetSYCXListByDate(startDate,endDate);
             gvList.DataSource = objDs;

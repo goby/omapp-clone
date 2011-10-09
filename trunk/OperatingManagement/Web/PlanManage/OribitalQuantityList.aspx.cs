@@ -28,8 +28,10 @@ namespace OperatingManagement.Web.PlanManage
 
         public override void OnPageLoaded()
         {
+            this.PagePermission = "OribitalQuantity.List";
             this.ShortTitle = "查看卫星轨道根数";
             this.SetTitle();
+            this.AddJavaScriptInclude("scripts/pages/OribitalQuantityList.aspx.js");
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
@@ -43,6 +45,14 @@ namespace OperatingManagement.Web.PlanManage
         {
             DateTime startDate = new DateTime();
             DateTime endDate = new DateTime();
+            if (!string.IsNullOrEmpty(txtStartDate.Text))
+            {
+                startDate = Convert.ToDateTime(txtStartDate.Text);
+            }
+            if (!string.IsNullOrEmpty(txtEndDate.Text))
+            {
+                endDate = Convert.ToDateTime(txtEndDate);
+            }
             DataSet objDs = new DataSet();
             objDs = (new OribitalQuantity()).GetOribitalQuantityListByDate(startDate, endDate);
             gvList.DataSource = objDs;

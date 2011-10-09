@@ -9,17 +9,16 @@ using OperatingManagement.Framework.Core;
 using System.Data;
 using Oracle.DataAccess.Client;
 
-
-namespace OperatingManagement.DataAccessLayer.PlanManage
+namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
-    public class SYJH : BaseEntity<int, SYJH>
+    public class XDSC : BaseEntity<int, XDSC>
     {
-        private static readonly string GET_SYJHList_ByDate = "UP_SYJH_GETLIST";
+        private static readonly string GET_XDSCList_ByDate = "up_xdsc_getlist";
 
-        /// <summary>
-        /// Create a new instance of <see cref="SYJH"/> class.
+                /// <summary>
+        /// Create a new instance of <see cref="SYCX"/> class.
         /// </summary>
-        public SYJH()
+        public XDSC()
         {
             _database = OracleDatabase.FromConfiguringNode("ApplicationServices");
         }
@@ -27,32 +26,32 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         #region -Properties-
         private OracleDatabase _database = null;
 
-        public int JHID { get; set; }
+        public int ID { get; set; }
         public DateTime CTime { get; set; }
+        public string Source { get; set; }
+        public string Destination { get; set; }
         public string TaskID { get; set; }
-        public SYJHType PlanType { get; set; }
-        public int PlanID { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public string InfoType { get; set; }
+        public int LineCount { get; set; }
         public string FileIndex { get; set; }
         public string Reserve { get; set; }
         #endregion
 
         #region -Methods-
         /// <summary>
-        /// 根据时间获取试验计划列表
+        /// 获取轨道根数列表
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
-        public DataSet GetSYJHListByDate(DateTime startDate, DateTime endDate)
+        public DataSet GetListByDate(DateTime startDate, DateTime endDate)
         {
             DataSet ds = null;
             try
             {
                 ds = new DataSet();
                 ds.Tables.Add();
-                OracleCommand command = _database.GetStoreProcCommand(GET_SYJHList_ByDate);
+                OracleCommand command = _database.GetStoreProcCommand(GET_XDSCList_ByDate);
                 if (startDate != DateTime.MinValue)
                 {
                     _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
@@ -69,7 +68,6 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 {
                     _database.AddInParameter(command, "p_endDate", OracleDbType.Date, endDate);
                 }
-                _database.AddOutParameter(command, "o_cursor", OracleDbType.RefCursor, 0);
                 using (IDataReader reader = _database.ExecuteReader(command))
                 {
                     ds.Tables[0].Load(reader);
@@ -91,6 +89,5 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             //this.AddValidRules("ID", "序号不能为空。", string.IsNullOrEmpty(ID));
         }
         #endregion
-        //
     }
 }

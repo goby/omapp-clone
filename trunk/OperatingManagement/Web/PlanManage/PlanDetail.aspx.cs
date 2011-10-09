@@ -41,8 +41,10 @@ namespace OperatingManagement.Web.PlanManage
 
         public override void OnPageLoaded()
         {
+            this.PagePermission = "Plan.Detail";
             this.ShortTitle = "计划明细";
             base.OnPageLoaded();
+            //this.AddJavaScriptInclude("scripts/pages/");
         }
     }
 }

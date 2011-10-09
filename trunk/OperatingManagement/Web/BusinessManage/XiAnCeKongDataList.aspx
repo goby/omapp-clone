@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="OribitalQuantityList.aspx.cs" Inherits="OperatingManagement.Web.PlanManage.OribitalQuantityList" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="XiAnCeKongDataList.aspx.cs" Inherits="OperatingManagement.Web.BusinessManage.XiAnCeKongDataList" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
         .style1
@@ -28,11 +28,7 @@
         {
             height: 18px;
         }
-        .style7
-        {
-            width: 100%;
-        }
-    </style>
+        </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
 </asp:Content>
@@ -56,14 +52,29 @@
             </td>
         </tr>
         <tr>
+            <td align="right" class="style2">
+                数据类型：</td>
+            <td class="style3">
+                <asp:DropDownList ID="ddlType" runat="server" Height="16px" Width="148px">
+                    <asp:ListItem Value="tb_gdxa">飞行器轨道根数</asp:ListItem>
+                    <asp:ListItem Value="tb_gdsh">事后精轨根数</asp:ListItem>
+                    <asp:ListItem Value="tb_xdsc">星地时差</asp:ListItem>
+                    <asp:ListItem Value="tb_T0">起飞0点T0</asp:ListItem>
+                </asp:DropDownList>
+            </td>
+            <td align="right" class="style4">
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
             <td class="style5">
             </td>
             <td class="style6" colspan="3">
-                <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
+                <asp:Button ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
                     Width="69px" />
 &nbsp;&nbsp;
-                <%--<asp:Button ID="btnReset" runat="server" Text="重置" Width="65px" />--%>
-                 <button class="button" onclick="return reset();" style="width:65px;">重置</button>
+                <asp:Button ID="btnReset" runat="server" Text="重置" Width="65px" />
             </td>
         </tr>
         <tr>
@@ -105,27 +116,9 @@
         </tr>
         <tr>
             <td  colspan="4" align="center">
-                <asp:Button ID="btnSend" runat="server" Text="发送轨道数据" onclick="btnSend_Click" />
-            </td>
+                &nbsp;</td>
         </tr>
     </table>
     </asp:Panel>
 
-    <asp:Panel ID="pnlDestination" runat="server">
-        <table class="style7">
-            <tr>
-                <td align="center">
-                    <asp:RadioButtonList ID="rbtDestination" runat="server">
-                    </asp:RadioButtonList>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: center">
-                    <asp:Button ID="btnSubmit" runat="server" onclick="btnSubmit_Click" Text="发送" />
-                    &nbsp;&nbsp;
-                    <asp:Button ID="btnCancel" runat="server" onclick="btnCancel_Click" Text="取消" />
-                </td>
-            </tr>
-        </table>
-    </asp:Panel>
-</asp:Content>
+    </asp:Content>

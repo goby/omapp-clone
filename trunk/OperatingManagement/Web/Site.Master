@@ -6,8 +6,10 @@
     <title></title>
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
+    
 </head>
 <body>
+<script language="javascript" type="text/javascript" src='<%=ResolveUrl("~") %>Scripts/DateTimePicker/WdatePicker.js'></script>
     <form runat="server">
     <div class="wrap">
         <div class="head">
