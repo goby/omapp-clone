@@ -105,10 +105,10 @@
     <Content Include="App_Themes\Default\Site.css" />
     <Content Include="BusinessManage\CenterOutputPolicyManage.aspx" />
     <Content Include="BusinessManage\MeasureDataDetail.aspx" />
-<<<<<<< .mine    <Content Include="BusinessManage\MeasureDataList.aspx" />
+<Content Include="BusinessManage\MeasureDataList.aspx" />
     <Content Include="BusinessManage\XiAnCeKongDataDetail.aspx" />
     <Content Include="BusinessManage\XiAnCeKongDataList.aspx" />
-=======>>>>>>> .theirs    <Content Include="Index.aspx" />
+<Content Include="Index.aspx" />
     <Content Include="PlanManage\ExperimentPlanList.aspx" />
     <Content Include="PlanManage\ExperimentProgramList.aspx" />
     <Content Include="PlanManage\NotSpaceTaskList.aspx" />
@@ -205,7 +205,7 @@
       <DependentUpon>MeasureDataDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="BusinessManage\MeasureDataList.aspx.cs">
-<<<<<<< .mine      <DependentUpon>MeasureDataList.aspx</DependentUpon>
+ <DependentUpon>MeasureDataList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="BusinessManage\MeasureDataList.aspx.designer.cs">
@@ -225,7 +225,7 @@
     <Compile Include="BusinessManage\XiAnCeKongDataList.aspx.designer.cs">
       <DependentUpon>XiAnCeKongDataList.aspx</DependentUpon>
     </Compile>
-=======>>>>>>> .theirs    <Compile Include="Global.asax.cs">
+<Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Index.aspx.cs">
