@@ -55,6 +55,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "中心输出策略", "中�
 		Scripts\业务管理\中心输出策略\UP_01_中心输出策略.txt = Scripts\业务管理\中心输出策略\UP_01_中心输出策略.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesKernel", "ServicesKernel\ServicesKernel.csproj", "{755C37F8-272A-43A0-8055-287AC82D185E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +143,16 @@ Global
 		{F108CA3D-8C70-47C0-8DDB-2A62CBBAC211}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F108CA3D-8C70-47C0-8DDB-2A62CBBAC211}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F108CA3D-8C70-47C0-8DDB-2A62CBBAC211}.Release|x86.ActiveCfg = Release|Any CPU
+		{755C37F8-272A-43A0-8055-287AC82D185E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{755C37F8-272A-43A0-8055-287AC82D185E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{755C37F8-272A-43A0-8055-287AC82D185E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{755C37F8-272A-43A0-8055-287AC82D185E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{755C37F8-272A-43A0-8055-287AC82D185E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{755C37F8-272A-43A0-8055-287AC82D185E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{755C37F8-272A-43A0-8055-287AC82D185E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{755C37F8-272A-43A0-8055-287AC82D185E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{755C37F8-272A-43A0-8055-287AC82D185E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{755C37F8-272A-43A0-8055-287AC82D185E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,6 +161,7 @@ Global
 		{2F26ECB8-6AE6-44CC-9C03-8A23B6D8CB37} = {4D524B9A-85C0-42E5-98B6-164264897140}
 		{C3A23001-F7C2-4174-BB54-7A60A1A20F46} = {4D524B9A-85C0-42E5-98B6-164264897140}
 		{C301ECEB-1C07-4A0C-8F66-6BE801CECA02} = {4D524B9A-85C0-42E5-98B6-164264897140}
+		{755C37F8-272A-43A0-8055-287AC82D185E} = {4D524B9A-85C0-42E5-98B6-164264897140}
 		{55B5B8DB-EED4-42F1-9715-A9DC3A35A406} = {C1CEB9FC-6953-46CE-B219-268ED854132F}
 		{9E179023-3E98-4E91-BC38-0329FC4A640F} = {EB0B86E6-DB65-4229-A29F-E52CD0E3E978}
 		{58EE1BBF-1809-41D4-BA01-D77870598DD8} = {775AB9A5-FC47-46B3-814F-E3D9D4930E4C}
