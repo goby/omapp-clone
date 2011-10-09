@@ -46,6 +46,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessManage\CenterOutputPolicy.cs" />
+    <Compile Include="BusinessManage\GDXA.cs" />
+    <Compile Include="BusinessManage\GDSH.cs" />
+    <Compile Include="BusinessManage\XDSC.cs" />
+    <Compile Include="BusinessManage\T0.cs" />
+    <Compile Include="BusinessManage\R.cs" />
+    <Compile Include="BusinessManage\SBJH.cs" />
+    <Compile Include="BusinessManage\MBXX.cs" />
+    <Compile Include="BusinessManage\HJXX.cs" />
+    <Compile Include="BusinessManage\YJBG.cs" />
+    <Compile Include="BusinessManage\JHBG.cs" />
+    <Compile Include="BusinessManage\SYXQ.cs" />
+    <Compile Include="BusinessManage\GCJG.cs" />
+    <Compile Include="BusinessManage\CZJG.cs" />
+    <Compile Include="BusinessManage\JDJG.cs" />
+    <Compile Include="BusinessManage\TYJG.cs" />
     <Compile Include="PlanManage\OribitalQuantity.cs" />
     <Compile Include="PlanManage\Plan.cs" />
     <Compile Include="PlanManage\YDSJ.cs" />
@@ -63,6 +78,12 @@
       <Project>{C301ECEB-1C07-4A0C-8F66-6BE801CECA02}</Project>
       <Name>Framework</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessManage\RR.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessManage\AE.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
