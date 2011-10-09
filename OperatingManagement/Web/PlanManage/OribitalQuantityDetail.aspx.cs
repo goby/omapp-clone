@@ -41,8 +41,10 @@ namespace OperatingManagement.Web.PlanManage
 
         public override void OnPageLoaded()
         {
+            this.PagePermission = "OribitalQuantity.Detail";
             this.ShortTitle = "轨道根数明细";
             base.OnPageLoaded();
+            //this.AddJavaScriptInclude("scripts/pages/");
         }
 
     }
