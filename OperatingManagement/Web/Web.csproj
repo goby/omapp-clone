@@ -104,7 +104,11 @@
     <Content Include="App_Themes\Default\Images\top-menu.png" />
     <Content Include="App_Themes\Default\Site.css" />
     <Content Include="BusinessManage\CenterOutputPolicyManage.aspx" />
-    <Content Include="Index.aspx" />
+    <Content Include="BusinessManage\MeasureDataDetail.aspx" />
+<<<<<<< .mine    <Content Include="BusinessManage\MeasureDataList.aspx" />
+    <Content Include="BusinessManage\XiAnCeKongDataDetail.aspx" />
+    <Content Include="BusinessManage\XiAnCeKongDataList.aspx" />
+=======>>>>>>> .theirs    <Content Include="Index.aspx" />
     <Content Include="PlanManage\ExperimentPlanList.aspx" />
     <Content Include="PlanManage\ExperimentProgramList.aspx" />
     <Content Include="PlanManage\NotSpaceTaskList.aspx" />
@@ -120,11 +124,43 @@
     <Content Include="Scripts\Core\jquery-plugins.js" />
     <Content Include="Scripts\Core\util.js" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\DateTimePicker\calendar.js" />
+    <Content Include="Scripts\DateTimePicker\config.js" />
+    <Content Include="Scripts\DateTimePicker\lang\en.js" />
+    <Content Include="Scripts\DateTimePicker\lang\zh-cn.js" />
+    <Content Include="Scripts\DateTimePicker\lang\zh-tw.js" />
+    <Content Include="Scripts\DateTimePicker\My97DatePicker.htm" />
+    <Content Include="Scripts\DateTimePicker\skin\datePicker.gif" />
+    <Content Include="Scripts\DateTimePicker\skin\default\datepicker.css" />
+    <Content Include="Scripts\DateTimePicker\skin\default\down.jpg" />
+    <Content Include="Scripts\DateTimePicker\skin\default\left.gif" />
+    <Content Include="Scripts\DateTimePicker\skin\default\navLeft.gif" />
+    <Content Include="Scripts\DateTimePicker\skin\default\navRight.gif" />
+    <Content Include="Scripts\DateTimePicker\skin\default\right.gif" />
+    <Content Include="Scripts\DateTimePicker\skin\default\up.jpg" />
+    <Content Include="Scripts\DateTimePicker\skin\WdatePicker.css" />
+    <Content Include="Scripts\DateTimePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="Scripts\DateTimePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="Scripts\DateTimePicker\skin\whyGreen\down.jpg" />
+    <Content Include="Scripts\DateTimePicker\skin\whyGreen\left.gif" />
+    <Content Include="Scripts\DateTimePicker\skin\whyGreen\navLeft.gif" />
+    <Content Include="Scripts\DateTimePicker\skin\whyGreen\navRight.gif" />
+    <Content Include="Scripts\DateTimePicker\skin\whyGreen\other\bg2.jpg" />
+    <Content Include="Scripts\DateTimePicker\skin\whyGreen\other\interface.jpg" />
+    <Content Include="Scripts\DateTimePicker\skin\whyGreen\right.gif" />
+    <Content Include="Scripts\DateTimePicker\skin\whyGreen\up.jpg" />
+    <Content Include="Scripts\DateTimePicker\skin\whyGreen\ymbg.jpg" />
+    <Content Include="Scripts\DateTimePicker\WdatePicker.js" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
+    <Content Include="Scripts\Pages\ExperimentPlanList.aspx.js" />
+    <Content Include="Scripts\Pages\ExperimentProgramList.aspx.js" />
     <Content Include="Scripts\Pages\userroleedit.aspx.js" />
     <Content Include="Scripts\Pages\roleadd.aspx.js" />
     <Content Include="Scripts\Pages\roles.aspx.js" />
     <Content Include="Scripts\Pages\users.aspx.js" />
+    <Content Include="Scripts\Pages\NotSpaceTaskList.aspx.js" />
+    <Content Include="Scripts\Pages\PlanList.aspx.js" />
+    <Content Include="Scripts\Pages\OribitalQuantityList.aspx.js" />
     <Content Include="Views\Exp\Exp.aspx" />
     <Content Include="Views\Exp\PNF404.aspx" />
     <Content Include="Views\UserAndRole\RoleAdd.aspx" />
@@ -161,7 +197,35 @@
     <Compile Include="BusinessManage\CenterOutputPolicyManage.aspx.designer.cs">
       <DependentUpon>CenterOutputPolicyManage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Global.asax.cs">
+    <Compile Include="BusinessManage\MeasureDataDetail.aspx.cs">
+      <DependentUpon>MeasureDataDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BusinessManage\MeasureDataDetail.aspx.designer.cs">
+      <DependentUpon>MeasureDataDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BusinessManage\MeasureDataList.aspx.cs">
+<<<<<<< .mine      <DependentUpon>MeasureDataList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BusinessManage\MeasureDataList.aspx.designer.cs">
+      <DependentUpon>MeasureDataList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BusinessManage\XiAnCeKongDataDetail.aspx.cs">
+      <DependentUpon>XiAnCeKongDataDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BusinessManage\XiAnCeKongDataDetail.aspx.designer.cs">
+      <DependentUpon>XiAnCeKongDataDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BusinessManage\XiAnCeKongDataList.aspx.cs">
+      <DependentUpon>XiAnCeKongDataList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BusinessManage\XiAnCeKongDataList.aspx.designer.cs">
+      <DependentUpon>XiAnCeKongDataList.aspx</DependentUpon>
+    </Compile>
+=======>>>>>>> .theirs    <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Index.aspx.cs">
@@ -320,7 +384,9 @@
       <DependentUpon>Users.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Scripts\Pages\SpaceTaskList.aspx.js" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Site.Master" />
   </ItemGroup>
