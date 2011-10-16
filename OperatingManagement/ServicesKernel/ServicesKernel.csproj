@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="File\DataFileHandle.cs" />
     <Compile Include="File\FileMonitor.cs" />
+    <Compile Include="File\UDPFrameHandle.cs" />
     <Compile Include="File\XMLFileHandel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

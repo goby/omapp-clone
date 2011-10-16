@@ -10,7 +10,7 @@ using OperatingManagement.WebKernel.Route;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.Framework;
-using OperatingManagement.DataAccessLayer.PlanManage;
+using OperatingManagement.DataAccessLayer.BusinessManage;
 using System.Web.Security;
 using System.Data;
 
@@ -54,7 +54,7 @@ namespace OperatingManagement.Web.PlanManage
                 endDate = Convert.ToDateTime(txtEndDate);
             }
             DataSet objDs = new DataSet();
-            objDs = (new OribitalQuantity()).GetOribitalQuantityListByDate(startDate, endDate);
+            objDs = (new GD()).GetGDListByDate(startDate, endDate);
             gvList.DataSource = objDs;
             gvList.DataBind();
             if (objDs.Tables[0].Rows.Count > 0)

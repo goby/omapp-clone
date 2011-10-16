@@ -11,15 +11,15 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
-    public class T0 : BaseEntity<int, T0>
+    public class GD : BaseEntity<int, GD>
     {
-        private static readonly string GET_T0List_ByDate = "up_t0_getlist";
-        private static readonly string Insert = "up_t0_insert";
+        private static readonly string GET_OribitalQuantityList_ByDate = "up_gd_getlist";
+        private static readonly string Insert = "up_gd_insert";
 
         /// <summary>
         /// Create a new instance of <see cref="SYCX"/> class.
         /// </summary>
-        public T0()
+        public GD()
         {
             _database = OracleDatabase.FromConfiguringNode("ApplicationServices");
         }
@@ -45,11 +45,59 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public string DataLength { get; set; }
         public string DataClass { get; set; }
         public string Reserve { get; set; }
+
         /// <summary>
-        /// 占4个字节，二进制整数补码表示，量化单位为0.1ms
+        /// 占2个字节，用无符号二进制整数表示，
+        /// 量化单位为1天，北京时2000年1月1日计为第1天
         /// </summary>
-        public string TZero { get; set; }
-        #endregion
+        public string D { get; set; }
+        /// <summary>
+        /// 占4个字节，用无符号二进制整数表示，
+        /// 量化单位为0.1ms
+        /// </summary>
+        public string T { get; set; }
+        /// <summary>
+        /// 4个字节，用无符号二进制整数表示，
+        /// 量化单位为0.1m
+        /// </summary>
+        public string A { get; set; }
+        /// <summary>
+        /// 占4个字节，用无符号二进制整数表示，量化单位 为2E-31
+        /// </summary>
+        public string E { get; set; }
+        /// <summary>
+        /// 占4个字节，用无符号二进制整数表示，量化单位为2E-24度
+        /// </summary>
+        public string I { get; set; }
+        /// <summary>
+        /// 占4个字节，用无符号二进制整数表示，量化单位为2E-22度
+        /// </summary>
+        public string Ohm { get; set; }
+        /// <summary>
+        /// 占4个字节，用无符号二进制整数表示，量化单位为2E-22度
+        /// </summary>
+        public string Omega{ get; set; }
+        /// <summary>
+        /// 占4个字节，用无符号二进制整数表示，量化单位为2E-22度
+        /// </summary>
+        public string M { get; set; }
+        /// <summary>
+        /// 占4个字节，用二进制整数补码表示，量化单位为2E-20分钟
+        /// </summary>
+        public string P { get; set; }
+        /// <summary>
+        /// 占4个字节，用二进制整数补码表示，量化单位为2E-20秒/天
+        /// </summary>
+        public string Pi { get; set; }
+        /// <summary>
+        /// 4个字节，用无符号二进制整数表示，量化单位为0.1m
+        /// </summary>
+        public string Ra { get; set; }
+        /// <summary>
+        /// 4个字节，用无符号二进制整数表示，量化单位为0.1m
+        /// </summary>
+        public string Rp { get; set; }
+        #endregion 
 
         #region -Methods-
         /// <summary>
@@ -58,14 +106,14 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
-        public DataSet GetListByDate(DateTime startDate, DateTime endDate)
+        public DataSet GetGDListByDate(DateTime startDate, DateTime endDate)
         {
             DataSet ds = null;
             try
             {
                 ds = new DataSet();
                 ds.Tables.Add();
-                OracleCommand command = _database.GetStoreProcCommand(GET_T0List_ByDate);
+                OracleCommand command = _database.GetStoreProcCommand(GET_OribitalQuantityList_ByDate);
                 if (startDate != DateTime.MinValue)
                 {
                     _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
@@ -131,7 +179,18 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_datalength",this.DataLength),
                 new OracleParameter("p_dataclass",this.DataClass),
                 new OracleParameter("p_Reserve",this.Reserve),
-                new OracleParameter("p_Data_TZero",this.TZero),
+                new OracleParameter("p_Data_D",this.D),
+                new OracleParameter("p_Data_T",this.T),
+                new OracleParameter("p_Data_A",this.A),
+                new OracleParameter("p_Data_E",this.E),
+                new OracleParameter("p_Data_I",this.I),
+                new OracleParameter("p_Data_Ohm",this.Ohm),
+                new OracleParameter("p_Data_Omega",this.Omega),
+                new OracleParameter("p_Data_M",this.M),
+                new OracleParameter("p_Data_P",this.P),
+                new OracleParameter("p_Data_PI",this.Pi),
+                new OracleParameter("p_Data_RA",this.Ra),
+                new OracleParameter("p_Data_RP",this.Rp),
                 opId,
                 p
             });
