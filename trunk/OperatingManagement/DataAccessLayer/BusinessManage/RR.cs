@@ -14,8 +14,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
     public class RR : BaseEntity<int, RR>
     {
         private static readonly string GET_RRList_ByDate = "up_rr_getlist";
+        private static readonly string Insert = "up_rr_insert";
 
-                /// <summary>
+        /// <summary>
         /// Create a new instance of <see cref="SYCX"/> class.
         /// </summary>
         public RR()
@@ -28,13 +29,44 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         public int ID { get; set; }
         public DateTime CTime { get; set; }
-        public string Source { get; set; }
-        public string Destination { get; set; }
-        public string TaskID { get; set; }
-        public string InfoType { get; set; }
-        public int LineCount { get; set; }
-        public string FileIndex { get; set; }
+        public string Version { get; set; }
+        public string Flag { get; set; }
+        public string MainType { get; set; }
+        public string DataType { get; set; }
+        public string SourceAddress { get; set; }
+        public string DestinationAddress { get; set; }
+        public string MissionCode { get; set; }
+        public string SatelliteCode { get; set; }
+        public DateTime DataDate { get; set; }
+        public string DataTime { get; set; }
+        public string SequenceNumber { get; set; }
+        public string ChildrenPackNumber { get; set; }
+        public string UDPReserve { get; set; }
+        public string DataLength { get; set; }
+        public string DataClass { get; set; }
         public string Reserve { get; set; }
+
+        /// <summary>
+        /// 占2个字节，二进制代码表示
+        /// </summary>
+        public string ZT { get; set; }
+        /// <summary>
+        /// 占4个字节，用无符号二进制整数表示，量化单位0.1ms
+        /// </summary>
+        public string T { get; set; }
+        /// <summary>
+        /// 占4个字节，用二进制整数补码表示，量化单位0.0001m/s(使用的光速c取299 792 458m/s)
+        /// </summary>
+        public string RR0 { get; set; }
+        /// <summary>
+        /// 占4个字节，用二进制整数补码表示，量化单位10-12（无量纲）。
+        /// 扩频模式2时，该字段有效；该字段无效时固定填“0”
+        /// </summary>
+        public string DeltaF { get; set; }
+        /// <summary>
+        /// 占2个字节，用二进制整数补码表示，量化单位0.01dBHz
+        /// </summary>
+        public string SPhi { get; set; }
         #endregion
 
         #region -Methods-
@@ -80,6 +112,54 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             }
 
             return ds;
+        }
+
+        /// <summary>
+        /// Inserts a new record into database.
+        /// </summary>
+        /// <returns></returns>
+        public FieldVerifyResult Add()
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            OracleParameter opId = new OracleParameter()
+            {
+                ParameterName = "v_Id",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _database.SpExecuteNonQuery(Insert, new OracleParameter[]{
+                new OracleParameter("p_Version",this.Version),
+                new OracleParameter("p_Flag",this.Flag),
+                new OracleParameter("p_Maintype",this.MainType),
+                new OracleParameter("p_datatype",this.DataType),
+                new OracleParameter("p_Source",this.SourceAddress),
+                new OracleParameter("p_Destination",this.DestinationAddress),
+                new OracleParameter("p_missioncode",this.MissionCode),
+                new OracleParameter("p_satellitecode",this.SatelliteCode),
+                new OracleParameter("p_datadate",(DateTime)this.DataDate),
+                new OracleParameter("p_datatime",this.DataTime),
+                new OracleParameter("p_sequencenumber",this.SequenceNumber),
+                new OracleParameter("p_childrenpacknumber",this.ChildrenPackNumber),
+                new OracleParameter("p_udpReserve",this.UDPReserve),
+                new OracleParameter("p_datalength",this.DataLength),
+                new OracleParameter("p_dataclass",this.DataClass),
+                new OracleParameter("p_Reserve",this.Reserve),
+                new OracleParameter("p_Data_ZT",this.ZT),
+                new OracleParameter("p_Data_T",this.T),
+                new OracleParameter("p_Data_RR",this.RR0),
+                new OracleParameter("p_Data_DeltaF",this.DeltaF),
+                new OracleParameter("p_Data_SPHI",this.SPhi),
+                opId,
+                p
+            });
+            if (opId.Value != null && opId.Value != DBNull.Value)
+                this.Id = Convert.ToInt32(opId.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
         #endregion
 
