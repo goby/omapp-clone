@@ -47,6 +47,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{F108CA3D-8C70-47C0-8DDB-2A62CBBAC211}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "业务管理", "业务管理", "{58EE1BBF-1809-41D4-BA01-D77870598DD8}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\taiji\Desktop\DT_01_序列.sql = C:\Users\taiji\Desktop\DT_01_序列.sql
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "中心输出策略", "中心输出策略", "{952B9C18-9A9B-4796-B54A-58A8B8BC35F7}"
 	ProjectSection(SolutionItems) = preProject
@@ -56,6 +59,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "中心输出策略", "中�
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesKernel", "ServicesKernel\ServicesKernel.csproj", "{755C37F8-272A-43A0-8055-287AC82D185E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "运控信息收发", "运控信息收发", "{073A4EAA-2980-411D-A3B4-02C952E9EFB3}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\taiji\Desktop\TB_01_运控信息收发.sql = C:\Users\taiji\Desktop\TB_01_运控信息收发.sql
+		C:\Users\taiji\Desktop\UP_01_运控信息收发.sql = C:\Users\taiji\Desktop\UP_01_运控信息收发.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "文件服务器", "文件服务器", "{852B50FB-7BEA-4B36-BC61-4B3E92A56CD5}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\taiji\Desktop\UP_01_文件服务器相关.sql = C:\Users\taiji\Desktop\UP_01_文件服务器相关.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -167,5 +181,7 @@ Global
 		{58EE1BBF-1809-41D4-BA01-D77870598DD8} = {775AB9A5-FC47-46B3-814F-E3D9D4930E4C}
 		{F108CA3D-8C70-47C0-8DDB-2A62CBBAC211} = {7BCFCF29-0B2F-4036-AF46-3BBEFC8D8C2E}
 		{952B9C18-9A9B-4796-B54A-58A8B8BC35F7} = {58EE1BBF-1809-41D4-BA01-D77870598DD8}
+		{073A4EAA-2980-411D-A3B4-02C952E9EFB3} = {58EE1BBF-1809-41D4-BA01-D77870598DD8}
+		{852B50FB-7BEA-4B36-BC61-4B3E92A56CD5} = {58EE1BBF-1809-41D4-BA01-D77870598DD8}
 	EndGlobalSection
 EndGlobal
