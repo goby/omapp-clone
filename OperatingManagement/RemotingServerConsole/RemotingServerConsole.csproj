@@ -50,6 +50,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
+      <Project>{F108CA3D-8C70-47C0-8DDB-2A62CBBAC211}</Project>
+      <Name>DataAccessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Framework\Framework.csproj">
+      <Project>{C301ECEB-1C07-4A0C-8F66-6BE801CECA02}</Project>
+      <Name>Framework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RemotingObjectEntity\RemotingObjectEntity.csproj">
       <Project>{8E4124C5-A074-4AF0-8633-BB50091C9A71}</Project>
       <Name>RemotingObjectEntity</Name>
