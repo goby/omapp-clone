@@ -8,6 +8,7 @@ begin
        open o_cursor for
             select * from tb_user where LoginName=p_LoginName;
 end;
+/
 create or replace procedure up_user_selectbyid
 (
        p_UserId tb_user.userid%type,
@@ -18,6 +19,7 @@ begin
        open o_cursor for
             select * from tb_user where userid=p_UserId;
 end;
+/
 create or replace procedure up_user_selectall
 (
        o_cursor out sys_refcursor  
@@ -27,7 +29,7 @@ begin
        open o_cursor for
             select * from tb_user;
 end;
-  
+/ 
 create or replace procedure up_role_selectall
 (
        o_cursor out sys_refcursor  
@@ -37,7 +39,7 @@ begin
        open o_cursor for
             select * from tb_role;
 end;
-
+/
 create or replace procedure up_module_selectall
 (
        o_cursor out sys_refcursor  
@@ -47,7 +49,7 @@ begin
        open o_cursor for
             select * from tb_module;
 end;
-
+/
 create or replace procedure up_action_selectall
 (
        o_cursor out sys_refcursor  
@@ -57,7 +59,7 @@ begin
        open o_cursor for
             select * from tb_action;
 end;
-
+/
 create or replace procedure up_permission_selectall
 (
        o_cursor out sys_refcursor  
@@ -71,7 +73,7 @@ begin
             left join tb_action c on a.actionid=c.actionid
             order by a.permissionid asc;
 end;
-
+/
 create or replace procedure up_permission_selectbyln
 (
        p_LoginName tb_user.loginname%type,
@@ -93,6 +95,7 @@ begin
             )
             order by a.permissionid asc;
 end;
+/
 create or replace procedure up_role_insert
 (
        p_RoleName tb_role.rolename%type,
@@ -126,6 +129,7 @@ begin
           COMMIT;
           v_result:=4; --Error
 end;
+/
 create or replace procedure up_role_update
 (
        p_RoleId tb_role.roleid%type,
@@ -165,6 +169,7 @@ begin
           COMMIT;
           v_result:=4; --Error
 end;
+/
 create or replace procedure up_role_selectbyid
 (
        p_RoleId tb_role.roleid%type,
@@ -177,13 +182,14 @@ begin
             a.roleid=b.roleid
             where a.roleid = p_RoleId;
 end;
-
+/
 create or replace procedure up_user_insert
 (
        p_LoginName tb_user.loginname%type,
        p_DisplayName tb_user.displayname%type,
        p_Password tb_user.password1%type,
        p_UserType tb_user.usertype%type,
+       p_UserCatalog tb_user.usercatalog%type,
        p_Status tb_user.status%type,
        p_Mobile tb_user.mobile%type,
        p_Note tb_user.note%type,
@@ -208,7 +214,7 @@ begin
        savepoint p1;
        v_UserId:= to_number(fn_genseqnum('0002'));
        insert into tb_user values(v_UserId,p_LoginName,p_DisplayName,p_Password,p_UserType,
-              p_Status,p_Mobile,p_Note,sysdate(),sysdate());
+              p_Status,p_Mobile,p_Note,sysdate(),sysdate(),p_UserCatalog);
        commit;
        v_result:=5; -- Success
        
@@ -218,13 +224,14 @@ begin
           COMMIT;
           v_result:=4; --Error
 end;
-
+/
 create or replace procedure up_user_update
 (
        p_UserId tb_user.userid%type,
        p_DisplayName tb_user.displayname%type,
        p_Password tb_user.password1%type,
        p_UserType tb_user.usertype%type,
+       p_UserCatalog tb_user.usercatalog%type,
        p_Status tb_user.status%type,
        p_Mobile tb_user.mobile%type,
        p_Note tb_user.note%type,
@@ -247,6 +254,7 @@ begin
          Status = p_Status,
          Mobile = p_Mobile,
          Note = p_Note,
+         UserCatalog = p_UserCatalog,
          LastUpdatedTime = sysdate() where userid=p_UserId;
        commit;
        if p_Password!='' then
@@ -261,6 +269,7 @@ begin
           COMMIT;
           v_result:=4; --Error
 end;
+/
 create or replace procedure up_user_addtorole
 (
        P_UserId tb_user.userid%type,
@@ -285,6 +294,7 @@ begin
           COMMIT;
           v_result:=0; --Error
 end;
+/
 create or replace procedure up_user_selectrolesbyid
 (
        p_UserId tb_user.userid%type,

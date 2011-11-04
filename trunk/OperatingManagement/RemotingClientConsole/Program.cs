@@ -12,7 +12,7 @@ namespace RemotingClientConsole
         static void Main(string[] args)
         {
             IAccount account = OperatingManagement.RemotingClient.RemotingActivator.GetObject<IAccount>();
-            Console.WriteLine(account.ValidateUser("admin", "123456"));
+            Console.WriteLine(account.ValidateUser("xiongjun", "password"));
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         }
