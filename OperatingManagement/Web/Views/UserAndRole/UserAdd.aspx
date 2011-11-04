@@ -24,11 +24,11 @@
             </td>
         </tr>
         <tr>
-            <th style="width:100px;">显示名(<span class="red">*</span>)</th>
+            <th style="width:100px;">姓名(<span class="red">*</span>)</th>
             <td>
                 <asp:TextBox ID="txtDisplayName" runat="server" Width="300px" CssClass="text" MaxLength="10"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfv2" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtDisplayName" ErrorMessage="必须填写“显示名称”。"></asp:RequiredFieldValidator>
+                     ControlToValidate="txtDisplayName" ErrorMessage="必须填写“姓名”。"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
@@ -54,20 +54,21 @@
             <th style="width:100px;">类型(<span class="red">*</span>)</th>
             <td>
                 <asp:RadioButtonList ID="rdlTypes" runat="server" RepeatDirection="Horizontal">
-                    <asp:ListItem Text="普通用户" Value="0" Selected="True"></asp:ListItem>
-                    <asp:ListItem Text="系统管理员" Value="1"></asp:ListItem>
+                    <asp:ListItem Text="中心内部用户" Value="0" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="中心外部用户" Value="1"></asp:ListItem>
+                    <asp:ListItem Text="临时用户" Value="2"></asp:ListItem>
                 </asp:RadioButtonList>
             </td>
         </tr>
-        <tr>
+        <!-- <tr>
             <th style="width:100px;">状态(<span class="red">*</span>)</th>
             <td>
-                <asp:RadioButtonList ID="rdlStatus" runat="server" RepeatDirection="Horizontal">
+                <asp:RadioButtonList ID="rdlStatus" runat="server" RepeatDirection="Horizontal" Enabled=false>
                     <asp:ListItem Text="活动帐户" Value="0" Selected="True"></asp:ListItem>
                     <asp:ListItem Text="锁定帐户" Value="2"></asp:ListItem>
                 </asp:RadioButtonList>
             </td>
-        </tr>
+        </tr> -->
         <tr>
             <th style="width:100px;">联系电话</th>
             <td>
