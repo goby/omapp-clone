@@ -33,7 +33,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
                 Note = txtNote.Text.Trim(),
                 Password = txtPassword.Text.Trim(),
                 Status = (Framework.FieldStatus)Convert.ToInt32(rdlStatus.SelectedValue),
-                UserType = (Framework.UserType)Convert.ToInt32(rdlTypes.SelectedValue)
+                UserType = (Framework.UserType)Convert.ToInt32(0)//(rdlTypes.SelectedValue)
             };
             var result = u.Add();
             string msg = string.Empty;
