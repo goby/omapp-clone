@@ -11,7 +11,8 @@
     <RootNamespace>RemotingServerConsole</RootNamespace>
     <AssemblyName>RemotingServerConsole</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -36,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,6 +52,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RemotingObjectEntity\RemotingObjectEntity.csproj">
+      <Project>{8E4124C5-A074-4AF0-8633-BB50091C9A71}</Project>
+      <Name>RemotingObjectEntity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RemotingServer\RemotingServer.csproj">
       <Project>{6DF9CDAD-51C8-4082-ABE9-015545834F7F}</Project>
       <Name>RemotingServer</Name>
