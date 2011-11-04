@@ -8,6 +8,7 @@ create table TB_USER
   DISPLAYNAME       VARCHAR2(20) not null,
   PASSWORD1       VARCHAR2(200) not null,
   USERTYPE       NUMBER(1) not null,
+  USERCATALOG      NUMBER(1) not null,
   STATUS         NUMBER(1) not null,
   MOBILE         VARCHAR2(15),
   NOTE        VARCHAR2(100),

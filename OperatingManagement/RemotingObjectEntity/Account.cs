@@ -48,8 +48,9 @@ namespace OperatingManagement.RemotingObjectEntity
                             new XElement("displayName", u.DisplayName),
                             new XElement("LoginName", u.LoginName),
                             new XElement("mobile", u.Mobile),
-                            new XElement("state", u.Status),
-                            new XElement("userType", u.UserType),
+                            new XElement("state", (int)u.Status),
+                            new XElement("userType", (int)u.UserType),
+                            new XElement("userCatalog", (int)u.UserCatalog),
                             new XElement("createdTime", u.CreatedTime.ToString("yyyyMMdd HH:mm:ss",
                                 System.Globalization.DateTimeFormatInfo.InvariantInfo)));
                         var rs = u.SelectRolesById();
@@ -84,9 +85,9 @@ namespace OperatingManagement.RemotingObjectEntity
             catch (Exception ex)
             {
                 code.Value = "0";
-                msg.SetValue(new XCData(ex.Message));
+                msg.Add(new XCData(ex.Message));
             }
-            root.Add(code, msg, roles, permissions);
+            root.Add(code, msg, user, roles, permissions);
             return root.ToString();
         }
     }

@@ -73,6 +73,7 @@
     <Compile Include="Core\AspNetCookie.cs" />
     <Compile Include="Core\AspNetException.cs" />
     <Compile Include="Core\GlobalSettings.cs" />
+    <Compile Include="Enum\UserCatalog.cs" />
     <Compile Include="Enum\FieldStatus.cs" />
     <Compile Include="Enum\PasswordFormat.cs" />
     <Compile Include="Enum\SYCXType.cs" />

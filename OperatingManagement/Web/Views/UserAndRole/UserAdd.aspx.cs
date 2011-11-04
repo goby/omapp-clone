@@ -33,7 +33,8 @@ namespace OperatingManagement.Web.Views.UserAndRole
                 Note = txtNote.Text.Trim(),
                 Password = txtPassword.Text.Trim(),
                 Status = (Framework.FieldStatus)Convert.ToInt32(rdlStatus.SelectedValue),
-                UserType = (Framework.UserType)Convert.ToInt32(0)//(rdlTypes.SelectedValue)
+                UserType = (Framework.UserType)Convert.ToInt32(rdlTypes.SelectedValue),
+                UserCatalog = (Framework.UserCatalog)Convert.ToInt32(rdlUserCat.SelectedValue)
             };
             var result = u.Add();
             string msg = string.Empty;
@@ -63,7 +64,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             this.PagePermission = "UserManage.Add";
             this.ShortTitle = "新增用户";
             this.SetTitle();
-            //this.AddJavaScriptInclude("scripts/pages/useradd.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/useradd.aspx.js");
         }
 
     }

@@ -44,9 +44,18 @@
             </td>
         </tr>
         <tr>
-            <th style="width:100px;">类型(<span class="red">*</span>)</th>
+            <th style="width:100px;">权限类型(<span class="red">*</span>)</th>
             <td>
                 <asp:RadioButtonList ID="rdlTypes" runat="server" RepeatDirection="Horizontal">
+                    <asp:ListItem Text="普通用户" Value="0" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="系统管理员" Value="1"></asp:ListItem>
+                </asp:RadioButtonList>
+            </td>
+        </tr>
+        <tr>
+            <th style="width:100px;">用户类型(<span class="red">*</span>)</th>
+            <td>
+                <asp:RadioButtonList ID="rdlUserCat" runat="server" RepeatDirection="Horizontal">
                     <asp:ListItem Text="中心内部用户" Value="0" Selected="True"></asp:ListItem>
                     <asp:ListItem Text="中心外部用户" Value="1"></asp:ListItem>
                     <asp:ListItem Text="临时用户" Value="2"></asp:ListItem>

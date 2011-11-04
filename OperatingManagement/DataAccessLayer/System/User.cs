@@ -42,6 +42,10 @@ namespace OperatingManagement.DataAccessLayer.System
         /// </summary>
         public UserType UserType { get; set; }
         /// <summary>
+        /// Gets/Sets the user catalog.
+        /// </summary>
+        public UserCatalog UserCatalog { get; set; }
+        /// <summary>
         /// Gets/Sets the status.
         /// </summary>
         public FieldStatus Status { get; set; }
@@ -92,7 +96,8 @@ namespace OperatingManagement.DataAccessLayer.System
                         Password = dr["Password1"].ToString(),
                         UpdatedTime = Convert.ToDateTime(dr["LastUpdatedTime"].ToString()),
                         Status = (FieldStatus)(Convert.ToInt32(dr["Status"].ToString())),
-                        UserType = (UserType)(Convert.ToInt32(dr["UserType"].ToString()))
+                        UserType = (UserType)(Convert.ToInt32(dr["UserType"].ToString())),
+                        UserCatalog = (UserCatalog)(Convert.ToInt32(dr["UserCatalog"].ToString()))
                     });
                 }
             }
@@ -144,6 +149,7 @@ namespace OperatingManagement.DataAccessLayer.System
                 new OracleParameter("p_DisplayName",this.DisplayName),
                 new OracleParameter("p_Password",GlobalSettings.EncryptPassword(this.Password)),
                 new OracleParameter("p_UserType",(int)this.UserType),
+                new OracleParameter("p_UserCatalog",(int)this.UserCatalog),
                 new OracleParameter("p_Status",(int)this.Status),
                 new OracleParameter("p_Mobile",this.Mobile),
                 new OracleParameter("p_Note",this.Note),
@@ -173,6 +179,7 @@ namespace OperatingManagement.DataAccessLayer.System
                     string.IsNullOrEmpty(this.Password)?string.Empty:
                         GlobalSettings.EncryptPassword(this.Password)),
                 new OracleParameter("p_UserType",(int)this.UserType),
+                new OracleParameter("p_UserCatalog",(int)this.UserCatalog),
                 new OracleParameter("p_Status",(int)this.Status),
                 new OracleParameter("p_Mobile",this.Mobile),
                 new OracleParameter("p_Note",this.Note),
@@ -227,7 +234,8 @@ namespace OperatingManagement.DataAccessLayer.System
                         Password = dr["Password1"].ToString(),
                         UpdatedTime = Convert.ToDateTime(dr["LastUpdatedTime"].ToString()),
                         Status = (FieldStatus)(Convert.ToInt32(dr["Status"].ToString())),
-                        UserType = (UserType)(Convert.ToInt32(dr["UserType"].ToString()))
+                        UserType = (UserType)(Convert.ToInt32(dr["UserType"].ToString())),
+                        UserCatalog = (UserCatalog)(Convert.ToInt32(dr["UserCatalog"].ToString()))
                     };
                 }
             }
@@ -261,7 +269,8 @@ namespace OperatingManagement.DataAccessLayer.System
                         Password = dr["Password1"].ToString(),
                         UpdatedTime = Convert.ToDateTime(dr["LastUpdatedTime"].ToString()),
                         Status = (FieldStatus)(Convert.ToInt32(dr["Status"].ToString())),
-                        UserType = (UserType)(Convert.ToInt32(dr["UserType"].ToString()))
+                        UserType = (UserType)(Convert.ToInt32(dr["UserType"].ToString())),
+                        UserCatalog = (UserCatalog)(Convert.ToInt32(dr["UserCatalog"].ToString()))
                     };
                 }
             }
@@ -284,11 +293,22 @@ namespace OperatingManagement.DataAccessLayer.System
 
                 if (u.Status != FieldStatus.Active)
                     return FieldVerifyResult.Inactive;
+
+                this.DisplayName = u.DisplayName;
+                this.CreatedTime = u.CreatedTime;
+                this.Mobile = u.LoginName;
+                this.Mobile = u.Mobile;
+                this.Note = u.Note;
+                this.Status = u.Status;
+                this.UpdatedTime = u.UpdatedTime;
+                this.UserType = u.UserType;
+                this.UserCatalog = u.UserCatalog;
                 return FieldVerifyResult.Success;
             }
-            catch
+            catch(Exception ex)
             {
-                return FieldVerifyResult.Error;
+                throw ex;
+                //return FieldVerifyResult.Error;
             }
         }
         #endregion

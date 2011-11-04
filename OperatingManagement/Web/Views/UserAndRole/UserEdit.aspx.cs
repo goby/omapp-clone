@@ -27,6 +27,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             txtNote.Text = user.Note;
             rdlStatus.SelectedValue = ((int)user.Status).ToString();
             rdlTypes.SelectedValue = ((int)user.UserType).ToString();
+            rdlUserCat.SelectedValue = ((int)user.UserCatalog).ToString();
 
             ltHref.Text = "<a href=\"userroleedit.aspx?id=" + userId.ToString() + "\">[分配角色]</a>";
         }
@@ -40,7 +41,8 @@ namespace OperatingManagement.Web.Views.UserAndRole
                 Note = txtNote.Text.Trim(),
                 Password = txtPassword.Text.Trim(),
                 Status = (Framework.FieldStatus)Convert.ToInt32(rdlStatus.SelectedValue),
-                UserType = (Framework.UserType)Convert.ToInt32(0)//(rdlTypes.SelectedValue)
+                UserType = (Framework.UserType)Convert.ToInt32(rdlTypes.SelectedValue),
+                UserCatalog = (Framework.UserCatalog)Convert.ToInt32(rdlUserCat.SelectedValue)
             };
             var result = u.Update();
             string msg = string.Empty;
@@ -63,7 +65,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             this.PagePermission = "UserManage.Edit";
             this.ShortTitle = "编辑用户";
             this.SetTitle();
-            //this.AddJavaScriptInclude("scripts/pages/useradd.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/useradd.aspx.js");
         }
 
     }
