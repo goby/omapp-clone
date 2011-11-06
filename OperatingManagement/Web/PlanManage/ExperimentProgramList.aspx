@@ -77,28 +77,54 @@
         </tr>
         <tr>
             <td class="style2" colspan="4">
-                <asp:GridView ID="gvList" runat="server" AutoGenerateColumns="False" 
-                    BackColor="White" BorderColor="#E7E7FF" BorderStyle="None" BorderWidth="1px" 
-                    CellPadding="3" GridLines="Horizontal" Width="100%">
-                    <AlternatingRowStyle BackColor="#F7F7F7" />
-                    <Columns>
-                        <asp:BoundField DataField="pname" HeaderText="项目名称" />
-                        <asp:BoundField DataField="ptype" HeaderText="类型" />
-                        <asp:BoundField DataField="pnid" HeaderText="编号" />
-                        <asp:BoundField DataField="starttime" HeaderText="开始时间" />
-                        <asp:BoundField FooterText="endtime" HeaderText="结束时间" />
-                        <asp:CommandField DeleteText="生成计划" HeaderText="生成计划" ShowDeleteButton="True" />
-                    </Columns>
-                    <FooterStyle BackColor="#B5C7DE" ForeColor="#4A3C8C" />
-                    <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#F7F7F7" />
-                    <PagerStyle BackColor="#E7E7FF" ForeColor="#4A3C8C" HorizontalAlign="Right" />
-                    <RowStyle BackColor="#E7E7FF" ForeColor="#4A3C8C" />
-                    <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="#F7F7F7" />
-                    <SortedAscendingCellStyle BackColor="#F4F4FD" />
-                    <SortedAscendingHeaderStyle BackColor="#5A4C9D" />
-                    <SortedDescendingCellStyle BackColor="#D8D8F0" />
-                    <SortedDescendingHeaderStyle BackColor="#3E3277" />
-                </asp:GridView>
+
+        <asp:Repeater ID="rpDatas" runat="server">
+        <HeaderTemplate>
+            <table class="list">
+                <tr>
+                    <%--<th style="width:20px;"><input type="checkbox" onclick="checkAll(this)" /></th>--%>
+                    <th style="width:150px;">项目名称</th>
+                    <th style="width:150px;">类型</th>
+                    <th style="width:150px;">编号</th>
+                    <th style="width:150px;">开始时间</th>
+                    <th style="width:150px;">结束时间</th>
+                    <th style="width:70px;">明细</th>
+                    <th style="width:70px;">生成计划</th>
+                </tr>  
+                <tbody id="tbUsers">        
+        </HeaderTemplate>
+        <ItemTemplate>
+            <tr>
+                <%--<td><input type="checkbox" <%# Eval("LoginName").ToString().Equals(this.Profile.UserName,StringComparison.InvariantCultureIgnoreCase)?"disabled=\"true\"":"" %> name="chkDelete" value="<%# Eval("Id") %>" /></td>--%>
+                <td><%# Eval("pname")%></td>
+                <td><%# Eval("ptype")%></td>
+                <td><%# Eval("pnid")%></td>
+                <td><%# Eval("starttime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%></td>
+                <td><%# Eval("endtime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%></td>
+                <td>
+                    <button class="button" onclick="return showDetail('<%# Eval("ID") %>')">明细</button>
+                </td>
+                <td>
+                    <button class="button" onclick="return generatePlans('<%# Eval("ID") %>')">生成计划</button>
+                </td>
+            </tr>            
+        </ItemTemplate>
+        <FooterTemplate>   
+                </tbody>           
+            </table>            
+        </FooterTemplate>
+    </asp:Repeater>
+    <table class="listTitle">
+        <tr>
+            <td class="listTitle-c1">
+                          
+            </td>
+            <td class="listTitle-c2">
+                <om:CollectionPager ID="cpPager" runat="server" ></om:CollectionPager>
+            </td>
+        </tr>
+    </table>
+
             </td>
         </tr>
     </table>

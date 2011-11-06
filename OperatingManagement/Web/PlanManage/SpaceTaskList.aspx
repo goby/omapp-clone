@@ -41,77 +41,149 @@
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-    <asp:Panel ID="pnlData" runat="server">
-    <table cellpadding="0" class="style1">
-        <tr>
-            <td align="right" class="style2">
-                开始日期：</td>
-            <td class="style3">
-                <asp:TextBox ID="txtStartDate" runat="server"  onclick="new WdatePicker(this);"></asp:TextBox>
-            </td>
-            <td align="right" class="style4">
-                结束日期：</td>
-            <td>
-                <asp:TextBox ID="txtEndDate" runat="server"  onclick="new WdatePicker(this);"></asp:TextBox>
-            </td>
-        </tr>
-        <tr>
-            <td class="style5">
-            </td>
-            <td class="style6" colspan="3">
-                <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
-                    Width="69px" />
-&nbsp;&nbsp;
-                <%--<asp:Button ID="btnReset" runat="server" Text="重置" Width="65px" />--%>
-                <button class="button" onclick="return reset();" style="width:65px;">重置</button>
-            </td>
-        </tr>
-        <tr>
-            <td class="style2">
-                &nbsp;</td>
-            <td class="style3">
-                &nbsp;</td>
-            <td class="style4">
-                &nbsp;</td>
-            <td>
-                &nbsp;</td>
-        </tr>
-        <tr>
-            <td class="style2" colspan="4">
-                <asp:GridView ID="gvList" runat="server" AutoGenerateColumns="False" 
-                    BackColor="White" BorderColor="#E7E7FF" BorderStyle="None" BorderWidth="1px" 
-                    CellPadding="3" GridLines="Horizontal" Width="100%" DataKeyNames="ydsjid" 
-                    onrowcommand="gvList_RowCommand">
-                    <AlternatingRowStyle BackColor="#F7F7F7" />
-                    <Columns>
-                        <asp:CheckBoxField />
-                        <asp:BoundField DataField="source" HeaderText="信源" />
-                        <asp:BoundField DataField="destination" HeaderText="信宿" />
-                        <asp:BoundField DataField="taskid" HeaderText="任务代码" />
-                        <asp:BoundField DataField="ctime" HeaderText="生成时间" />
-                         <asp:ButtonField CommandName="ShowDetail" HeaderText="明细" Text="明细" />
-                    </Columns>
-                    <FooterStyle BackColor="#B5C7DE" ForeColor="#4A3C8C" />
-                    <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#F7F7F7" />
-                    <PagerStyle BackColor="#E7E7FF" ForeColor="#4A3C8C" HorizontalAlign="Right" />
-                    <RowStyle BackColor="#E7E7FF" ForeColor="#4A3C8C" />
-                    <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="#F7F7F7" />
-                    <SortedAscendingCellStyle BackColor="#F4F4FD" />
-                    <SortedAscendingHeaderStyle BackColor="#5A4C9D" />
-                    <SortedDescendingCellStyle BackColor="#D8D8F0" />
-                    <SortedDescendingHeaderStyle BackColor="#3E3277" />
-                </asp:GridView>
-            </td>
-        </tr>
-        <tr>
-            <td  colspan="4" align="center">
-                <asp:Button ID="btnSend" runat="server" Text="发送数据" onclick="btnSend_Click" />
-            </td>
-        </tr>
-    </table>
-    </asp:Panel>
-
-    <asp:Panel ID="pnlDestination" runat="server">
+    <%--    <asp:Panel ID="pnlData" runat="server">--%>
+    <div id="divData">
+        <table cellpadding="0" class="style1">
+            <tr>
+                <td align="right" class="style2">
+                    开始日期：
+                </td>
+                <td class="style3">
+                    <asp:TextBox ID="txtStartDate" runat="server" onclick="new WdatePicker(this);"></asp:TextBox>
+                </td>
+                <td align="right" class="style4">
+                    结束日期：
+                </td>
+                <td>
+                    <asp:TextBox ID="txtEndDate" runat="server" onclick="new WdatePicker(this);"></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td class="style5">
+                </td>
+                <td class="style6" colspan="3">
+                    <asp:Button class="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
+                        Text="查询" Width="69px" />
+                    &nbsp;&nbsp;
+                    <%--<asp:Button ID="btnReset" runat="server" Text="重置" Width="65px" />--%>
+                    <button class="button" onclick="return reset();" style="width: 65px;">
+                        重置</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="style2">
+                    &nbsp;
+                </td>
+                <td class="style3">
+                    &nbsp;
+                </td>
+                <td class="style4">
+                    &nbsp;
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td class="style2" colspan="4">
+                    <table class="listTitle">
+                        <tr>
+                            <td class="listTitle-c1">
+                                <button class="button" onclick="return selectAll();">
+                                    全选</button>&nbsp;&nbsp;
+                                <button class="button" onclick="return sendYDSJ1();">
+                                    发送引导数据</button>
+                            </td>
+                            <td class="listTitle-c2">
+                                <div class="load" id="submitIndicator" style="display: none">
+                                    提交中，请稍候。。。</div>
+                            </td>
+                        </tr>
+                    </table>
+                    <asp:Repeater ID="rpDatas" runat="server">
+                        <HeaderTemplate>
+                            <table class="list">
+                                <tr>
+                                    <th style="width: 20px;">
+                                        <input type="checkbox" onclick="checkAll(this)" />
+                                    </th>
+                                    <th style="width: 100px;">
+                                        信源
+                                    </th>
+                                    <th style="width: 100px;">
+                                        信宿
+                                    </th>
+                                    <th style="width: 100px;">
+                                        任务代码
+                                    </th>
+                                    <th style="width: 100px;">
+                                        卫星编号
+                                    </th>
+                                    <th>
+                                        创建时间
+                                    </th>
+                                    <th style="width: 70px;">
+                                        明细
+                                    </th>
+                                </tr>
+                                <tbody id="tbYDSJs">
+                        </HeaderTemplate>
+                        <ItemTemplate>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>" />
+                                </td>
+                                <td>
+                                    <%# Eval("SOURCEADDRESS")%>
+                                </td>
+                                <td>
+                                    <%# Eval("DESTINATIONADDRESS")%>
+                                </td>
+                                <td>
+                                    <%# Eval("MISSIONCODEV")%>
+                                </td>
+                                <td>
+                                    <%# Eval("SATELLITECODE")%>
+                                </td>
+                                <td>
+                                    <%# Eval("CreatedTime","{0:"+this.SiteSetting.DateTimeFormat+"}") %>
+                                </td>
+                                <td>
+                                    <button class="button" onclick="return showDetail('<%# Eval("Id") %>')">
+                                        明细</button>
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            </tbody> </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
+                    <table class="listTitle">
+                        <tr>
+                            <td class="listTitle-c1">
+                                <button class="button" onclick="return selectAll();">
+                                    全选</button>&nbsp;&nbsp;
+                                <button class="button" onclick="return sendYDSJ1();">
+                                    发送引导数据</button>
+                            </td>
+                            <td class="listTitle-c2">
+                                <om:CollectionPager ID="cpPager" runat="server">
+                                </om:CollectionPager>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" align="center">
+                    <%-- <asp:Button ID="btnSend" runat="server" Text="发送轨道数据" onclick="btnSend_Click" />--%>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <%--    </asp:Panel>--%>
+    <%--    <asp:Panel ID="pnlDestination" runat="server">--%>
+    <div id="tartgetPanel" style="display: none">
         <table class="style7">
             <tr>
                 <td align="center">
@@ -121,12 +193,13 @@
             </tr>
             <tr>
                 <td style="text-align: center">
-                    <asp:Button ID="btnSubmit" runat="server" onclick="btnSubmit_Click" Text="发送" />
+                    <asp:Button ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="发送" />
                     &nbsp;&nbsp;
-                    <asp:Button ID="btnCancel" runat="server" onclick="btnCancel_Click" Text="取消" />
+                    <asp:Button ID="btnCancel" runat="server" OnClick="btnCancel_Click" Text="取消" />
                 </td>
             </tr>
         </table>
-    </asp:Panel>
+    </div>
+    <%--    </asp:Panel>--%>
     
 </asp:Content>

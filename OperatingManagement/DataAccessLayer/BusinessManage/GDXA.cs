@@ -39,7 +39,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         #region -Methods-
         /// <summary>
-        /// 获取轨道根数列表
+        /// 获取西安轨道列表
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>

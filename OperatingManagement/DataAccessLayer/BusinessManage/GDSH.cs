@@ -104,11 +104,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
-        public DataSet GetListByDate(DateTime startDate, DateTime endDate)
+        public List<GDSH> GetListByDate(DateTime startDate, DateTime endDate)
         {
             DataSet ds = null;
-            try
-            {
+
                 ds = new DataSet();
                 ds.Tables.Add();
                 OracleCommand command = _database.GetStoreProcCommand(GET_GDSHList_ByDate);
@@ -133,13 +132,49 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     ds.Tables[0].Load(reader);
                 }
 
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+                List<GDSH> objDatas = new List<GDSH>();
+                if (ds != null && ds.Tables.Count == 1)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        objDatas.Add(new GDSH()
+                        {
+                            Id = Convert.ToInt32(dr["ID"].ToString()),
+                            CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                            Version = dr["Version"].ToString(),
+                            Flag = dr["Flag"].ToString(),
+                            MainType = dr["MainType"].ToString(),
+                            DataType = dr["DataType"].ToString(),
+                            SourceAddress = dr["SourceAddress"].ToString(),
+                            DestinationAddress = dr["DestinationAddress"].ToString(),
+                            MissionCode = dr["MissionCode"].ToString(),
+                            SatelliteCode = dr["SatelliteCode"].ToString(),
+                            DataDate = Convert.ToDateTime(dr["DataDate"].ToString()),
+                            DataTime = dr["DataTime"].ToString(),
+                            SequenceNumber = dr["SequenceNumber"].ToString(),
+                            ChildrenPackNumber = dr["ChildrenPackNumber"].ToString(),
+                            UDPReserve = dr["UDPReserve"].ToString(),
+                            DataLength = dr["DataLength"].ToString(),
+                            DataClass = dr["DataClass"].ToString(),
+                            Reserve = dr["RESERVE"].ToString(),
+                            D = dr["D"].ToString(),
+                            T = dr["T"].ToString(),
+                            A = dr["A"].ToString(),
+                            E = dr["E"].ToString(),
+                            I = dr["I"].ToString(),
+                            Ohm = dr["Ohm"].ToString(),
+                            Omega = dr["Omega"].ToString(),
+                            M = dr["M"].ToString(),
+                            CDSM = dr["CDSM"].ToString(),
+                            KSM = dr["KSM"].ToString(),
+                            KZ1 = dr["KZ1"].ToString(),
+                            KZ2 = dr["KZ2"].ToString()
+                        });
+                    }
+                }
 
-            return ds;
+
+                return objDatas;
         }
 
         /// <summary>

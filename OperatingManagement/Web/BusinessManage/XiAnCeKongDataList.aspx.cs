@@ -28,7 +28,7 @@ namespace OperatingManagement.Web.BusinessManage
             this.PagePermission = "XiAnCeKongData.List";
             this.ShortTitle = "查看西安卫星测控中心数据";
             this.SetTitle();
-            //this.AddJavaScriptInclude("scripts/pages/");
+            this.AddJavaScriptInclude("scripts/pages/XiAnCeKongDataList.aspx.js");
         }
 
 
@@ -51,38 +51,35 @@ namespace OperatingManagement.Web.BusinessManage
             {
                 endDate = Convert.ToDateTime(txtEndDate);
             }
-            DataSet objDs = new DataSet();
+
             switch (dtype)
             {
                 case "tb_gdxa":
-                    objDs = (new GDXA()).GetListByDate(startDate, endDate);
+                    List<GD> listDatasGDXA = (new GD()).GetGDListByDate(startDate, endDate);
+                    cpPager.DataSource = listDatasGDXA;
                     break;
                 case "tb_gdsh":
-                    objDs = (new GDSH()).GetListByDate(startDate, endDate);
+                    List<GDSH> listDatasGDSH = (new GDSH()).GetListByDate(startDate, endDate);
+                    cpPager.DataSource = listDatasGDSH;
                     break;
                 case "tb_xdsc":
-                    objDs = (new XDSC()).GetListByDate(startDate, endDate);
+                    List<XDSC> listDatasXDSC = (new XDSC()).GetListByDate(startDate, endDate);
+                    cpPager.DataSource = listDatasXDSC;
                     break;
                 case "tb_T0":
-                    objDs = (new T0()).GetListByDate(startDate, endDate);
+                    List<T0> listDatasT0 = (new T0()).GetListByDate(startDate, endDate);
+                    cpPager.DataSource = listDatasT0;
                     break;
             }
-            gvList.DataSource = objDs;
-            gvList.DataBind();
+
+            //cpPager.DataSource = listDatas;
+            cpPager.PageSize = this.SiteSetting.PageSize;
+            cpPager.BindToControl = rpDatas;
+            rpDatas.DataSource = cpPager.DataSourcePaged;
+            rpDatas.DataBind();
 
         }
 
-        protected void gvList_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            if ("ShowDetail" == e.CommandName)
-            {
-                int idx = Int32.Parse(e.CommandArgument.ToString());
-                int ID = Convert.ToInt32(gvList.DataKeys[idx][0]);
-                string dataType = ddlType.SelectedValue;
-
-                Response.Redirect(string.Format("XiAnCeKongDataDetail.aspx?id={0}&dtype={1}", ID,dataType));
-            }
-        }
         //
 
     }

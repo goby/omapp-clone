@@ -21,7 +21,7 @@ namespace OperatingManagement.Web.PlanManage
         public override void OnPageLoaded()
         {
             this.PagePermission = "Plan.List";
-            this.ShortTitle = "计划列表";
+            this.ShortTitle = "查询计划";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/PlanList.aspx.js");
         }
@@ -56,7 +56,7 @@ namespace OperatingManagement.Web.PlanManage
             string planType = rbtType.Text;
             string planAging = ddlAging.SelectedValue;
             DataSet objDs = new DataSet();
-            objDs = (new SYCX()).GetSYCXListByDate(startDate, endDate);
+            objDs = (new Plan()).GetSYJHList(planType,planAging, startDate, endDate);
             gvList.DataSource = objDs;
             gvList.DataBind();
             if (objDs.Tables[0].Rows.Count > 0)

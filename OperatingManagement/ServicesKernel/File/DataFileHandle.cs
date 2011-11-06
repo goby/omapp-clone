@@ -12,14 +12,29 @@ namespace OperatingManagement.ServicesKernel.File
         StreamReader sr;
         StreamWriter sw;
         string _filepath = null;
+        string _savepath = null;
 
+        /// <summary>
+        /// 文件读取路径
+        /// </summary>
         public string FilePath
         {
             get { return _filepath; }
             set { _filepath = value; }
         }
+
+        /// <summary>
+        /// 文件保存路径
+        /// </summary>
+        public string SavePath
+        {
+            get { return _savepath; }
+            set { _savepath = value; }
+        }
         #endregion
 
+
+        #region -Public Methods-
         public DataFileHandle(string filepath)
         {
             FilePath = filepath;
@@ -73,16 +88,69 @@ namespace OperatingManagement.ServicesKernel.File
         }
 
         /// <summary>
+        /// 生成计划文件:应用研究工作计划、空间信息需求、地面站工作计划、中心运行计划、仿真推演试验数据
+        /// </summary>
+        public void WriteFile(string type)
+        {
+            if (String.IsNullOrEmpty(_savepath))
+            { return; }
+
+            //switch (type)
+            //{ 
+            //    case
+            //}
+
+        }
+
+        public void GetDataFileBaseInfo(out string ctime,out string source, out string destination,out string taskid,
+            out string infotype,out string linecount)
+        {
+            ctime = ""; source = ""; destination = ""; taskid = ""; infotype = ""; linecount = "";
+            if (String.IsNullOrEmpty(_filepath))
+            { return; }
+
+            sr = new StreamReader(FilePath);
+            string nextline = null;
+
+            sr.BaseStream.Seek(0, SeekOrigin.Begin);
+            nextline = sr.ReadLine();
+            while (nextline != null)
+            {
+                if (nextline.Trim() == "<说明区>")
+                {
+                    nextline = sr.ReadLine();
+                    ctime = nextline.Replace("[生成时间]：", "").Trim();
+                    nextline = sr.ReadLine();
+                    source = nextline.Replace("[信源S]：", "").Trim();
+                    nextline = sr.ReadLine();
+                    destination = nextline.Replace("[信宿D]：", "").Trim();
+                    nextline = sr.ReadLine();
+                    taskid = nextline.Replace("[任务代码M]：", "").Trim();
+                    nextline = sr.ReadLine();
+                    infotype = nextline.Replace("[信息类别B]：", "").Trim();
+                    nextline = sr.ReadLine();
+                    linecount = nextline.Replace("[数据区行数L]：", "").Trim();
+                    break;
+                }
+            }
+
+            sr.Close();
+        }
+
+        #endregion
+
+        #region -Private Methods-
+        /// <summary>
         /// type: 1,说明区;2,符号区;3,数据区;4,辅助区;
         /// </summary>
         /// <param name="type"></param>
-        bool validateDate(int type,StreamReader reader)
+        bool validateDate(int type, StreamReader reader)
         {
             string strLine = null;
             string strLineText = null;
             bool result = true;
             switch (type)
-            { 
+            {
                 case 1:
                     strLine = reader.ReadLine();
                     strLineText = strLine.Replace("[生成时间]", "");
@@ -136,40 +204,7 @@ namespace OperatingManagement.ServicesKernel.File
             return result;
         }
 
-        public void GetDataFileBaseInfo(out string ctime,out string source, out string destination,out string taskid,
-            out string infotype,out string linecount)
-        {
-            ctime = ""; source = ""; destination = ""; taskid = ""; infotype = ""; linecount = "";
-            if (String.IsNullOrEmpty(_filepath))
-            { return; }
-
-            sr = new StreamReader(FilePath);
-            string nextline = null;
-
-            sr.BaseStream.Seek(0, SeekOrigin.Begin);
-            nextline = sr.ReadLine();
-            while (nextline != null)
-            {
-                if (nextline.Trim() == "<说明区>")
-                {
-                    nextline = sr.ReadLine();
-                    ctime = nextline.Replace("[生成时间]：", "").Trim();
-                    nextline = sr.ReadLine();
-                    source = nextline.Replace("[信源S]：", "").Trim();
-                    nextline = sr.ReadLine();
-                    destination = nextline.Replace("[信宿D]：", "").Trim();
-                    nextline = sr.ReadLine();
-                    taskid = nextline.Replace("[任务代码M]：", "").Trim();
-                    nextline = sr.ReadLine();
-                    infotype = nextline.Replace("[信息类别B]：", "").Trim();
-                    nextline = sr.ReadLine();
-                    linecount = nextline.Replace("[数据区行数L]：", "").Trim();
-                    break;
-                }
-            }
-
-            sr.Close();
-        }
+        #endregion
 
     }
 }
