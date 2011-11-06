@@ -3,6 +3,6 @@
 }
 
 function showDetail(id) {
-    window.location.href = "/PlanManage/ExperimentPlanDetail.aspx?id=" + id;
+    window.location.href = "/PlanManage/MeasureDataDetail.aspx?id=" + id;
     return false;
 }

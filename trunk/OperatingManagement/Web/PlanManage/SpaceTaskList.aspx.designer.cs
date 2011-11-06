@@ -13,15 +13,6 @@ namespace OperatingManagement.Web.PlanManage {
     public partial class SpaceTaskList {
         
         /// <summary>
-        /// pnlData 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlData;
-        
-        /// <summary>
         /// txtStartDate 控件。
         /// </summary>
         /// <remarks>
@@ -49,31 +40,22 @@ namespace OperatingManagement.Web.PlanManage {
         protected global::System.Web.UI.WebControls.Button btnSearch;
         
         /// <summary>
-        /// gvList 控件。
+        /// rpDatas 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvList;
+        protected global::System.Web.UI.WebControls.Repeater rpDatas;
         
         /// <summary>
-        /// btnSend 控件。
+        /// cpPager 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSend;
-        
-        /// <summary>
-        /// pnlDestination 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlDestination;
+        protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpPager;
         
         /// <summary>
         /// rbtDestination 控件。

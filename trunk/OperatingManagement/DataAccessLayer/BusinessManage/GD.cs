@@ -15,9 +15,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
     {
         private static readonly string GET_OribitalQuantityList_ByDate = "up_gd_getlist";
         private static readonly string Insert = "up_gd_insert";
+        private static readonly string SelectByID = "up_gd_selectByID";
 
         /// <summary>
-        /// Create a new instance of <see cref="SYCX"/> class.
+        /// Create a new instance of <see cref="GD"/> class.
         /// </summary>
         public GD()
         {
@@ -106,11 +107,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
-        public DataSet GetGDListByDate(DateTime startDate, DateTime endDate)
+        public List<GD> GetGDListByDate(DateTime startDate, DateTime endDate)
         {
             DataSet ds = null;
-            try
-            {
+
                 ds = new DataSet();
                 ds.Tables.Add();
                 OracleCommand command = _database.GetStoreProcCommand(GET_OribitalQuantityList_ByDate);
@@ -135,13 +135,104 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     ds.Tables[0].Load(reader);
                 }
 
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+                List<GD> objDatas = new List<GD>();
+                if (ds != null && ds.Tables.Count == 1)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        objDatas.Add(new GD()
+                        {
+                            Id = Convert.ToInt32(dr["ID"].ToString()),
+                            CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                            Version = dr["Version"].ToString(),
+                            Flag = dr["Flag"].ToString(),
+                            MainType = dr["MainType"].ToString(),
+                            DataType = dr["DataType"].ToString(),
+                            SourceAddress = dr["SourceAddress"].ToString(),
+                            DestinationAddress = dr["DestinationAddress"].ToString(),
+                            MissionCode = dr["MissionCode"].ToString(),
+                            SatelliteCode = dr["SatelliteCode"].ToString(),
+                            DataDate = Convert.ToDateTime(dr["DataDate"].ToString()),
+                            DataTime = dr["DataTime"].ToString(),
+                            SequenceNumber = dr["SequenceNumber"].ToString(),
+                            ChildrenPackNumber = dr["ChildrenPackNumber"].ToString(),
+                            UDPReserve = dr["UDPReserve"].ToString(),
+                            DataLength = dr["DataLength"].ToString(),
+                            DataClass = dr["DataClass"].ToString(),
+                            Reserve = dr["RESERVE"].ToString(),
+                            D = dr["D"].ToString(),
+                            T = dr["T"].ToString(),
+                            A = dr["A"].ToString(),
+                            E = dr["E"].ToString(),
+                            I = dr["I"].ToString(),
+                            Ohm = dr["Ohm"].ToString(),
+                            Omega = dr["Omega"].ToString(),
+                            M = dr["M"].ToString(),
+                            P = dr["P"].ToString(),
+                            Pi = dr["Pi"].ToString(),
+                            Ra = dr["Ra"].ToString(),
+                            Rp = dr["Rp"].ToString()
+                        });
+                    }
+                }
 
-            return ds;
+
+                return objDatas;
+        }
+
+        /// <summary>
+        /// Selects the specific GD by identification.
+        /// </summary>
+        /// <returns>GD</returns>
+        public GD SelectById()
+        {
+            OracleParameter p = PrepareRefCursor();
+
+            DataSet ds = _database.SpExecuteDataSet(SelectByID, new OracleParameter[]{
+                new OracleParameter("p_Id", this.Id), 
+                p
+            });
+
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    return new GD()
+                    {
+                        Id = Convert.ToInt32(dr["ID"].ToString()),
+                        CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        Version = dr["Version"].ToString(),
+                        Flag = dr["Flag"].ToString(),
+                        MainType = dr["MainType"].ToString(),
+                        DataType = dr["DataType"].ToString(),
+                        SourceAddress = dr["SourceAddress"].ToString(),
+                        DestinationAddress = dr["DestinationAddress"].ToString(),
+                        MissionCode = dr["MissionCode"].ToString(),
+                        SatelliteCode = dr["SatelliteCode"].ToString(),
+                        DataDate = Convert.ToDateTime(dr["DataDate"].ToString()),
+                        DataTime = dr["DataTime"].ToString(),
+                        SequenceNumber = dr["SequenceNumber"].ToString(),
+                        ChildrenPackNumber = dr["ChildrenPackNumber"].ToString(),
+                        UDPReserve = dr["UDPReserve"].ToString(),
+                        DataLength = dr["DataLength"].ToString(),
+                        DataClass = dr["DataClass"].ToString(),
+                        Reserve = dr["RESERVE"].ToString(),
+                        D = dr["D"].ToString(),
+                        T = dr["T"].ToString(),
+                        A = dr["A"].ToString(),
+                        E = dr["E"].ToString(),
+                        I = dr["I"].ToString(),
+                        Ohm = dr["Ohm"].ToString(),
+                        Omega = dr["Omega"].ToString(),
+                        M = dr["M"].ToString(),
+                        P = dr["P"].ToString(),
+                        Pi = dr["Pi"].ToString(),
+                        Ra = dr["Ra"].ToString(),
+                        Rp = dr["Rp"].ToString()
+                    };
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -197,6 +288,18 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             if (opId.Value != null && opId.Value != DBNull.Value)
                 this.Id = Convert.ToInt32(opId.Value);
             return (FieldVerifyResult)Convert.ToInt32(p.Value);
+        }
+        #endregion
+
+        #region -Private methods-
+        private OracleParameter PrepareRefCursor()
+        {
+            return new OracleParameter()
+            {
+                ParameterName = "o_cursor",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.RefCursor
+            };
         }
         #endregion
 

@@ -21,22 +21,42 @@ namespace OperatingManagement.Web.PlanManage
         {
             if (!IsPostBack)
             {
-                if (this.QueryStringObserver("ydsjid"))
+                if (this.QueryStringObserver("id"))
                 {
                     //string sID = this.DecryptString(Request.QueryString["ydsjid"]);
-                    string sID = Request.QueryString["ydsjid"];
+                    string sID = Request.QueryString["id"];
                     int id = 0;
                     Int32.TryParse(sID, out id);
-                    BindFileInfo();
+                    BindFileInfo(id);
                 }
             }
         }
 
-        void BindFileInfo()
+        void BindFileInfo(int id)
         {
-            XmlDocument xml = new XmlDocument();
-            xml.Load(HttpContext.Current.Server.MapPath("~/file/test.xml"));
-            txtContent.Text = xml.InnerText;
+            DataAccessLayer.PlanManage.YDSJ y = new DataAccessLayer.PlanManage.YDSJ { Id = id };
+            DataAccessLayer.PlanManage.YDSJ obj = y.SelectById();
+
+
+            lblVersion.Text = obj.Version;
+            lblFlag.Text = obj.Flag;
+            lblMainType.Text = obj.MainType;
+            lblDataType.Text = obj.DataType;
+            lblSource.Text = obj.SourceAddress;
+            lblDestination.Text = obj.DestinationAddress;
+            lblMissionCode.Text = obj.MissionCode;
+            lblSatelliteCode.Text = obj.SatelliteCode;
+            lblDataDate.Text = obj.DataDate.ToShortDateString();
+            lblDataTime.Text = obj.DataTime;
+
+            lblD.Text = obj.D;
+            lblT.Text = obj.T;
+            lblA.Text = obj.A;
+            lblE.Text = obj.E;
+            lblI.Text = obj.I;
+            lblOhm.Text = obj.Ohm;
+            lblOmega.Text = obj.Omega;
+            lblM.Text = obj.M;
         }
 
         public override void OnPageLoaded()

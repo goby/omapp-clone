@@ -19,14 +19,6 @@ namespace OperatingManagement.Web.PlanManage
 {
     public partial class ExperimentProgramList : AspNetPage, IRouteContext
     {
-        public override void OnPageLoaded()
-        {
-            this.PagePermission = "ExperimentProgram.List";
-            this.ShortTitle = "试验程序列表";
-            this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/ExperimentProgramList.aspx.js");
-        }
-
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -51,12 +43,21 @@ namespace OperatingManagement.Web.PlanManage
             {
                 endDate = Convert.ToDateTime(txtEndDate);
             }
-            DataSet objDs = new DataSet(); 
-            objDs = (new SYCX()).GetSYCXListByDate(startDate,endDate);
-            gvList.DataSource = objDs;
-            gvList.DataBind();
+
+            List<SYCX> listDatas = (new SYCX()).GetSYCXListByDate(startDate, endDate);
+            cpPager.DataSource = listDatas;
+            cpPager.PageSize = this.SiteSetting.PageSize;
+            cpPager.BindToControl = rpDatas;
+            rpDatas.DataSource = cpPager.DataSourcePaged;
+            rpDatas.DataBind();
         }
 
-
+        public override void OnPageLoaded()
+        {
+            this.PagePermission = "ExperimentProgram.List";
+            this.ShortTitle = "查看试验程序";
+            this.SetTitle();
+            this.AddJavaScriptInclude("scripts/pages/ExperimentProgramList.aspx.js");
+        }
     }
 }

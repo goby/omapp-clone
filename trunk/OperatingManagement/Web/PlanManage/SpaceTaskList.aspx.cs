@@ -22,16 +22,8 @@ namespace OperatingManagement.Web.PlanManage
         {
             if (!IsPostBack)
             {
-                btnSend.Attributes.Add("onclick", "javascript:return confirm('确定要发送所选数据吗?');");
+                //btnSend.Attributes.Add("onclick", "javascript:return confirm('确定要发送所选数据吗?');");
             }
-        }
-
-        public override void OnPageLoaded()
-        {
-            this.PagePermission = "SpaceTask.List";
-            this.ShortTitle = "查看卫星轨道根数";
-            this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/SpaceTaskList.aspx.js");
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
@@ -53,18 +45,12 @@ namespace OperatingManagement.Web.PlanManage
             {
                 endDate = Convert.ToDateTime(txtEndDate);
             }
-            DataSet objDs = new DataSet();
-            objDs = (new YDSJ()).GetYDSJListByDate(startDate, endDate,"1");
-            gvList.DataSource = objDs;
-            gvList.DataBind();
-            if (objDs.Tables[0].Rows.Count > 0)
-            {
-                btnSend.Visible = true;
-            }
-            else
-            {
-                btnSend.Visible = false;
-            }
+            List<YDSJ> listDatas = (new YDSJ()).GetYDSJListByDate(startDate, endDate,"1");
+            cpPager.DataSource = listDatas;
+            cpPager.PageSize = this.SiteSetting.PageSize;
+            cpPager.BindToControl = rpDatas;
+            rpDatas.DataSource = cpPager.DataSourcePaged;
+            rpDatas.DataBind();
         }
 
         void BindRadDestination()
@@ -74,8 +60,6 @@ namespace OperatingManagement.Web.PlanManage
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
-            pnlData.Visible = false;
-            pnlDestination.Visible = true;
             BindRadDestination();
         }
         //最终发送
@@ -86,19 +70,16 @@ namespace OperatingManagement.Web.PlanManage
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-            pnlData.Visible = true;
-            pnlDestination.Visible = false;
+
         }
 
-        protected void gvList_RowCommand(object sender, GridViewCommandEventArgs e)
+        public override void OnPageLoaded()
         {
-            if ("ShowDetail" == e.CommandName)
-            {
-                int idx = Int32.Parse(e.CommandArgument.ToString());
-                int ydsjID = Convert.ToInt32(gvList.DataKeys[idx][0]);
-
-                Response.Redirect(string.Format("YDSJDetail.aspx?ydsjid={0}", ydsjID));
-            }
+            this.PagePermission = "SpaceTask.List";
+            this.ShortTitle = "查看空间机动任务";
+            this.SetTitle();
+            this.AddJavaScriptInclude("scripts/pages/SpaceTaskList.aspx.js");
         }
+
     }
 }

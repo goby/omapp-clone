@@ -105,11 +105,13 @@
     <Content Include="App_Themes\Default\Site.css" />
     <Content Include="BusinessManage\CenterOutputPolicyManage.aspx" />
     <Content Include="BusinessManage\MeasureDataDetail.aspx" />
-<Content Include="BusinessManage\MeasureDataList.aspx" />
+    <Content Include="BusinessManage\MeasureDataList.aspx" />
     <Content Include="BusinessManage\XiAnCeKongDataDetail.aspx" />
     <Content Include="BusinessManage\XiAnCeKongDataList.aspx" />
-<Content Include="Index.aspx" />
+    <Content Include="Index.aspx" />
+    <Content Include="PlanManage\ExperimentPlanDetail.aspx" />
     <Content Include="PlanManage\ExperimentPlanList.aspx" />
+    <Content Include="PlanManage\ExperimentProgramDetail.aspx" />
     <Content Include="PlanManage\ExperimentProgramList.aspx" />
     <Content Include="PlanManage\NotSpaceTaskList.aspx" />
     <Content Include="PlanManage\OribitalQuantityDetail.aspx" />
@@ -161,6 +163,8 @@
     <Content Include="Scripts\Pages\NotSpaceTaskList.aspx.js" />
     <Content Include="Scripts\Pages\PlanList.aspx.js" />
     <Content Include="Scripts\Pages\OribitalQuantityList.aspx.js" />
+    <Content Include="Scripts\Pages\MeasureDataList.aspx.js" />
+    <Content Include="Scripts\Pages\XiAnCeKongDataList.aspx.js" />
     <Content Include="Views\Exp\Exp.aspx" />
     <Content Include="Views\Exp\PNF404.aspx" />
     <Content Include="Views\UserAndRole\RoleAdd.aspx" />
@@ -205,7 +209,7 @@
       <DependentUpon>MeasureDataDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="BusinessManage\MeasureDataList.aspx.cs">
- <DependentUpon>MeasureDataList.aspx</DependentUpon>
+      <DependentUpon>MeasureDataList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="BusinessManage\MeasureDataList.aspx.designer.cs">
@@ -225,7 +229,7 @@
     <Compile Include="BusinessManage\XiAnCeKongDataList.aspx.designer.cs">
       <DependentUpon>XiAnCeKongDataList.aspx</DependentUpon>
     </Compile>
-<Compile Include="Global.asax.cs">
+    <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Index.aspx.cs">
@@ -235,12 +239,26 @@
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
+    <Compile Include="PlanManage\ExperimentPlanDetail.aspx.cs">
+      <DependentUpon>ExperimentPlanDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PlanManage\ExperimentPlanDetail.aspx.designer.cs">
+      <DependentUpon>ExperimentPlanDetail.aspx</DependentUpon>
+    </Compile>
     <Compile Include="PlanManage\ExperimentPlanList.aspx.cs">
       <DependentUpon>ExperimentPlanList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="PlanManage\ExperimentPlanList.aspx.designer.cs">
       <DependentUpon>ExperimentPlanList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PlanManage\ExperimentProgramDetail.aspx.cs">
+      <DependentUpon>ExperimentProgramDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PlanManage\ExperimentProgramDetail.aspx.designer.cs">
+      <DependentUpon>ExperimentProgramDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="PlanManage\ExperimentProgramList.aspx.cs">
       <DependentUpon>ExperimentProgramList.aspx</DependentUpon>

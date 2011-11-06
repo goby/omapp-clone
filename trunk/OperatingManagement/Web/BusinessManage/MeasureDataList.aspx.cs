@@ -28,7 +28,7 @@ namespace OperatingManagement.Web.BusinessManage
             this.PagePermission = "MeasureData.List";
             this.ShortTitle = "查看测角测速测距数据";
             this.SetTitle();
-            //this.AddJavaScriptInclude("scripts/pages/");
+            this.AddJavaScriptInclude("scripts/pages/MeasureDataList.aspx.js");
         }
 
 
@@ -51,35 +51,30 @@ namespace OperatingManagement.Web.BusinessManage
             {
                 endDate = Convert.ToDateTime(txtEndDate);
             }
-            DataSet objDs = new DataSet();
             switch (dtype)
             {
                 case "tb_ae":
-                    objDs = (new AE()).GetListByDate(startDate, endDate);
+                    List<AE> listDatasAE = (new AE()).GetListByDate(startDate, endDate);
+                    cpPager.DataSource = listDatasAE;
                     break;
                 case "tb_rr":
-                    objDs = (new RR()).GetListByDate(startDate, endDate);
+                    List<RR> listDatasRR = (new RR()).GetListByDate(startDate, endDate);
+                    cpPager.DataSource = listDatasRR;
                     break;
                 case "tb_r":
-                    objDs = (new R()).GetListByDate(startDate, endDate);
+                    List<R> listDatasR = (new R()).GetListByDate(startDate, endDate);
+                    cpPager.DataSource = listDatasR;
                     break;
             }
-            gvList.DataSource = objDs;
-            gvList.DataBind();
+
+            //cpPager.DataSource = listDatas;
+            cpPager.PageSize = this.SiteSetting.PageSize;
+            cpPager.BindToControl = rpDatas;
+            rpDatas.DataSource = cpPager.DataSourcePaged;
+            rpDatas.DataBind();
 
         }
 
-        protected void gvList_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            if ("ShowDetail" == e.CommandName)
-            {
-                int idx = Int32.Parse(e.CommandArgument.ToString());
-                int ID = Convert.ToInt32(gvList.DataKeys[idx][0]);
-                string dataType = ddlType.SelectedValue;
-
-                Response.Redirect(string.Format("MeasureDataDetail.aspx?id={0}&dtype={1}", ID,dataType));
-            }
-        }
         //
     }
 }

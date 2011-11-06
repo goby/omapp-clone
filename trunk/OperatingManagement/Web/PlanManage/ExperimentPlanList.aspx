@@ -1,4 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ExperimentPlanList.aspx.cs" Inherits="OperatingManagement.Web.PlanManage.ExperimentPlanList" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
+    CodeBehind="ExperimentPlanList.aspx.cs" Inherits="OperatingManagement.Web.PlanManage.ExperimentPlanList" %>
+
 <asp:Content ID="Content3" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
         .style1
@@ -43,60 +45,104 @@
     <table cellpadding="0" class="style1">
         <tr>
             <td align="right" class="style2">
-                开始日期：</td>
+                开始日期：
+            </td>
             <td class="style3">
-                <asp:TextBox ID="txtStartDate" runat="server"  onclick="new WdatePicker(this);"></asp:TextBox>
+                <asp:TextBox ID="txtStartDate" runat="server" onclick="new WdatePicker(this);"></asp:TextBox>
             </td>
             <td align="right" class="style4">
-                结束日期：</td>
+                结束日期：
+            </td>
             <td>
-                <asp:TextBox ID="txtEndDate" runat="server"  onclick="new WdatePicker(this);"></asp:TextBox>
+                <asp:TextBox ID="txtEndDate" runat="server" onclick="new WdatePicker(this);"></asp:TextBox>
             </td>
         </tr>
         <tr>
             <td class="style5">
             </td>
             <td class="style6" colspan="3">
-                <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
-                    Width="65px" />
-&nbsp;&nbsp;
+                <asp:Button class="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
+                    Text="查询" Width="65px" />
+                &nbsp;&nbsp;
                 <%--<asp:Button ID="btnReset" runat="server" Text="重置" Width="65px" />--%>
-                 <button class="button" onclick="return reset();" style="width:65px;">重置</button>
+                <button class="button" onclick="return reset();" style="width: 65px;">
+                    重置</button>
             </td>
         </tr>
         <tr>
             <td class="style2">
-                &nbsp;</td>
+                &nbsp;
+            </td>
             <td class="style3">
-                &nbsp;</td>
+                &nbsp;
+            </td>
             <td class="style4">
-                &nbsp;</td>
+                &nbsp;
+            </td>
             <td>
-                &nbsp;</td>
+                &nbsp;
+            </td>
         </tr>
         <tr>
             <td class="style2" colspan="4">
-                <asp:GridView ID="gvList" runat="server" AutoGenerateColumns="False" 
-                    BackColor="White" BorderColor="#E7E7FF" BorderStyle="None" BorderWidth="1px" 
-                    CellPadding="3" GridLines="Horizontal" Width="100%">
-                    <AlternatingRowStyle BackColor="#F7F7F7" />
-                    <Columns>
-                        <asp:BoundField DataField="jhid" HeaderText="计划ID" />
-                        <asp:BoundField DataField="plantype" HeaderText="类型" />
-                        <asp:BoundField DataField="planid" HeaderText="编号" />
-                        <asp:BoundField DataField="starttime" HeaderText="开始时间" />
-                        <asp:BoundField HeaderText="结束时间" DataField="endtime" />
-                    </Columns>
-                    <FooterStyle BackColor="#B5C7DE" ForeColor="#4A3C8C" />
-                    <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#F7F7F7" />
-                    <PagerStyle BackColor="#E7E7FF" ForeColor="#4A3C8C" HorizontalAlign="Right" />
-                    <RowStyle BackColor="#E7E7FF" ForeColor="#4A3C8C" />
-                    <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="#F7F7F7" />
-                    <SortedAscendingCellStyle BackColor="#F4F4FD" />
-                    <SortedAscendingHeaderStyle BackColor="#5A4C9D" />
-                    <SortedDescendingCellStyle BackColor="#D8D8F0" />
-                    <SortedDescendingHeaderStyle BackColor="#3E3277" />
-                </asp:GridView>
+                <asp:Repeater ID="rpUsers" runat="server">
+                    <HeaderTemplate>
+                        <table class="list">
+                            <tr>
+                                <%--<th style="width:20px;"><input type="checkbox" onclick="checkAll(this)" /></th>--%>
+                                <th style="width: 150px;">
+                                    信源
+                                </th>
+                                <th style="width: 150px;">
+                                    信宿
+                                </th>
+                                <th style="width: 150px;">
+                                    任务代码
+                                </th>
+                                <th style="width: 150px;">
+                                    生成时间
+                                </th>
+                                <th style="width: 70px;">
+                                    明细
+                                </th>
+                            </tr>
+                            <tbody id="tbUsers">
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <tr>
+                            <%--<td><input type="checkbox" <%# Eval("LoginName").ToString().Equals(this.Profile.UserName,StringComparison.InvariantCultureIgnoreCase)?"disabled=\"true\"":"" %> name="chkDelete" value="<%# Eval("Id") %>" /></td>--%>
+                            <td>
+                                <%# Eval("source")%>
+                            </td>
+                            <td>
+                                <%# Eval("destination")%>
+                            </td>
+                            <td>
+                                <%# Eval("taskid")%>
+                            </td>
+                            <td>
+                                <%# Eval("ctime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
+                            </td>
+                            <td>
+                                <button class="button" onclick="return showDetail('<%# Eval("JHID") %>')">
+                                    明细</button>
+                            </td>
+                        </tr>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        </tbody> </table>
+                    </FooterTemplate>
+                </asp:Repeater>
+                <table class="listTitle">
+                    <tr>
+                        <td class="listTitle-c1">
+                        </td>
+                        <td class="listTitle-c2">
+                            <om:CollectionPager ID="cpPager" runat="server">
+                            </om:CollectionPager>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>

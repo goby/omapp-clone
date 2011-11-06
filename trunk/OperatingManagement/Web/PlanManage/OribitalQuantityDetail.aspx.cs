@@ -21,22 +21,45 @@ namespace OperatingManagement.Web.PlanManage
         {
             if (!IsPostBack)
             {
-                if (this.QueryStringObserver("gdid"))
+                if (this.QueryStringObserver("id"))
                 {
                     //string sID = this.DecryptString(Request.QueryString["gdid"]);
-                    string sID = Request.QueryString["gdid"];
+                    string sID = Request.QueryString["id"];
                     int id = 0;
                     Int32.TryParse(sID, out id);
-                    BindFileInfo();
+                    BindFileInfo(id);
                 }
             }
         }
 
-        void BindFileInfo()
+        void BindFileInfo(int id)
         {
-            XmlDocument xml = new XmlDocument();
-            xml.Load(HttpContext.Current.Server.MapPath("~/file/test.xml"));
-            txtContent.Text = xml.InnerText;
+            DataAccessLayer.BusinessManage.GD g = new DataAccessLayer.BusinessManage.GD { Id = id };
+            DataAccessLayer.BusinessManage.GD obj = g.SelectById();
+
+            lblVersion.Text = obj.Version;
+            lblFlag.Text = obj.Flag;
+            lblMainType.Text = obj.MainType;
+            lblDataType.Text = obj.DataType;
+            lblSource.Text = obj.SourceAddress;
+            lblDestination.Text = obj.DestinationAddress;
+            lblMissionCode.Text = obj.MissionCode;
+            lblSatelliteCode.Text = obj.SatelliteCode;
+            lblDataDate.Text = obj.DataDate.ToShortDateString();
+            lblDataTime.Text = obj.DataTime;
+
+            lblD.Text = obj.D;
+            lblT.Text = obj.T;
+            lblA.Text = obj.A;
+            lblRa.Text = obj.Ra;
+            lblRp.Text = obj.Rp;
+            lblE.Text = obj.E;
+            lblI.Text = obj.I;
+            lblOhm.Text = obj.Ohm;
+            lblOmega.Text = obj.Omega;
+            lblM.Text = obj.M;
+            lblP.Text = obj.P;
+            lblPi.Text = obj.Pi;
         }
 
         public override void OnPageLoaded()
