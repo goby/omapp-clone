@@ -53,6 +53,7 @@ namespace OperatingManagement.RemotingObjectEntity
                             new XElement("userCatalog", (int)u.UserCatalog),
                             new XElement("createdTime", u.CreatedTime.ToString("yyyyMMdd HH:mm:ss",
                                 System.Globalization.DateTimeFormatInfo.InvariantInfo)));
+
                         var rs = u.SelectRolesById();
                         if (rs != null && rs.Count > 0)
                         {

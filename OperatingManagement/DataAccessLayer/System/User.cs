@@ -294,6 +294,7 @@ namespace OperatingManagement.DataAccessLayer.System
                 if (u.Status != FieldStatus.Active)
                     return FieldVerifyResult.Inactive;
 
+                this.Id = u.Id;
                 this.DisplayName = u.DisplayName;
                 this.CreatedTime = u.CreatedTime;
                 this.Mobile = u.LoginName;
