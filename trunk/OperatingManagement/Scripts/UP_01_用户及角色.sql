@@ -257,7 +257,7 @@ begin
          UserCatalog = p_UserCatalog,
          LastUpdatedTime = sysdate() where userid=p_UserId;
        commit;
-       if p_Password!='' then
+       if p_Password is not null then
          update tb_user set password1 = p_Password  where userid=p_UserId;
          commit;
        end if;

@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Login.aspx" />
+    <Content Include="App_Data\accountCentre.xml" />
     <Content Include="App_Data\menuIndex.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -165,6 +166,7 @@
     <Content Include="Scripts\Pages\OribitalQuantityList.aspx.js" />
     <Content Include="Scripts\Pages\MeasureDataList.aspx.js" />
     <Content Include="Scripts\Pages\XiAnCeKongDataList.aspx.js" />
+    <Content Include="Views\Account\MyProfile.aspx" />
     <Content Include="Views\Exp\Exp.aspx" />
     <Content Include="Views\Exp\PNF404.aspx" />
     <Content Include="Views\UserAndRole\RoleAdd.aspx" />
@@ -330,6 +332,13 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Account\MyProfile.aspx.cs">
+      <DependentUpon>MyProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Account\MyProfile.aspx.designer.cs">
+      <DependentUpon>MyProfile.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Exp\Exp.aspx.cs">
       <DependentUpon>Exp.aspx</DependentUpon>

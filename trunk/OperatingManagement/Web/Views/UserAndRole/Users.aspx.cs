@@ -25,6 +25,21 @@ namespace OperatingManagement.Web.Views.UserAndRole
             rpUsers.DataSource = cpPager.DataSourcePaged;
             rpUsers.DataBind();
         }
+        protected bool IsAdminOrCurrent(object loginName, object userType)
+        {
+            bool isMyself = loginName.ToString().Equals(Profile.UserName, StringComparison.InvariantCultureIgnoreCase);
+            
+            bool isAdmin = userType.ToString().Equals(Framework.UserType.Admin.ToString(), StringComparison.InvariantCultureIgnoreCase);
+            if (isMyself)
+            {
+                if (isAdmin) return false;
+                else return true;
+            }
+            else
+            {
+                return isAdmin;
+            }
+        }
         public override void OnPageLoaded()
         {
             this.PagePermission = "UserManage.List";

@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OperatingManagement.Web.Views.UserAndRole {
+namespace OperatingManagement.Web.Views.Account {
     
     
-    public partial class UserAdd {
+    public partial class MyProfile {
         
         /// <summary>
         /// navMain control.
@@ -31,31 +31,13 @@ namespace OperatingManagement.Web.Views.UserAndRole {
         protected global::OperatingManagement.WebKernel.Controls.PageMenu PageMenu1;
         
         /// <summary>
-        /// txtLoginName control.
+        /// ltLoginName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLoginName;
-        
-        /// <summary>
-        /// rfv1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv1;
-        
-        /// <summary>
-        /// fev1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator fev1;
+        protected global::System.Web.UI.WebControls.Literal ltLoginName;
         
         /// <summary>
         /// txtDisplayName control.
@@ -85,15 +67,6 @@ namespace OperatingManagement.Web.Views.UserAndRole {
         protected global::System.Web.UI.WebControls.TextBox txtPassword;
         
         /// <summary>
-        /// rfv3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv3;
-        
-        /// <summary>
         /// rev2 control.
         /// </summary>
         /// <remarks>
@@ -121,33 +94,6 @@ namespace OperatingManagement.Web.Views.UserAndRole {
         protected global::System.Web.UI.WebControls.CompareValidator cv1;
         
         /// <summary>
-        /// rdlTypes control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rdlTypes;
-        
-        /// <summary>
-        /// rdlUserCat control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rdlUserCat;
-        
-        /// <summary>
-        /// rdlStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rdlStatus;
-        
-        /// <summary>
         /// txtMobile control.
         /// </summary>
         /// <remarks>
@@ -173,24 +119,6 @@ namespace OperatingManagement.Web.Views.UserAndRole {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNote;
-        
-        /// <summary>
-        /// hfUserId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfUserId;
-        
-        /// <summary>
-        /// ltHref control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltHref;
         
         /// <summary>
         /// ltMessage control.

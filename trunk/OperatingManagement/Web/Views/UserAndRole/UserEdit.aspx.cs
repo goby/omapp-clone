@@ -20,6 +20,10 @@ namespace OperatingManagement.Web.Views.UserAndRole
         {
             double userId = Convert.ToDouble(Request.QueryString["Id"]);
             DataAccessLayer.System.User u = new DataAccessLayer.System.User() { Id = userId };
+            if (u.UserType == Framework.UserType.Admin && Profile.UserName != u.LoginName)
+            {
+                throw new Exception("You cant edit administrator's profile.");
+            }
             var user = u.SelectById();
             ltLoginName.Text = user.LoginName;
             txtDisplayName.Text = user.DisplayName;
@@ -55,7 +59,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
                     msg = "编辑用户已成功，可点击“分配角色”按钮为其设置所属角色。";
                     break;
                 case Framework.FieldVerifyResult.NameDuplicated2:
-                    msg = "已存在相同名称，请输入其他“显示名”。";
+                    msg = "已存在相同名称，请输入其他“显示名称”。";
                     break;
             }
             ltMessage.Text = msg;
@@ -65,7 +69,6 @@ namespace OperatingManagement.Web.Views.UserAndRole
             this.PagePermission = "UserManage.Edit";
             this.ShortTitle = "编辑用户";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/useradd.aspx.js");
         }
 
     }

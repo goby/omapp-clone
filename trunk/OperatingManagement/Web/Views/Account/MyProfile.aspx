@@ -1,14 +1,14 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="UserEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.UserAndRole.UserEdit" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="MyProfile.aspx.cs" Inherits="OperatingManagement.Web.Views.Account.MyProfile" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="usernrole" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuUserNRole" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="accountCentre" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    用户管理 &gt; 新增用户
+    个人中心 &gt; 修改信息
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="edit" style="width:800px;">
@@ -44,34 +44,6 @@
             </td>
         </tr>
         <tr>
-            <th style="width:100px;">权限类型(<span class="red">*</span>)</th>
-            <td>
-                <asp:RadioButtonList ID="rdlTypes" runat="server" RepeatDirection="Horizontal">
-                    <asp:ListItem Text="其他用户" Value="0" Selected="True"></asp:ListItem>
-                    <asp:ListItem Text="系统管理员" Value="1"></asp:ListItem>
-                </asp:RadioButtonList>
-            </td>
-        </tr>
-        <tr>
-            <th style="width:100px;">用户类型(<span class="red">*</span>)</th>
-            <td>
-                <asp:RadioButtonList ID="rdlUserCat" runat="server" RepeatDirection="Horizontal">
-                    <asp:ListItem Text="中心内部用户" Value="0" Selected="True"></asp:ListItem>
-                    <asp:ListItem Text="中心外部用户" Value="1"></asp:ListItem>
-                    <asp:ListItem Text="临时用户" Value="2"></asp:ListItem>
-                </asp:RadioButtonList>
-            </td>
-        </tr>
-        <!-- <tr>
-            <th style="width:100px;">状态(<span class="red">*</span>)</th>
-            <td>
-                <asp:RadioButtonList ID="rdlStatus" runat="server" RepeatDirection="Horizontal">
-                    <asp:ListItem Text="活动帐户" Value="0" Selected="True"></asp:ListItem>
-                    <asp:ListItem Text="锁定帐户" Value="2"></asp:ListItem>
-                </asp:RadioButtonList>
-            </td>
-        </tr> -->
-        <tr>
             <th style="width:100px;">联系电话</th>
             <td>
                 <asp:TextBox ID="txtMobile" runat="server" Width="300px" CssClass="text" MaxLength="20"></asp:TextBox>
@@ -89,12 +61,6 @@
         <tr>
             <th>&nbsp;</th>
             <td>
-                <asp:Literal ID="ltHref" runat="server"></asp:Literal>
-            </td>
-        </tr>
-        <tr>
-            <th>&nbsp;</th>
-            <td>
                 <asp:Label ID="ltMessage" runat="server" CssClass="error" Text="“显示名称”必须唯一，“密码”为空时将保持原密码不变。"></asp:Label>
             </td>
         </tr>
@@ -107,4 +73,3 @@
         </tr>
     </table>
 </asp:Content>
-
