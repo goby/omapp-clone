@@ -36,13 +36,13 @@
         </HeaderTemplate>
         <ItemTemplate>
             <tr>
-                <td><input type="checkbox" <%# Eval("LoginName").ToString().Equals(this.Profile.UserName,StringComparison.InvariantCultureIgnoreCase)?"disabled=\"true\"":"" %> name="chkDelete" value="<%# Eval("Id") %>" /></td>
+                <td><input type="checkbox" <%# IsAdminOrCurrent(Eval("LoginName"),Eval("UserType"))?"disabled=\"true\"":"" %> name="chkDelete" value="<%# Eval("Id") %>" /></td>
                 <td><%# Eval("LoginName") %></td>
                 <td><%# Eval("DisplayName") %></td>
                 <td><%# Eval("CreatedTime","{0:"+this.SiteSetting.DateTimeFormat+"}") %></td>
                 <td>
                     <button class="button" onclick="return editUser('<%# Eval("Id") %>')"
-                    <%# Eval("LoginName").ToString().Equals(this.Profile.UserName,StringComparison.InvariantCultureIgnoreCase)?"disabled=\"true\"":"" %>>编辑</button>
+                    <%# IsAdminOrCurrent(Eval("LoginName"),Eval("UserType"))?"disabled=\"true\"":"" %> %>编辑</button>
                 </td>
             </tr>            
         </ItemTemplate>

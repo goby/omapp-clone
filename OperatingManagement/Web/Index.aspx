@@ -11,4 +11,5 @@
     首页
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
+    Welcome!
 </asp:Content>

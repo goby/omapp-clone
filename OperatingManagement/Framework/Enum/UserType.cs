@@ -17,6 +17,10 @@ namespace OperatingManagement.Framework
         /// <summary>
         /// It means administrative.
         /// </summary>
-        Admin = 1
+        Admin = 1,
+        /// <summary>
+        /// Just EveryOne.
+        /// </summary>
+        EveryOne = 2
     }
 }

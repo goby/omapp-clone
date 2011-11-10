@@ -24,11 +24,11 @@
             </td>
         </tr>
         <tr>
-            <th style="width:100px;">姓名(<span class="red">*</span>)</th>
+            <th style="width:100px;">显示名称(<span class="red">*</span>)</th>
             <td>
                 <asp:TextBox ID="txtDisplayName" runat="server" Width="300px" CssClass="text" MaxLength="10"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfv2" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtDisplayName" ErrorMessage="必须填写“姓名”。"></asp:RequiredFieldValidator>
+                     ControlToValidate="txtDisplayName" ErrorMessage="必须填写“显示名称”。"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
@@ -39,7 +39,7 @@
                      ControlToValidate="txtPassword" ErrorMessage="必须填写“密码”。"></asp:RequiredFieldValidator>
                 <asp:RegularExpressionValidator ID="rev2" runat="server" Display="Dynamic" ForeColor="Red"
                      ControlToValidate="txtPassword" ErrorMessage="只能输入字母和数字，且首字符必须为字母，最小长度为6个字符。"
-                     ValidationExpression="^[a-zA-Z]\w{6,15}$"></asp:RegularExpressionValidator>
+                     ValidationExpression="^[a-zA-Z]\w{5,15}$"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
@@ -54,7 +54,7 @@
             <th style="width:100px;">权限类型(<span class="red">*</span>)</th>
             <td>
                 <asp:RadioButtonList ID="rdlTypes" runat="server" RepeatDirection="Horizontal">
-                    <asp:ListItem Text="普通用户" Value="0" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="其他用户" Value="0" Selected="True"></asp:ListItem>
                     <asp:ListItem Text="系统管理员" Value="1"></asp:ListItem>
                 </asp:RadioButtonList>
             </td>
@@ -82,6 +82,10 @@
             <th style="width:100px;">联系电话</th>
             <td>
                 <asp:TextBox ID="txtMobile" runat="server" Width="300px" CssClass="text" MaxLength="20"></asp:TextBox>
+                
+                <asp:RegularExpressionValidator ID="rev3" runat="server" Display="Dynamic" ForeColor="Red"
+                     ControlToValidate="txtMobile" ErrorMessage="“联系电话”格式必须形如“[区号][号码]”、“[手机号码]”、“[直拨号码]”等。"
+                     ValidationExpression="((\d{11})|^((\d{3,8})|(\d{4}|\d{3})(\d{7,8})|(\d{4}|\d{3})(\d{7,8})(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})(\d{4}|\d{3}|\d{2}|\d{1}))$)"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>

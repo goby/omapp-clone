@@ -28,7 +28,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             DataAccessLayer.System.User u = new DataAccessLayer.System.User()
             {
                 DisplayName = txtDisplayName.Text.Trim(),
-                LoginName = txtLoginName.Text.Trim(),
+                LoginName = txtLoginName.Text.Trim().ToLower(),
                 Mobile = txtMobile.Text.Trim(),
                 Note = txtNote.Text.Trim(),
                 Password = txtPassword.Text.Trim(),
@@ -53,7 +53,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
                     rdlStatus.SelectedIndex = rdlTypes.SelectedIndex = 0;
                     break;
                 case Framework.FieldVerifyResult.NameDuplicated2:
-                    msg = "已存在相同名称，请输入其他“显示名”。";
+                    msg = "已存在相同名称，请输入其他“显示名称”。";
                     break;
             }
             ltMessage.Text = msg;
@@ -64,7 +64,6 @@ namespace OperatingManagement.Web.Views.UserAndRole
             this.PagePermission = "UserManage.Add";
             this.ShortTitle = "新增用户";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/useradd.aspx.js");
         }
 
     }

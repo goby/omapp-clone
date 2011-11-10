@@ -29,7 +29,7 @@ namespace OperatingManagement.Web.Account
         {
             DataAccessLayer.System.User u = new DataAccessLayer.System.User()
             {
-                LoginName = txtLoginName.Text.Trim(),
+                LoginName = txtLoginName.Text.Trim().ToLower(),
                 Password = txtPassword.Text.Trim()
             };
             if (!u.IsValid) {
@@ -66,10 +66,10 @@ namespace OperatingManagement.Web.Account
                     cookie.Value = FormsAuthentication.Encrypt(newticket);
                     AspNetCookie.AddCookie(cookie);
                     string url = FormsAuthentication.GetRedirectUrl(u.LoginName, true);
-                    if (string.IsNullOrEmpty(url))
-                        Response.Redirect("index.aspx");
-                    else
-                        Response.Redirect(url);
+                    
+                    Response.Redirect("~/index.aspx");
+                    
+                    //Response.Redirect(url);
                     return;
             }
             lblMessage.Text = outMsg;
