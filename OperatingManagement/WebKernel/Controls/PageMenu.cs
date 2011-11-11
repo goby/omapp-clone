@@ -19,6 +19,7 @@ namespace OperatingManagement.WebKernel.Controls
         /// Gets/sets the name of representing xml file.
         /// </summary>
         public string XmlFileName { get; set; }
+        private static readonly string _HTML_MENU_NULL = "<li><span>{0}</span></li>";
         private static readonly string _HTML_MENU = "<li><span>{0}</span><ul>{1}</ul></li>";
         private static readonly string _HTML_ITEM = "<li _c=\"{2}\" id=\"menu-{3}\"><a onfocus=\"javascript:this.blur();\" href=\"{0}\">{1}</a></li>";
 
@@ -65,7 +66,12 @@ namespace OperatingManagement.WebKernel.Controls
                     totalCount += currentCount;
                 }
             }
-            return "<ul>" + sbMenu.ToString() + "</ul>";
+            string strMenu = sbMenu.ToString();
+            if (string.IsNullOrEmpty(strMenu))
+            {
+                strMenu = string.Format(_HTML_MENU_NULL, "————————");
+            }
+            return "<ul>" + strMenu + "</ul>";
         }
 
         public override void RenderControl(HtmlTextWriter writer)
