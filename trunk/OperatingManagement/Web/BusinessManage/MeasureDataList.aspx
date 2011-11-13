@@ -33,8 +33,10 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
 </asp:Content>
@@ -60,7 +62,7 @@
                     数据类型：
                 </td>
                 <td class="style3">
-                    <asp:DropDownList ID="ddlType" runat="server" Height="16px" Width="148px">
+                    <asp:DropDownList ID="ddlType" runat="server" Height="20px" Width="150px">
                         <asp:ListItem Value="tb_ae">测角信息</asp:ListItem>
                         <asp:ListItem Value="tb_r">测距信息</asp:ListItem>
                         <asp:ListItem Value="tb_rr">测速信息</asp:ListItem>
