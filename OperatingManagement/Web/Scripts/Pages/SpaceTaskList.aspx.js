@@ -12,6 +12,12 @@ function selectAll() {
     return false;
 }
 
+function checkAll(o) {
+    if ($('#tbYDSJs').length > 0) {
+        $('#tbYDSJs').find('input:checkbox:not([disabled])').attr('checked', o.checked);
+    }
+}
+
 function sendYDSJ1() {
     var chks = $('#tbYDSJs').find('input:checkbox:not([disabled])').filter('[checked=true]');
     if (chks.length == 0) {

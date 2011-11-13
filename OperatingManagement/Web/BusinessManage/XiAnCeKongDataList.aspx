@@ -31,8 +31,10 @@
         </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
 </asp:Content>
@@ -55,7 +57,7 @@
             <td align="right" class="style2">
                 数据类型：</td>
             <td class="style3">
-                <asp:DropDownList ID="ddlType" runat="server" Height="16px" Width="148px">
+                <asp:DropDownList ID="ddlType" runat="server" Height="20px" Width="150px">
                     <asp:ListItem Value="tb_gdxa">飞行器轨道根数</asp:ListItem>
                     <asp:ListItem Value="tb_gdsh">事后精轨根数</asp:ListItem>
                     <asp:ListItem Value="tb_xdsc">星地时差</asp:ListItem>

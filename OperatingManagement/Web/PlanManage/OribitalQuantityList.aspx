@@ -130,7 +130,7 @@
                                         明细
                                     </th>
                                 </tr>
-                                <tbody id="tbGDs">
+                        <tbody id="tbGDs">
                         </HeaderTemplate>
                         <ItemTemplate>
                             <tr>
