@@ -114,7 +114,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 ds = new DataSet();
                 ds.Tables.Add();
                 OracleCommand command = _database.GetStoreProcCommand(GET_OribitalQuantityList_ByDate);
-                if (startDate != DateTime.MinValue)
+                if (startDate == DateTime.MinValue)
                 {
                     _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
                 }
@@ -122,7 +122,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 {
                     _database.AddInParameter(command, "p_startDate", OracleDbType.Date, startDate);
                 }
-                if (endDate != DateTime.MinValue)
+                if (endDate == DateTime.MinValue)
                 {
                     _database.AddInParameter(command, "p_endDate", OracleDbType.Date, DBNull.Value);
                 }

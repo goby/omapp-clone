@@ -38,7 +38,7 @@
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuIndex" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content6" ContentPlaceHolderID="MapPathContent" runat="server">
     首页
@@ -62,7 +62,7 @@
             <td align="right" class="style4">
                 计划时效：</td>
             <td>
-                <asp:DropDownList ID="ddlAging" runat="server" Height="16px" Width="146px">
+                <asp:DropDownList ID="ddlAging" runat="server" Height="20px" Width="146px">
                     <asp:ListItem Value="1">周计划</asp:ListItem>
                     <asp:ListItem Value="2">日计划</asp:ListItem>
                     <asp:ListItem Value="3">应急计划</asp:ListItem>
