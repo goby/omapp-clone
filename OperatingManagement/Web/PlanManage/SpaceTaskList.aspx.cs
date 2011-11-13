@@ -43,7 +43,7 @@ namespace OperatingManagement.Web.PlanManage
             }
             if (!string.IsNullOrEmpty(txtEndDate.Text))
             {
-                endDate = Convert.ToDateTime(txtEndDate);
+                endDate = Convert.ToDateTime(txtEndDate.Text);
             }
             List<YDSJ> listDatas = (new YDSJ()).GetYDSJListByDate(startDate, endDate,"1");
             cpPager.DataSource = listDatas;

@@ -75,6 +75,7 @@
     <Content Include="App_Data\menuUserNRole.xml" />
     <Content Include="App_Data\navigator.xml" />
     <Content Include="App_Data\siteSetting.xml" />
+    <Content Include="App_Data\menuPlan.xml" />
     <Content Include="App_Themes\Default\Images\arrow-right.gif" />
     <Content Include="App_Themes\Default\Images\background.gif" />
     <Content Include="App_Themes\Default\Images\body-bot.png" />

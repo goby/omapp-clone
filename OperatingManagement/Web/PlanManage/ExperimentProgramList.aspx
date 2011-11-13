@@ -34,7 +34,7 @@
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuIndex" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content6" ContentPlaceHolderID="MapPathContent" runat="server">
     首页
