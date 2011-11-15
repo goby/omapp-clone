@@ -54,7 +54,10 @@ namespace OperatingManagement.Web.Account
                     outMsg = "内部错误，无法登录。";
                     break;
                 case FieldVerifyResult.Success:
-                    string token = u.LoginName + ".$." + u.Password + ".$." + DateTime.Now.Ticks.ToString();
+                    string split = "$";
+                    string token = u.LoginName + split +
+                        GlobalSettings.EncryptPassword(u.Password) + split + 
+                        DateTime.Now.Ticks.ToString();
                     string encryptedToken = GlobalSettings.Encrypt(token);
                     string callback = Request.QueryString["callback"];
                     string retUrl = callback;
@@ -66,7 +69,7 @@ namespace OperatingManagement.Web.Account
                     else
                         retUrl += "?";
 
-                    retUrl += "token=" + token;
+                    retUrl += "token=" + encryptedToken;
                     Response.Redirect(retUrl);
                     return;
             }
