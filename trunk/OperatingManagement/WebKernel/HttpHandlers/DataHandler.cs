@@ -5,6 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.Security;
 using OperatingManagement.Framework;
+using OperatingManagement.DataAccessLayer.System;
 
 namespace OperatingManagement.WebKernel.HttpHandlers
 {
@@ -15,8 +16,43 @@ namespace OperatingManagement.WebKernel.HttpHandlers
             var req = context.Request; 
             string msg = string.Empty;
             bool suc = false;
-            
+            try
+            {
+                switch (req["action"])
+                {
+                    case "deleteUsersByIds":
+                        suc = DeleteUserByIds(req["ids"], out msg);
+                        break;
+                    case "deleteRolesByIds":
+                        suc = DeleteRoleByIds(req["ids"], out msg);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                suc = false;
+                msg = "服务器端错误。";
+            }
             WriteResponse(msg, suc);
+        }
+        bool DeleteRoleByIds(string ids, out string msg)
+        {
+            Role r = new Role();
+            var retValue = r.DeleteByIds(ids);
+            if (retValue == FieldVerifyResult.Error)
+            {
+                msg = "删除关联数据失败。";
+                return true;
+            }
+            msg = string.Empty;
+            return true;
+        }
+        bool DeleteUserByIds(string ids, out string msg)
+        {
+            User u = new User();
+            u.DeleteByIds(ids);
+            msg = string.Empty;
+            return true;
         }
     }
 }

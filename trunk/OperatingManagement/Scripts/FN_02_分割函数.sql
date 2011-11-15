@@ -8,14 +8,20 @@ create or replace function split
 is
    l_idx  pls_integer;
    v_list  varchar2(50) := p_list;
+   v_temp varchar2(50) := '';
 begin
    loop
       l_idx := instr(v_list,p_sep);
       if l_idx > 0 then
-          pipe row(substr(v_list,1,l_idx-1));
+          v_temp := substr(v_list,1,l_idx-1);
+          if v_temp<>' ' then
+             pipe row(v_temp); 
+          end if;   
           v_list := substr(v_list,l_idx+length(p_sep));
       else
-          pipe row(v_list);
+          if v_list<>' ' then
+             pipe row(v_list);
+          end if;
           exit;
       end if;
    end loop;

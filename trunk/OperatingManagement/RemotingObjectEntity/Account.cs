@@ -27,7 +27,7 @@ namespace OperatingManagement.RemotingObjectEntity
                     LoginName = userName,
                     Password = password
                 };
-                FieldVerifyResult retVal = u.Verify();
+                FieldVerifyResult retVal = u.Verify(false);
                 switch (retVal)
                 {
                     case FieldVerifyResult.NotExist:
@@ -46,12 +46,12 @@ namespace OperatingManagement.RemotingObjectEntity
                         code.Value = "5";
                         user.Add(new XElement("id", u.Id),
                             new XElement("displayName", u.DisplayName),
-                            new XElement("LoginName", u.LoginName),
+                            new XElement("loginName", u.LoginName),
                             new XElement("mobile", u.Mobile),
                             new XElement("state", (int)u.Status),
                             new XElement("userType", (int)u.UserType),
                             new XElement("userCatalog", (int)u.UserCatalog),
-                            new XElement("createdTime", u.CreatedTime.ToString("yyyyMMdd HH:mm:ss",
+                            new XElement("createdTime", u.CreatedTime.ToString("yyyy/MM/dd HH:mm:ss",
                                 System.Globalization.DateTimeFormatInfo.InvariantInfo)));
 
                         var rs = u.SelectRolesById();
@@ -72,7 +72,7 @@ namespace OperatingManagement.RemotingObjectEntity
                                 permissions.Add(new XElement("permission",
                                     new XElement("id", per.Id),
                                     new XElement("module",
-                                        new XElement("id", per.Id),
+                                        new XElement("id", per.Module.Id),
                                         new XElement("name", per.Module.ModuleName)),
                                     new XElement("task",
                                         new XElement("id", per.Task.Id),

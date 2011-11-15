@@ -52,6 +52,25 @@ namespace OperatingManagement.DataAccessLayer.System
 
         #region -Public methods-
         /// <summary>
+        /// Deletes the roles by identifications.
+        /// </summary>
+        /// <param name="ids">The identifications of roles to be deleted.</param>
+        /// <returns></returns>
+        public FieldVerifyResult DeleteByIds(string ids)
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _database.SpExecuteNonQuery("up_role_deletebyids", new OracleParameter[]{
+                new OracleParameter("p_Ids",ids),
+                p
+            });
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+        }
+        /// <summary>
         /// Selects all Roles from database.
         /// </summary>
         /// <returns></returns>

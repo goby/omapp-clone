@@ -242,6 +242,14 @@ namespace OperatingManagement.DataAccessLayer.System
             return null;
         }
         /// <summary>
+        /// Deletes the users by identifications.
+        /// </summary>
+        /// <param name="ids">The identification of users to be deleted, split by ','.</param>
+        public void DeleteByIds(string ids)
+        {
+            _database.SpExecuteNonQuery("up_user_deletebyids", new OracleParameter("p_Ids", ids));
+        }
+        /// <summary>
         /// Selects the specific user by identification.
         /// </summary>
         /// <returns><see cref="User"/> object.</returns>
@@ -276,11 +284,22 @@ namespace OperatingManagement.DataAccessLayer.System
             }
             return null;
         }
+        
+        /// <summary>
+        /// Verifies the specific user by LoginName and Password(Not be encrypted).
+        /// </summary>
+        /// <param name="needEncryptPassword">A value indicating that the Password should be encrypted or not.</param>
+        /// <returns><see cref="FieldVerifyResult"/> object.</returns>
+        public FieldVerifyResult Verify()
+        {
+            return Verify(true);
+        }
         /// <summary>
         /// Verifies the specific user by LoginName and Password.
         /// </summary>
+        /// <param name="needEncryptPassword">A value indicating that the Password should be encrypted or not.</param>
         /// <returns><see cref="FieldVerifyResult"/> object.</returns>
-        public FieldVerifyResult Verify()
+        public FieldVerifyResult Verify(bool needEncryptPassword)
         {
             try
             {
@@ -288,7 +307,11 @@ namespace OperatingManagement.DataAccessLayer.System
                 if (u == null)
                     return FieldVerifyResult.NotExist;
 
-                if (u.Password != GlobalSettings.EncryptPassword(this.Password))
+                string pwd = this.Password;
+                if (needEncryptPassword)
+                    pwd = GlobalSettings.EncryptPassword(this.Password);
+
+                if (u.Password != pwd)
                     return FieldVerifyResult.PasswordIncorrect;
 
                 if (u.Status != FieldStatus.Active)

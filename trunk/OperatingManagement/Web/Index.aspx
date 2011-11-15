@@ -11,5 +11,5 @@
     首页
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-    Welcome!
+    <%= this.Profile.Account.DisplayName %>，你好！欢迎登录业务管理应用软件！
 </asp:Content>

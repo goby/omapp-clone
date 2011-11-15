@@ -306,3 +306,42 @@ begin
             select * from tb_role
                    where roleid in (select roleid from tb_userrole where userid=p_UserId);
 end;
+/
+create or replace procedure up_user_deletebyids
+(
+       p_Ids varchar2
+)
+is
+begin
+       delete from tb_user where userid in
+       (select column_value from table(split(p_Ids,',')));
+       commit;
+end;
+/
+create or replace procedure up_role_deletebyids
+(
+       p_Ids varchar2,       
+       v_result out number
+)
+is 
+begin
+       savepoint p1;
+       delete from tb_userrole where roleid in 
+       (select column_value from table(split(p_Ids,',')));
+       commit;
+       
+       delete from tb_rolepermission where roleid in 
+       (select column_value from table(split(p_Ids,',')));
+       commit;
+       
+       delete from tb_role where roleid in
+       (select column_value from table(split(p_Ids,',')));
+       commit;
+       v_result:=5; -- Success
+       
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK TO SAVEPOINT p1;
+          COMMIT;
+          v_result:=4; --Error
+end;
