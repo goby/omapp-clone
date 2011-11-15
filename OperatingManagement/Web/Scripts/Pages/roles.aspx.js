@@ -34,31 +34,30 @@ function deleteRoles() {
         okEvent: function (o, e) {
             //ajax begin
             var ids = chks.map(function () { return this.value; }).get().join(',');
-            var indicator = $('#submitIndicator');
+            var indicator = $('#submitIndicator').attr('class', 'load');
             indicator.show();
-            /*
+
             $.ajax({
                 url: 'data.axd',
                 dataType: 'text',
                 data: {
                     ids: ids,
-                    action: 'userdelete',
+                    action: 'deleteRolesByIds',
                     t: Math.random()
                 },
                 error: function (resp) {
-                    showMsg('数据提交过程中发生了异常。');
-                    indicator.hide();
+                    indicator.attr('class', 'error').html('数据提交过程中发生了异常。');
                 },
                 success: function (resp) {
                     var json = eval('(' + resp + ')');
-                    showMsg(json.msg);
                     if (json.suc) {
                         window.location.href = window.location.href;
+                    } else {
+                        indicator.attr('class', 'error').html('数据提交过程中发生了异常。');
                     }
-                    indicator.hide();
                 }
             });
-            */
+
             //ajax end
         }
     });
