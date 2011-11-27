@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SystemParameters>
+  <TaskList>
+    <item text="任务一" value="1"></item>
+    <item text="任务二" value="2"></item>
+    <item text="任务三" value="3"></item>
+  </TaskList>
+  <InfoSource>
+    <item text="信息来源一" value="A"></item>
+    <item text="信息来源二" value="B"></item>
+    <item text="信息来源三" value="C"></item>
+  </InfoSource>
+  <InfoType>
+    <item text="信息类别一" value="a"></item>
+    <item text="信息类别二" value="b"></item>
+    <item text="信息类别三" value="c"></item>
+  </InfoType>
+  <Ddestination>
+    <item text="信宿一" value="A1"></item>
+    <item text="信宿二" value="A2"></item>
+    <item text="信宿三" value="A3"></item>
+  </Ddestination>
+</SystemParameters>

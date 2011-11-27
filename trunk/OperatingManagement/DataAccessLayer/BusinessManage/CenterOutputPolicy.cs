@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
+using System.Xml;
 
 using OperatingManagement.Framework.Basic;
 using OperatingManagement.Framework;
@@ -23,9 +24,17 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         private OracleDatabase _dataBase = null;
 
         /// <summary>
+        /// 任务代号
+        /// </summary>
+        public string TaskID { get; set; }
+        /// <summary>
+        /// 卫星名称
+        /// </summary>
+        public string SatName { get; set; }
+        /// <summary>
         /// 信源
         /// </summary>
-        public string InfoFrom { get; set; }
+        public string InfoSource { get; set; }
         /// <summary>
         /// 信息类别
         /// </summary>
@@ -33,7 +42,15 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 信宿
         /// </summary>
-        public string InfoTo { get; set; }
+        public string Ddestination { get; set; }
+        /// <summary>
+        /// 生效时间
+        /// </summary>
+        public DateTime EffectTime { get; set; }
+        /// <summary>
+        /// 失效时间
+        /// </summary>
+        public DateTime DefectTime { get; set; }
         /// <summary>
         /// 描述
         /// </summary>
@@ -80,7 +97,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public CenterOutputPolicy SelectByID()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
-            DataSet ds = _dataBase.SpExecuteDataSet("UP_COP_SelectByID", new OracleParameter[] { new OracleParameter("p_COPID", this.Id), o_Cursor });
+            DataSet ds = _dataBase.SpExecuteDataSet("UP_COP_SelectByID", new OracleParameter[] { new OracleParameter("p_COPID", Id), o_Cursor });
 
             CenterOutputPolicy info = null;
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
@@ -88,9 +105,13 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 info = new CenterOutputPolicy()
                 {
                     Id = Convert.ToInt32(ds.Tables[0].Rows[0]["COPID"]),
-                    InfoFrom = ds.Tables[0].Rows[0]["InfoFrom"].ToString(),
+                    TaskID = ds.Tables[0].Rows[0]["TaskID"].ToString(),
+                    SatName = ds.Tables[0].Rows[0]["SatName"].ToString(),
+                    InfoSource = ds.Tables[0].Rows[0]["InfoSource"].ToString(),
                     InfoType = ds.Tables[0].Rows[0]["InfoType"].ToString(),
-                    InfoTo = ds.Tables[0].Rows[0]["InfoTo"].ToString(),
+                    Ddestination = ds.Tables[0].Rows[0]["Ddestination"].ToString(),
+                    EffectTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["EffectTime"]),
+                    DefectTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["DefectTime"]),
                     Note = ds.Tables[0].Rows[0]["Note"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["Note"].ToString(),
                     CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
                     CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedUserID"]),
@@ -110,24 +131,29 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             OracleParameter o_Cursor = PrepareRefCursor();
             DataSet ds = _dataBase.SpExecuteDataSet("UP_COP_SelectAll", new OracleParameter[] { o_Cursor });
 
-            List<CenterOutputPolicy> infoList = null;
+            List<CenterOutputPolicy> infoList = new List<CenterOutputPolicy>();
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
-                infoList = new List<CenterOutputPolicy>();
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    infoList.Add(new CenterOutputPolicy()
+                    CenterOutputPolicy info = new CenterOutputPolicy()
                     {
                         Id = Convert.ToInt32(dr["COPID"]),
-                        InfoFrom = dr["InfoFrom"].ToString(),
+                        TaskID = dr["TaskID"].ToString(),
+                        SatName = dr["SatName"].ToString(),
+                        InfoSource = dr["InfoSource"].ToString(),
                         InfoType = dr["InfoType"].ToString(),
-                        InfoTo = dr["InfoTo"].ToString(),
+                        Ddestination = dr["Ddestination"].ToString(),
+                        EffectTime = Convert.ToDateTime(dr["EffectTime"]),
+                        DefectTime = Convert.ToDateTime(dr["DefectTime"]),
                         Note = dr["Note"] == DBNull.Value ? string.Empty : dr["Note"].ToString(),
                         CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
                         CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["CreatedUserID"]),
                         UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
                         UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["UpdatedUserID"])
-                    });
+                    };
+
+                    infoList.Add(info);
                 }
             }
             return infoList;
@@ -148,14 +174,18 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             };
 
             _dataBase.SpExecuteNonQuery("UP_COP_Insert", new OracleParameter[]{
-                                        new OracleParameter("p_InfoFrom",this.InfoFrom),
-                                        new OracleParameter("p_InfoType", this.InfoType),
-                                        new OracleParameter("p_InfoTo",this.InfoTo),
-                                        new OracleParameter("p_Note", string.IsNullOrEmpty(this.Note) ? DBNull.Value as object : this.Note),
-                                        new OracleParameter("p_CreatedTime",this.CreatedTime),
-                                        new OracleParameter("p_CreatedUserID",this.CreatedUserID == 0 ? DBNull.Value as object : this.CreatedUserID),
-                                        new OracleParameter("p_UpdatedTime",this.UpdatedTime == DateTime.MinValue ? DBNull.Value as object : this.UpdatedTime),
-                                        new OracleParameter("p_UpdatedUserID",this.UpdatedUserID == 0 ? DBNull.Value as object : this.UpdatedUserID),
+                                        new OracleParameter("p_TaskID",TaskID),
+                                        new OracleParameter("p_SatName",SatName),
+                                        new OracleParameter("p_InfoSource",InfoSource),
+                                        new OracleParameter("p_InfoType",InfoType),
+                                        new OracleParameter("p_Ddestination",Ddestination),
+                                        new OracleParameter("p_EffectTime",EffectTime),
+                                        new OracleParameter("p_DefectTime",DefectTime),
+                                        new OracleParameter("p_Note",string.IsNullOrEmpty(Note) ? DBNull.Value as object : Note),
+                                        new OracleParameter("p_CreatedTime",CreatedTime),
+                                        new OracleParameter("p_CreatedUserID",CreatedUserID == 0 ? DBNull.Value as object : CreatedUserID),
+                                        new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
+                                        new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0 ? DBNull.Value as object : UpdatedUserID),
                                         v_ID,
                                         v_Result});
             if (v_ID.Value != null && v_ID.Value != DBNull.Value)
@@ -172,27 +202,101 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             OracleParameter v_Result = PrepareOutputResult();
 
             _dataBase.SpExecuteNonQuery("UP_COP_Update", new OracleParameter[]{
-                                        new OracleParameter("p_COPID",this.Id),
-                                        new OracleParameter("p_InfoFrom",this.InfoFrom),
-                                        new OracleParameter("p_InfoType", this.InfoType),
-                                        new OracleParameter("p_InfoTo",this.InfoTo),
-                                        new OracleParameter("p_Note", string.IsNullOrEmpty(this.Note) ? DBNull.Value as object : this.Note),
-                                        new OracleParameter("p_CreatedTime",this.CreatedTime),
-                                        new OracleParameter("p_CreatedUserID",this.CreatedUserID == 0 ? DBNull.Value as object : this.CreatedUserID),
-                                        new OracleParameter("p_UpdatedTime",this.UpdatedTime == DateTime.MinValue ? DBNull.Value as object : this.UpdatedTime),
-                                        new OracleParameter("p_UpdatedUserID",this.UpdatedUserID == 0 ? DBNull.Value as object : this.UpdatedUserID),
+                                        new OracleParameter("p_COPID",Id),
+                                        new OracleParameter("p_TaskID",TaskID),
+                                        new OracleParameter("p_SatName",SatName),
+                                        new OracleParameter("p_InfoSource",InfoSource),
+                                        new OracleParameter("p_InfoType",InfoType),
+                                        new OracleParameter("p_Ddestination",Ddestination),
+                                        new OracleParameter("p_EffectTime",EffectTime),
+                                        new OracleParameter("p_DefectTime",DefectTime),
+                                        new OracleParameter("p_Note", string.IsNullOrEmpty(Note) ? DBNull.Value as object : Note),
+                                        new OracleParameter("p_CreatedTime",CreatedTime),
+                                        new OracleParameter("p_CreatedUserID",CreatedUserID == 0 ? DBNull.Value as object : CreatedUserID),
+                                        new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
+                                        new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0 ? DBNull.Value as object : UpdatedUserID),
                                         v_Result});
             return (FieldVerifyResult)Convert.ToInt32(v_Result.Value);
         }
 
+        /// <summary>
+        /// 选择下拉列表参数
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public Dictionary<string, string> GetSystemParameters(SystemParametersType type)
+        {
+            string filePath = GlobalSettings.MapPath(string.Format(AspNetConfig.Config["settingPattern"].ToString(), @"SystemParameters"));
+            XmlDocument doc = new XmlDocument();
+            doc.Load(filePath);
+
+            string xmlPath = string.Format(@"//{0}/item", type.ToString());
+            XmlNodeList xmlNodeList = doc.SelectNodes(xmlPath);
+
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            if (xmlNodeList != null)
+            {
+                foreach (XmlNode xmlNode in xmlNodeList)
+                {
+                    if (!dictionary.ContainsKey(xmlNode.Attributes["text"].Value) && !dictionary.ContainsValue(xmlNode.Attributes["value"].Value))
+                    {
+                        dictionary.Add(xmlNode.Attributes["text"].Value, xmlNode.Attributes["value"].Value);
+                    }
+                }
+            }
+            return dictionary;
+        }
+        /// <summary>
+        /// 校验Task时间是否存在
+        /// </summary>
+        /// <returns>true:存在</returns>
+        public bool HaveEffectivePolicy()
+        {
+            List<CenterOutputPolicy> infoList = SelectAll();
+            var query = infoList.Where(a =>a.Id != Id && a.TaskID.ToLower() == TaskID.ToLower() && 
+                ((a.EffectTime <= EffectTime && EffectTime <= a.DefectTime) 
+                  || (a.EffectTime <= DefectTime && DefectTime <= a.DefectTime) 
+                  || (EffectTime <= a.EffectTime && DefectTime >= a.DefectTime)));
+            if (query != null && query.Count() > 0)
+                return true;
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// 根据任务代号和卫星名称查询中心输出策略
+        /// </summary>
+        /// <returns></returns>
+        public List<CenterOutputPolicy> SelectByParameters()
+        {
+            List<CenterOutputPolicy> infoList = SelectAll();
+            var query = infoList.Where(a => (string.IsNullOrEmpty(TaskID) || a.TaskID.ToLower() == TaskID.ToLower()) && 
+                (string.IsNullOrEmpty(SatName) || a.SatName.ToLower() == SatName.ToLower())).OrderByDescending(a=> a.CreatedTime);
+            return query.ToList<CenterOutputPolicy>();
+        }
         #endregion
 
         #region -Override BaseEntity-
         protected override void ValidationRules()
         {
-
+            this.AddValidRules("TaskID", "任务代号不能为空。", string.IsNullOrEmpty(TaskID));
+            this.AddValidRules("SatName", "卫星名称不能为空。", string.IsNullOrEmpty(SatName));
+            this.AddValidRules("InfoSource", "信源不能为空。", string.IsNullOrEmpty(InfoSource));
+            this.AddValidRules("InfoType", "信息类别不能为空。", string.IsNullOrEmpty(InfoType));
+            this.AddValidRules("Ddestination", "信宿不能为空。", string.IsNullOrEmpty(Ddestination));
         }
         #endregion
 
+    }
+
+    /// <summary>
+    /// 参数类型
+    /// </summary>
+    public enum SystemParametersType
+    {
+        TaskList = 1,
+        InfoSource = 2,
+        InfoType = 3,
+        Ddestination = 4
     }
 }
