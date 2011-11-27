@@ -1,4 +1,6 @@
 
+
+
 create or replace procedure UP_COP_SelectByID
 (
        p_COPID TB_CenterOutputPolicy.COPID%type,
@@ -24,9 +26,13 @@ end;
 
 create or replace procedure UP_COP_Insert
 (
-       p_InfoFrom TB_CenterOutputPolicy.Infofrom%type,
+       p_TaskID  TB_CenterOutputPolicy.Taskid%type,
+       p_SatName  TB_CenterOutputPolicy.Satname%type,
+       p_InfoSource TB_CenterOutputPolicy.Infosource%type,
        p_InfoType TB_CenterOutputPolicy.Infotype%type,
-       p_InfoTo TB_CenterOutputPolicy.Infoto%type,
+       p_DDestination TB_CenterOutputPolicy.Ddestination%type,
+       p_EffectTime TB_CenterOutputPolicy.Effecttime%type,
+       p_DefectTime TB_CenterOutputPolicy.Defecttime%type,
        p_Note TB_CenterOutputPolicy.Note%type,
        p_CreatedTime TB_CenterOutputPolicy.Createdtime%type,
        p_CreatedUserID TB_CenterOutputPolicy.Createduserid%type,
@@ -39,7 +45,7 @@ is
 begin  
        savepoint p1;
        v_COPID:=to_number(fn_genseqnum('4001'));
-       Insert into TB_CenterOutputPolicy Values(v_COPID,p_InfoFrom,p_InfoType,p_InfoTo,p_Note,p_CreatedTime,p_CreatedUserID,p_UpdatedTime,p_UpdatedUserID);
+       Insert into TB_CenterOutputPolicy(COPID,TaskID,SatName,InfoSource,InfoType,DDestination,EffectTime,DefectTime,Note,CreatedTime,CreatedUserID,UpdatedTime,UpdatedUserID) Values(v_COPID,p_TaskID,p_SatName,p_InfoSource,p_InfoType,p_DDestination,p_EffectTime,p_DefectTime,p_Note,p_CreatedTime,p_CreatedUserID,p_UpdatedTime,p_UpdatedUserID);
        commit;
        v_Result:=5; -- Success
        
@@ -51,12 +57,17 @@ begin
 end;
 
 
+
 create or replace procedure UP_COP_Update
 (
     p_COPID TB_CenterOutputPolicy.Copid%type,
-    p_InfoFrom TB_CenterOutputPolicy.Infofrom%type,
+    p_TaskID  TB_CenterOutputPolicy.Taskid%type,
+    p_SatName  TB_CenterOutputPolicy.Satname%type,
+    p_InfoSource TB_CenterOutputPolicy.Infosource%type,
     p_InfoType TB_CenterOutputPolicy.Infotype%type,
-    p_InfoTo TB_CenterOutputPolicy.Infoto%type,
+    p_DDestination TB_CenterOutputPolicy.Ddestination%type,
+    p_EffectTime TB_CenterOutputPolicy.Effecttime%type,
+    p_DefectTime TB_CenterOutputPolicy.Defecttime%type,
     p_Note TB_CenterOutputPolicy.Note%type,
     p_CreatedTime TB_CenterOutputPolicy.Createdtime%type,
     p_CreatedUserID TB_CenterOutputPolicy.Createduserid%type,
@@ -69,9 +80,13 @@ begin
      savepoint p1;
      
      update TB_CenterOutputPolicy 
-        set InfoFrom=p_InfoFrom
+        set TaskID=p_TaskID
+           ,SatName=p_SatName
+           ,InfoSource=p_InfoSource
            ,InfoType=p_InfoType
-           ,InfoTo=p_InfoTo
+           ,DDestination=p_DDestination
+           ,EffectTime=p_EffectTime
+           ,DefectTime=p_DefectTime
            ,Note=p_Note
            ,CreatedTime=p_CreatedTime
            ,CreatedUserID=p_CreatedUserID

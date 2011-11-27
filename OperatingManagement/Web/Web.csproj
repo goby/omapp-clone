@@ -80,6 +80,9 @@
     <Content Include="App_Data\siteSetting.xml" />
     <Content Include="App_Data\menuPlan.xml" />
     <Content Include="App_Data\menuBusiness.xml" />
+    <Content Include="App_Data\SystemParameters.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Themes\Default\Images\arrow-right.gif" />
     <Content Include="App_Themes\Default\Images\background.gif" />
     <Content Include="App_Themes\Default\Images\body-bot.png" />
@@ -109,6 +112,8 @@
     <Content Include="App_Themes\Default\Images\top-menu-layer.png" />
     <Content Include="App_Themes\Default\Images\top-menu.png" />
     <Content Include="App_Themes\Default\Site.css" />
+    <Content Include="BusinessManage\CenterOutputPolicyAdd.aspx" />
+    <Content Include="BusinessManage\CenterOutputPolicyEdit.aspx" />
     <Content Include="BusinessManage\CenterOutputPolicyManage.aspx" />
     <Content Include="BusinessManage\MeasureDataDetail.aspx" />
     <Content Include="BusinessManage\MeasureDataList.aspx" />
@@ -208,6 +213,20 @@
       <DependentUpon>PassportSSO.aspx</DependentUpon>
     </Compile>
     <Compile Include="Assembly\StaticExtend\DynamicLinq.cs" />
+    <Compile Include="BusinessManage\CenterOutputPolicyAdd.aspx.cs">
+      <DependentUpon>CenterOutputPolicyAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BusinessManage\CenterOutputPolicyAdd.aspx.designer.cs">
+      <DependentUpon>CenterOutputPolicyAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BusinessManage\CenterOutputPolicyEdit.aspx.cs">
+      <DependentUpon>CenterOutputPolicyEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BusinessManage\CenterOutputPolicyEdit.aspx.designer.cs">
+      <DependentUpon>CenterOutputPolicyEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BusinessManage\CenterOutputPolicyManage.aspx.cs">
       <DependentUpon>CenterOutputPolicyManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
