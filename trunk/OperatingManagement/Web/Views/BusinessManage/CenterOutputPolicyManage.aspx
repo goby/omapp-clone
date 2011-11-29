@@ -1,75 +1,168 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CenterOutputPolicyManage.aspx.cs" Inherits="OperatingManagement.Web.BusinessManage.CenterOutputPolicyManage" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
+    CodeBehind="CenterOutputPolicyManage.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyManage" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
+        .norText
+        {
+            width: 155px;
+            margin: 0px;
+            padding: 0px;
+        }
+        .norDpl
+        {
+            width: 160px;
+            margin: 0px;
+            padding: 0px;
+        }
+        .index_content_search
+        {
+            margin-top: 10px;
+        }
+        
+        .index_content_search table
+        {
+            border: 1px solid #eeeeee;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        .index_content_search table td
+        {
+            border: 1px solid #eeeeee;
+            line-height: 26px;
+            color: #333333;
+            text-align: left;
+            height: 26px;
+        }
+        .index_content_search table th
+        {
+            border: 1px solid #eeeeee;
+            font-weight: bold;
+            line-height: 26px;
+            color: #333333;
+            text-align: right;
+            height: 26px;
+        }
+        .index_content_view
+        {
+            margin-top: 10px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuIndex" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-首页&gt;中心输出策略
+    业务管理&gt;中心输出策略查询
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-  <table class="edit" style="width:800px;">
-        <tr>
-            <th style="width:100px;">信源(<span class="red">*</span>)</th>
-            <td>
-                <asp:TextBox ID="txtInfoFrom" runat="server" Width="300px" CssClass="text" MaxLength="4"></asp:TextBox>
-                <asp:RequiredFieldValidator ID="rfv1" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtInfoFrom" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
-            </td>
-        </tr>
-        <tr>
-            <th style="width:100px;">信息类别(<span class="red">*</span>)</th>
-            <td>
-                <asp:TextBox ID="txtInfoType" runat="server" Width="300px" CssClass="text" MaxLength="4"></asp:TextBox>
-                <asp:RequiredFieldValidator ID="rfv2" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtInfoType" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
-            </td>
-        </tr>
-        <tr>
-            <th style="width:100px;">信宿(<span class="red">*</span>)</th>
-            <td>
-                <asp:TextBox ID="txtInfoTo" runat="server" Width="300px" CssClass="text" MaxLength="4"></asp:TextBox>
-                <asp:RequiredFieldValidator ID="rfv3" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtInfoTo" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
-            </td>
-        </tr>
-        <tr>
-            <th style="width:100px;">描述</th>
-            <td>
-                <asp:TextBox ID="txtNote" runat="server" Width="300px" CssClass="text" MaxLength="200"></asp:TextBox>
-            </td>
-        </tr>
-        <tr>
-            <th style="width:100px;">创建时间</th>
-            <td>
-                <asp:Label ID="lblCreatedTime" runat="server" Text=""></asp:Label>
-            </td>
-        </tr>
-        <tr>
-            <th style="width:100px;">最后修改时间</th>
-            <td>
-               <asp:Label ID="lblUpdatedTime" runat="server" Text=""></asp:Label>
-               <asp:HiddenField ID="hfCOPID" runat="server" Value="" />
-            </td>
-        </tr>
-        <tr id="trMessage" runat="server" visible="false">
-            <th>&nbsp;</th>
-            <td>
-                <asp:Label ID="lblMessage" runat="server" CssClass="error" Text=""></asp:Label>
-            </td>
-        </tr>
-        <tr>
-            <th>&nbsp;</th>
-            <td>
-                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" onclick="btnSubmit_Click" />
-                <asp:Button ID="btnCancel" runat="server" CssClass="button" Text="取消" 
-                    onclick="btnCancel_Click" CausesValidation="false"/>
-            </td>
-        </tr>
-    </table>
+    <div class="index_content_search">
+        <table cellspacing="0" cellpadding="0" class="searchTable">
+            <tr>
+                <th width="15%">
+                    任务代号：
+                </th>
+                <td width="25%">
+                    <asp:DropDownList ID="dplTask" runat="server" CssClass="norDpl">
+                    </asp:DropDownList>
+                </td>
+                <th width="15%">
+                    卫星名称：
+                </th>
+                <td width="25%">
+                    <asp:DropDownList ID="dplSatName" runat="server" CssClass="norDpl">
+                    </asp:DropDownList>
+                </td>
+                <td width="20%">
+                    <asp:Button ID="btnSearch" runat="server" OnClick="btnSearch_Click" CssClass="button" Text="查 询" />
+                    <asp:Button ID="btnAdd" runat="server" OnClick="btnAdd_Click" CssClass="button" Text="添 加"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="index_content_view">
+        <asp:Repeater ID="rpCOPList" runat="server">
+            <HeaderTemplate>
+                <table class="list">
+                    <tr>
+                        <th style="width: 10%;">
+                            任务代号
+                        </th>
+                        <th style="width: 20%;">
+                            卫星名称
+                        </th>
+                        <th style="width: 10%;">
+                            信源
+                        </th>
+                        <th style="width: 10%;">
+                            信息类别
+                        </th>
+                        <th style="width: 10%;">
+                            信宿
+                        </th>
+                        <th style="width: 10%;">
+                            生效时间
+                        </th>
+                        <th style="width: 10%;">
+                            失效时间
+                        </th>
+                        <th style="width: 10%;">
+                            编辑
+                        </th>
+                        <th style="width: 10%;">
+                            下载
+                        </th>
+                    </tr>
+                    <tbody id="tbCOPList">
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <td>
+                        <%# Eval("TaskID")%>
+                    </td>
+                    <td>
+                        <%# Eval("SatName")%>
+                    </td>
+                    <td>
+                        <%# Eval("InfoSource")%>
+                    </td>
+                    <td>
+                        <%# Eval("InfoType")%>
+                    </td>
+                    <td>
+                        <%# Eval("Ddestination")%>
+                    </td>
+                    <td>
+                        <%# Eval("EffectTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
+                    </td>
+                    <td>
+                        <%# Eval("DefectTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
+                    </td>
+                    <td>
+                        <asp:LinkButton ID="lbtnEdit" runat="server" OnClick="lbtnEdit_Click" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
+                    </td>
+                    <td>
+                        <asp:LinkButton ID="lbtnDownload" runat="server" OnClick="lbtnDownload_Click" CommandArgument='<%# Eval("Id")%>'>下载</asp:LinkButton>
+                    </td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                </tbody></table>
+            </FooterTemplate>
+        </asp:Repeater>
+        <table class="listTitle">
+            <tr>
+                <td class="listTitle-c1">
+                </td>
+                <td class="listTitle-c2">
+                    <om:CollectionPager ID="cpPager" runat="server">
+                    </om:CollectionPager>
+                </td>
+            </tr>
+        </table>
+    </div>
 </asp:Content>

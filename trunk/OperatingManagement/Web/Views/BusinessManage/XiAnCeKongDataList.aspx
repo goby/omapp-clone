@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="XiAnCeKongDataList.aspx.cs" Inherits="OperatingManagement.Web.BusinessManage.XiAnCeKongDataList" %>
+    CodeBehind="XiAnCeKongDataList.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.XiAnCeKongDataList" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">

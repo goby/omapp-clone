@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="ExperimentPlanList.aspx.cs" Inherits="OperatingManagement.Web.PlanManage.ExperimentPlanList" %>
+    CodeBehind="ExperimentPlanList.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.ExperimentPlanList" %>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">

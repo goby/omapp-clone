@@ -17,11 +17,20 @@
     <item id="3-2" title="中心状态监控" roles="Anyone" href="#" />
     <item id="3-3" title="卫星综合状态监控" roles="Anyone" href="#" />
   </menu>
-  <menu title="业务管理">
-    <item id="4-1" title="中心输出策略" roles="Anyone" href="BusinessManage/CenterOutputPolicyManage.aspx" />
+  <!--<menu title="业务管理">
+    <item id="4-1" title="中心输出策略" roles="Anyone" href="Views/BusinessManage/CenterOutputPolicyManage.aspx" />
     <item id="4-2" title="卫星监视数据" roles="Anyone" href="#" />
     <item id="4-3" title="文件服务器" roles="Anyone" href="#" />
     <item id="4-4" title="实验数据分发" roles="Anyone" href="#" />
     <item id="4-5" title="资源调度" roles="Anyone" href="#" />
+  </menu>-->
+  <menu title="业务管理">
+    <item id="4-1" title="中心输出策略管理" roles="ExperimentPlan.List" href="Views/BusinessManage/CenterOutputPolicyManage.aspx" />
+    <item id="4-2" title="西安卫星测控中心数据查询" roles="XiAnCeKongData.List" href="Views/BusinessManage/XiAnCeKongDataList.aspx" />
+    <item id="4-3" title="测角测速测距数据查询" roles="MeasureData.List" href="Views/BusinessManage/MeasureDataList.aspx" />
+    <item id="4-4" title="空间遥操作状态数据查询" roles="Anyone" href="#" />
+    <item id="4-5" title="资源信息管理" roles="Anyone" href="#" />
+    <item id="4-6" title="资源状态管理" roles="Anyone" href="#" />
+    <item id="4-7" title="资源调度计算" roles="Anyone" href="#" />
   </menu>
 </menus>

@@ -14,7 +14,7 @@ using OperatingManagement.DataAccessLayer.BusinessManage;
 using System.Web.Security;
 using System.Data;
 
-namespace OperatingManagement.Web.BusinessManage
+namespace OperatingManagement.Web.Views.BusinessManage
 {
     public partial class MeasureDataList : AspNetPage, IRouteContext
     {

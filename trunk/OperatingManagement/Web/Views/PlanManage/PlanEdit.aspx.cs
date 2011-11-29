@@ -13,7 +13,7 @@ using OperatingManagement.Framework;
 using System.Web.Security;
 using System.Xml;
 
-namespace OperatingManagement.Web.PlanManage
+namespace OperatingManagement.Web.Views.PlanManage
 {
     public partial class PlanEdit : AspNetPage, IRouteContext
     {
