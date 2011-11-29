@@ -9,7 +9,8 @@
     
 </head>
 <body>
-<script language="javascript" type="text/javascript" src='<%=ResolveUrl("~") %>Scripts/DateTimePicker/WdatePicker.js'></script>
+<script language="javascript" type="text/javascript" src='<%=ResolveUrl("~") %>Scripts/calendar.js'></script>
+
     <form runat="server">
     <div class="wrap">
         <div class="head">
