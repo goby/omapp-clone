@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="MeasureDataList.aspx.cs" Inherits="OperatingManagement.Web.BusinessManage.MeasureDataList" %>
+    CodeBehind="MeasureDataList.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.MeasureDataList" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">

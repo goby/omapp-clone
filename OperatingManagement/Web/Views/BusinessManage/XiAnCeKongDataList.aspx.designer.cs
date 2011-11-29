@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace OperatingManagement.Web.BusinessManage {
+namespace OperatingManagement.Web.Views.BusinessManage {
     
     
     public partial class XiAnCeKongDataList {

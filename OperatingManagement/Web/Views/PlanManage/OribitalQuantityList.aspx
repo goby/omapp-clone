@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="OribitalQuantityList.aspx.cs" Inherits="OperatingManagement.Web.PlanManage.OribitalQuantityList" %>
+    CodeBehind="OribitalQuantityList.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.OribitalQuantityList" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">

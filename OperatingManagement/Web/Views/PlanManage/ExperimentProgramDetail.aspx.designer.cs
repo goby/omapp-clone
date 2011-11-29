@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace OperatingManagement.Web.PlanManage {
+namespace OperatingManagement.Web.Views.PlanManage {
     
     
     public partial class ExperimentProgramDetail {

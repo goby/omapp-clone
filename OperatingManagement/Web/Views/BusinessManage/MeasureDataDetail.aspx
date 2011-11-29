@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MeasureDataDetail.aspx.cs" Inherits="OperatingManagement.Web.BusinessManage.MeasureDataDetail" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MeasureDataDetail.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.MeasureDataDetail" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 

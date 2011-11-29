@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="PlanAdd.aspx.cs" Inherits="OperatingManagement.Web.PlanManage.PlanAdd" %>
+    CodeBehind="PlanAdd.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.PlanAdd" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
         .text

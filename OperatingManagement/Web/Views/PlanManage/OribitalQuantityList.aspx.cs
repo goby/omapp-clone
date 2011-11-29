@@ -14,7 +14,7 @@ using OperatingManagement.DataAccessLayer.BusinessManage;
 using System.Web.Security;
 using System.Data;
 
-namespace OperatingManagement.Web.PlanManage
+namespace OperatingManagement.Web.Views.PlanManage
 {
     public partial class OribitalQuantityList : AspNetPage, IRouteContext
     {

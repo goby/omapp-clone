@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ExperimentProgramList.aspx.cs" Inherits="OperatingManagement.Web.PlanManage.ExperimentProgramList" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ExperimentProgramList.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.ExperimentProgramList" %>
 <asp:Content ID="Content3" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
         .style1

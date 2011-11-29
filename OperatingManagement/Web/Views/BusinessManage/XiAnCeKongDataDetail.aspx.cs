@@ -13,7 +13,7 @@ using OperatingManagement.Framework;
 using System.Web.Security;
 using System.Xml;
 
-namespace OperatingManagement.Web.BusinessManage
+namespace OperatingManagement.Web.Views.BusinessManage
 {
     public partial class XiAnCeKongDataDetail : AspNetPage, IRouteContext
     {

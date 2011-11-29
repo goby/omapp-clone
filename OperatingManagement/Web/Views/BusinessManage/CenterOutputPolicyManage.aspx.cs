@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.WebKernel.Basic;
 
-namespace OperatingManagement.Web.BusinessManage
+namespace OperatingManagement.Web.Views.BusinessManage
 {
     public partial class CenterOutputPolicyManage : AspNetPage
     {
@@ -16,118 +16,149 @@ namespace OperatingManagement.Web.BusinessManage
         {
             try
             {
-                trMessage.Visible = false;
-                lblMessage.Text = string.Empty;
                 if (!IsPostBack)
                 {
-                    BindControls();
+                    BindDataSource();
+                    BindSatNameDataSource();
+                    BindCOPList();
                 }
             }
             catch
             {
-                trMessage.Visible = true;
-                lblMessage.Text = "发生未知错误，操作失败。";
+                
             }
         }
 
-        protected void btnSubmit_Click(object sender, EventArgs e)
+        protected void btnSearch_Click(object sender, EventArgs e)
         {
             try
             {
-                Framework.FieldVerifyResult result;
-                string msg = string.Empty;
+                BindCOPList();
+            }
+            catch
+            { }
+        }
+
+        protected void btnAdd_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string url = @"~/BusinessManage/CenterOutputPolicyAdd.aspx";
+                Response.Redirect(url);
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch
+            { }
+        }
+
+        protected void lbtnEdit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LinkButton lbtnEdit = (sender as LinkButton);
+                if (lbtnEdit == null)
+                {
+                    BindCOPList();
+                    return;
+                }
+                string url = @"~/BusinessManage/CenterOutputPolicyEdit.aspx?copid=" + lbtnEdit.CommandArgument;
+                Response.Redirect(url);
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch
+            { }
+        }
+
+        protected void lbtnDownload_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LinkButton lbtnDownload = (sender as LinkButton);
+                if (lbtnDownload == null)
+                {
+                    BindCOPList();
+                    return;
+                }
+                int copID = 0;
+                if (!int.TryParse(lbtnDownload.CommandArgument, out copID))
+                {
+                    BindCOPList();
+                    return;
+                }
+
                 CenterOutputPolicy centerOutputPolicy = new CenterOutputPolicy();
-                if (string.IsNullOrEmpty(hfCOPID.Value))
+                centerOutputPolicy.Id = copID;
+                centerOutputPolicy = centerOutputPolicy.SelectByID();
+                if (centerOutputPolicy == null)
                 {
-                    centerOutputPolicy.InfoFrom = txtInfoFrom.Text.Trim();
-                    centerOutputPolicy.InfoType = txtInfoType.Text.Trim();
-                    centerOutputPolicy.InfoTo = txtInfoTo.Text.Trim();
-                    centerOutputPolicy.Note = txtNote.Text.Trim();
-                    centerOutputPolicy.CreatedTime = DateTime.Now;
-                    centerOutputPolicy.UpdatedTime = DateTime.Now;
-                    result = centerOutputPolicy.Add();
-
-                    hfCOPID.Value = centerOutputPolicy.Id.ToString();
-                    lblCreatedTime.Text = centerOutputPolicy.CreatedTime.ToString("yyyy-MM-dd hh:mm:ss");
-                    lblUpdatedTime.Text = centerOutputPolicy.UpdatedTime.ToString("yyyy-MM-dd hh:mm:ss");
+                    BindCOPList();
+                    return;
                 }
-                else
-                {
-                    centerOutputPolicy.Id = Convert.ToInt32(hfCOPID.Value);
-                    centerOutputPolicy = centerOutputPolicy.SelectByID();
-
-                    centerOutputPolicy.InfoFrom = txtInfoFrom.Text.Trim();
-                    centerOutputPolicy.InfoType = txtInfoType.Text.Trim();
-                    centerOutputPolicy.InfoTo = txtInfoTo.Text.Trim();
-                    centerOutputPolicy.Note = txtNote.Text.Trim();
-                    centerOutputPolicy.UpdatedTime = DateTime.Now;
-                    result = centerOutputPolicy.Update();
-
-                    lblUpdatedTime.Text = centerOutputPolicy.UpdatedTime.ToString("yyyy-MM-dd hh:mm:ss");
-                }
-
-                switch (result)
-                {
-                    case Framework.FieldVerifyResult.Error:
-                        msg = "发生了数据错误，无法完成请求的操作。";
-                        break;
-                    case Framework.FieldVerifyResult.Success:
-                        msg = "更新中心输出策略成功。";
-                        break;
-                    default:
-                        msg = "发生未知错误，操作失败。";
-                        break;
-                }
-                trMessage.Visible = true;
-                lblMessage.Text = msg;
+                StringBuilder strBuilder = new StringBuilder("ConfigurationInfo\r\n");
+                strBuilder.AppendFormat("TaskID={0}\r\n", centerOutputPolicy.TaskID);
+                strBuilder.AppendFormat("SatName={0}\r\n", centerOutputPolicy.SatName);
+                strBuilder.AppendFormat("Source={0}\r\n", centerOutputPolicy.InfoSource);
+                strBuilder.AppendFormat("InfoType={0}\r\n", centerOutputPolicy.InfoType);
+                strBuilder.AppendFormat("Ddestination={0}\r\n", centerOutputPolicy.Ddestination);
+                strBuilder.AppendFormat("EffectTime={0}\r\n", centerOutputPolicy.EffectTime.ToString("yyyy-MM-dd HH:mm:ss"));
+                strBuilder.AppendFormat("DefectTime={0}\r\n", centerOutputPolicy.DefectTime.ToString("yyyy-MM-dd HH:mm:ss"));
+                Response.Clear();
+                Response.Buffer = false;
+                Response.ContentType = "application/octet-stream";
+                Response.AppendHeader("content-disposition", "attachment;filename=" + centerOutputPolicy.TaskID + ".dat;");
+                Response.Write(strBuilder.ToString());
+                Response.Flush();
+                Response.End();
             }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
             catch
-            {
-                trMessage.Visible = true;
-                lblMessage.Text = "发生未知错误，操作失败。";
-            }
-        }
-
-        protected void btnCancel_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                BindControls();
-            }
-            catch
-            {
-                trMessage.Visible = true;
-                lblMessage.Text = "发生未知错误，操作失败。";
-            }
+            { }
         }
 
         #region Method
-
-        protected void BindControls()
+        /// <summary>
+        /// 绑定控件数据源
+        /// </summary>
+        private void BindDataSource()
         {
             CenterOutputPolicy centerOutputPolicy = new CenterOutputPolicy();
-            //目前中心输出策略只维护一条数据
-            List<CenterOutputPolicy> infoList = centerOutputPolicy.SelectAll();
-            if (infoList == null || infoList.Count == 0)
-            {
-                hfCOPID.Value = string.Empty;
-                txtInfoFrom.Text = string.Empty;
-                txtInfoType.Text = string.Empty;
-                txtInfoTo.Text = string.Empty;
-                txtNote.Text = string.Empty;
-            }
-            else
-            {
-                centerOutputPolicy = infoList[0];
-                hfCOPID.Value = centerOutputPolicy.Id.ToString();
-                txtInfoFrom.Text = centerOutputPolicy.InfoFrom;
-                txtInfoType.Text = centerOutputPolicy.InfoType;
-                txtInfoTo.Text = centerOutputPolicy.InfoTo;
-                txtNote.Text = centerOutputPolicy.Note;
-                lblCreatedTime.Text = centerOutputPolicy.CreatedTime.ToString("yyyy-MM-dd hh:mm:ss");
-                lblUpdatedTime.Text = centerOutputPolicy.UpdatedTime.ToString("yyyy-MM-dd hh:mm:ss");
-            }
+
+            dplTask.Items.Clear();
+            dplTask.DataSource = centerOutputPolicy.GetSystemParameters(SystemParametersType.TaskList);
+            dplTask.DataTextField = "key";
+            dplTask.DataValueField = "value";
+            dplTask.DataBind();
+            dplTask.Items.Insert(0, new ListItem("全部", ""));
         }
+        /// <summary>
+        /// 绑定卫星数据源
+        /// 等确定卫星表结构及来源后替换
+        /// </summary>
+        private void BindSatNameDataSource()
+        {
+            dplSatName.Items.Clear();
+            for (int i = 1; i <= 5; i++)
+            {
+                dplSatName.Items.Add(new ListItem("卫星" + i.ToString(), i.ToString()));
+            }
+            dplSatName.Items.Insert(0, new ListItem("全部", ""));
+        }
+
+        private void BindCOPList()
+        {
+            CenterOutputPolicy centerOutputPolicy = new CenterOutputPolicy();
+            centerOutputPolicy.TaskID = dplTask.SelectedValue;
+            centerOutputPolicy.SatName = dplSatName.SelectedValue;
+            cpPager.DataSource = centerOutputPolicy.SelectByParameters();
+            cpPager.PageSize = this.SiteSetting.PageSize;
+            cpPager.BindToControl = rpCOPList;
+            rpCOPList.DataSource = cpPager.DataSourcePaged;
+            rpCOPList.DataBind();
+        }
+       
         #endregion
     }
 }
