@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <menus>
     <menu title="业务管理">
-        <item id="1-1" title="中心输出策略" roles="ExperimentPlan.List" href="BusinessManage/CenterOutputPolicyManage.aspx" />
-        <item id="1-2" title="查看测角测速测距数据" roles="MeasureData.List" href="BusinessManage/MeasureDataList.aspx" />
-        <item id="1-3" title="查看西安卫星测控中心数据" roles="XiAnCeKongData.List" href="BusinessManage/XiAnCeKongDataList.aspx" />
+        <item id="1-1" title="中心输出策略" roles="ExperimentPlan.List" href="Views/BusinessManage/CenterOutputPolicyManage.aspx" />
+        <item id="1-2" title="查看测角测速测距数据" roles="MeasureData.List" href="Views/BusinessManage/MeasureDataList.aspx" />
+        <item id="1-3" title="查看西安卫星测控中心数据" roles="XiAnCeKongData.List" href="Views/BusinessManage/XiAnCeKongDataList.aspx" />
     </menu>
 </menus>
