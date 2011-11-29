@@ -64,7 +64,7 @@
     <Compile Include="BusinessManage\TYJG.cs" />
     <Compile Include="BusinessManage\GD.cs" />
     <Compile Include="BusinessManage\BASICINFODATA.cs" />
-    <Compile Include="PlanManage\Plan.cs" />
+    <Compile Include="PlanManage\JH.cs" />
     <Compile Include="PlanManage\YDSJ.cs" />
     <Compile Include="PlanManage\SYCX.cs" />
     <Compile Include="PlanManage\SYJH.cs" />
