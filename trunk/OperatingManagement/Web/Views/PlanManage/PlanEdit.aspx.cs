@@ -50,17 +50,53 @@ namespace OperatingManagement.Web.Views.PlanManage
             { 
                 case "YJJH":
                     pnlYJJH.Visible = true;
-                    
-                   // ltPlanType.Text = 
+                    YJJH objYJJH = (new YJJH()).SelectById(Convert.ToInt32(HfID.Value));
+                    ltPlanType.Text = objYJJH.InfoType;
+                    txtSourceYJJH.Text = objYJJH.Source;
+                    txtDesYJJH.Text = objYJJH.Destination;
+                    txtFormatYJJH.Text = objYJJH.Format1;
+                    txtTaskIDYJJH.Text = objYJJH.TaskID;
+                    txtLinecountYJJH.Text = objYJJH.LineCount.ToString();
+                    txtDataYJJH.Text = objYJJH.DataSection;
+                    txtNoteYJJH.Text = objYJJH.Reserve;
                     break;
                 case "XXXQ":
                     pnlXXXQ.Visible = true;
+                    XXXQ objXXXQ = (new XXXQ()).SelectById(Convert.ToInt32(HfID.Value));
+                    ltinfoTypeXXXQ.Text = objXXXQ.InfoType;
+                    txtSourceXXXQ.Text = objXXXQ.Source;
+                    txtDesXXXQ.Text = objXXXQ.Destination;
+                    txtFormat1XXXQ.Text = objXXXQ.Format1;
+                    txtFormat2XXXQ.Text = objXXXQ.Format2;
+                    txtTaskIDXXXQ.Text = objXXXQ.TaskID;
+                    txtLineCountXXXQ.Text = objXXXQ.LineCount.ToString();
+                    txtDataXXXQ.Text = objXXXQ.DataSection;
+                    txtNoteXXXQ.Text = objXXXQ.Reserve;
                     break;
                 case "GZJH":
                     pnlGZJH.Visible = true;
+                    GZJH objGZJH = (new GZJH()).SelectById(Convert.ToInt32(HfID.Value));
+                    ltinfotypeGZJH.Text = objGZJH.InfoType;
+                    txtSourceGZJH.Text = objGZJH.Source;
+                    txtDesGZJH.Text = objGZJH.Destination;
+                    txtFormat1GZJH.Text = objGZJH.Format1;
+                    txtFormat2GZJH.Text = objGZJH.Format2;
+                    txtTaskidGZJH.Text = objGZJH.TaskID;
+                    txtLineCountGZJH.Text = objGZJH.LineCount.ToString();
+                    txtDataGZJH.Text = objGZJH.DataSection;
+                    txtNoteGZJH.Text = objGZJH.Reserve;
                     break;
                 case "TYSJ":
                     pnlTYSJ.Visible = true;
+                    TYSJ objTYSJ = (new TYSJ()).SelectById(Convert.ToInt32(HfID.Value));
+                    ltinfotypeTYSJ.Text = objTYSJ.InfoType;
+                    txtSourceTYSJ.Text = objTYSJ.Source;
+                    txtDesTYSJ.Text = objTYSJ.Destination;
+                    txtFormat1TYSJ.Text = objTYSJ.Format1;
+                    txtTaskidTYSJ.Text = objTYSJ.TaskID;
+                    txtLineCountTYSJ.Text = objTYSJ.LineCount.ToString();
+                    txtDataTYSJ.Text = objTYSJ.DataSection;
+                    txtNoteTYSJ.Text = objTYSJ.Reserve;
                     break;
                 default:
                     pnl4.Visible = true;

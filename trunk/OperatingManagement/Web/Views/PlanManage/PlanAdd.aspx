@@ -111,6 +111,9 @@
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" 
                     onclick="btnSubmit_Click" Text="提交" />
+            &nbsp;&nbsp;
+                <asp:Button ID="txtGetPlanInfo" runat="server" onclick="txtGetPlanInfo_Click" 
+                    Text="从设备计划获取信息" />
             </td>
         </tr>
     </table>

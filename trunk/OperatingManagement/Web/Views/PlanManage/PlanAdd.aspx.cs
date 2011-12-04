@@ -35,6 +35,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 PlanID = Convert.ToInt32(txtPlanID.Text.Trim()),
                 StartTime  = Convert.ToDateTime(txtStartTime.Text.Trim()),
                 EndTime = Convert.ToDateTime(txtEndTime.Text.Trim()),
+                SRCType = 0, 
                 Reserve = txtNote.Text.Trim()
             };
             var result = jh.Add();
@@ -58,6 +59,11 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.ShortTitle = "新建计划";
             this.SetTitle();
             //this.AddJavaScriptInclude("scripts/pages/PlanAdd.aspx.js");
+        }
+
+        protected void txtGetPlanInfo_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

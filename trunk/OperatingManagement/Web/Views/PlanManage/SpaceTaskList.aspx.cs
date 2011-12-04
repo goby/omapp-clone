@@ -26,9 +26,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
         }
 
-        protected void btnSearch_Click(object sender, EventArgs e)
+        protected void Button1_Click(object sender, EventArgs e)
         {
-
             BindGridView();
         }
 
@@ -41,10 +40,19 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 startDate = Convert.ToDateTime(txtStartDate.Text);
             }
+            else
+            {
+                startDate = DateTime.Now.AddDays(-14);
+            }
             if (!string.IsNullOrEmpty(txtEndDate.Text))
             {
-                endDate = Convert.ToDateTime(txtEndDate.Text);
+                endDate = Convert.ToDateTime(txtEndDate);
             }
+            else
+            {
+                endDate = DateTime.Now;
+            }
+
             List<YDSJ> listDatas = (new YDSJ()).GetYDSJListByDate(startDate, endDate,"1");
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
@@ -80,6 +88,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/SpaceTaskList.aspx.js");
         }
+
+
 
     }
 }
