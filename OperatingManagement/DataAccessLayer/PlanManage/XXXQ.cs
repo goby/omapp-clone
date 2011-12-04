@@ -150,6 +150,51 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             });
             return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
+
+        public XXXQ SelectById(int id)
+        {
+            OracleParameter p = PrepareRefCursor();
+
+            DataSet ds = _database.SpExecuteDataSet("up_XXXQ_selectbyid", new OracleParameter[]{
+                new OracleParameter("p_Id", id), 
+                p
+            });
+
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    return new XXXQ()
+                    {
+                        ID = Convert.ToInt32(dr["ID"].ToString()),
+                        CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        Source = dr["Source"].ToString(),
+                        Destination = dr["Destination"].ToString(),
+                        TaskID = dr["TaskID"].ToString(),
+                        InfoType = dr["InfoType"].ToString(),
+                        LineCount = Convert.ToInt32(dr["LineCount"].ToString()),
+                        Format1 = dr["Format1"].ToString(),
+                        Format2 = dr["Format2"].ToString(),
+                        DataSection = dr["DataSection"].ToString(),
+                        FileIndex = dr["FileIndex"].ToString(),
+                        Reserve = dr["Reserve"].ToString()
+                    };
+                }
+            }
+            return null;
+        }
+        #endregion
+
+        #region -Private methods-
+        private OracleParameter PrepareRefCursor()
+        {
+            return new OracleParameter()
+            {
+                ParameterName = "o_cursor",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.RefCursor
+            };
+        }
         #endregion
 
         #region -Override BaseEntity-
