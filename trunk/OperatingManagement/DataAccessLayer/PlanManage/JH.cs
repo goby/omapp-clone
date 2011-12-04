@@ -13,7 +13,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
 {
     public class JH : BaseEntity<int, JH>
     {
-        private static readonly string GET_PlanList = "";
+        private static readonly string GET_PlanList = "UP_JH_GETLIST";
 
         /// <summary>
         /// Create a new instance of <see cref="JH"/> class.
@@ -59,7 +59,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 OracleCommand command = _database.GetStoreProcCommand(GET_PlanList);
                 _database.AddInParameter(command, "p_planType", OracleDbType.Varchar2, planType);
                 _database.AddInParameter(command, "p_planAging", OracleDbType.Varchar2, planAging);
-                if (startDate != DateTime.MinValue)
+                if (startDate == DateTime.MinValue)
                 {
                     _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
                 }
@@ -67,7 +67,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 {
                     _database.AddInParameter(command, "p_startDate", OracleDbType.Date, startDate);
                 }
-                if (endDate != DateTime.MinValue)
+                if (endDate == DateTime.MinValue)
                 {
                     _database.AddInParameter(command, "p_endDate", OracleDbType.Date, DBNull.Value);
                 }
@@ -86,7 +86,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                     {
                         objDatas.Add(new JH()
                         {
-                            Id = Convert.ToInt32(dr["ID"].ToString()),
+                            ID = Convert.ToInt32(dr["ID"].ToString()),
                             CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
                             TaskID = dr["taskid"].ToString(),
                             PlanType = dr["plantype"].ToString(),
@@ -138,11 +138,50 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 this.Id = Convert.ToInt32(opId.Value);
             return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
-        public string GenarateFileName()
-        {
-            string fileName="";
 
-            return fileName;
+        public JH SelectByPlanTypeAndPlanID(string plantype,int planid)
+        {
+            OracleParameter p = PrepareRefCursor();
+
+            DataSet ds = _database.SpExecuteDataSet("up_jh_selectbyplantypeandid", new OracleParameter[]{
+                new OracleParameter("p_PlanType", this.PlanType),
+                new OracleParameter("p_PlanId", this.PlanID), 
+                p
+            });
+
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    return new JH()
+                    {
+                        ID = Convert.ToInt32(dr["ID"].ToString()),
+                        CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        TaskID = dr["taskid"].ToString(),
+                        PlanType = dr["plantype"].ToString(),
+                        PlanID = Convert.ToInt32(dr["PlanID"].ToString()),
+                        StartTime = Convert.ToDateTime(dr["StartTime"].ToString()),
+                        EndTime = Convert.ToDateTime(dr["EndTime"].ToString()),
+                        SRCType = Convert.ToInt32(dr["SRCType"].ToString()),
+                        SRCID = Convert.ToInt32(dr["SRCID"].ToString()),
+                        FileIndex = dr["FileIndex"].ToString(),
+                        Reserve = dr["Reserve"].ToString()
+                    };
+                }
+            }
+            return null;
+        }
+        #endregion
+
+        #region -Private methods-
+        private OracleParameter PrepareRefCursor()
+        {
+            return new OracleParameter()
+            {
+                ParameterName = "o_cursor",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.RefCursor
+            };
         }
         #endregion
 
