@@ -3,6 +3,6 @@
 }
 
 function showDetail(id) {
-    window.location.href = "/PlanManage/XiAnCeKongDataDetail.aspx?id=" + id;
+    window.location.href = "/Views/PlanManage/XiAnCeKongDataDetail.aspx?id=" + id;
     return false;
 }

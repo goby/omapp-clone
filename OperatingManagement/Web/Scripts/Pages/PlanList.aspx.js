@@ -3,12 +3,12 @@
 }
 
 function showDetail(id) {
-    window.location.href = "/PlanManage/PlanDetail.aspx?id=" + id;
+    window.location.href = "/Views/PlanManage/PlanDetail.aspx?id=" + id;
     return false;
 }
 
 function showEdit(id) {
-    window.location.href = "/PlanManage/PlanEdit.aspx?id=" + id;
+    window.location.href = "/Views/PlanManage/PlanEdit.aspx?id=" + id;
     return false;
 }
 
