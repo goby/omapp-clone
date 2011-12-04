@@ -3,7 +3,7 @@
 }
 
 function showDetail(id) {
-    window.location.href = "/PlanManage/OribitalQuantityDetail.aspx?id=" + id;
+    window.location.href = "/Views/PlanManage/OribitalQuantityDetail.aspx?id=" + id;
     return false;
 }
 

@@ -3,7 +3,7 @@
 }
 
 function showDetail(id) {
-    window.location.href = "/PlanManage/YDSJDetail.aspx?id=" + id;
+    window.location.href = "/Views/PlanManage/YDSJDetail.aspx?id=" + id;
     return false;
 }
 
