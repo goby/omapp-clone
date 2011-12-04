@@ -37,9 +37,17 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 startDate = Convert.ToDateTime(txtStartDate.Text);
             }
+            else
+            {
+                startDate = DateTime.Now.AddDays(-14);
+            }
             if (!string.IsNullOrEmpty(txtEndDate.Text))
             {
                 endDate = Convert.ToDateTime(txtEndDate);
+            }
+            else
+            {
+                endDate = DateTime.Now;
             }
 
             List<SYJH> listDatas= (new SYJH()).GetSYJHListByDate(startDate, endDate);

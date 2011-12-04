@@ -12,6 +12,7 @@ using OperatingManagement.DataAccessLayer;
 using OperatingManagement.Framework;
 using System.Web.Security;
 using System.Xml;
+using System.IO;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
@@ -24,6 +25,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 string sID = Request.QueryString["id"];
                 int id = 0;
                 Int32.TryParse(sID, out id);
+                id = 1;
                 BindFileInfo( id );
             }
         }
@@ -32,9 +34,11 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             DataAccessLayer.PlanManage.SYJH jh = new DataAccessLayer.PlanManage.SYJH{ Id = id };
             DataAccessLayer.PlanManage.SYJH obj = jh.SelectById();
-            XmlDocument xml = new XmlDocument();
-            xml.Load(HttpContext.Current.Server.MapPath(obj.FileIndex));
-            txtContent.Text = xml.InnerText;
+            //XmlDocument xml = new XmlDocument();
+            //xml.Load(HttpContext.Current.Server.MapPath(obj.FileIndex));
+            StreamReader sr = new StreamReader(obj.FileIndex,System.Text.Encoding.Default);
+            txtContent.Text= sr.ReadToEnd();
+            //txtContent.Text = xml.InnerText;
         }
 
         public override void OnPageLoaded()

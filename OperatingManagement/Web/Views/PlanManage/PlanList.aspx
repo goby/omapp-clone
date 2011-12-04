@@ -48,12 +48,12 @@
                 </th>
                 <td class="style3" rowspan="3">
                     <asp:RadioButtonList ID="rbtType" runat="server">
-                        <asp:ListItem>应用研究工作计划</asp:ListItem>
-                        <asp:ListItem>空间信息需求</asp:ListItem>
-                        <asp:ListItem>面站工作计划</asp:ListItem>
-                        <asp:ListItem>中心运行计划</asp:ListItem>
-                        <asp:ListItem>仿真推演试验数据</asp:ListItem>
-                        <asp:ListItem>设备工作计划</asp:ListItem>
+                        <asp:ListItem Value="YJJH">应用研究工作计划</asp:ListItem>
+                        <asp:ListItem Value="XXXQ">空间信息需求</asp:ListItem>
+                        <asp:ListItem Value="GZJH">地面站工作计划</asp:ListItem>
+                        <asp:ListItem Value="ZXJH">中心运行计划</asp:ListItem>
+                        <asp:ListItem Value="TYSJ">仿真推演试验数据</asp:ListItem>
+                        <asp:ListItem Value="SBJH">设备工作计划</asp:ListItem>
                     </asp:RadioButtonList>
                 </td>
                 <th align="right" class="style4">
