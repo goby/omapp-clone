@@ -65,8 +65,8 @@
                 <td class="style5">
                 </td>
                 <td class="style6" colspan="3">
-                    <asp:Button class="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
-                        Text="查询" Width="69px" />
+                    <asp:Button ID="Button1"  class="button" Width="69px" runat="server" Text="查询" 
+                        onclick="Button1_Click" />
                     &nbsp;&nbsp;
                     <%--<asp:Button ID="btnReset" runat="server" Text="重置" Width="65px" />--%>
                     <button class="button" onclick="return reset();" style="width: 65px;">
