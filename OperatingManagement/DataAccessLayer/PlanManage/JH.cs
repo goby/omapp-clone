@@ -103,6 +103,37 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 return objDatas;
         }
 
+        public List<JH> SelectByIDS(string ids)
+        {
+            OracleParameter p = PrepareRefCursor();
+            DataSet ds = _database.SpExecuteDataSet("up_jh_selectinids", new OracleParameter[]{
+                new OracleParameter("p_ids",ids),
+                p
+            });
+            List<JH> jhs = new List<JH>();
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    jhs.Add(new JH()
+                    {
+                        ID = Convert.ToInt32(dr["ID"].ToString()),
+                        CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        TaskID = dr["taskid"].ToString(),
+                        PlanType = dr["plantype"].ToString(),
+                        PlanID = Convert.ToInt32(dr["PlanID"].ToString()),
+                        StartTime = Convert.ToDateTime(dr["StartTime"].ToString()),
+                        EndTime = Convert.ToDateTime(dr["EndTime"].ToString()),
+                        SRCType = Convert.ToInt32(dr["SRCType"].ToString()),
+                        SRCID = Convert.ToInt32(dr["SRCID"].ToString()),
+                        FileIndex = dr["FileIndex"].ToString(),
+                        Reserve = dr["Reserve"].ToString()
+                    });
+                }
+            }
+            return jhs;
+        }
+
         /// <summary>
         /// Inserts a new record into database.
         /// </summary>
