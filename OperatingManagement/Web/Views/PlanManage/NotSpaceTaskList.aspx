@@ -83,6 +83,7 @@
             </tr>
             <tr>
                 <td class="style2" colspan="4">
+                <div id="selectAll1" >
                     <table class="listTitle">
                         <tr>
                             <td class="listTitle-c1">
@@ -97,6 +98,7 @@
                             </td>
                         </tr>
                     </table>
+                    </div>
                     <asp:Repeater ID="rpDatas" runat="server">
                         <HeaderTemplate>
                             <table class="list">
@@ -155,6 +157,7 @@
                             </tbody> </table>
                         </FooterTemplate>
                     </asp:Repeater>
+                    <div id="selectAll2">
                     <table class="listTitle">
                         <tr>
                             <td class="listTitle-c1">
@@ -169,6 +172,7 @@
                             </td>
                         </tr>
                     </table>
+                    </div>
                 </td>
             </tr>
             <tr>

@@ -30,7 +30,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
-
+                pnlDestination.Visible = false;
+                pnlData.Visible = true;
             }
         }
 
@@ -72,10 +73,6 @@ namespace OperatingManagement.Web.Views.PlanManage
             rpDatas.DataBind();
         }
 
-        void BindRadDestination()
-        { 
-            
-        }
 
         //最终发送
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -85,7 +82,51 @@ namespace OperatingManagement.Web.Views.PlanManage
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)
         {
+            pnlDestination.Visible = false;
+            pnlData.Visible = true;
+        }
 
+        protected void btnHidden_Click(object sender, EventArgs e)
+        {
+            pnlDestination.Visible = true;
+            pnlData.Visible = false;
+            string plantype = txtPlanType.Text;
+            switch (plantype)
+            {
+                case "YJJH":
+                    rbtDestination.Items.Clear();
+                    rbtDestination.Items.Add(new ListItem("天基目标观测应用研究分系统（GCYJ）", "GCYJ"));
+                    rbtDestination.Items.Add(new ListItem("遥操作应用研究分系统（CZYJ）", "CZYJ"));
+                    rbtDestination.Items.Add(new ListItem("空间机动应用研究分系统（JDYJ）", "JDYJ"));
+                    rbtDestination.Items.Add(new ListItem("仿真推演分系统（FZTY）", "FZTY"));
+                    break;
+                case "XXXQ":
+                    rbtDestination.Items.Clear();
+                    rbtDestination.Items.Add(new ListItem("空间信息综合应用中心(XXZX)", "XXZX"));
+                    break;
+                case "GZJH":
+                    rbtDestination.Items.Clear();
+                    rbtDestination.Items.Add(new ListItem("西安中心（XSCC）", "XSCC"));
+                    rbtDestination.Items.Add(new ListItem("总参二部信息处理中心（XXZX）", "XXZX"));
+                    rbtDestination.Items.Add(new ListItem("总参三部技侦中心（JZZX）", "JZZX"));
+                    rbtDestination.Items.Add(new ListItem("总参气象水文空间天气总站资料处理中心（ZLZX）", "ZLZX"));
+                    rbtDestination.Items.Add(new ListItem("863-YZ4701遥科学综合站（JYZ1）", "JYZ1"));
+                    rbtDestination.Items.Add(new ListItem("863-YZ4702遥科学综合站（JYZ2）", "JYZ2"));
+                    break;
+                case "ZXJH":
+                    rbtDestination.Items.Clear();
+                    break;
+                case "TYSJ":
+                    rbtDestination.Items.Clear();
+                    rbtDestination.Items.Add(new ListItem("仿真推演分系统(FZTY)", "FZTY"));
+                    break;
+                case "SBJH":
+                    rbtDestination.Items.Clear();
+                    rbtDestination.Items.Add(new ListItem("运控评估中心YKZX(02 04 00 00)", "YKZX"));
+                    break;
+
+            }
+            
         }
     }
 }

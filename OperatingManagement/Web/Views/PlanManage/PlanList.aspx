@@ -39,7 +39,7 @@
     查询计划
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
-    <%--    <asp:Panel ID="pnlData" runat="server">--%>
+        <asp:Panel ID="pnlData" runat="server">
     <div id="divData">
         <table cellpadding="0" class="edit">
             <tr>
@@ -93,6 +93,12 @@
                     <%--<asp:Button ID="btnReset" runat="server" Text="重置" Width="65px" />--%>
                     <button class="button" onclick="return reset();" style="width: 65px;">
                         重置</button>
+                        <div style="display:none;">
+                    <asp:TextBox ID="txtPlanID" runat="server" ClientIDMode="Static"></asp:TextBox>
+                    <asp:TextBox ID="txtPlanType" runat="server" ClientIDMode="Static"></asp:TextBox>
+                    <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" 
+                                onclick="btnHidden_Click" />
+                        </div>
                 </td>
             </tr>
             <tr>
@@ -147,15 +153,15 @@
                                     <%# Eval("endtime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
                                 </td>
                                 <td>
-                                    <button class="button" onclick="return showEdit('<%# Eval("ID") %>')">
+                                    <button class="button" onclick="return showEdit('<%# Eval("PLANID") %>','<%# Eval("PLANTYPE") %>')">
                                         编辑</button>
                                 </td>
                                 <td>
-                                    <button class="button" onclick="return showDetail('<%# Eval("ID") %>')">
+                                    <button class="button" onclick="return showDetail('<%# Eval("PLANID") %>','<%# Eval("PLANTYPE") %>')">
                                         明细</button>
                                 </td>
                                 <td>
-                                    <button class="button" onclick="return showSend('<%# Eval("ID") %>')">
+                                    <button class="button" onclick="return showSend('<%# Eval("PLANID") %>','<%# Eval("PLANTYPE") %>')">
                                         发送计划</button>
                                 </td>
                             </tr>
@@ -179,24 +185,25 @@
             </tr>
         </table>
     </div>
-    <%--   </asp:Panel>--%>
-    <%--    <asp:Panel ID="pnlDestination" runat="server">--%>
-    <div id="tartgetPanel" style="display: none">
-        <table class="style7">
+       </asp:Panel>
+        <asp:Panel ID="pnlDestination" runat="server">
+<%--    <div id="tartgetPanel" style="display: none">--%>
+        <table style = " text-align:center;">
             <tr>
-                <td align="center">
+                <td align="center"  style="text-align: center">
                     <asp:RadioButtonList ID="rbtDestination" runat="server">
                     </asp:RadioButtonList>
+                    <br />
                 </td>
             </tr>
             <tr>
                 <td style="text-align: center">
-                    <asp:Button ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="发送" />
+                    <asp:Button ID="btnSubmit"  class="button" runat="server" OnClick="btnSubmit_Click" Text="发送" />
                     &nbsp;&nbsp;
-                    <asp:Button ID="btnCancel" runat="server" OnClick="btnCancel_Click" Text="取消" />
+                    <asp:Button ID="btnCancel"  class="button" runat="server" OnClick="btnCancel_Click" Text="取消" />
                 </td>
             </tr>
         </table>
-    </div>
-    <%--    </asp:Panel>--%>
+<%--    </div>--%>
+        </asp:Panel>
 </asp:Content>

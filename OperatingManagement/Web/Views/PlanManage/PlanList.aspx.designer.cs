@@ -31,6 +31,15 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::OperatingManagement.WebKernel.Controls.PageMenu PageMenu1;
         
         /// <summary>
+        /// pnlData 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlData;
+        
+        /// <summary>
         /// rbtType 控件。
         /// </summary>
         /// <remarks>
@@ -76,6 +85,33 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.Button btnSearch;
         
         /// <summary>
+        /// txtPlanID 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPlanID;
+        
+        /// <summary>
+        /// txtPlanType 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPlanType;
+        
+        /// <summary>
+        /// btnHidden 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnHidden;
+        
+        /// <summary>
         /// rpDatas 控件。
         /// </summary>
         /// <remarks>
@@ -92,6 +128,15 @@ namespace OperatingManagement.Web.Views.PlanManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpPager;
+        
+        /// <summary>
+        /// pnlDestination 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlDestination;
         
         /// <summary>
         /// rbtDestination 控件。

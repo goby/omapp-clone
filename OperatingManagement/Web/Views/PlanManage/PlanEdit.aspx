@@ -95,6 +95,9 @@
                     <td>
                         <asp:Button ID="btnSubmitYJJH" runat="server" CssClass="button" Text="提交" 
                             OnClick="btnSubmit_Click" />
+                        &nbsp;
+                        <asp:Button ID="txtSaveToYJJH"  CssClass="button"  runat="server" Text="另存" 
+                            onclick="txtSaveToYJJH_Click" />
                     </td>
                 </tr>
             </table>
@@ -189,6 +192,9 @@
                     <td>
                         <asp:Button ID="btnXXXQ" runat="server" CssClass="button" Text="提交" 
                             onclick="btnXXXQ_Click" />
+                        &nbsp;
+                        <asp:Button ID="txtSaveToXXXQ" runat="server" CssClass="button" 
+                             Text="另存" onclick="txtSaveToXXXQ_Click" />
                     </td>
                 </tr>
             </table>
@@ -283,6 +289,9 @@
                     <td>
                         <asp:Button ID="btnGZJH" runat="server" CssClass="button" Text="提交" 
                             onclick="btnGZJH_Click"  />
+                        &nbsp;
+                        <asp:Button ID="txtSaveToGZJH" runat="server" CssClass="button" 
+                             Text="另存" onclick="txtSaveToGZJH_Click" />
                     </td>
                 </tr>
             </table>
@@ -370,14 +379,16 @@
                     <td>
                         <asp:Button ID="txtTYSJ" runat="server" CssClass="button" Text="提交" 
                             onclick="txtTYSJ_Click"  />
+                        &nbsp;
+                        <asp:Button ID="txtSaveToTYSJ" runat="server" CssClass="button" 
+                            Text="另存" onclick="txtSaveToTYSJ_Click" />
                     </td>
                 </tr>
             </table>
         </asp:Panel>
         <asp:Panel ID="pnl4" runat="server">
             <asp:TextBox ID="txtContent" runat="server" Height="469px" TextMode="MultiLine" Width="659px"></asp:TextBox>
-            <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Style="height: 21px"
-                Text="Button" /></asp:Panel>
+            </asp:Panel>
     </div>
     <div style="display:none;">
         <asp:HiddenField ID="hfinfotype" runat="server" />
