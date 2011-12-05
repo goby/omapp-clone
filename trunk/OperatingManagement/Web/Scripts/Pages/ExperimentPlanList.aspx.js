@@ -1,8 +1,10 @@
-﻿function resetAll() {
+﻿
+function resetAll() {
     $('input:text').val('');
+    return false;
 }
 
 function showDetail(id) {
-    window.location.href = "/Views/PlanManage/ExperimentPlanDetail.aspx?id=" + id;
+    window.open("/Views/PlanManage/ExperimentPlanDetail.aspx?id=" + id);
     return false;
 }

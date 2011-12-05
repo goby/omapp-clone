@@ -32,3 +32,21 @@ function sendGD1() {
 
     return false;
 }
+
+function showSelectAll() {
+    var divselectAll1 = $('#selectAll1');
+    divselectAll1.show();
+    var divselectAll12 = $('#selectAll2');
+    divselectAll12.show();
+
+    return false;
+}
+
+function hideSelectAll() {
+    var divselectAll1 = $('#selectAll1');
+    divselectAll1.hide();
+    var divselectAll12 = $('#selectAll2');
+    divselectAll12.hide();
+
+    return false;
+}
