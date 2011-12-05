@@ -1,0 +1,2 @@
+2011-12-1 Framework工程新增FTPProcessor文件	by Cindy
+2011-12-1 solutionitems新增变更说明文件	by Cindy

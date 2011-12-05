@@ -112,26 +112,7 @@
     <Content Include="App_Themes\Default\Images\top-menu-layer.png" />
     <Content Include="App_Themes\Default\Images\top-menu.png" />
     <Content Include="App_Themes\Default\Site.css" />
-    <Content Include="BusinessManage\CenterOutputPolicyAdd.aspx" />
-    <Content Include="BusinessManage\CenterOutputPolicyEdit.aspx" />
-    <Content Include="BusinessManage\CenterOutputPolicyManage.aspx" />
-    <Content Include="BusinessManage\MeasureDataDetail.aspx" />
-    <Content Include="BusinessManage\MeasureDataList.aspx" />
-    <Content Include="BusinessManage\XiAnCeKongDataDetail.aspx" />
-    <Content Include="BusinessManage\XiAnCeKongDataList.aspx" />
     <Content Include="Index.aspx" />
-    <Content Include="PlanManage\ExperimentPlanDetail.aspx" />
-    <Content Include="PlanManage\ExperimentPlanList.aspx" />
-    <Content Include="PlanManage\ExperimentProgramDetail.aspx" />
-    <Content Include="PlanManage\ExperimentProgramList.aspx" />
-    <Content Include="PlanManage\NotSpaceTaskList.aspx" />
-    <Content Include="PlanManage\OribitalQuantityDetail.aspx" />
-    <Content Include="PlanManage\OribitalQuantityList.aspx" />
-    <Content Include="PlanManage\PlanDetail.aspx" />
-    <Content Include="PlanManage\PlanEdit.aspx" />
-    <Content Include="PlanManage\PlanList.aspx" />
-    <Content Include="PlanManage\SpaceTaskList.aspx" />
-    <Content Include="PlanManage\YDSJDetail.aspx" />
     <Content Include="Scripts\Core\jquery-datepick.js" />
     <Content Include="Scripts\Core\jquery-min.js" />
     <Content Include="Scripts\Core\jquery-plugins.js" />
@@ -233,55 +214,6 @@
       <DependentUpon>PassportSSO.aspx</DependentUpon>
     </Compile>
     <Compile Include="Assembly\StaticExtend\DynamicLinq.cs" />
-    <Compile Include="BusinessManage\CenterOutputPolicyAdd.aspx.cs">
-      <DependentUpon>CenterOutputPolicyAdd.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="BusinessManage\CenterOutputPolicyAdd.aspx.designer.cs">
-      <DependentUpon>CenterOutputPolicyAdd.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="BusinessManage\CenterOutputPolicyEdit.aspx.cs">
-      <DependentUpon>CenterOutputPolicyEdit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="BusinessManage\CenterOutputPolicyEdit.aspx.designer.cs">
-      <DependentUpon>CenterOutputPolicyEdit.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="BusinessManage\CenterOutputPolicyManage.aspx.cs">
-      <DependentUpon>CenterOutputPolicyManage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="BusinessManage\CenterOutputPolicyManage.aspx.designer.cs">
-      <DependentUpon>CenterOutputPolicyManage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="BusinessManage\MeasureDataDetail.aspx.cs">
-      <DependentUpon>MeasureDataDetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="BusinessManage\MeasureDataDetail.aspx.designer.cs">
-      <DependentUpon>MeasureDataDetail.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="BusinessManage\MeasureDataList.aspx.cs">
-      <DependentUpon>MeasureDataList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="BusinessManage\MeasureDataList.aspx.designer.cs">
-      <DependentUpon>MeasureDataList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="BusinessManage\XiAnCeKongDataDetail.aspx.cs">
-      <DependentUpon>XiAnCeKongDataDetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="BusinessManage\XiAnCeKongDataDetail.aspx.designer.cs">
-      <DependentUpon>XiAnCeKongDataDetail.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="BusinessManage\XiAnCeKongDataList.aspx.cs">
-      <DependentUpon>XiAnCeKongDataList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="BusinessManage\XiAnCeKongDataList.aspx.designer.cs">
-      <DependentUpon>XiAnCeKongDataList.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -291,90 +223,6 @@
     </Compile>
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="PlanManage\ExperimentPlanDetail.aspx.cs">
-      <DependentUpon>ExperimentPlanDetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PlanManage\ExperimentPlanDetail.aspx.designer.cs">
-      <DependentUpon>ExperimentPlanDetail.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="PlanManage\ExperimentPlanList.aspx.cs">
-      <DependentUpon>ExperimentPlanList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PlanManage\ExperimentPlanList.aspx.designer.cs">
-      <DependentUpon>ExperimentPlanList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="PlanManage\ExperimentProgramDetail.aspx.cs">
-      <DependentUpon>ExperimentProgramDetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PlanManage\ExperimentProgramDetail.aspx.designer.cs">
-      <DependentUpon>ExperimentProgramDetail.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="PlanManage\ExperimentProgramList.aspx.cs">
-      <DependentUpon>ExperimentProgramList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PlanManage\ExperimentProgramList.aspx.designer.cs">
-      <DependentUpon>ExperimentProgramList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="PlanManage\NotSpaceTaskList.aspx.cs">
-      <DependentUpon>NotSpaceTaskList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PlanManage\NotSpaceTaskList.aspx.designer.cs">
-      <DependentUpon>NotSpaceTaskList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="PlanManage\OribitalQuantityDetail.aspx.cs">
-      <DependentUpon>OribitalQuantityDetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PlanManage\OribitalQuantityDetail.aspx.designer.cs">
-      <DependentUpon>OribitalQuantityDetail.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="PlanManage\OribitalQuantityList.aspx.cs">
-      <DependentUpon>OribitalQuantityList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PlanManage\OribitalQuantityList.aspx.designer.cs">
-      <DependentUpon>OribitalQuantityList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="PlanManage\PlanDetail.aspx.cs">
-      <DependentUpon>PlanDetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PlanManage\PlanDetail.aspx.designer.cs">
-      <DependentUpon>PlanDetail.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="PlanManage\PlanEdit.aspx.cs">
-      <DependentUpon>PlanEdit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PlanManage\PlanEdit.aspx.designer.cs">
-      <DependentUpon>PlanEdit.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="PlanManage\PlanList.aspx.cs">
-      <DependentUpon>PlanList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PlanManage\PlanList.aspx.designer.cs">
-      <DependentUpon>PlanList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="PlanManage\SpaceTaskList.aspx.cs">
-      <DependentUpon>SpaceTaskList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PlanManage\SpaceTaskList.aspx.designer.cs">
-      <DependentUpon>SpaceTaskList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="PlanManage\YDSJDetail.aspx.cs">
-      <DependentUpon>YDSJDetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PlanManage\YDSJDetail.aspx.designer.cs">
-      <DependentUpon>YDSJDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">
