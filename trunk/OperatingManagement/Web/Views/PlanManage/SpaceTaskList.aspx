@@ -83,6 +83,7 @@
             </tr>
             <tr>
                 <td class="style2" colspan="4">
+                <asp:Panel ID ="pnlAll1" runat="server">
                     <table class="listTitle">
                         <tr>
                             <td class="listTitle-c1">
@@ -97,6 +98,7 @@
                             </td>
                         </tr>
                     </table>
+                    </asp:Panel>
                     <asp:Repeater ID="rpDatas" runat="server">
                         <HeaderTemplate>
                             <table class="list">
@@ -155,6 +157,7 @@
                             </tbody> </table>
                         </FooterTemplate>
                     </asp:Repeater>
+                    <asp:Panel ID ="pnlAll2" runat="server">
                     <table class="listTitle">
                         <tr>
                             <td class="listTitle-c1">
@@ -169,6 +172,7 @@
                             </td>
                         </tr>
                     </table>
+                    </asp:Panel>
                 </td>
             </tr>
             <tr>

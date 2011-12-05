@@ -112,6 +112,15 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.Button btnSubmitYJJH;
         
         /// <summary>
+        /// txtSaveToYJJH 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button txtSaveToYJJH;
+        
+        /// <summary>
         /// pnlXXXQ 控件。
         /// </summary>
         /// <remarks>
@@ -209,6 +218,15 @@ namespace OperatingManagement.Web.Views.PlanManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnXXXQ;
+        
+        /// <summary>
+        /// txtSaveToXXXQ 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button txtSaveToXXXQ;
         
         /// <summary>
         /// pnlGZJH 控件。
@@ -310,6 +328,15 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.Button btnGZJH;
         
         /// <summary>
+        /// txtSaveToGZJH 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button txtSaveToGZJH;
+        
+        /// <summary>
         /// pnlTYSJ 控件。
         /// </summary>
         /// <remarks>
@@ -400,6 +427,15 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.Button txtTYSJ;
         
         /// <summary>
+        /// txtSaveToTYSJ 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button txtSaveToTYSJ;
+        
+        /// <summary>
         /// pnl4 控件。
         /// </summary>
         /// <remarks>
@@ -416,15 +452,6 @@ namespace OperatingManagement.Web.Views.PlanManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtContent;
-        
-        /// <summary>
-        /// Button1 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
         
         /// <summary>
         /// hfinfotype 控件。

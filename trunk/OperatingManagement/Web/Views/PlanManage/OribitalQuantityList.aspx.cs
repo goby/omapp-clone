@@ -23,6 +23,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             if (!IsPostBack)
             {
                 //btnSend.Attributes.Add("onclick", "javascript:return confirm('确定要发送所选轨道数据吗?');");
+                ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>hideSelectAll();</script>");
             }
         }
 

@@ -10,33 +10,33 @@
 namespace OperatingManagement.Web.Views.PlanManage {
     
     
-    public partial class PlanDetail {
+    public partial class GenaratedPlanList {
         
         /// <summary>
-        /// form1 控件。
+        /// navMain 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::OperatingManagement.WebKernel.Controls.PageNavigator navMain;
         
         /// <summary>
-        /// txtContent 控件。
+        /// PageMenu1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtContent;
+        protected global::OperatingManagement.WebKernel.Controls.PageMenu PageMenu1;
         
         /// <summary>
-        /// Button1 控件。
+        /// rpDatas 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.Repeater rpDatas;
     }
 }

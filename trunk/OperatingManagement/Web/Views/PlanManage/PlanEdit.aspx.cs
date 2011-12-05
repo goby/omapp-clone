@@ -27,15 +27,16 @@ namespace OperatingManagement.Web.Views.PlanManage
                 pnlGZJH.Visible = false;
                 pnlTYSJ.Visible = false;
                 pnl4.Visible = false;
-                if (this.QueryStringObserver("planID") && this.QueryStringObserver("infotype"))
+               // if (this.QueryStringObserver("planID") && this.QueryStringObserver("infotype"))
+                if (!string.IsNullOrEmpty(Request.QueryString["planid"]) && !string.IsNullOrEmpty(Request.QueryString["infotype"]))
                 {
                     //string sID = this.DecryptString(Request.QueryString["roleID"]);
                     hfinfotype.Value = Request.QueryString["infotype"].ToUpper();
-                    HfID.Value = Request.QueryString["planID"];
-                    string sID = Request.QueryString["planID"];
+                    HfID.Value = Request.QueryString["planid"];
+                    string sID = Request.QueryString["planid"];
                     int id = 0;
                     Int32.TryParse(sID, out id);
-                    //BindFileInfo();
+                    BindFileInfo();
                 }
             }
         }
@@ -109,22 +110,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.PagePermission = "Plan.Edit";
             this.ShortTitle = "编辑计划";
             base.OnPageLoaded();
-            //this.AddJavaScriptInclude("scripts/pages/");
-        }
-
-        protected void Button1_Click(object sender, EventArgs e)
-        {
-
-            //应用程序计划
-            //TYSJ objTYSJ = new TYSJ();
-            //objTYSJ.Source = "运控评估中心YKZX(02 04 00 00)";
-            //objTYSJ.Destination = "仿真推演分系统FZTY(02 E7 00 00)";
-            //objTYSJ.TaskID = "700任务(0501)";
-            //objTYSJ.InfoType = "仿真推演数据(00 70 32 00)";
-            //objTYSJ.LineCount = 3;
-            //objTYSJ.Add();
-            Button1.Text = DateTime.Now.ToString("yyyyMMddHHmm") + "--" ; 
-
+            this.AddJavaScriptInclude("scripts/pages/PlanEdit.aspx.js");
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -140,7 +126,16 @@ namespace OperatingManagement.Web.Views.PlanManage
             objYJJH.DataSection = txtDataYJJH.Text;
             objYJJH.Reserve = txtNoteYJJH.Text;
 
-            objYJJH.Update();
+            var result = objYJJH.Update();
+            switch (result)
+            {
+                case Framework.FieldVerifyResult.Error:
+                    ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>showMsgError();</script>");
+                    break;
+                case Framework.FieldVerifyResult.Success:
+                    ClientScript.RegisterStartupScript(this.GetType(), "success", "<script type='text/javascript'>showMsgSuccess();</script>");
+                    break;
+            }
         }
 
         protected void btnXXXQ_Click(object sender, EventArgs e)
@@ -157,7 +152,16 @@ namespace OperatingManagement.Web.Views.PlanManage
             objXXXQ.DataSection = txtDataXXXQ.Text;
             objXXXQ.Reserve = txtNoteXXXQ.Text;
 
-            objXXXQ.Update();
+            var result= objXXXQ.Update();
+            switch (result)
+            {
+                case Framework.FieldVerifyResult.Error:
+                    ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>showMsgError();</script>");
+                    break;
+                case Framework.FieldVerifyResult.Success:
+                    ClientScript.RegisterStartupScript(this.GetType(), "success", "<script type='text/javascript'>showMsgSuccess();</script>");
+                    break;
+            }
         }
 
         protected void btnGZJH_Click(object sender, EventArgs e)
@@ -174,7 +178,16 @@ namespace OperatingManagement.Web.Views.PlanManage
             objGZJH.DataSection = txtDataGZJH.Text;
             objGZJH.Reserve = txtNoteGZJH.Text;
 
-            objGZJH.Update();
+            var result = objGZJH.Update();
+            switch (result)
+            {
+                case Framework.FieldVerifyResult.Error:
+                    ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>showMsgError();</script>");
+                    break;
+                case Framework.FieldVerifyResult.Success:
+                    ClientScript.RegisterStartupScript(this.GetType(), "success", "<script type='text/javascript'>showMsgSuccess();</script>");
+                    break;
+            }
         }
 
         protected void txtTYSJ_Click(object sender, EventArgs e)
@@ -190,7 +203,115 @@ namespace OperatingManagement.Web.Views.PlanManage
             objTYSJ.DataSection = txtDataTYSJ.Text;
             objTYSJ.Reserve = txtNoteTYSJ.Text;
 
-            objTYSJ.Update();
+            var result = objTYSJ.Update();
+            switch (result)
+            {
+                case Framework.FieldVerifyResult.Error:
+                    ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>showMsgError();</script>");
+                    break;
+                case Framework.FieldVerifyResult.Success:
+                    ClientScript.RegisterStartupScript(this.GetType(), "success", "<script type='text/javascript'>showMsgSuccess();</script>");
+                    break;
+            }
+        }
+
+        protected void txtSaveToYJJH_Click(object sender, EventArgs e)
+        {
+            YJJH objYJJH = new YJJH();
+            //objYJJH.ID = Convert.ToInt32(HfID.Value);
+            objYJJH.Source = txtSourceYJJH.Text.Trim();
+            objYJJH.Destination = txtDesYJJH.Text.Trim();
+            objYJJH.TaskID = txtTaskIDYJJH.Text.Trim();
+            objYJJH.InfoType = ltPlanType.Text;
+            objYJJH.Format1 = txtFormatYJJH.Text.Trim();
+            objYJJH.LineCount = Convert.ToInt32(txtLinecountYJJH.Text);
+            objYJJH.DataSection = txtDataYJJH.Text;
+            objYJJH.Reserve = txtNoteYJJH.Text;
+
+            var result = objYJJH.Add();
+            switch (result)
+            {
+                case Framework.FieldVerifyResult.Error:
+                    ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>showMsgError();</script>");
+                    break;
+                case Framework.FieldVerifyResult.Success:
+                    ClientScript.RegisterStartupScript(this.GetType(), "success", "<script type='text/javascript'>showMsgSuccess();</script>");
+                    break;
+            }
+        }
+
+        protected void txtSaveToXXXQ_Click(object sender, EventArgs e)
+        {
+            XXXQ objXXXQ = new XXXQ();
+            objXXXQ.Source = txtSourceXXXQ.Text.Trim();
+            objXXXQ.Destination = txtDesXXXQ.Text.Trim();
+            objXXXQ.TaskID = txtTaskIDXXXQ.Text.Trim();
+            objXXXQ.InfoType = ltinfoTypeXXXQ.Text;
+            objXXXQ.Format1 = txtFormat1XXXQ.Text.Trim();
+            objXXXQ.Format2 = txtFormat2XXXQ.Text.Trim();
+            objXXXQ.LineCount = Convert.ToInt32(txtLineCountXXXQ.Text);
+            objXXXQ.DataSection = txtDataXXXQ.Text;
+            objXXXQ.Reserve = txtNoteXXXQ.Text;
+
+            var result =objXXXQ.Add();
+            switch (result)
+            {
+                case Framework.FieldVerifyResult.Error:
+                    ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>showMsgError();</script>");
+                    break;
+                case Framework.FieldVerifyResult.Success:
+                    ClientScript.RegisterStartupScript(this.GetType(), "success", "<script type='text/javascript'>showMsgSuccess();</script>");
+                    break;
+            }
+        }
+
+        protected void txtSaveToGZJH_Click(object sender, EventArgs e)
+        {
+            GZJH objGZJH = new GZJH();
+            objGZJH.Source = txtSourceGZJH.Text.Trim();
+            objGZJH.Destination = txtDesGZJH.Text.Trim();
+            objGZJH.TaskID = txtTaskidGZJH.Text.Trim();
+            objGZJH.InfoType = ltinfotypeGZJH.Text;
+            objGZJH.Format1 = txtFormat1GZJH.Text.Trim();
+            objGZJH.Format2 = txtFormat2GZJH.Text.Trim();
+            objGZJH.LineCount = Convert.ToInt32(txtLineCountGZJH.Text);
+            objGZJH.DataSection = txtDataGZJH.Text;
+            objGZJH.Reserve = txtNoteGZJH.Text;
+
+            var result = objGZJH.Add();
+            switch (result)
+            {
+                case Framework.FieldVerifyResult.Error:
+                    ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>showMsgError();</script>");
+                    break;
+                case Framework.FieldVerifyResult.Success:
+                    ClientScript.RegisterStartupScript(this.GetType(), "success", "<script type='text/javascript'>showMsgSuccess();</script>");
+                    break;
+            }
+        }
+
+        protected void txtSaveToTYSJ_Click(object sender, EventArgs e)
+        {
+            TYSJ objTYSJ = new TYSJ();
+            objTYSJ.Source = txtSourceTYSJ.Text.Trim();
+            objTYSJ.Destination = txtDesTYSJ.Text.Trim();
+            objTYSJ.TaskID = txtTaskidTYSJ.Text.Trim();
+            objTYSJ.InfoType = ltinfotypeTYSJ.Text;
+            objTYSJ.Format1 = txtFormat1TYSJ.Text.Trim();
+            objTYSJ.LineCount = Convert.ToInt32(txtLineCountTYSJ.Text);
+            objTYSJ.DataSection = txtDataTYSJ.Text;
+            objTYSJ.Reserve = txtNoteTYSJ.Text;
+
+            var result =objTYSJ.Add();
+            switch (result)
+            {
+                case Framework.FieldVerifyResult.Error:
+                    ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>showMsgError();</script>");
+                    break;
+                case Framework.FieldVerifyResult.Success:
+                    ClientScript.RegisterStartupScript(this.GetType(), "success", "<script type='text/javascript'>showMsgSuccess();</script>");
+                    break;
+            }
         }
     }
 }
