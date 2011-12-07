@@ -16,7 +16,7 @@ namespace SSOTest
             string token = Request.QueryString["token"];
             if (!string.IsNullOrEmpty(token))
             {
-                string decryptedToken = EncryptHelper.Decrypt(token);
+                string decryptedToken = EncryptHelper.Decrypt(HttpUtility.UrlDecode(token));
                 string[] ks = decryptedToken.Split(new string[] { "$" }, StringSplitOptions.RemoveEmptyEntries);
                 string userName = ks[0];
                 string password = ks[1];

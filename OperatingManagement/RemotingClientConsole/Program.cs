@@ -12,10 +12,10 @@ namespace RemotingClientConsole
         [STAThread]
         static void Main(string[] args)
         {
-            IAccount account = OperatingManagement.RemotingClient.RemotingActivator.GetObject<IAccount>();
-            string pwd = PasswordEncryptHelper.EncryptPassword("password");
+            IAccount account = OperatingManagement.RemotingClient.RemotingActivator.GetObject<IAccount>("127.0.0.1", "8085");
+            string pwd = PasswordEncryptHelper.EncryptPasswordBySalt("f12345", "MSFTJOM@web#");
 
-            string xml = account.ValidateUser("xiongjun", pwd);
+            string xml = account.ValidateUser("opercindy", pwd);
 
             Console.WriteLine(xml);
 
