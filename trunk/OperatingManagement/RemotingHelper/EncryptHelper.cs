@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Web;
 using System.Security.Cryptography;
 using System.Configuration;
 
@@ -22,7 +21,6 @@ namespace OperatingManagement.RemotingHelper
         {
             try
             {
-                planText = HttpUtility.UrlDecode(planText);
                 planText = planText.Replace(plusReplacer, "+");
                 byte[] inputs = Convert.FromBase64String(planText);
                 MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
