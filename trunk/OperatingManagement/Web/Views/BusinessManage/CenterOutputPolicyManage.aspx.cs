@@ -124,10 +124,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void BindDataSource()
         {
-            CenterOutputPolicy centerOutputPolicy = new CenterOutputPolicy();
-
             dplTask.Items.Clear();
-            dplTask.DataSource = centerOutputPolicy.GetSystemParameters(SystemParametersType.TaskList);
+            dplTask.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.TaskList);
             dplTask.DataTextField = "key";
             dplTask.DataValueField = "value";
             dplTask.DataBind();

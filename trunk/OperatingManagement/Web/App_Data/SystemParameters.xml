@@ -20,4 +20,16 @@
     <item text="信宿二" value="A2"></item>
     <item text="信宿三" value="A3"></item>
   </Ddestination>
+  <ResourceType>
+    <item text="地面站资源" value="01"></item>
+    <item text="通信资源" value="02"></item>
+    <item text="中心资源" value="03"></item>
+  </ResourceType>
+  <ResourceStatus>
+    <item text="全部" value=""></item>
+    <item text="健康" value="01"></item>
+    <item text="不可用" value="02"></item>
+    <item text="占用中" value="03"></item>
+    <item text="已删除" value="03"></item>
+  </ResourceStatus>
 </SystemParameters>
