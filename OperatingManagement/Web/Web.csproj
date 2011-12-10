@@ -163,8 +163,17 @@
     <Content Include="Views\BusinessManage\CenterOutputPolicyAdd.aspx" />
     <Content Include="Views\BusinessManage\CenterOutputPolicyEdit.aspx" />
     <Content Include="Views\BusinessManage\CenterOutputPolicyManage.aspx" />
+    <Content Include="Views\BusinessManage\CenterResourceAdd.aspx" />
+    <Content Include="Views\BusinessManage\CenterResourceEdit.aspx" />
+    <Content Include="Views\BusinessManage\CommunicationResourceAdd.aspx" />
+    <Content Include="Views\BusinessManage\CommunicationResourceEdit.aspx" />
+    <Content Include="Views\BusinessManage\GroundResourceAdd.aspx" />
+    <Content Include="Views\BusinessManage\GroundResourceEdit.aspx" />
     <Content Include="Views\BusinessManage\MeasureDataDetail.aspx" />
     <Content Include="Views\BusinessManage\MeasureDataList.aspx" />
+    <Content Include="Views\BusinessManage\ResourceAdd.aspx" />
+    <Content Include="Views\BusinessManage\ResourceEdit.aspx" />
+    <Content Include="Views\BusinessManage\ResourceManage.aspx" />
     <Content Include="Views\BusinessManage\XiAnCeKongDataDetail.aspx" />
     <Content Include="Views\BusinessManage\XiAnCeKongDataList.aspx" />
     <Content Include="Views\Exp\Exp.aspx" />
@@ -262,6 +271,48 @@
     <Compile Include="Views\BusinessManage\CenterOutputPolicyManage.aspx.designer.cs">
       <DependentUpon>CenterOutputPolicyManage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\BusinessManage\CenterResourceAdd.aspx.cs">
+      <DependentUpon>CenterResourceAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\CenterResourceAdd.aspx.designer.cs">
+      <DependentUpon>CenterResourceAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\CenterResourceEdit.aspx.cs">
+      <DependentUpon>CenterResourceEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\CenterResourceEdit.aspx.designer.cs">
+      <DependentUpon>CenterResourceEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\CommunicationResourceAdd.aspx.cs">
+      <DependentUpon>CommunicationResourceAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\CommunicationResourceAdd.aspx.designer.cs">
+      <DependentUpon>CommunicationResourceAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\CommunicationResourceEdit.aspx.cs">
+      <DependentUpon>CommunicationResourceEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\CommunicationResourceEdit.aspx.designer.cs">
+      <DependentUpon>CommunicationResourceEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GroundResourceAdd.aspx.cs">
+      <DependentUpon>GroundResourceAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GroundResourceAdd.aspx.designer.cs">
+      <DependentUpon>GroundResourceAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GroundResourceEdit.aspx.cs">
+      <DependentUpon>GroundResourceEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GroundResourceEdit.aspx.designer.cs">
+      <DependentUpon>GroundResourceEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\BusinessManage\MeasureDataDetail.aspx.cs">
       <DependentUpon>MeasureDataDetail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -275,6 +326,27 @@
     </Compile>
     <Compile Include="Views\BusinessManage\MeasureDataList.aspx.designer.cs">
       <DependentUpon>MeasureDataList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ResourceAdd.aspx.cs">
+      <DependentUpon>ResourceAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ResourceAdd.aspx.designer.cs">
+      <DependentUpon>ResourceAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ResourceEdit.aspx.cs">
+      <DependentUpon>ResourceEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ResourceEdit.aspx.designer.cs">
+      <DependentUpon>ResourceEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ResourceManage.aspx.cs">
+      <DependentUpon>ResourceManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ResourceManage.aspx.designer.cs">
+      <DependentUpon>ResourceManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\XiAnCeKongDataDetail.aspx.cs">
       <DependentUpon>XiAnCeKongDataDetail.aspx</DependentUpon>
