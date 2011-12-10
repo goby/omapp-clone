@@ -1,35 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SystemParameters>
-  <TaskList>
+  <CenterOutputPolicyTaskList description="中心输出策略任务列表">
     <item text="任务一" value="1"></item>
     <item text="任务二" value="2"></item>
     <item text="任务三" value="3"></item>
-  </TaskList>
-  <InfoSource>
+  </CenterOutputPolicyTaskList>
+  <CenterOutputPolicyInfoSource description="中心输出策略信源列表">
     <item text="信息来源一" value="A"></item>
     <item text="信息来源二" value="B"></item>
     <item text="信息来源三" value="C"></item>
-  </InfoSource>
-  <InfoType>
+  </CenterOutputPolicyInfoSource>
+  <CenterOutputPolicyInfoType description="中心输出策略信息类别列表">
     <item text="信息类别一" value="a"></item>
     <item text="信息类别二" value="b"></item>
     <item text="信息类别三" value="c"></item>
-  </InfoType>
-  <Ddestination>
+  </CenterOutputPolicyInfoType>
+  <CenterOutputPolicyDdestination description="中心输出策略信宿列表">
     <item text="信宿一" value="A1"></item>
     <item text="信宿二" value="A2"></item>
     <item text="信宿三" value="A3"></item>
-  </Ddestination>
-  <ResourceType>
+  </CenterOutputPolicyDdestination>
+  <ResourceType description="资源管理资源类型列表">
     <item text="地面站资源" value="01"></item>
     <item text="通信资源" value="02"></item>
     <item text="中心资源" value="03"></item>
   </ResourceType>
-  <ResourceStatus>
+  <ResourceStatus description="资源管理资源状态列表">
     <item text="全部" value=""></item>
     <item text="健康" value="01"></item>
     <item text="不可用" value="02"></item>
     <item text="占用中" value="03"></item>
     <item text="已删除" value="03"></item>
   </ResourceStatus>
+  <GroundResourceOwner description="资源管理管理单位列表">
+    <item text="请选择" value=""></item>
+    <item text="总参" value="总参"></item>
+    <item text="总装" value="总装"></item>
+  </GroundResourceOwner>
+  <GroundResourceCoordinate description="资源管理站址坐标列表">
+    <item text="请选择" value=""></item>
+    <item text="地心系XYZ" value="地心系XYZ"></item>
+    <item text="地心系BLH" value="地心系BLH"></item>
+  </GroundResourceCoordinate>
+  <GroundResourceFunctionType description="资源管理功能类型列表">
+    <item text="遥测接收" value="遥测接收"></item>
+    <item text="上行遥控" value="上行遥控"></item>
+    <item text="轨道测量" value="轨道测量"></item>
+    <item text="数传接收" value="数传接收"></item>
+  </GroundResourceFunctionType>
 </SystemParameters>

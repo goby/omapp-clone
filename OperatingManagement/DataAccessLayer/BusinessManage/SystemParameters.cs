@@ -14,11 +14,17 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
     /// </summary>
     public enum SystemParametersType
     {
-        TaskList = 1,
-        InfoSource = 2,
-        InfoType = 3,
-        Ddestination = 4
+        CenterOutputPolicyTaskList = 1,
+        CenterOutputPolicyInfoSource = 2,
+        CenterOutputPolicyInfoType = 3,
+        CenterOutputPolicyDdestination = 4,
+        ResourceType = 5,
+        ResourceStatus = 6,
+        GroundResourceOwner = 7,
+        GroundResourceCoordinate = 8,
+        GroundResourceFunctionType = 9,
     }
+
     [Serializable]
     public class SystemParameters
     {
