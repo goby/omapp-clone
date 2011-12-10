@@ -125,7 +125,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         private void BindDataSource()
         {
             dplTask.Items.Clear();
-            dplTask.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.TaskList);
+            dplTask.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyTaskList);
             dplTask.DataTextField = "key";
             dplTask.DataValueField = "value";
             dplTask.DataBind();

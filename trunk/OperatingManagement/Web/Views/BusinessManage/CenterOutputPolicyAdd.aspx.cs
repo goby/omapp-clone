@@ -137,28 +137,28 @@ namespace OperatingManagement.Web.Views.BusinessManage
         private void BindDataSource()
         {
             dplTask.Items.Clear();
-            dplTask.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.TaskList);
+            dplTask.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyTaskList);
             dplTask.DataTextField = "key";
             dplTask.DataValueField = "value";
             dplTask.DataBind();
             dplTask.Items.Insert(0, new ListItem("请选择", ""));
 
             dplInfoSource.Items.Clear();
-            dplInfoSource.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.InfoSource);
+            dplInfoSource.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyInfoSource);
             dplInfoSource.DataTextField = "key";
             dplInfoSource.DataValueField = "value";
             dplInfoSource.DataBind();
             dplInfoSource.Items.Insert(0, new ListItem("请选择", ""));
 
             dplInfoType.Items.Clear();
-            dplInfoType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.InfoType);
+            dplInfoType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyInfoType);
             dplInfoType.DataTextField = "key";
             dplInfoType.DataValueField = "value";
             dplInfoType.DataBind();
             dplInfoType.Items.Insert(0, new ListItem("请选择", ""));
 
             dplDdestination.Items.Clear();
-            dplDdestination.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.Ddestination);
+            dplDdestination.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyDdestination);
             dplDdestination.DataTextField = "key";
             dplDdestination.DataValueField = "value";
             dplDdestination.DataBind();
