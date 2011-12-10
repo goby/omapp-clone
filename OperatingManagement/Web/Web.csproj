@@ -79,7 +79,9 @@
     </Content>
     <Content Include="App_Data\siteSetting.xml" />
     <Content Include="App_Data\menuPlan.xml" />
-    <Content Include="App_Data\menuBusiness.xml" />
+    <Content Include="App_Data\menuBusiness.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\SystemParameters.xml">
       <SubType>Designer</SubType>
     </Content>

@@ -1,0 +1,218 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data;
+using System.Xml;
+
+using OperatingManagement.Framework.Basic;
+using OperatingManagement.Framework;
+using OperatingManagement.Framework.Core;
+using Oracle.DataAccess.Client;
+
+namespace OperatingManagement.DataAccessLayer.BusinessManage
+{
+    [Serializable]
+    public class HealthStatus : BaseEntity<int, CenterOutputPolicy>
+    {
+        public HealthStatus()
+        {
+            _dataBase = OracleDatabase.FromConfiguringNode("ApplicationServices");
+        }
+
+        #region Properties
+        private OracleDatabase _dataBase = null;
+        /// <summary>
+        /// 资源序号
+        /// </summary>
+        public int ResourceID { get; set; }
+        /// <summary>
+        /// 资源类型
+        /// </summary>
+        public int ResourceType { get; set; }
+        /// <summary>
+        /// 功能类型
+        /// 可空
+        /// </summary>
+        public int FunctionType { get; set; }
+        /// <summary>
+        /// 健康状态
+        /// </summary>
+        public int Status { get; set; }
+        /// <summary>
+        /// 起始时间
+        /// 可空
+        /// </summary>
+        public DateTime BeginTime { get; set; }
+        /// <summary>
+        /// 结束时间
+        /// 可空
+        /// </summary>
+        public DateTime EndTime { get; set; }
+        /// <summary>
+        /// 创建用户ID
+        /// </summary>
+        public int CreatedUserID { get; set; }
+        /// <summary>
+        /// 最后修改用户ID
+        /// </summary>
+        public int UpdatedUserID { get; set; }
+        #endregion
+
+        #region -Private Methods-
+        private OracleParameter PrepareRefCursor()
+        {
+            return new OracleParameter()
+            {
+                ParameterName = "o_Cursor",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.RefCursor
+            };
+        }
+
+        private OracleParameter PrepareOutputResult()
+        {
+            return new OracleParameter()
+            {
+                ParameterName = "v_Result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Int32,
+            };
+        }
+        #endregion
+
+        #region -Public Method-
+
+        /// <summary>
+        /// 根据ID获得健康状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public HealthStatus SelectByID()
+        {
+            OracleParameter o_Cursor = PrepareRefCursor();
+            DataSet ds = _dataBase.SpExecuteDataSet("UP_HealthStatus_SelectByID", new OracleParameter[] { new OracleParameter("p_HSID", Id), o_Cursor });
+
+            HealthStatus info = null;
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                info = new HealthStatus()
+                {
+                    Id = Convert.ToInt32(ds.Tables[0].Rows[0]["HSID"]),
+                    ResourceID = Convert.ToInt32(ds.Tables[0].Rows[0]["ResourceID"]),
+                    ResourceType = Convert.ToInt32(ds.Tables[0].Rows[0]["ResourceType"]),
+                    FunctionType = ds.Tables[0].Rows[0]["FunctionType"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["FunctionType"]),
+                    Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
+                    BeginTime = ds.Tables[0].Rows[0]["BeginTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["BeginTime"]),
+                    EndTime = ds.Tables[0].Rows[0]["EndTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["EndTime"]),
+                    CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
+                    CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedUserID"]),
+                    UpdatedTime = ds.Tables[0].Rows[0]["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["UpdatedTime"]),
+                    UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["UpdatedUserID"])
+                };
+            }
+            return info;
+        }
+
+        /// <summary>
+        /// 获得所有健康状态列表
+        /// </summary>
+        /// <returns></returns>
+        public List<HealthStatus> SelectAll()
+        {
+            OracleParameter o_Cursor = PrepareRefCursor();
+            DataSet ds = _dataBase.SpExecuteDataSet("UP_HealthStatus_SelectAll", new OracleParameter[] { o_Cursor });
+
+            List<HealthStatus> infoList = new List<HealthStatus>();
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    HealthStatus info = new HealthStatus()
+                    {
+                        Id = Convert.ToInt32(ds.Tables[0].Rows[0]["HSID"]),
+                        ResourceID = Convert.ToInt32(ds.Tables[0].Rows[0]["ResourceID"]),
+                        ResourceType = Convert.ToInt32(ds.Tables[0].Rows[0]["ResourceType"]),
+                        FunctionType = ds.Tables[0].Rows[0]["FunctionType"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["FunctionType"]),
+                        Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
+                        BeginTime = ds.Tables[0].Rows[0]["BeginTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["BeginTime"]),
+                        EndTime = ds.Tables[0].Rows[0]["EndTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["EndTime"]),
+                        CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
+                        CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedUserID"]),
+                        UpdatedTime = ds.Tables[0].Rows[0]["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["UpdatedTime"]),
+                        UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["UpdatedUserID"])
+                    };
+
+                    infoList.Add(info);
+                }
+            }
+            return infoList;
+        }
+
+        /// <summary>
+        /// 添加健康状态
+        /// </summary>
+        /// <returns></returns>
+        public FieldVerifyResult Add()
+        {
+            OracleParameter v_Result = PrepareOutputResult();
+            OracleParameter v_ID = new OracleParameter()
+            {
+                ParameterName = "v_HSID",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Int32
+            };
+
+            _dataBase.SpExecuteNonQuery("UP_HealthStatus_Insert", new OracleParameter[]{
+                                        new OracleParameter("p_ResourceID",ResourceID),
+                                        new OracleParameter("p_ResourceType",ResourceType),
+                                        new OracleParameter("p_FunctionType",FunctionType ==0 ?  DBNull.Value as object : FunctionType),
+                                        new OracleParameter("p_Status",Status),
+                                        new OracleParameter("p_BeginTime",BeginTime == DateTime.MinValue ? DBNull.Value as object : BeginTime),
+                                        new OracleParameter("p_EndTime", EndTime == DateTime.MinValue ? DBNull.Value as object : EndTime),
+                                        new OracleParameter("p_CreatedTime",CreatedTime),
+                                        new OracleParameter("p_CreatedUserID",CreatedUserID == 0 ? DBNull.Value as object : CreatedUserID),
+                                        new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
+                                        new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0 ? DBNull.Value as object : UpdatedUserID),
+                                        v_ID,
+                                        v_Result});
+            if (v_ID.Value != null && v_ID.Value != DBNull.Value)
+                this.Id = Convert.ToInt32(v_ID.Value);
+            return (FieldVerifyResult)Convert.ToInt32(v_Result.Value);
+        }
+
+        /// <summary>
+        /// 根据ID更新健康状态
+        /// </summary>
+        /// <returns></returns>
+        public FieldVerifyResult Update()
+        {
+            OracleParameter v_Result = PrepareOutputResult();
+
+            _dataBase.SpExecuteNonQuery("UP_HealthStatus_Update", new OracleParameter[]{
+                                        new OracleParameter("p_HSID",Id),
+                                        new OracleParameter("p_ResourceType",ResourceType),
+                                        new OracleParameter("p_FunctionType",FunctionType ==0 ?  DBNull.Value as object : FunctionType),
+                                        new OracleParameter("p_Status",Status),
+                                        new OracleParameter("p_BeginTime",BeginTime == DateTime.MinValue ? DBNull.Value as object : BeginTime),
+                                        new OracleParameter("p_EndTime", EndTime == DateTime.MinValue ? DBNull.Value as object : EndTime),
+                                        new OracleParameter("p_CreatedTime",CreatedTime),
+                                        new OracleParameter("p_CreatedUserID",CreatedUserID == 0 ? DBNull.Value as object : CreatedUserID),
+                                        new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
+                                        new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0 ? DBNull.Value as object : UpdatedUserID),
+                                        v_Result});
+            return (FieldVerifyResult)Convert.ToInt32(v_Result.Value);
+        }
+
+        #endregion
+
+        #region -Override BaseEntity-
+        protected override void ValidationRules()
+        {
+            this.AddValidRules("ResourceID", "资源序号不能为空。", (ResourceID == 0));
+            this.AddValidRules("ResourceType", "资源类型不能为空。", (ResourceType == 0));
+            this.AddValidRules("Status", "健康状态不能为空。", (Status == 0));
+        }
+        #endregion
+    }
+}

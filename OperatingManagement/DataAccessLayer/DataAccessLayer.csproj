@@ -46,9 +46,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessManage\CenterOutputPolicy.cs" />
+    <Compile Include="BusinessManage\CenterResource.cs" />
+    <Compile Include="BusinessManage\CommunicationResource.cs" />
     <Compile Include="BusinessManage\GDXA.cs" />
     <Compile Include="BusinessManage\GDSH.cs" />
+    <Compile Include="BusinessManage\GroundResource.cs" />
     <Compile Include="BusinessManage\HD.cs" />
+    <Compile Include="BusinessManage\HealthStatus.cs" />
+    <Compile Include="BusinessManage\UseStatus.cs" />
     <Compile Include="BusinessManage\XDSC.cs" />
     <Compile Include="BusinessManage\T0.cs" />
     <Compile Include="BusinessManage\R.cs" />
