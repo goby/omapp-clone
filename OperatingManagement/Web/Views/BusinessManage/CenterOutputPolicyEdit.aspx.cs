@@ -146,7 +146,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                string url = @"~/BusinessManage/CenterOutputPolicyManage.aspx";
+                string url = @"~/Views/BusinessManage/CenterOutputPolicyManage.aspx";
                 Response.Redirect(url);
             }
             catch (System.Threading.ThreadAbortException ex1)

@@ -26,26 +26,35 @@
     <item text="中心资源" value="03"></item>
   </ResourceType>
   <ResourceStatus description="资源管理资源状态列表">
-    <item text="全部" value=""></item>
     <item text="健康" value="01"></item>
     <item text="不可用" value="02"></item>
     <item text="占用中" value="03"></item>
     <item text="已删除" value="03"></item>
   </ResourceStatus>
-  <GroundResourceOwner description="资源管理管理单位列表">
-    <item text="请选择" value=""></item>
+  <GroundResourceOwner description="地面站资源管理单位列表">
     <item text="总参" value="总参"></item>
     <item text="总装" value="总装"></item>
   </GroundResourceOwner>
-  <GroundResourceCoordinate description="资源管理站址坐标列表">
-    <item text="请选择" value=""></item>
+  <GroundResourceCoordinate description="地面站资源站址坐标列表">
     <item text="地心系XYZ" value="地心系XYZ"></item>
     <item text="地心系BLH" value="地心系BLH"></item>
   </GroundResourceCoordinate>
-  <GroundResourceFunctionType description="资源管理功能类型列表">
+  <GroundResourceFunctionType description="地面站资源功能类型列表">
     <item text="遥测接收" value="遥测接收"></item>
     <item text="上行遥控" value="上行遥控"></item>
     <item text="轨道测量" value="轨道测量"></item>
     <item text="数传接收" value="数传接收"></item>
   </GroundResourceFunctionType>
+  <CommunicationResourceDirection description="通信资源方向列表">
+    <item text="遥测接收" value="遥测接收"></item>
+    <item text="上行遥控" value="上行遥控"></item>
+    <item text="轨道测量" value="轨道测量"></item>
+    <item text="数传接收" value="数传接收"></item>
+  </CommunicationResourceDirection>
+  <CenterResourceEquipmentType description="中心资源设备类型列表">
+    <item text="遥测接收" value="遥测接收"></item>
+    <item text="上行遥控" value="上行遥控"></item>
+    <item text="轨道测量" value="轨道测量"></item>
+    <item text="数传接收" value="数传接收"></item>
+  </CenterResourceEquipmentType>
 </SystemParameters>

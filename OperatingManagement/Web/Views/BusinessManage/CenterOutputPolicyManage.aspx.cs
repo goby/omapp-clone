@@ -43,7 +43,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                string url = @"~/BusinessManage/CenterOutputPolicyAdd.aspx";
+                string url = @"~/Views/BusinessManage/CenterOutputPolicyAdd.aspx";
                 Response.Redirect(url);
             }
             catch (System.Threading.ThreadAbortException ex1)
@@ -62,7 +62,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindCOPList();
                     return;
                 }
-                string url = @"~/BusinessManage/CenterOutputPolicyEdit.aspx?copid=" + lbtnEdit.CommandArgument;
+                string url = @"~/Views/BusinessManage/CenterOutputPolicyEdit.aspx?copid=" + lbtnEdit.CommandArgument;
                 Response.Redirect(url);
             }
             catch (System.Threading.ThreadAbortException ex1)

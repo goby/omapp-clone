@@ -23,6 +23,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         GroundResourceOwner = 7,
         GroundResourceCoordinate = 8,
         GroundResourceFunctionType = 9,
+        CommunicationResourceDirection = 10,
+        CenterResourceEquipmentType = 11
     }
 
     [Serializable]

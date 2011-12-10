@@ -29,7 +29,7 @@
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="edit" style="width: 800px;">
         <tr>
-            <th>
+            <th style="width: 200px;">
                 地面站名称(<span class="red">*</span>)
             </th>
             <td>
@@ -75,6 +75,8 @@
             <td>
                 <asp:DropDownList ID="dplOwner" runat="server" CssClass="norDpl">
                 </asp:DropDownList>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="dplOwner" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
@@ -84,6 +86,8 @@
             <td>
                 <asp:DropDownList ID="dplCoordinate" runat="server" CssClass="norDpl">
                 </asp:DropDownList>
+                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="dplCoordinate" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
@@ -91,7 +95,7 @@
                 功能类型(<span class="red">*</span>)
             </th>
             <td>
-                <asp:CheckBoxList ID="cblFunctionType" runat="server">
+                <asp:CheckBoxList ID="cblFunctionType" runat="server" BorderWidth="0" RepeatColumns="4" BorderStyle="None">
                 </asp:CheckBoxList>
             </td>
         </tr>
