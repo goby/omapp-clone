@@ -43,20 +43,21 @@ create or replace procedure UP_GroundRes_Insert
        v_Result out number
 )
 is
-begin  
+begin
        savepoint p1;
        v_GRID:=to_number(fn_genseqnum('4002'));
-       Insert into TB_GroundResource(GRID,GRCode,EquipmentName,EquipmentCode,Owner,Coordinate,FunctionType,Status,ExtProperties,CreatedTime,CreatedUserID,UpdatedTime,UpdatedUserID) 
-       Values(v_GRID,p_GRCode,p_EquipmentName,p_EquipmentCode,p_Owner,p_Coordinate,p_FunctionType,p_Status,p_ExtProperties,p_CreatedTime,p_CreatedUserID,p_UpdatedTime,p_UpdatedUserID);
+       Insert into TB_GroundResource(GRID,GRName,GRCode,EquipmentName,EquipmentCode,Owner,Coordinate,FunctionType,Status,ExtProperties,CreatedTime,CreatedUserID,UpdatedTime,UpdatedUserID)
+       Values(v_GRID,p_GRName,p_GRCode,p_EquipmentName,p_EquipmentCode,p_Owner,p_Coordinate,p_FunctionType,p_Status,p_ExtProperties,p_CreatedTime,p_CreatedUserID,p_UpdatedTime,p_UpdatedUserID);
        commit;
        v_Result:=5; -- Success
-       
+
        EXCEPTION
         WHEN OTHERS THEN
           ROLLBACK TO SAVEPOINT p1;
           COMMIT;
        v_Result:=4; --Error
 end;
+
 
 
 
@@ -83,7 +84,8 @@ begin
      savepoint p1;
      
      Update TB_GroundResource
-     Set GRCode=p_GRCode
+     Set GRName=p_GRName
+	    ,GRCode=p_GRCode
         ,EquipmentName=p_EquipmentName
         ,EquipmentCode=p_EquipmentCode
         ,Owner=p_Owner

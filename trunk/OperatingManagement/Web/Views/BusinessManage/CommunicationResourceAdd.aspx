@@ -29,7 +29,7 @@
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="edit" style="width: 800px;">
         <tr>
-            <th>
+            <th style="width: 200px;">
                 线路名称(<span class="red">*</span>)
             </th>
             <td>
@@ -40,11 +40,23 @@
         </tr>
         <tr>
             <th>
+                线路编码(<span class="red">*</span>)
+            </th>
+            <td>
+                <asp:TextBox ID="txtRouteCode" runat="server" CssClass="norText"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtRouteCode" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+            </td>
+        </tr>
+        <tr>
+            <th>
                 方向(<span class="red">*</span>)
             </th>
             <td>
                 <asp:DropDownList ID="dplDirection" runat="server" CssClass="norDpl">
                 </asp:DropDownList>
+                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="dplDirection" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>

@@ -24,12 +24,12 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuIndex" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    业务管理&gt;资源添加
+    业务管理&gt;中心资源添加
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="edit" style="width: 800px;">
         <tr>
-            <th>
+            <th style="width: 200px;">
                 设备编号(<span class="red">*</span>)
             </th>
             <td>
@@ -45,6 +45,8 @@
             <td>
                 <asp:DropDownList ID="dplEquipmentType" runat="server" CssClass="norDpl">
                 </asp:DropDownList>
+                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="dplEquipmentType" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
