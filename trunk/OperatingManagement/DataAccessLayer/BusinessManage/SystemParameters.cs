@@ -31,7 +31,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
     public class SystemParameters
     {
         /// <summary>
-        /// 选择下拉列表参数
+        /// 根据参数类型获得参数列表
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
@@ -56,6 +56,36 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 }
             }
             return dictionary;
+        }
+
+        /// <summary>
+        /// 根据参数值获得参数文本
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string GetSystemParameterText(SystemParametersType type, string value)
+        {
+            string filePath = GlobalSettings.MapPath(string.Format(AspNetConfig.Config["settingPattern"].ToString(), @"SystemParameters"));
+            XmlDocument doc = new XmlDocument();
+            doc.Load(filePath);
+
+            string xmlPath = string.Format(@"//{0}/item", type.ToString());
+            XmlNodeList xmlNodeList = doc.SelectNodes(xmlPath);
+
+            string text = string.Empty;
+            if (xmlNodeList != null)
+            {
+                foreach (XmlNode xmlNode in xmlNodeList)
+                {
+                    if (xmlNode.Attributes["value"].Value == value)
+                    {
+                        text = xmlNode.Attributes["text"].Value;
+                        break;
+                    }
+                }
+            }
+            return text;
         }
     }
 

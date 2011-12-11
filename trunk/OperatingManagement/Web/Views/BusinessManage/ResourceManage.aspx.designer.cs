@@ -67,6 +67,33 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.Button btnAdd;
         
         /// <summary>
+        /// divGroundResource 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divGroundResource;
+        
+        /// <summary>
+        /// rpGroundResourceList 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpGroundResourceList;
+        
+        /// <summary>
+        /// cpGroundResourcePager 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpGroundResourcePager;
+        
+        /// <summary>
         /// divCommunicationResource 控件。
         /// </summary>
         /// <remarks>
@@ -76,21 +103,48 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCommunicationResource;
         
         /// <summary>
-        /// rpCOPList 控件。
+        /// rpCommunicationResourceList 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpCOPList;
+        protected global::System.Web.UI.WebControls.Repeater rpCommunicationResourceList;
         
         /// <summary>
-        /// cpPager 控件。
+        /// cpCommunicationResourcePager 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpPager;
+        protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpCommunicationResourcePager;
+        
+        /// <summary>
+        /// divCenterResource 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCenterResource;
+        
+        /// <summary>
+        /// rpCenterResourceList 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpCenterResourceList;
+        
+        /// <summary>
+        /// cpCenterResourcePager 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpCenterResourcePager;
     }
 }

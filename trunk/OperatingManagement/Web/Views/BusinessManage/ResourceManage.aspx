@@ -82,8 +82,95 @@
             </tr>
         </table>
     </div>
+    <div id="divGroundResource" runat="server" class="index_content_view">
+        <asp:Repeater ID="rpGroundResourceList" runat="server">
+            <HeaderTemplate>
+                <table class="list">
+                    <tr>
+                        <th style="width: 10%;">
+                            地面站名称
+                        </th>
+                        <th style="width: 10%;">
+                            地面站编号
+                        </th>
+                        <th style="width: 10%;">
+                            设备名称
+                        </th>
+                        <th style="width: 10%;">
+                            设备编号
+                        </th>
+                        <th style="width: 10%;">
+                            管理单位
+                        </th>
+                        <th style="width: 10%;">
+                            站址坐标
+                        </th>
+                        <th style="width: 10%;">
+                            功能类型
+                        </th>
+                        <th style="width: 10%;">
+                            查看状态1
+                        </th>
+                        <th style="width: 10%;">
+                            编辑
+                        </th>
+                         <th style="width: 10%;">
+                            删除
+                        </th>
+                    </tr>
+                    <tbody id="tbGroundResourceList">
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <td>
+                        <%# Eval("GRName")%>
+                    </td>
+                    <td>
+                        <%# Eval("GRCode")%>
+                    </td>
+                    <td>
+                        <%# Eval("EquipmentName")%>
+                    </td>
+                    <td>
+                        <%# Eval("EquipmentCode")%>
+                    </td>
+                    <td>
+                        <%# Eval("Owner")%>
+                    </td>
+                    <td>
+                        <%# Eval("Coordinate")%>
+                    </td>
+                    <td>
+                        <%# Eval("FunctionType")%>
+                    </td>
+                    <td>
+                        <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument='<%# Eval("Id")%>'>查看状态1</asp:LinkButton>
+                    </td>
+                    <td>
+                        <asp:LinkButton ID="lbtnEdit" runat="server" OnClick="lbtnEdit_Click" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
+                    </td>
+                    <td>
+                        <asp:LinkButton ID="LinkButton3" runat="server" OnClick="lbtnEdit_Click" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
+                    </td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                </tbody></table>
+            </FooterTemplate>
+        </asp:Repeater>
+        <table class="listTitle">
+            <tr>
+                <td class="listTitle-c1">
+                </td>
+                <td class="listTitle-c2">
+                    <om:CollectionPager ID="cpGroundResourcePager" runat="server">
+                    </om:CollectionPager>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div id="divCommunicationResource" runat="server" class="index_content_view">
-        <asp:Repeater ID="rpCOPList" runat="server">
+        <asp:Repeater ID="rpCommunicationResourceList" runat="server">
             <HeaderTemplate>
                 <table class="list">
                     <tr>
@@ -115,7 +202,7 @@
                             编辑
                         </th>
                     </tr>
-                    <tbody id="tbCOPList">
+                    <tbody id="tbCommunicationResourceList">
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
@@ -161,7 +248,89 @@
                 <td class="listTitle-c1">
                 </td>
                 <td class="listTitle-c2">
-                    <om:CollectionPager ID="cpPager" runat="server">
+                    <om:CollectionPager ID="cpCommunicationResourcePager" runat="server">
+                    </om:CollectionPager>
+                </td>
+            </tr>
+        </table>
+    </div>
+     <div id="divCenterResource" runat="server" class="index_content_view">
+        <asp:Repeater ID="rpCenterResourceList" runat="server">
+            <HeaderTemplate>
+                <table class="list">
+                    <tr>
+                        <th style="width: 10%;">
+                            设备编号
+                        </th>
+                        <th style="width: 20%;">
+                            设备类型
+                        </th>
+                        <th style="width: 10%;">
+                            支持的任务
+                        </th>
+                        <th style="width: 10%;">
+                            最大数据处理量
+                        </th>
+                        <th style="width: 10%;">
+                            创建时间
+                        </th>
+                        <th style="width: 10%;">
+                            修改时间
+                        </th>
+                        <th style="width: 10%;">
+                            查看状态1
+                        </th>
+                        <th style="width: 10%;">
+                            查看状态2
+                        </th>
+                        <th style="width: 10%;">
+                            编辑
+                        </th>
+                    </tr>
+                    <tbody id="tbCenterResourceList">
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <td>
+                        <%# Eval("EquipmentCode")%>
+                    </td>
+                    <td>
+                        <%# Eval("EquipmentType")%>
+                    </td>
+                    <td>
+                        <%# Eval("SupportTask")%>
+                    </td>
+                    <td>
+                        <%# Eval("DataProcess")%>
+                    </td>
+                    <td>
+                        <%# Eval("CreatedTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
+                    </td>
+                    <td>
+                        <%# Eval("UpdatedTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
+                    </td>
+                    <td>
+                        <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument='<%# Eval("Id")%>'>查看状态1</asp:LinkButton>
+                    </td>
+                    <td>
+                        <asp:LinkButton ID="LinkButton2" runat="server" CommandArgument='<%# Eval("Id")%>'>查看状态2</asp:LinkButton>
+                    </td>
+                    <td>
+                        <asp:LinkButton ID="lbtnEdit" runat="server" OnClick="lbtnEdit_Click" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
+                    </td>
+                    
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                </tbody></table>
+            </FooterTemplate>
+        </asp:Repeater>
+        <table class="listTitle">
+            <tr>
+                <td class="listTitle-c1">
+                </td>
+                <td class="listTitle-c2">
+                    <om:CollectionPager ID="cpCenterResourcePager" runat="server">
                     </om:CollectionPager>
                 </td>
             </tr>

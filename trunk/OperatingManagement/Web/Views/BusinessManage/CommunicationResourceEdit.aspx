@@ -24,12 +24,12 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuIndex" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    业务管理&gt;通信资源添加
+    业务管理&gt;通信资源编辑
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="edit" style="width: 800px;">
         <tr>
-            <th>
+            <th style="width: 200px;">
                 线路名称(<span class="red">*</span>)
             </th>
             <td>
@@ -40,11 +40,23 @@
         </tr>
         <tr>
             <th>
+                线路编码(<span class="red">*</span>)
+            </th>
+            <td>
+                <asp:TextBox ID="txtRouteCode" runat="server" CssClass="norText"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtRouteCode" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+            </td>
+        </tr>
+        <tr>
+            <th>
                 方向(<span class="red">*</span>)
             </th>
             <td>
                 <asp:DropDownList ID="dplDirection" runat="server" CssClass="norDpl">
                 </asp:DropDownList>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="dplDirection" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
@@ -55,6 +67,22 @@
                 <asp:TextBox ID="txtBandWidth" runat="server" CssClass="norText"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtBandWidth" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                创建时间
+            </th>
+            <td>
+                <asp:Label ID="lblCreatedTime" runat="server" Text=""></asp:Label>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                最后修改时间
+            </th>
+            <td>
+                <asp:Label ID="lblUpdatedTime" runat="server" Text=""></asp:Label>
             </td>
         </tr>
         <tr id="trMessage" runat="server" visible="false">
