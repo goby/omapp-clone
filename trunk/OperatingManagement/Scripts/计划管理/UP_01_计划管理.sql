@@ -1,14 +1,14 @@
---------------------------------------------
--- Export file for user HTCUSER           --
--- Created by taiji on 2011/12/5, 0:33:11 --
---------------------------------------------
+----------------------------------------------
+-- Export file for user HTCUSER             --
+-- Created by taiji on 2011/12/11, 21:59:13 --
+----------------------------------------------
 
 spool UP_01_计划管理.log
 
-prompt
+prompt
 prompt Creating procedure UP_GZJH_INSERT
 prompt =================================
-prompt
+prompt
 create or replace procedure htcuser.up_GZJH_insert
 (
        p_CTime tb_GZJH.Ctime%type,
@@ -41,10 +41,10 @@ begin
 end;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_GZJH_SELECTBYID
 prompt =====================================
-prompt
+prompt
 create or replace procedure htcuser.up_GZJH_selectbyid
 (
        p_Id tb_gzjh.id%type,
@@ -57,10 +57,10 @@ begin
 end;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_GZJH_UPDATE
 prompt =================================
-prompt
+prompt
 create or replace procedure htcuser.up_GZJH_update
 (
        v_Id out tb_GZJH.Id%type,
@@ -99,10 +99,35 @@ begin
 end;
 /
 
-prompt
+prompt
+prompt Creating procedure UP_GZJH_UPDATEFILEINDEX
+prompt ==========================================
+prompt
+create or replace procedure htcuser.up_gzjh_updatefileindex
+(
+       v_Id  tb_gzjh.Id%type,
+       p_FileIndex tb_gzjh.fileindex%type,
+       v_result out number
+)
+is
+begin
+     update   tb_gzjh t set
+     t.fileindex=p_FileIndex  where t.Id = v_Id;
+       commit;
+       v_result:=5; -- Success
+
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK;
+          COMMIT;
+          v_result:=4; --Error
+end;
+/
+
+prompt
 prompt Creating procedure UP_JH_GETLIST
 prompt ================================
-prompt
+prompt
 create or replace procedure htcuser.UP_JH_GETLIST
 (
        p_planType IN TB_JH.Plantype%type Default null,
@@ -135,10 +160,10 @@ dbms_output.put_line(v_sql);
 end;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_JH_INSERT
 prompt ===============================
-prompt
+prompt
 create or replace procedure htcuser.up_jh_insert
       (
       p_TaskID tb_jh.taskid%type,
@@ -169,10 +194,10 @@ begin
 end;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_JH_SELECTBYPLANTYPEANDID
 prompt ==============================================
-prompt
+prompt
 create or replace procedure htcuser.up_jh_selectbyplantypeandid
 (
        p_PlanType tb_jh.plantype%type,
@@ -186,10 +211,62 @@ begin
 end;
 /
 
-prompt
+prompt
+prompt Creating procedure UP_JH_SELECTINIDS
+prompt ====================================
+prompt
+create or replace procedure htcuser.up_jh_SelectInIDS
+(
+       p_ids varchar2,
+       o_cursor out sys_refcursor
+) is
+v_sql varchar2(4000);
+begin
+v_sql:='SELECT * FROM TB_JH t '||
+          ' where 1=1 ';
+
+   if (p_ids is not null)
+   then
+      v_sql:=v_sql||' and t.id in ('|| p_ids ||')';
+   end if;
+
+   dbms_output.put_line(v_sql);
+
+   OPEN o_cursor For v_sql;
+
+
+end;
+/
+
+prompt
+prompt Creating procedure UP_JH_UPDATEFILEINDEX
+prompt ========================================
+prompt
+create or replace procedure htcuser.up_jh_updatefileindex
+(
+       v_Id  tb_jh.Id%type,
+       p_FileIndex tb_jh.fileindex%type,
+       v_result out number
+)
+is
+begin
+     update   tb_jh t set
+     t.fileindex=p_FileIndex  where t.Id = v_Id;
+       commit;
+       v_result:=5; -- Success
+
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK;
+          COMMIT;
+          v_result:=4; --Error
+end;
+/
+
+prompt
 prompt Creating procedure UP_SYCX_GETLIST
 prompt ==================================
-prompt
+prompt
 create or replace procedure htcuser.UP_SYCX_GETLIST
 (
        p_startDate IN TB_SYCX.Ctime%type Default null,
@@ -216,10 +293,10 @@ begin
 end;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_SYCX_SELECTBYID
 prompt =====================================
-prompt
+prompt
 create or replace procedure htcuser.UP_SYCX_SELECTBYID
 (
        p_Id tb_sycx.id%type,
@@ -232,10 +309,10 @@ begin
 end;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_SYJH_GETLIST
 prompt ==================================
-prompt
+prompt
 create or replace procedure htcuser.UP_SYJH_GETLIST
 (
        p_startDate IN TB_SYJH.Ctime%type Default null,
@@ -276,10 +353,10 @@ dbms_output.put_line(v_sql);
 end;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_SYJH_SELECTBYID
 prompt =====================================
-prompt
+prompt
 create or replace procedure htcuser.UP_SYJH_SELECTBYID
 (
        p_Id tb_syjh.jhid%type,
@@ -292,10 +369,10 @@ begin
 end;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_TYSJ_INSERT
 prompt =================================
-prompt
+prompt
 create or replace procedure htcuser.up_TYSJ_insert
 (
        p_CTime tb_TYSJ.Ctime%type,
@@ -327,10 +404,10 @@ begin
 end up_TYSJ_insert;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_TYSJ_SELECTBYID
 prompt =====================================
-prompt
+prompt
 create or replace procedure htcuser.up_TYSJ_selectbyid
 (
        p_Id tb_tysj.id%type,
@@ -343,10 +420,10 @@ begin
 end;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_TYSJ_UPDATE
 prompt =================================
-prompt
+prompt
 create or replace procedure htcuser.up_TYSJ_update
 (
        v_Id out tb_TYSJ.Id%type,
@@ -383,10 +460,35 @@ begin
 end;
 /
 
-prompt
+prompt
+prompt Creating procedure UP_TYSJ_UPDATEFILEINDEX
+prompt ==========================================
+prompt
+create or replace procedure htcuser.up_tysj_updatefileindex
+(
+       v_Id  tb_tysj.Id%type,
+       p_FileIndex tb_tysj.fileindex%type,
+       v_result out number
+)
+is
+begin
+     update   tb_tysj t set
+     t.fileindex=p_FileIndex  where t.Id = v_Id;
+       commit;
+       v_result:=5; -- Success
+
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK;
+          COMMIT;
+          v_result:=4; --Error
+end;
+/
+
+prompt
 prompt Creating procedure UP_XXXQ_INSERT
 prompt =================================
-prompt
+prompt
 create or replace procedure htcuser.up_xxxq_insert
 (
        p_CTime tb_xxxq.Ctime%type,
@@ -419,10 +521,10 @@ begin
 end;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_XXXQ_SELECTBYID
 prompt =====================================
-prompt
+prompt
 create or replace procedure htcuser.up_XXXQ_selectbyid
 (
        p_Id tb_xxxq.id%type,
@@ -435,10 +537,10 @@ begin
 end;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_XXXQ_UPDATE
 prompt =================================
-prompt
+prompt
 create or replace procedure htcuser.up_xxxq_update
 (
        v_Id out tb_xxxq.Id%type,
@@ -477,10 +579,35 @@ begin
 end;
 /
 
-prompt
+prompt
+prompt Creating procedure UP_XXXQ_UPDATEFILEINDEX
+prompt ==========================================
+prompt
+create or replace procedure htcuser.up_xxxq_updatefileindex
+(
+       v_Id  tb_xxxq.Id%type,
+       p_FileIndex tb_xxxq.fileindex%type,
+       v_result out number
+)
+is
+begin
+     update   tb_xxxq t set
+     t.fileindex=p_FileIndex  where t.Id = v_Id;
+       commit;
+       v_result:=5; -- Success
+
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK;
+          COMMIT;
+          v_result:=4; --Error
+end;
+/
+
+prompt
 prompt Creating procedure UP_YDSJ_GETLIST
 prompt ==================================
-prompt
+prompt
 create or replace procedure htcuser.up_ydsj_Getlist
 (
        p_sapceType in TB_YDSJ.Spacetype%type,
@@ -511,10 +638,10 @@ v_sql:='SELECT * FROM TB_YDSJ t '||
 end up_ydsj_Getlist;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_YDSJ_SELECTBYID
 prompt =====================================
-prompt
+prompt
 create or replace procedure htcuser.up_ydsj_selectByID
 (
        p_Id tb_ydsj.id%type,
@@ -527,43 +654,10 @@ begin
 end;
 /
 
-prompt
-prompt Creating procedure UP_YJBG_INSERT
-prompt =================================
-prompt
-create or replace procedure htcuser.up_YJBG_insert
-(
-       p_CTime tb_YJBG.Ctime%type,
-       p_Source tb_YJBG.Source%type,
-       p_Destination tb_YJBG.Destination%type,
-       p_TaskID tb_YJBG.Taskid%type,
-       p_InfoType tb_YJBG.Infotype%type,
-       p_LineCount tb_YJBG.Linecount%type,
-       p_FileIndex tb_YJBG.Fileindex%type,
-       p_Reserve tb_YJBG.Reserve%type,
-       v_Id out tb_YJBG.Id%type,
-       v_result out number
-)
-is
-begin
-       v_Id:= to_number(fn_genseqnum('0014'));
-       insert into tb_YJBG(id,Ctime,Source,Destination,Taskid,Infotype,Linecount,Fileindex,Reserve)
-       values(v_Id,sysdate(),p_Source,p_Destination,p_TaskID,p_InfoType,p_LineCount,p_FileIndex,p_Reserve);
-       commit;
-       v_result:=5; -- Success
-
-       EXCEPTION
-        WHEN OTHERS THEN
-          ROLLBACK;
-          COMMIT;
-          v_result:=4; --Error
-end up_YJBG_insert;
-/
-
-prompt
+prompt
 prompt Creating procedure UP_YJJH_INSERT
 prompt =================================
-prompt
+prompt
 create or replace procedure htcuser.up_yjjh_insert
 (
        p_CTime tb_yjjh.Ctime%type,
@@ -595,10 +689,10 @@ begin
 end up_yjjh_insert;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_YJJH_SELECTBYID
 prompt =====================================
-prompt
+prompt
 create or replace procedure htcuser.up_yjjh_selectbyid
 (
        p_Id tb_yjjh.id%type,
@@ -611,13 +705,13 @@ begin
 end;
 /
 
-prompt
+prompt
 prompt Creating procedure UP_YJJH_UPDATE
 prompt =================================
-prompt
+prompt
 create or replace procedure htcuser.up_yjjh_update
 (
-       v_Id out tb_yjjh.Id%type,
+       v_Id  tb_yjjh.Id%type,
        p_Source tb_yjjh.Source%type,
        p_Destination tb_yjjh.Destination%type,
        p_TaskID tb_yjjh.Taskid%type,
@@ -630,16 +724,40 @@ create or replace procedure htcuser.up_yjjh_update
 )
 is
 begin
-     update   tb_yjjh set
-     Source=p_Source,
-     Destination=p_Destination,
-     Taskid=p_TaskID,
-     Infotype=p_InfoType,
-     Linecount=p_LineCount,
-     Format1=p_Format1,
-     datasection=p_DataSection,
---     Fileindex,
-     Reserve=p_Reserve;
+     update   tb_yjjh t set
+     t.Source=p_Source,
+     t.Destination=p_Destination,
+     t.Taskid=p_TaskID,
+     t.Infotype=p_InfoType,
+     t.Linecount=p_LineCount,
+     t.Format1=p_Format1,
+     t.datasection=p_DataSection,
+     t.Reserve=p_Reserve  where t.Id = v_Id;
+       commit;
+       v_result:=5; -- Success
+
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK;
+          COMMIT;
+          v_result:=4; --Error
+end;
+/
+
+prompt
+prompt Creating procedure UP_YJJH_UPDATEFILEINDEX
+prompt ==========================================
+prompt
+create or replace procedure htcuser.up_yjjh_updatefileindex
+(
+       v_Id  tb_yjjh.Id%type,
+       p_FileIndex tb_yjjh.fileindex%type,
+       v_result out number
+)
+is
+begin
+     update   tb_yjjh t set
+     t.fileindex=p_FileIndex  where t.Id = v_Id;
        commit;
        v_result:=5; -- Success
 
