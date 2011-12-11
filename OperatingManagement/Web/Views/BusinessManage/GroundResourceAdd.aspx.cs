@@ -87,7 +87,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 groundResource.Owner = dplOwner.SelectedValue;
                 groundResource.Coordinate = dplCoordinate.SelectedValue;
                 groundResource.FunctionType = functionType;
-                groundResource.Status = 0;
+                groundResource.Status = 1;//正常
                 groundResource.CreatedTime = DateTime.Now;
                 groundResource.UpdatedTime = DateTime.Now;
 
@@ -119,7 +119,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                string url = @"~/Views/BusinessManage/ResourceManage.aspx";
+                string url = @"~/Views/BusinessManage/ResourceManage.aspx?resourcetype=" + Server.UrlEncode("01");
                 Response.Redirect(url);
             }
             catch (System.Threading.ThreadAbortException ex1)

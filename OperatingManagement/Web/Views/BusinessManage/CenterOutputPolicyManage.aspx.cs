@@ -62,7 +62,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindCOPList();
                     return;
                 }
-                string url = @"~/Views/BusinessManage/CenterOutputPolicyEdit.aspx?copid=" + lbtnEdit.CommandArgument;
+                string url = @"~/Views/BusinessManage/CenterOutputPolicyEdit.aspx?copid=" + Server.UrlEncode(lbtnEdit.CommandArgument);
                 Response.Redirect(url);
             }
             catch (System.Threading.ThreadAbortException ex1)

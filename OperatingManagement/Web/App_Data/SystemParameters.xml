@@ -46,15 +46,13 @@
     <item text="数传接收" value="数传接收"></item>
   </GroundResourceFunctionType>
   <CommunicationResourceDirection description="通信资源方向列表">
-    <item text="遥测接收" value="遥测接收"></item>
-    <item text="上行遥控" value="上行遥控"></item>
-    <item text="轨道测量" value="轨道测量"></item>
-    <item text="数传接收" value="数传接收"></item>
+    <item text="西安卫星测控中心与运控评估中心" value="西安卫星测控中心与运控评估中心"></item>
+    <item text="运控评估中心与数据接收站" value="运控评估中心与数据接收站"></item>
   </CommunicationResourceDirection>
   <CenterResourceEquipmentType description="中心资源设备类型列表">
-    <item text="遥测接收" value="遥测接收"></item>
-    <item text="上行遥控" value="上行遥控"></item>
-    <item text="轨道测量" value="轨道测量"></item>
-    <item text="数传接收" value="数传接收"></item>
+    <item text="数据收发设备" value="数据收发设备"></item>
+    <item text="加解密平台" value="加解密平台"></item>
+    <item text="遥测信息处理设备" value="遥测信息处理设备"></item>
+    <item text="数传信息处理设备" value="数传信息处理设备"></item>
   </CenterResourceEquipmentType>
 </SystemParameters>

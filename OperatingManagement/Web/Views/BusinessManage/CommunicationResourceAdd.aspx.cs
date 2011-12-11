@@ -61,7 +61,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 communicationResource.RouteCode = txtRouteCode.Text.Trim();
                 communicationResource.Direction = dplDirection.SelectedValue;
                 communicationResource.BandWidth = txtBandWidth.Text.Trim();
-                communicationResource.Status = 0;
+                communicationResource.Status = 1;//正常
                 communicationResource.CreatedTime = DateTime.Now;
                 communicationResource.UpdatedTime = DateTime.Now;
 
@@ -93,7 +93,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                string url = @"~/Views/BusinessManage/ResourceManage.aspx";
+                string url = @"~/Views/BusinessManage/ResourceManage.aspx?resourcetype=" + Server.UrlEncode("02");
                 Response.Redirect(url);
             }
             catch (System.Threading.ThreadAbortException ex1)

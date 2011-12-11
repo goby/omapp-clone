@@ -61,7 +61,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 centerResource.EquipmentType = dplEquipmentType.SelectedValue;
                 centerResource.SupportTask = txtSupportTask.Text.Trim();
                 centerResource.DataProcess = txtDataProcess.Text.Trim();
-                centerResource.Status = 0;
+                centerResource.Status = 1;//正常
                 centerResource.CreatedTime = DateTime.Now;
                 centerResource.UpdatedTime = DateTime.Now;
 
@@ -72,7 +72,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                         msg = "发生了数据错误，无法完成请求的操作。";
                         break;
                     case Framework.FieldVerifyResult.Success:
-                        msg = "添加通信资源成功。";
+                        msg = "添加中心资源成功。";
                         ResetControls();
                         break;
                     default:
@@ -93,7 +93,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                string url = @"~/Views/BusinessManage/ResourceManage.aspx";
+                string url = @"~/Views/BusinessManage/ResourceManage.aspx?resourcetype=" + Server.UrlEncode("03");
                 Response.Redirect(url);
             }
             catch (System.Threading.ThreadAbortException ex1)
