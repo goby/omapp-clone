@@ -13,6 +13,7 @@ using OperatingManagement.Framework;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using System.Web.Security;
 using System.Data;
+using ServicesKernel.File;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
@@ -77,7 +78,69 @@ namespace OperatingManagement.Web.Views.PlanManage
         //最终发送
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            string plantype = txtPlanType.Text;
+            string planid = txtPlanID.Text;
+            FileNameMaker fm = new FileNameMaker();
+            CreatePlanFile cpf = new CreatePlanFile();
+            string filename="";
+            switch (plantype)
+            {
+                case "YJJH":
+                    filename =fm.GenarateFileNameTypeThree("YJJH", "YKZX", rbtDestination.SelectedValue, ".PLA");
+                    YJJH obj = new YJJH();
+                    obj = obj.SelectById(Convert.ToInt32(planid));
+                    cpf.ID = obj.ID;
+                    cpf.CTime = obj.CTime;
+                    cpf.Source = obj.Source;
+                    cpf.Destination = obj.Destination;
+                    cpf.Format1 = obj.Format1;
+                    cpf.DataSection = obj.DataSection;
+                    cpf.SavePath = System.Configuration.ConfigurationManager.AppSettings["savepath"];
+                    cpf.FilePath = cpf.SavePath + filename;
+                    cpf.NewFile();
+                    break;
+                case "XXXQ":
+                    filename = fm.GenarateFileNameTypeThree("MBXQ", "YKZX", rbtDestination.SelectedValue, ".REG");
+                    XXXQ objx = new XXXQ();
+                    objx = objx.SelectById(Convert.ToInt32(planid));
+                    cpf.ID = objx.ID;
+                    cpf.CTime = objx.CTime;
+                    cpf.Source = objx.Source;
+                    cpf.Destination = objx.Destination;
+                    cpf.Format1 = objx.Format1;
+                    cpf.DataSection = objx.DataSection;
+                    cpf.SavePath = System.Configuration.ConfigurationManager.AppSettings["savepath"];
+                    cpf.FilePath = cpf.SavePath + filename;
+                    cpf.NewFile();
+                    cpf.NewFile();
+                    break;
+                case "GZJH":
+                    //filename = fm.GenarateFileNameTypeThree("GZJH", "YKZX", rbtDestination.SelectedValue, ".PLA");
+                    break;
+                case "ZXJH":
+                    //filename = fm.GenarateFileNameTypeThree("YJJH", "YKZX", rbtDestination.SelectedValue, ".PLA");
+                    break;
+                case "TYSJ":
+                    filename = fm.GenarateFileNameTypeThree("TYSJ", "YKZX", rbtDestination.SelectedValue, ".DAT");
+                    TYSJ objt = new TYSJ();
+                    objt = objt.SelectById(Convert.ToInt32(planid));
+                    cpf.ID = objt.ID;
+                    cpf.CTime = objt.CTime;
+                    cpf.Source = objt.Source;
+                    cpf.Destination = objt.Destination;
+                    cpf.Format1 = objt.Format1;
+                    cpf.DataSection = objt.DataSection;
+                    cpf.SavePath = System.Configuration.ConfigurationManager.AppSettings["savepath"];
+                    cpf.FilePath = cpf.SavePath + filename;
+                    cpf.NewFile();
+                    cpf.NewFile();
+                    cpf.NewFile();
+                    break;
+                case "SBJH":
+                    filename = fm.GenarateFileNameTypeOne("SBJH","B",1);
+                    break;
 
+            }
         }
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)

@@ -179,6 +179,22 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             }
             return null;
         }
+
+        public FieldVerifyResult UpdateFileIndex()
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _database.SpExecuteNonQuery("up_tysj_updatefileindex", new OracleParameter[]{
+                new OracleParameter("v_Id",this.Id),
+                new OracleParameter("p_FileIndex",this.FileIndex),
+                p
+            });
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+        }
         #endregion
 
         #region -Private methods-
