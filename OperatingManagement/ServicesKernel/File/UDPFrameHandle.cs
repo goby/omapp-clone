@@ -242,11 +242,11 @@ namespace ServicesKernel.File
                 A = Convert.ToUInt32( this.DataInfo.Substring(6, 4),2).ToString(),
                 E = Convert.ToUInt32( this.DataInfo.Substring(10, 4),2).ToString(),
                 I = Convert.ToUInt32( this.DataInfo.Substring(14, 4),2).ToString(),
-                Ohm = Convert.ToUInt32( this.DataInfo.Substring(18, 4),2).ToString(),
-                Omega = Convert.ToUInt32( this.DataInfo.Substring(22, 4),2).ToString(),
+                Q = Convert.ToUInt32( this.DataInfo.Substring(18, 4),2).ToString(),
+                W = Convert.ToUInt32( this.DataInfo.Substring(22, 4),2).ToString(),
                 M = Convert.ToUInt32( this.DataInfo.Substring(26, 4),2).ToString(),
                 P = GetNumberFromComplement( this.DataInfo.Substring(30, 4) ),
-                Pi = GetNumberFromComplement( this.DataInfo.Substring(34, 4)),
+                DELTP = GetNumberFromComplement( this.DataInfo.Substring(34, 4)),
                 Ra = Convert.ToUInt32( this.DataInfo.Substring(38, 4),2).ToString(),
                 Rp = Convert.ToUInt32( this.DataInfo.Substring(42, 4),2).ToString()
             };
