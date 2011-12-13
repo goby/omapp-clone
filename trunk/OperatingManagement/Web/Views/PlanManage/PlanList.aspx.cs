@@ -80,6 +80,9 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             string plantype = txtPlanType.Text;
             string planid = txtPlanID.Text;
+            string id = txtId.Text;
+            JH objJH = new JH();
+            objJH.Id = Convert.ToInt32(id);
             FileNameMaker fm = new FileNameMaker();
             CreatePlanFile cpf = new CreatePlanFile();
             string filename="";
@@ -98,6 +101,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                     cpf.SavePath = System.Configuration.ConfigurationManager.AppSettings["savepath"];
                     cpf.FilePath = cpf.SavePath + filename;
                     cpf.NewFile();
+                    obj.FileIndex = cpf.FilePath;
+                    obj.UpdateFileIndex();
+
+                    objJH.FileIndex = cpf.FilePath;
                     break;
                 case "XXXQ":
                     filename = fm.GenarateFileNameTypeThree("MBXQ", "YKZX", rbtDestination.SelectedValue, ".REG");
@@ -112,7 +119,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                     cpf.SavePath = System.Configuration.ConfigurationManager.AppSettings["savepath"];
                     cpf.FilePath = cpf.SavePath + filename;
                     cpf.NewFile();
-                    cpf.NewFile();
+                    objx.FileIndex = cpf.FilePath;
+                    objx.UpdateFileIndex();
+
+                    objJH.FileIndex = cpf.FilePath;
                     break;
                 case "GZJH":
                     //filename = fm.GenarateFileNameTypeThree("GZJH", "YKZX", rbtDestination.SelectedValue, ".PLA");
@@ -133,14 +143,17 @@ namespace OperatingManagement.Web.Views.PlanManage
                     cpf.SavePath = System.Configuration.ConfigurationManager.AppSettings["savepath"];
                     cpf.FilePath = cpf.SavePath + filename;
                     cpf.NewFile();
-                    cpf.NewFile();
-                    cpf.NewFile();
+                    objt.FileIndex = cpf.FilePath;
+                    objt.UpdateFileIndex();
+
+                    objJH.FileIndex = cpf.FilePath;
                     break;
                 case "SBJH":
                     filename = fm.GenarateFileNameTypeOne("SBJH","B",1);
                     break;
 
             }
+            objJH.UpdateFileIndex();//更新计划表
         }
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)

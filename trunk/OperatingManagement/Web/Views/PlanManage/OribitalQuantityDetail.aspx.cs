@@ -55,11 +55,11 @@ namespace OperatingManagement.Web.Views.PlanManage
             lblRp.Text = obj.Rp;
             lblE.Text = obj.E;
             lblI.Text = obj.I;
-            lblOhm.Text = obj.Ohm;
-            lblOmega.Text = obj.Omega;
+            lblOhm.Text = obj.Q;
+            lblOmega.Text = obj.W;
             lblM.Text = obj.M;
             lblP.Text = obj.P;
-            lblPi.Text = obj.Pi;
+            lblPi.Text = obj.DELTP;
         }
 
         public override void OnPageLoaded()

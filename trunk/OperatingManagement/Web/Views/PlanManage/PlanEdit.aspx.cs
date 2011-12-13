@@ -127,6 +127,18 @@ namespace OperatingManagement.Web.Views.PlanManage
             objYJJH.Reserve = txtNoteYJJH.Text;
 
             var result = objYJJH.Update();
+            JH objjh = new JH();
+            objjh = objjh.SelectByPlanTypeAndPlanID("YJJH", Convert.ToInt32(HfID.Value));
+            objjh.TaskID = txtTaskIDYJJH.Text.Trim();
+            if (!string.IsNullOrEmpty(txtStartTimeYJJH.Text.Trim()))
+            {
+                objjh.StartTime = Convert.ToDateTime(txtStartTimeYJJH.Text.Trim());
+            }
+            if (!string.IsNullOrEmpty(txtEndTimeYJJH.Text.Trim()))
+            {
+                objjh.EndTime = Convert.ToDateTime(txtEndTimeYJJH.Text.Trim());
+            }
+            objjh.Update();
             switch (result)
             {
                 case Framework.FieldVerifyResult.Error:
@@ -153,6 +165,18 @@ namespace OperatingManagement.Web.Views.PlanManage
             objXXXQ.Reserve = txtNoteXXXQ.Text;
 
             var result= objXXXQ.Update();
+            JH objjh = new JH();
+            objjh = objjh.SelectByPlanTypeAndPlanID("XXXQ", Convert.ToInt32(HfID.Value));
+            objjh.TaskID = txtTaskIDXXXQ.Text.Trim();
+            if (!string.IsNullOrEmpty(txtStartTimeXXXQ.Text.Trim()))
+            {
+                objjh.StartTime = Convert.ToDateTime(txtStartTimeXXXQ.Text.Trim());
+            }
+            if (!string.IsNullOrEmpty(txtEndTimeXXXQ.Text.Trim()))
+            {
+                objjh.EndTime = Convert.ToDateTime(txtEndTimeXXXQ.Text.Trim());
+            }
+            objjh.Update();
             switch (result)
             {
                 case Framework.FieldVerifyResult.Error:
@@ -179,6 +203,18 @@ namespace OperatingManagement.Web.Views.PlanManage
             objGZJH.Reserve = txtNoteGZJH.Text;
 
             var result = objGZJH.Update();
+            JH objjh = new JH();
+            objjh = objjh.SelectByPlanTypeAndPlanID("GZJH", Convert.ToInt32(HfID.Value));
+            objjh.TaskID = txtTaskidGZJH.Text.Trim();
+            if (!string.IsNullOrEmpty(txtStartTimeGZJH.Text.Trim()))
+            {
+                objjh.StartTime = Convert.ToDateTime(txtStartTimeGZJH.Text.Trim());
+            }
+            if (!string.IsNullOrEmpty(txtEndTimeGZJH.Text.Trim()))
+            {
+                objjh.EndTime = Convert.ToDateTime(txtEndTimeGZJH.Text.Trim());
+            }
+            objjh.Update();
             switch (result)
             {
                 case Framework.FieldVerifyResult.Error:
@@ -204,6 +240,18 @@ namespace OperatingManagement.Web.Views.PlanManage
             objTYSJ.Reserve = txtNoteTYSJ.Text;
 
             var result = objTYSJ.Update();
+            JH objjh = new JH();
+            objjh = objjh.SelectByPlanTypeAndPlanID("TYSJ", Convert.ToInt32(HfID.Value));
+            objjh.TaskID = txtTaskidTYSJ.Text.Trim();
+            if (!string.IsNullOrEmpty(txtStartTimeTYSJ.Text.Trim()))
+            {
+                objjh.StartTime = Convert.ToDateTime(txtStartTimeTYSJ.Text.Trim());
+            }
+            if (!string.IsNullOrEmpty(txtEndTimeTYSJ.Text.Trim()))
+            {
+                objjh.EndTime = Convert.ToDateTime(txtEndTimeTYSJ.Text.Trim());
+            }
+            objjh.Update();
             switch (result)
             {
                 case Framework.FieldVerifyResult.Error:
@@ -229,6 +277,19 @@ namespace OperatingManagement.Web.Views.PlanManage
             objYJJH.Reserve = txtNoteYJJH.Text;
 
             var result = objYJJH.Add();
+
+            JH objjh = new JH();
+            objjh = objjh.SelectByPlanTypeAndPlanID("YJJH", Convert.ToInt32( HfID.Value));
+            objjh.PlanID = objYJJH.Id;
+            if (!string.IsNullOrEmpty(txtStartTimeYJJH.Text.Trim()))
+            {
+                objjh.StartTime = Convert.ToDateTime(txtStartTimeYJJH.Text.Trim());
+            }
+            if (!string.IsNullOrEmpty(txtEndTimeYJJH.Text.Trim()))
+            {
+                objjh.EndTime = Convert.ToDateTime(txtEndTimeYJJH.Text.Trim());
+            }
+            objjh.Add();
             switch (result)
             {
                 case Framework.FieldVerifyResult.Error:
@@ -254,6 +315,19 @@ namespace OperatingManagement.Web.Views.PlanManage
             objXXXQ.Reserve = txtNoteXXXQ.Text;
 
             var result =objXXXQ.Add();
+
+            JH objjh = new JH();
+            objjh = objjh.SelectByPlanTypeAndPlanID("XXXQ", Convert.ToInt32(HfID.Value));
+            objjh.PlanID = objXXXQ.Id;
+            if (!string.IsNullOrEmpty(txtStartTimeXXXQ.Text.Trim()))
+            {
+                objjh.StartTime = Convert.ToDateTime(txtStartTimeXXXQ.Text.Trim());
+            }
+            if (!string.IsNullOrEmpty(txtEndTimeXXXQ.Text.Trim()))
+            {
+                objjh.EndTime = Convert.ToDateTime(txtEndTimeXXXQ.Text.Trim());
+            }
+            objjh.Add();
             switch (result)
             {
                 case Framework.FieldVerifyResult.Error:
@@ -279,6 +353,18 @@ namespace OperatingManagement.Web.Views.PlanManage
             objGZJH.Reserve = txtNoteGZJH.Text;
 
             var result = objGZJH.Add();
+            JH objjh = new JH();
+            objjh = objjh.SelectByPlanTypeAndPlanID("GZJH", Convert.ToInt32(HfID.Value));
+            objjh.PlanID = objGZJH.Id;
+            if (!string.IsNullOrEmpty(txtStartTimeGZJH.Text.Trim()))
+            {
+                objjh.StartTime = Convert.ToDateTime(txtStartTimeGZJH.Text.Trim());
+            }
+            if (!string.IsNullOrEmpty(txtEndTimeGZJH.Text.Trim()))
+            {
+                objjh.EndTime = Convert.ToDateTime(txtEndTimeGZJH.Text.Trim());
+            }
+            objjh.Add();
             switch (result)
             {
                 case Framework.FieldVerifyResult.Error:
@@ -303,6 +389,18 @@ namespace OperatingManagement.Web.Views.PlanManage
             objTYSJ.Reserve = txtNoteTYSJ.Text;
 
             var result =objTYSJ.Add();
+            JH objjh = new JH();
+            objjh = objjh.SelectByPlanTypeAndPlanID("TYSJ", Convert.ToInt32(HfID.Value));
+            objjh.PlanID = objTYSJ.Id;
+            if (!string.IsNullOrEmpty(txtStartTimeTYSJ.Text.Trim()))
+            {
+                objjh.StartTime = Convert.ToDateTime(txtStartTimeTYSJ.Text.Trim());
+            }
+            if (!string.IsNullOrEmpty(txtEndTimeTYSJ.Text.Trim()))
+            {
+                objjh.EndTime = Convert.ToDateTime(txtEndTimeTYSJ.Text.Trim());
+            }
+            objjh.Add();
             switch (result)
             {
                 case Framework.FieldVerifyResult.Error:

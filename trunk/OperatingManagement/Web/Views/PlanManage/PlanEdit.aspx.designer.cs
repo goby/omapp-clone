@@ -40,6 +40,24 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.Literal ltPlanType;
         
         /// <summary>
+        /// txtStartTimeYJJH 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtStartTimeYJJH;
+        
+        /// <summary>
+        /// txtEndTimeYJJH 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEndTimeYJJH;
+        
+        /// <summary>
         /// txtSourceYJJH 控件。
         /// </summary>
         /// <remarks>
@@ -137,6 +155,24 @@ namespace OperatingManagement.Web.Views.PlanManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltinfoTypeXXXQ;
+        
+        /// <summary>
+        /// txtStartTimeXXXQ 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtStartTimeXXXQ;
+        
+        /// <summary>
+        /// txtEndTimeXXXQ 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEndTimeXXXQ;
         
         /// <summary>
         /// txtSourceXXXQ 控件。
@@ -247,6 +283,24 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.Literal ltinfotypeGZJH;
         
         /// <summary>
+        /// txtStartTimeGZJH 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtStartTimeGZJH;
+        
+        /// <summary>
+        /// txtEndTimeGZJH 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEndTimeGZJH;
+        
+        /// <summary>
         /// txtSourceGZJH 控件。
         /// </summary>
         /// <remarks>
@@ -353,6 +407,24 @@ namespace OperatingManagement.Web.Views.PlanManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltinfotypeTYSJ;
+        
+        /// <summary>
+        /// txtStartTimeTYSJ 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtStartTimeTYSJ;
+        
+        /// <summary>
+        /// txtEndTimeTYSJ 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEndTimeTYSJ;
         
         /// <summary>
         /// txtSourceTYSJ 控件。
