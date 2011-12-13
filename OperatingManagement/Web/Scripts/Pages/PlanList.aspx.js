@@ -25,16 +25,17 @@ function showEdit(planid,plantype) {
     return false;
 }
 
-function showSend(id,plantype) {
+function showSend(id,planid,plantype) {
 //    var divData = $('#divData');
 //    divData.hide();
 //    var indicator = $('#tartgetPanel');
 //    indicator.show();
-
+    var txtId = $('#txtId'); 
+    txtId.val(id);
     var txtPlanID = $('#txtPlanID'); 
-    txtPlanID.val(id);
-    var txtPlanID = $('#txtPlanType'); 
-    txtPlanID.val(plantype);
+    txtPlanID.val(planid);
+    var txtPlanType = $('#txtPlanType'); 
+    txtPlanType.val(plantype);
     var btn = $('#btnHidden');
     btn.click();
     return false;

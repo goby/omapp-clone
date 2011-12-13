@@ -94,6 +94,7 @@
                     <button class="button" onclick="return reset();" style="width: 65px;">
                         重置</button>
                         <div style="display:none;">
+                        <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
                     <asp:TextBox ID="txtPlanID" runat="server" ClientIDMode="Static"></asp:TextBox>
                     <asp:TextBox ID="txtPlanType" runat="server" ClientIDMode="Static"></asp:TextBox>
                     <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" 
@@ -161,7 +162,7 @@
                                         明细</button>
                                 </td>
                                 <td>
-                                    <button class="button" onclick="return showSend('<%# Eval("PLANID") %>','<%# Eval("PLANTYPE") %>')">
+                                    <button class="button" onclick="return showSend('<%# Eval("ID") %>','<%# Eval("PLANID") %>','<%# Eval("PLANTYPE") %>')">
                                         发送计划</button>
                                 </td>
                             </tr>

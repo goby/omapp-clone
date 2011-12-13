@@ -23,6 +23,22 @@
                 </tr>
                 <tr>
                     <th style="width: 100px;">
+                        开始时间</th>
+                    <td>
+                        <asp:TextBox ID="txtStartTimeYJJH" runat="server" CssClass="text" 
+                            MaxLength="10" Width="300px"  onclick="setday(this);"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 100px;">
+                        结束时间</th>
+                    <td>
+                        <asp:TextBox ID="txtEndTimeYJJH" runat="server" CssClass="text" MaxLength="10" 
+                            Width="300px"  onclick="setday(this);"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 100px;">
                         信源
                     </th>
                     <td>
@@ -109,6 +125,22 @@
                         信息类别</th>
                     <td>
                         <asp:Literal ID="ltinfoTypeXXXQ" runat="server"></asp:Literal>
+                    </td>
+                </tr>
+                                <tr>
+                    <th style="width: 100px;">
+                        开始时间</th>
+                    <td>
+                        <asp:TextBox ID="txtStartTimeXXXQ" runat="server" CssClass="text" 
+                            MaxLength="10" Width="300px"  onclick="setday(this);"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 100px;">
+                        结束时间</th>
+                    <td>
+                        <asp:TextBox ID="txtEndTimeXXXQ" runat="server" CssClass="text" MaxLength="10" 
+                            Width="300px"  onclick="setday(this);"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
@@ -208,6 +240,22 @@
                         <asp:Literal ID="ltinfotypeGZJH" runat="server"></asp:Literal>
                     </td>
                 </tr>
+                                <tr>
+                    <th style="width: 100px;">
+                        开始时间</th>
+                    <td>
+                        <asp:TextBox ID="txtStartTimeGZJH" runat="server" CssClass="text" 
+                            MaxLength="10" Width="300px"  onclick="setday(this);"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 100px;">
+                        结束时间</th>
+                    <td>
+                        <asp:TextBox ID="txtEndTimeGZJH" runat="server" CssClass="text" MaxLength="10" 
+                            Width="300px"  onclick="setday(this);"></asp:TextBox>
+                    </td>
+                </tr>
                 <tr>
                     <th style="width: 100px;">
                         信源
@@ -303,6 +351,22 @@
                         信息类别</th>
                     <td>
                         <asp:Literal ID="ltinfotypeTYSJ" runat="server"></asp:Literal>
+                    </td>
+                </tr>
+                                <tr>
+                    <th style="width: 100px;">
+                        开始时间</th>
+                    <td>
+                        <asp:TextBox ID="txtStartTimeTYSJ" runat="server" CssClass="text" 
+                            MaxLength="10" Width="300px"  onclick="setday(this);"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 100px;">
+                        结束时间</th>
+                    <td>
+                        <asp:TextBox ID="txtEndTimeTYSJ" runat="server" CssClass="text" MaxLength="10" 
+                            Width="300px"  onclick="setday(this);"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
