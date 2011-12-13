@@ -47,6 +47,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public string DataClass { get; set; }
         public string Reserve { get; set; }
 
+        public string Satid { get; set; }
+        public string IType { get; set; }
+        public string ICode { get; set; }
         /// <summary>
         /// 占2个字节，用无符号二进制整数表示，
         /// 量化单位为1天，北京时2000年1月1日计为第1天
@@ -57,6 +60,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 量化单位为0.1ms
         /// </summary>
         public string T { get; set; }
+        public string Times { get; set; }
         /// <summary>
         /// 4个字节，用无符号二进制整数表示，
         /// 量化单位为0.1m
@@ -73,11 +77,11 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 占4个字节，用无符号二进制整数表示，量化单位为2E-22度
         /// </summary>
-        public string Ohm { get; set; }
+        public string Q { get; set; }
         /// <summary>
         /// 占4个字节，用无符号二进制整数表示，量化单位为2E-22度
         /// </summary>
-        public string Omega{ get; set; }
+        public string W{ get; set; }
         /// <summary>
         /// 占4个字节，用无符号二进制整数表示，量化单位为2E-22度
         /// </summary>
@@ -89,7 +93,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 占4个字节，用二进制整数补码表示，量化单位为2E-20秒/天
         /// </summary>
-        public string Pi { get; set; }
+        public string DELTP { get; set; }
         /// <summary>
         /// 4个字节，用无符号二进制整数表示，量化单位为0.1m
         /// </summary>
@@ -98,6 +102,22 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 4个字节，用无符号二进制整数表示，量化单位为0.1m
         /// </summary>
         public string Rp { get; set; }
+        /// <summary>
+        /// 占3个字节，无符号二进制整数表示，量化单位为2E-16米2/千克
+        /// </summary>
+        public string CDSM { get; set; }
+        /// <summary>
+        /// 占3个字节，无符号二进制整数表示，量化单位为2E-16米2/千克
+        /// </summary>
+        public string KSM { get; set; }
+        /// <summary>
+        /// 各占4个字节，备用；700任务不用，固定填“0”
+        /// </summary>
+        public string KZ1 { get; set; }
+        /// <summary>
+        /// 各占4个字节，备用；700任务不用，固定填“0”
+        /// </summary>
+        public string KZ2 { get; set; }
         #endregion 
 
         #region -Methods-
@@ -160,18 +180,26 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                             DataLength = dr["DataLength"].ToString(),
                             DataClass = dr["DataClass"].ToString(),
                             Reserve = dr["RESERVE"].ToString(),
+                            Satid = dr["Satid"].ToString(),
+                            IType = dr["itype"].ToString(),
+                            ICode = dr["icode"].ToString(),
                             D = dr["D"].ToString(),
                             T = dr["T"].ToString(),
+                            Times = dr["Times"].ToString(),
                             A = dr["A"].ToString(),
                             E = dr["E"].ToString(),
                             I = dr["I"].ToString(),
-                            Ohm = dr["Ohm"].ToString(),
-                            Omega = dr["Omega"].ToString(),
+                            Q = dr["Q"].ToString(),
+                            W = dr["W"].ToString(),
                             M = dr["M"].ToString(),
                             P = dr["P"].ToString(),
-                            Pi = dr["Pi"].ToString(),
+                            DELTP = dr["Pi"].ToString(),
                             Ra = dr["Ra"].ToString(),
-                            Rp = dr["Rp"].ToString()
+                            Rp = dr["Rp"].ToString(),
+                            CDSM = dr["CDSM"].ToString(),
+                            KSM = dr["KSM"].ToString(),
+                            KZ1 = dr["KZ1"].ToString(),
+                            KZ2 = dr["KZ2"].ToString()
                         });
                     }
                 }
@@ -217,18 +245,26 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         DataLength = dr["DataLength"].ToString(),
                         DataClass = dr["DataClass"].ToString(),
                         Reserve = dr["RESERVE"].ToString(),
+                        Satid = dr["Satid"].ToString(),
+                        IType = dr["itype"].ToString(),
+                        ICode = dr["icode"].ToString(),
                         D = dr["D"].ToString(),
                         T = dr["T"].ToString(),
+                        Times = dr["Times"].ToString(),
                         A = dr["A"].ToString(),
                         E = dr["E"].ToString(),
                         I = dr["I"].ToString(),
-                        Ohm = dr["Ohm"].ToString(),
-                        Omega = dr["Omega"].ToString(),
+                        Q = dr["Q"].ToString(),
+                        W = dr["W"].ToString(),
                         M = dr["M"].ToString(),
                         P = dr["P"].ToString(),
-                        Pi = dr["Pi"].ToString(),
+                        DELTP = dr["Pi"].ToString(),
                         Ra = dr["Ra"].ToString(),
-                        Rp = dr["Rp"].ToString()
+                        Rp = dr["Rp"].ToString(),
+                        CDSM = dr["CDSM"].ToString(),
+                        KSM = dr["KSM"].ToString(),
+                        KZ1 = dr["KZ1"].ToString(),
+                        KZ2 = dr["KZ2"].ToString()
                     };
                 }
             }
@@ -270,18 +306,28 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_datalength",this.DataLength),
                 new OracleParameter("p_dataclass",this.DataClass),
                 new OracleParameter("p_Reserve",this.Reserve),
+                new OracleParameter("p_Satid",this.Satid),
+                new OracleParameter("p_IType",this.IType),
+                new OracleParameter("p_ICode",this.ICode),
+                new OracleParameter("p_Data_T",this.T),
+                new OracleParameter("p_Times",this.Times),
                 new OracleParameter("p_Data_D",this.D),
                 new OracleParameter("p_Data_T",this.T),
+                new OracleParameter("p_Times",this.Times),
                 new OracleParameter("p_Data_A",this.A),
                 new OracleParameter("p_Data_E",this.E),
                 new OracleParameter("p_Data_I",this.I),
-                new OracleParameter("p_Data_Ohm",this.Ohm),
-                new OracleParameter("p_Data_Omega",this.Omega),
+                new OracleParameter("p_Data_Ohm",this.Q),
+                new OracleParameter("p_Data_Omega",this.W),
                 new OracleParameter("p_Data_M",this.M),
                 new OracleParameter("p_Data_P",this.P),
-                new OracleParameter("p_Data_PI",this.Pi),
+                new OracleParameter("p_Data_PI",this.DELTP),
                 new OracleParameter("p_Data_RA",this.Ra),
                 new OracleParameter("p_Data_RP",this.Rp),
+                new OracleParameter("p_Data_CDSM",this.CDSM),
+                new OracleParameter("p_Data_KSM",this.KSM),
+                new OracleParameter("p_Data_KZ1",this.KZ1),
+                new OracleParameter("p_Data_KZ2",this.KZ2),
                 opId,
                 p
             });

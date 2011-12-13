@@ -170,6 +170,24 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
 
+        public FieldVerifyResult Update()
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _database.SpExecuteNonQuery("up_jh_update", new OracleParameter[]{
+                new OracleParameter("v_Id",this.Id),
+                new OracleParameter("p_TaskID",this.TaskID),
+                new OracleParameter("p_StartTime",(DateTime)this.StartTime),
+                new OracleParameter("p_EndTime",(DateTime)this.EndTime),
+                p
+            });
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+        }
+
         public JH SelectByPlanTypeAndPlanID(string plantype,int planid)
         {
             OracleParameter p = PrepareRefCursor();
