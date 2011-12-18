@@ -26,10 +26,10 @@
     <item text="中心资源" value="03"></item>
   </ResourceType>
   <ResourceStatus description="资源管理资源状态列表">
-    <item text="健康" value="01"></item>
-    <item text="不可用" value="02"></item>
+    <item text="正常" value="01"></item>
+    <item text="异常" value="02"></item>
     <item text="占用中" value="03"></item>
-    <item text="已删除" value="03"></item>
+    <item text="已删除" value="04"></item>
   </ResourceStatus>
   <GroundResourceOwner description="地面站资源管理单位列表">
     <item text="总参" value="总参"></item>

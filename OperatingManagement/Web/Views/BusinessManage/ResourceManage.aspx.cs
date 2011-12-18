@@ -91,9 +91,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindRepeater();
                     return;
                 }
-                
+
                 string url = @"~/Views/BusinessManage/ResourceManage.aspx";
-                string resourceType = dplResourceType.SelectedValue;
+                string resourceType = lbtnEdit.CommandName;
                 switch (resourceType)
                 {
                     case "01"://地面站资源
@@ -107,6 +107,41 @@ namespace OperatingManagement.Web.Views.BusinessManage
                         break;
                 }
                 Response.Redirect(url);
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch
+            { }
+        }
+
+        protected void lbtnDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LinkButton lbtnDelete = (sender as LinkButton);
+                if (lbtnDelete == null)
+                {
+                    BindRepeater();
+                    return;
+                }
+                int id = 0;
+                int.TryParse(lbtnDelete.CommandArgument, out id);
+                string resourceType = lbtnDelete.CommandName;
+                Framework.FieldVerifyResult result = DeleteResource(id, resourceType);
+                switch (result)
+                {
+                    case Framework.FieldVerifyResult.Error:
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "javascript:alert(\"发生了数据错误，无法完成请求的操作。\"", true);
+                        break;
+                    case Framework.FieldVerifyResult.Success:
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "javascript:alert(\"删除资源成功。\"", true);
+                        BindRepeater();
+                        break;
+                    default:
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "javascript:alert(\"发生了数据错误，无法完成请求的操作。\"", true);
+                        BindRepeater();
+                        break;
+                }
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
@@ -208,6 +243,53 @@ namespace OperatingManagement.Web.Views.BusinessManage
             cpCenterResourcePager.BindToControl = rpGroundResourceList;
             rpCenterResourceList.DataSource = cpCenterResourcePager.DataSourcePaged;
             rpCenterResourceList.DataBind();
+        }
+        /// <summary>
+        /// 逻辑删除资源信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="resourceType"></param>
+        /// <returns></returns>
+        private Framework.FieldVerifyResult DeleteResource(int id, string resourceType)
+        {
+            Framework.FieldVerifyResult result = 0;
+            switch (resourceType)
+            {
+                case "01"://地面站资源
+                    GroundResource groundResource = new GroundResource();
+                    groundResource.Id = id;
+                    groundResource = groundResource.SelectByID();
+                    if (groundResource != null)
+                    {
+                        groundResource.Status = 2;
+                        groundResource.UpdatedTime = DateTime.Now;
+                        result = groundResource.Update();
+                    }
+                    break;
+                case "02"://通信资源
+                    CommunicationResource communicationResource = new CommunicationResource();
+                    communicationResource.Id = id;
+                    communicationResource = communicationResource.SelectByID();
+                    if (communicationResource != null)
+                    {
+                        communicationResource.Status = 2;
+                        communicationResource.UpdatedTime = DateTime.Now;
+                        result = communicationResource.Update();
+                    }
+                    break;
+                case "03"://中心资源
+                    CenterResource centerResource = new CenterResource();
+                    centerResource.Id = id;
+                    centerResource = centerResource.SelectByID();
+                    if (centerResource != null)
+                    {
+                        centerResource.Status = 2;
+                        centerResource.UpdatedTime = DateTime.Now;
+                        result = centerResource.Update();
+                    }
+                    break;
+            }
+            return result;
         }
 
         #endregion

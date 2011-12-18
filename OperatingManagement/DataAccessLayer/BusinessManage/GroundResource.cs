@@ -162,6 +162,48 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             }
             return infoList;
         }
+        /// <summary>
+        /// 根据地面站资源在某个时间点状态做查询
+        /// </summary>
+        /// <param name="status">全部:"";正常:01;异常:02;占用中:03;已删除:04</param>
+        /// <param name="timePoint">地面站资源在某个时间点</param>
+        /// <returns></returns>
+        public List<GroundResource> Search(string status, DateTime timePoint)
+        {
+            OracleParameter o_Cursor = PrepareRefCursor();
+            DataSet ds = _dataBase.SpExecuteDataSet("UP_GroundRes_Search", new OracleParameter[] { 
+                new OracleParameter("p_Status", status),
+                new OracleParameter("p_TimePoint", timePoint),
+                o_Cursor });
+
+            List<GroundResource> infoList = new List<GroundResource>();
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    GroundResource info = new GroundResource()
+                    {
+                        Id = Convert.ToInt32(ds.Tables[0].Rows[0]["GRID"]),
+                        GRName = ds.Tables[0].Rows[0]["GRName"].ToString(),
+                        GRCode = ds.Tables[0].Rows[0]["GRCode"].ToString(),
+                        EquipmentName = ds.Tables[0].Rows[0]["EquipmentName"].ToString(),
+                        EquipmentCode = ds.Tables[0].Rows[0]["EquipmentCode"].ToString(),
+                        Owner = ds.Tables[0].Rows[0]["Owner"].ToString(),
+                        Coordinate = ds.Tables[0].Rows[0]["Coordinate"].ToString(),
+                        FunctionType = ds.Tables[0].Rows[0]["FunctionType"].ToString(),
+                        Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
+                        ExtProperties = ds.Tables[0].Rows[0]["ExtProperties"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ExtProperties"].ToString(),
+                        CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
+                        CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedUserID"]),
+                        UpdatedTime = ds.Tables[0].Rows[0]["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["UpdatedTime"]),
+                        UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["UpdatedUserID"])
+                    };
+
+                    infoList.Add(info);
+                }
+            }
+            return infoList;
+        }
 
         /// <summary>
         /// 添加地面站资源
