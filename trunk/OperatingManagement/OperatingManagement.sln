@@ -92,6 +92,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		变更说明.txt = 变更说明.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "资源管理", "资源管理", "{1D9F9852-A5D7-4EE8-8C25-7EABF735EE08}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\业务管理\资源管理\DT_01_地面站资源.sql = Scripts\业务管理\资源管理\DT_01_地面站资源.sql
+		Scripts\业务管理\资源管理\DT_02_通信资源.sql = Scripts\业务管理\资源管理\DT_02_通信资源.sql
+		Scripts\业务管理\资源管理\DT_03_中心资源.sql = Scripts\业务管理\资源管理\DT_03_中心资源.sql
+		Scripts\业务管理\资源管理\DT_04_健康状态.sql = Scripts\业务管理\资源管理\DT_04_健康状态.sql
+		Scripts\业务管理\资源管理\DT_05_占用状态.sql = Scripts\业务管理\资源管理\DT_05_占用状态.sql
+		Scripts\业务管理\资源管理\TB_01_地面站资源.sql = Scripts\业务管理\资源管理\TB_01_地面站资源.sql
+		Scripts\业务管理\资源管理\TB_02_通信资源.sql = Scripts\业务管理\资源管理\TB_02_通信资源.sql
+		Scripts\业务管理\资源管理\TB_03_中心资源.sql = Scripts\业务管理\资源管理\TB_03_中心资源.sql
+		Scripts\业务管理\资源管理\TB_04_健康状态.sql = Scripts\业务管理\资源管理\TB_04_健康状态.sql
+		Scripts\业务管理\资源管理\TB_05_占用状态.sql = Scripts\业务管理\资源管理\TB_05_占用状态.sql
+		Scripts\业务管理\资源管理\UP_01_地面站资源.sql = Scripts\业务管理\资源管理\UP_01_地面站资源.sql
+		Scripts\业务管理\资源管理\UP_02_通信资源.sql = Scripts\业务管理\资源管理\UP_02_通信资源.sql
+		Scripts\业务管理\资源管理\UP_03_中心资源.sql = Scripts\业务管理\资源管理\UP_03_中心资源.sql
+		Scripts\业务管理\资源管理\UP_04_健康状态.sql = Scripts\业务管理\资源管理\UP_04_健康状态.sql
+		Scripts\业务管理\资源管理\UP_05_占用状态.sql = Scripts\业务管理\资源管理\UP_05_占用状态.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -285,6 +304,7 @@ Global
 		{F108CA3D-8C70-47C0-8DDB-2A62CBBAC211} = {7BCFCF29-0B2F-4036-AF46-3BBEFC8D8C2E}
 		{952B9C18-9A9B-4796-B54A-58A8B8BC35F7} = {58EE1BBF-1809-41D4-BA01-D77870598DD8}
 		{EBA8D604-31C5-46EF-816A-AF484A90030D} = {58EE1BBF-1809-41D4-BA01-D77870598DD8}
+		{1D9F9852-A5D7-4EE8-8C25-7EABF735EE08} = {58EE1BBF-1809-41D4-BA01-D77870598DD8}
 		{6DF9CDAD-51C8-4082-ABE9-015545834F7F} = {86A5BA45-B6D4-4360-9C51-F44242AF015F}
 		{AD1E6844-A8A5-4659-8796-B2D6080D7A5D} = {86A5BA45-B6D4-4360-9C51-F44242AF015F}
 		{07E34555-8503-4E7D-A158-10D46143B29E} = {86A5BA45-B6D4-4360-9C51-F44242AF015F}

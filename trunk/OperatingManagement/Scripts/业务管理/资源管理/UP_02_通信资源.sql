@@ -100,3 +100,46 @@ begin
 end;
 
 
+create or replace procedure UP_ComRes_Search
+(
+       p_Status varchar2,
+       p_TimePoint date,
+       o_Cursor out sys_refcursor
+)
+is
+begin
+       IF Nvl(p_Status,'')='' Or p_Status='04' Then--全部、删除
+         open o_Cursor for
+             Select * From TB_CommunicationResource 
+              Where (Status=p_Status Or Nvl(p_Status,'')='') 
+             Order By CreatedTime Desc;
+       Elsif p_Status='01' Then --正常
+         open o_Cursor for
+             Select * From TB_CommunicationResource 
+             Where CRID not in (Select ResourceID From TB_HEALTHSTATUS 
+                                 Where ResourceType=2
+                                   And Status=2 
+                                   And BeginTime<=p_TimePoint 
+                                   And EndTime>=p_TimePoint)
+             Order By CreatedTime Desc;
+       Elsif p_Status='02' Then --异常
+          open o_Cursor for
+             Select * From TB_CommunicationResource 
+                 Where CRID in (Select ResourceID From TB_HEALTHSTATUS 
+                                 Where ResourceType=2
+                                   And Status=2 
+                                   And BeginTime<=p_TimePoint 
+                                   And EndTime>=p_TimePoint)
+                 Order By CreatedTime Desc;
+       Elsif p_Status='03' Then --占用中
+          open o_Cursor for
+             Select * From TB_CommunicationResource 
+                 Where CRID in (Select ResourceID From TB_USESTATUS 
+                                 Where ResourceType=2
+                                   And BeginTime<=p_TimePoint 
+                                   And EndTime>=p_TimePoint)
+                 Order By CreatedTime Desc;
+       
+       End IF;
+end;
+

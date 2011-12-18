@@ -147,10 +147,10 @@
                         <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument='<%# Eval("Id")%>'>查看状态1</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnEdit" runat="server" OnClick="lbtnEdit_Click" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnEdit" runat="server" OnClick="lbtnEdit_Click" CommandName="01" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="LinkButton3" runat="server" OnClick="lbtnEdit_Click" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnDelete" runat="server" OnClick="lbtnDelete_Click" OnClientClick="javascript:return confirm('是否删除该资源？')" CommandName="01" CommandArgument='<%# Eval("Id")%>'>删除</asp:LinkButton>
                     </td>
                 </tr>
             </ItemTemplate>

@@ -147,6 +147,46 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
+        /// 根据通信资源在某个时间点状态做查询
+        /// </summary>
+        /// <param name="status">全部:"";正常:01;异常:02;占用中:03;已删除:04</param>
+        /// <param name="timePoint">中心资源在某个时间点</param>
+        /// <returns></returns>
+        public List<CommunicationResource> Search(string status, DateTime timePoint)
+        {
+            OracleParameter o_Cursor = PrepareRefCursor();
+            DataSet ds = _dataBase.SpExecuteDataSet("UP_ComRes_Search", new OracleParameter[] {  
+                new OracleParameter("p_Status", status),
+                new OracleParameter("p_TimePoint", timePoint),
+                o_Cursor });
+
+            List<CommunicationResource> infoList = new List<CommunicationResource>();
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    CommunicationResource info = new CommunicationResource()
+                    {
+                        Id = Convert.ToInt32(ds.Tables[0].Rows[0]["CRID"]),
+                        RouteName = ds.Tables[0].Rows[0]["RouteName"].ToString(),
+                        RouteCode = ds.Tables[0].Rows[0]["RouteCode"].ToString(),
+                        Direction = ds.Tables[0].Rows[0]["Direction"].ToString(),
+                        BandWidth = ds.Tables[0].Rows[0]["BandWidth"].ToString(),
+                        Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
+                        ExtProperties = ds.Tables[0].Rows[0]["ExtProperties"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ExtProperties"].ToString(),
+                        CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
+                        CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedUserID"]),
+                        UpdatedTime = ds.Tables[0].Rows[0]["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["UpdatedTime"]),
+                        UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["UpdatedUserID"])
+                    };
+
+                    infoList.Add(info);
+                }
+            }
+            return infoList;
+        }
+
+        /// <summary>
         /// 添加通信资源
         /// </summary>
         /// <returns></returns>
