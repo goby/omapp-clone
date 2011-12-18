@@ -543,6 +543,10 @@
       <Project>{2F26ECB8-6AE6-44CC-9C03-8A23B6D8CB37}</Project>
       <Name>Security</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServicesKernel\ServicesKernel.csproj">
+      <Project>{755C37F8-272A-43A0-8055-287AC82D185E}</Project>
+      <Name>ServicesKernel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WebKernel\WebKernel.csproj">
       <Project>{C3A23001-F7C2-4174-BB54-7A60A1A20F46}</Project>
       <Name>WebKernel</Name>
