@@ -107,39 +107,47 @@ create or replace procedure UP_CenterRes_Search
 )
 is
 begin
-       IF Nvl(p_Status,'')='' Or p_Status='04' Then--全部、删除
+       IF p_Status='' Or p_Status Is Null Then--全部 
          open o_Cursor for
-             Select * From TB_CenterResource 
-              Where (Status=p_Status Or Nvl(p_Status,'')='') 
+             Select * From TB_CenterResource
+             Order By CreatedTime Desc;
+       Elsif p_Status='04' Then---删除
+         open o_Cursor for
+             Select * From TB_CenterResource
+             Where Status=2
              Order By CreatedTime Desc;
        Elsif p_Status='01' Then --正常
          open o_Cursor for
-             Select * From TB_CenterResource 
-             Where CRID not in (Select ResourceID From TB_HEALTHSTATUS 
+             Select * From TB_CenterResource
+             Where Status=1
+               And CRID not in (Select ResourceID From TB_HEALTHSTATUS
                                  Where ResourceType=3
-                                   And Status=2 
-                                   And BeginTime<=p_TimePoint 
+                                   And Status=2
+                                   And BeginTime<=p_TimePoint
                                    And EndTime>=p_TimePoint)
              Order By CreatedTime Desc;
        Elsif p_Status='02' Then --异常
           open o_Cursor for
-             Select * From TB_CenterResource 
-                 Where CRID in (Select ResourceID From TB_HEALTHSTATUS 
+             Select * From TB_CenterResource
+                 Where Status=1
+                   And CRID in (Select ResourceID From TB_HEALTHSTATUS
                                  Where ResourceType=3
-                                   And Status=2 
-                                   And BeginTime<=p_TimePoint 
+                                   And Status=2
+                                   And BeginTime<=p_TimePoint
                                    And EndTime>=p_TimePoint)
                  Order By CreatedTime Desc;
        Elsif p_Status='03' Then --占用中
           open o_Cursor for
-             Select * From TB_CenterResource 
-                 Where CRID in (Select ResourceID From TB_USESTATUS 
-                                 Where ResourceType=3 
-                                   And BeginTime<=p_TimePoint 
+             Select * From TB_CenterResource
+                 Where Status=1
+                   And CRID in (Select ResourceID From TB_USESTATUS
+                                 Where ResourceType=3
+                                   And BeginTime<=p_TimePoint
                                    And EndTime>=p_TimePoint)
                  Order By CreatedTime Desc;
-       
+
        End IF;
 end;
+
 
 

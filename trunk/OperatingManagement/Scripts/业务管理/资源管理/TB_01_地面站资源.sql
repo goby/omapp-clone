@@ -6,9 +6,9 @@ create table TB_GROUNDRESOURCE
   grcode        NVARCHAR2(50) not null,
   equipmentname NVARCHAR2(50) not null,
   equipmentcode NVARCHAR2(50) not null,
-  owner         NVARCHAR2(10) not null,
+  owner         NVARCHAR2(20) not null,
   coordinate    NVARCHAR2(20) not null,
-  functiontype  NVARCHAR2(20) not null,
+  functiontype  NVARCHAR2(50) not null,
   status        NUMBER(2) not null,
   extproperties NVARCHAR2(2000),
   createdtime   DATE not null,
@@ -22,7 +22,7 @@ tablespace TSHTC
   maxtrans 255
   storage
   (
-    initial 64
+    initial 16K
     minextents 1
     maxextents unlimited
   );
