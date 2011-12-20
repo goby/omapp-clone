@@ -63,7 +63,7 @@ end;
 
 create or replace procedure UP_GroundRes_Update
 (
-       p_GRID out TB_GroundResource.GRID%type,
+       p_GRID TB_GroundResource.GRID%type,
        p_GRName TB_GroundResource.GRName%type,
        p_GRCode TB_GroundResource.GRCode%type,
        p_EquipmentName TB_GroundResource.EquipmentName%type,
@@ -117,38 +117,47 @@ create or replace procedure UP_GroundRes_Search
 )
 is
 begin
-       IF Nvl(p_Status,'')='' Or p_Status='04' Then--全部、删除
+       IF p_Status='' Or p_Status Is Null Then--全部
+
          open o_Cursor for
-             Select * From TB_GroundResource 
-              Where (Status=p_Status Or Nvl(p_Status,'')='') 
+             Select * From TB_GroundResource
              Order By CreatedTime Desc;
+       Elsif p_Status='04' Then---删除
+         open o_Cursor for
+               Select * From TB_GroundResource
+               Where Status=2
+               Order By CreatedTime Desc;
        Elsif p_Status='01' Then --正常
          open o_Cursor for
-             Select * From TB_GroundResource 
-             Where GRID not in (Select ResourceID From TB_HEALTHSTATUS 
-                                 Where ResourceType=1 
-                                   And Status=2 
-                                   And BeginTime<=p_TimePoint 
+             Select * From TB_GroundResource
+             Where Status=1
+               And GRID not in (Select ResourceID From TB_HEALTHSTATUS
+                                 Where ResourceType=1
+                                   And Status=2
+                                   And BeginTime<=p_TimePoint
                                    And EndTime>=p_TimePoint)
              Order By CreatedTime Desc;
        Elsif p_Status='02' Then --异常
           open o_Cursor for
-             Select * From TB_GroundResource 
-             Where GRID in (Select ResourceID From TB_HEALTHSTATUS 
-                                 Where ResourceType=1 
-                                   And Status=2 
-                                   And BeginTime<=p_TimePoint 
+             Select * From TB_GroundResource
+             Where Status=1
+               And GRID in (Select ResourceID From TB_HEALTHSTATUS
+                                 Where ResourceType=1
+                                   And Status=2
+                                   And BeginTime<=p_TimePoint
                                    And EndTime>=p_TimePoint)
              Order By CreatedTime Desc;
        Elsif p_Status='03' Then --占用中
           open o_Cursor for
-             Select * From TB_GroundResource 
-             Where GRID in (Select ResourceID From TB_USESTATUS 
-                                 Where ResourceType=1 
-                                   And BeginTime<=p_TimePoint 
+             Select * From TB_GroundResource
+             Where Status=1
+               And GRID in (Select ResourceID From TB_USESTATUS
+                                 Where ResourceType=1
+                                   And BeginTime<=p_TimePoint
                                    And EndTime>=p_TimePoint)
              Order By CreatedTime Desc;
-       
+
        End IF;
 end;
+
 

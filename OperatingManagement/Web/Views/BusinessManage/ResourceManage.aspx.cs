@@ -210,7 +210,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string resourceStatus = dplResourceStatus.SelectedValue;
 
             GroundResource groundResource = new GroundResource();
-            cpGroundResourcePager.DataSource = groundResource.SelectAll();
+            cpGroundResourcePager.DataSource = groundResource.Search(resourceStatus, DateTime.Now);
             cpGroundResourcePager.PageSize = this.SiteSetting.PageSize;
             cpGroundResourcePager.BindToControl = rpGroundResourceList;
             rpGroundResourceList.DataSource = cpGroundResourcePager.DataSourcePaged;
@@ -224,7 +224,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string resourceStatus = dplResourceStatus.SelectedValue;
 
             CommunicationResource communicationResource = new CommunicationResource();
-            cpCommunicationResourcePager.DataSource = communicationResource.SelectAll();
+            cpCommunicationResourcePager.DataSource = communicationResource.Search(resourceStatus, DateTime.Now);
             cpCommunicationResourcePager.PageSize = this.SiteSetting.PageSize;
             cpCommunicationResourcePager.BindToControl = rpCommunicationResourceList;
             rpCommunicationResourceList.DataSource = cpCommunicationResourcePager.DataSourcePaged;
@@ -238,7 +238,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string resourceStatus = dplResourceStatus.SelectedValue;
 
             CenterResource centerResource = new CenterResource();
-            cpCenterResourcePager.DataSource = centerResource.SelectAll();
+            cpCenterResourcePager.DataSource = centerResource.Search(resourceStatus, DateTime.Now);
             cpCenterResourcePager.PageSize = this.SiteSetting.PageSize;
             cpCenterResourcePager.BindToControl = rpGroundResourceList;
             rpCenterResourceList.DataSource = cpCenterResourcePager.DataSourcePaged;
@@ -290,6 +290,24 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     break;
             }
             return result;
+        }
+        /// <summary>
+        /// 根据地面资源功能类型值获得文本
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        protected string GetGroundResourceFunctionType(string valueString)
+        {
+            string textString = string.Empty;
+            if (!string.IsNullOrEmpty(valueString))
+            {
+                string[] valueArray = valueString.Split(new char[] { ',', '，', ';', '；' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string value in valueArray)
+                {
+                    textString += SystemParameters.GetSystemParameterText(SystemParametersType.GroundResourceFunctionType, value) + ",";
+                }
+            }
+            return textString.Trim(new char[] { ',' });
         }
 
         #endregion

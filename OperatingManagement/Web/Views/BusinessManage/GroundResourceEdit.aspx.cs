@@ -126,6 +126,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                         break;
                     case Framework.FieldVerifyResult.Success:
                         msg = "修改地面站资源成功。";
+                        BindControls();
                         break;
                     default:
                         msg = "发生未知错误，操作失败。";

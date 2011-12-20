@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ResourceManage.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.ResourceManage" %>
+<%@ Import Namespace="OperatingManagement.DataAccessLayer.BusinessManage" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
  <style type="text/css">
         .norText
@@ -135,13 +136,13 @@
                         <%# Eval("EquipmentCode")%>
                     </td>
                     <td>
-                        <%# Eval("Owner")%>
+                        <%# SystemParameters.GetSystemParameterText(SystemParametersType.GroundResourceOwner, Eval("Owner").ToString())%>
                     </td>
                     <td>
-                        <%# Eval("Coordinate")%>
+                        <%# SystemParameters.GetSystemParameterText(SystemParametersType.GroundResourceCoordinate, Eval("Coordinate").ToString())%>
                     </td>
                     <td>
-                        <%# Eval("FunctionType")%>
+                        <%# GetGroundResourceFunctionType(Eval("FunctionType").ToString())%>
                     </td>
                     <td>
                         <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument='<%# Eval("Id")%>'>查看状态1</asp:LinkButton>
@@ -186,20 +187,14 @@
                         <th style="width: 10%;">
                             带宽
                         </th>
-                        <th style="width: 10%;">
-                            创建时间
-                        </th>
-                        <th style="width: 10%;">
-                            修改时间
-                        </th>
-                        <th style="width: 10%;">
+                         <th style="width: 10%;">
                             查看状态1
                         </th>
                         <th style="width: 10%;">
-                            查看状态2
-                        </th>
-                        <th style="width: 10%;">
                             编辑
+                        </th>
+                         <th style="width: 10%;">
+                            删除
                         </th>
                     </tr>
                     <tbody id="tbCommunicationResourceList">
@@ -213,30 +208,20 @@
                         <%# Eval("RouteCode")%>
                     </td>
                     <td>
-                        <%# Eval("Direction")%>
+                        <%# SystemParameters.GetSystemParameterText(SystemParametersType.CommunicationResourceDirection, Eval("Direction").ToString())%>
                     </td>
                     <td>
                         <%# Eval("BandWidth")%>
                     </td>
                     <td>
-                        <%# Eval("Ddestination")%>
-                    </td>
-                    <td>
-                        <%# Eval("CreatedTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
-                    </td>
-                    <td>
-                        <%# Eval("UpdatedTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
-                    </td>
-                    <td>
                         <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument='<%# Eval("Id")%>'>查看状态1</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="LinkButton2" runat="server" CommandArgument='<%# Eval("Id")%>'>查看状态2</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnEdit" runat="server" OnClick="lbtnEdit_Click" CommandName="02" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnEdit" runat="server" OnClick="lbtnEdit_Click" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
-                    </td>
-                    
+                        <asp:LinkButton ID="lbtnDelete" runat="server" OnClick="lbtnDelete_Click" OnClientClick="javascript:return confirm('是否删除该资源？')" CommandName="02" CommandArgument='<%# Eval("Id")%>'>删除</asp:LinkButton>
+                    </td>         
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
@@ -272,19 +257,13 @@
                             最大数据处理量
                         </th>
                         <th style="width: 10%;">
-                            创建时间
-                        </th>
-                        <th style="width: 10%;">
-                            修改时间
-                        </th>
-                        <th style="width: 10%;">
                             查看状态1
                         </th>
                         <th style="width: 10%;">
-                            查看状态2
-                        </th>
-                        <th style="width: 10%;">
                             编辑
+                        </th>
+                         <th style="width: 10%;">
+                            删除
                         </th>
                     </tr>
                     <tbody id="tbCenterResourceList">
@@ -295,7 +274,7 @@
                         <%# Eval("EquipmentCode")%>
                     </td>
                     <td>
-                        <%# Eval("EquipmentType")%>
+                         <%# SystemParameters.GetSystemParameterText(SystemParametersType.CenterResourceEquipmentType, Eval("EquipmentType").ToString())%>
                     </td>
                     <td>
                         <%# Eval("SupportTask")%>
@@ -304,21 +283,14 @@
                         <%# Eval("DataProcess")%>
                     </td>
                     <td>
-                        <%# Eval("CreatedTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
-                    </td>
-                    <td>
-                        <%# Eval("UpdatedTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
-                    </td>
-                    <td>
                         <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument='<%# Eval("Id")%>'>查看状态1</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="LinkButton2" runat="server" CommandArgument='<%# Eval("Id")%>'>查看状态2</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnEdit" runat="server" OnClick="lbtnEdit_Click" CommandName="02" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnEdit" runat="server" OnClick="lbtnEdit_Click" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnDelete" runat="server" OnClick="lbtnDelete_Click" OnClientClick="javascript:return confirm('是否删除该资源？')" CommandName="02" CommandArgument='<%# Eval("Id")%>'>删除</asp:LinkButton>
                     </td>
-                    
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
