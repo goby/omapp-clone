@@ -183,6 +183,7 @@
     <Content Include="Views\PlanManage\ExperimentProgramDetail.aspx" />
     <Content Include="Views\PlanManage\ExperimentProgramList.aspx" />
     <Content Include="Views\PlanManage\NotSpaceTaskList.aspx" />
+    <Content Include="Views\BusinessManage\OrbitParaCalculate.aspx" />
     <Content Include="Views\PlanManage\OribitalQuantityDetail.aspx" />
     <Content Include="Views\PlanManage\OribitalQuantityList.aspx" />
     <Content Include="Views\PlanManage\PlanAdd.aspx" />
@@ -410,6 +411,12 @@
     </Compile>
     <Compile Include="Views\PlanManage\NotSpaceTaskList.aspx.designer.cs">
       <DependentUpon>NotSpaceTaskList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\OrbitParaCalculate.aspx.cs">
+      <DependentUpon>OrbitParaCalculate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\OrbitParaCalculate.aspx.designer.cs">
+      <DependentUpon>OrbitParaCalculate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\PlanManage\OribitalQuantityDetail.aspx.cs">
       <DependentUpon>OribitalQuantityDetail.aspx</DependentUpon>
