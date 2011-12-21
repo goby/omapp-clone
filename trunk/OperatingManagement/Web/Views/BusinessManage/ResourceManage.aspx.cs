@@ -80,8 +80,38 @@ namespace OperatingManagement.Web.Views.BusinessManage
             catch
             { }
         }
+        /// <summary>
+        /// 管理资源状态
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbtnManageResourceStatus_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LinkButton lbtnManageResourceStatus = (sender as LinkButton);
+                if (lbtnManageResourceStatus == null)
+                {
+                    BindRepeater();
+                    return;
+                }
+                string resourceID = lbtnManageResourceStatus.CommandArgument;
+                string resourceType = lbtnManageResourceStatus.CommandName;
+                string url = string.Format(@"~/Views/BusinessManage/ResourceStatusManage.aspx?id={0}&resourcetype={1}", Server.UrlEncode(resourceID), Server.UrlEncode(resourceType));
 
-        protected void lbtnEdit_Click(object sender, EventArgs e)
+                Response.Redirect(url);
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch
+            { }
+        }
+        /// <summary>
+        /// 编辑资源
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbtnEditResource_Click(object sender, EventArgs e)
         {
             try
             {
@@ -113,8 +143,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             catch
             { }
         }
-
-        protected void lbtnDelete_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 删除资源
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbtnDeleteResource_Click(object sender, EventArgs e)
         {
             try
             {
@@ -131,14 +165,14 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 switch (result)
                 {
                     case Framework.FieldVerifyResult.Error:
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "javascript:alert(\"发生了数据错误，无法完成请求的操作。\"", true);
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生了数据错误，无法完成请求的操作。\")", true);
                         break;
                     case Framework.FieldVerifyResult.Success:
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "javascript:alert(\"删除资源成功。\"", true);
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"删除资源成功。\")", true);
                         BindRepeater();
                         break;
                     default:
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "javascript:alert(\"发生了数据错误，无法完成请求的操作。\"", true);
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生了数据错误，无法完成请求的操作。\")", true);
                         BindRepeater();
                         break;
                 }
