@@ -110,13 +110,13 @@
                             功能类型
                         </th>
                         <th style="width: 10%;">
-                            查看状态1
+                            管理状态
                         </th>
                         <th style="width: 10%;">
-                            编辑
+                            编辑资源
                         </th>
                          <th style="width: 10%;">
-                            删除
+                            删除资源
                         </th>
                     </tr>
                     <tbody id="tbGroundResourceList">
@@ -145,13 +145,13 @@
                         <%# GetGroundResourceFunctionType(Eval("FunctionType").ToString())%>
                     </td>
                     <td>
-                        <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument='<%# Eval("Id")%>'>查看状态1</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="01"  CommandArgument='<%# Eval("Id")%>'>管理状态</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnEdit" runat="server" OnClick="lbtnEdit_Click" CommandName="01" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnEditResource" runat="server" OnClick="lbtnEditResource_Click" CommandName="01" CommandArgument='<%# Eval("Id")%>'>编辑资源</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnDelete" runat="server" OnClick="lbtnDelete_Click" OnClientClick="javascript:return confirm('是否删除该资源？')" CommandName="01" CommandArgument='<%# Eval("Id")%>'>删除</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnDeleteResource" runat="server" OnClick="lbtnDeleteResource_Click" OnClientClick="javascript:return confirm('是否删除该资源？')" CommandName="01" CommandArgument='<%# Eval("Id")%>'>删除资源</asp:LinkButton>
                     </td>
                 </tr>
             </ItemTemplate>
@@ -188,13 +188,13 @@
                             带宽
                         </th>
                          <th style="width: 10%;">
-                            查看状态1
+                            管理状态
                         </th>
                         <th style="width: 10%;">
-                            编辑
+                            编辑资源
                         </th>
                          <th style="width: 10%;">
-                            删除
+                            删除资源
                         </th>
                     </tr>
                     <tbody id="tbCommunicationResourceList">
@@ -214,14 +214,14 @@
                         <%# Eval("BandWidth")%>
                     </td>
                     <td>
-                        <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument='<%# Eval("Id")%>'>查看状态1</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="02"  CommandArgument='<%# Eval("Id")%>'>管理状态</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnEdit" runat="server" OnClick="lbtnEdit_Click" CommandName="02" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnEditResource" runat="server" OnClick="lbtnEditResource_Click" CommandName="02" CommandArgument='<%# Eval("Id")%>'>编辑资源</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnDelete" runat="server" OnClick="lbtnDelete_Click" OnClientClick="javascript:return confirm('是否删除该资源？')" CommandName="02" CommandArgument='<%# Eval("Id")%>'>删除</asp:LinkButton>
-                    </td>         
+                        <asp:LinkButton ID="lbtnDeleteResource" runat="server" OnClick="lbtnDeleteResource_Click" OnClientClick="javascript:return confirm('是否删除该资源？')" CommandName="02" CommandArgument='<%# Eval("Id")%>'>删除资源</asp:LinkButton>
+                    </td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
@@ -257,13 +257,13 @@
                             最大数据处理量
                         </th>
                         <th style="width: 10%;">
-                            查看状态1
+                            管理状态
                         </th>
                         <th style="width: 10%;">
-                            编辑
+                            编辑资源
                         </th>
                          <th style="width: 10%;">
-                            删除
+                            删除资源
                         </th>
                     </tr>
                     <tbody id="tbCenterResourceList">
@@ -282,14 +282,14 @@
                     <td>
                         <%# Eval("DataProcess")%>
                     </td>
-                    <td>
-                        <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument='<%# Eval("Id")%>'>查看状态1</asp:LinkButton>
+                   <td>
+                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="03"  CommandArgument='<%# Eval("Id")%>'>管理状态</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnEdit" runat="server" OnClick="lbtnEdit_Click" CommandName="02" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnEditResource" runat="server" OnClick="lbtnEditResource_Click" CommandName="03" CommandArgument='<%# Eval("Id")%>'>编辑资源</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnDelete" runat="server" OnClick="lbtnDelete_Click" OnClientClick="javascript:return confirm('是否删除该资源？')" CommandName="02" CommandArgument='<%# Eval("Id")%>'>删除</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnDeleteResource" runat="server" OnClick="lbtnDeleteResource_Click" OnClientClick="javascript:return confirm('是否删除该资源？')" CommandName="03" CommandArgument='<%# Eval("Id")%>'>删除资源</asp:LinkButton>
                     </td>
                 </tr>
             </ItemTemplate>
