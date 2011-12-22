@@ -4,7 +4,7 @@ create table TB_HEALTHSTATUS
   hsid          NUMBER(10) not null,
   resourceid    NUMBER(10) not null,
   resourcetype  NUMBER(2) not null,
-  functiontype  NUMBER(2),
+  functiontype  NVARCHAR2(50),
   status        NUMBER(2) not null,
   begintime     DATE,
   endtime       DATE,
@@ -19,7 +19,7 @@ tablespace TSHTC
   maxtrans 255
   storage
   (
-    initial 64
+    initial 16K
     minextents 1
     maxextents unlimited
   );
