@@ -20,7 +20,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             get
             {
-                string resourceType = "01";
+                string resourceType = "1";
                 if (Request.QueryString["resourcetype"] != null)
                 {
                     resourceType = Request.QueryString["resourcetype"];
@@ -63,13 +63,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 string resourceType = dplResourceType.SelectedValue;
                 switch (resourceType)
                 {
-                    case "01"://地面站资源
+                    case "1"://地面站资源
                         url = @"~/Views/BusinessManage/GroundResourceAdd.aspx";
                         break;
-                    case "02"://通信资源
+                    case "2"://通信资源
                         url = @"~/Views/BusinessManage/CommunicationResourceAdd.aspx";
                         break;
-                    case "03"://中心资源
+                    case "3"://中心资源
                         url = @"~/Views/BusinessManage/CenterResourceAdd.aspx";
                         break;
                 }
@@ -126,13 +126,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 string resourceType = lbtnEdit.CommandName;
                 switch (resourceType)
                 {
-                    case "01"://地面站资源
+                    case "1"://地面站资源
                         url = @"~/Views/BusinessManage/GroundResourceEdit.aspx?grid=" + Server.UrlEncode(lbtnEdit.CommandArgument);
                         break;
-                    case "02"://通信资源
+                    case "2"://通信资源
                         url = @"~/Views/BusinessManage/CommunicationResourceEdit.aspx?crid=" + Server.UrlEncode(lbtnEdit.CommandArgument);
                         break;
-                    case "03"://中心资源
+                    case "3"://中心资源
                         url = @"~/Views/BusinessManage/CenterResourceEdit.aspx?crid=" + Server.UrlEncode(lbtnEdit.CommandArgument);
                         break;
                 }
@@ -211,19 +211,19 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string resourceType = dplResourceType.SelectedValue;
             switch (resourceType)
             {
-                case "01"://地面站资源
+                case "1"://地面站资源
                     divGroundResource.Visible = true;
                     divCommunicationResource.Visible = false;
                     divCenterResource.Visible = false;
                     BindGroundResourceList();
                     break;
-                case "02"://通信资源
+                case "2"://通信资源
                     divGroundResource.Visible = false;
                     divCommunicationResource.Visible = true;
                     divCenterResource.Visible = false;
                     BindCommunicationResource();
                     break;
-                case "03"://中心资源
+                case "3"://中心资源
                     divGroundResource.Visible = false;
                     divCommunicationResource.Visible = false;
                     divCenterResource.Visible = true;
@@ -289,7 +289,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             Framework.FieldVerifyResult result = 0;
             switch (resourceType)
             {
-                case "01"://地面站资源
+                case "1"://地面站资源
                     GroundResource groundResource = new GroundResource();
                     groundResource.Id = id;
                     groundResource = groundResource.SelectByID();
@@ -300,7 +300,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                         result = groundResource.Update();
                     }
                     break;
-                case "02"://通信资源
+                case "2"://通信资源
                     CommunicationResource communicationResource = new CommunicationResource();
                     communicationResource.Id = id;
                     communicationResource = communicationResource.SelectByID();
@@ -311,7 +311,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                         result = communicationResource.Update();
                     }
                     break;
-                case "03"://中心资源
+                case "3"://中心资源
                     CenterResource centerResource = new CenterResource();
                     centerResource.Id = id;
                     centerResource = centerResource.SelectByID();

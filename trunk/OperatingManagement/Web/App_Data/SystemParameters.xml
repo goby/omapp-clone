@@ -21,15 +21,15 @@
     <item text="信宿三" value="A3"></item>
   </CenterOutputPolicyDdestination>
   <ResourceType description="资源管理资源类型列表">
-    <item text="地面站资源" value="01"></item>
-    <item text="通信资源" value="02"></item>
-    <item text="中心资源" value="03"></item>
+    <item text="地面站资源" value="1"></item>
+    <item text="通信资源" value="2"></item>
+    <item text="中心资源" value="3"></item>
   </ResourceType>
   <ResourceStatus description="资源管理资源状态列表">
-    <item text="正常" value="01"></item>
-    <item text="异常" value="02"></item>
-    <item text="占用中" value="03"></item>
-    <item text="已删除" value="04"></item>
+    <item text="正常" value="1"></item>
+    <item text="异常" value="2"></item>
+    <item text="占用中" value="3"></item>
+    <item text="已删除" value="4"></item>
   </ResourceStatus>
   <GroundResourceOwner description="地面站资源管理单位列表">
     <item text="总参" value="总参"></item>

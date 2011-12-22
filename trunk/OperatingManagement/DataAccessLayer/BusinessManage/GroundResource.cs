@@ -165,7 +165,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 根据地面站资源在某个时间点状态做查询
         /// </summary>
-        /// <param name="status">全部:"";正常:01;异常:02;占用中:03;已删除:04</param>
+        /// <param name="status">全部:"";正常:1;异常:2;占用中:3;已删除:4</param>
         /// <param name="timePoint">地面站资源在某个时间点</param>
         /// <returns></returns>
         public List<GroundResource> Search(string status, DateTime timePoint)

@@ -111,12 +111,12 @@ begin
          open o_Cursor for
              Select * From TB_CommunicationResource
              Order By CreatedTime Desc;
-       Elsif p_Status='04' Then---删除
+       Elsif p_Status='4' Then---删除
           open o_Cursor for
              Select * From TB_CommunicationResource
              Where Status=2
              Order By CreatedTime Desc;
-       Elsif p_Status='01' Then --正常
+       Elsif p_Status='1' Then --正常
          open o_Cursor for
              Select * From TB_CommunicationResource
              Where Status=1
@@ -126,7 +126,7 @@ begin
                                    And BeginTime<=p_TimePoint
                                    And EndTime>=p_TimePoint)
              Order By CreatedTime Desc;
-       Elsif p_Status='02' Then --异常
+       Elsif p_Status='2' Then --异常
           open o_Cursor for
              Select * From TB_CommunicationResource
                  Where Status=1 
@@ -136,7 +136,7 @@ begin
                                    And BeginTime<=p_TimePoint
                                    And EndTime>=p_TimePoint)
                  Order By CreatedTime Desc;
-       Elsif p_Status='03' Then --占用中
+       Elsif p_Status='3' Then --占用中
           open o_Cursor for
              Select * From TB_CommunicationResource
                  Where Status=1 
