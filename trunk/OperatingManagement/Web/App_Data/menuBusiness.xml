@@ -5,8 +5,8 @@
       <item id="1-2" title="西安卫星测控中心数据查询" roles="XiAnCeKongData.List" href="Views/BusinessManage/XiAnCeKongDataList.aspx" />
       <item id="1-3" title="测角测速测距数据查询" roles="MeasureData.List" href="Views/BusinessManage/MeasureDataList.aspx" />
       <item id="1-4" title="空间遥操作状态数据查询" roles="Anyone" href="#" />
-      <item id="1-5" title="资源信息管理" roles="Anyone" href="#" />
-      <item id="1-6" title="资源状态管理" roles="Anyone" href="#" />
+      <item id="1-5" title="资源信息管理" roles="Anyone" href="Views/BusinessManage/ResourceManage.aspx" />
+      <item id="1-6" title="资源状态管理" roles="Anyone" href="Views/BusinessManage/ResourceStatusManage.aspx" />
       <item id="1-7" title="资源调度计算" roles="Anyone" href="#" />
       <item id="1-8" title="轨道参数转换" roles="OrbitParaCal.Edit" href="Views/BusinessManage/OrbitParaCalculate.aspx" />
     </menu>

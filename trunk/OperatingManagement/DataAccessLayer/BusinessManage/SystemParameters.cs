@@ -24,7 +24,12 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         GroundResourceCoordinate = 8,
         GroundResourceFunctionType = 9,
         CommunicationResourceDirection = 10,
-        CenterResourceEquipmentType = 11
+        CenterResourceEquipmentType = 11,
+        StatusType = 12,
+        HealthStatus =13,
+        HealthStatusFunctionType = 14,
+        UseStatusUsedType = 15,
+        UseStatusCanBeUsed = 16
     }
 
     [Serializable]

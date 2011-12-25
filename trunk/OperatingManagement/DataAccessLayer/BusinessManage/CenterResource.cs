@@ -126,23 +126,33 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 {
                     CenterResource info = new CenterResource()
                     {
-                        Id = Convert.ToInt32(ds.Tables[0].Rows[0]["CRID"]),
-                        EquipmentCode = ds.Tables[0].Rows[0]["EquipmentCode"].ToString(),
-                        EquipmentType = ds.Tables[0].Rows[0]["EquipmentType"].ToString(),
-                        SupportTask = ds.Tables[0].Rows[0]["SupportTask"].ToString(),
-                        DataProcess = ds.Tables[0].Rows[0]["DataProcess"].ToString(),
-                        Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
-                        ExtProperties = ds.Tables[0].Rows[0]["ExtProperties"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ExtProperties"].ToString(),
-                        CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
-                        CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedUserID"]),
-                        UpdatedTime = ds.Tables[0].Rows[0]["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["UpdatedTime"]),
-                        UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["UpdatedUserID"])
+                        Id = Convert.ToInt32(dr["CRID"]),
+                        EquipmentCode = dr["EquipmentCode"].ToString(),
+                        EquipmentType = dr["EquipmentType"].ToString(),
+                        SupportTask = dr["SupportTask"].ToString(),
+                        DataProcess = dr["DataProcess"].ToString(),
+                        Status = Convert.ToInt32(dr["Status"]),
+                        ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
+                        CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
+                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["CreatedUserID"]),
+                        UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
+                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["UpdatedUserID"])
                     };
 
                     infoList.Add(info);
                 }
             }
             return infoList;
+        }
+
+        /// <summary>
+        /// 根据Code获得中心资源
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public CenterResource SelectByCode()
+        {
+            return SelectAll().Where(a => a.EquipmentCode.ToLower() == EquipmentCode.ToLower()).FirstOrDefault<CenterResource>();
         }
 
         /// <summary>
@@ -166,17 +176,17 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 {
                     CenterResource info = new CenterResource()
                     {
-                        Id = Convert.ToInt32(ds.Tables[0].Rows[0]["CRID"]),
-                        EquipmentCode = ds.Tables[0].Rows[0]["EquipmentCode"].ToString(),
-                        EquipmentType = ds.Tables[0].Rows[0]["EquipmentType"].ToString(),
-                        SupportTask = ds.Tables[0].Rows[0]["SupportTask"].ToString(),
-                        DataProcess = ds.Tables[0].Rows[0]["DataProcess"].ToString(),
-                        Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
-                        ExtProperties = ds.Tables[0].Rows[0]["ExtProperties"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ExtProperties"].ToString(),
-                        CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
-                        CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedUserID"]),
-                        UpdatedTime = ds.Tables[0].Rows[0]["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["UpdatedTime"]),
-                        UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["UpdatedUserID"])
+                        Id = Convert.ToInt32(dr["CRID"]),
+                        EquipmentCode = dr["EquipmentCode"].ToString(),
+                        EquipmentType = dr["EquipmentType"].ToString(),
+                        SupportTask = dr["SupportTask"].ToString(),
+                        DataProcess = dr["DataProcess"].ToString(),
+                        Status = Convert.ToInt32(dr["Status"]),
+                        ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
+                        CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
+                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["CreatedUserID"]),
+                        UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
+                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["UpdatedUserID"])
                     };
 
                     infoList.Add(info);

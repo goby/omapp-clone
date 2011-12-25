@@ -4,7 +4,7 @@ create table TB_USESTATUS
   usid          NUMBER(10) not null,
   resourceid    NUMBER(10) not null,
   resourcetype  NUMBER(2) not null,
-  usetype       NUMBER(2) not null,
+  usedtype      NUMBER(2) not null,
   begintime     DATE not null,
   endtime       DATE not null,
   usedby        NVARCHAR2(50),
@@ -22,7 +22,7 @@ tablespace TSHTC
   maxtrans 255
   storage
   (
-    initial 64
+    initial 16K
     minextents 1
     maxextents unlimited
   );
@@ -33,7 +33,7 @@ comment on column TB_USESTATUS.resourceid
   is '资源序号';
 comment on column TB_USESTATUS.resourcetype
   is '资源类型';
-comment on column TB_USESTATUS.usetype
+comment on column TB_USESTATUS.usedtype
   is '占用类型';
 comment on column TB_USESTATUS.begintime
   is '起始时间';
