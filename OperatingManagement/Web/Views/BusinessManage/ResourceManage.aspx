@@ -145,7 +145,7 @@
                         <%# GetGroundResourceFunctionType(Eval("FunctionType").ToString())%>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="1"  CommandArgument='<%# Eval("Id")%>'>管理状态</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="1"  CommandArgument='<%# Eval("GRCode")%>'>管理状态</asp:LinkButton>
                     </td>
                     <td>
                         <asp:LinkButton ID="lbtnEditResource" runat="server" OnClick="lbtnEditResource_Click" CommandName="1" CommandArgument='<%# Eval("Id")%>'>编辑资源</asp:LinkButton>
@@ -214,7 +214,7 @@
                         <%# Eval("BandWidth")%>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="2"  CommandArgument='<%# Eval("Id")%>'>管理状态</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="2"  CommandArgument='<%# Eval("RouteCode")%>'>管理状态</asp:LinkButton>
                     </td>
                     <td>
                         <asp:LinkButton ID="lbtnEditResource" runat="server" OnClick="lbtnEditResource_Click" CommandName="2" CommandArgument='<%# Eval("Id")%>'>编辑资源</asp:LinkButton>
@@ -283,7 +283,7 @@
                         <%# Eval("DataProcess")%>
                     </td>
                    <td>
-                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="3"  CommandArgument='<%# Eval("Id")%>'>管理状态</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="3"  CommandArgument='<%# Eval("EquipmentCode")%>'>管理状态</asp:LinkButton>
                     </td>
                     <td>
                         <asp:LinkButton ID="lbtnEditResource" runat="server" OnClick="lbtnEditResource_Click" CommandName="3" CommandArgument='<%# Eval("Id")%>'>编辑资源</asp:LinkButton>

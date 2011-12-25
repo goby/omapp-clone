@@ -141,20 +141,20 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 {
                     GroundResource info = new GroundResource()
                     {
-                        Id = Convert.ToInt32(ds.Tables[0].Rows[0]["GRID"]),
-                        GRName = ds.Tables[0].Rows[0]["GRName"].ToString(),
-                        GRCode = ds.Tables[0].Rows[0]["GRCode"].ToString(),
-                        EquipmentName = ds.Tables[0].Rows[0]["EquipmentName"].ToString(),
-                        EquipmentCode = ds.Tables[0].Rows[0]["EquipmentCode"].ToString(),
-                        Owner = ds.Tables[0].Rows[0]["Owner"].ToString(),
-                        Coordinate = ds.Tables[0].Rows[0]["Coordinate"].ToString(),
-                        FunctionType = ds.Tables[0].Rows[0]["FunctionType"].ToString(),
-                        Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
-                        ExtProperties = ds.Tables[0].Rows[0]["ExtProperties"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ExtProperties"].ToString(),
-                        CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
-                        CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedUserID"]),
-                        UpdatedTime = ds.Tables[0].Rows[0]["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["UpdatedTime"]),
-                        UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["UpdatedUserID"])
+                        Id = Convert.ToInt32(dr["GRID"]),
+                        GRName = dr["GRName"].ToString(),
+                        GRCode = dr["GRCode"].ToString(),
+                        EquipmentName = dr["EquipmentName"].ToString(),
+                        EquipmentCode = dr["EquipmentCode"].ToString(),
+                        Owner = dr["Owner"].ToString(),
+                        Coordinate = dr["Coordinate"].ToString(),
+                        FunctionType = dr["FunctionType"].ToString(),
+                        Status = Convert.ToInt32(dr["Status"]),
+                        ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
+                        CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
+                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["CreatedUserID"]),
+                        UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
+                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["UpdatedUserID"])
                     };
 
                     infoList.Add(info);
@@ -162,6 +162,17 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             }
             return infoList;
         }
+
+        /// <summary>
+        /// 根据Code获得地面站资源
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public GroundResource SelectByCode()
+        {
+            return SelectAll().Where(a => a.GRCode.ToLower() == GRCode.ToLower()).FirstOrDefault<GroundResource>();
+        }
+
         /// <summary>
         /// 根据地面站资源在某个时间点状态做查询
         /// </summary>
@@ -183,20 +194,20 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 {
                     GroundResource info = new GroundResource()
                     {
-                        Id = Convert.ToInt32(ds.Tables[0].Rows[0]["GRID"]),
-                        GRName = ds.Tables[0].Rows[0]["GRName"].ToString(),
-                        GRCode = ds.Tables[0].Rows[0]["GRCode"].ToString(),
-                        EquipmentName = ds.Tables[0].Rows[0]["EquipmentName"].ToString(),
-                        EquipmentCode = ds.Tables[0].Rows[0]["EquipmentCode"].ToString(),
-                        Owner = ds.Tables[0].Rows[0]["Owner"].ToString(),
-                        Coordinate = ds.Tables[0].Rows[0]["Coordinate"].ToString(),
-                        FunctionType = ds.Tables[0].Rows[0]["FunctionType"].ToString(),
-                        Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
-                        ExtProperties = ds.Tables[0].Rows[0]["ExtProperties"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ExtProperties"].ToString(),
-                        CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
-                        CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedUserID"]),
-                        UpdatedTime = ds.Tables[0].Rows[0]["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["UpdatedTime"]),
-                        UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["UpdatedUserID"])
+                        Id = Convert.ToInt32(dr["GRID"]),
+                        GRName = dr["GRName"].ToString(),
+                        GRCode = dr["GRCode"].ToString(),
+                        EquipmentName = dr["EquipmentName"].ToString(),
+                        EquipmentCode = dr["EquipmentCode"].ToString(),
+                        Owner = dr["Owner"].ToString(),
+                        Coordinate = dr["Coordinate"].ToString(),
+                        FunctionType = dr["FunctionType"].ToString(),
+                        Status = Convert.ToInt32(dr["Status"]),
+                        ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
+                        CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
+                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["CreatedUserID"]),
+                        UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
+                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["UpdatedUserID"])
                     };
 
                     infoList.Add(info);

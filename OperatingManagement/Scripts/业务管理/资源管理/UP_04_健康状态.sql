@@ -99,3 +99,47 @@ begin
 end;
 
 
+
+
+
+create or replace procedure UP_HealthStatus_Search
+(
+       p_ResourceType TB_HEALTHSTATUS.Resourcetype%type,
+       p_ResourceID TB_HEALTHSTATUS.Resourceid%type,
+       p_BeginTime TB_HEALTHSTATUS.Begintime%type,
+       p_EndTime TB_HEALTHSTATUS.Endtime%type,
+       o_Cursor out sys_refcursor
+)
+is
+begin
+    IF p_ResourceType=1 Then
+       open o_Cursor for
+            Select A.*,B.GRNAME as ResourceName,B.GRCODE as ResourceCode 
+            From TB_HEALTHSTATUS A
+            Inner join TB_GROUNDRESOURCE B on (A.RESOURCETYPE=1 And A.Resourceid=B.GRID)
+            Where ( p_BeginTime>= A.Begintime And p_BeginTime<=A.EndTime)
+               Or ( p_EndTime>= A.Begintime And p_EndTime<=A.EndTime)
+               Or ( p_BeginTime<=A.Begintime And p_EndTime>=A.EndTime)
+            Order BY A.CreatedTime DESC;
+     Elsif p_ResourceType=2 Then
+         open o_Cursor for
+            Select A.*,B.ROUTENAME as ResourceName,B.ROUTECODE as ResourceCode 
+            From TB_HEALTHSTATUS A
+            Inner join TB_COMMUNICATIONRESOURCE B on (A.RESOURCETYPE=2 And A.Resourceid=B.CRID)
+            Where ( p_BeginTime>= A.Begintime And p_BeginTime<=A.EndTime)
+               Or ( p_EndTime>= A.Begintime And p_EndTime<=A.EndTime)
+               Or ( p_BeginTime<=A.Begintime And p_EndTime>=A.EndTime)
+            Order BY A.CreatedTime DESC;
+      Elsif p_ResourceType=3 Then
+         open o_Cursor for
+            Select A.*,B.EQUIPMENTTYPE as ResourceName,B.EQUIPMENTCODE as ResourceCode 
+            From TB_HEALTHSTATUS A
+            Inner join TB_CENTERRESOURCE B on (A.RESOURCETYPE=3 And A.Resourceid=B.CRID)
+            Where ( p_BeginTime>= A.Begintime And p_BeginTime<=A.EndTime)
+               Or ( p_EndTime>= A.Begintime And p_EndTime<=A.EndTime)
+               Or ( p_BeginTime<=A.Begintime And p_EndTime>=A.EndTime)
+            Order BY A.CreatedTime DESC;
+      END IF;
+      
+end;
+

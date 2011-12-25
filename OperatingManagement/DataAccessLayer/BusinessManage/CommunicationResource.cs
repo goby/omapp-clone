@@ -127,23 +127,33 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 {
                     CommunicationResource info = new CommunicationResource()
                     {
-                        Id = Convert.ToInt32(ds.Tables[0].Rows[0]["CRID"]),
-                        RouteName = ds.Tables[0].Rows[0]["RouteName"].ToString(),
-                        RouteCode = ds.Tables[0].Rows[0]["RouteCode"].ToString(),
-                        Direction = ds.Tables[0].Rows[0]["Direction"].ToString(),
-                        BandWidth = ds.Tables[0].Rows[0]["BandWidth"].ToString(),
-                        Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
-                        ExtProperties = ds.Tables[0].Rows[0]["ExtProperties"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ExtProperties"].ToString(),
-                        CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
-                        CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedUserID"]),
-                        UpdatedTime = ds.Tables[0].Rows[0]["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["UpdatedTime"]),
-                        UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["UpdatedUserID"])
+                        Id = Convert.ToInt32(dr["CRID"]),
+                        RouteName = dr["RouteName"].ToString(),
+                        RouteCode = dr["RouteCode"].ToString(),
+                        Direction = dr["Direction"].ToString(),
+                        BandWidth = dr["BandWidth"].ToString(),
+                        Status = Convert.ToInt32(dr["Status"]),
+                        ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
+                        CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
+                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["CreatedUserID"]),
+                        UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
+                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["UpdatedUserID"])
                     };
 
                     infoList.Add(info);
                 }
             }
             return infoList;
+        }
+
+        /// <summary>
+        /// 根据Code获得通信资源
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public CommunicationResource SelectByCode()
+        {
+            return SelectAll().Where(a => a.RouteCode.ToLower() == RouteCode.ToLower()).FirstOrDefault<CommunicationResource>();
         }
 
         /// <summary>
@@ -167,17 +177,17 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 {
                     CommunicationResource info = new CommunicationResource()
                     {
-                        Id = Convert.ToInt32(ds.Tables[0].Rows[0]["CRID"]),
-                        RouteName = ds.Tables[0].Rows[0]["RouteName"].ToString(),
-                        RouteCode = ds.Tables[0].Rows[0]["RouteCode"].ToString(),
-                        Direction = ds.Tables[0].Rows[0]["Direction"].ToString(),
-                        BandWidth = ds.Tables[0].Rows[0]["BandWidth"].ToString(),
-                        Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
-                        ExtProperties = ds.Tables[0].Rows[0]["ExtProperties"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ExtProperties"].ToString(),
-                        CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
-                        CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedUserID"]),
-                        UpdatedTime = ds.Tables[0].Rows[0]["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["UpdatedTime"]),
-                        UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["UpdatedUserID"])
+                        Id = Convert.ToInt32(dr["CRID"]),
+                        RouteName = dr["RouteName"].ToString(),
+                        RouteCode = dr["RouteCode"].ToString(),
+                        Direction = dr["Direction"].ToString(),
+                        BandWidth = dr["BandWidth"].ToString(),
+                        Status = Convert.ToInt32(dr["Status"]),
+                        ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
+                        CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
+                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["CreatedUserID"]),
+                        UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
+                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["UpdatedUserID"])
                     };
 
                     infoList.Add(info);

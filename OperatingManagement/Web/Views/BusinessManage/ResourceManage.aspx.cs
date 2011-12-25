@@ -95,9 +95,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindRepeater();
                     return;
                 }
-                string resourceID = lbtnManageResourceStatus.CommandArgument;
+                string resourceCode = lbtnManageResourceStatus.CommandArgument;
                 string resourceType = lbtnManageResourceStatus.CommandName;
-                string url = string.Format(@"~/Views/BusinessManage/ResourceStatusManage.aspx?id={0}&resourcetype={1}", Server.UrlEncode(resourceID), Server.UrlEncode(resourceType));
+                string url = string.Format(@"~/Views/BusinessManage/ResourceStatusManage.aspx?resourcecode={0}&resourcetype={1}", Server.UrlEncode(resourceCode), Server.UrlEncode(resourceType));
 
                 Response.Redirect(url);
             }

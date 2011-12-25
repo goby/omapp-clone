@@ -34,7 +34,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 功能类型
         /// 可空
         /// </summary>
-        public int FunctionType { get; set; }
+        public string FunctionType { get; set; }
         /// <summary>
         /// 健康状态
         /// </summary>
@@ -57,6 +57,15 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 最后修改用户ID
         /// </summary>
         public int UpdatedUserID { get; set; }
+
+        /// <summary>
+        /// 资源扩展属性，资源名称
+        /// </summary>
+        public string ResourceName { get; set; }
+        /// <summary>
+        /// 资源扩展属性，资源编码
+        /// </summary>
+        public string ResourceCode { get; set; }
         #endregion
 
         #region -Private Methods-
@@ -101,7 +110,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     Id = Convert.ToInt32(ds.Tables[0].Rows[0]["HSID"]),
                     ResourceID = Convert.ToInt32(ds.Tables[0].Rows[0]["ResourceID"]),
                     ResourceType = Convert.ToInt32(ds.Tables[0].Rows[0]["ResourceType"]),
-                    FunctionType = ds.Tables[0].Rows[0]["FunctionType"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["FunctionType"]),
+                    FunctionType = ds.Tables[0].Rows[0]["FunctionType"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["FunctionType"].ToString(),
                     Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
                     BeginTime = ds.Tables[0].Rows[0]["BeginTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["BeginTime"]),
                     EndTime = ds.Tables[0].Rows[0]["EndTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["EndTime"]),
@@ -130,17 +139,59 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 {
                     HealthStatus info = new HealthStatus()
                     {
-                        Id = Convert.ToInt32(ds.Tables[0].Rows[0]["HSID"]),
-                        ResourceID = Convert.ToInt32(ds.Tables[0].Rows[0]["ResourceID"]),
-                        ResourceType = Convert.ToInt32(ds.Tables[0].Rows[0]["ResourceType"]),
-                        FunctionType = ds.Tables[0].Rows[0]["FunctionType"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["FunctionType"]),
-                        Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
-                        BeginTime = ds.Tables[0].Rows[0]["BeginTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["BeginTime"]),
-                        EndTime = ds.Tables[0].Rows[0]["EndTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["EndTime"]),
-                        CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
-                        CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedUserID"]),
-                        UpdatedTime = ds.Tables[0].Rows[0]["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["UpdatedTime"]),
-                        UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["UpdatedUserID"])
+                        Id = Convert.ToInt32(dr["HSID"]),
+                        ResourceID = Convert.ToInt32(dr["ResourceID"]),
+                        ResourceType = Convert.ToInt32(dr["ResourceType"]),
+                        FunctionType = dr["FunctionType"] == DBNull.Value ? string.Empty : dr["FunctionType"].ToString(),
+                        Status = Convert.ToInt32(dr["Status"]),
+                        BeginTime = dr["BeginTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["BeginTime"]),
+                        EndTime = dr["EndTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["EndTime"]),
+                        CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
+                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["CreatedUserID"]),
+                        UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
+                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["UpdatedUserID"])
+                    };
+
+                    infoList.Add(info);
+                }
+            }
+            return infoList;
+        }
+
+        /// <summary>
+        /// 查询资源健康情况列表
+        /// </summary>
+        /// <returns></returns>
+        public List<HealthStatus> Search(int resourceType, int resourceID, DateTime beginTime, DateTime endTime)
+        {
+            OracleParameter o_Cursor = PrepareRefCursor();
+            DataSet ds = _dataBase.SpExecuteDataSet("UP_HealthStatus_Search", new OracleParameter[]{
+                                        new OracleParameter("p_ResourceType",resourceType),                        
+                                        new OracleParameter("p_ResourceID",resourceID),
+                                        new OracleParameter("p_BeginTime",beginTime),
+                                        new OracleParameter("p_EndTime", endTime),
+                                        o_Cursor});
+
+            List<HealthStatus> infoList = new List<HealthStatus>();
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    HealthStatus info = new HealthStatus()
+                    {
+                        Id = Convert.ToInt32(dr["HSID"]),
+                        ResourceID = Convert.ToInt32(dr["ResourceID"]),
+                        ResourceType = Convert.ToInt32(dr["ResourceType"]),
+                        FunctionType = dr["FunctionType"] == DBNull.Value ? string.Empty : dr["FunctionType"].ToString(),
+                        Status = Convert.ToInt32(dr["Status"]),
+                        BeginTime = dr["BeginTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["BeginTime"]),
+                        EndTime = dr["EndTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["EndTime"]),
+                        CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
+                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["CreatedUserID"]),
+                        UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
+                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["UpdatedUserID"]),
+                        ResourceName = dr["ResourceName"] == DBNull.Value ? string.Empty : dr["ResourceName"].ToString(),
+                        ResourceCode = dr["ResourceCode"] == DBNull.Value ? string.Empty : dr["ResourceCode"].ToString()
                     };
 
                     infoList.Add(info);
@@ -166,7 +217,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             _dataBase.SpExecuteNonQuery("UP_HealthStatus_Insert", new OracleParameter[]{
                                         new OracleParameter("p_ResourceID",ResourceID),
                                         new OracleParameter("p_ResourceType",ResourceType),
-                                        new OracleParameter("p_FunctionType",FunctionType ==0 ?  DBNull.Value as object : FunctionType),
+                                        new OracleParameter("p_FunctionType", string.IsNullOrEmpty(FunctionType) ?  DBNull.Value as object : FunctionType),
                                         new OracleParameter("p_Status",Status),
                                         new OracleParameter("p_BeginTime",BeginTime == DateTime.MinValue ? DBNull.Value as object : BeginTime),
                                         new OracleParameter("p_EndTime", EndTime == DateTime.MinValue ? DBNull.Value as object : EndTime),
@@ -192,7 +243,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             _dataBase.SpExecuteNonQuery("UP_HealthStatus_Update", new OracleParameter[]{
                                         new OracleParameter("p_HSID",Id),
                                         new OracleParameter("p_ResourceType",ResourceType),
-                                        new OracleParameter("p_FunctionType",FunctionType ==0 ?  DBNull.Value as object : FunctionType),
+                                        new OracleParameter("p_FunctionType",string.IsNullOrEmpty(FunctionType) ?  DBNull.Value as object : FunctionType),
                                         new OracleParameter("p_Status",Status),
                                         new OracleParameter("p_BeginTime",BeginTime == DateTime.MinValue ? DBNull.Value as object : BeginTime),
                                         new OracleParameter("p_EndTime", EndTime == DateTime.MinValue ? DBNull.Value as object : EndTime),

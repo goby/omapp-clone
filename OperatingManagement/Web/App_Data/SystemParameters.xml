@@ -55,4 +55,26 @@
     <item text="遥测信息处理设备" value="遥测信息处理设备"></item>
     <item text="数传信息处理设备" value="数传信息处理设备"></item>
   </CenterResourceEquipmentType>
+  <StatusType description="状态类型列表">
+    <item text="健康状态" value="1"></item>
+    <item text="占用状态" value="2"></item>
+  </StatusType>
+  <HealthStatus description="健康状态列表">
+    <item text="正常" value="1"></item>
+    <item text="异常" value="2"></item>
+  </HealthStatus>
+  <HealthStatusFunctionType description="健康状态功能类型列表">
+    <item text="数传数据接收" value="数传数据接收"></item>
+    <item text="遥测数据接收" value="遥测数据接收"></item>
+    <item text="遥控操作" value="遥控操作"></item>
+  </HealthStatusFunctionType>
+  <UseStatusUsedType description="占用状态占用类型列表">
+    <item text="任务占用" value="1"></item>
+    <item text="维护占用" value="2"></item>
+    <item text="其他占用" value="3"></item>
+  </UseStatusUsedType>
+  <UseStatusCanBeUsed description="占用状态是否可执行任务列表">
+    <item text="是" value="1"></item>
+    <item text="否" value="2"></item>
+  </UseStatusCanBeUsed>
 </SystemParameters>
