@@ -49,8 +49,9 @@
                 <td class="style3" rowspan="3">
                     <asp:RadioButtonList ID="rbtType" runat="server">
                         <asp:ListItem Value="YJJH">应用研究工作计划</asp:ListItem>
-                        <asp:ListItem Value="XXXQ">空间信息需求</asp:ListItem>
-                        <asp:ListItem Value="GZJH">地面站工作计划</asp:ListItem>
+                        <asp:ListItem Value="MBXQ">空间信息需求</asp:ListItem>
+                        <asp:ListItem Value="HJXQ">空间信息需求</asp:ListItem>
+                        <asp:ListItem Value="DMJH">地面站工作计划</asp:ListItem>
                         <asp:ListItem Value="ZXJH">中心运行计划</asp:ListItem>
                         <asp:ListItem Value="TYSJ">仿真推演试验数据</asp:ListItem>
                         <asp:ListItem Value="SBJH">设备工作计划</asp:ListItem>
@@ -154,11 +155,11 @@
                                     <%# Eval("endtime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
                                 </td>
                                 <td>
-                                    <button class="button" onclick="return showEdit('<%# Eval("PLANID") %>','<%# Eval("PLANTYPE") %>')">
+                                    <button class="button" onclick="return showEdit('<%# Eval("ID") %>','<%# Eval("PLANTYPE") %>')">
                                         编辑</button>
                                 </td>
                                 <td>
-                                    <button class="button" onclick="return showDetail('<%# Eval("PLANID") %>','<%# Eval("PLANTYPE") %>')">
+                                    <button class="button" onclick="return showDetail('<%# Eval("ID") %>','<%# Eval("PLANTYPE") %>')">
                                         明细</button>
                                 </td>
                                 <td>

@@ -103,6 +103,11 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 return objDatas;
         }
 
+        /// <summary>
+        /// 单个或多个ID，如("1,2,3")
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
         public List<JH> SelectByIDS(string ids)
         {
             OracleParameter p = PrepareRefCursor();
