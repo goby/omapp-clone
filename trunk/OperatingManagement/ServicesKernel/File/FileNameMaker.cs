@@ -7,6 +7,7 @@ namespace ServicesKernel.File
 {
     public class FileNameMaker
     {
+        #region 外部文件命名
         public string GenarateFileNameTypeOne(string infotype,string dateType,int sequence)
         {
             //版本号_对象标识_信源标识_模式标识_信息类型标识_日期_编号. xml
@@ -232,6 +233,16 @@ namespace ServicesKernel.File
             }
             return result;
         }
+        #endregion
+
+        #region 内部文件
+        public string GenarateInternalFileNameTypeOne(string infotype,string taskid,string satid)
+        {
+            string filename = "";
+            filename = "GL_" + infotype.ToUpper() + taskid.ToUpper() + satid.ToUpper() + DateTime.Now.ToString("yyyyMMddHHmm") + ".xml";
+            return filename;
+        }
+        #endregion
 
     }
 }

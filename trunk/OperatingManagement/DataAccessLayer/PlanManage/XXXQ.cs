@@ -40,6 +40,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         public string DataSection { get; set; }
         public string FileIndex { get; set; }
         public string Reserve { get; set; }
+
+        public string SatID { get; set; }
+        public MBXQ objMBXQ { get; set; }
+        public HJXQ objHJXQ { get; set; }
         #endregion
 
         #region -Methods-

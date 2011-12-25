@@ -39,6 +39,14 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         public string DataSection { get; set; }
         public string FileIndex { get; set; }
         public string Reserve { get; set; }
+
+        public string SatID { get; set; }
+        public string XXFL { get; set; }
+        public string JXH { get; set; }
+        public string SysName { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
+        public string Task { get; set; }
         #endregion
 
         #region -Methods-

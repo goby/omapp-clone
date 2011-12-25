@@ -98,8 +98,6 @@ namespace OperatingManagement.Web.Views.PlanManage
                     cpf.Destination = obj.Destination;
                     cpf.Format1 = obj.Format1;
                     cpf.DataSection = obj.DataSection;
-                    cpf.SavePath = System.Configuration.ConfigurationManager.AppSettings["savepath"];
-                    cpf.FilePath = cpf.SavePath + filename;
                     cpf.NewFile();
                     obj.FileIndex = cpf.FilePath;
                     obj.UpdateFileIndex();
@@ -116,8 +114,6 @@ namespace OperatingManagement.Web.Views.PlanManage
                     cpf.Destination = objx.Destination;
                     cpf.Format1 = objx.Format1;
                     cpf.DataSection = objx.DataSection;
-                    cpf.SavePath = System.Configuration.ConfigurationManager.AppSettings["savepath"];
-                    cpf.FilePath = cpf.SavePath + filename;
                     cpf.NewFile();
                     objx.FileIndex = cpf.FilePath;
                     objx.UpdateFileIndex();
@@ -140,8 +136,6 @@ namespace OperatingManagement.Web.Views.PlanManage
                     cpf.Destination = objt.Destination;
                     cpf.Format1 = objt.Format1;
                     cpf.DataSection = objt.DataSection;
-                    cpf.SavePath = System.Configuration.ConfigurationManager.AppSettings["savepath"];
-                    cpf.FilePath = cpf.SavePath + filename;
                     cpf.NewFile();
                     objt.FileIndex = cpf.FilePath;
                     objt.UpdateFileIndex();
