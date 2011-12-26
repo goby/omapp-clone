@@ -13,6 +13,7 @@ using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.Framework;
 using System.Web.Security;
 using System.Xml;
+using ServicesKernel.File;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
@@ -34,8 +35,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         private void BindJhTable(string sID)
         {
             List<JH> jh = (new JH()).SelectByIDS(sID);
-            txtPlanStartTime.Text = jh[0].StartTime.ToShortTimeString();
-            txtPlanEndTime.Text = jh[0].EndTime.ToShortTimeString();
+            txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
+            txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
         }
         private void BindXML()
@@ -55,17 +56,20 @@ namespace OperatingManagement.Web.Views.PlanManage
             root = xmlDoc.SelectSingleNode("空间环境信息需求/Sum");
             txtHJSum.Text = root.InnerText;
 
-            root = xmlDoc.SelectSingleNode("空间环境信息需求/卫星");
+            root = xmlDoc.SelectSingleNode("空间环境信息需求");
             List<HJXQSatInfo> list = new List<HJXQSatInfo>();
             HJXQSatInfo sat;
             foreach (XmlNode n in root.ChildNodes)
             {
-                sat = new HJXQSatInfo();
-                sat.SatName = n["SatName"].InnerText;
-                sat.InfoName = n["InfoName"].InnerText;
-                sat.InfoArea = n["InfoArea"].InnerText;
-                sat.InfoTime = n["InfoTime"].InnerText;
-                list.Add(sat);
+                if (n.Name == "卫星")
+                {
+                    sat = new HJXQSatInfo();
+                    sat.SatName = n["SatName"].InnerText;
+                    sat.InfoName = n["InfoName"].InnerText;
+                    sat.InfoArea = n["InfoArea"].InnerText;
+                    sat.InfoTime = n["InfoTime"].InnerText;
+                    list.Add(sat);
+                }
             }
             rpHJ.DataSource = list;
             rpHJ.DataBind();
@@ -136,6 +140,39 @@ namespace OperatingManagement.Web.Views.PlanManage
                 rp.DataSource = list2;
                 rp.DataBind();
             }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            HJXQ obj = new HJXQ();
+            obj.User = txtHJUser.Text;
+            obj.Time = txtHJTime.Text;
+            obj.EnvironInfo = txtHJEnvironInfo.Text;
+            obj.TimeSection1 = txtHJTimeSection1.Text;
+            obj.TimeSection2 = txtHJTimeSection2.Text;
+            obj.Sum = txtHJSum.Text;
+            obj.SatInfos = new List<HJXQSatInfo>();
+
+            HJXQSatInfo dm;
+            foreach (RepeaterItem it in rpHJ.Items)
+            {
+                dm = new HJXQSatInfo();
+                TextBox txtHJSatName = (TextBox)it.FindControl("txtHJSatName");
+                TextBox txtHJInfoName = (TextBox)it.FindControl("txtHJInfoName");
+                TextBox txtHJInfoArea = (TextBox)it.FindControl("txtHJInfoArea");
+                TextBox txtHJInfoTime = (TextBox)it.FindControl("txtHJInfoTime");
+
+                dm.SatName = txtHJSatName.Text;
+                dm.InfoName = txtHJInfoName.Text;
+                dm.InfoArea = txtHJInfoArea.Text;
+                dm.InfoTime = txtHJInfoTime.Text;
+
+                obj.SatInfos.Add(dm);
+            }
+
+            CreatePlanFile creater = new CreatePlanFile();
+            creater.FilePath = HfFileIndex.Value;
+            creater.CreateHJXQFile(obj, 1);
         }
     }
 }

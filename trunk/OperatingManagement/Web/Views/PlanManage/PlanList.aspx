@@ -122,6 +122,9 @@
                                         任务代号
                                     </th>
                                     <th style="width: 150px;">
+                                        计划类别
+                                    </th>
+                                    <th style="width: 150px;">
                                         开始时间
                                     </th>
                                     <th style="width: 150px;">
@@ -147,6 +150,9 @@
                                 </td>
                                 <td>
                                     <%# Eval("taskid")%>
+                                </td>
+                                <td>
+                                    <%# Eval("plantype")%>
                                 </td>
                                 <td>
                                     <%# Eval("starttime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>

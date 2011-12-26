@@ -28,12 +28,18 @@ namespace OperatingManagement.Web.Views.PlanManage
                     HfID.Value = Request.QueryString["planid"];
                     string sID = Request.QueryString["planid"];
                     switch (hfinfotype.Value)
-                    { 
+                    {
                         case "YJJH":
-                            Response.Redirect("YJJHEdit.aspx?id="+sID);
+                            Response.Redirect("YJJHEdit.aspx?id=" + sID);
                             break;
                         case "XXXQ":
                             Response.Redirect("XXXQEdit.aspx?id=" + sID);
+                            break;
+                        case "MBXQ":
+                            Response.Redirect("MBXQEdit.aspx?id=" + sID);
+                            break;
+                        case "HJXQ":
+                            Response.Redirect("HJXQEdit.aspx?id=" + sID);
                             break;
                         case "DMJH":
                             Response.Redirect("DMJHEdit.aspx?id=" + sID);

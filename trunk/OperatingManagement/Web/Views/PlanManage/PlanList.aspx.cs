@@ -54,6 +54,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             else
             {
                 startDate = DateTime.Now.AddDays(-14);
+                txtStartDate.Text = startDate.ToString("yyyy-MM-dd");
             }
             if (!string.IsNullOrEmpty(txtEndDate.Text))
             {
@@ -61,7 +62,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             else
             {
-                endDate = DateTime.Now;
+                endDate = DateTime.Now.AddDays(1);
             }
             string planType = rbtType.Text;
             string planAging = ddlAging.SelectedValue;

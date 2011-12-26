@@ -13,6 +13,7 @@ using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.Framework;
 using System.Web.Security;
 using System.Xml;
+using ServicesKernel.File;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
@@ -34,8 +35,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         private void BindJhTable(string sID)
         {
             List<JH> jh = (new JH()).SelectByIDS(sID);
-            txtPlanStartTime.Text = jh[0].StartTime.ToShortTimeString();
-            txtPlanEndTime.Text = jh[0].EndTime.ToShortTimeString();
+            txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
+            txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
         }
         private void BindXML()
@@ -61,7 +62,24 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.PagePermission = "Plan.Edit";
             this.ShortTitle = "编辑计划";
             base.OnPageLoaded();
-            this.AddJavaScriptInclude("scripts/pages/YJJHEdit.aspx.js");
+           //this.SetTitle();
+           // this.AddJavaScriptInclude("scripts/pages/YJJHEdit.aspx.js");
+
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            YJJH obj = new YJJH();
+            obj.XXFL = txtXXFL.Text;
+            obj.JXH = txtJXH.Text;
+            obj.SysName = txtSysName.Text;
+            obj.StartTime = txtStartTime.Text;
+            obj.EndTime = txtEndTime.Text;
+            obj.Task = txtTask.Text;
+
+            CreatePlanFile creater = new CreatePlanFile();
+            creater.FilePath = HfFileIndex.Value;
+            creater.CreateYJJHFile(obj,1);
         }
 
     }

@@ -38,6 +38,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         #endregion
     }
 
+    [Serializable]
     public class DMJH_Task
     {
         #region -Properties-
@@ -59,6 +60,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         #endregion
     }
 
+    [Serializable]
     public class DMJH_Task_ReakTimeTransfor
     {
         #region -Properties-
@@ -72,6 +74,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         #endregion
     }
 
+    [Serializable]
     public class DMJH_Task_AfterFeedBack
     {
         #region -Properties-

@@ -4,15 +4,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <style type="text/css">
+        .style1
+        {
+            width: 157px;
+        }
+        .style2
+        {
+            width: 236px;
+        }
+    </style>
+    <script src="../../Scripts/calendar.js" type="text/javascript"></script>
 </head>
 <body>
     <form id="form1" runat="server">
     <div>
         <table cellpadding="0" class="edit" style="width: 800px;">
             <tr>
-                <th>
+                <th class="style1">
                     计划开始时间</th>
-                <td>
+                <td class="style2">
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
                             MaxLength="10"   onclick="setday(this);"></asp:TextBox>
                 </td>
@@ -24,10 +35,10 @@
                 </td>
             </tr>
             <tr>
-                <th>
+                <th class="style1">
                     编号
                 </th>
-                <td>
+                <td class="style2">
                     <asp:TextBox ID="txtSequence" runat="server"></asp:TextBox>
                 </td>
                 <th>
@@ -38,11 +49,11 @@
                 </td>
             </tr>
             <tr>
-                <th>
+                <th class="style1">
                     工作单位
                 </th>
-                <td>
-                    <asp:TextBox ID="txtStationName" runat="server"></asp:TextBox>
+                <td class="style2">
+                    <asp:TextBox ID="txtStationName" runat="server" style="margin-left: 0px"></asp:TextBox>
                 </td>
                 <th>
                     设备代号
@@ -52,10 +63,10 @@
                 </td>
             </tr>
             <tr>
-                <th>
+                <th class="style1">
                     任务个数
                 </th>
-                <td>
+                <td class="style2">
                     <asp:TextBox ID="txtTaskCount" runat="server"></asp:TextBox>
                 </td>
                 <th>
@@ -83,13 +94,13 @@
                                         任务标志
                                     </th>
                                     <td>
-                                        <asp:TextBox ID="txtTaskFlag" CssClass="text" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtTaskFlag" CssClass="text" runat="server" Text='<%# Eval("TaskFlag")%>'></asp:TextBox>
                                     </td>
                                     <th>
                                         工作方式
                                     </th>
                                     <td>
-                                        <asp:TextBox ID="txtWorkWay" CssClass="text" runat="server" Text='<%# Eval("Description")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtWorkWay" CssClass="text" runat="server" Text='<%# Eval("WorkWay")%>'></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -97,13 +108,13 @@
                                         计划性质
                                     </th>
                                     <td>
-                                        <asp:TextBox ID="txtPlanPropertiy" CssClass="text" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtPlanPropertiy" CssClass="text" runat="server" Text='<%# Eval("PlanPropertiy")%>'></asp:TextBox>
                                     </td>
                                     <th>
                                         工作模式
                                     </th>
                                     <td>
-                                        <asp:TextBox ID="txtWorkMode" CssClass="text" runat="server" Text='<%# Eval("Description")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtWorkMode" CssClass="text" runat="server" Text='<%# Eval("WorkMode")%>'></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -111,13 +122,13 @@
                                         任务准备开始时间
                                     </th>
                                     <td>
-                                        <asp:TextBox ID="txtPreStartTime" CssClass="text" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtPreStartTime" CssClass="text" runat="server" Text='<%# Eval("PreStartTime")%>'></asp:TextBox>
                                     </td>
                                     <th>
                                         任务开始时间
                                     </th>
                                     <td>
-                                        <asp:TextBox ID="txtStartTime" CssClass="text" runat="server" Text='<%# Eval("Description")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtStartTime" CssClass="text" runat="server" Text='<%# Eval("StartTime")%>'></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -125,13 +136,13 @@
                                         跟踪开始时间
                                     </th>
                                     <td>
-                                        <asp:TextBox ID="txtTrackStartTime" CssClass="text" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtTrackStartTime" CssClass="text" runat="server" Text='<%# Eval("TrackStartTime")%>'></asp:TextBox>
                                     </td>
                                     <th>
                                         开上行载波时间
                                     </th>
                                     <td>
-                                        <asp:TextBox ID="txtWaveOnStartTime" CssClass="text" runat="server" Text='<%# Eval("Description")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtWaveOnStartTime" CssClass="text" runat="server" Text='<%# Eval("WaveOnStartTime")%>'></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -139,13 +150,13 @@
                                         关上行载波时间
                                     </th>
                                     <td>
-                                        <asp:TextBox ID="txtWaveOffStartTime" CssClass="text" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtWaveOffStartTime" CssClass="text" runat="server" Text='<%# Eval("WaveOffStartTime")%>'></asp:TextBox>
                                     </td>
                                     <th>
                                         跟踪结束时间
                                     </th>
                                     <td>
-                                        <asp:TextBox ID="txtTrackEndTime" CssClass="text" runat="server" Text='<%# Eval("Description")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtTrackEndTime" CssClass="text" runat="server" Text='<%# Eval("TrackEndTime")%>'></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -153,7 +164,7 @@
                                         任务结束时间
                                     </th>
                                     <td>
-                                        <asp:TextBox ID="txtEndTime" CssClass="text" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtEndTime" CssClass="text" runat="server" Text='<%# Eval("EndTime")%>'></asp:TextBox>
                                     </td>
                                     <th>
                                         
@@ -183,7 +194,7 @@
                                                             信息流标志
                                                         </th>
                                                         <td>
-                                                            <asp:TextBox ID="txtInfoFlowFlag" CssClass="text" runat="server" Text='<%# Eval("txtInfoFlowFlag")%>'></asp:TextBox>
+                                                            <asp:TextBox ID="txtInfoFlowFlag" CssClass="text" runat="server" Text='<%# Eval("InfoFlowFlag")%>'></asp:TextBox>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -208,7 +219,7 @@
                                                             <asp:TextBox ID="txtTransSpeedRate" CssClass="text" runat="server" Text='<%# Eval("TransSpeedRate")%>'></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:Button ID="Button2" CssClass="button" CommandName="Add" runat="server" Text="删除" />
+                                                            <asp:Button ID="Button2" CssClass="button" CommandName="Add" runat="server" Text="添加" />
                                                         </td>
                                                         <td>
                                                             <asp:Button ID="Button3" CssClass="button" CommandName="Del" runat="server" Text="删除" />
@@ -276,11 +287,11 @@
                                                             
                                                         </th>
                                                         <td>
-                                                            <asp:Button ID="Button5" CssClass="button" CommandName="Add" runat="server" Text="删除" />
+                                                            
                                                         </td>
-                                                        <th>
-                                                           
-                                                        </th>
+                                                        <td>
+                                                           <asp:Button ID="Button5" CssClass="button" CommandName="Add" runat="server" Text="添加" />
+                                                        </td>
                                                         <td>
                                                             <asp:Button ID="Button6" CssClass="button" CommandName="Del" runat="server" Text="删除" />
                                                         </td>
@@ -309,6 +320,9 @@
             </tr>
         </table>
     </div>
+    <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存" onclick="btnSubmit_Click" />
     </form>
 </body>
 </html>

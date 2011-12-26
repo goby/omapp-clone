@@ -37,6 +37,7 @@
         {
         }
     </style>
+    <script src="../../Scripts/calendar.js" type="text/javascript"></script>
     </head>
 <body>
     <form id="form1" runat="server">
@@ -61,7 +62,7 @@
                     日期
                 </th>
                 <td>
-                    <asp:TextBox ID="txtDate" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtDate" CssClass="text" runat="server"></asp:TextBox>
                 </td>
                 <th>
                      <asp:HiddenField ID="HfID" runat="server" />
@@ -72,7 +73,7 @@
             </tr>
             
         </table>
-        <table class="edit">
+        <table class="edit" style="width:800px;">
             <tr>
                 <th class="style3" rowspan="17">
                     试验<br />
@@ -227,13 +228,13 @@
                 </td>
             </tr>
         </table>
-        <table class="style6" style="width:800px;">
+        <table class="edit style6" style="width:800px;">
             <tr>
-                <td class="style7" rowspan="20">
+                <th class="style7" rowspan="20">
                     工作<br />
-                    计划</td>
-                <td class="style8">
-                    工作内容</td>
+                    计划</th>
+                <th class="style8">
+                    工作内容</th>
                 <td class="style9" colspan="3">
                     <asp:Repeater ID="rpWork" runat="server" 
                         onitemcommand="rpWork_ItemCommand">
@@ -284,182 +285,182 @@
                 </td>
             </tr>
             <tr>
-                <td class="style8" rowspan="14">
-                    载荷管理</td>
-                <td class="style9" rowspan="7">
-                    载荷管理</td>
-                <td class="style9">
-                    对应试验ID</td>
+                <th class="style8" rowspan="14">
+                    载荷管理</th>
+                <th class="style9" rowspan="7">
+                    载荷管理</th>
+                <th class="style9">
+                    对应试验ID</th>
                 <td>
                     <asp:TextBox ID="txtWork_Load_SYID" runat="server" CssClass="text" 
                         Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td class="style9">
-                    卫星代号</td>
+                <th class="style9">
+                    卫星代号</th>
                 <td>
                     <asp:TextBox ID="txtWork_Load_SatID" runat="server" CssClass="text" 
                         Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td class="style9">
-                    进程</td>
+                <th class="style9">
+                    进程</th>
                 <td>
                     <asp:TextBox ID="txtWork_Load_Process" runat="server" CssClass="text" 
                         Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td class="style9">
-                    事件</td>
+                <th class="style9">
+                    事件</th>
                 <td>
                     <asp:TextBox ID="txtWork_Load_Event" runat="server" CssClass="text" 
                         Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td class="style9">
-                    动作内容</td>
+                <th class="style9">
+                    动作内容</th>
                 <td>
                     <asp:TextBox ID="txtWork_Load_Action" runat="server" CssClass="text" 
                         Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td class="style9">
-                    开始时间</td>
+                <th class="style9">
+                    开始时间</th>
                 <td>
                     <asp:TextBox ID="txtWork_Load_StartTime" runat="server" CssClass="text" 
                         Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td class="style9">
-                    结束时间</td>
+                <th class="style9">
+                    结束时间</th>
                 <td>
                     <asp:TextBox ID="txtWork_Load_EndTime" runat="server" CssClass="text" 
                         Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td class="style9" rowspan="7">
-                    指令管理</td>
-                <td>
-                    对应试验ID</td>
+                <th class="style9" rowspan="7">
+                    指令管理</th>
+                <th>
+                    对应试验ID</th>
                 <td>
                     <asp:TextBox ID="txtWork_Command_SYID" runat="server" CssClass="text" 
                         Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td>
-                    试验项目</td>
+                <th>
+                    试验项目</th>
                 <td>
                     <asp:TextBox ID="txtWork_Command_SYItem" runat="server" CssClass="text" 
                         Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td>
-                    卫星代号</td>
+                <th>
+                    卫星代号</th>
                 <td>
                     <asp:TextBox ID="txtWork_Command_SatID" runat="server" CssClass="text" 
                         Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td>
-                    指令内容</td>
+                <th>
+                    指令内容</th>
                 <td>
                     <asp:TextBox ID="txtWork_Command_Content" runat="server" CssClass="text" 
                         Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td>
-                    上注要求</td>
+                <th>
+                    上注要求</th>
                 <td>
                     <asp:TextBox ID="txtWork_Command_UpRequire" runat="server" CssClass="text" 
                         Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td>
-                    指令发送方向</td>
+                <th>
+                    指令发送方向</th>
                 <td>
                     <asp:TextBox ID="txtWork_Command_Direction" runat="server" CssClass="text" 
                         Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td>
-                    特殊需求</td>
+                <th>
+                    特殊需求</th>
                 <td>
                     <asp:TextBox ID="txtWork_Command_SpecialRequire" runat="server" CssClass="text" 
                         Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td class="style8">
-                    试验数据处理</td>
+                <th class="style8">
+                    试验数据处理</th>
                 <td class="style9" colspan="3">
                     <asp:Repeater ID="rpSYDataHandle" runat="server" 
                         onitemcommand="rpSYDataHandle_ItemCommand">
                         <ItemTemplate>
                             <table>
                                 <tr>
-                                    <td>
-                                        对应试验ID</td>
+                                    <th>
+                                        对应试验ID</th>
                                     <td>
                                         <asp:TextBox ID="txtSHSYID" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
                                     </td>
-                                    <td>
-                                        卫星代号</td>
+                                    <th>
+                                        卫星代号</th>
                                     <td>
                                         <asp:TextBox ID="txtSHSatID" runat="server" Text='<%# Eval("SatID")%>'></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        圈次</td>
+                                    <th>
+                                        圈次</th>
                                     <td>
                                         <asp:TextBox ID="txtSHLaps" runat="server" Text='<%# Eval("Laps")%>'></asp:TextBox>
                                     </td>
-                                    <td>
-                                        主站名称</td>
+                                    <th>
+                                        主站名称</th>
                                     <td>
                                         <asp:TextBox ID="txtSHMaintStation" runat="server" Text='<%# Eval("MainStationName")%>'></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        备站名称</td>
+                                    <th>
+                                        备站名称</th>
                                     <td>
                                         <asp:TextBox ID="txtSHBakStation" runat="server" Text='<%# Eval("BakStationName")%>'></asp:TextBox>
                                     </td>
-                                    <td>
-                                        工作内容</td>
+                                    <th>
+                                        工作内容</th>
                                     <td>
                                         <asp:TextBox ID="txtSHContent" runat="server" Text='<%# Eval("Content")%>'></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        实时开始处理时间</td>
+                                    <th>
+                                        实时开始处理时间</th>
                                     <td>
                                         <asp:TextBox ID="txtSHStartTime" runat="server" Text='<%# Eval("StartTime")%>'></asp:TextBox>
                                     </td>
-                                    <td>
-                                        实时结束处理时间</td>
+                                    <th>
+                                        实时结束处理时间</th>
                                     <td>
                                         <asp:TextBox ID="txtSHEndTime" runat="server" Text='<%# Eval("EndTime")%>'></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        事后数据处理</td>
+                                    <th>
+                                        事后数据处理</th>
                                     <td>
                                         <asp:TextBox ID="txtSHAfterDH" runat="server" Text='<%# Eval("AfterWardsDataHandle")%>'></asp:TextBox>
                                     </td>
@@ -476,33 +477,33 @@
                 </td>
             </tr>
             <tr>
-                <td class="style8">
-                    指挥与监视</td>
+                <th class="style8">
+                    指挥与监视</th>
                 <td class="style9" colspan="3">
                     <asp:Repeater ID="rpDirectAndMonitor" runat="server" 
                         onitemcommand="rpDirectAndMonitor_ItemCommand">
                         <ItemTemplate>
                             <table>
                                 <tr>
-                                    <td>
-                                        对应试验ID</td>
+                                    <th>
+                                        对应试验ID</th>
                                     <td>
                                         <asp:TextBox ID="txtDMSYID" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
                                     </td>
-                                    <td>
-                                        时间段</td>
+                                    <th>
+                                        时间段</th>
                                     <td>
                                         <asp:TextBox ID="txtDMDateSection" runat="server" Text='<%# Eval("DateSection")%>'></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        指挥与监视任务</td>
+                                    <th>
+                                        指挥与监视任务</th>
                                     <td>
                                         <asp:TextBox ID="txtDMTask" runat="server" Text='<%# Eval("Task")%>'></asp:TextBox>
                                     </td>
-                                    <td>
-                                        实时显示任务</td>
+                                    <th>
+                                        实时显示任务</th>
                                     <td>
                                         <asp:TextBox ID="txtDMRTTask" runat="server" Text='<%# Eval("RealTimeShowTask")%>'></asp:TextBox>
                                     </td>
@@ -525,33 +526,33 @@
                 </td>
             </tr>
             <tr>
-                <td class="style8">
-                    实时控制</td>
+                <th class="style8">
+                    实时控制</th>
                 <td class="style9" colspan="3">
                     <asp:Repeater ID="rpRealTimeControl" runat="server" 
                         onitemcommand="rpRealTimeControl_ItemCommand">
                         <ItemTemplate>
                             <table>
                                 <tr>
-                                    <td>
-                                        工作</td>
+                                    <th>
+                                        工作</th>
                                     <td>
                                         <asp:TextBox ID="txtRCWork" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
                                     </td>
-                                    <td>
-                                        对应试验ID</td>
+                                    <th>
+                                        对应试验ID</th>
                                     <td>
                                         <asp:TextBox ID="txtRCSYID" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        开始时间</td>
+                                    <th>
+                                        开始时间</th>
                                     <td>
                                         <asp:TextBox ID="txtRCStartTime" runat="server" Text='<%# Eval("StartTime")%>'></asp:TextBox>
                                     </td>
-                                    <td>
-                                        结束时间</td>
+                                    <th>
+                                        结束时间</th>
                                     <td>
                                         <asp:TextBox ID="txtRCEndTime" runat="server" Text='<%# Eval("EndTime")%>'></asp:TextBox>
                                     </td>
@@ -574,28 +575,28 @@
                 </td>
             </tr>
             <tr>
-                <td class="style8">
-                    试验评估</td>
+                <th class="style8">
+                    试验评估</th>
                 <td class="style9" colspan="3">
                     <asp:Repeater ID="rpSYEstimate" runat="server" 
                         onitemcommand="SYEstimate_ItemCommand">
                         <ItemTemplate>
                             <table>
                                 <tr>
-                                    <td>
-                                       对应试验ID</td>
+                                    <th>
+                                       对应试验ID</th>
                                     <td>
                                         <asp:TextBox ID="txtESYID" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
                                     </td>
-                                    <td>
-                                        开始时间</td>
+                                    <th>
+                                        开始时间</th>
                                     <td>
                                         <asp:TextBox ID="txtEStartTime" runat="server" Text='<%# Eval("StartTime")%>'></asp:TextBox>
                                     </td>
                                 </tr>
                                  <tr>
-                                    <td>
-                                      完成时间</td>
+                                    <th>
+                                      完成时间</th>
                                     <td>
                                         <asp:TextBox ID="txtEEndTime" runat="server" Text='<%# Eval("EndTime")%>'></asp:TextBox>
                                     </td>
@@ -612,34 +613,34 @@
                 </td>
             </tr>
             <tr>
-                <td class="style8">
-                    数据管理</td>
+                <th class="style8">
+                    数据管理</th>
                 <td class="style9" colspan="3">
                     <asp:Repeater ID="rpDataManage" runat="server" 
                         onitemcommand="rpDataManage_ItemCommand">
                         <ItemTemplate>
                             <table>
                                 <tr>
-                                    <td>
-                                        工作</td>
+                                    <th>
+                                        工作</th>
                                     <td>
                                         <asp:TextBox ID="txtMWork" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
                                     </td>
-                                    <td>
-                                        对应数据描述</td>
+                                    <th>
+                                        对应数据描述</th>
                                     <td>
                                         <asp:TextBox ID="txtMDes" runat="server" Text='<%# Eval("Description")%>'></asp:TextBox>
                                     </td>
                                     
                                 </tr>
                                 <tr>
-                                    <td>
-                                        开始时间</td>
+                                    <th>
+                                        开始时间</th>
                                     <td>
                                         <asp:TextBox ID="txtMStartTime" runat="server" Text='<%# Eval("StartTime")%>'></asp:TextBox>
                                     </td>
-                                    <td>
-                                        结束时间</td>
+                                    <th>
+                                        结束时间</th>
                                     <td>
                                         <asp:TextBox ID="txtMEndTime" runat="server" Text='<%# Eval("EndTime")%>'></asp:TextBox>
                                     </td>
@@ -665,15 +666,13 @@
         </table>
         <br />
         <br />
-        <table class="edit">
+        <table class="edit" style="width:800px; text-align:center;">
+
             <tr>
                 <td>
-                    
+                    <asp:Button ID="btnSubmit" CssClass="button" runat="server" Text="保存" 
+                        onclick="btnSubmit_Click" />
                 </td>
-            </tr>
-            <tr>
-                <td>
-                    &nbsp;</td>
             </tr>
         </table>
     </div>

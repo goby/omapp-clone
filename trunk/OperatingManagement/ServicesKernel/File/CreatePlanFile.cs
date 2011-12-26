@@ -35,18 +35,35 @@ namespace ServicesKernel.File
         public string FileIndex { get; set; }
         public string Reserve { get; set; }
 
+        private string _filepath=null;
         public string FilePath 
         {
             get
             {
-                return SavePath + filename;
+                if (string.IsNullOrEmpty(_filepath))
+                {
+                    return SavePath + filename;
+                }
+                else
+                {
+                    return _filepath;
+                }
+            }
+            set
+            {
+                _filepath = value;
             }
         }
         public string SavePath 
         {
             get
             {
-                return System.Configuration.ConfigurationManager.AppSettings["savepath"];
+                string savepath =System.Configuration.ConfigurationManager.AppSettings["savepath"];
+                if (savepath[savepath.Length-1] !='\\')
+                {
+                    savepath += "\\";
+                }
+                return savepath;
             }
         }
 
@@ -80,9 +97,15 @@ namespace ServicesKernel.File
         /// <summary>
         /// 应用研究
         /// </summary>
-        public string CreateYJJHFile(YJJH obj)
+        /// <param name="obj"></param>
+        /// <param name="type">0:Add;1:Edit</param>
+        /// <returns></returns>
+        public string CreateYJJHFile(YJJH obj,int type)
         {
-            filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("YJJH", obj.TaskID, obj.SatID);
+            if (type == 0)
+            {
+                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("YJJH", obj.TaskID, obj.SatID);
+            }
             xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
             xmlWriter.Formatting = Formatting.Indented;
             xmlWriter.WriteStartDocument();
@@ -230,9 +253,13 @@ namespace ServicesKernel.File
             xmlWriter.Close();
             return FilePath;
         }
-        public string CreateMBXQFile(MBXQ obj)
+
+        public string CreateMBXQFile(MBXQ obj,int type)
         {
-            filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("MBXQ", obj.TaskID, obj.SatID);
+            if (type == 0)
+            {
+                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("MBXQ", obj.TaskID, obj.SatID);
+            }
             xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
             xmlWriter.Formatting = Formatting.Indented;
             xmlWriter.WriteStartDocument();
@@ -288,9 +315,13 @@ namespace ServicesKernel.File
             xmlWriter.Close();
             return FilePath;
         }
-        public string CreateHJXQFile(HJXQ obj)
+
+        public string CreateHJXQFile(HJXQ obj,int type)
         {
-            filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("HJXQ", obj.TaskID, obj.SatID);
+            if (type == 0)
+            {
+                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("HJXQ", obj.TaskID, obj.SatID);
+            }
             xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
             xmlWriter.Formatting = Formatting.Indented;
             xmlWriter.WriteStartDocument();
@@ -352,9 +383,12 @@ namespace ServicesKernel.File
         /// <summary>
         /// 地面站工作计划
         /// </summary>
-        public string CreateDMJHFile(DMJH obj)
+        public string CreateDMJHFile(DMJH obj,int type)
         {
-            filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("DMJH", obj.TaskID, obj.SatID);
+            if (type == 0)
+            {
+                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("DMJH", obj.TaskID, obj.SatID);
+            }
             xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
             xmlWriter.Formatting = Formatting.Indented;
             xmlWriter.WriteStartDocument();
@@ -499,9 +533,12 @@ namespace ServicesKernel.File
         /// <summary>
         /// 中心计划
         /// </summary>
-        public string CreateZXJHFile(ZXJH obj)
+        public string CreateZXJHFile(ZXJH obj,int type)
         {
-            filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("ZXJH", obj.TaskID, obj.SatID);
+            if (type == 0)
+            {
+                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("ZXJH", obj.TaskID, obj.SatID);
+            }
             xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
             xmlWriter.Formatting = Formatting.Indented;
             xmlWriter.WriteStartDocument();
@@ -851,9 +888,12 @@ namespace ServicesKernel.File
         /// <summary>
         /// 仿真推演
         /// </summary>
-        public string CreateTYSJFile(TYSJ obj)
+        public string CreateTYSJFile(TYSJ obj,int type)
         {
-            filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("TYSJ", obj.TaskID, obj.SatID);
+            if (type == 0)
+            {
+                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("TYSJ", obj.TaskID, obj.SatID);
+            }
             xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
             xmlWriter.Formatting = Formatting.Indented;
             xmlWriter.WriteStartDocument();
