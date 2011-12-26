@@ -13,7 +13,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-新建计划
+    新建计划
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="edit" style="width:800px;">
@@ -33,12 +33,28 @@
                 计划类型(<span class="red">*</span>)</th>
             <td>
                 <asp:DropDownList ID="ddlPlanType" runat="server" Width="304px" Height="24px">
-                    <asp:ListItem>应用研究工作计划</asp:ListItem>
-                    <asp:ListItem>空间信息需求</asp:ListItem>
-                    <asp:ListItem>地面站工作计划</asp:ListItem>
-                    <asp:ListItem>中心运行计划</asp:ListItem>
-                    <asp:ListItem>仿真推演试验数据</asp:ListItem>
-                    <asp:ListItem>设备工作计划</asp:ListItem>
+                    <asp:ListItem Value="YJJH">应用研究工作计划</asp:ListItem>
+                    <asp:ListItem Value="MBXQ">空间目标信息需求</asp:ListItem>
+                    <asp:ListItem Value="HJXQ">空间环境信息需求</asp:ListItem>
+                    <asp:ListItem Value="DMJH">地面站工作计划</asp:ListItem>
+                    <asp:ListItem Value="ZXJH">中心运行计划</asp:ListItem>
+                    <asp:ListItem Value="TYSJ">仿真推演试验数据</asp:ListItem>
+                    <%--<asp:ListItem Value="SBJH">设备工作计划</asp:ListItem>--%>
+                </asp:DropDownList>
+            </td>
+        </tr>
+        <tr>
+            <th style="width:100px;">
+                卫星(<span class="red">*</span>)</th>
+            <td>
+                <asp:DropDownList ID="ddlSat" runat="server" Width="304px" Height="24px">
+                    <asp:ListItem Value="TS3">TS-3卫星</asp:ListItem>
+                    <asp:ListItem Value="TS4A">TS-4-A卫星</asp:ListItem>
+                    <asp:ListItem Value="TS4B">TS-4-B卫星</asp:ListItem>
+                    <asp:ListItem Value="TS5A">TS-5-A卫星</asp:ListItem>
+                    <asp:ListItem Value="TS5B">TS-5-B卫星</asp:ListItem>
+                    <asp:ListItem Value="TS2">TS-2卫星</asp:ListItem>
+                    <asp:ListItem Value="DXLH">多星联合试验</asp:ListItem>
                 </asp:DropDownList>
             </td>
         </tr>
@@ -93,7 +109,8 @@
             <th>
                 &nbsp;</th>
             <td>
-                <asp:HiddenField ID="hfUserId" runat="server" />
+                <asp:HiddenField ID="hfPlanType" runat="server" />
+                <asp:HiddenField ID="hfID" runat="server" />
                 <asp:Literal ID="ltHref" runat="server"></asp:Literal>
             </td>
         </tr>
@@ -112,8 +129,14 @@
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" 
                     onclick="btnSubmit_Click" Text="提交" />
             &nbsp;&nbsp;
-                <asp:Button ID="txtGetPlanInfo" runat="server" onclick="txtGetPlanInfo_Click" 
+                <asp:Button ID="btnGetPlanInfo" runat="server" CssClass="button" onclick="txtGetPlanInfo_Click" 
                     Text="从设备计划获取信息" />
+            &nbsp;
+                <asp:Button ID="btnEdit" runat="server" CssClass="button" Text="编辑详细" 
+                    onclick="btnEdit_Click" />
+&nbsp;
+                <asp:Button ID="btnContinue" runat="server" CssClass="button" Text="继续新建" 
+                    onclick="btnContinue_Click" />
             </td>
         </tr>
     </table>

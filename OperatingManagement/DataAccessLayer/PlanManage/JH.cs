@@ -39,6 +39,8 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         public int SRCID { get; set; } //计划源编号：当计划源类型为1时，为试验程序编号；计划源类型为2时，为设备工作计划编号。
         public string FileIndex { get; set; }
         public string Reserve { get; set; }
+
+        public string SatID { get; set; }
         #endregion
 
         #region -Methods-

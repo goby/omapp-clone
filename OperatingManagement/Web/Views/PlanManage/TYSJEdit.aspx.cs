@@ -13,6 +13,7 @@ using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.Framework;
 using System.Web.Security;
 using System.Xml;
+using ServicesKernel.File;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
@@ -34,8 +35,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         private void BindJhTable(string sID)
         {
             List<JH> jh = (new JH()).SelectByIDS(sID);
-            txtPlanStartTime.Text = jh[0].StartTime.ToShortTimeString();
-            txtPlanEndTime.Text = jh[0].EndTime.ToShortTimeString();
+            txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
+            txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
         }
         private void BindXML()
@@ -62,6 +63,21 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.ShortTitle = "编辑计划";
             base.OnPageLoaded();
             this.AddJavaScriptInclude("scripts/pages/TYSJEdit.aspx.js");
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            TYSJ objTYSJ = new TYSJ();
+            objTYSJ.SatName = txtSatName.Text;
+            objTYSJ.Type = txtType.Text;
+            objTYSJ.TestItem = txtTestItem.Text;
+            objTYSJ.StartTime = txtStartTime.Text;
+            objTYSJ.EndTime = txtEndTime.Text;
+            objTYSJ.Condition = txtCondition.Text;
+
+            CreatePlanFile creater = new CreatePlanFile();
+            creater.FilePath = HfFileIndex.Value;
+            creater.CreateTYSJFile(objTYSJ, 1);
         }
     }
 }

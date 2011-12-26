@@ -58,6 +58,15 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.DropDownList ddlPlanType;
         
         /// <summary>
+        /// ddlSat 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSat;
+        
+        /// <summary>
         /// txtPlanID 控件。
         /// </summary>
         /// <remarks>
@@ -130,13 +139,22 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.TextBox txtNote;
         
         /// <summary>
-        /// hfUserId 控件。
+        /// hfPlanType 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfUserId;
+        protected global::System.Web.UI.WebControls.HiddenField hfPlanType;
+        
+        /// <summary>
+        /// hfID 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfID;
         
         /// <summary>
         /// ltHref 控件。
@@ -166,12 +184,30 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.Button btnSubmit;
         
         /// <summary>
-        /// txtGetPlanInfo 控件。
+        /// btnGetPlanInfo 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button txtGetPlanInfo;
+        protected global::System.Web.UI.WebControls.Button btnGetPlanInfo;
+        
+        /// <summary>
+        /// btnEdit 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnEdit;
+        
+        /// <summary>
+        /// btnContinue 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnContinue;
     }
 }

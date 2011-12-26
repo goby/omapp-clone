@@ -13,6 +13,7 @@ using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.Framework;
 using System.Web.Security;
 using System.Xml;
+using ServicesKernel.File;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
@@ -34,8 +35,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         private void BindJhTable(string sID)
         {
             List<JH> jh = (new JH()).SelectByIDS(sID);
-            txtPlanStartTime.Text = jh[0].StartTime.ToShortTimeString();
-            txtPlanEndTime.Text = jh[0].EndTime.ToShortTimeString();
+            txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
+            txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
         }
         private void BindXML()
@@ -55,16 +56,19 @@ namespace OperatingManagement.Web.Views.PlanManage
             root = xmlDoc.SelectSingleNode("空间目标信息需求/Sum");
             txtMBSum.Text = root.InnerText;
 
-            root = xmlDoc.SelectSingleNode("空间目标信息需求/卫星");
+            root = xmlDoc.SelectSingleNode("空间目标信息需求");
             List<MBXQSatInfo> list = new List<MBXQSatInfo>();
             MBXQSatInfo sat;
             foreach (XmlNode n in root.ChildNodes)
             {
-                sat = new MBXQSatInfo();
-                sat.SatName = n["SatName"].InnerText;
-                sat.InfoName = n["InfoName"].InnerText;
-                sat.InfoTime = n["InfoTime"].InnerText;
-                list.Add(sat);
+                if (n.Name == "卫星")
+                {
+                    sat = new MBXQSatInfo();
+                    sat.SatName = n["SatName"].InnerText;
+                    sat.InfoName = n["InfoName"].InnerText;
+                    sat.InfoTime = n["InfoTime"].InnerText;
+                    list.Add(sat);
+                }
             }
             rpMB.DataSource = list;
             rpMB.DataBind();
@@ -129,6 +133,37 @@ namespace OperatingManagement.Web.Views.PlanManage
                 rp.DataSource = list2;
                 rp.DataBind();
             }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            MBXQ obj = new MBXQ();
+            obj.User = txtMBUser.Text;
+            obj.Time = txtMBTime.Text;
+            obj.TargetInfo = txtMBTargetInfo.Text;
+            obj.TimeSection1 = txtMBTimeSection1.Text;
+            obj.TimeSection2 = txtMBTimeSection2.Text;
+            obj.Sum = txtMBSum.Text;
+            obj.SatInfos = new List<MBXQSatInfo>();
+
+            MBXQSatInfo dm;
+            foreach (RepeaterItem it in rpMB.Items)
+            {
+                dm = new MBXQSatInfo();
+                TextBox txtMBSatName = (TextBox)it.FindControl("txtMBSatName");
+                TextBox txtMBInfoName = (TextBox)it.FindControl("txtMBInfoName");
+                TextBox txtMBInfoTime = (TextBox)it.FindControl("txtMBInfoTime");
+
+                dm.SatName = txtMBSatName.Text;
+                dm.InfoName = txtMBInfoName.Text;
+                dm.InfoTime = txtMBInfoTime.Text;
+
+                obj.SatInfos.Add(dm);
+            }
+
+            CreatePlanFile creater = new CreatePlanFile();
+            creater.FilePath = HfFileIndex.Value;
+            creater.CreateMBXQFile(obj, 1);
         }
     }
 }

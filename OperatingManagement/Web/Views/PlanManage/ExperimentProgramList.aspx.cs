@@ -66,7 +66,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             objYJJH.TaskID = "700任务(0500)";
             objYJJH.InfoType = "应用研究计划(00 70 06 00)";
             objYJJH.SatID = "TS3";
-            objJH.FileIndex=(new CreatePlanFile()).CreateYJJHFile(objYJJH);
+            objJH.FileIndex=(new CreatePlanFile()).CreateYJJHFile(objYJJH,0);
 
             objJH.TaskID = objYJJH.TaskID;
             objJH.PlanType = "YJJH";
@@ -87,7 +87,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             MBXQ objMBXQ = new MBXQ();
             objMBXQ.TaskID = "700任务(0501)";
             objMBXQ.SatID = "TS3";
-            objJH.FileIndex = (new CreatePlanFile()).CreateMBXQFile(objMBXQ);
+            objJH.FileIndex = (new CreatePlanFile()).CreateMBXQFile(objMBXQ,0);
             objJH.TaskID = objMBXQ.TaskID;
             objJH.PlanType = "MBXQ";
             objJH.PlanID = objMBXQ.ID;
@@ -96,7 +96,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             HJXQ objHJXQ = new HJXQ();
             objHJXQ.TaskID = "700任务(0501)";
             objHJXQ.SatID = "TS3";
-            objJH.FileIndex = (new CreatePlanFile()).CreateHJXQFile(objHJXQ);
+            objJH.FileIndex = (new CreatePlanFile()).CreateHJXQFile(objHJXQ, 0);
             objJH.TaskID = objHJXQ.TaskID;
             objJH.PlanType = "HJXQ";
             objJH.PlanID = objHJXQ.ID;
@@ -112,7 +112,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             objGZJH.Format1 = "JXH  XXFL  DW  SB  QS";
             objGZJH.Format2 = "QH  DH  FS  JXZ  MS  QB  GXZ  ZHB  RK  GZK  KSHX  GSHX  GZJ  JS  BID  SBZ  RTs  RTe  SL  BID  HBZ  Ts  Te  RTs  SL";
             objGZJH.SatID = "TS3";
-            objJH.FileIndex = (new CreatePlanFile()).CreateDMJHFile(objGZJH);
+            objJH.FileIndex = (new CreatePlanFile()).CreateDMJHFile(objGZJH, 0);
             objJH.TaskID = objGZJH.TaskID;
             objJH.PlanType = "DMJH";
             objJH.PlanID = objGZJH.ID;
@@ -123,7 +123,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             ZXJH objZXJH = new ZXJH();
             objZXJH.TaskID = "700任务(0501)";
             objZXJH.SatID = "TS3";
-            objJH.FileIndex = (new CreatePlanFile()).CreateZXJHFile(objZXJH);
+            objJH.FileIndex = (new CreatePlanFile()).CreateZXJHFile(objZXJH, 0);
             objJH.TaskID = objZXJH.TaskID;
             objJH.PlanType = "ZXJH";
             objJH.PlanID = objZXJH.ID;
@@ -139,7 +139,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             objTYSJ.Format1 = "SatName  Type  TestItem  StartTime  EndTime  Condition";
             objTYSJ.SatID = "TS3";
 
-            objJH.FileIndex = (new CreatePlanFile()).CreateTYSJFile(objTYSJ);
+            objJH.FileIndex = (new CreatePlanFile()).CreateTYSJFile(objTYSJ, 0);
             objJH.TaskID = objTYSJ.TaskID;
             objJH.PlanType = "TYSJ";
             objJH.PlanID = objTYSJ.Id;

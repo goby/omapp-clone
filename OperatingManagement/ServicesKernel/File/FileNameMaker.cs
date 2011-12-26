@@ -239,7 +239,7 @@ namespace ServicesKernel.File
         public string GenarateInternalFileNameTypeOne(string infotype,string taskid,string satid)
         {
             string filename = "";
-            filename = "GL_" + infotype.ToUpper() + taskid.ToUpper() + satid.ToUpper() + DateTime.Now.ToString("yyyyMMddHHmm") + ".xml";
+            filename = "GL_" + infotype.ToUpper() + "_" + taskid.ToUpper() + "_" + satid.ToUpper() + "_" + DateTime.Now.ToString("yyyyMMddHHmm") + ".xml";
             return filename;
         }
         #endregion

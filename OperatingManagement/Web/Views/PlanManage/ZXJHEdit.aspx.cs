@@ -14,6 +14,7 @@ using OperatingManagement.Framework;
 using System.Web.Security;
 using System.Xml;
 using System.Collections;
+using ServicesKernel.File;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
@@ -35,8 +36,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         private void BindJhTable(string sID)
         {
             List<JH> jh = (new JH()).SelectByIDS(sID);
-            txtPlanStartTime.Text = jh[0].StartTime.ToShortTimeString();
-            txtPlanEndTime.Text = jh[0].EndTime.ToShortTimeString();
+            txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
+            txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
         }
         private void BindXML()
@@ -221,195 +222,6 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.ShortTitle = "编辑计划";
             base.OnPageLoaded();
             this.AddJavaScriptInclude("scripts/pages/ZXJHEdit.aspx.js");
-        }
-
-        protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                if (ViewState["ar"] != null && ViewState["op"] != null)
-                {
-                    ArrayList ar = (ArrayList)ViewState["ar"];
-                    Repeater rp = e.Item.FindControl("Repeater2") as Repeater;
-                    int row = (int)ViewState["row"];
-                    List<ZXJH_SYEstimate> list2 = new List<ZXJH_SYEstimate>();
-                    ZXJH_SYEstimate sye;
-                    string op = (string)ViewState["op"];
-                    if (op == "Add")
-                    {
-                        //sye = new ZXJH_SYEstimate();
-                        if (e.Item.ItemIndex <= ar.Count-1)
-                        {
-                            list2 = (List < ZXJH_SYEstimate >) ar[e.Item.ItemIndex];
-                            rp.DataSource = list2;
-                            rp.DataBind();
-                        }
-                        else
-                        {
-                            sye = new ZXJH_SYEstimate();
-                            sye.StartTime = "";
-                            sye.EndTime = "";
-                            list2.Add(sye);
-                            rp.DataSource = list2;
-                            rp.DataBind();
-                        }
-                    }
-                    if (op == "Del")
-                    {
-                        if (e.Item.ItemIndex <= ar.Count - 1)
-                        {
-                            list2 = (List<ZXJH_SYEstimate>)ar[e.Item.ItemIndex];
-                            rp.DataSource = list2;
-                            rp.DataBind();
-                        }
-                    }
-                }
-                else
-                {
-                    #region 正常
-                    Repeater rp = e.Item.FindControl("Repeater2") as Repeater;
-                    int row = e.Item.ItemIndex;
-                    List<ZXJH_SYEstimate> list2 = new List<ZXJH_SYEstimate>();
-                    ZXJH_SYEstimate sye;
-                    XmlDocument xmlDoc = new XmlDocument();
-                    xmlDoc.Load(@"D:\files\aa.xml");
-                    XmlNode root = xmlDoc.SelectSingleNode("ZXJH/任务");//查找 txt
-                    int i = 0;
-                    foreach (XmlNode n in root.ChildNodes)
-                    {
-                        foreach (XmlNode nd in n.ChildNodes)
-                        {
-                            if (row == i)
-                            {
-                                if (nd.Name == "Item")
-                                {
-                                    sye = new ZXJH_SYEstimate();
-                                    sye.StartTime = nd["X"].InnerText;
-                                    sye.EndTime = nd["Y"].InnerText;
-                                    list2.Add(sye);
-                                }
-                            }
-                        }
-
-                        i = i + 1;
-                    }
-                    rp.DataSource = list2;
-                    rp.DataBind();
-
-                    #endregion
-                }
-            }
-        }
-
-        protected void Repeater1_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            if (e.CommandName == "Add")
-            {
-                List<ZXJH_DataManage> list2 = new List<ZXJH_DataManage>();
-                ZXJH_DataManage dm;
-                List<ZXJH_SYEstimate> list1 = new List<ZXJH_SYEstimate>();
-                ZXJH_SYEstimate sye;
-                
-                Repeater rp = (Repeater)source;
-                ViewState["row"] = e.Item.ItemIndex;
-                ArrayList ar = new ArrayList();
-                ViewState["op"] = "Add";
-
-                foreach (RepeaterItem it in rp.Items)
-                {
-                    Repeater rps = it.FindControl("Repeater2") as Repeater;
-                    foreach (RepeaterItem its in rps.Items)
-                    {
-                            sye = new ZXJH_SYEstimate();
-                            TextBox txt1 = (TextBox)its.FindControl("txtX");
-                            TextBox txt2 = (TextBox)its.FindControl("txtY");
-                            sye.StartTime = txt1.Text;
-                            sye.EndTime = txt2.Text;
-                            list1.Add(sye);
-                    }
-                    ar.Add(list1);
-                    list1 = new List<ZXJH_SYEstimate>();
-
-                    dm = new ZXJH_DataManage();
-                    TextBox txtX = (TextBox)it.FindControl("txtName");
-                    TextBox txtY = (TextBox)it.FindControl("txtColor");
-                    dm.Work = txtX.Text;
-                    dm.Description = txtY.Text;
-                    list2.Add(dm);
-                }
-                ViewState["ar"] = ar;
-                dm = new ZXJH_DataManage();
-                dm.Work = "";
-                dm.Description = "";
-                list2.Add(dm);
-                rp.DataSource = list2;
-                rp.DataBind();
-
-            }
-            if (e.CommandName == "Del")
-            {
-                List<ZXJH_DataManage> list2 = new List<ZXJH_DataManage>();
-                ZXJH_DataManage dm;
-                List<ZXJH_SYEstimate> list1 = new List<ZXJH_SYEstimate>();
-                ZXJH_SYEstimate sye;
-                ArrayList ar = new ArrayList();
-                Repeater rp = (Repeater)source;
-                ViewState["row"] = e.Item.ItemIndex;
-                ViewState["op"] = "Del";
-
-                foreach (RepeaterItem it in rp.Items)
-                {
-                    if (e.Item.ItemIndex != it.ItemIndex)
-                    {
-                        Repeater rps = it.FindControl("Repeater2") as Repeater;
-                        foreach (RepeaterItem its in rps.Items)
-                        {
-                            sye = new ZXJH_SYEstimate();
-                            TextBox txt1 = (TextBox)its.FindControl("txtX");
-                            TextBox txt2 = (TextBox)its.FindControl("txtY");
-                            sye.StartTime = txt1.Text;
-                            sye.EndTime = txt2.Text;
-                            list1.Add(sye);
-                        }
-                        ar.Add(list1);
-                        list1 = new List<ZXJH_SYEstimate>();
-
-                        dm = new ZXJH_DataManage();
-                        TextBox txtX = (TextBox)it.FindControl("txtName");
-                        TextBox txtY = (TextBox)it.FindControl("txtColor");
-                        dm.Work = txtX.Text;
-                        dm.Description = txtY.Text;
-                        list2.Add(dm);
-                    }
-                }
-                ViewState["ar"] = ar;
-                rp.DataSource = list2;
-                rp.DataBind();
-            }
-        }
-
-        protected void Repeater2_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            if (e.CommandName == "Del")
-            {
-                List<ZXJH_SYEstimate> list2 = new List<ZXJH_SYEstimate>();
-                ZXJH_SYEstimate sye;
-                Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
-                {
-                    if (e.Item.ItemIndex != it.ItemIndex)
-                    {
-                        sye = new ZXJH_SYEstimate();
-                        TextBox txtX = (TextBox)it.FindControl("txtX");
-                        TextBox txtY = (TextBox)it.FindControl("txtY");
-                        sye.StartTime = txtX.Text;
-                        sye.EndTime = txtY.Text;
-                        list2.Add(sye);
-                    }
-                }
-                rp.DataSource = list2;
-                rp.DataBind();
-            }
         }
 
         protected void rpWork_ItemCommand(object source, RepeaterCommandEventArgs e)
@@ -783,6 +595,165 @@ namespace OperatingManagement.Web.Views.PlanManage
                 rp.DataSource = list2;
                 rp.DataBind();
             }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            #region basic
+            ZXJH obj = new ZXJH();
+            obj.Date = txtDate.Text;
+            obj.SYCount = txtSYCount.Text;
+            obj.SYID = txtSYID.Text;
+            obj.SYName = txtSYName.Text;
+            obj.SYDateTime = txtSYDateTime.Text;
+            obj.SYDays = txtSYDays.Text;
+            obj.SYLoadStartTime = txtLoadStartTime.Text;
+            obj.SYLoadEndTime = txtLoadEndTime.Text;
+            obj.SYLoadContent = txtLoadContent.Text;
+            obj.SY_SCLaps = txtSCLaps.Text;
+            obj.SY_SCStartTime = txtSCStartTime.Text;
+            obj.SY_SCEndTime = txtSCEndTime.Text;
+            obj.SY_CKLaps = txtCKLaps.Text;
+            obj.SY_CKStartTime = txtCKStartTime.Text;
+            obj.SY_CKEndTime = txtCKEndTime.Text;
+            obj.SY_ZSFirst = txtZSFirst.Text;
+            obj.SY_ZSLast = txtZSLast.Text;
+            obj.SY_ZSContent = txtZSContent.Text;
+            obj.Work_Load_SYID = txtWork_Load_SYID.Text;
+            obj.Work_Load_SatID = txtWork_Load_SatID.Text;
+            obj.Work_Load_Process = txtWork_Load_Process.Text;
+            obj.Work_Load_Event = txtWork_Load_Event.Text;
+            obj.Work_Load_Action = txtWork_Load_Action.Text;
+            obj.Work_Load_StartTime = txtWork_Load_StartTime.Text;
+            obj.Work_Load_EndTime = txtWork_Load_EndTime.Text;
+            obj.Work_Command_SYID = txtWork_Command_SYID.Text;
+            obj.Work_Command_SYItem = txtWork_Command_SYItem.Text;
+            obj.Work_Command_SatID = txtWork_Command_SatID.Text;
+            obj.Work_Command_Content = txtWork_Command_Content.Text;
+            obj.Work_Command_UpRequire = txtWork_Command_UpRequire.Text;
+            obj.Work_Command_Direction = txtWork_Command_Direction.Text;
+            obj.Work_Command_SpecialRequire = txtWork_Command_SpecialRequire.Text;
+
+            obj.WorkContents = new List<ZXJH_WorkContent>();
+            obj.SYDataHandles = new List<ZXJH_SYDataHandle>();
+            obj.DirectAndMonitors = new List<ZXJH_DirectAndMonitor>();
+            obj.RealTimeControls = new List<ZXJH_RealTimeControl>();
+            obj.SYEstimates = new List<ZXJH_SYEstimate>();
+            obj.DataManages = new List<ZXJH_DataManage>();
+            #endregion
+
+            ZXJH_WorkContent wc;
+            ZXJH_SYDataHandle dh;
+            ZXJH_DirectAndMonitor dam;
+            ZXJH_RealTimeControl rc;
+            ZXJH_SYEstimate sye;
+            ZXJH_DataManage dm;
+            #region workContent
+            foreach (RepeaterItem it in rpWork.Items)
+            {
+                wc = new ZXJH_WorkContent();
+                TextBox txtWC_Work = (TextBox)it.FindControl("txtWC_Work");
+                TextBox txtWC_SYID = (TextBox)it.FindControl("txtWC_SYID");
+                TextBox txtWC_StartTime = (TextBox)it.FindControl("txtWC_StartTime");
+                TextBox txtWC_MinTime = (TextBox)it.FindControl("txtWC_MinTime");
+                TextBox txtWC_MaxTime = (TextBox)it.FindControl("txtWC_MaxTime");
+
+                wc.Work = txtWC_Work.Text;
+                wc.SYID = txtWC_SYID.Text;
+                wc.StartTime = txtWC_StartTime.Text;
+                wc.MinTime = txtWC_MinTime.Text;
+                wc.MaxTime = txtWC_MaxTime.Text;
+                obj.WorkContents.Add(wc);
+            }
+            #endregion
+            #region SYDataHandle
+            foreach (RepeaterItem it in rpSYDataHandle.Items)
+            {
+                dh = new ZXJH_SYDataHandle();
+                TextBox txtSHSYID = (TextBox)it.FindControl("txtSHSYID");
+                TextBox txtSHSatID = (TextBox)it.FindControl("txtSHSatID");
+                TextBox txtSHLaps = (TextBox)it.FindControl("txtSHLaps");
+                TextBox txtSHMaintStation = (TextBox)it.FindControl("txtSHMaintStation");
+                TextBox txtSHBakStation = (TextBox)it.FindControl("txtSHBakStation");
+                TextBox txtSHContent = (TextBox)it.FindControl("txtSHContent");
+                TextBox txtSHStartTime = (TextBox)it.FindControl("txtSHStartTime");
+                TextBox txtSHEndTime = (TextBox)it.FindControl("txtSHEndTime");
+                TextBox txtSHAfterDH = (TextBox)it.FindControl("txtSHAfterDH");
+
+                dh.SYID = txtSHSYID.Text;
+                dh.SatID = txtSHSatID.Text;
+                dh.Laps = txtSHLaps.Text;
+                dh.MainStationName = txtSHMaintStation.Text;
+                dh.BakStationName = txtSHBakStation.Text;
+                dh.Content = txtSHContent.Text;
+                dh.StartTime = txtSHStartTime.Text;
+                dh.EndTime = txtSHEndTime.Text;
+                dh.AfterWardsDataHandle = txtSHAfterDH.Text;
+                obj.SYDataHandles.Add(dh);
+            }
+            #endregion
+            #region DirectAndMonitor
+            foreach (RepeaterItem it in rpDirectAndMonitor.Items)
+            {
+                dam = new ZXJH_DirectAndMonitor();
+                TextBox txtDMSYID = (TextBox)it.FindControl("txtDMSYID");
+                TextBox txtDMDateSection = (TextBox)it.FindControl("txtDMDateSection");
+                TextBox txtDMTask = (TextBox)it.FindControl("txtDMTask");
+                TextBox txtDMRTTask = (TextBox)it.FindControl("txtDMRTTask");
+
+                dam.SYID = txtDMSYID.Text;
+                dam.DateSection = txtDMDateSection.Text;
+                dam.Task = txtDMTask.Text;
+                dam.RealTimeShowTask = txtDMRTTask.Text;
+                obj.DirectAndMonitors.Add(dam);
+            }
+            #endregion
+            foreach (RepeaterItem it in rpRealTimeControl.Items)
+            {
+                rc = new ZXJH_RealTimeControl();
+                TextBox txtRCWork = (TextBox)it.FindControl("txtRCWork");
+                TextBox txtRCSYID = (TextBox)it.FindControl("txtRCSYID");
+                TextBox txtRCStartTime = (TextBox)it.FindControl("txtRCStartTime");
+                TextBox txtRCEndTime = (TextBox)it.FindControl("txtRCEndTime");
+
+                rc.Work = txtRCWork.Text;
+                rc.SYID = txtRCSYID.Text;
+                rc.StartTime = txtRCStartTime.Text;
+                rc.EndTime = txtRCEndTime.Text;
+                obj.RealTimeControls.Add(rc);
+            }
+            #region SYEstimate
+            foreach (RepeaterItem it in rpSYEstimate.Items)
+            {
+                sye = new ZXJH_SYEstimate();
+                TextBox txtESYID = (TextBox)it.FindControl("txtESYID");
+                TextBox txtEStartTime = (TextBox)it.FindControl("txtEStartTime");
+                TextBox txtEEndTime = (TextBox)it.FindControl("txtEEndTime");
+
+                sye.SYID = txtESYID.Text;
+                sye.StartTime = txtEStartTime.Text;
+                sye.EndTime = txtEEndTime.Text;
+                obj.SYEstimates.Add(sye);
+            }
+            #endregion
+            foreach (RepeaterItem it in rpDataManage.Items)
+            {
+                dm = new ZXJH_DataManage();
+                TextBox txtMWork = (TextBox)it.FindControl("txtMWork");
+                TextBox txtMDes = (TextBox)it.FindControl("txtMDes");
+                TextBox txtMStartTime = (TextBox)it.FindControl("txtMStartTime");
+                TextBox txtMEndTime = (TextBox)it.FindControl("txtMEndTime");
+
+                dm.Work = txtMWork.Text;
+                dm.Description = txtMDes.Text;
+                dm.StartTime = txtMStartTime.Text;
+                dm.EndTime = txtMEndTime.Text;
+                obj.DataManages.Add(dm);
+            }
+
+            CreatePlanFile creater = new CreatePlanFile();
+            creater.FilePath = HfFileIndex.Value;
+            creater.CreateZXJHFile(obj, 1);
         }
     }
 }

@@ -14,6 +14,7 @@ using OperatingManagement.Framework;
 using System.Web.Security;
 using System.Xml;
 using System.Collections;
+using ServicesKernel.File;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
@@ -36,8 +37,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         private void BindJhTable(string sID)
         {
             List<JH> jh = (new JH()).SelectByIDS(sID);
-            txtPlanStartTime.Text = jh[0].StartTime.ToShortTimeString();
-            txtPlanEndTime.Text = jh[0].EndTime.ToShortTimeString();
+            txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
+            txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
         }
         private void BindXML()
@@ -57,22 +58,25 @@ namespace OperatingManagement.Web.Views.PlanManage
             root = xmlDoc.SelectSingleNode("地面站工作计划/任务个数");
             txtTaskCount.Text = root.InnerText;
 
-            root = xmlDoc.SelectSingleNode("地面站工作计划/任务");
+            root = xmlDoc.SelectSingleNode("地面站工作计划");
             foreach (XmlNode n in root.ChildNodes)
             {
-                task = new DMJH_Task();
-                task.TaskFlag = n["任务标志"].InnerText;
-                task.WorkWay = n["工作方式"].InnerText;
-                task.PlanPropertiy = n["计划性质"].InnerText;
-                task.WorkMode = n["工作模式"].InnerText;
-                task.PreStartTime = n["任务准备开始时间"].InnerText;
-                task.StartTime = n["任务开始时间"].InnerText;
-                task.TrackStartTime = n["跟踪开始时间"].InnerText;
-                task.WaveOnStartTime = n["开上行载波时间"].InnerText;
-                task.WaveOffStartTime = n["关上行载波时间"].InnerText;
-                task.TrackEndTime = n["跟踪结束时间"].InnerText;
-                task.EndTime = n["任务结束时间"].InnerText;
-                listTask.Add(task);
+                if (n.Name == "任务")
+                {
+                    task = new DMJH_Task();
+                    task.TaskFlag = n["任务标志"].InnerText;
+                    task.WorkWay = n["工作方式"].InnerText;
+                    task.PlanPropertiy = n["计划性质"].InnerText;
+                    task.WorkMode = n["工作模式"].InnerText;
+                    task.PreStartTime = n["任务准备开始时间"].InnerText;
+                    task.StartTime = n["任务开始时间"].InnerText;
+                    task.TrackStartTime = n["跟踪开始时间"].InnerText;
+                    task.WaveOnStartTime = n["开上行载波时间"].InnerText;
+                    task.WaveOffStartTime = n["关上行载波时间"].InnerText;
+                    task.TrackEndTime = n["跟踪结束时间"].InnerText;
+                    task.EndTime = n["任务结束时间"].InnerText;
+                    listTask.Add(task);
+                }
             }
 
             Repeater1.DataSource = listTask;
@@ -172,39 +176,45 @@ namespace OperatingManagement.Web.Views.PlanManage
                     DMJH_Task_AfterFeedBack afb;
                     XmlDocument xmlDoc = new XmlDocument();
                     xmlDoc.Load(HfFileIndex.Value);
-                    XmlNode root = xmlDoc.SelectSingleNode("DMJH/任务");
+                    XmlNode root = xmlDoc.SelectSingleNode("地面站工作计划");
                     int i = 0;
+                    
                     foreach (XmlNode n in root.ChildNodes)
                     {
-                        foreach (XmlNode nd in n.ChildNodes)
+                        #region 任务
+                        if (n.Name == "任务")
                         {
-                            if (row == i)
+                            foreach (XmlNode nd in n.ChildNodes)
                             {
-                                if (nd.Name == "实时传输")
+                                if (row == i)
                                 {
-                                    rt = new DMJH_Task_ReakTimeTransfor();
-                                    rt.FormatFlag = nd["格式标志"].InnerText;
-                                    rt.InfoFlowFlag = nd["信息流标志"].InnerText;
-                                    rt.TransStartTime = nd["数据传输开始时间"].InnerText;
-                                    rt.TransEndTime = nd["数据传输结束时间"].InnerText;
-                                    rt.TransSpeedRate = nd["数据传输速率"].InnerText;
-                                    list1.Add(rt);
-                                }
-                                if (nd.Name == "事后回放")
-                                {
-                                    afb = new DMJH_Task_AfterFeedBack();
-                                    afb.FormatFlag = nd["格式标志"].InnerText;
-                                    afb.InfoFlowFlag = nd["信息流标志"].InnerText;
-                                    afb.DataStartTime = nd["数据起始时间"].InnerText;
-                                    afb.DataEndTime = nd["数据结束时间"].InnerText;
-                                    afb.TransStartTime = nd["数据传输开始时间"].InnerText;
-                                    afb.TransSpeedRate = nd["数据传输速率"].InnerText;
-                                    list2.Add(afb);
+                                    if (nd.Name == "实时传输")
+                                    {
+                                        rt = new DMJH_Task_ReakTimeTransfor();
+                                        rt.FormatFlag = nd["格式标志"].InnerText;
+                                        rt.InfoFlowFlag = nd["信息流标志"].InnerText;
+                                        rt.TransStartTime = nd["数据传输开始时间"].InnerText;
+                                        rt.TransEndTime = nd["数据传输结束时间"].InnerText;
+                                        rt.TransSpeedRate = nd["数据传输速率"].InnerText;
+                                        list1.Add(rt);
+                                    }
+                                    if (nd.Name == "事后回放")
+                                    {
+                                        afb = new DMJH_Task_AfterFeedBack();
+                                        afb.FormatFlag = nd["格式标志"].InnerText;
+                                        afb.InfoFlowFlag = nd["信息流标志"].InnerText;
+                                        afb.DataStartTime = nd["数据起始时间"].InnerText;
+                                        afb.DataEndTime = nd["数据结束时间"].InnerText;
+                                        afb.TransStartTime = nd["数据传输开始时间"].InnerText;
+                                        afb.TransSpeedRate = nd["数据传输速率"].InnerText;
+                                        list2.Add(afb);
+                                    }
                                 }
                             }
+                            i = i + 1;//记录是第几个任务
                         }
-
-                        i = i + 1;
+                        #endregion
+                        
                     }
                     rpR.DataSource = list1;
                     rpR.DataBind();
@@ -238,11 +248,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         
                         rtt = new DMJH_Task_ReakTimeTransfor();
-                        TextBox txtFormatFlag = (TextBox)it.FindControl("txtFormatFlag");
-                        TextBox txtInfoFlowFlag = (TextBox)it.FindControl("txtInfoFlowFlag");
-                        TextBox txtTransStartTime = (TextBox)it.FindControl("txtTransStartTime");
-                        TextBox txtTransEndTime = (TextBox)it.FindControl("txtTransEndTime");
-                        TextBox txtTransSpeedRate = (TextBox)it.FindControl("txtTransSpeedRate");
+                        TextBox txtFormatFlag = (TextBox)its.FindControl("txtFormatFlag");
+                        TextBox txtInfoFlowFlag = (TextBox)its.FindControl("txtInfoFlowFlag");
+                        TextBox txtTransStartTime = (TextBox)its.FindControl("txtTransStartTime");
+                        TextBox txtTransEndTime = (TextBox)its.FindControl("txtTransEndTime");
+                        TextBox txtTransSpeedRate = (TextBox)its.FindControl("txtTransSpeedRate");
 
                         rtt.FormatFlag = txtFormatFlag.Text;
                         rtt.InfoFlowFlag = txtInfoFlowFlag.Text;
@@ -261,12 +271,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
 
                         afb = new DMJH_Task_AfterFeedBack();
-                        TextBox txtFormatFlag = (TextBox)it.FindControl("FormatFlag");
-                        TextBox txtInfoFlowFlag = (TextBox)it.FindControl("InfoFlowFlag");
-                        TextBox txtDataStartTime = (TextBox)it.FindControl("DataStartTime");
-                        TextBox txtDataEndTime = (TextBox)it.FindControl("DataEndTime");
-                        TextBox txtTransStartTime = (TextBox)it.FindControl("TransStartTime");
-                        TextBox txtTransSpeedRate = (TextBox)it.FindControl("TransSpeedRate");
+                        TextBox txtFormatFlag = (TextBox)its.FindControl("FormatFlag");
+                        TextBox txtInfoFlowFlag = (TextBox)its.FindControl("InfoFlowFlag");
+                        TextBox txtDataStartTime = (TextBox)its.FindControl("DataStartTime");
+                        TextBox txtDataEndTime = (TextBox)its.FindControl("DataEndTime");
+                        TextBox txtTransStartTime = (TextBox)its.FindControl("TransStartTime");
+                        TextBox txtTransSpeedRate = (TextBox)its.FindControl("TransSpeedRate");
 
                         afb.FormatFlag = txtFormatFlag.Text;
                         afb.InfoFlowFlag = txtInfoFlowFlag.Text;
@@ -340,11 +350,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                         {
 
                             rtt = new DMJH_Task_ReakTimeTransfor();
-                            TextBox txtFormatFlag = (TextBox)it.FindControl("txtFormatFlag");
-                            TextBox txtInfoFlowFlag = (TextBox)it.FindControl("txtInfoFlowFlag");
-                            TextBox txtTransStartTime = (TextBox)it.FindControl("txtTransStartTime");
-                            TextBox txtTransEndTime = (TextBox)it.FindControl("txtTransEndTime");
-                            TextBox txtTransSpeedRate = (TextBox)it.FindControl("txtTransSpeedRate");
+                            TextBox txtFormatFlag = (TextBox)its.FindControl("txtFormatFlag");
+                            TextBox txtInfoFlowFlag = (TextBox)its.FindControl("txtInfoFlowFlag");
+                            TextBox txtTransStartTime = (TextBox)its.FindControl("txtTransStartTime");
+                            TextBox txtTransEndTime = (TextBox)its.FindControl("txtTransEndTime");
+                            TextBox txtTransSpeedRate = (TextBox)its.FindControl("txtTransSpeedRate");
 
                             rtt.FormatFlag = txtFormatFlag.Text;
                             rtt.InfoFlowFlag = txtInfoFlowFlag.Text;
@@ -363,12 +373,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                         {
 
                             afb = new DMJH_Task_AfterFeedBack();
-                            TextBox txtFormatFlag = (TextBox)it.FindControl("FormatFlag");
-                            TextBox txtInfoFlowFlag = (TextBox)it.FindControl("InfoFlowFlag");
-                            TextBox txtDataStartTime = (TextBox)it.FindControl("DataStartTime");
-                            TextBox txtDataEndTime = (TextBox)it.FindControl("DataEndTime");
-                            TextBox txtTransStartTime = (TextBox)it.FindControl("TransStartTime");
-                            TextBox txtTransSpeedRate = (TextBox)it.FindControl("TransSpeedRate");
+                            TextBox txtFormatFlag = (TextBox)its.FindControl("FormatFlag");
+                            TextBox txtInfoFlowFlag = (TextBox)its.FindControl("InfoFlowFlag");
+                            TextBox txtDataStartTime = (TextBox)its.FindControl("DataStartTime");
+                            TextBox txtDataEndTime = (TextBox)its.FindControl("DataEndTime");
+                            TextBox txtTransStartTime = (TextBox)its.FindControl("TransStartTime");
+                            TextBox txtTransSpeedRate = (TextBox)its.FindControl("TransSpeedRate");
 
                             afb.FormatFlag = txtFormatFlag.Text;
                             afb.InfoFlowFlag = txtInfoFlowFlag.Text;
@@ -554,6 +564,111 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.ShortTitle = "编辑计划";
             base.OnPageLoaded();
             this.AddJavaScriptInclude("scripts/pages/ZXJHEdit.aspx.js");
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            DMJH obj = new DMJH();
+            obj.Sequence = txtSequence.Text;
+            obj.DateTime = txtDatetime.Text;
+            obj.StationName = txtStationName.Text;
+            obj.EquipmentID = txtEquipmentID.Text;
+            obj.TaskCount = txtTaskCount.Text;
+            obj.DMJHTasks = new List<DMJH_Task>();
+            //{ 
+            //    new DMJH_Task{
+            //        ReakTimeTransfors=new List<DMJH_Task_ReakTimeTransfor>(),
+            //        AfterFeedBacks = new List<DMJH_Task_AfterFeedBack>()
+            //    } 
+            //};
+
+            DMJH_Task rt;
+            DMJH_Task_ReakTimeTransfor rtt;
+            DMJH_Task_AfterFeedBack afb;
+            
+            foreach (RepeaterItem it in Repeater1.Items)
+            {
+                #region task
+                rt = new DMJH_Task();
+                TextBox txtTaskFlag = (TextBox)it.FindControl("txtTaskFlag");
+                TextBox txtWorkWay = (TextBox)it.FindControl("txtWorkWay");
+                TextBox txtPlanPropertiy = (TextBox)it.FindControl("txtPlanPropertiy");
+                TextBox txtWorkMode = (TextBox)it.FindControl("txtWorkMode");
+                TextBox txtPreStartTime = (TextBox)it.FindControl("txtPreStartTime");
+                TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                TextBox txtTrackStartTime = (TextBox)it.FindControl("txtTrackStartTime");
+                TextBox txtWaveOnStartTime = (TextBox)it.FindControl("txtWaveOnStartTime");
+                TextBox txtWaveOffStartTime = (TextBox)it.FindControl("txtWaveOffStartTime");
+                TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
+                TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+                rt.TaskFlag = txtTaskFlag.Text;
+                rt.WorkWay = txtWorkWay.Text;
+                rt.PlanPropertiy = txtPlanPropertiy.Text;
+                rt.WorkMode = txtWorkMode.Text;
+                rt.PreStartTime = txtPreStartTime.Text;
+                rt.StartTime = txtStartTime.Text;
+                rt.TrackStartTime = txtTrackStartTime.Text;
+                rt.WaveOnStartTime = txtWaveOnStartTime.Text;
+                rt.WaveOffStartTime = txtWaveOffStartTime.Text;
+                rt.TrackEndTime = txtTrackEndTime.Text;
+                rt.EndTime = txtEndTime.Text;
+                rt.ReakTimeTransfors = new List<DMJH_Task_ReakTimeTransfor>();
+                rt.AfterFeedBacks = new List<DMJH_Task_AfterFeedBack>();
+                //obj.DMJHTasks.Add(rt);
+                #endregion
+                #region ReakTimeTransfor
+                Repeater rps = it.FindControl("rpReakTimeTransfor") as Repeater;
+                foreach (RepeaterItem its in rps.Items)
+                {
+
+                    rtt = new DMJH_Task_ReakTimeTransfor();
+                    TextBox txtFormatFlag = (TextBox)its.FindControl("txtFormatFlag");
+                    TextBox txtInfoFlowFlag = (TextBox)its.FindControl("txtInfoFlowFlag");
+                    TextBox txtTransStartTime = (TextBox)its.FindControl("txtTransStartTime");
+                    TextBox txtTransEndTime = (TextBox)its.FindControl("txtTransEndTime");
+                    TextBox txtTransSpeedRate = (TextBox)its.FindControl("txtTransSpeedRate");
+
+                    rtt.FormatFlag = txtFormatFlag.Text;
+                    rtt.InfoFlowFlag = txtInfoFlowFlag.Text;
+                    rtt.TransStartTime = txtTransStartTime.Text;
+                    rtt.TransEndTime = txtTransEndTime.Text;
+                    rtt.TransSpeedRate = txtTransSpeedRate.Text;
+                    rt.ReakTimeTransfors.Add(rtt);
+
+                }
+               
+                #endregion
+                #region AfterFeedBack
+                Repeater rpa = it.FindControl("rpAfterFeedBack") as Repeater;
+                foreach (RepeaterItem its in rpa.Items)
+                {
+
+                    afb = new DMJH_Task_AfterFeedBack();
+                    TextBox txtFormatFlag = (TextBox)its.FindControl("FormatFlag");
+                    TextBox txtInfoFlowFlag = (TextBox)its.FindControl("InfoFlowFlag");
+                    TextBox txtDataStartTime = (TextBox)its.FindControl("DataStartTime");
+                    TextBox txtDataEndTime = (TextBox)its.FindControl("DataEndTime");
+                    TextBox txtTransStartTime = (TextBox)its.FindControl("TransStartTime");
+                    TextBox txtTransSpeedRate = (TextBox)its.FindControl("TransSpeedRate");
+
+                    afb.FormatFlag = txtFormatFlag.Text;
+                    afb.InfoFlowFlag = txtInfoFlowFlag.Text;
+                    afb.DataStartTime = txtDataStartTime.Text;
+                    afb.DataEndTime = txtDataEndTime.Text;
+                    afb.TransStartTime = txtTransStartTime.Text;
+                    afb.TransSpeedRate = txtTransSpeedRate.Text;
+                    rt.AfterFeedBacks.Add(afb);
+
+                }
+                #endregion
+                obj.DMJHTasks.Add(rt);
+            }
+
+
+
+            CreatePlanFile creater = new CreatePlanFile();
+            creater.FilePath = HfFileIndex.Value;
+            creater.CreateDMJHFile(obj, 1);
         }
         //
     }

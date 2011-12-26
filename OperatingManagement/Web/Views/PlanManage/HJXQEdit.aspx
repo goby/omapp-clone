@@ -13,6 +13,7 @@
         .text
         {}
     </style>
+    <script src="../../Scripts/calendar.js" type="text/javascript"></script>
 </head>
 <body>
     <form id="form1" runat="server">
