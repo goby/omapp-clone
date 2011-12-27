@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
     CodeBehind="PlanAdd.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.PlanAdd" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
         .text
@@ -16,6 +17,7 @@
     新建计划
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
+
     <table class="edit" style="width:800px;">
         <tr>
             <th style="width:100px;">
@@ -111,6 +113,7 @@
             <td>
                 <asp:HiddenField ID="hfPlanType" runat="server" />
                 <asp:HiddenField ID="hfID" runat="server" />
+                <asp:HiddenField ID="hfSBJHID" runat="server" ClientIDMode="Static" />
                 <asp:Literal ID="ltHref" runat="server"></asp:Literal>
             </td>
         </tr>
@@ -119,7 +122,7 @@
                 &nbsp;</th>
             <td>
                 <asp:Label ID="ltMessage" runat="server" CssClass="error" 
-                    Text="“任务代号”和“计划编号”必须唯一。"></asp:Label>
+                    Text="“计划编号”必须唯一。"></asp:Label>
             </td>
         </tr>
         <tr>
@@ -127,16 +130,100 @@
                 &nbsp;</th>
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" 
-                    onclick="btnSubmit_Click" Text="提交" />
+                    onclick="btnSubmit_Click" Text="生成计划" />
             &nbsp;&nbsp;
                 <asp:Button ID="btnGetPlanInfo" runat="server" CssClass="button" onclick="txtGetPlanInfo_Click" 
-                    Text="从设备计划获取信息" />
+                    Text="选择设备计划" CausesValidation="False" />
             &nbsp;
                 <asp:Button ID="btnEdit" runat="server" CssClass="button" Text="编辑详细" 
-                    onclick="btnEdit_Click" />
+                    onclick="btnEdit_Click" CausesValidation="False" />
 &nbsp;
                 <asp:Button ID="btnContinue" runat="server" CssClass="button" Text="继续新建" 
-                    onclick="btnContinue_Click" />
+                    onclick="btnContinue_Click" CausesValidation="False" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                &nbsp;</th>
+            <td>
+                <asp:LinkButton ID="btnSBJH" runat="server" ClientIDMode="Static" 
+                    onclick="btnSBJH_Click" CausesValidation="False"></asp:LinkButton>
+                
+            &nbsp;
+                <asp:Label ID="Label1" runat="server" ForeColor="Red" Text="设备计划仅对地面计划有效"></asp:Label>
+                
+            </td>
+        </tr>
+        <tr>
+            <th>
+                &nbsp;</th>
+            <td>
+                    <asp:Repeater ID="rpDatas" runat="server">
+                        <HeaderTemplate>
+                            <table class="list">
+                                <tr>
+                                    <%--<th style="width:20px;"><input type="checkbox" onclick="checkAll(this)" /></th>--%>
+                                    <th style="width: 150px;">
+                                        计划编号
+                                    </th>
+                                    <th style="width: 150px;">
+                                        任务代号
+                                    </th>
+                                    <th style="width: 150px;">
+                                        计划类别
+                                    </th>
+                                    <th style="width: 150px;">
+                                        开始时间
+                                    </th>
+                                    <th style="width: 150px;">
+                                        结束时间
+                                    </th>
+                                    <th style="width: 70px;">
+                                        选择
+                                    </th>
+                                </tr>
+                                <tbody id="tbUsers">
+                        </HeaderTemplate>
+                        <ItemTemplate>
+                            <tr>
+                                <%--<td><input type="checkbox" <%# Eval("LoginName").ToString().Equals(this.Profile.UserName,StringComparison.InvariantCultureIgnoreCase)?"disabled=\"true\"":"" %> name="chkDelete" value="<%# Eval("Id") %>" /></td>--%>
+                                <td>
+                                    <%# Eval("planid")%>
+                                </td>
+                                <td>
+                                    <%# Eval("taskid")%>
+                                </td>
+                                <td>
+                                    <%# Eval("plantype")%>
+                                </td>
+                                <td>
+                                    <%# Eval("starttime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
+                                </td>
+                                <td>
+                                    <%# Eval("endtime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
+                                </td>
+                                <td>
+                                    <button class="button" 
+                                        onclick="return SelectSBJH('<%# Eval("ID") %>',escape('<%# GetFileName(Eval("FileIndex")) %>'))">
+                                        选择</button>
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            </tbody> </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
+                    <table class="listTitle">
+                        <tr>
+                            <td class="listTitle-c1">
+
+                            </td>
+                            <td class="listTitle-c2">
+                                <om:CollectionPager ID="cpPager" runat="server" PageSize="5">
+                                </om:CollectionPager>
+                            </td>
+                        </tr>
+                    </table>
             </td>
         </tr>
     </table>

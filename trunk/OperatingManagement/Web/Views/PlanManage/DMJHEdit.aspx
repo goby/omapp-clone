@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DMJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.DMJHEdit" %>
+﻿<%@ Page MaintainScrollPositionOnPostback="true" Language="C#"  AutoEventWireup="true" CodeBehind="DMJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.DMJHEdit" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -19,7 +19,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <table cellpadding="0" class="edit" style="width: 800px;">
+        <table cellpadding="0" class="edit" style="width: 750px;">
             <tr>
                 <th class="style1">
                     计划开始时间</th>
@@ -39,13 +39,13 @@
                     编号
                 </th>
                 <td class="style2">
-                    <asp:TextBox ID="txtSequence" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtSequence" CssClass="text"  runat="server"></asp:TextBox>
                 </td>
                 <th>
                     时间
                 </th>
                 <td>
-                    <asp:TextBox ID="txtDatetime" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtDatetime" CssClass="text"  runat="server"></asp:TextBox>
                 </td>
             </tr>
             <tr>
@@ -53,13 +53,13 @@
                     工作单位
                 </th>
                 <td class="style2">
-                    <asp:TextBox ID="txtStationName" runat="server" style="margin-left: 0px"></asp:TextBox>
+                    <asp:TextBox ID="txtStationName" CssClass="text"  runat="server" style="margin-left: 0px"></asp:TextBox>
                 </td>
                 <th>
                     设备代号
                 </th>
                 <td>
-                    <asp:TextBox ID="txtEquipmentID" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtEquipmentID" CssClass="text"  runat="server"></asp:TextBox>
                 </td>
             </tr>
             <tr>
@@ -67,18 +67,21 @@
                     任务个数
                 </th>
                 <td class="style2">
-                    <asp:TextBox ID="txtTaskCount" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtTaskCount" CssClass="text"  runat="server"></asp:TextBox>
                 </td>
                 <th>
                      <asp:HiddenField ID="HfID" runat="server" />
+                     <asp:HiddenField ID="HfFileIndex" runat="server" />
                 </th>
                 <td>
-                    <asp:HiddenField ID="HfFileIndex" runat="server" />
+                    <asp:HiddenField ID="hfTaskID" runat="server" />
+                <asp:HiddenField ID="hfSatID" runat="server" />
+                <asp:HiddenField ID="hfOverDate" runat="server" />
                 </td>
             </tr>
             
         </table>
-        <table class="edit" style="width: 800px;">
+        <table class="edit" style="width: 750px;">
             <tr>
                 <td>
                 </td>
@@ -174,7 +177,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th colspan="4">
+                                    <th colspan="4" style="text-align:center">
                                         实时传输
                                     </th>
                                 </tr>
@@ -231,7 +234,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th colspan="4">
+                                    <th colspan="4" style="text-align:center">
                                         事后回放
                                     </th>
                                 </tr>
@@ -321,8 +324,12 @@
         </table>
     </div>
     <br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存" onclick="btnSubmit_Click" />
+    <div style="width:750px; text-align:center;">
+        <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" onclick="btnSubmit_Click" />
+        &nbsp;&nbsp;&nbsp;
+                    <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
+                    onclick="btnSubmit_Click" />
+    </div>
     </form>
 </body>
 </html>

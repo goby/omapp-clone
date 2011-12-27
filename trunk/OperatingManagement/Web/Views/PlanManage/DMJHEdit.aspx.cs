@@ -30,6 +30,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                     HfID.Value = sID;
                     BindJhTable(sID);
                     BindXML();
+                    if ("detail" == Request.QueryString["op"])
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");
+                    }
+                    
                 }
                
             }
@@ -40,6 +45,17 @@ namespace OperatingManagement.Web.Views.PlanManage
             txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
             txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
+            hfTaskID.Value = jh[0].TaskID.ToString();
+            string[] strTemp = jh[0].FileIndex.Split('_');
+            if (strTemp.Length >= 2)
+            {
+                hfSatID.Value = strTemp[strTemp.Length - 2];
+            }
+            if (DateTime.Now > jh[0].StartTime)
+            {
+                btnSubmit.Visible = false;
+                hfOverDate.Value = "true";
+            }
         }
         private void BindXML()
         {
@@ -339,92 +355,99 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             if (e.CommandName == "Del")
             {
-                ViewState["op"] = "Del";
-                foreach (RepeaterItem it in rp.Items)
+                if (rp.Items.Count <= 1)
                 {
-                    if (e.Item.ItemIndex != it.ItemIndex)
-                    {
-                        #region ReakTimeTransfor
-                        Repeater rps = it.FindControl("rpReakTimeTransfor") as Repeater;
-                        foreach (RepeaterItem its in rps.Items)
-                        {
-
-                            rtt = new DMJH_Task_ReakTimeTransfor();
-                            TextBox txtFormatFlag = (TextBox)its.FindControl("txtFormatFlag");
-                            TextBox txtInfoFlowFlag = (TextBox)its.FindControl("txtInfoFlowFlag");
-                            TextBox txtTransStartTime = (TextBox)its.FindControl("txtTransStartTime");
-                            TextBox txtTransEndTime = (TextBox)its.FindControl("txtTransEndTime");
-                            TextBox txtTransSpeedRate = (TextBox)its.FindControl("txtTransSpeedRate");
-
-                            rtt.FormatFlag = txtFormatFlag.Text;
-                            rtt.InfoFlowFlag = txtInfoFlowFlag.Text;
-                            rtt.TransStartTime = txtTransStartTime.Text;
-                            rtt.TransEndTime = txtTransEndTime.Text;
-                            rtt.TransSpeedRate = txtTransSpeedRate.Text;
-                            listr.Add(rtt);
-
-                        }
-                        arrR.Add(listr);
-                        listr = new List<DMJH_Task_ReakTimeTransfor>();
-                        #endregion
-                        #region AfterFeedBack
-                        Repeater rpa = it.FindControl("rpAfterFeedBack") as Repeater;
-                        foreach (RepeaterItem its in rpa.Items)
-                        {
-
-                            afb = new DMJH_Task_AfterFeedBack();
-                            TextBox txtFormatFlag = (TextBox)its.FindControl("FormatFlag");
-                            TextBox txtInfoFlowFlag = (TextBox)its.FindControl("InfoFlowFlag");
-                            TextBox txtDataStartTime = (TextBox)its.FindControl("DataStartTime");
-                            TextBox txtDataEndTime = (TextBox)its.FindControl("DataEndTime");
-                            TextBox txtTransStartTime = (TextBox)its.FindControl("TransStartTime");
-                            TextBox txtTransSpeedRate = (TextBox)its.FindControl("TransSpeedRate");
-
-                            afb.FormatFlag = txtFormatFlag.Text;
-                            afb.InfoFlowFlag = txtInfoFlowFlag.Text;
-                            afb.DataStartTime = txtDataStartTime.Text;
-                            afb.DataEndTime = txtDataEndTime.Text;
-                            afb.TransStartTime = txtTransStartTime.Text;
-                            afb.TransSpeedRate = txtTransSpeedRate.Text;
-                            lista.Add(afb);
-
-                        }
-                        arrA.Add(lista);
-                        lista = new List<DMJH_Task_AfterFeedBack>();
-                        #endregion
-                        #region Task
-                        rt = new DMJH_Task();
-                        TextBox txtTaskFlag = (TextBox)it.FindControl("txtTaskFlag");
-                        TextBox txtWorkWay = (TextBox)it.FindControl("txtWorkWay");
-                        TextBox txtPlanPropertiy = (TextBox)it.FindControl("txtPlanPropertiy");
-                        TextBox txtWorkMode = (TextBox)it.FindControl("txtWorkMode");
-                        TextBox txtPreStartTime = (TextBox)it.FindControl("txtPreStartTime");
-                        TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
-                        TextBox txtTrackStartTime = (TextBox)it.FindControl("txtTrackStartTime");
-                        TextBox txtWaveOnStartTime = (TextBox)it.FindControl("txtWaveOnStartTime");
-                        TextBox txtWaveOffStartTime = (TextBox)it.FindControl("txtWaveOffStartTime");
-                        TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
-                        TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
-
-                        rt.TaskFlag = txtTaskFlag.Text;
-                        rt.WorkWay = txtWorkWay.Text;
-                        rt.PlanPropertiy = txtPlanPropertiy.Text;
-                        rt.WorkMode = txtWorkMode.Text;
-                        rt.PreStartTime = txtPreStartTime.Text;
-                        rt.StartTime = txtStartTime.Text;
-                        rt.TrackStartTime = txtTrackStartTime.Text;
-                        rt.WaveOnStartTime = txtWaveOnStartTime.Text;
-                        rt.WaveOffStartTime = txtWaveOffStartTime.Text;
-                        rt.TrackEndTime = txtTrackEndTime.Text;
-                        rt.EndTime = txtEndTime.Text;
-                        list2.Add(rt);
-                        #endregion
-                    }
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
                 }
-                ViewState["arrR"] = arrR;
-                ViewState["arrA"] = arrA;
-                rp.DataSource = list2;
-                rp.DataBind();
+                else
+                {
+                    ViewState["op"] = "Del";
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        if (e.Item.ItemIndex != it.ItemIndex)
+                        {
+                            #region ReakTimeTransfor
+                            Repeater rps = it.FindControl("rpReakTimeTransfor") as Repeater;
+                            foreach (RepeaterItem its in rps.Items)
+                            {
+
+                                rtt = new DMJH_Task_ReakTimeTransfor();
+                                TextBox txtFormatFlag = (TextBox)its.FindControl("txtFormatFlag");
+                                TextBox txtInfoFlowFlag = (TextBox)its.FindControl("txtInfoFlowFlag");
+                                TextBox txtTransStartTime = (TextBox)its.FindControl("txtTransStartTime");
+                                TextBox txtTransEndTime = (TextBox)its.FindControl("txtTransEndTime");
+                                TextBox txtTransSpeedRate = (TextBox)its.FindControl("txtTransSpeedRate");
+
+                                rtt.FormatFlag = txtFormatFlag.Text;
+                                rtt.InfoFlowFlag = txtInfoFlowFlag.Text;
+                                rtt.TransStartTime = txtTransStartTime.Text;
+                                rtt.TransEndTime = txtTransEndTime.Text;
+                                rtt.TransSpeedRate = txtTransSpeedRate.Text;
+                                listr.Add(rtt);
+
+                            }
+                            arrR.Add(listr);
+                            listr = new List<DMJH_Task_ReakTimeTransfor>();
+                            #endregion
+                            #region AfterFeedBack
+                            Repeater rpa = it.FindControl("rpAfterFeedBack") as Repeater;
+                            foreach (RepeaterItem its in rpa.Items)
+                            {
+
+                                afb = new DMJH_Task_AfterFeedBack();
+                                TextBox txtFormatFlag = (TextBox)its.FindControl("FormatFlag");
+                                TextBox txtInfoFlowFlag = (TextBox)its.FindControl("InfoFlowFlag");
+                                TextBox txtDataStartTime = (TextBox)its.FindControl("DataStartTime");
+                                TextBox txtDataEndTime = (TextBox)its.FindControl("DataEndTime");
+                                TextBox txtTransStartTime = (TextBox)its.FindControl("TransStartTime");
+                                TextBox txtTransSpeedRate = (TextBox)its.FindControl("TransSpeedRate");
+
+                                afb.FormatFlag = txtFormatFlag.Text;
+                                afb.InfoFlowFlag = txtInfoFlowFlag.Text;
+                                afb.DataStartTime = txtDataStartTime.Text;
+                                afb.DataEndTime = txtDataEndTime.Text;
+                                afb.TransStartTime = txtTransStartTime.Text;
+                                afb.TransSpeedRate = txtTransSpeedRate.Text;
+                                lista.Add(afb);
+
+                            }
+                            arrA.Add(lista);
+                            lista = new List<DMJH_Task_AfterFeedBack>();
+                            #endregion
+                            #region Task
+                            rt = new DMJH_Task();
+                            TextBox txtTaskFlag = (TextBox)it.FindControl("txtTaskFlag");
+                            TextBox txtWorkWay = (TextBox)it.FindControl("txtWorkWay");
+                            TextBox txtPlanPropertiy = (TextBox)it.FindControl("txtPlanPropertiy");
+                            TextBox txtWorkMode = (TextBox)it.FindControl("txtWorkMode");
+                            TextBox txtPreStartTime = (TextBox)it.FindControl("txtPreStartTime");
+                            TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                            TextBox txtTrackStartTime = (TextBox)it.FindControl("txtTrackStartTime");
+                            TextBox txtWaveOnStartTime = (TextBox)it.FindControl("txtWaveOnStartTime");
+                            TextBox txtWaveOffStartTime = (TextBox)it.FindControl("txtWaveOffStartTime");
+                            TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
+                            TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+
+                            rt.TaskFlag = txtTaskFlag.Text;
+                            rt.WorkWay = txtWorkWay.Text;
+                            rt.PlanPropertiy = txtPlanPropertiy.Text;
+                            rt.WorkMode = txtWorkMode.Text;
+                            rt.PreStartTime = txtPreStartTime.Text;
+                            rt.StartTime = txtStartTime.Text;
+                            rt.TrackStartTime = txtTrackStartTime.Text;
+                            rt.WaveOnStartTime = txtWaveOnStartTime.Text;
+                            rt.WaveOffStartTime = txtWaveOffStartTime.Text;
+                            rt.TrackEndTime = txtTrackEndTime.Text;
+                            rt.EndTime = txtEndTime.Text;
+                            list2.Add(rt);
+                            #endregion
+                        }
+                    }
+                    ViewState["arrR"] = arrR;
+                    ViewState["arrA"] = arrA;
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
             }
         }
 
@@ -466,27 +489,34 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<DMJH_Task_ReakTimeTransfor> list2 = new List<DMJH_Task_ReakTimeTransfor>();
                 DMJH_Task_ReakTimeTransfor rt;
                 Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
+                if (rp.Items.Count <= 1)
                 {
-                    if (e.Item.ItemIndex != it.ItemIndex)
-                    {
-                        rt = new DMJH_Task_ReakTimeTransfor();
-                        TextBox txtFormatFlag = (TextBox)it.FindControl("txtFormatFlag");
-                        TextBox txtInfoFlowFlag = (TextBox)it.FindControl("txtInfoFlowFlag");
-                        TextBox txtTransStartTime = (TextBox)it.FindControl("txtTransStartTime");
-                        TextBox txtTransEndTime = (TextBox)it.FindControl("txtTransEndTime");
-                        TextBox txtTransSpeedRate = (TextBox)it.FindControl("txtTransSpeedRate");
-
-                        rt.FormatFlag = txtFormatFlag.Text;
-                        rt.InfoFlowFlag = txtInfoFlowFlag.Text;
-                        rt.TransStartTime = txtTransStartTime.Text;
-                        rt.TransEndTime = txtTransEndTime.Text;
-                        rt.TransSpeedRate = txtTransSpeedRate.Text;
-                        list2.Add(rt);
-                    }
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
                 }
-                rp.DataSource = list2;
-                rp.DataBind();
+                else
+                {
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        if (e.Item.ItemIndex != it.ItemIndex)
+                        {
+                            rt = new DMJH_Task_ReakTimeTransfor();
+                            TextBox txtFormatFlag = (TextBox)it.FindControl("txtFormatFlag");
+                            TextBox txtInfoFlowFlag = (TextBox)it.FindControl("txtInfoFlowFlag");
+                            TextBox txtTransStartTime = (TextBox)it.FindControl("txtTransStartTime");
+                            TextBox txtTransEndTime = (TextBox)it.FindControl("txtTransEndTime");
+                            TextBox txtTransSpeedRate = (TextBox)it.FindControl("txtTransSpeedRate");
+
+                            rt.FormatFlag = txtFormatFlag.Text;
+                            rt.InfoFlowFlag = txtInfoFlowFlag.Text;
+                            rt.TransStartTime = txtTransStartTime.Text;
+                            rt.TransEndTime = txtTransEndTime.Text;
+                            rt.TransSpeedRate = txtTransSpeedRate.Text;
+                            list2.Add(rt);
+                        }
+                    }
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
             }
         }
 
@@ -531,29 +561,36 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<DMJH_Task_AfterFeedBack> list2 = new List<DMJH_Task_AfterFeedBack>();
                 DMJH_Task_AfterFeedBack rt;
                 Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
+                if (rp.Items.Count <= 1)
                 {
-                    if (e.Item.ItemIndex != it.ItemIndex)
-                    {
-                        rt = new DMJH_Task_AfterFeedBack();
-                        TextBox txtFormatFlag = (TextBox)it.FindControl("FormatFlag");
-                        TextBox txtInfoFlowFlag = (TextBox)it.FindControl("InfoFlowFlag");
-                        TextBox txtDataStartTime = (TextBox)it.FindControl("DataStartTime");
-                        TextBox txtDataEndTime = (TextBox)it.FindControl("DataEndTime");
-                        TextBox txtTransStartTime = (TextBox)it.FindControl("TransStartTime");
-                        TextBox txtTransSpeedRate = (TextBox)it.FindControl("TransSpeedRate");
-
-                        rt.FormatFlag = txtFormatFlag.Text;
-                        rt.InfoFlowFlag = txtInfoFlowFlag.Text;
-                        rt.DataStartTime = txtDataStartTime.Text;
-                        rt.DataEndTime = txtDataEndTime.Text;
-                        rt.TransStartTime = txtTransStartTime.Text;
-                        rt.TransSpeedRate = txtTransSpeedRate.Text;
-                        list2.Add(rt);
-                    }
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
                 }
-                rp.DataSource = list2;
-                rp.DataBind();
+                else
+                {
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        if (e.Item.ItemIndex != it.ItemIndex)
+                        {
+                            rt = new DMJH_Task_AfterFeedBack();
+                            TextBox txtFormatFlag = (TextBox)it.FindControl("FormatFlag");
+                            TextBox txtInfoFlowFlag = (TextBox)it.FindControl("InfoFlowFlag");
+                            TextBox txtDataStartTime = (TextBox)it.FindControl("DataStartTime");
+                            TextBox txtDataEndTime = (TextBox)it.FindControl("DataEndTime");
+                            TextBox txtTransStartTime = (TextBox)it.FindControl("TransStartTime");
+                            TextBox txtTransSpeedRate = (TextBox)it.FindControl("TransSpeedRate");
+
+                            rt.FormatFlag = txtFormatFlag.Text;
+                            rt.InfoFlowFlag = txtInfoFlowFlag.Text;
+                            rt.DataStartTime = txtDataStartTime.Text;
+                            rt.DataEndTime = txtDataEndTime.Text;
+                            rt.TransStartTime = txtTransStartTime.Text;
+                            rt.TransSpeedRate = txtTransSpeedRate.Text;
+                            list2.Add(rt);
+                        }
+                    }
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
             }
         }
 
@@ -563,7 +600,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.PagePermission = "Plan.Edit";
             this.ShortTitle = "编辑计划";
             base.OnPageLoaded();
-            this.AddJavaScriptInclude("scripts/pages/ZXJHEdit.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/DMJHEdit.aspx.js");
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -667,8 +704,32 @@ namespace OperatingManagement.Web.Views.PlanManage
 
 
             CreatePlanFile creater = new CreatePlanFile();
-            creater.FilePath = HfFileIndex.Value;
-            creater.CreateDMJHFile(obj, 1);
+            if (hfOverDate.Value == "true")
+            {
+                obj.TaskID = hfTaskID.Value;
+                obj.SatID = hfSatID.Value;
+                string filepath = creater.CreateDMJHFile(obj, 0);
+
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                {
+                    TaskID = obj.TaskID,
+                    PlanType = "DMJH",
+                    PlanID = 0,
+                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    SRCType = 0,
+                    FileIndex = filepath,
+                    SatID = obj.SatID,
+                    Reserve = ""
+                };
+                var result = jh.Add();
+            }
+            else
+            {
+                creater.FilePath = HfFileIndex.Value;
+                creater.CreateDMJHFile(obj, 1);
+            }
+            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
         }
         //
     }

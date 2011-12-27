@@ -29,6 +29,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                     HfID.Value = sID;
                     BindJhTable(sID);
                     BindXML();
+
+                    if ("detail" == Request.QueryString["op"])
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");
+                    }
                 }
             }
         }
@@ -38,6 +43,17 @@ namespace OperatingManagement.Web.Views.PlanManage
             txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
             txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
+            hfTaskID.Value = jh[0].TaskID.ToString();
+            string[] strTemp = jh[0].FileIndex.Split('_');
+            if (strTemp.Length >= 2)
+            {
+                hfSatID.Value = strTemp[strTemp.Length - 2];
+            }
+            if (DateTime.Now > jh[0].StartTime)
+            {
+                btnSubmit.Visible = false;
+                hfOverDate.Value = "true";
+            }
         }
         private void BindXML()
         {
@@ -115,23 +131,30 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<MBXQSatInfo> list2 = new List<MBXQSatInfo>();
                 MBXQSatInfo dm;
                 Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
+                if (rp.Items.Count <= 1)
                 {
-                    if (e.Item.ItemIndex != it.ItemIndex)
-                    {
-                        dm = new MBXQSatInfo();
-                        TextBox txtMBSatName = (TextBox)it.FindControl("txtMBSatName");
-                        TextBox txtMBInfoName = (TextBox)it.FindControl("txtMBInfoName");
-                        TextBox txtMBInfoTime = (TextBox)it.FindControl("txtMBInfoTime");
-
-                        dm.SatName = txtMBSatName.Text;
-                        dm.InfoName = txtMBInfoName.Text;
-                        dm.InfoTime = txtMBInfoTime.Text;
-                        list2.Add(dm);
-                    }
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
                 }
-                rp.DataSource = list2;
-                rp.DataBind();
+                else
+                {
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        if (e.Item.ItemIndex != it.ItemIndex)
+                        {
+                            dm = new MBXQSatInfo();
+                            TextBox txtMBSatName = (TextBox)it.FindControl("txtMBSatName");
+                            TextBox txtMBInfoName = (TextBox)it.FindControl("txtMBInfoName");
+                            TextBox txtMBInfoTime = (TextBox)it.FindControl("txtMBInfoTime");
+
+                            dm.SatName = txtMBSatName.Text;
+                            dm.InfoName = txtMBInfoName.Text;
+                            dm.InfoTime = txtMBInfoTime.Text;
+                            list2.Add(dm);
+                        }
+                    }
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
             }
         }
 
@@ -162,8 +185,33 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
 
             CreatePlanFile creater = new CreatePlanFile();
-            creater.FilePath = HfFileIndex.Value;
-            creater.CreateMBXQFile(obj, 1);
+            if (hfOverDate.Value == "true")
+            {
+                obj.TaskID = hfTaskID.Value;
+                obj.SatID = hfSatID.Value;
+                string filepath = creater.CreateMBXQFile(obj, 0);
+
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                {
+                    TaskID = obj.TaskID,
+                    PlanType = "MBXQ",
+                    PlanID = 0,
+                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    SRCType = 0,
+                    FileIndex = filepath,
+                    SatID = obj.SatID,
+                    Reserve = ""
+                };
+                var result = jh.Add();
+            }
+            else
+            {
+                creater.FilePath = HfFileIndex.Value;
+                creater.CreateMBXQFile(obj, 1);
+            }
+
+            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ZXJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.ZXJHEdit" %>
+﻿<%@ Page MaintainScrollPositionOnPostback="true"  Language="C#" AutoEventWireup="true" CodeBehind="ZXJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.ZXJHEdit" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -66,9 +66,12 @@
                 </td>
                 <th>
                      <asp:HiddenField ID="HfID" runat="server" />
+                     <asp:HiddenField ID="HfFileIndex" runat="server" />
                 </th>
                 <td>
-                    <asp:HiddenField ID="HfFileIndex" runat="server" />
+                 <asp:HiddenField ID="hfTaskID" runat="server" />
+                <asp:HiddenField ID="hfSatID" runat="server" />
+                <asp:HiddenField ID="hfOverDate" runat="server" />
                 </td>
             </tr>
             
@@ -269,8 +272,6 @@
                                         最长持续时间</td>
                                     <td>
                                         <asp:TextBox ID="txtWC_MaxTime" runat="server" Text='<%# Eval("MaxTime")%>'></asp:TextBox>
-                                    </td>
-                                    <td>
                                     </td>
                                     <td>
                                          <asp:Button ID="btn1" CssClass="button"  runat="server" CommandName="Add" Text="添加" />
@@ -666,15 +667,13 @@
         </table>
         <br />
         <br />
-        <table class="edit" style="width:800px; text-align:center;">
-
-            <tr>
-                <td>
-                    <asp:Button ID="btnSubmit" CssClass="button" runat="server" Text="保存" 
+<div style="width:750px; text-align:center">
+                    <asp:Button ID="btnSubmit" CssClass="button" runat="server" Text="保存计划" 
                         onclick="btnSubmit_Click" />
-                </td>
-            </tr>
-        </table>
+                        &nbsp;&nbsp;&nbsp;
+                    <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
+                    onclick="btnSubmit_Click" />
+</div>
     </div>
     </form>
 </body>

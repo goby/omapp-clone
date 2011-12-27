@@ -30,6 +30,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                     HfID.Value = sID;
                     BindJhTable(sID);
                     BindXML();
+
+                    if ("detail" == Request.QueryString["op"])
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");
+                    }
                 }
             }
         }
@@ -39,6 +44,17 @@ namespace OperatingManagement.Web.Views.PlanManage
             txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
             txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
+            hfTaskID.Value = jh[0].TaskID.ToString();
+            string[] strTemp = jh[0].FileIndex.Split('_');
+            if (strTemp.Length >= 2)
+            {
+                hfSatID.Value = strTemp[strTemp.Length - 2];
+            }
+            if (DateTime.Now > jh[0].StartTime)
+            {
+                btnSubmit.Visible = false;
+                hfOverDate.Value = "true";
+            }
         }
         private void BindXML()
         {
@@ -260,30 +276,38 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             if (e.CommandName == "Del")
             {
-                List<ZXJH_WorkContent> list2 = new List<ZXJH_WorkContent>();
-                ZXJH_WorkContent wc;
                 Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
+                if (rp.Items.Count <= 1)
                 {
-                    if (e.Item.ItemIndex != it.ItemIndex)
-                    {
-                        wc = new ZXJH_WorkContent();
-                        TextBox txtWC_Work = (TextBox)it.FindControl("txtWC_Work");
-                        TextBox txtWC_SYID = (TextBox)it.FindControl("txtWC_SYID");
-                        TextBox txtWC_StartTime = (TextBox)it.FindControl("txtWC_StartTime");
-                        TextBox txtWC_MinTime = (TextBox)it.FindControl("txtWC_MinTime");
-                        TextBox txtWC_MaxTime = (TextBox)it.FindControl("txtWC_MaxTime");
-
-                        wc.Work = txtWC_Work.Text;
-                        wc.SYID = txtWC_SYID.Text;
-                        wc.StartTime = txtWC_StartTime.Text;
-                        wc.MinTime = txtWC_MinTime.Text;
-                        wc.MaxTime = txtWC_MaxTime.Text;
-                        list2.Add(wc);
-                    }
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
                 }
-                rp.DataSource = list2;
-                rp.DataBind();
+                else
+                {
+                    List<ZXJH_WorkContent> list2 = new List<ZXJH_WorkContent>();
+                    ZXJH_WorkContent wc;
+
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        if (e.Item.ItemIndex != it.ItemIndex)
+                        {
+                            wc = new ZXJH_WorkContent();
+                            TextBox txtWC_Work = (TextBox)it.FindControl("txtWC_Work");
+                            TextBox txtWC_SYID = (TextBox)it.FindControl("txtWC_SYID");
+                            TextBox txtWC_StartTime = (TextBox)it.FindControl("txtWC_StartTime");
+                            TextBox txtWC_MinTime = (TextBox)it.FindControl("txtWC_MinTime");
+                            TextBox txtWC_MaxTime = (TextBox)it.FindControl("txtWC_MaxTime");
+
+                            wc.Work = txtWC_Work.Text;
+                            wc.SYID = txtWC_SYID.Text;
+                            wc.StartTime = txtWC_StartTime.Text;
+                            wc.MinTime = txtWC_MinTime.Text;
+                            wc.MaxTime = txtWC_MaxTime.Text;
+                            list2.Add(wc);
+                        }
+                    }
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
             }
         }
 
@@ -338,35 +362,42 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<ZXJH_SYDataHandle> list2 = new List<ZXJH_SYDataHandle>();
                 ZXJH_SYDataHandle dh;
                 Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
+                if (rp.Items.Count <= 1)
                 {
-                    if (e.Item.ItemIndex != it.ItemIndex)
-                    {
-                        dh = new ZXJH_SYDataHandle();
-                        TextBox txtSHSYID = (TextBox)it.FindControl("txtSHSYID");
-                        TextBox txtSHSatID = (TextBox)it.FindControl("txtSHSatID");
-                        TextBox txtSHLaps = (TextBox)it.FindControl("txtSHLaps");
-                        TextBox txtSHMaintStation = (TextBox)it.FindControl("txtSHMaintStation");
-                        TextBox txtSHBakStation = (TextBox)it.FindControl("txtSHBakStation");
-                        TextBox txtSHContent = (TextBox)it.FindControl("txtSHContent");
-                        TextBox txtSHStartTime = (TextBox)it.FindControl("txtSHStartTime");
-                        TextBox txtSHEndTime = (TextBox)it.FindControl("txtSHEndTime");
-                        TextBox txtSHAfterDH = (TextBox)it.FindControl("txtSHAfterDH");
-
-                        dh.SYID = txtSHSYID.Text;
-                        dh.SatID = txtSHSatID.Text;
-                        dh.Laps = txtSHLaps.Text;
-                        dh.MainStationName = txtSHMaintStation.Text;
-                        dh.BakStationName = txtSHBakStation.Text;
-                        dh.Content = txtSHContent.Text;
-                        dh.StartTime = txtSHStartTime.Text;
-                        dh.EndTime = txtSHEndTime.Text;
-                        dh.AfterWardsDataHandle = txtSHAfterDH.Text;
-                        list2.Add(dh);
-                    }
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
                 }
-                rp.DataSource = list2;
-                rp.DataBind();
+                else
+                {
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        if (e.Item.ItemIndex != it.ItemIndex)
+                        {
+                            dh = new ZXJH_SYDataHandle();
+                            TextBox txtSHSYID = (TextBox)it.FindControl("txtSHSYID");
+                            TextBox txtSHSatID = (TextBox)it.FindControl("txtSHSatID");
+                            TextBox txtSHLaps = (TextBox)it.FindControl("txtSHLaps");
+                            TextBox txtSHMaintStation = (TextBox)it.FindControl("txtSHMaintStation");
+                            TextBox txtSHBakStation = (TextBox)it.FindControl("txtSHBakStation");
+                            TextBox txtSHContent = (TextBox)it.FindControl("txtSHContent");
+                            TextBox txtSHStartTime = (TextBox)it.FindControl("txtSHStartTime");
+                            TextBox txtSHEndTime = (TextBox)it.FindControl("txtSHEndTime");
+                            TextBox txtSHAfterDH = (TextBox)it.FindControl("txtSHAfterDH");
+
+                            dh.SYID = txtSHSYID.Text;
+                            dh.SatID = txtSHSatID.Text;
+                            dh.Laps = txtSHLaps.Text;
+                            dh.MainStationName = txtSHMaintStation.Text;
+                            dh.BakStationName = txtSHBakStation.Text;
+                            dh.Content = txtSHContent.Text;
+                            dh.StartTime = txtSHStartTime.Text;
+                            dh.EndTime = txtSHEndTime.Text;
+                            dh.AfterWardsDataHandle = txtSHAfterDH.Text;
+                            list2.Add(dh);
+                        }
+                    }
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
             }
         }
 
@@ -406,25 +437,32 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<ZXJH_DirectAndMonitor> list2 = new List<ZXJH_DirectAndMonitor>();
                 ZXJH_DirectAndMonitor dm;
                 Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
+                if (rp.Items.Count <= 1)
                 {
-                    if (e.Item.ItemIndex != it.ItemIndex)
-                    {
-                        dm = new ZXJH_DirectAndMonitor();
-                        TextBox txtDMSYID = (TextBox)it.FindControl("txtDMSYID");
-                        TextBox txtDMDateSection = (TextBox)it.FindControl("txtDMDateSection");
-                        TextBox txtDMTask = (TextBox)it.FindControl("txtDMTask");
-                        TextBox txtDMRTTask = (TextBox)it.FindControl("txtDMRTTask");
-
-                        dm.SYID = txtDMSYID.Text;
-                        dm.DateSection = txtDMDateSection.Text;
-                        dm.Task = txtDMTask.Text;
-                        dm.RealTimeShowTask = txtDMRTTask.Text;
-                        list2.Add(dm);
-                    }
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
                 }
-                rp.DataSource = list2;
-                rp.DataBind();
+                else
+                {
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        if (e.Item.ItemIndex != it.ItemIndex)
+                        {
+                            dm = new ZXJH_DirectAndMonitor();
+                            TextBox txtDMSYID = (TextBox)it.FindControl("txtDMSYID");
+                            TextBox txtDMDateSection = (TextBox)it.FindControl("txtDMDateSection");
+                            TextBox txtDMTask = (TextBox)it.FindControl("txtDMTask");
+                            TextBox txtDMRTTask = (TextBox)it.FindControl("txtDMRTTask");
+
+                            dm.SYID = txtDMSYID.Text;
+                            dm.DateSection = txtDMDateSection.Text;
+                            dm.Task = txtDMTask.Text;
+                            dm.RealTimeShowTask = txtDMRTTask.Text;
+                            list2.Add(dm);
+                        }
+                    }
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
             }
         }
 
@@ -464,25 +502,32 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<ZXJH_RealTimeControl> list2 = new List<ZXJH_RealTimeControl>();
                 ZXJH_RealTimeControl rc;
                 Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
+                if (rp.Items.Count <= 1)
                 {
-                    if (e.Item.ItemIndex != it.ItemIndex)
-                    {
-                        rc = new ZXJH_RealTimeControl();
-                        TextBox txtRCWork = (TextBox)it.FindControl("txtRCWork");
-                        TextBox txtRCSYID = (TextBox)it.FindControl("txtRCSYID");
-                        TextBox txtRCStartTime = (TextBox)it.FindControl("txtRCStartTime");
-                        TextBox txtRCEndTime = (TextBox)it.FindControl("txtRCEndTime");
-
-                        rc.Work = txtRCWork.Text;
-                        rc.SYID = txtRCSYID.Text;
-                        rc.StartTime = txtRCStartTime.Text;
-                        rc.EndTime = txtRCEndTime.Text;
-                        list2.Add(rc);
-                    }
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
                 }
-                rp.DataSource = list2;
-                rp.DataBind();
+                else
+                {
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        if (e.Item.ItemIndex != it.ItemIndex)
+                        {
+                            rc = new ZXJH_RealTimeControl();
+                            TextBox txtRCWork = (TextBox)it.FindControl("txtRCWork");
+                            TextBox txtRCSYID = (TextBox)it.FindControl("txtRCSYID");
+                            TextBox txtRCStartTime = (TextBox)it.FindControl("txtRCStartTime");
+                            TextBox txtRCEndTime = (TextBox)it.FindControl("txtRCEndTime");
+
+                            rc.Work = txtRCWork.Text;
+                            rc.SYID = txtRCSYID.Text;
+                            rc.StartTime = txtRCStartTime.Text;
+                            rc.EndTime = txtRCEndTime.Text;
+                            list2.Add(rc);
+                        }
+                    }
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
             }
         }
 
@@ -519,23 +564,30 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<ZXJH_SYEstimate> list2 = new List<ZXJH_SYEstimate>();
                 ZXJH_SYEstimate sye;
                 Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
+                if (rp.Items.Count <= 1)
                 {
-                    if (e.Item.ItemIndex != it.ItemIndex)
-                    {
-                        sye = new ZXJH_SYEstimate();
-                        TextBox txtESYID = (TextBox)it.FindControl("txtESYID");
-                        TextBox txtEStartTime = (TextBox)it.FindControl("txtEStartTime");
-                        TextBox txtEEndTime = (TextBox)it.FindControl("txtEEndTime");
-
-                        sye.SYID = txtESYID.Text;
-                        sye.StartTime = txtEStartTime.Text;
-                        sye.EndTime = txtEEndTime.Text;
-                        list2.Add(sye);
-                    }
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
                 }
-                rp.DataSource = list2;
-                rp.DataBind();
+                else
+                {
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        if (e.Item.ItemIndex != it.ItemIndex)
+                        {
+                            sye = new ZXJH_SYEstimate();
+                            TextBox txtESYID = (TextBox)it.FindControl("txtESYID");
+                            TextBox txtEStartTime = (TextBox)it.FindControl("txtEStartTime");
+                            TextBox txtEEndTime = (TextBox)it.FindControl("txtEEndTime");
+
+                            sye.SYID = txtESYID.Text;
+                            sye.StartTime = txtEStartTime.Text;
+                            sye.EndTime = txtEEndTime.Text;
+                            list2.Add(sye);
+                        }
+                    }
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
             }
         }
 
@@ -575,25 +627,32 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<ZXJH_DataManage> list2 = new List<ZXJH_DataManage>();
                 ZXJH_DataManage dm;
                 Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
+                if (rp.Items.Count <= 1)
                 {
-                    if (e.Item.ItemIndex != it.ItemIndex)
-                    {
-                        dm = new ZXJH_DataManage();
-                        TextBox txtMWork = (TextBox)it.FindControl("txtMWork");
-                        TextBox txtMDes = (TextBox)it.FindControl("txtMDes");
-                        TextBox txtMStartTime = (TextBox)it.FindControl("txtMStartTime");
-                        TextBox txtMEndTime = (TextBox)it.FindControl("txtMEndTime");
-
-                        dm.Work = txtMWork.Text;
-                        dm.Description = txtMDes.Text;
-                        dm.StartTime = txtMStartTime.Text;
-                        dm.EndTime = txtMEndTime.Text;
-                        list2.Add(dm);
-                    }
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
                 }
-                rp.DataSource = list2;
-                rp.DataBind();
+                else
+                {
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        if (e.Item.ItemIndex != it.ItemIndex)
+                        {
+                            dm = new ZXJH_DataManage();
+                            TextBox txtMWork = (TextBox)it.FindControl("txtMWork");
+                            TextBox txtMDes = (TextBox)it.FindControl("txtMDes");
+                            TextBox txtMStartTime = (TextBox)it.FindControl("txtMStartTime");
+                            TextBox txtMEndTime = (TextBox)it.FindControl("txtMEndTime");
+
+                            dm.Work = txtMWork.Text;
+                            dm.Description = txtMDes.Text;
+                            dm.StartTime = txtMStartTime.Text;
+                            dm.EndTime = txtMEndTime.Text;
+                            list2.Add(dm);
+                        }
+                    }
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
             }
         }
 
@@ -752,8 +811,33 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
 
             CreatePlanFile creater = new CreatePlanFile();
-            creater.FilePath = HfFileIndex.Value;
-            creater.CreateZXJHFile(obj, 1);
+            if (hfOverDate.Value == "true")
+            {
+                obj.TaskID = hfTaskID.Value;
+                obj.SatID = hfSatID.Value;
+                string filepath = creater.CreateZXJHFile(obj, 0);
+
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                {
+                    TaskID = obj.TaskID,
+                    PlanType = "ZXJH",
+                    PlanID = 0,
+                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    SRCType = 0,
+                    FileIndex = filepath,
+                    SatID = obj.SatID,
+                    Reserve = ""
+                };
+                var result = jh.Add();
+            }
+            else
+            {
+                creater.FilePath = HfFileIndex.Value;
+                creater.CreateZXJHFile(obj, 1);
+            }
+
+            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
         }
     }
 }
