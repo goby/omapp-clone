@@ -29,6 +29,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                     HfID.Value = sID;
                     BindJhTable(sID);
                     BindXML();
+
+                    if ("detail" == Request.QueryString["op"])
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");
+                    }
                 }
             }
         }
@@ -38,6 +43,17 @@ namespace OperatingManagement.Web.Views.PlanManage
             txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
             txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
+            hfTaskID.Value = jh[0].TaskID.ToString();
+            string[] strTemp= jh[0].FileIndex.Split('_');
+            if (strTemp.Length >= 2)
+            {
+                hfSatID.Value = strTemp[strTemp.Length - 2];
+            }
+            if (DateTime.Now > jh[0].StartTime)
+            {
+                btnSubmit.Visible = false;
+                hfOverDate.Value = "true";
+            }
         }
         private void BindXML()
         {
@@ -63,7 +79,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.ShortTitle = "编辑计划";
             base.OnPageLoaded();
            //this.SetTitle();
-           // this.AddJavaScriptInclude("scripts/pages/YJJHEdit.aspx.js");
+           this.AddJavaScriptInclude("scripts/pages/YJJHEdit.aspx.js");
 
         }
 
@@ -78,8 +94,33 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.Task = txtTask.Text;
 
             CreatePlanFile creater = new CreatePlanFile();
-            creater.FilePath = HfFileIndex.Value;
-            creater.CreateYJJHFile(obj,1);
+            if (hfOverDate.Value == "true")
+            {
+                obj.TaskID = hfTaskID.Value;
+                obj.SatID = hfSatID.Value;
+                string filepath=creater.CreateYJJHFile(obj, 0);
+
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                {
+                    TaskID = obj.TaskID,
+                    PlanType = "YJJH",
+                    PlanID = 0,
+                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    SRCType = 0,
+                    FileIndex = filepath,
+                    SatID = obj.SatID,
+                    Reserve = ""
+                };
+                var result = jh.Add();
+            }
+            else
+            {
+                creater.FilePath = HfFileIndex.Value;
+                creater.CreateYJJHFile(obj, 1);
+            }
+
+            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
         }
 
     }

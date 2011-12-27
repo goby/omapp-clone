@@ -78,10 +78,16 @@
         <tr>
             <th class="style1">&nbsp;</th>
             <td>
-                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
+                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" 
+                    onclick="btnSubmit_Click" />
+                    &nbsp;&nbsp;&nbsp;
+                    <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
                     onclick="btnSubmit_Click" />
                      <asp:HiddenField ID="HfID" runat="server" />
                     <asp:HiddenField ID="HfFileIndex" runat="server" />
+                <asp:HiddenField ID="hfTaskID" runat="server" />
+                <asp:HiddenField ID="hfSatID" runat="server" />
+                <asp:HiddenField ID="hfOverDate" runat="server" />
             </td>
         </tr>
     </table>

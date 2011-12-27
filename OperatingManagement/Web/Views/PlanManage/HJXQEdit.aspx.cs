@@ -29,6 +29,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                     HfID.Value = sID;
                     BindJhTable(sID);
                     BindXML();
+
+                    if ("detail" == Request.QueryString["op"])
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");
+                    }
                 }
             }
         }
@@ -38,6 +43,17 @@ namespace OperatingManagement.Web.Views.PlanManage
             txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
             txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
+            hfTaskID.Value = jh[0].TaskID.ToString();
+            string[] strTemp = jh[0].FileIndex.Split('_');
+            if (strTemp.Length >= 2)
+            {
+                hfSatID.Value = strTemp[strTemp.Length - 2];
+            }
+            if (DateTime.Now > jh[0].StartTime)
+            {
+                btnSubmit.Visible = false;
+                hfOverDate.Value = "true";
+            }
         }
         private void BindXML()
         {
@@ -81,7 +97,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.PagePermission = "Plan.Edit";
             this.ShortTitle = "编辑计划";
             base.OnPageLoaded();
-            this.AddJavaScriptInclude("scripts/pages/HYXQEdit.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/HJXQEdit.aspx.js");
         }
 
         protected void rpHJ_ItemCommand(object source, RepeaterCommandEventArgs e)
@@ -120,25 +136,32 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<HJXQSatInfo> list2 = new List<HJXQSatInfo>();
                 HJXQSatInfo dm;
                 Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
+                if (rp.Items.Count <= 1)
                 {
-                    if (e.Item.ItemIndex != it.ItemIndex)
-                    {
-                        dm = new HJXQSatInfo();
-                        TextBox txtHJSatName = (TextBox)it.FindControl("txtHJSatName");
-                        TextBox txtHJInfoName = (TextBox)it.FindControl("txtHJInfoName");
-                        TextBox txtHJInfoArea = (TextBox)it.FindControl("txtHJInfoArea");
-                        TextBox txtHJInfoTime = (TextBox)it.FindControl("txtHJInfoTime");
-
-                        dm.SatName = txtHJSatName.Text;
-                        dm.InfoName = txtHJInfoName.Text;
-                        dm.InfoArea = txtHJInfoArea.Text;
-                        dm.InfoTime = txtHJInfoTime.Text;
-                        list2.Add(dm);
-                    }
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
                 }
-                rp.DataSource = list2;
-                rp.DataBind();
+                else
+                {
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        if (e.Item.ItemIndex != it.ItemIndex)
+                        {
+                            dm = new HJXQSatInfo();
+                            TextBox txtHJSatName = (TextBox)it.FindControl("txtHJSatName");
+                            TextBox txtHJInfoName = (TextBox)it.FindControl("txtHJInfoName");
+                            TextBox txtHJInfoArea = (TextBox)it.FindControl("txtHJInfoArea");
+                            TextBox txtHJInfoTime = (TextBox)it.FindControl("txtHJInfoTime");
+
+                            dm.SatName = txtHJSatName.Text;
+                            dm.InfoName = txtHJInfoName.Text;
+                            dm.InfoArea = txtHJInfoArea.Text;
+                            dm.InfoTime = txtHJInfoTime.Text;
+                            list2.Add(dm);
+                        }
+                    }
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
             }
         }
 
@@ -171,8 +194,33 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
 
             CreatePlanFile creater = new CreatePlanFile();
-            creater.FilePath = HfFileIndex.Value;
-            creater.CreateHJXQFile(obj, 1);
+            if (hfOverDate.Value == "true")
+            {
+                obj.TaskID = hfTaskID.Value;
+                obj.SatID = hfSatID.Value;
+                string filepath = creater.CreateHJXQFile(obj, 0);
+
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                {
+                    TaskID = obj.TaskID,
+                    PlanType = "HJXQ",
+                    PlanID = 0,
+                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    SRCType = 0,
+                    FileIndex = filepath,
+                    SatID = obj.SatID,
+                    Reserve = ""
+                };
+                var result = jh.Add();
+            }
+            else
+            {
+                creater.FilePath = HfFileIndex.Value;
+                creater.CreateHJXQFile(obj, 1);
+            }
+
+            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
         }
     }
 }

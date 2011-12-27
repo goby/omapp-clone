@@ -29,6 +29,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                     HfID.Value = sID;
                     BindJhTable(sID);
                     BindXML();
+
+                    if ("detail" == Request.QueryString["op"])
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");
+                    }
                 }
             }
         }
@@ -38,6 +43,17 @@ namespace OperatingManagement.Web.Views.PlanManage
             txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
             txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
+            hfTaskID.Value = jh[0].TaskID.ToString();
+            string[] strTemp = jh[0].FileIndex.Split('_');
+            if (strTemp.Length >= 2)
+            {
+                hfSatID.Value = strTemp[strTemp.Length - 2];
+            }
+            if (DateTime.Now > jh[0].StartTime)
+            {
+                btnSubmit.Visible = false;
+                hfOverDate.Value = "true";
+            }
         }
         private void BindXML()
         {
@@ -76,8 +92,33 @@ namespace OperatingManagement.Web.Views.PlanManage
             objTYSJ.Condition = txtCondition.Text;
 
             CreatePlanFile creater = new CreatePlanFile();
-            creater.FilePath = HfFileIndex.Value;
-            creater.CreateTYSJFile(objTYSJ, 1);
+            if (hfOverDate.Value == "true")
+            {
+                objTYSJ.TaskID = hfTaskID.Value;
+                objTYSJ.SatID = hfSatID.Value;
+                string filepath = creater.CreateTYSJFile(objTYSJ, 0);
+
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                {
+                    TaskID = objTYSJ.TaskID,
+                    PlanType = "TYSJ",
+                    PlanID = 0,
+                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    SRCType = 0,
+                    FileIndex = filepath,
+                    SatID = objTYSJ.SatID,
+                    Reserve = ""
+                };
+                var result = jh.Add();
+            }
+            else
+            {
+                creater.FilePath = HfFileIndex.Value;
+                creater.CreateTYSJFile(objTYSJ, 1);
+            }
+
+            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
         }
     }
 }
