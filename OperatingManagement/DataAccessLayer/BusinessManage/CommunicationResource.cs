@@ -13,7 +13,7 @@ using Oracle.DataAccess.Client;
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
     [Serializable]
-    public class CommunicationResource : BaseEntity<int, CenterOutputPolicy>
+    public class CommunicationResource : BaseEntity<int, CommunicationResource>
     {
         public CommunicationResource()
         {

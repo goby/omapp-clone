@@ -143,10 +143,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplTask.DataBind();
             dplTask.Items.Insert(0, new ListItem("请选择", ""));
 
+            XYXSInfo xyxsInfo = new XYXSInfo();
             dplInfoSource.Items.Clear();
-            dplInfoSource.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyInfoSource);
-            dplInfoSource.DataTextField = "key";
-            dplInfoSource.DataValueField = "value";
+            //dplInfoSource.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyInfoSource);
+            dplInfoSource.DataSource = xyxsInfo.XYXSInfoCache;
+            dplInfoSource.DataTextField = "ADDRName";
+            dplInfoSource.DataValueField = "INCODE";
             dplInfoSource.DataBind();
             dplInfoSource.Items.Insert(0, new ListItem("请选择", ""));
 
@@ -158,9 +160,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplInfoType.Items.Insert(0, new ListItem("请选择", ""));
 
             dplDdestination.Items.Clear();
-            dplDdestination.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyDdestination);
-            dplDdestination.DataTextField = "key";
-            dplDdestination.DataValueField = "value";
+            //dplDdestination.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyDdestination);
+            dplDdestination.DataSource = xyxsInfo.XYXSInfoCache;
+            dplDdestination.DataTextField = "ADDRName";
+            dplDdestination.DataValueField = "INCODE";
             dplDdestination.DataBind();
             dplDdestination.Items.Insert(0, new ListItem("请选择", ""));
         }

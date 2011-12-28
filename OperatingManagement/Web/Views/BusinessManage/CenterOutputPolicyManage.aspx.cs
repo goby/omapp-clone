@@ -156,6 +156,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
             rpCOPList.DataSource = cpPager.DataSourcePaged;
             rpCOPList.DataBind();
         }
+        /// <summary>
+        /// 根据inCode获得ADDRName
+        /// </summary>
+        /// <param name="inCode"></param>
+        /// <returns></returns>
+        protected string GetXYXSADDRName(string inCode)
+        {
+            XYXSInfo xyxs = new XYXSInfo();
+            return xyxs.GetXYXSADDRName(inCode);
+        }
        
         #endregion
     }

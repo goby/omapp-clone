@@ -128,13 +128,13 @@
                         <%# Eval("SatName")%>
                     </td>
                     <td>
-                        <%# Eval("InfoSource")%>
+                        <%#GetXYXSADDRName(Eval("InfoSource").ToString())%>
                     </td>
                     <td>
                         <%# Eval("InfoType")%>
                     </td>
                     <td>
-                        <%# Eval("Ddestination")%>
+                        <%#GetXYXSADDRName(Eval("Ddestination").ToString())%>
                     </td>
                     <td>
                         <%# Eval("EffectTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
