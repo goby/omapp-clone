@@ -13,7 +13,7 @@ using Oracle.DataAccess.Client;
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
     [Serializable]
-    public class HealthStatus : BaseEntity<int, CenterOutputPolicy>
+    public class HealthStatus : BaseEntity<int, HealthStatus>
     {
         public HealthStatus()
         {

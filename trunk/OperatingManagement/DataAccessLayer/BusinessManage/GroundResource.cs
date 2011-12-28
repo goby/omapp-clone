@@ -13,7 +13,7 @@ using Oracle.DataAccess.Client;
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
     [Serializable]
-    public class GroundResource : BaseEntity<int, CenterOutputPolicy>
+    public class GroundResource : BaseEntity<int, GroundResource>
     {
         public GroundResource()
         {

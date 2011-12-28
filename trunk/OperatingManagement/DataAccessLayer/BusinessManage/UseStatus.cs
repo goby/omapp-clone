@@ -14,7 +14,7 @@ using Oracle.DataAccess.Client;
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
     [Serializable]
-    public class UseStatus : BaseEntity<int, CenterOutputPolicy>
+    public class UseStatus : BaseEntity<int, UseStatus>
     {
         public UseStatus()
         {

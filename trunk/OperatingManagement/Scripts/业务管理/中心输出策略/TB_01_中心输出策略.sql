@@ -1,20 +1,19 @@
-Drop table TB_CENTEROUTPUTPOLICY;
 -- Create table
 create table TB_CENTEROUTPUTPOLICY
 (
-  copid          NUMBER(10) not null,
-  taskid         NVARCHAR2(50) not null,
-  satname        NVARCHAR2(50) not null,
-  InfoSource     VARCHAR2(4) not null,
-  infotype       VARCHAR2(4) not null,
-  DDestination   VARCHAR2(4) not null,
-  effecttime     DATE not null,
-  defecttime     DATE not null,
-  note           NVARCHAR2(200),
-  createdtime    DATE not null,
-  createduserid  NUMBER(10),
-  updatedtime    DATE,
-  updateduserid  NUMBER(10)
+  copid         NUMBER(10) not null,
+  taskid        NVARCHAR2(50) not null,
+  satname       NVARCHAR2(50) not null,
+  infosource    VARCHAR2(20) not null,
+  infotype      VARCHAR2(20) not null,
+  ddestination  VARCHAR2(20) not null,
+  effecttime    DATE not null,
+  defecttime    DATE not null,
+  note          NVARCHAR2(200),
+  createdtime   DATE not null,
+  createduserid NUMBER(10),
+  updatedtime   DATE,
+  updateduserid NUMBER(10)
 )
 tablespace TSHTC
   pctfree 10
@@ -22,7 +21,7 @@ tablespace TSHTC
   maxtrans 255
   storage
   (
-    initial 64
+    initial 16K
     minextents 1
     maxextents unlimited
   );
@@ -33,11 +32,11 @@ comment on column TB_CENTEROUTPUTPOLICY.taskid
   is '任务代号';
 comment on column TB_CENTEROUTPUTPOLICY.satname
   is '卫星名称';
-comment on column TB_CENTEROUTPUTPOLICY.InfoSource
+comment on column TB_CENTEROUTPUTPOLICY.infosource
   is '信源';
 comment on column TB_CENTEROUTPUTPOLICY.infotype
   is '信息类别';
-comment on column TB_CENTEROUTPUTPOLICY.DDestination
+comment on column TB_CENTEROUTPUTPOLICY.ddestination
   is '信宿';
 comment on column TB_CENTEROUTPUTPOLICY.effecttime
   is '生效时间';
