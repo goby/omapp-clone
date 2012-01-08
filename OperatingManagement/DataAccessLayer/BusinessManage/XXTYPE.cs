@@ -48,13 +48,18 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         public string DATATYPE { get; set; }
 
-        //public List<XYXSInfo> XYXSInfoCache
-        //{
-        //    get
-        //    {
-
-        //    }
-        //}
+        public static List<XXTYPE> _xxTypeCache = null;
+        public List<XXTYPE> XXTYPECache
+        {
+            get
+            {
+                if (_xxTypeCache == null)
+                {
+                    _xxTypeCache = SelectAll();
+                }
+                return _xxTypeCache;
+            }
+        }
         #endregion
 
         #region -Private Methods-
