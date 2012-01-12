@@ -11,7 +11,9 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
-    //空间环境信息
+    /// <summary>
+    /// 仿真推演试验数据
+    /// </summary>
     public class TYSJ : BaseEntity<int, TYSJ>
     {
         private static readonly string GET_List_ByDate = "up_TYSJ_getlist";

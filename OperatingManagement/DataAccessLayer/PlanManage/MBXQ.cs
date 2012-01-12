@@ -11,7 +11,9 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
-    //空间目标信息需求
+    /// <summary>
+    /// 空间目标信息需求
+    /// </summary>
     public class MBXQ
     {
         #region -Properties-
