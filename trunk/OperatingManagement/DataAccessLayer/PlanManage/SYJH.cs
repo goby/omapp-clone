@@ -12,6 +12,9 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
+    /// <summary>
+    /// 试验计划
+    /// </summary>
     public class SYJH : BaseEntity<int, SYJH>
     {
         private static readonly string GET_SYJHList_ByDate = "UP_SYJH_GETLIST";

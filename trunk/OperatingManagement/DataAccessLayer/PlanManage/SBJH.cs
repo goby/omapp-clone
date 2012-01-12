@@ -11,6 +11,9 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
+    /// <summary>
+    /// 设备工作计划
+    /// </summary>
     public class SBJH
     {
         #region -Properties-

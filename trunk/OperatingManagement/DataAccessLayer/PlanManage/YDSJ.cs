@@ -11,6 +11,9 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
+    /// <summary>
+    /// 引导数据
+    /// </summary>
     public class YDSJ : BaseEntity<int, YDSJ>
     {
         private static readonly string GET_YDSJList_ByDate = "up_ydsj_getlist"; 

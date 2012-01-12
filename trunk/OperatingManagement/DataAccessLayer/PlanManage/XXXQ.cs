@@ -11,7 +11,9 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
-    //空间环境信息
+    /// <summary>
+    /// 空间信息需求
+    /// </summary>
     public class XXXQ : BaseEntity<int, XXXQ>
     {
         private static readonly string GET_List_ByDate = "up_XXXQ_getlist";

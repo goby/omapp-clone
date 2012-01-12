@@ -125,6 +125,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "计划管理", "计划管�
 		Scripts\计划管理\VW_01_计划管理.sql = Scripts\计划管理\VW_01_计划管理.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "初始化数据", "初始化数据", "{38584E56-8108-4393-92DE-1A17E4E91629}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\初始化数据\TB_XXTYPE.sql = Scripts\初始化数据\TB_XXTYPE.sql
+		Scripts\初始化数据\TB_XYXSInfo.sql = Scripts\初始化数据\TB_XYXSInfo.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -316,6 +322,7 @@ Global
 		{9346BE0A-7EA5-4FC2-936C-1AC18D743808} = {7F51E1B7-A7B2-4C36-9793-1E2B1F2000DC}
 		{58EE1BBF-1809-41D4-BA01-D77870598DD8} = {775AB9A5-FC47-46B3-814F-E3D9D4930E4C}
 		{DF72F9FB-615C-4339-B0C7-AA07CFE2AD12} = {775AB9A5-FC47-46B3-814F-E3D9D4930E4C}
+		{38584E56-8108-4393-92DE-1A17E4E91629} = {775AB9A5-FC47-46B3-814F-E3D9D4930E4C}
 		{F108CA3D-8C70-47C0-8DDB-2A62CBBAC211} = {7BCFCF29-0B2F-4036-AF46-3BBEFC8D8C2E}
 		{952B9C18-9A9B-4796-B54A-58A8B8BC35F7} = {58EE1BBF-1809-41D4-BA01-D77870598DD8}
 		{EBA8D604-31C5-46EF-816A-AF484A90030D} = {58EE1BBF-1809-41D4-BA01-D77870598DD8}

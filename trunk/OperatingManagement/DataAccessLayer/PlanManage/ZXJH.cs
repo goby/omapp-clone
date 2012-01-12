@@ -11,7 +11,9 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
-    //中心计划
+    /// <summary>
+    /// 中心运行计划
+    /// </summary>
     public class ZXJH 
     {
         #region -Properties-
