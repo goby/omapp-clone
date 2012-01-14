@@ -57,12 +57,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "中心输出策略", "中�
 		Scripts\业务管理\中心输出策略\DT_01_序列.sql = Scripts\业务管理\中心输出策略\DT_01_序列.sql
 		Scripts\业务管理\中心输出策略\DT_02_信源信宿.sql = Scripts\业务管理\中心输出策略\DT_02_信源信宿.sql
 		Scripts\业务管理\中心输出策略\DT_03_信息类型.sql = Scripts\业务管理\中心输出策略\DT_03_信息类型.sql
+		Scripts\业务管理\中心输出策略\DT_04_卫星.txt = Scripts\业务管理\中心输出策略\DT_04_卫星.txt
 		Scripts\业务管理\中心输出策略\TB_01_中心输出策略.sql = Scripts\业务管理\中心输出策略\TB_01_中心输出策略.sql
 		Scripts\业务管理\中心输出策略\TB_02_信源信宿.sql = Scripts\业务管理\中心输出策略\TB_02_信源信宿.sql
 		Scripts\业务管理\中心输出策略\TB_03_信息类型.sql = Scripts\业务管理\中心输出策略\TB_03_信息类型.sql
+		Scripts\业务管理\中心输出策略\TB_04_卫星.txt = Scripts\业务管理\中心输出策略\TB_04_卫星.txt
 		Scripts\业务管理\中心输出策略\UP_01_中心输出策略.sql = Scripts\业务管理\中心输出策略\UP_01_中心输出策略.sql
 		Scripts\业务管理\中心输出策略\UP_02_信源信宿.sql = Scripts\业务管理\中心输出策略\UP_02_信源信宿.sql
 		Scripts\业务管理\中心输出策略\UP_03_信息类型.sql = Scripts\业务管理\中心输出策略\UP_03_信息类型.sql
+		Scripts\业务管理\中心输出策略\UP_04_卫星.txt = Scripts\业务管理\中心输出策略\UP_04_卫星.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesKernel", "ServicesKernel\ServicesKernel.csproj", "{755C37F8-272A-43A0-8055-287AC82D185E}"
