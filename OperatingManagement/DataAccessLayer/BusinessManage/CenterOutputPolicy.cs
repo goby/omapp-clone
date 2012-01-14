@@ -34,15 +34,15 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 信源
         /// </summary>
-        public string InfoSource { get; set; }
+        public int InfoSource { get; set; }
         /// <summary>
         /// 信息类别
         /// </summary>
-        public string InfoType { get; set; }
+        public int InfoType { get; set; }
         /// <summary>
         /// 信宿
         /// </summary>
-        public string Ddestination { get; set; }
+        public int Ddestination { get; set; }
         /// <summary>
         /// 生效时间
         /// </summary>
@@ -107,9 +107,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     Id = Convert.ToInt32(ds.Tables[0].Rows[0]["COPID"]),
                     TaskID = ds.Tables[0].Rows[0]["TaskID"].ToString(),
                     SatName = ds.Tables[0].Rows[0]["SatName"].ToString(),
-                    InfoSource = ds.Tables[0].Rows[0]["InfoSource"].ToString(),
-                    InfoType = ds.Tables[0].Rows[0]["InfoType"].ToString(),
-                    Ddestination = ds.Tables[0].Rows[0]["Ddestination"].ToString(),
+                    InfoSource = Convert.ToInt32(ds.Tables[0].Rows[0]["InfoSource"]),
+                    InfoType = Convert.ToInt32(ds.Tables[0].Rows[0]["InfoType"]),
+                    Ddestination = Convert.ToInt32(ds.Tables[0].Rows[0]["Ddestination"]),
                     EffectTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["EffectTime"]),
                     DefectTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["DefectTime"]),
                     Note = ds.Tables[0].Rows[0]["Note"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["Note"].ToString(),
@@ -141,9 +141,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         Id = Convert.ToInt32(dr["COPID"]),
                         TaskID = dr["TaskID"].ToString(),
                         SatName = dr["SatName"].ToString(),
-                        InfoSource = dr["InfoSource"].ToString(),
-                        InfoType = dr["InfoType"].ToString(),
-                        Ddestination = dr["Ddestination"].ToString(),
+                        InfoSource = Convert.ToInt32(dr["InfoSource"]),
+                        InfoType = Convert.ToInt32(dr["InfoType"]),
+                        Ddestination = Convert.ToInt32(dr["Ddestination"]),
                         EffectTime = Convert.ToDateTime(dr["EffectTime"]),
                         DefectTime = Convert.ToDateTime(dr["DefectTime"]),
                         Note = dr["Note"] == DBNull.Value ? string.Empty : dr["Note"].ToString(),
@@ -225,7 +225,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public bool HaveEffectivePolicy()
         {
             List<CenterOutputPolicy> infoList = SelectAll();
-            var query = infoList.Where(a =>a.Id != Id && a.TaskID.ToLower() == TaskID.ToLower() && 
+            var query = infoList.Where(a =>a.Id != Id && a.TaskID.ToLower() == TaskID.ToLower() && a.SatName.ToLower() == SatName.ToLower() && 
+                a.InfoType == InfoType && a.InfoSource == InfoSource && a.Ddestination == Ddestination &&
                 ((a.EffectTime <= EffectTime && EffectTime <= a.DefectTime) 
                   || (a.EffectTime <= DefectTime && DefectTime <= a.DefectTime) 
                   || (EffectTime <= a.EffectTime && DefectTime >= a.DefectTime)));
@@ -253,9 +254,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         {
             this.AddValidRules("TaskID", "任务代号不能为空。", string.IsNullOrEmpty(TaskID));
             this.AddValidRules("SatName", "卫星名称不能为空。", string.IsNullOrEmpty(SatName));
-            this.AddValidRules("InfoSource", "信源不能为空。", string.IsNullOrEmpty(InfoSource));
-            this.AddValidRules("InfoType", "信息类别不能为空。", string.IsNullOrEmpty(InfoType));
-            this.AddValidRules("Ddestination", "信宿不能为空。", string.IsNullOrEmpty(Ddestination));
+            this.AddValidRules("InfoSource", "信源不能为空。", InfoSource < 1);
+            this.AddValidRules("InfoType", "信息类别不能为空。", InfoType < 1);
+            this.AddValidRules("Ddestination", "信宿不能为空。", Ddestination < 1);
         }
         #endregion
     }

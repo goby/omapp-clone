@@ -142,6 +142,22 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             }
             return infoList;
         }
+        /// <summary>
+        /// 根据rid获得信息类型的DATANAME
+        /// </summary>
+        /// <param name="rid">编号</param>
+        /// <returns>信息类型DATANAME</returns>
+        public string GetXXTypeDATANAME(int rid)
+        {
+            string dataName = string.Empty;
+            if (XXTYPECache != null)
+            {
+                var query = XXTYPECache.Where(a => a.Id == rid);
+                if (query != null && query.Count() > 0)
+                    dataName = query.FirstOrDefault().DATANAME;
+            }
+            return dataName;
+        }
         #endregion
 
         #region -Override BaseEntity-

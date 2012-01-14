@@ -98,10 +98,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 }
                 StringBuilder strBuilder = new StringBuilder("ConfigurationInfo\r\n");
                 strBuilder.AppendFormat("TaskID={0}\r\n", centerOutputPolicy.TaskID);
-                strBuilder.AppendFormat("SatName={0}\r\n", centerOutputPolicy.SatName);
-                strBuilder.AppendFormat("Source={0}\r\n", centerOutputPolicy.InfoSource);
-                strBuilder.AppendFormat("InfoType={0}\r\n", centerOutputPolicy.InfoType);
-                strBuilder.AppendFormat("Ddestination={0}\r\n", centerOutputPolicy.Ddestination);
+                strBuilder.AppendFormat("SatName={0}\r\n", GetSatelliteWXMC(centerOutputPolicy.SatName));
+                strBuilder.AppendFormat("Source={0}\r\n", GetXYXSADDRName(centerOutputPolicy.InfoSource));
+                strBuilder.AppendFormat("InfoType={0}\r\n", GetXXTypeDATANAME(centerOutputPolicy.InfoType));
+                strBuilder.AppendFormat("Ddestination={0}\r\n", GetXYXSADDRName(centerOutputPolicy.Ddestination));
                 strBuilder.AppendFormat("EffectTime={0}\r\n", centerOutputPolicy.EffectTime.ToString("yyyy-MM-dd HH:mm:ss"));
                 strBuilder.AppendFormat("DefectTime={0}\r\n", centerOutputPolicy.DefectTime.ToString("yyyy-MM-dd HH:mm:ss"));
                 Response.Clear();
@@ -120,7 +120,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         #region Method
         /// <summary>
-        /// 绑定控件数据源
+        /// 绑定任务数据源
         /// </summary>
         private void BindDataSource()
         {
@@ -133,18 +133,20 @@ namespace OperatingManagement.Web.Views.BusinessManage
         }
         /// <summary>
         /// 绑定卫星数据源
-        /// 等确定卫星表结构及来源后替换
         /// </summary>
         private void BindSatNameDataSource()
         {
             dplSatName.Items.Clear();
-            for (int i = 1; i <= 5; i++)
-            {
-                dplSatName.Items.Add(new ListItem("卫星" + i.ToString(), i.ToString()));
-            }
+            Satellite satellite = new Satellite();
+            dplSatName.DataSource = satellite.SatelliteCache;
+            dplSatName.DataTextField = "WXMC";
+            dplSatName.DataValueField = "Id";
+            dplSatName.DataBind();
             dplSatName.Items.Insert(0, new ListItem("全部", ""));
         }
-
+        /// <summary>
+        /// 绑定中心输出策略信息
+        /// </summary>
         private void BindCOPList()
         {
             CenterOutputPolicy centerOutputPolicy = new CenterOutputPolicy();
@@ -157,16 +159,35 @@ namespace OperatingManagement.Web.Views.BusinessManage
             rpCOPList.DataBind();
         }
         /// <summary>
-        /// 根据inCode获得ADDRName
+        /// 根据rid获得信源信宿的ADDRName
         /// </summary>
-        /// <param name="inCode"></param>
-        /// <returns></returns>
-        protected string GetXYXSADDRName(string inCode)
+        /// <param name="rid">编号</param>
+        /// <returns>信源信宿的地址</returns>
+        protected string GetXYXSADDRName(int rid)
         {
             XYXSInfo xyxs = new XYXSInfo();
-            return xyxs.GetXYXSADDRName(inCode);
+            return xyxs.GetXYXSADDRName(rid);
         }
-       
+        /// <summary>
+        /// 根据rid获得信息类型的DATANAME
+        /// </summary>
+        /// <param name="rid">编号</param>
+        /// <returns>信息类型DATANAME</returns>
+        protected string GetXXTypeDATANAME(int rid)
+        {
+            XXTYPE xxType = new XXTYPE();
+            return xxType.GetXXTypeDATANAME(rid);
+        }
+        /// <summary>
+        /// 根据WXBM获得卫星名称
+        /// </summary>
+        /// <param name="wxbm">卫星编码</param>
+        /// <returns>卫星名称</returns>
+        protected string GetSatelliteWXMC(string wxbm)
+        {
+            Satellite satellite = new Satellite();
+            return satellite.GetSatelliteWXMC(wxbm);
+        }
         #endregion
     }
 }

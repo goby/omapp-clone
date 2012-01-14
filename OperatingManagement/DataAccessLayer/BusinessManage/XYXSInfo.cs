@@ -130,16 +130,32 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             return infoList;
         }
         /// <summary>
-        /// 根据inCode获得ADDRName
+        /// 根据inCode获得信源信宿的ADDRName
         /// </summary>
         /// <param name="inCode"></param>
-        /// <returns></returns>
+        /// <returns>信源信宿的地址</returns>
         public string GetXYXSADDRName(string inCode)
         {
             string addrName = string.Empty;
             if (XYXSInfoCache != null)
             {
                 var query = XYXSInfoCache.Where(a => a.INCODE.ToLower() == inCode.ToLower());
+                if (query != null && query.Count() > 0)
+                    addrName = query.FirstOrDefault().ADDRName;
+            }
+            return addrName;
+        }
+        /// <summary>
+        /// 根据rid获得信源信宿的ADDRName
+        /// </summary>
+        /// <param name="rid">编号</param>
+        /// <returns>信源信宿的地址</returns>
+        public string GetXYXSADDRName(int rid)
+        {
+            string addrName = string.Empty;
+            if (XYXSInfoCache != null)
+            {
+                var query = XYXSInfoCache.Where(a => a.Id == rid);
                 if (query != null && query.Count() > 0)
                     addrName = query.FirstOrDefault().ADDRName;
             }
