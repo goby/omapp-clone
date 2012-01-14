@@ -89,19 +89,19 @@
             <HeaderTemplate>
                 <table class="list">
                     <tr>
-                        <th style="width: 10%;">
+                        <th style="width: 15%;">
                             任务代号
                         </th>
-                        <th style="width: 20%;">
+                        <th style="width: 10%;">
                             卫星名称
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 15%;">
                             信源
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 15%;">
                             信息类别
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 15%;">
                             信宿
                         </th>
                         <th style="width: 10%;">
@@ -110,10 +110,10 @@
                         <th style="width: 10%;">
                             失效时间
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 5%;">
                             编辑
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 5%;">
                             下载
                         </th>
                     </tr>
@@ -125,16 +125,16 @@
                         <%# Eval("TaskID")%>
                     </td>
                     <td>
-                        <%# Eval("SatName")%>
+                        <%#GetSatelliteWXMC(Eval("SatName").ToString())%>
                     </td>
                     <td>
-                        <%#GetXYXSADDRName(Eval("InfoSource").ToString())%>
+                        <%#GetXYXSADDRName(Convert.ToInt32(Eval("InfoSource")))%>
                     </td>
                     <td>
-                        <%# Eval("InfoType")%>
+                         <%#GetXXTypeDATANAME(Convert.ToInt32(Eval("InfoType")))%>
                     </td>
                     <td>
-                        <%#GetXYXSADDRName(Eval("Ddestination").ToString())%>
+                        <%#GetXYXSADDRName(Convert.ToInt32(Eval("Ddestination")))%>
                     </td>
                     <td>
                         <%# Eval("EffectTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
