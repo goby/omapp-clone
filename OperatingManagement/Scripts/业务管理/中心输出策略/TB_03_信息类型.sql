@@ -1,3 +1,4 @@
+--本地测试需要执行此脚本，上线时甲方DB中应该存在该表及对应数据
 -- Create table
 create table TB_XXTYPE
 (

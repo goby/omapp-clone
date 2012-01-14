@@ -1,0 +1,37 @@
+--本地测试需要执行此脚本，上线时甲方DB中应该存在该表及对应数据
+-- Create table
+create table SATELLITE
+(
+  wxmc   NVARCHAR2(50),
+  wxbm   NVARCHAR2(10),
+  state  VARCHAR2(2),
+  mzb    NUMBER(8),
+  bmfsxs NUMBER(8),
+  sx     NVARCHAR2(1000),
+  gn     NVARCHAR2(1000)
+)
+tablespace TSHTC
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the columns 
+comment on column SATELLITE.wxmc
+  is '卫星名称';
+comment on column SATELLITE.wxbm
+  is '卫星代码，卫星唯一标识';
+comment on column SATELLITE.state
+  is '状态，T为可用，F为不可用';
+comment on column SATELLITE.mzb
+  is '面质比';
+comment on column SATELLITE.bmfsxs
+  is '表面反射系数';
+comment on column SATELLITE.sx
+  is '按属性表顺序填写属性值';
+comment on column SATELLITE.gn
+  is '按功能表顺序，如果有该功能，没有填0，之间"，"隔开';
