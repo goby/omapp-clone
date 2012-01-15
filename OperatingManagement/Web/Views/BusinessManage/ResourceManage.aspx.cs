@@ -15,11 +15,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
         #region 属性
         /// <summary>
         /// 资源类型
+        /// 地面站资源：1；通信资源：2；中心资源：3
         /// </summary>
         protected string ResourceType
         {
             get
             {
+                //默认为地面站资源
                 string resourceType = "1";
                 if (Request.QueryString["resourcetype"] != null)
                 {
@@ -44,7 +46,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
             }
         }
-
+        /// <summary>
+        /// 查询资源
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             try
@@ -54,7 +60,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
             catch
             { }
         }
-
+        /// <summary>
+        /// 添加资源
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             try
@@ -63,14 +73,17 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 string resourceType = dplResourceType.SelectedValue;
                 switch (resourceType)
                 {
-                    case "1"://地面站资源
-                        url = @"~/Views/BusinessManage/GroundResourceAdd.aspx";
+                    //地面站资源
+                    case "1":
+                        url = @"~/Views/BusinessManage/GroundResourceAdd.aspx";//地面站资源添加页面
                         break;
-                    case "2"://通信资源
-                        url = @"~/Views/BusinessManage/CommunicationResourceAdd.aspx";
+                    //通信资源
+                    case "2":
+                        url = @"~/Views/BusinessManage/CommunicationResourceAdd.aspx";//通信资源添加页面
                         break;
-                    case "3"://中心资源
-                        url = @"~/Views/BusinessManage/CenterResourceAdd.aspx";
+                    //中心资源
+                    case "3":
+                        url = @"~/Views/BusinessManage/CenterResourceAdd.aspx";//中心资源添加页面
                         break;
                 }
                 Response.Redirect(url);
@@ -126,14 +139,17 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 string resourceType = lbtnEdit.CommandName;
                 switch (resourceType)
                 {
-                    case "1"://地面站资源
-                        url = @"~/Views/BusinessManage/GroundResourceEdit.aspx?grid=" + Server.UrlEncode(lbtnEdit.CommandArgument);
+                    //地面站资源
+                    case "1":
+                        url = @"~/Views/BusinessManage/GroundResourceEdit.aspx?grid=" + Server.UrlEncode(lbtnEdit.CommandArgument);//地面站资源编辑页面
                         break;
-                    case "2"://通信资源
-                        url = @"~/Views/BusinessManage/CommunicationResourceEdit.aspx?crid=" + Server.UrlEncode(lbtnEdit.CommandArgument);
+                    //通信资源
+                    case "2":
+                        url = @"~/Views/BusinessManage/CommunicationResourceEdit.aspx?crid=" + Server.UrlEncode(lbtnEdit.CommandArgument);//通信资源编辑页面
                         break;
-                    case "3"://中心资源
-                        url = @"~/Views/BusinessManage/CenterResourceEdit.aspx?crid=" + Server.UrlEncode(lbtnEdit.CommandArgument);
+                    //中心资源
+                    case "3":
+                        url = @"~/Views/BusinessManage/CenterResourceEdit.aspx?crid=" + Server.UrlEncode(lbtnEdit.CommandArgument);//中心资源编辑页面
                         break;
                 }
                 Response.Redirect(url);
@@ -158,8 +174,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindRepeater();
                     return;
                 }
+                //资源ID
                 int id = 0;
                 int.TryParse(lbtnDelete.CommandArgument, out id);
+                //资源类型
                 string resourceType = lbtnDelete.CommandName;
                 Framework.FieldVerifyResult result = DeleteResource(id, resourceType);
                 switch (result)
@@ -182,6 +200,78 @@ namespace OperatingManagement.Web.Views.BusinessManage
             catch
             { }
         }
+
+        #region ItemDataBound
+        /// <summary>
+        /// 地面站资源单条数据绑定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rpGroundResourceList_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                LinkButton lbtnManageResourceStatus = (e.Item.FindControl("lbtnManageResourceStatus") as LinkButton);
+                LinkButton lbtnDeleteResource = (e.Item.FindControl("lbtnDeleteResource") as LinkButton);
+                if (lbtnManageResourceStatus != null && lbtnDeleteResource != null)
+                {
+                    GroundResource groundResource = (e.Item.DataItem as GroundResource);
+                    if (groundResource.Status == 2)
+                    {
+                        lbtnManageResourceStatus.Enabled = false;
+                        lbtnDeleteResource.OnClientClick = string.Empty;
+                        lbtnDeleteResource.Enabled = false;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// 通信资源单条数据绑定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rpCommunicationResourceList_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                LinkButton lbtnManageResourceStatus = (e.Item.FindControl("lbtnManageResourceStatus") as LinkButton);
+                LinkButton lbtnDeleteResource = (e.Item.FindControl("lbtnDeleteResource") as LinkButton);
+                if (lbtnManageResourceStatus != null && lbtnDeleteResource != null)
+                {
+                    CommunicationResource communicationResource = (e.Item.DataItem as CommunicationResource);
+                    if (communicationResource.Status == 2)
+                    {
+                        lbtnManageResourceStatus.Enabled = false;
+                        lbtnDeleteResource.OnClientClick = string.Empty;
+                        lbtnDeleteResource.Enabled = false;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// 中心资源单条数据绑定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rpCenterResourceList_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                LinkButton lbtnManageResourceStatus = (e.Item.FindControl("lbtnManageResourceStatus") as LinkButton);
+                LinkButton lbtnDeleteResource = (e.Item.FindControl("lbtnDeleteResource") as LinkButton);
+                if (lbtnManageResourceStatus != null && lbtnDeleteResource != null)
+                {
+                    CenterResource centerResource = (e.Item.DataItem as CenterResource);
+                    if (centerResource.Status == 2)
+                    {
+                        lbtnManageResourceStatus.Enabled = false;
+                        lbtnDeleteResource.OnClientClick = string.Empty;
+                        lbtnDeleteResource.Enabled = false;
+                    }
+                }
+            }
+        }
+        #endregion
 
         #region Method
         /// <summary>
@@ -281,43 +371,46 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <summary>
         /// 逻辑删除资源信息
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="resourceType"></param>
-        /// <returns></returns>
+        /// <param name="id">资源ID</param>
+        /// <param name="resourceType">资源类型</param>
+        /// <returns>删除结果</returns>
         private Framework.FieldVerifyResult DeleteResource(int id, string resourceType)
         {
             Framework.FieldVerifyResult result = 0;
             switch (resourceType)
             {
-                case "1"://地面站资源
+                //地面站资源
+                case "1":
                     GroundResource groundResource = new GroundResource();
                     groundResource.Id = id;
                     groundResource = groundResource.SelectByID();
                     if (groundResource != null)
                     {
-                        groundResource.Status = 2;
+                        groundResource.Status = 2;//删除状态
                         groundResource.UpdatedTime = DateTime.Now;
                         result = groundResource.Update();
                     }
                     break;
-                case "2"://通信资源
+                //通信资源
+                case "2":
                     CommunicationResource communicationResource = new CommunicationResource();
                     communicationResource.Id = id;
                     communicationResource = communicationResource.SelectByID();
                     if (communicationResource != null)
                     {
-                        communicationResource.Status = 2;
+                        communicationResource.Status = 2;//删除状态
                         communicationResource.UpdatedTime = DateTime.Now;
                         result = communicationResource.Update();
                     }
                     break;
-                case "3"://中心资源
+                //中心资源
+                case "3":
                     CenterResource centerResource = new CenterResource();
                     centerResource.Id = id;
                     centerResource = centerResource.SelectByID();
                     if (centerResource != null)
                     {
-                        centerResource.Status = 2;
+                        centerResource.Status = 2;//删除状态
                         centerResource.UpdatedTime = DateTime.Now;
                         result = centerResource.Update();
                     }
@@ -329,7 +422,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// 根据地面资源功能类型值获得文本
         /// </summary>
         /// <param name="valueString"></param>
-        /// <returns></returns>
+        /// <returns>地面资源功能类型文本</returns>
         protected string GetGroundResourceFunctionType(string valueString)
         {
             string textString = string.Empty;
@@ -345,5 +438,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
         }
 
         #endregion
+
     }
 }

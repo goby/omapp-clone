@@ -35,6 +35,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             try
             {
                 string msg = string.Empty;
+                //资源管理资源类型列表：地面站资源=1、通信资源=2、中心资源=3
                 int resourceType = 0;
                 int.TryParse(dplResourceType.SelectedValue, out resourceType);
                 if (string.IsNullOrEmpty(txtResourceCode.Text.Trim()))
@@ -124,7 +125,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "请选择是否可执行任务";
                     return;
                 }
-
+                //状态类型列表：健康状态=1、占用状态=2
                 if (dplStatusType.SelectedValue == "1")
                 {
                     Framework.FieldVerifyResult result;
@@ -153,7 +154,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                             break;
                     }
                 }
-                else if (dplStatusType.SelectedValue == "2")
+                else if (dplStatusType.SelectedValue == "2")//状态类型列表：健康状态=1、占用状态=2
                 {
                     Framework.FieldVerifyResult result;
                     UseStatus useStatus = new UseStatus();
@@ -212,8 +213,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void dplStatusType_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //状态类型列表：健康状态=1、占用状态=2
             if (dplStatusType.SelectedValue == "1")
             {
+                //资源管理资源类型列表：地面站资源=1、通信资源=2、中心资源=3
                 dplResourceType.Items.Clear();
                 dplResourceType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.ResourceType);
                 dplResourceType.DataTextField = "key";
@@ -226,6 +229,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 //通信资源没有占用状态
                 dplResourceType.Items.Remove(dplResourceType.Items.FindByValue("2"));
+                //占用状态占用类型列表：任务占用=1、维护占用=2、其他占用=3
                 dplUsedType.SelectedValue = "1";
             }
             SetControlsVisible();
@@ -258,18 +262,21 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void BindDataSource()
         {
+            //状态类型列表：健康状态=1、占用状态=2
             dplStatusType.Items.Clear();
             dplStatusType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.StatusType);
             dplStatusType.DataTextField = "key";
             dplStatusType.DataValueField = "value";
             dplStatusType.DataBind();
 
+            //资源管理资源类型列表：地面站资源=1、通信资源=2、中心资源=3
             dplResourceType.Items.Clear();
             dplResourceType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.ResourceType);
             dplResourceType.DataTextField = "key";
             dplResourceType.DataValueField = "value";
             dplResourceType.DataBind();
 
+            //健康状态功能类型列表：数传数据接收、遥测数据接收、遥控操作
             dplFunctionType.Items.Clear();
             dplFunctionType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.HealthStatusFunctionType);
             dplFunctionType.DataTextField = "key";
@@ -277,6 +284,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplFunctionType.DataBind();
             dplFunctionType.Items.Insert(0, new ListItem("请选择", ""));
 
+            //健康状态列表：正常=1、异常=2
             dplHealthStatus.Items.Clear();
             dplHealthStatus.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.HealthStatus);
             dplHealthStatus.DataTextField = "key";
@@ -286,6 +294,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplHealthStatus.SelectedValue = "2";
             dplHealthStatus.Enabled = false;
 
+            //占用状态占用类型列表：任务占用=1、维护占用=2、其他占用=3
             dplUsedType.Items.Clear();
             dplUsedType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.UseStatusUsedType);
             dplUsedType.DataTextField = "key";
@@ -293,6 +302,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplUsedType.DataBind();
             //dplUsedType.Items.Insert(0, new ListItem("请选择", ""));
 
+            //占用状态是否可执行任务列表：是=1、否=2
             dplCanBeUsed.Items.Clear();
             dplCanBeUsed.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.UseStatusCanBeUsed);
             dplCanBeUsed.DataTextField = "key";
@@ -305,31 +315,39 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void SetControlsVisible()
         {
+            //状态类型列表：健康状态=1、占用状态=2
             if (dplStatusType.SelectedValue == "1")
             {
+                //与健康状态相关控件可见
                 trHealthStatusFunctionType.Visible = true;
                 trHealthStatus.Visible = true;
+                //与占用状态相关控件不可见
                 trUseStatusUsedType.Visible = false;
                 trUseStatusUsedBy.Visible = false;
                 trUseStatusUsedCategory.Visible = false;
                 trUseStatusUsedFor.Visible = false;
                 trUseStatusCanBeUsed.Visible = false;
 
+                //资源管理资源类型列表：地面站资源=1、通信资源=2、中心资源=3
                 if (dplResourceType.SelectedValue != "1")
                 {
+                    //只有地面站资源有健康状态功能类型列表
                     trHealthStatusFunctionType.Visible = false;
                 }
             }
             else if (dplStatusType.SelectedValue == "2")
             {
+                //与健康状态相关控件不可见
                 trHealthStatusFunctionType.Visible = false;
                 trHealthStatus.Visible = false;
+                //与占用状态相关控件可见
                 trUseStatusUsedType.Visible = true;
                 trUseStatusUsedBy.Visible = true;
                 trUseStatusUsedCategory.Visible = true;
                 trUseStatusUsedFor.Visible = true;
                 trUseStatusCanBeUsed.Visible = true;
 
+                //占用状态占用类型列表：任务占用=1、维护占用=2、其他占用=3
                 if (dplUsedType.SelectedValue == "1")
                 {
                     trUseStatusUsedFor.Visible = false;
@@ -370,29 +388,32 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <summary>
         /// 获得资源ID
         /// </summary>
-        /// <param name="resourceType"></param>
-        /// <param name="resourceCode"></param>
-        /// <returns></returns>
+        /// <param name="resourceType">资源类型</param>
+        /// <param name="resourceCode">资源编号</param>
+        /// <returns>资源ID</returns>
         private int GetResourceID(int resourceType, string resourceCode)
         {
             int resourceID = 0;
             switch (resourceType)
             {
-                case 1://地面站资源
+                //地面站资源
+                case 1:
                     GroundResource groundResource = new GroundResource();
                     groundResource.GRCode = resourceCode;
                     groundResource = groundResource.SelectByCode();
                     if (groundResource != null && groundResource.Id > 0)
                         resourceID = groundResource.Id;
                     break;
-                case 2://通信资源
+                //通信资源
+                case 2:
                     CommunicationResource communicationResource = new CommunicationResource();
                     communicationResource.RouteCode = resourceCode;
                     communicationResource = communicationResource.SelectByCode();
                     if (communicationResource != null && communicationResource.Id > 0)
                         resourceID = communicationResource.Id;
                     break;
-                case 3://中心资源
+                //中心资源
+                case 3:
                     CenterResource centerResource = new CenterResource();
                     centerResource.EquipmentCode = resourceCode;
                     centerResource = centerResource.SelectByCode();

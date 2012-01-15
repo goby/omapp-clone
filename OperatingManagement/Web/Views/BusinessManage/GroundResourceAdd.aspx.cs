@@ -63,6 +63,20 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
+                if (string.IsNullOrEmpty(dplOwner.SelectedValue))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "管理单位不能为空";
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(dplCoordinate.SelectedValue))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "站址坐标不能为空";
+                    return;
+                }
+
                 if (cblFunctionType.SelectedItem == null)
                 {
                     trMessage.Visible = true;
@@ -90,6 +104,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 groundResource.Status = 1;//正常
                 groundResource.CreatedTime = DateTime.Now;
                 groundResource.UpdatedTime = DateTime.Now;
+
+                if (groundResource.HaveActiveGRCode())
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "地面站编号已经存在";
+                    return;
+                }
 
                 result = groundResource.Add();
                 switch (result)

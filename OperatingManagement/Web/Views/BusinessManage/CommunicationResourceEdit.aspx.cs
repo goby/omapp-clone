@@ -67,6 +67,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
+                if (string.IsNullOrEmpty(dplDirection.SelectedValue))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "方向不能为空";
+                    return;
+                }
+
                 if (string.IsNullOrEmpty(txtBandWidth.Text.Trim()))
                 {
                     trMessage.Visible = true;
@@ -92,6 +99,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 //communicationResource.Status = 1;
                 //communicationResource.CreatedTime = DateTime.Now;
                 communicationResource.UpdatedTime = DateTime.Now;
+
+                if (communicationResource.HaveActiveRouteCode())
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "线路编码已经存在";
+                    return;
+                }
 
                 result = communicationResource.Update();
                 switch (result)

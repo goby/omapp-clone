@@ -41,6 +41,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
+                if (string.IsNullOrEmpty(dplEquipmentType.SelectedValue))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "设备类型不能为空";
+                    return;
+                }
+
                 if (string.IsNullOrEmpty(txtSupportTask.Text.Trim()))
                 {
                     trMessage.Visible = true;
@@ -64,6 +71,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 centerResource.Status = 1;//正常
                 centerResource.CreatedTime = DateTime.Now;
                 centerResource.UpdatedTime = DateTime.Now;
+
+                if (centerResource.HaveActiveEquipmentCode())
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "设备编号已经存在";
+                    return;
+                }
 
                 result = centerResource.Add();
                 switch (result)

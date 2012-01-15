@@ -148,11 +148,24 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 根据Code获得中心资源
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
         public CenterResource SelectByCode()
         {
-            return SelectAll().Where(a => a.EquipmentCode.ToLower() == EquipmentCode.ToLower()).FirstOrDefault<CenterResource>();
+            return SelectAll().Where(a => a.Status == 1 && a.EquipmentCode.ToLower() == EquipmentCode.ToLower()).FirstOrDefault<CenterResource>();
+        }
+
+        /// <summary>
+        /// 校验该设备编号是否已经存在
+        /// </summary>
+        /// <returns>true:已经存在</returns>
+        public bool HaveActiveEquipmentCode()
+        {
+            List<CenterResource> infoList = SelectAll();
+            var query = infoList.Where(a => a.Id != Id && a.Status == 1 && a.EquipmentCode.ToLower() == EquipmentCode.ToLower());
+            if (query != null && query.Count() > 0)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>
