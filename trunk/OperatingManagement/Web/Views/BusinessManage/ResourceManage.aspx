@@ -84,7 +84,8 @@
         </table>
     </div>
     <div id="divGroundResource" runat="server" class="index_content_view">
-        <asp:Repeater ID="rpGroundResourceList" runat="server">
+        <asp:Repeater ID="rpGroundResourceList" runat="server" 
+            onitemdatabound="rpGroundResourceList_ItemDataBound">
             <HeaderTemplate>
                 <table class="list">
                     <tr>
@@ -109,13 +110,16 @@
                         <th style="width: 10%;">
                             功能类型
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 9%;">
+                            资源状态
+                        </th>
+                        <th style="width: 7%;">
                             管理状态
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 7%;">
                             编辑资源
                         </th>
-                         <th style="width: 10%;">
+                         <th style="width: 7%;">
                             删除资源
                         </th>
                     </tr>
@@ -145,6 +149,9 @@
                         <%# GetGroundResourceFunctionType(Eval("FunctionType").ToString())%>
                     </td>
                     <td>
+                       <%# Eval("Status").ToString() == "2" ? "删除" : "正常"%>
+                    </td>
+                    <td>
                         <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="1"  CommandArgument='<%# Eval("GRCode")%>'>管理状态</asp:LinkButton>
                     </td>
                     <td>
@@ -171,29 +178,33 @@
         </table>
     </div>
     <div id="divCommunicationResource" runat="server" class="index_content_view">
-        <asp:Repeater ID="rpCommunicationResourceList" runat="server">
+        <asp:Repeater ID="rpCommunicationResourceList" runat="server" 
+            onitemdatabound="rpCommunicationResourceList_ItemDataBound">
             <HeaderTemplate>
                 <table class="list">
                     <tr>
-                        <th style="width: 10%;">
+                        <th style="width: 20%;">
                             线路名称
                         </th>
                         <th style="width: 20%;">
                             线路编号
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 15%;">
                             方向
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 15%;">
                             带宽
                         </th>
-                         <th style="width: 10%;">
+                        <th style="width: 9%;">
+                            资源状态
+                        </th>
+                         <th style="width: 7%;">
                             管理状态
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 7%;">
                             编辑资源
                         </th>
-                         <th style="width: 10%;">
+                         <th style="width: 7%;">
                             删除资源
                         </th>
                     </tr>
@@ -212,6 +223,9 @@
                     </td>
                     <td>
                         <%# Eval("BandWidth")%>
+                    </td>
+                     <td>
+                       <%# Eval("Status").ToString() == "2" ? "删除" : "正常"%>
                     </td>
                     <td>
                         <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="2"  CommandArgument='<%# Eval("RouteCode")%>'>管理状态</asp:LinkButton>
@@ -240,29 +254,33 @@
         </table>
     </div>
      <div id="divCenterResource" runat="server" class="index_content_view">
-        <asp:Repeater ID="rpCenterResourceList" runat="server">
+        <asp:Repeater ID="rpCenterResourceList" runat="server" 
+             onitemdatabound="rpCenterResourceList_ItemDataBound">
             <HeaderTemplate>
                 <table class="list">
                     <tr>
-                        <th style="width: 10%;">
+                        <th style="width: 15%;">
                             设备编号
                         </th>
                         <th style="width: 20%;">
                             设备类型
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 20%;">
                             支持的任务
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 15%;">
                             最大数据处理量
                         </th>
-                        <th style="width: 10%;">
+                       <th style="width: 9%;">
+                            资源状态
+                        </th>
+                         <th style="width: 7%;">
                             管理状态
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 7%;">
                             编辑资源
                         </th>
-                         <th style="width: 10%;">
+                         <th style="width: 7%;">
                             删除资源
                         </th>
                     </tr>
@@ -281,6 +299,9 @@
                     </td>
                     <td>
                         <%# Eval("DataProcess")%>
+                    </td>
+                     <td>
+                       <%# Eval("Status").ToString() == "2" ? "删除" : "正常"%>
                     </td>
                    <td>
                         <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="3"  CommandArgument='<%# Eval("EquipmentCode")%>'>管理状态</asp:LinkButton>

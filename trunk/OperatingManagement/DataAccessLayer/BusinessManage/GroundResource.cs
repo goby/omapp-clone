@@ -166,11 +166,24 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 根据Code获得地面站资源
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
         public GroundResource SelectByCode()
         {
-            return SelectAll().Where(a => a.GRCode.ToLower() == GRCode.ToLower()).FirstOrDefault<GroundResource>();
+            return SelectAll().Where(a => a.Status == 1 && a.GRCode.ToLower() == GRCode.ToLower()).FirstOrDefault<GroundResource>();
+        }
+
+        /// <summary>
+        /// 校验该地面站资源编号是否已经存在
+        /// </summary>
+        /// <returns>true:已经存在</returns>
+        public bool HaveActiveGRCode()
+        {
+            List<GroundResource> infoList = SelectAll();
+            var query = infoList.Where(a => a.Id != Id && a.Status == 1 && a.GRCode.ToLower() == GRCode.ToLower());
+            if (query != null && query.Count() > 0)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>

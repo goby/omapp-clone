@@ -149,11 +149,24 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 根据Code获得通信资源
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
         public CommunicationResource SelectByCode()
         {
-            return SelectAll().Where(a => a.RouteCode.ToLower() == RouteCode.ToLower()).FirstOrDefault<CommunicationResource>();
+            return SelectAll().Where(a => a.Status == 1 && a.RouteCode.ToLower() == RouteCode.ToLower()).FirstOrDefault<CommunicationResource>();
+        }
+
+        /// <summary>
+        /// 校验该通信线路编号是否已经存在
+        /// </summary>
+        /// <returns>true:已经存在</returns>
+        public bool HaveActiveRouteCode()
+        {
+            List<CommunicationResource> infoList = SelectAll();
+            var query = infoList.Where(a => a.Id != Id && a.Status == 1 && a.RouteCode.ToLower() == RouteCode.ToLower());
+            if (query != null && query.Count() > 0)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>

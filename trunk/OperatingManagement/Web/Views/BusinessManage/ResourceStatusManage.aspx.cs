@@ -80,7 +80,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             if (!IsPostBack)
             {
                 BindDataSource();
-                //判断是否从资源管理页面跳转过来
+                //从资源管理页面跳转过来需要绑定健康、占用状态
                 if (!string.IsNullOrEmpty(ResourceCode))
                 {
                     BindResourceStatusList();
@@ -115,6 +115,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void BindDataSource()
         {
+            //资源管理资源类型列表：地面站资源=1、通信资源=2、中心资源=3
             dplResourceType.Items.Clear();
             dplResourceType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.ResourceType);
             dplResourceType.DataTextField = "key";
@@ -122,9 +123,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplResourceType.DataBind();
             dplResourceType.SelectedValue = ResourceType.ToString();
 
+            //资源编号
             txtResourceCode.Text = ResourceCode;
 
+            //开始时间
             txtBeginTime.Text = BeginTime.ToString("yyyy-MM-dd");
+            //结束时间
             txtEndTime.Text = EndTime.ToString("yyyy-MM-dd");
         }
 
@@ -137,26 +141,26 @@ namespace OperatingManagement.Web.Views.BusinessManage
             int.TryParse(dplResourceType.SelectedValue, out resourceType);
             if (string.IsNullOrEmpty(txtResourceCode.Text.Trim()))
             {
-                //todo 资源编号不能为空
+                //资源编号不能为空
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"资源编号不能为空。\")", true);
                 return;
             }
             int resourceID = GetResourceID(resourceType, txtResourceCode.Text.Trim());
             if (resourceID < 1)
             {
-                //todo 资源不存在
+                //资源不存在
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"资源不存在，请确认输入的资源编号是否正确。\")", true);
                 return;
             }
             if (string.IsNullOrEmpty(txtBeginTime.Text.Trim()))
             {
-                //todo 起始时间不能为空
+                //起始时间不能为空
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"起始时间不能为空。\")", true);
                 return;
             }
             if (string.IsNullOrEmpty(txtEndTime.Text.Trim()))
             {
-                //todo 结束时间不能为空
+                //结束时间不能为空
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"结束时间不能为空。\")", true);
                 return;
             }
@@ -175,10 +179,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
             endTime = endTime.AddSeconds(86399.9);//23:59:59
             if (beginTime > endTime)
             {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"起始时间应小于结束时间。\")", true);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"结束时间应大于起始时间。\")", true);
                 return;
             }
 
+            //查询健康状态
             HealthStatus healthStatus = new HealthStatus();
             cpResourceHealthStatusPager.DataSource = healthStatus.Search(resourceType, resourceID, beginTime, endTime);
             cpResourceHealthStatusPager.PageSize = this.SiteSetting.PageSize;
@@ -186,6 +191,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             rpResourceHealthStatusList.DataSource = cpResourceHealthStatusPager.DataSourcePaged;
             rpResourceHealthStatusList.DataBind();
 
+            //查询占用状态
             UseStatus useStatus = new UseStatus();
             cpResourceUseStatusPager.DataSource = useStatus.Search(resourceType, resourceID, beginTime, endTime);
             cpResourceUseStatusPager.PageSize = this.SiteSetting.PageSize;
@@ -196,29 +202,32 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <summary>
         /// 获得资源ID
         /// </summary>
-        /// <param name="resourceType"></param>
-        /// <param name="resourceCode"></param>
-        /// <returns></returns>
+        /// <param name="resourceType">资源类型</param>
+        /// <param name="resourceCode">资源编号</param>
+        /// <returns>资源ID</returns>
         private int GetResourceID(int resourceType, string resourceCode)
         {
             int resourceID = 0;
             switch (resourceType)
             {
-                case 1://地面站资源
+                //地面站资源
+                case 1:
                     GroundResource groundResource = new GroundResource();
                     groundResource.GRCode = resourceCode;
                     groundResource = groundResource.SelectByCode();
                     if (groundResource != null && groundResource.Id > 0)
                         resourceID = groundResource.Id;
                     break;
-                case 2://通信资源
+                //通信资源
+                case 2:
                     CommunicationResource communicationResource = new CommunicationResource();
                     communicationResource.RouteCode = resourceCode;
                     communicationResource = communicationResource.SelectByCode();
                     if (communicationResource != null && communicationResource.Id > 0)
                         resourceID = communicationResource.Id;
                     break;
-                case 3://中心资源
+                //中心资源
+                case 3:
                     CenterResource centerResource = new CenterResource();
                     centerResource.EquipmentCode = resourceCode;
                     centerResource = centerResource.SelectByCode();
