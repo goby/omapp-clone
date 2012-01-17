@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.Web
+//FileName:CenterOutputPolicyEdit.cs
+//Remark:中心输出策略编辑类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20111015    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;

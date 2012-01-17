@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.Web
+//FileName:ResourceStatusManage.cs
+//Remark:资源状态管理类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20111015    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -87,7 +97,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 }
             }
         }
-
+        /// <summary>
+        /// 查询资源状态
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             try
@@ -97,7 +111,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
             catch
             { }
         }
-
+        /// <summary>
+        /// 添加资源状态
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             try

@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.DataAccessLayer
+//FileName:HealthStatus.cs
+//Remark:资源健康状态管理类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20111011    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -93,10 +103,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         #region -Public Method-
 
         /// <summary>
-        /// 根据ID获得健康状态
+        /// 根据ID获得资源健康状态实体
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>资源健康状态实体</returns>
         public HealthStatus SelectByID()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
@@ -124,9 +133,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 获得所有健康状态列表
+        /// 获得所有资源健康状态实体列表
         /// </summary>
-        /// <returns></returns>
+        /// <returns>资源健康状态实体列表</returns>
         public List<HealthStatus> SelectAll()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
@@ -159,9 +168,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 查询资源健康情况列表
+        /// 查询资源健康状态
         /// </summary>
-        /// <returns></returns>
+        /// <returns>资源健康状态实体列表</returns>
         public List<HealthStatus> Search(int resourceType, int resourceID, DateTime beginTime, DateTime endTime)
         {
             OracleParameter o_Cursor = PrepareRefCursor();
@@ -201,9 +210,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 添加健康状态
+        /// 添加健康状态记录
         /// </summary>
-        /// <returns></returns>
+        /// <returns>添加结果</returns>
         public FieldVerifyResult Add()
         {
             OracleParameter v_Result = PrepareOutputResult();
@@ -233,9 +242,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 根据ID更新健康状态
+        /// 根据ID更新健康状态记录
         /// </summary>
-        /// <returns></returns>
+        /// <returns>更新结果</returns>
         public FieldVerifyResult Update()
         {
             OracleParameter v_Result = PrepareOutputResult();

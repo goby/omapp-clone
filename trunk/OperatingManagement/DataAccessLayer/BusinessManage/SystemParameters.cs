@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.DataAccessLayer
+//FileName:SystemParametersType.cs
+//Remark:系统参数读取类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20111001    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,8 +48,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 根据参数类型获得参数列表
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="type">参数类型</param>
+        /// <returns>参数列表</returns>
         public static Dictionary<string, string> GetSystemParameters(SystemParametersType type)
         {
             string filePath = GlobalSettings.MapPath(string.Format(AspNetConfig.Config["settingPattern"].ToString(), @"SystemParameters"));
@@ -66,9 +76,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 根据参数值获得参数文本
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="type">参数类型</param>
+        /// <param name="value">参数值</param>
+        /// <returns>参数文本</returns>
         public static string GetSystemParameterText(SystemParametersType type, string value)
         {
             string filePath = GlobalSettings.MapPath(string.Format(AspNetConfig.Config["settingPattern"].ToString(), @"SystemParameters"));
@@ -93,5 +103,4 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             return text;
         }
     }
-
 }

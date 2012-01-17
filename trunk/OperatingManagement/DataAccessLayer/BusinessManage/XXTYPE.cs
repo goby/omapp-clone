@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.DataAccessLayer
+//FileName:XXTYPE.cs
+//Remark:信息类型读取类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20120114    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -86,10 +96,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         #region -Public Method-
         /// <summary>
-        /// 根据ID获得信息类型
+        /// 根据ID获得信息类型实体
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>信息类型实体</returns>
         public XXTYPE SelectByID()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
@@ -113,9 +122,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 获得信息类型
+        /// 获得信息类型实体列表
         /// </summary>
-        /// <returns></returns>
+        /// <returns>信息类型实体列表</returns>
         public List<XXTYPE> SelectAll()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
