@@ -11,14 +11,16 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
-    //碰撞预警报告
+    /// <summary>
+    /// 碰撞预警报告
+    /// </summary>
     public class YJBG : BaseEntity<int, YJBG>
     {
         private static readonly string GET_List_ByDate = "up_YJBG_getlist";
         private static readonly string Insert = "up_yjbg_insert";
 
-                /// <summary>
-        /// Create a new instance of <see cref="SYCX"/> class.
+        /// <summary>
+        /// Create a new instance of <see cref="YJBG"/> class.
         /// </summary>
         public YJBG()
         {

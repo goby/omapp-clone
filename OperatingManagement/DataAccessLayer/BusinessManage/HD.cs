@@ -5,6 +5,9 @@ using System.Text;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
+    /// <summary>
+    /// 应答信息
+    /// </summary>
     public class HD
     {
         #region -Properties-

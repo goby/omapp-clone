@@ -11,6 +11,9 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
+    /// <summary>
+    /// 星地时差
+    /// </summary>
     public class XDSC : BaseEntity<int, XDSC>
     {
         private static readonly string GET_XDSCList_ByDate = "up_xdsc_getlist";
@@ -66,7 +69,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         #region -Methods-
         /// <summary>
-        /// 获取轨道根数列表
+        /// 获取星地时差数列表
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>

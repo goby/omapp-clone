@@ -11,13 +11,16 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
+    /// <summary>
+    /// 测距数据
+    /// </summary>
     public class R : BaseEntity<int, R>
     {
         private static readonly string GET_RList_ByDate = "up_r_getlist";
         private static readonly string Insert = "up_r_insert";
 
         /// <summary>
-        /// Create a new instance of <see cref="SYCX"/> class.
+        /// Create a new instance of <see cref="R"/> class.
         /// </summary>
         public R()
         {

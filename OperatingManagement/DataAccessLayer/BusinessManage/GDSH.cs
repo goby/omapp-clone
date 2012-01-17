@@ -11,13 +11,16 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
+    /// <summary>
+    /// 卫星事后精轨根数
+    /// </summary>
     public class GDSH : BaseEntity<int, GDSH>
     {
         private static readonly string GET_GDSHList_ByDate = "up_gdsh_getlist";
         private static readonly string Insert = "up_gdsh_insert";
 
         /// <summary>
-        /// Create a new instance of <see cref="SYCX"/> class.
+        /// Create a new instance of <see cref="GDSH"/> class.
         /// </summary>
         public GDSH()
         {

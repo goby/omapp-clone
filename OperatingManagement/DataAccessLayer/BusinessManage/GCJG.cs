@@ -11,14 +11,16 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
-    //天基目标观测试验数据处理结果
+    /// <summary>
+    /// 天基目标观测试验数据处理结果
+    /// </summary>
     public class GCJG : BaseEntity<int, GCJG>
     {
         private static readonly string GET_List_ByDate = "up_GCJG_getlist";
         private static readonly string Insert = "up_gcjg_insert";
 
-                /// <summary>
-        /// Create a new instance of <see cref="SYCX"/> class.
+        /// <summary>
+        /// Create a new instance of <see cref="GCJG"/> class.
         /// </summary>
         public GCJG()
         {
@@ -41,7 +43,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         #region -Methods-
         /// <summary>
-        /// 天基目标观测试验数据处理结果列表
+        /// 根据时间获取天基目标观测试验数据处理结果列表
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>

@@ -11,12 +11,15 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
+    /// <summary>
+    /// 西安轨道数据
+    /// </summary>
     public class GDXA : BaseEntity<int, GDXA>
     {
         private static readonly string GET_GDXAList_ByDate = "up_gdxa_getlist";
 
-                /// <summary>
-        /// Create a new instance of <see cref="SYCX"/> class.
+        /// <summary>
+        /// Create a new instance of <see cref="GDXA"/> class.
         /// </summary>
         public GDXA()
         {

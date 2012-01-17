@@ -11,6 +11,9 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
+    /// <summary>
+    /// 轨道信息数据
+    /// </summary>
     public class GD : BaseEntity<int, GD>
     {
         private static readonly string GET_OribitalQuantityList_ByDate = "up_gd_getlist";
@@ -122,7 +125,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         #region -Methods-
         /// <summary>
-        /// 获取轨道根数列表
+        /// 根据时间获取轨道根数列表
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
