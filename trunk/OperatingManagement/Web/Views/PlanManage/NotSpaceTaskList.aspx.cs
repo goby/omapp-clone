@@ -23,7 +23,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             if (!IsPostBack)
             {
                 //btnSend.Attributes.Add("onclick", "javascript:return confirm('确定要发送所选数据吗?');");
-
+                pnlAll1.Visible = false;
+                pnlAll2.Visible = false;
                 ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>hideSelectAll();</script>");
                // ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>showMsgError();</script>");
             }
@@ -54,6 +55,17 @@ namespace OperatingManagement.Web.Views.PlanManage
             cpPager.BindToControl = rpDatas;
             rpDatas.DataSource = cpPager.DataSourcePaged;
             rpDatas.DataBind();
+
+            if (listDatas.Count > 0)
+            {
+                pnlAll1.Visible = true;
+                pnlAll2.Visible = true;
+            }
+            else
+            {
+                pnlAll1.Visible = false;
+                pnlAll2.Visible = false;
+            }
         }
 
         void BindRadDestination()

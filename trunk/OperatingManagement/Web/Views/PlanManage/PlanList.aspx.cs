@@ -42,7 +42,9 @@ namespace OperatingManagement.Web.Views.PlanManage
             BindGridView();
         }
 
-        //绑定列表
+        /// <summary>
+        /// 绑定列表
+        /// </summary>
         void BindGridView()
         {
             DateTime startDate = new DateTime();
@@ -76,7 +78,11 @@ namespace OperatingManagement.Web.Views.PlanManage
         }
 
 
-        //最终发送
+        /// <summary>
+        /// 最终发送
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             string plantype = txtPlanType.Text;

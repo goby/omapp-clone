@@ -58,14 +58,16 @@
                     </asp:RadioButtonList>
                 </td>
                 <th align="right" class="style4">
-                    计划时效：
+                   <%-- 计划时效：--%>
                 </th>
                 <td>
+                <div style="display:none">
                     <asp:DropDownList ID="ddlAging" runat="server" Height="24px" Width="146px">
                         <asp:ListItem Value="1">周计划</asp:ListItem>
                         <asp:ListItem Value="2">日计划</asp:ListItem>
                         <asp:ListItem Value="3">应急计划</asp:ListItem>
                     </asp:DropDownList>
+                    </div>
                 </td>
             </tr>
             <tr>
