@@ -39,7 +39,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
         }
         /// <summary>
-        /// 查询输出策略
+        /// 查询中心输出策略
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -53,7 +53,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             { }
         }
         /// <summary>
-        /// 添加输出策略
+        /// 添加中心输出策略
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -70,7 +70,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             { }
         }
         /// <summary>
-        /// 编辑输出策略
+        /// 编辑中心输出策略
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -93,7 +93,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             { }
         }
         /// <summary>
-        /// 下载记录
+        /// 下载中心输出策略记录
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
