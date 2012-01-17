@@ -41,7 +41,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
         }
         /// <summary>
-        /// 提交保存事件
+        /// 提交添加中心输出策略记录
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

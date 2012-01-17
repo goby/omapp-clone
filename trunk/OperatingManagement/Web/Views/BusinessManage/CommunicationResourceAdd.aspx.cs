@@ -40,7 +40,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
         }
         /// <summary>
-        /// 提交保存通信资源记录
+        /// 提交添加通信资源记录
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
