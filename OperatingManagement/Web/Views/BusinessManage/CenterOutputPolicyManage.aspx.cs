@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.Web
+//FileName:CenterOutputPolicyManage.cs
+//Remark:中心输出策略管理类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20111015    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
@@ -28,7 +38,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 
             }
         }
-
+        /// <summary>
+        /// 查询输出策略
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             try
@@ -38,7 +52,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
             catch
             { }
         }
-
+        /// <summary>
+        /// 添加输出策略
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             try
@@ -51,7 +69,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
             catch
             { }
         }
-
+        /// <summary>
+        /// 编辑输出策略
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbtnEdit_Click(object sender, EventArgs e)
         {
             try
@@ -70,7 +92,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
             catch
             { }
         }
-
+        /// <summary>
+        /// 下载记录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbtnDownload_Click(object sender, EventArgs e)
         {
             try
@@ -131,6 +157,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplTask.DataBind();
             dplTask.Items.Insert(0, new ListItem("全部", ""));
         }
+
         /// <summary>
         /// 绑定卫星数据源
         /// </summary>
@@ -144,6 +171,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplSatName.DataBind();
             dplSatName.Items.Insert(0, new ListItem("全部", ""));
         }
+
         /// <summary>
         /// 绑定中心输出策略信息
         /// </summary>
@@ -158,6 +186,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             rpCOPList.DataSource = cpPager.DataSourcePaged;
             rpCOPList.DataBind();
         }
+
         /// <summary>
         /// 根据rid获得信源信宿的ADDRName
         /// </summary>
@@ -168,6 +197,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             XYXSInfo xyxs = new XYXSInfo();
             return xyxs.GetXYXSADDRName(rid);
         }
+
         /// <summary>
         /// 根据rid获得信息类型的DATANAME
         /// </summary>
@@ -178,6 +208,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             XXTYPE xxType = new XXTYPE();
             return xxType.GetXXTypeDATANAME(rid);
         }
+
         /// <summary>
         /// 根据WXBM获得卫星名称
         /// </summary>

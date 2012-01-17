@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.Web
+//FileName:ResourceManage.cs
+//Remark:资源管理类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20111015    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,7 +25,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         #region 属性
         /// <summary>
         /// 资源类型
-        /// 地面站资源：1；通信资源：2；中心资源：3
+        /// 地面站资源=1、通信资源=2、中心资源=3
         /// </summary>
         protected string ResourceType
         {
@@ -301,19 +311,22 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string resourceType = dplResourceType.SelectedValue;
             switch (resourceType)
             {
-                case "1"://地面站资源
+                //地面站资源
+                case "1":
                     divGroundResource.Visible = true;
                     divCommunicationResource.Visible = false;
                     divCenterResource.Visible = false;
                     BindGroundResourceList();
                     break;
-                case "2"://通信资源
+                //通信资源
+                case "2":
                     divGroundResource.Visible = false;
                     divCommunicationResource.Visible = true;
                     divCenterResource.Visible = false;
                     BindCommunicationResource();
                     break;
-                case "3"://中心资源
+                //中心资源
+                case "3":
                     divGroundResource.Visible = false;
                     divCommunicationResource.Visible = false;
                     divCenterResource.Visible = true;
@@ -421,7 +434,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <summary>
         /// 根据地面资源功能类型值获得文本
         /// </summary>
-        /// <param name="valueString"></param>
+        /// <param name="valueString">功能类型字符串</param>
         /// <returns>地面资源功能类型文本</returns>
         protected string GetGroundResourceFunctionType(string valueString)
         {

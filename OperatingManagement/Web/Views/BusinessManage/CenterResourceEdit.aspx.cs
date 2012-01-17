@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.Web
+//FileName:CenterResourceEdit.cs
+//Remark:中心资源编辑类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20111015    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -48,6 +58,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 lblMessage.Text = "发生未知错误，操作失败。";
             }
         }
+        /// <summary>
+        /// 提交更新中心资源记录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             try
@@ -95,7 +110,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 centerResource.EquipmentType = dplEquipmentType.SelectedValue;
                 centerResource.SupportTask = txtSupportTask.Text.Trim();
                 centerResource.DataProcess = txtDataProcess.Text.Trim();
-                //centerResource.Status = 1;//正常
+                //centerResource.Status = 1;//正常，状态不更新
                 //centerResource.CreatedTime = DateTime.Now;
                 centerResource.UpdatedTime = DateTime.Now;
 

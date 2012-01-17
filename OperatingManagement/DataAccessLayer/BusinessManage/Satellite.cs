@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.DataAccessLayer
+//FileName:Satellite.cs
+//Remark:卫星信息读取类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20120114    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -90,10 +100,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         #region -Public Method-
         /// <summary>
-        /// 根据ID获得信息类型
+        /// 根据ID获得卫星信息实体
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>卫星信息实体</returns>
         public Satellite SelectByID()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
@@ -117,9 +126,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 获得信息类型
+        /// 获得卫星信息实体列表
         /// </summary>
-        /// <returns></returns>
+        /// <returns>卫星信息实体列表</returns>
         public List<Satellite> SelectAll()
         {
             OracleParameter o_Cursor = PrepareRefCursor();

@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.Web
+//FileName:CommunicationResourceAdd.cs
+//Remark:通信资源添加类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20111015    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -29,6 +39,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 lblMessage.Text = "发生未知错误，操作失败。";
             }
         }
+        /// <summary>
+        /// 提交保存通信资源记录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             try

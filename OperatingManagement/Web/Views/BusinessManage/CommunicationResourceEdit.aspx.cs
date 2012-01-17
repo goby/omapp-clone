@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.Web
+//FileName:CommunicationResourceEdit.cs
+//Remark:通信资源编辑类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20111015    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -48,6 +58,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 lblMessage.Text = "发生未知错误，操作失败。";
             }
         }
+        /// <summary>
+        /// 提交更新通信资源记录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             try
@@ -96,8 +111,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 communicationResource.RouteCode = txtRouteCode.Text.Trim();
                 communicationResource.Direction = dplDirection.SelectedValue;
                 communicationResource.BandWidth = txtBandWidth.Text.Trim();
-                //communicationResource.Status = 1;
-                //communicationResource.CreatedTime = DateTime.Now;
+                //communicationResource.Status = 1;//正常，状态不更新
+                //communicationResource.CreatedTime = DateTime.Now;//创建时间不更新
                 communicationResource.UpdatedTime = DateTime.Now;
 
                 if (communicationResource.HaveActiveRouteCode())

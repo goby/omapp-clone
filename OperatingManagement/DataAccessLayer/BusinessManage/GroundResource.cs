@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.DataAccessLayer
+//FileName:GroundResource.cs
+//Remark:地面资源管理类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20111011    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -92,10 +102,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         #region -Public Method-
         /// <summary>
-        /// 根据ID获得地面站资源
+        /// 根据ID获得地面站资源实体
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>地面站资源实体</returns>
         public GroundResource SelectByID()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
@@ -126,9 +135,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 获得所有地面站资源列表
+        /// 获得所有地面站资源实体列表
         /// </summary>
-        /// <returns></returns>
+        /// <returns>地面站资源实体列表</returns>
         public List<GroundResource> SelectAll()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
@@ -164,9 +173,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 根据Code获得地面站资源
+        /// 根据Code获得地面站资源实体
         /// </summary>
-        /// <returns></returns>
+        /// <returns>地面站资源实体</returns>
         public GroundResource SelectByCode()
         {
             return SelectAll().Where(a => a.Status == 1 && a.GRCode.ToLower() == GRCode.ToLower()).FirstOrDefault<GroundResource>();
@@ -191,7 +200,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         /// <param name="status">全部:"";正常:1;异常:2;占用中:3;已删除:4</param>
         /// <param name="timePoint">地面站资源在某个时间点</param>
-        /// <returns></returns>
+        /// <returns>地面站资源实体列表</returns>
         public List<GroundResource> Search(string status, DateTime timePoint)
         {
             OracleParameter o_Cursor = PrepareRefCursor();
@@ -230,9 +239,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 添加地面站资源
+        /// 添加地面站资源记录
         /// </summary>
-        /// <returns></returns>
+        /// <returns>添加结果</returns>
         public FieldVerifyResult Add()
         {
             OracleParameter v_Result = PrepareOutputResult();
@@ -265,9 +274,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 根据ID更新地面站资源
+        /// 根据ID更新地面站资源记录
         /// </summary>
-        /// <returns></returns>
+        /// <returns>更新结果</returns>
         public FieldVerifyResult Update()
         {
             OracleParameter v_Result = PrepareOutputResult();

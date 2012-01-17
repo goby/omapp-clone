@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.Web
+//FileName:CenterOutputPolicyAdd.cs
+//Remark:中心输出策略添加类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20111015    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -112,7 +122,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "失效时间格式错误";
                     return;
                 }
-                defectTime = defectTime.AddSeconds(86399.9);//23:59:59
+                //23:59:59
+                defectTime = defectTime.AddSeconds(86399.9);
                 if (effectTime > defectTime)
                 {
                     trMessage.Visible = true;

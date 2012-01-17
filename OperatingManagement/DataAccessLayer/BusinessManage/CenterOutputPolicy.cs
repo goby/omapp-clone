@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.DataAccessLayer
+//FileName:CenterOutputPolicy.cs
+//Remark:中心输出策略管理类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20111011    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -92,8 +102,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 根据ID获得中心输出策略
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>中心输出策略实体</returns>
         public CenterOutputPolicy SelectByID()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
@@ -123,9 +132,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 获得中心输出策略
+        /// 获得中心输出策略列表
         /// </summary>
-        /// <returns></returns>
+        /// <returns>中心输出策略实体列表</returns>
         public List<CenterOutputPolicy> SelectAll()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
@@ -160,9 +169,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 添加中心输出策略
+        /// 添加中心输出策略记录
         /// </summary>
-        /// <returns></returns>
+        /// <returns>添加结果</returns>
         public FieldVerifyResult Add()
         {
             OracleParameter v_Result = PrepareOutputResult();
@@ -194,9 +203,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 根据ID更新中心输出策略
+        /// 根据ID更新中心输出策略记录
         /// </summary>
-        /// <returns></returns>
+        /// <returns>更新结果</returns>
         public FieldVerifyResult Update()
         {
             OracleParameter v_Result = PrepareOutputResult();
@@ -219,7 +228,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             return (FieldVerifyResult)Convert.ToInt32(v_Result.Value);
         }
         /// <summary>
-        /// 校验Task时间是否存在
+        /// 校验是否存在某个时间段中心输出策略
         /// </summary>
         /// <returns>true:存在</returns>
         public bool HaveEffectivePolicy()

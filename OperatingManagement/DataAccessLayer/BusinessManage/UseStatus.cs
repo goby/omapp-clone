@@ -1,4 +1,14 @@
-﻿using System;
+﻿#region
+//------------------------------------------------------
+//Assembly:OperatingManagement.DataAccessLayer
+//FileName:UseStatus.cs
+//Remark:资源占用状态管理类
+//------------------------------------------------------
+//VERSION       AUTHOR      DATE        CONTENT
+//1.0           liutao      20111011    Create     
+//------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -107,10 +117,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         #region -Public Method-
 
         /// <summary>
-        /// 根据ID获得占用状态
+        /// 根据ID获得资源占用状态实体
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>资源占用状态实体</returns>
         public UseStatus SelectByID()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
@@ -141,9 +150,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 获得所有占用状态列表
+        /// 获得所有资源占用状态实体列表
         /// </summary>
-        /// <returns></returns>
+        /// <returns>资源占用状态实体列表</returns>
         public List<UseStatus> SelectAll()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
@@ -179,13 +188,13 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 查询资源占用情况列表
+        /// 查询资源占用情况
         /// </summary>
         /// <param name="resourceType">资源类型，地面站资源:1;通信资源:2;中心资源:3;</param>
         /// <param name="resourceID">资源ID</param>
         /// <param name="beginTime">占用开始时间</param>
         /// <param name="endTime">占用结束时间</param>
-        /// <returns></returns>
+        /// <returns>资源占用状态实体列表</returns>
         public List<UseStatus> Search(int resourceType, int resourceID, DateTime beginTime, DateTime endTime)
         {
             OracleParameter o_Cursor = PrepareRefCursor();
@@ -228,9 +237,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 添加占用状态
+        /// 添加占用状态记录
         /// </summary>
-        /// <returns></returns>
+        /// <returns>添加结果</returns>
         public FieldVerifyResult Add()
         {
             OracleParameter v_Result = PrepareOutputResult();
@@ -263,9 +272,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 根据ID更新占用状态
+        /// 根据ID更新占用状态记录
         /// </summary>
-        /// <returns></returns>
+        /// <returns>更新结果</returns>
         public FieldVerifyResult Update()
         {
             OracleParameter v_Result = PrepareOutputResult();
