@@ -11,9 +11,6 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
-    /// <summary>
-    /// 工作计划
-    /// </summary>
     public class GZJH : BaseEntity<int, GZJH>
     {
         private static readonly string GET_List_ByDate = "up_XGZJH_getlist";
@@ -46,7 +43,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
 
         #region -Methods-
         /// <summary>
-        /// 应用研究工作计划
+        /// 
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>

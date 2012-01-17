@@ -12,7 +12,8 @@ using Oracle.DataAccess.Client;
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
     /// <summary>
-    /// 试验程序
+    /// 实验程序
+    /// Represents the SYCX object from database.
     /// </summary>
     public class SYCX : BaseEntity<int, SYCX>
     {
@@ -31,17 +32,53 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         private OracleDatabase _database = null;
 
         public int ID {get;set;}
+        /// <summary>
+        /// 创建时间
+        /// </summary>
         public DateTime CTime {get;set;}
+        /// <summary>
+        /// 任务代号
+        /// </summary>
         public string TaskID { get; set; }
+        /// <summary>
+        /// 实验程序类型
+        /// </summary>
         public SYCXType PType { get; set; }
+        /// <summary>
+        /// 试验项目
+        /// </summary>
         public string PName { get; set; }
+        /// <summary>
+        /// 试验程序编号
+        /// </summary>
         public int PNID { get; set; }
+        /// <summary>
+        /// 对应计划编号
+        /// </summary>
         public int PlanID { get; set; }
+        /// <summary>
+        /// 试验开始时间
+        /// </summary>
         public DateTime StartTime { get; set; }
+        /// <summary>
+        /// 试验结束时间
+        /// </summary>
         public DateTime EndTime { get; set; }
+        /// <summary>
+        /// 信息类型
+        /// </summary>
         public string InfoType { get; set; }
+        /// <summary>
+        /// 数据区行数
+        /// </summary>
         public int LineCount { get; set; }
+        /// <summary>
+        /// 文件索引
+        /// </summary>
         public string FileIndex { get; set; }
+        /// <summary>
+        /// 备注
+        /// </summary>
         public string Reserve { get; set; }
         #endregion
 

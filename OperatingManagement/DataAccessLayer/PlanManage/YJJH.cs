@@ -19,8 +19,8 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         private static readonly string GET_List_ByDate = "up_YJJH_getlist";
         private static readonly string Insert = "up_YJJH_insert";
 
-                /// <summary>
-        /// Create a new instance of <see cref="SYCX"/> class.
+        /// <summary>
+        /// Create a new instance of <see cref="YJJH"/> class.
         /// </summary>
         public YJJH()
         {
@@ -43,17 +43,35 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         public string Reserve { get; set; }
 
         public string SatID { get; set; }
+        /// <summary>
+        /// 信息分类
+        /// </summary>
         public string XXFL { get; set; }
+        /// <summary>
+        /// 计划序号
+        /// </summary>
         public string JXH { get; set; }
+        /// <summary>
+        /// 系统名称
+        /// </summary>
         public string SysName { get; set; }
+        /// <summary>
+        /// 试验开始时间
+        /// </summary>
         public string StartTime { get; set; }
+        /// <summary>
+        /// 试验结束时间
+        /// </summary>
         public string EndTime { get; set; }
+        /// <summary>
+        /// 系统任务
+        /// </summary>
         public string Task { get; set; }
         #endregion
 
         #region -Methods-
         /// <summary>
-        /// 应用研究工作计划
+        /// 获取应用研究工作计划列表
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
