@@ -11,6 +11,9 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
+    /// <summary>
+    /// 起飞零点
+    /// </summary>
     public class T0 : BaseEntity<int, T0>
     {
         private static readonly string GET_T0List_ByDate = "up_t0_getlist";
@@ -53,7 +56,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         #region -Methods-
         /// <summary>
-        /// 获取轨道根数列表
+        /// 获取起飞零点列表
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>

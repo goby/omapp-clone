@@ -11,14 +11,16 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
-    //空间机动试验数据处理结果
+    /// <summary>
+    /// 空间机动试验数据处理结果
+    /// </summary>
     public class JDJG : BaseEntity<int, JDJG>
     {
         private static readonly string GET_List_ByDate = "up_JDJG_getlist";
         private static readonly string Insert = "up_jdjg_insert";
 
         /// <summary>
-        /// Create a new instance of <see cref="SYCX"/> class.
+        /// Create a new instance of <see cref="JDJG"/> class.
         /// </summary>
         public JDJG()
         {

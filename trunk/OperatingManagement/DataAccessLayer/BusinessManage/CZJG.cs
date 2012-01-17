@@ -11,14 +11,16 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
-    //遥操作试验数据处理结果
+    /// <summary>
+    /// 遥操作试验数据处理结果
+    /// </summary>
     public class CZJG : BaseEntity<int, CZJG>
     {
         private static readonly string GET_List_ByDate = "up_CZJG_getlist";
         private static readonly string Insert = "up_czjg_insert";
 
-                /// <summary>
-        /// Create a new instance of <see cref="SYCX"/> class.
+        /// <summary>
+        /// Create a new instance of <see cref="CZJG"/> class.
         /// </summary>
         public CZJG()
         {
@@ -41,7 +43,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         #region -Methods-
         /// <summary>
-        /// 遥操作试验数据处理结果列表
+        /// 根据时间获取遥操作试验数据处理结果列表
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
