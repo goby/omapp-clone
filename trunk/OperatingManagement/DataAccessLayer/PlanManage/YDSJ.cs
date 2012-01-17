@@ -18,8 +18,9 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
     {
         private static readonly string GET_YDSJList_ByDate = "up_ydsj_getlist"; 
         private static readonly string SelectByID = "up_ydsj_selectByID";
-                /// <summary>
-        /// Create a new instance of <see cref="SYCX"/> class.
+
+        /// <summary>
+        /// Create a new instance of <see cref="YDSJ"/> class.
         /// </summary>
         public YDSJ()
         {
@@ -30,26 +31,77 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         private OracleDatabase _database = null;
 
         public int YDSJID { get; set; }
+        /// <summary>
+        /// 创建时间
+        /// </summary>
         public DateTime CTime { get; set; }
+        /// <summary>
+        /// 版本
+        /// </summary>
         public string Version { get; set; }
+        /// <summary>
+        /// 标志
+        /// </summary>
         public string Flag { get; set; }
+        /// <summary>
+        /// 数据类别
+        /// </summary>
         public string MainType { get; set; }
+        /// <summary>
+        /// 数据次类别
+        /// </summary>
         public string DataType { get; set; }
+        /// <summary>
+        /// 信源地址
+        /// </summary>
         public string SourceAddress { get; set; }
+        /// <summary>
+        /// 住宿地址
+        /// </summary>
         public string DestinationAddress { get; set; }
+        /// <summary>
+        /// 任务代号
+        /// </summary>
         public string MissionCode { get; set; }
+        /// <summary>
+        /// 卫星编号 
+        /// </summary>
         public string SatelliteCode { get; set; }
+        /// <summary>
+        /// 数据日期
+        /// </summary>
         public DateTime DataDate { get; set; }
+        /// <summary>
+        /// 数据时间
+        /// </summary>
         public string DataTime { get; set; }
+        /// <summary>
+        /// 数据报顺序编号
+        /// </summary>
         public string SequenceNumber { get; set; }
+        /// <summary>
+        /// 子包数
+        /// </summary>
         public string ChildrenPackNumber { get; set; }
+        /// <summary>
+        /// 保留字段
+        /// </summary>
         public string UDPReserve { get; set; }
+        /// <summary>
+        /// 数据长度
+        /// </summary>
         public string DataLength { get; set; }
+        /// <summary>
+        /// 数据
+        /// </summary>
         public string DataClass { get; set; }
         /// <summary>
         /// SpaceType 1:空间机动任务;2:非空间机动任务;
         /// </summary>
         public string SpaceType { get; set; }
+        /// <summary>
+        /// 备注
+        /// </summary>
         public string Reserve { get; set; }
 
         /// <summary>

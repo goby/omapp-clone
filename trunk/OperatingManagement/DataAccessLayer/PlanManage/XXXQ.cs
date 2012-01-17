@@ -12,14 +12,14 @@ using Oracle.DataAccess.Client;
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
     /// <summary>
-    /// 空间信息需求
+    /// 空间环境信息
     /// </summary>
     public class XXXQ : BaseEntity<int, XXXQ>
     {
         private static readonly string GET_List_ByDate = "up_XXXQ_getlist";
         private static readonly string Insert = "up_XXXQ_insert";
 
-                /// <summary>
+        /// <summary>
         /// Create a new instance of <see cref="SYCX"/> class.
         /// </summary>
         public XXXQ()

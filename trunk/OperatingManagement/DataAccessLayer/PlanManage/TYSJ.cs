@@ -12,15 +12,15 @@ using Oracle.DataAccess.Client;
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
     /// <summary>
-    /// 仿真推演试验数据
+    /// 仿真推演
     /// </summary>
     public class TYSJ : BaseEntity<int, TYSJ>
     {
         private static readonly string GET_List_ByDate = "up_TYSJ_getlist";
         private static readonly string Insert = "up_TYSJ_insert";
 
-                /// <summary>
-        /// Create a new instance of <see cref="SYCX"/> class.
+        /// <summary>
+        /// Create a new instance of <see cref="TYSJ"/> class.
         /// </summary>
         public TYSJ()
         {
@@ -43,11 +43,29 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         public string Reserve { get; set; }
 
         public string SatID { get; set; }
+        /// <summary>
+        /// 卫星名称
+        /// </summary>
         public string SatName { get; set; }
+        /// <summary>
+        /// 试验类别
+        /// </summary>
         public string Type { get; set; }
+        /// <summary>
+        /// 试验项目
+        /// </summary>
         public string TestItem { get; set; }
+        /// <summary>
+        /// 试验开始时间
+        /// </summary>
         public string StartTime { get; set; }
+        /// <summary>
+        /// 试验结束时间
+        /// </summary>
         public string EndTime { get; set; }
+        /// <summary>
+        /// 试验条件
+        /// </summary>
         public string Condition { get; set; }
         #endregion
 

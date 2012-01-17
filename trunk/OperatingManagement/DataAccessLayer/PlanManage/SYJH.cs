@@ -13,7 +13,7 @@ using Oracle.DataAccess.Client;
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
     /// <summary>
-    /// 试验计划
+    /// 实验计划
     /// </summary>
     public class SYJH : BaseEntity<int, SYJH>
     {
@@ -158,6 +158,6 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             //this.AddValidRules("ID", "序号不能为空。", string.IsNullOrEmpty(ID));
         }
         #endregion
-        //
+
     }
 }

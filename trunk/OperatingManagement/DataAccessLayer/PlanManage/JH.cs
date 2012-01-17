@@ -11,6 +11,9 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
+    /// <summary>
+    /// 计划表
+    /// </summary>
     public class JH : BaseEntity<int, JH>
     {
         private static readonly string GET_PlanList = "UP_JH_GETLIST";
@@ -27,17 +30,50 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         private OracleDatabase _database = null;
 
         public int ID { get; set; }
+        /// <summary>
+        /// 创建时间
+        /// </summary>
         public DateTime CTime { get; set; }
+        /// <summary>
+        /// 任务编号
+        /// </summary>
         public string TaskID { get; set; }
+        /// <summary>
+        /// 计划类型
+        /// </summary>
         public string PlanType { get; set; }
+        /// <summary>
+        /// 计划ID
+        /// </summary>
         public int PlanID { get; set; }
-        public string PLANAGING { get; set; }//时效
+        /// <summary>
+        /// 时效
+        /// </summary>
+        public string PLANAGING { get; set; }
         //public SYJHType PlanType { get; set; }
+        /// <summary>
+        /// 开始时间
+        /// </summary>
         public DateTime StartTime { get; set; }
+        /// <summary>
+        /// 结束时间
+        /// </summary>
         public DateTime EndTime { get; set; }
-        public int SRCType { get; set; } //计划源类型：空白计划0；试验程序1；设备工作计划2；
-        public int SRCID { get; set; } //计划源编号：当计划源类型为1时，为试验程序编号；计划源类型为2时，为设备工作计划编号。
+        /// <summary>
+        /// /计划源类型：空白计划0；试验程序1；设备工作计划2；
+        /// </summary>
+        public int SRCType { get; set; }
+        /// <summary>
+        /// 计划源编号：当计划源类型为1时，为试验程序编号；计划源类型为2时，为设备工作计划编号。
+        /// </summary>
+        public int SRCID { get; set; } 
+        /// <summary>
+        /// 文件索引
+        /// </summary>
         public string FileIndex { get; set; }
+        /// <summary>
+        /// 备注
+        /// </summary>
         public string Reserve { get; set; }
 
         public string SatID { get; set; }
