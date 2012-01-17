@@ -46,7 +46,7 @@
 轨道根数管理
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-    <%--    <asp:Panel ID="pnlData" runat="server">--%>
+   <asp:Panel ID="pnlData" runat="server">
     <div id="divData">
         <table cellpadding="0"  class="edit" >
             <tr>
@@ -85,6 +85,7 @@
             </tr>
             <tr>
                 <td class="style2" colspan="4">
+                <asp:Panel ID ="pnlAll1" runat="server">
                     <div id="selectAll1" >
                     <table class="listTitle">
                         <tr>
@@ -101,6 +102,7 @@
                         </tr>
                     </table>
                     </div>
+                    </asp:Panel>
                     <asp:Repeater ID="rpDatas" runat="server">
                         <HeaderTemplate>
                             <table class="list">
@@ -159,6 +161,7 @@
                             </tbody> </table>
                         </FooterTemplate>
                     </asp:Repeater>
+                    <asp:Panel ID ="pnlAll2" runat="server">
                     <div id="selectAll2" >
                     <table class="listTitle">
                         <tr>
@@ -175,6 +178,7 @@
                         </tr>
                     </table>
                     </div>
+                    </asp:Panel>
                 </td>
             </tr>
             <tr>
@@ -184,14 +188,22 @@
             </tr>
         </table>
     </div>
-    <%--    </asp:Panel>--%>
-    <%--    <asp:Panel ID="pnlDestination" runat="server">--%>
-    <div id="tartgetPanel" style="display: none">
+        </asp:Panel>
+        <asp:Panel ID="pnlDestination" runat="server">
+<%--    <div id="tartgetPanel" style="display: ">--%>
         <table class="style7">
             <tr>
                 <td align="center">
-                    <asp:RadioButtonList ID="rbtDestination" runat="server">
-                    </asp:RadioButtonList>
+                    <%--<asp:RadioButtonList ID="rbtDestination" runat="server">
+                    </asp:RadioButtonList>--%>
+                    
+                    <asp:CheckBoxList ID="ckbDestination" runat="server">
+                        <asp:ListItem Value="0">天基目标观测应用研究分系统</asp:ListItem>
+                        <asp:ListItem Value="1">空间遥操作应用研究分系统</asp:ListItem>
+                        <asp:ListItem Value="2">空间机动应用研究分系统</asp:ListItem>
+                        <asp:ListItem Value="3">仿真推演分系统</asp:ListItem>
+                        <asp:ListItem Value="4">空间信息综合应用中心</asp:ListItem>
+                    </asp:CheckBoxList>
                 </td>
             </tr>
             <tr>
@@ -202,6 +214,6 @@
                 </td>
             </tr>
         </table>
-    </div>
-    <%--    </asp:Panel>--%>
+<%--    </div>--%>
+        </asp:Panel>
 </asp:Content>
