@@ -25,6 +25,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Portal", "Portal", "{C1CEB9FC-6953-46CE-B219-268ED854132F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{EB0B86E6-DB65-4229-A29F-E52CD0E3E978}"
+	ProjectSection(SolutionItems) = preProject
+		变更说明.txt = 变更说明.txt
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{9E179023-3E98-4E91-BC38-0329FC4A640F}"
 EndProject
