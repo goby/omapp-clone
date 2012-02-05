@@ -180,10 +180,14 @@
     <Content Include="Views\BusinessManage\XiAnCeKongDataList.aspx" />
     <Content Include="Views\Exp\Exp.aspx" />
     <Content Include="Views\Exp\PNF404.aspx" />
+    <Content Include="Views\PlanManage\DMJHEdit.aspx" />
     <Content Include="Views\PlanManage\ExperimentPlanDetail.aspx" />
     <Content Include="Views\PlanManage\ExperimentPlanList.aspx" />
     <Content Include="Views\PlanManage\ExperimentProgramDetail.aspx" />
     <Content Include="Views\PlanManage\ExperimentProgramList.aspx" />
+    <Content Include="Views\PlanManage\GenaratedPlanList.aspx" />
+    <Content Include="Views\PlanManage\HJXQEdit.aspx" />
+    <Content Include="Views\PlanManage\MBXQEdit.aspx" />
     <Content Include="Views\PlanManage\NotSpaceTaskList.aspx" />
     <Content Include="Views\BusinessManage\OrbitParaCalculate.aspx" />
     <Content Include="Views\PlanManage\OribitalQuantityDetail.aspx" />
@@ -193,7 +197,10 @@
     <Content Include="Views\PlanManage\PlanEdit.aspx" />
     <Content Include="Views\PlanManage\PlanList.aspx" />
     <Content Include="Views\PlanManage\SpaceTaskList.aspx" />
+    <Content Include="Views\PlanManage\TYSJEdit.aspx" />
     <Content Include="Views\PlanManage\YDSJDetail.aspx" />
+    <Content Include="Views\PlanManage\YJJHEdit.aspx" />
+    <Content Include="Views\PlanManage\ZXJHEdit.aspx" />
     <Content Include="Views\UserAndRole\RoleAdd.aspx" />
     <Content Include="Views\UserAndRole\RoleEdit.aspx" />
     <Content Include="Views\UserAndRole\Roles.aspx" />
@@ -393,6 +400,13 @@
     <Compile Include="Views\Exp\PNF404.aspx.designer.cs">
       <DependentUpon>PNF404.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\PlanManage\DMJHEdit.aspx.cs">
+      <DependentUpon>DMJHEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\PlanManage\DMJHEdit.aspx.designer.cs">
+      <DependentUpon>DMJHEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\PlanManage\ExperimentPlanDetail.aspx.cs">
       <DependentUpon>ExperimentPlanDetail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -420,6 +434,27 @@
     </Compile>
     <Compile Include="Views\PlanManage\ExperimentProgramList.aspx.designer.cs">
       <DependentUpon>ExperimentProgramList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlanManage\GenaratedPlanList.aspx.cs">
+      <DependentUpon>GenaratedPlanList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\PlanManage\GenaratedPlanList.aspx.designer.cs">
+      <DependentUpon>GenaratedPlanList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlanManage\HJXQEdit.aspx.cs">
+      <DependentUpon>HJXQEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\PlanManage\HJXQEdit.aspx.designer.cs">
+      <DependentUpon>HJXQEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlanManage\MBXQEdit.aspx.cs">
+      <DependentUpon>MBXQEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\PlanManage\MBXQEdit.aspx.designer.cs">
+      <DependentUpon>MBXQEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\PlanManage\NotSpaceTaskList.aspx.cs">
       <DependentUpon>NotSpaceTaskList.aspx</DependentUpon>
@@ -484,12 +519,33 @@
     <Compile Include="Views\PlanManage\SpaceTaskList.aspx.designer.cs">
       <DependentUpon>SpaceTaskList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\PlanManage\TYSJEdit.aspx.cs">
+      <DependentUpon>TYSJEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\PlanManage\TYSJEdit.aspx.designer.cs">
+      <DependentUpon>TYSJEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\PlanManage\YDSJDetail.aspx.cs">
       <DependentUpon>YDSJDetail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\PlanManage\YDSJDetail.aspx.designer.cs">
       <DependentUpon>YDSJDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlanManage\YJJHEdit.aspx.cs">
+      <DependentUpon>YJJHEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\PlanManage\YJJHEdit.aspx.designer.cs">
+      <DependentUpon>YJJHEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlanManage\ZXJHEdit.aspx.cs">
+      <DependentUpon>ZXJHEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\PlanManage\ZXJHEdit.aspx.designer.cs">
+      <DependentUpon>ZXJHEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\UserAndRole\RoleAdd.aspx.cs">
       <DependentUpon>RoleAdd.aspx</DependentUpon>
