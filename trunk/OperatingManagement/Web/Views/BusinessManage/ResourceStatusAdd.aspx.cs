@@ -390,7 +390,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             txtResourceCode.Text = string.Empty;
             dplFunctionType.SelectedIndex = 0;
-            dplHealthStatus.SelectedIndex = 0;
+            dplHealthStatus.SelectedValue = "2";
             dplUsedType.SelectedIndex = 0;
             txtBeginTime.Text = string.Empty;
             txtEndTime.Text = string.Empty;
