@@ -61,7 +61,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
         }
         public override void OnPageLoaded()
         {
-            this.PagePermission = "UserManage.Add";
+            this.PagePermission = "OMUserManage.Add";
             this.ShortTitle = "新增用户";
             this.SetTitle();
         }

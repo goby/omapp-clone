@@ -1,22 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <menus>
   <menu title="用户角色">
-    <item id="1-1" title="系统用户" roles="Anyone" href="" />
-    <item id="1-2" title="角色信息" roles="Anyone" href="" />
-    <item id="1-3" title="成员资格" roles="Anyone" href="" />
+    <item id="1-1" title="查看用户" roles="OMUserManage.View" href="views/userandrole/users.aspx" />
+    <item id="1-2" title="查看角色" roles="OMRoleManage.View" href="views/userandrole/roles.aspx" />
   </menu>
   <menu title="计划管理">
-    <item id="2-1" title="实验规划结果" roles="Anyone" href="#" />
-    <item id="2-2" title="计划列表" roles="Anyone" href="#" />
-    <item id="2-3" title="已提交发送任务" roles="Anyone" href="#" />
-    <item id="2-4" title="卫星轨道根数" roles="Anyone" href="#" />
-    <item id="2-5" title="引导数据" roles="Anyone" href="#" />
+    <item id="2-1" title="查看试验程序" roles="OMPLAN_ExProgram.View" href="Views/PlanManage/ExperimentProgramList.aspx" />
+    <item id="2-2" title="查看计划" roles="OMPLAN_Plan.View" href="Views/PlanManage/PlanList.aspx" />
+    <item id="2-3" title="轨道根数管理" roles="OMPLAN_OQ.View" href="Views/PlanManage/OribitalQuantityList.aspx" />
+    <item id="2-4" title="引导数据" roles="OMPLAN_NSpaceTask.View" href="Views/PlanManage/NotSpaceTaskList.aspx" />
   </menu>
-  <menu title="运行管理">
+  <!--<menu title="运行管理">
     <item id="3-1" title="分系统监控" roles="Anyone" href="#" />
     <item id="3-2" title="中心状态监控" roles="Anyone" href="#" />
     <item id="3-3" title="卫星综合状态监控" roles="Anyone" href="#" />
-  </menu>
+  </menu>-->
   <!--<menu title="业务管理">
     <item id="4-1" title="中心输出策略" roles="Anyone" href="Views/BusinessManage/CenterOutputPolicyManage.aspx" />
     <item id="4-2" title="卫星监视数据" roles="Anyone" href="#" />
@@ -25,12 +23,14 @@
     <item id="4-5" title="资源调度" roles="Anyone" href="#" />
   </menu>-->
   <menu title="业务管理">
-    <item id="4-1" title="中心输出策略管理" roles="ExperimentPlan.List" href="Views/BusinessManage/CenterOutputPolicyManage.aspx" />
-    <item id="4-2" title="西安卫星测控中心数据查询" roles="XiAnCeKongData.List" href="Views/BusinessManage/XiAnCeKongDataList.aspx" />
-    <item id="4-3" title="测角测速测距数据查询" roles="MeasureData.List" href="Views/BusinessManage/MeasureDataList.aspx" />
-    <item id="4-4" title="空间遥操作状态数据查询" roles="Anyone" href="#" />
-    <item id="4-5" title="资源信息管理" roles="Anyone" href="Views/BusinessManage/ResourceManage.aspx" />
-    <item id="4-6" title="资源状态管理" roles="Anyone" href="Views/BusinessManage/ResourceStatusManage.aspx" />
-    <item id="4-7" title="资源调度计算" roles="Anyone" href="#" />
-  </menu>
+    <item id="3-1" title="中心输出策略管理" roles="ExperimentPlan.List" href="Views/BusinessManage/CenterOutputPolicyManage.aspx" />
+    <item id="3-2" title="查看文件发送记录" roles="OMB_FSendInfo.View" href="#" />
+    <item id="3-3" title="查看文件接收记录" roles="OMB_FRcvInfo.View" href="#" />    <item id="3-5" title="资源信息管理" roles="Anyone" href="Views/BusinessManage/ResourceManage.aspx" />
+    <item id="3-4" title="资源状态管理" roles="Anyone" href="Views/BusinessManage/ResourceStatusManage.aspx" />
+    <item id="3-5" title="资源调度计算" roles="Anyone" href="#" />
+    <item id="3-6" title="轨道参数转换" roles="OMB_CSZH.Caculate" href="Views/BusinessManage/OrbitParaCalculate.aspx" />
+    <item id="3-7" title="轨道差值分析" roles="OMB_CZFX.Caculate" href="#" />
+    <item id="3-8" title="轨道交会预报" roles="OMB_JHYB.Caculate" href="#" />
+    <item id="3-9" title="轨道交会分析" roles="OMB_JHFX.Caculate" href="#" />
+    <item id="3-10" title="轨道预报" roles="OMB_GDYB.Caculate" href="#" />  </menu>
 </menus>
