@@ -1,11 +1,11 @@
 ﻿#region
 //------------------------------------------------------
 //Assembly:OperatingManagement.Web
-//FileName:ResourceStatusManage.cs
+//FileName:ResourceStatusChartManage.cs
 //Remark:资源状态管理类
 //------------------------------------------------------
 //VERSION       AUTHOR      DATE        CONTENT
-//1.0           liutao      20111015    Create     
+//1.0           liutao      20120204    Create     
 //------------------------------------------------------
 #endregion
 using System;
@@ -20,7 +20,7 @@ using OperatingManagement.WebKernel.Basic;
 
 namespace OperatingManagement.Web.Views.BusinessManage
 {
-    public partial class ResourceStatusManage : AspNetPage
+    public partial class ResourceStatusChartManage : AspNetPage
     {
         #region 属性
         /// <summary>
@@ -85,7 +85,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
         }
         #endregion
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -94,7 +93,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 //从资源管理页面跳转过来需要绑定健康、占用状态
                 if (!string.IsNullOrEmpty(ResourceCode))
                 {
-                    BindResourceStatusList();
+                    BindResourceStatusChart();
                 }
             }
         }
@@ -107,7 +106,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                BindResourceStatusList();
+                BindResourceStatusChart();
             }
             catch
             { }
@@ -154,7 +153,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <summary>
         /// 绑定资源状态列表
         /// </summary>
-        private void BindResourceStatusList()
+        private void BindResourceStatusChart()
         {
             int resourceType = 1;
             int.TryParse(dplResourceType.SelectedValue, out resourceType);
@@ -204,19 +203,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
             //查询健康状态
             HealthStatus healthStatus = new HealthStatus();
-            cpResourceHealthStatusPager.DataSource = healthStatus.Search(resourceType, resourceID, beginTime, endTime);
-            cpResourceHealthStatusPager.PageSize = this.SiteSetting.PageSize;
-            cpResourceHealthStatusPager.BindToControl = rpResourceHealthStatusList;
-            rpResourceHealthStatusList.DataSource = cpResourceHealthStatusPager.DataSourcePaged;
-            rpResourceHealthStatusList.DataBind();
+            List<HealthStatus> healthStatusList = healthStatus.Search(resourceType, resourceID, beginTime, endTime);
+            chartResourceStatus.Series["seriesHealthStatus"].Points.DataBindY(healthStatusList, "BeginTime,EndTime");
 
             //查询占用状态
             UseStatus useStatus = new UseStatus();
-            cpResourceUseStatusPager.DataSource = useStatus.Search(resourceType, resourceID, beginTime, endTime);
-            cpResourceUseStatusPager.PageSize = this.SiteSetting.PageSize;
-            cpResourceUseStatusPager.BindToControl = rpResourceUseStatusList;
-            rpResourceUseStatusList.DataSource = cpResourceUseStatusPager.DataSourcePaged;
-            rpResourceUseStatusList.DataBind();
+            List<UseStatus> useStatusList = useStatus.Search(resourceType, resourceID, beginTime, endTime);
+            chartResourceStatus.Series["seriesUseStatus"].Points.DataBindY(useStatusList, "BeginTime,EndTime");
         }
         /// <summary>
         /// 获得资源ID

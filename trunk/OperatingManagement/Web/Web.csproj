@@ -54,6 +54,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.DataVisualization" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
@@ -175,6 +176,7 @@
     <Content Include="Views\BusinessManage\ResourceEdit.aspx" />
     <Content Include="Views\BusinessManage\ResourceManage.aspx" />
     <Content Include="Views\BusinessManage\ResourceStatusAdd.aspx" />
+    <Content Include="Views\BusinessManage\ResourceStatusChartManage.aspx" />
     <Content Include="Views\BusinessManage\ResourceStatusManage.aspx" />
     <Content Include="Views\BusinessManage\XiAnCeKongDataDetail.aspx" />
     <Content Include="Views\BusinessManage\XiAnCeKongDataList.aspx" />
@@ -364,6 +366,13 @@
     </Compile>
     <Compile Include="Views\BusinessManage\ResourceStatusAdd.aspx.designer.cs">
       <DependentUpon>ResourceStatusAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ResourceStatusChartManage.aspx.cs">
+      <DependentUpon>ResourceStatusChartManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ResourceStatusChartManage.aspx.designer.cs">
+      <DependentUpon>ResourceStatusChartManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\ResourceStatusManage.aspx.cs">
       <DependentUpon>ResourceStatusManage.aspx</DependentUpon>
