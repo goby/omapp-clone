@@ -76,7 +76,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
         }
         public override void OnPageLoaded()
         {
-            this.PagePermission = "UserManage.Add,UserManage.Edit";
+            this.PagePermission = "OMUserManage.Add,OMUserManage.Edit";
             this.ShortTitle = "分配角色";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/userroleedit.aspx.js");

@@ -143,10 +143,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 trMessage.Visible = true;
                 lblMessage.Text = msg;
             }
-            catch
+            catch (Exception ex)
             {
                 trMessage.Visible = true;
-                lblMessage.Text = "发生未知错误，操作失败。";
+                lblMessage.Text = "发生未知错误，操作失败。" + ex.Message;
             }
         }
 
