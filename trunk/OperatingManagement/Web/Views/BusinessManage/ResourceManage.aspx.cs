@@ -211,6 +211,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             { }
         }
 
+        public override void OnPageLoaded()
+        {
+            this.ShortTitle = "资源管理";
+            this.SetTitle();
+        }
+
         #region ItemDataBound
         /// <summary>
         /// 地面站资源单条数据绑定

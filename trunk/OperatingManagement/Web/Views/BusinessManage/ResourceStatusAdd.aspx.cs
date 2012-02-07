@@ -272,6 +272,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             SetControlsVisible();
         }
 
+        public override void OnPageLoaded()
+        {
+            this.ShortTitle = "资源状态添加";
+            this.SetTitle();
+        }
+
         #region Method
         /// <summary>
         /// 绑定控件数据源

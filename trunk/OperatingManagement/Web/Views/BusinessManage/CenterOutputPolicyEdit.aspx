@@ -24,7 +24,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuIndex" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    业务管理&gt;中心输出策略编辑
+    中心输出策略管理&gt;中心输出策略编辑
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="edit" style="width: 800px;">

@@ -128,6 +128,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             { }
         }
 
+        public override void OnPageLoaded()
+        {
+            this.ShortTitle = "资源状态管理";
+            this.SetTitle();
+        }
+
         #region Method
         /// <summary>
         /// 绑定控件数据源
