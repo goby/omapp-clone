@@ -13,9 +13,9 @@ namespace RemotingClientConsole
         static void Main(string[] args)
         {
             IAccount account = OperatingManagement.RemotingClient.RemotingActivator.GetObject<IAccount>("127.0.0.1", "8085");
-            string pwd = PasswordEncryptHelper.EncryptPasswordBySalt("f12345", "MSFTJOM@web#");
+            string pwd = PasswordEncryptHelper.EncryptPasswordBySalt("w12345", "MSFTJOM@web#");
 
-            string xml = account.ValidateUser("opercindy", pwd);
+            string xml = account.ValidateUser("wangrong", pwd);
 
             Console.WriteLine(xml);
 

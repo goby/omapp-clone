@@ -10,3 +10,7 @@
 2011-12-28 将TB_XXTYPE和TB_XYXSInfo表引入,更新TB_CENTEROUTPUTPOLICY表字段infosource VARCHAR2(20) not null,infotype VARCHAR2(20) not null,ddestination VARCHAR2(20) not null定义
 2012-01-12 在Scripts中增加系统初始化数据文件夹，增加两个脚本TB_XXTYPE.sql、TB_XYXSInfo.sql，表示信源、信宿、信息类型，使用PLSQL Import 导入，由于这两个脚本内容保密，含数据部分被删除，放在公共邮箱中
 2012-01-17 完善中心输出策略、资源管理、健康状态管理、占用状态管理DataAccessLayer及Web项目中对应代码注释 by liutao
+2012-02-06 整理了菜单及Module、Action、Permission by frh
+2012-02-07 DataAccessLayer增加了SendInfo.cs、ReceiveInfo.cs by frh
+2012-02-07 Framwork中的Enum增加了FileServerEnum.cs
+2012-02-07 Portal工程里增加了\Views\BusinessManage\GetFileSInfo.aspx \Web\Scripts\Pages\GetFileSInfo.aspx.js
