@@ -78,6 +78,7 @@
     <Content Include="App_Data\navigator.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="App_Data\orbitParameters.xml" />
     <Content Include="App_Data\siteSetting.xml" />
     <Content Include="App_Data\menuPlan.xml" />
     <Content Include="App_Data\menuBusiness.xml">
@@ -163,6 +164,7 @@
     <Content Include="Scripts\DateTimePicker\skin\whyGreen\ymbg.jpg" />
     <Content Include="Scripts\DateTimePicker\WdatePicker.js" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
+    <Content Include="Scripts\Pages\BusinessManage\OrbitParaCalculate.aspx.js" />
     <Content Include="Scripts\Pages\ExperimentPlanList.aspx.js" />
     <Content Include="Scripts\Pages\ExperimentProgramList.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\userroleedit.aspx.js" />

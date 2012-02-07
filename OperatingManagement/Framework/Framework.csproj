@@ -68,6 +68,7 @@
     <Compile Include="Components\FTPProcessor.cs" />
     <Compile Include="Components\Navigator.cs" />
     <Compile Include="Components\CstMenu.cs" />
+    <Compile Include="Components\OrbitParameter.cs" />
     <Compile Include="Components\SiteSetting.cs" />
     <Compile Include="Core\AspNetConfig.cs" />
     <Compile Include="Core\AspNetContext.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Oracle\OracleDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflector\AspNetSetting.cs" />
+    <Compile Include="Storage\OrbitParameters.cs" />
     <Compile Include="Storage\Menus.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
