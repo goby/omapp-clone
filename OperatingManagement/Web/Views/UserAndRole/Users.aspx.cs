@@ -45,7 +45,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             this.PagePermission = "OMUserManage.View";
             this.ShortTitle = "用户列表";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/users.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/usernrole/users.aspx.js");
         }
     }
 }
