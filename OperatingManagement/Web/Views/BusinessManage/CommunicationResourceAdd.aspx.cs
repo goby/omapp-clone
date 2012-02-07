@@ -131,6 +131,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             { }
         }
 
+        public override void OnPageLoaded()
+        {
+            this.ShortTitle = "通信资源添加";
+            this.SetTitle();
+        }
+
         #region Method
         /// <summary>
         /// 绑定控件数据源

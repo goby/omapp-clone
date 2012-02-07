@@ -211,6 +211,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             { }
         }
 
+        public override void OnPageLoaded()
+        {
+            this.ShortTitle = "中心输出策略编辑";
+            this.SetTitle();
+        }
+
         #region Method
         /// <summary>
         /// 绑定控件数据源

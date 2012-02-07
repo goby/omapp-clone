@@ -107,7 +107,7 @@
         </table>
     </div>
      <div id="divResourceStatus" class="index_content_view">
-        <asp:Chart ID="chartResourceStatus" runat="server" Width="900px">
+        <asp:Chart ID="chartResourceStatus" runat="server" Width="900px" OnPreRender="chartResourceStatus_PreRender">
         <Legends>
             <asp:Legend Name="图例"></asp:Legend>
         </Legends>

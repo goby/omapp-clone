@@ -186,6 +186,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             catch
             { }
         }
+        
+        public override void OnPageLoaded()
+        {
+            this.ShortTitle = "中心输出策略添加";
+            this.SetTitle();
+        }
 
         #region Method
         /// <summary>
