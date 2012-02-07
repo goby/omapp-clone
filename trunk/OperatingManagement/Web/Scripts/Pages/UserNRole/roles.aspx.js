@@ -10,12 +10,12 @@ function selectAll() {
 function checkAll(o) {
     $('#tbUsers').find('input:checkbox:not([disabled])').attr('checked', o.checked);
 }
-function editUser(id) {
-    window.location.href = "/views/userandrole/useredit.aspx?id=" + id;
+function editRole(id) {
+    window.location.href = "/views/userandrole/roleedit.aspx?id=" + id;
     return false;
 }
-function deleteUsers() {
-    var chks = $('#tbUsers').find('input:checkbox:not([disabled])').filter('[checked=checked]');
+function deleteRoles() {
+    var chks = $('#tbRoles').find('input:checkbox:not([disabled])').filter('[checked=checked]');
     if (chks.length == 0) {
         _dialog.dialog({
             autoOpen: false,
@@ -28,18 +28,18 @@ function deleteUsers() {
                 }
             }
         });
-        _dialog.find('p.content').eq(0).html('请选择需要删除的用户。');
+        _dialog.find('p.content').eq(0).html('请选择需要删除的角色。');
         _dialog.dialog('open');
         return false;
     }
     _dialog.dialog({
         autoOpen: false,
-        height: 150,
+        height: 180,
         width: 350,
         modal: true,
         buttons: {
             '确定': function () {
-                $(this).dialog("close");
+                $(this).dialog("close"); 
                 //ajax begin
                 var ids = chks.map(function () { return this.value; }).get().join(',');
                 var indicator = $('#submitIndicator').attr('class', 'load');
@@ -50,7 +50,7 @@ function deleteUsers() {
                     dataType: 'text',
                     data: {
                         ids: ids,
-                        action: 'deleteUsersByIds',
+                        action: 'deleteRolesByIds',
                         t: Math.random()
                     },
                     error: function (resp) {
@@ -73,7 +73,7 @@ function deleteUsers() {
             }
         }
     });
-    _dialog.find('p.content').eq(0).html('<span class="red">删除指定的用户后将不可恢复，确定要继续吗？</span>');
+    _dialog.find('p.content').eq(0).html('<span class="red">删除指定的角色后将不可恢复，且将会移除与用户的关联关系，确定要继续吗？</span>');
     _dialog.dialog('open');
     return false;
 }

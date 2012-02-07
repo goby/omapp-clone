@@ -90,7 +90,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             this.PagePermission = "OMUserManage.Add";
             this.ShortTitle = "新增角色";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/roleadd.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/usernrole/roleadd.aspx.js");
         }
 
     }
