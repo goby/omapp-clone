@@ -151,8 +151,8 @@ namespace OperatingManagement.WebKernel.Basic
             FixedCssLocation();
             AddEncodeMeta();
             AddGenericLink("image/x-icon", "shortcut icon", "ICON", "images/favicon.ico");
-            AddJavaScriptInclude("scripts/core/jquery-min.js", false, false);
-            AddJavaScriptInclude("scripts/core/jquery-plugins.js",false,false);
+            AddJavaScriptInclude("scripts/core/jquery-1.7.1.min.js", false, false);
+            AddJavaScriptInclude("scripts/core/jquery-ui-1.8.17.custom.min.js", false, false);
             AddJavaScriptInclude("scripts/core/util.js", false, false);
             SetTitle();
         }
