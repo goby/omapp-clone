@@ -1,13 +1,4 @@
 ﻿///<reference path="../jquery-1.4.1-vsdoc.js" />
-function showMsg(msg) {
-    $.fn.modal({
-        title: '提示信息',
-        content: function (o, e) {
-            o.content.html(msg);
-        },
-        cancelText: '关闭'
-    });
-}
 function wrapKeyValues(o) {
     var k = o.value;
     if (!o.checked) {

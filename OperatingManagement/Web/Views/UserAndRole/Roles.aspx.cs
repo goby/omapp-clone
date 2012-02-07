@@ -31,7 +31,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             this.PagePermission = "OMRoleManage.View";
             this.ShortTitle = "角色列表";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/roles.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/usernrole/roles.aspx.js");
         }
     }
 }

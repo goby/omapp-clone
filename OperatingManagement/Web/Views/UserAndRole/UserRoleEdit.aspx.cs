@@ -79,7 +79,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             this.PagePermission = "OMUserManage.Add,OMUserManage.Edit";
             this.ShortTitle = "分配角色";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/userroleedit.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/usernrole/userroleedit.aspx.js");
         }
 
     }
