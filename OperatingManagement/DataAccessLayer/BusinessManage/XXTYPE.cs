@@ -54,7 +54,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         public string EXCODE { get; set; }
         /// <summary>
-        /// 信息类型：0-数据帧；1-文件
+        /// 信息类型：0-数据帧；1-文件，使用Enum InfoType
         /// </summary>
         public string DATATYPE { get; set; }
 

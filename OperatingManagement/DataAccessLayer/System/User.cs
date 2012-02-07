@@ -70,7 +70,7 @@ namespace OperatingManagement.DataAccessLayer.System
         }
         #endregion
 
-        #region -Public ethods-
+        #region -Public methods-
         /// <summary>
         /// Selects all the users from database.
         /// </summary>
