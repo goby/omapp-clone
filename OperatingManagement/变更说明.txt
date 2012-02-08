@@ -16,3 +16,4 @@
 2012-02-07 Web工程里增加了\Views\BusinessManage\GetFileSInfo.aspx，\Web\Scripts\Pages\GetFileSInfo.aspx.js
 2012-02-08 Web工程里增加了scripts/core/jquery.ui.datepicker.js，scripts/core/jquery.ui.datepicker-zh-CN.js，jquery.ui.widget.js，jquery.ui.core.js
 2012-02-08 修改了WebKernel的AspNetMasterPage.cs，增加scripts/core/jquery.ui.datepicker.js，scripts/core/jquery.ui.datepicker-zh-CN.js，jquery.ui.widget.js，jquery.ui.core.js的使用
+2012-02-08 修改了一些问题。App_Data下增加了PlanParameters.xml 计划管理用到的配置项 by Tangjia
