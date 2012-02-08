@@ -15,7 +15,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
     /// 发送记录，既包含文件类型又包含数据包类型
     /// </summary>
     [Serializable]
-    class SendInfo : BaseEntity<int, SendInfo>
+    public class SendInfo : BaseEntity<int, SendInfo>
     {
         private OracleDatabase _database = null;
         private const string s_up_sendinfo_selectbydatatype = "up_sendinfo_selectbydatatype";
@@ -31,19 +31,6 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         public SendInfo(DataRow dr)
         {
-            XYXSInfo oSender = new XYXSInfo();
-            XYXSInfo oReceiver = new XYXSInfo();
-            XXTYPE oXXType = new XXTYPE();
-
-            oSender.Id = Convert.ToInt32(dr["Sender"].ToString());
-            oSender.ADDRName = dr["SADDRName"].ToString();
-
-            oReceiver.Id = Convert.ToInt32(dr["Sender"].ToString());
-            oReceiver.ADDRName = dr["RADDRName"].ToString();
-
-            oXXType.Id = Convert.ToInt32(dr["INFOTYPE"].ToString());
-            oXXType.DATANAME = dr["INFOName"].ToString();
-
             this.Id = Convert.ToInt32(dr["RID"].ToString());
             if (dr["FileName"] == DBNull.Value)
                 this.FileName = string.Empty;
@@ -71,8 +58,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 this.CurPosition = Convert.ToInt32(dr["CurPosition"].ToString());
 
             this.RetryTimes = Convert.ToInt32(dr["RetryTimes"].ToString());
-            this.Sender = oSender;
-            this.Receiver = oReceiver;
+            this.SenderID = Convert.ToInt32(dr["SenderID"].ToString());
+            this.SenderName = dr["SenderID"].ToString();
+            this.ReceiverID = Convert.ToInt32(dr["ReceiverID"].ToString());
+            this.ReceiverName = dr["ReceiverID"].ToString();
             this.SendStatus = (SendStatuss)Convert.ToInt32(dr["SendStatus"].ToString());
 
             if (dr["Remark"] == DBNull.Value)
@@ -87,7 +76,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 this.LastUpdateTime = Convert.ToDateTime(dr["UserCatalog"].ToString());
 
             this.SendWay = (CommunicationWays)Convert.ToInt32(dr["SendWay"].ToString());
-            this.InfoType = oXXType;
+            this.InfoTypeID = Convert.ToInt32(dr["InfoTypeID"].ToString());
+            this.InfoTypeName = dr["InfoTypeName"].ToString();
             this.AutoReSend = (IFAutoReSend)Convert.ToInt32(dr["AutoReSend"].ToString());
         }
 
@@ -100,54 +90,81 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 文件标识
         /// </summary>
         public string FileCode { get; set; }
+
         /// <summary>
         /// 文件路径
         /// </summary>
         public string FilePath { get; set; }
+
         /// <summary>
         /// 文件大小，单位字节
         /// </summary>
         public long FileSize { get; set; }
+
         /// <summary>
         /// 当前位置
         /// </summary>
         public long CurPosition { get; set; }
+
         /// <summary>
         /// 重试次数
         /// </summary>
         public int RetryTimes { get; set; }
+
         /// <summary>
-        /// 发送方
+        /// 发送方标识
         /// </summary>
-        public XYXSInfo Sender { get; set; }
+        public int SenderID { get; set; }
+
         /// <summary>
-        /// 接收方
+        /// 发送方名称
         /// </summary>
-        public XYXSInfo Receiver { get; set; }
+        public string SenderName { get; set; }
+
+        /// <summary>
+        /// 接收方标识
+        /// </summary>
+        public int ReceiverID { get; set; }
+
+        /// 接收方名称
+        /// </summary>
+        public string ReceiverName { get; set; }
+
         /// <summary>
         /// 发送状态，使用Enum SendStatus
         /// </summary>
         public SendStatuss SendStatus { get; set; }
+
         /// <summary>
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+
         /// <summary>
         /// 提交发送时间
         /// </summary>
         public DateTime SubmitTime { get; set; }
+
         /// <summary>
         /// 最后更新时间
         /// </summary>
         public DateTime LastUpdateTime { get; set; }
+
         /// <summary>
-        /// 信息类型
+        /// 信息类型标识
         /// </summary>
-        public XXTYPE InfoType { get; set; }
+        public int InfoTypeID { get; set; }
+
+        /// <summary>
+        /// 信息类型名称
+        /// </summary>
+        public string InfoTypeName { get; set; }
+
         /// <summary>
         /// 发送方式，使用Enum CommunicationWay
         /// </summary>
         public CommunicationWays SendWay { get; set; }
+
         /// <summary>
         /// 是否自动重发
         /// </summary>
@@ -340,13 +357,13 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_FileSize", oFileSize),
                 new OracleParameter("p_CurPosition", oCurPostion),
                 new OracleParameter("p_RetryTimes", this.RetryTimes),
-                new OracleParameter("p_Sender", this.Sender.Id),
-                new OracleParameter("p_Receiver", this.Receiver.Id),
+                new OracleParameter("p_Sender", this.SenderID),
+                new OracleParameter("p_Receiver", this.ReceiverID),
                 new OracleParameter("p_SendStatus", (int)this.SendStatus),
                 new OracleParameter("p_Remark", DBNull.Value),
                 new OracleParameter("p_SubmitTime", OracleDbType.Date, this.SubmitTime, ParameterDirection.Input),
                 new OracleParameter("p_LastUpdateTime", DBNull.Value),
-                new OracleParameter("p_InfoType", this.InfoType.Id),
+                new OracleParameter("p_InfoType", this.InfoTypeID),
                 new OracleParameter("p_SendWay", (int)this.SendWay),
                 new OracleParameter("p_AutoReSend", (int)this.AutoReSend),
                 opId,
@@ -361,6 +378,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         /// <summary>
         /// Updates the sendinfo object in database.
+        /// only curPosition、LastUpdateTime、SendStatus、RetryTimes、Remark
         /// </summary>
         /// <returns></returns>
         public FieldVerifyResult Update()

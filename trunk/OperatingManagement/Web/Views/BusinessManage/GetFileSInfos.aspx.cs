@@ -10,7 +10,7 @@ using OperatingManagement.WebKernel.Route;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.Framework;
-using OperatingManagement.DataAccessLayer.PlanManage;
+using OperatingManagement.DataAccessLayer.BusinessManage;
 using System.Web.Security;
 using System.Data;
 using ServicesKernel.File;
@@ -21,7 +21,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            //if (!IsPostBack)
+            //    BindDataSource();
         }
 
         protected void btnHidRSendFile_Click(object sender, EventArgs e)
@@ -34,11 +35,19 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         }
 
+
         private void BindDataSource()
         {
+            SendInfo oSend = new SendInfo();
+            List<SendInfo> listDatas = oSend.SelectAllFileSendInfo();
+            cpPager.DataSource = listDatas;
+            cpPager.PageSize = this.SiteSetting.PageSize;
+            cpPager.BindToControl = rpDatas;
+            rpDatas.DataSource = cpPager.DataSourcePaged;
+            rpDatas.DataBind();
         }
 
-        private void SendFile(string fileName, string filePath)
+        private void SendFile(int sendInfoID)
         {
         }
 
@@ -47,7 +56,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             this.PagePermission = "OMB_FSendInfo.View";
             this.ShortTitle = "查看文件发送记录";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/GetFileSInfos.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/BusinessManage/GetFileSInfos.aspx.js");
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
