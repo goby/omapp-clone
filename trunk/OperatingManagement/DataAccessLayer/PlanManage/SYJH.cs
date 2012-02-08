@@ -44,14 +44,27 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         public DateTime EndTime { get; set; }
         public string FileIndex { get; set; }
         public string Reserve { get; set; }
+
+        /// <summary>
+        /// 时间
+        /// </summary>
+        public string CreateTime { get; set; }
+        /// <summary>
+        /// 试验个数
+        /// </summary>
+        public string SYCount { get; set; }
+        /// <summary>
+        /// 试验列表
+        /// </summary>
+        public List<SYJH_SY> SYJH_SY_List { get; set; }
         #endregion
 
         #region -Methods-
         /// <summary>
         /// 根据时间获取试验计划列表
         /// </summary>
-        /// <param name="startDate"></param>
-        /// <param name="endDate"></param>
+        /// <param name="startDate">开始时间</param>
+        /// <param name="endDate">结束时间</param>
         /// <returns></returns>
         public List<SYJH> GetSYJHListByDate(DateTime startDate, DateTime endDate)
         {
@@ -159,5 +172,38 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         }
         #endregion
 
+    }
+
+    [Serializable]
+    public class SYJH_SY
+    {
+        /// <summary>
+        /// 卫星名称
+        /// </summary>
+        public string SYSatName { get; set; }
+        /// <summary>
+        /// 试验类别
+        /// </summary>
+        public string SYType { get; set; }
+        /// <summary>
+        /// 试验项目
+        /// </summary>
+        public string SYItem { get; set; }
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        public string SYStartTime { get; set; }
+        /// <summary>
+        /// 结束时间 
+        /// </summary>
+        public string SYEndTime { get; set; }
+        /// <summary>
+        /// 系统名称
+        /// </summary>
+        public string SYSysName { get; set; }
+        /// <summary>
+        /// 系统任务
+        /// </summary>
+        public string SYSysTask { get; set; }
     }
 }
