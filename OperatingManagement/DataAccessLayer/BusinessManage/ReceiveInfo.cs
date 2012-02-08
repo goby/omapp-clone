@@ -12,7 +12,7 @@ using System.Data;
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
     [Serializable]
-    class ReceiveInfo : BaseEntity<int, GroundResource>
+    public class ReceiveInfo : BaseEntity<int, GroundResource>
     {
         private OracleDatabase _database = null;
         private const string s_up_rcvinfo_selectbydatatype = "up_rcvinfo_selectbydatatype";
@@ -28,19 +28,6 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         public ReceiveInfo(DataRow dr)
         {
-            XYXSInfo oSender = new XYXSInfo();
-            XYXSInfo oReceiver = new XYXSInfo();
-            XXTYPE oXXType = new XXTYPE();
-
-            oSender.Id = Convert.ToInt32(dr["Sender"].ToString());
-            oSender.ADDRName = dr["SADDRName"].ToString();
-
-            oReceiver.Id = Convert.ToInt32(dr["Sender"].ToString());
-            oReceiver.ADDRName = dr["RADDRName"].ToString();
-
-            oXXType.Id = Convert.ToInt32(dr["INFOTYPE"].ToString());
-            oXXType.DATANAME = dr["INFOName"].ToString();
-
             this.Id = Convert.ToInt32(dr["RID"].ToString());
             if (dr["FileName"] == DBNull.Value)
                 this.FileName = string.Empty;
@@ -67,8 +54,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             else
                 this.CurPosition = Convert.ToInt32(dr["CurPosition"].ToString());
 
-            this.Sender = oSender;
-            this.Receiver = oReceiver;
+            this.SenderID = Convert.ToInt32(dr["SenderID"].ToString());
+            this.SenderName = dr["SenderID"].ToString();
+            this.ReceiverID = Convert.ToInt32(dr["ReceiverID"].ToString());
+            this.ReceiverName = dr["ReceiverID"].ToString();
             this.ReceiveStatus = (ReceiveStatuss)Convert.ToInt32(dr["ReceiveStatus"].ToString());
             if (dr["Remark"] == DBNull.Value)
                 this.Remark = string.Empty;
@@ -80,7 +69,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             else
                 this.RecvEndTime = Convert.ToDateTime(dr["RecvEndTime"].ToString());
             this.ReceiveWay = (CommunicationWays)Convert.ToInt32(dr["ReceiveWay"].ToString());
-            this.InfoType = oXXType;
+            this.InfoTypeID = Convert.ToInt32(dr["InfoTypeID"].ToString());
+            this.InfoTypeName = dr["InfoTypeName"].ToString();
         }
         
         #region -Properties-
@@ -105,13 +95,23 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         public long CurPosition { get; set; }
         /// <summary>
-        /// 发送方
+        /// 发送方标识
         /// </summary>
-        public XYXSInfo Sender { get; set; }
+        public int SenderID { get; set; }
+
         /// <summary>
-        /// 接收方
+        /// 发送方名称
         /// </summary>
-        public XYXSInfo Receiver { get; set; }
+        public string SenderName { get; set; }
+
+        /// <summary>
+        /// 接收方标识
+        /// </summary>
+        public int ReceiverID { get; set; }
+
+        /// 接收方名称
+        /// </summary>
+        public string ReceiverName { get; set; }
         /// <summary>
         /// 接收状态，使用Enum ReceiveStatus
         /// </summary>
@@ -129,9 +129,14 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         public DateTime RecvEndTime { get; set; }
         /// <summary>
-        /// 信息类型
+        /// 信息类型标识
         /// </summary>
-        public XXTYPE InfoType { get; set; }
+        public int InfoTypeID { get; set; }
+
+        /// <summary>
+        /// 信息类型名称
+        /// </summary>
+        public string InfoTypeName { get; set; }
         /// <summary>
         /// 接收方式，使用Enum CommunicationWay
         /// </summary>
@@ -324,13 +329,13 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_FilePath", oFilePath),
                 new OracleParameter("p_FileSize", oFileSize),
                 new OracleParameter("p_CurPosition", oCurPostion),
-                new OracleParameter("p_Sender", this.Sender.Id),
-                new OracleParameter("p_Receiver", this.Receiver.Id),
+                new OracleParameter("p_Sender", this.SenderID),
+                new OracleParameter("p_Receiver", this.ReceiverID),
                 new OracleParameter("p_ReceiveStatus", (int)this.ReceiveStatus),
                 new OracleParameter("p_Remark", DBNull.Value),
                 new OracleParameter("p_RecvBeginTime", OracleDbType.Date, this.RecvBeginTime, ParameterDirection.Input),
                 new OracleParameter("p_RecvEndTime", DBNull.Value),
-                new OracleParameter("p_InfoType", this.InfoType.Id),
+                new OracleParameter("p_InfoType", this.InfoTypeID),
                 new OracleParameter("p_ReceiveWay", (int)this.ReceiveWay),
                 opId,
                 p
@@ -344,6 +349,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         /// <summary>
         /// Updates the ReceiveInfo object in database.
+        /// only curPosition、RcvEndTime、Receivetatus、Remark
         /// </summary>
         /// <returns></returns>
         public FieldVerifyResult Update()

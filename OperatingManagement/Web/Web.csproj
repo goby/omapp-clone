@@ -135,9 +135,10 @@
     <Content Include="Scripts\Core\jquery-1.7.1.min.js" />
     <Content Include="Scripts\Core\jquery-ui-1.8.17.custom.min.js" />
     <Content Include="Scripts\calendar.js" />
-    <Content Include="Scripts\Core\jquery-datepick.js" />    
-    <Content Include="Scripts\Core\jquery-min.js" />
-    <Content Include="Scripts\Core\jquery-plugins.js" />    
+    <Content Include="Scripts\Core\jquery.ui.core.js" />
+    <Content Include="Scripts\Core\jquery.ui.datepicker-zh-CN.js" />
+    <Content Include="Scripts\Core\jquery.ui.datepicker.js" />
+    <Content Include="Scripts\Core\jquery.ui.widget.js" />
     <Content Include="Scripts\Core\util.js" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\DateTimePicker\calendar.js" />
@@ -168,21 +169,17 @@
     <Content Include="Scripts\DateTimePicker\skin\whyGreen\ymbg.jpg" />
     <Content Include="Scripts\DateTimePicker\WdatePicker.js" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
-    <Content Include="Scripts\Pages\DMJHEdit.aspx.js" />    
+    <Content Include="Scripts\Pages\DMJHEdit.aspx.js" />
     <Content Include="Scripts\Pages\BusinessManage\OrbitParaCalculate.aspx.js" />
     <Content Include="Scripts\Pages\ExperimentPlanList.aspx.js" />
     <Content Include="Scripts\Pages\ExperimentProgramList.aspx.js" />
     <Content Include="Scripts\Pages\GenaratedPlanList.aspx.js" />
-    <Content Include="Scripts\Pages\GetFileSInfos.aspx.js" />
+    <Content Include="Scripts\Pages\BusinessManage\GetFileSInfos.aspx.js" />
     <Content Include="Scripts\Pages\HJXQEdit.aspx.js" />
     <Content Include="Scripts\Pages\MBXQEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanAdd.aspx.js" />
     <Content Include="Scripts\Pages\PlanEdit.aspx.js" />
     <Content Include="Scripts\Pages\TYSJEdit.aspx.js" />
-    <Content Include="Scripts\Pages\userroleedit.aspx.js" />
-    <Content Include="Scripts\Pages\roleadd.aspx.js" />
-    <Content Include="Scripts\Pages\roles.aspx.js" />
-    <Content Include="Scripts\Pages\users.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\userroleedit.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\roleadd.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\roles.aspx.js" />
@@ -194,6 +191,7 @@
     <Content Include="Scripts\Pages\XiAnCeKongDataList.aspx.js" />
     <Content Include="Scripts\Pages\YJJHEdit.aspx.js" />
     <Content Include="Scripts\Pages\ZXJHEdit.aspx.js" />
+    <Content Include="ucs\ucXXType.ascx" />
     <Content Include="Views\Account\MyProfile.aspx" />
     <Content Include="Views\BusinessManage\CenterOutputPolicyAdd.aspx" />
     <Content Include="Views\BusinessManage\CenterOutputPolicyEdit.aspx" />
@@ -289,6 +287,13 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="ucs\ucXXType.ascx.cs">
+      <DependentUpon>ucXXType.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ucs\ucXXType.ascx.designer.cs">
+      <DependentUpon>ucXXType.ascx</DependentUpon>
     </Compile>
     <Compile Include="Views\Account\MyProfile.aspx.cs">
       <DependentUpon>MyProfile.aspx</DependentUpon>

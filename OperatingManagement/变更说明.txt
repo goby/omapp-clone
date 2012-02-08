@@ -13,4 +13,6 @@
 2012-02-06 整理了菜单及Module、Action、Permission by frh
 2012-02-07 DataAccessLayer增加了SendInfo.cs、ReceiveInfo.cs by frh
 2012-02-07 Framwork中的Enum增加了FileServerEnum.cs
-2012-02-07 Portal工程里增加了\Views\BusinessManage\GetFileSInfo.aspx \Web\Scripts\Pages\GetFileSInfo.aspx.js
+2012-02-07 Web工程里增加了\Views\BusinessManage\GetFileSInfo.aspx，\Web\Scripts\Pages\GetFileSInfo.aspx.js
+2012-02-08 Web工程里增加了scripts/core/jquery.ui.datepicker.js，scripts/core/jquery.ui.datepicker-zh-CN.js，jquery.ui.widget.js，jquery.ui.core.js
+2012-02-08 修改了WebKernel的AspNetMasterPage.cs，增加scripts/core/jquery.ui.datepicker.js，scripts/core/jquery.ui.datepicker-zh-CN.js，jquery.ui.widget.js，jquery.ui.core.js的使用

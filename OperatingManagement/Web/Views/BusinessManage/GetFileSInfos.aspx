@@ -13,25 +13,35 @@
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="listTitle">
         <tr>
+            <td><div>信息类型<asp:DropDownList ID="ddlXXType"
+                    runat="server">
+                </asp:DropDownList>
+                开始日期<asp:TextBox ID="txtBeginDate" runat="server"></asp:TextBox>
+                结束日期<asp:TextBox ID="txtEndDate" runat="server"></asp:TextBox>
+                </div>
+            </td>
+            <td><asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
+                        Text="查询" Width="69px" /></td>
+        </tr>        
+        <tr>
             <td class="listTitle-c1">
                 <div style="display:none;">
-                    <asp:TextBox ID="txtRID" runat="server" ClientIDMode="Static"></asp:TextBox>
-                    <asp:TextBox ID="txtStatus" runat="server" ClientIDMode="Static"></asp:TextBox>
+                    <asp:TextBox ID="txtRID" runat="server" ClientIDMode="Static" CssClass="text" ></asp:TextBox>
+                    <asp:TextBox ID="txtStatus" runat="server" ClientIDMode="Static" CssClass="text" ></asp:TextBox>
                     <asp:Button ID="btnHidRSendFile" runat="server" ClientIDMode="Static" Text="btnHidRSendFile" 
                                 onclick="btnHidRSendFile_Click" />
                 </div>
             </td>
+            <td></td>
         </tr>
     </table>
-    <asp:Repeater ID="rpRoles" runat="server">
+    <asp:Repeater ID="rpDatas" runat="server">
         <HeaderTemplate>
             <table class="list">
                 <tr>
                     <th style="width:200px;">记录号</th>
                     <th style="width:200px;">文件名</th>
-                    <th style="width:200px;">文件标识</th>
                     <th style="width:150px;">文件路径</th>
-                    <th style="width:200px;">文件大小</th>
                     <th style="width:200px;">发送方式</th>
                     <th style="width:150px;">发送方</th>
                     <th style="width:200px;">信息类型</th>
@@ -48,13 +58,12 @@
             <tr>
                 <td><%# Eval("RID") %></td>
                 <td><%# Eval("FileName") %></td>
-                <td><%# Eval("FileCode") %></td>
                 <td><%# Eval("FilePath") %></td>
-                <td><%# Eval("Filesize") %></td>
+                <!--<td><%# Eval("Filesize") %></td> -->
                 <td><%# Eval("SendWay") %></td>
-                <td><%# Eval("Sender") %></td>
-                <td><%# Eval("InfoType")%></td>
-                <td><%# Eval("Receiver")%></td>
+                <td><%# Eval("SenderName") %></td>
+                <td><%# Eval("InfoTypeName")%></td>
+                <td><%# Eval("ReceiverName")%></td>
                 <td><%# Eval("SendStatus")%></td>
                 <td><%# Eval("RetryTimes")%></td>
                 <td><%# Eval("Remark")%></td>
