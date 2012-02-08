@@ -13,6 +13,9 @@ using OperatingManagement.Framework;
 using System.Web.Security;
 using System.Xml;
 using System.IO;
+using OperatingManagement.DataAccessLayer.PlanManage;
+using System.Collections;
+using ServicesKernel.File;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
@@ -20,25 +23,51 @@ namespace OperatingManagement.Web.Views.PlanManage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (this.QueryStringObserver("id"))
+            if (!IsPostBack)
             {
-                string sID = Request.QueryString["id"];
-                int id = 0;
-                Int32.TryParse(sID, out id);
-                id = 1;
-                BindFileInfo( id );
+                if (!string.IsNullOrEmpty(Request.QueryString["id"]))
+                {
+                    string sID = Request.QueryString["id"];
+                    HfID.Value = sID;
+                    SYJH jh = new SYJH();
+                    jh.Id = Convert.ToInt32(sID);
+                    jh.SelectById();
+                    HfFileIndex.Value = jh.FileIndex;
+                    BindXML();
+                }
             }
         }
 
-        void BindFileInfo(int id)
+        private void BindXML()
         {
-            DataAccessLayer.PlanManage.SYJH jh = new DataAccessLayer.PlanManage.SYJH{ Id = id };
-            DataAccessLayer.PlanManage.SYJH obj = jh.SelectById();
-            //XmlDocument xml = new XmlDocument();
-            //xml.Load(HttpContext.Current.Server.MapPath(obj.FileIndex));
-            StreamReader sr = new StreamReader(obj.FileIndex,System.Text.Encoding.Default);
-            txtContent.Text= sr.ReadToEnd();
-            //txtContent.Text = xml.InnerText;
+            List<SYJH_SY> listTask = new List<SYJH_SY>();
+            SYJH_SY task;
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(HfFileIndex.Value);
+            XmlNode root = xmlDoc.SelectSingleNode("试验计划/时间");
+            txtSYTime.Text = root.InnerText;
+            root = xmlDoc.SelectSingleNode("试验计划/试验个数");
+            txtSYCount.Text = root.InnerText;
+
+            root = xmlDoc.SelectSingleNode("试验计划");
+            foreach (XmlNode n in root.ChildNodes)
+            {
+                if (n.Name == "试验")
+                {
+                    task = new SYJH_SY();
+                    task.SYSatName = n["卫星名称"].InnerText;
+                    task.SYType = n["试验类别"].InnerText;
+                    task.SYItem = n["试验项目"].InnerText;
+                    task.SYStartTime = n["开始时间"].InnerText;
+                    task.SYEndTime = n["结束时间"].InnerText;
+                    task.SYSysName = n["系统名称"].InnerText;
+                    task.SYSysTask = n["系统任务"].InnerText;
+                    listTask.Add(task);
+                }
+            }
+
+            Repeater1.DataSource = listTask;
+            Repeater1.DataBind();
         }
 
         public override void OnPageLoaded()

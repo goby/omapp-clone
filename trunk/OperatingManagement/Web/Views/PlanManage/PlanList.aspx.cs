@@ -205,5 +205,10 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             
         }
+
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            Page.Response.Redirect(Request.CurrentExecutionFilePath);
+        }
     }
 }

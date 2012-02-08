@@ -13,13 +13,22 @@ namespace OperatingManagement.Web.Views.PlanManage {
     public partial class YJJHEdit {
         
         /// <summary>
-        /// form1 控件。
+        /// navMain 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::OperatingManagement.WebKernel.Controls.PageNavigator navMain;
+        
+        /// <summary>
+        /// PageMenu1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::OperatingManagement.WebKernel.Controls.PageMenu PageMenu1;
         
         /// <summary>
         /// txtPlanStartTime 控件。
@@ -40,13 +49,13 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.TextBox txtPlanEndTime;
         
         /// <summary>
-        /// txtXXFL 控件。
+        /// radBtnXXFL 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtXXFL;
+        protected global::System.Web.UI.WebControls.RadioButtonList radBtnXXFL;
         
         /// <summary>
         /// txtJXH 控件。
@@ -58,13 +67,13 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.TextBox txtJXH;
         
         /// <summary>
-        /// txtSysName 控件。
+        /// ddlSysName 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSysName;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSysName;
         
         /// <summary>
         /// txtStartTime 控件。

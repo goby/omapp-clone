@@ -156,5 +156,10 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/ExperimentProgramList.aspx.js");
         }
+
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            Page.Response.Redirect(Request.CurrentExecutionFilePath);
+        }
     }
 }

@@ -66,6 +66,32 @@ namespace OperatingManagement.Web.Views.PlanManage
             btnContinue.Visible = true;
             btnSubmit.Visible = false;
             btnGetPlanInfo.Visible = false;
+
+            #region 直接转到编辑页面
+            string sID = hfID.Value;
+            switch (hfPlanType.Value)
+            {
+                case "YJJH":
+                    Response.Redirect("YJJHEdit.aspx?id=" + sID);
+                    break;
+                case "MBXQ":
+                    Response.Redirect("MBXQEdit.aspx?id=" + sID);
+                    break;
+                case "HJXQ":
+                    Response.Redirect("HJXQEdit.aspx?id=" + sID);
+                    break;
+                case "DMJH":
+                    Response.Redirect("DMJHEdit.aspx?id=" + sID);
+                    break;
+                case "ZXJH":
+                    Response.Redirect("ZXJHEdit.aspx?id=" + sID);
+                    break;
+                case "TYSJ":
+                    Response.Redirect("TYSJEdit.aspx?id=" + sID);
+                    break;
+            }
+
+            #endregion
         }
 
         private string CreateFile()
@@ -78,7 +104,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     YJJH objYJJH = new YJJH
                     {
                         TaskID = txtTaskID.Text.Trim(),
-                        SatID = ddlSat.SelectedValue
+                        SatID = ddlSat.SelectedValue,
+                        XXFL = "ZJ",//默认周计划
+                        SysName = "天基目标观测应用研究分系统"
                     };
                     filepath = fileCreater.CreateYJJHFile(objYJJH,0);
                     break;

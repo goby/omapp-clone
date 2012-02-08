@@ -1,10 +1,7 @@
-﻿<%@ Page MaintainScrollPositionOnPostback="true" Language="C#"  AutoEventWireup="true" CodeBehind="DMJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.DMJHEdit" %>
+﻿<%@ Page MaintainScrollPositionOnPostback="true" MasterPageFile="~/Site.Master" Language="C#"  AutoEventWireup="true" CodeBehind="DMJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.DMJHEdit" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-    <style type="text/css">
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+<style type="text/css">
         .style1
         {
             width: 157px;
@@ -15,9 +12,17 @@
         }
     </style>
     <script src="../../Scripts/calendar.js" type="text/javascript"></script>
-</head>
-<body>
-    <form id="form1" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
+</asp:Content>
+<asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
+    地面站工作计划
+</asp:Content>
+<asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <div>
         <table cellpadding="0" class="edit" style="width: 750px;">
             <tr>
@@ -216,7 +221,7 @@
                                                     </tr>
                                                     <tr>
                                                         <th>
-                                                            数据传输速率
+                                                            数据传输速率(BPS)
                                                         </th>
                                                         <td>
                                                             <asp:TextBox ID="txtTransSpeedRate" CssClass="text" runat="server" Text='<%# Eval("TransSpeedRate")%>'></asp:TextBox>
@@ -330,6 +335,5 @@
                     <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
                     onclick="btnSubmit_Click" />
     </div>
-    </form>
-</body>
-</html>
+</asp:Content>
+

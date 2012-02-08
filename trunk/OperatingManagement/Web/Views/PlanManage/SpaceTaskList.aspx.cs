@@ -102,6 +102,11 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.AddJavaScriptInclude("scripts/pages/SpaceTaskList.aspx.js");
         }
 
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            Page.Response.Redirect(Request.CurrentExecutionFilePath);
+        }
+
 
 
     }
