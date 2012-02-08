@@ -137,6 +137,11 @@ table.edit th,table.edit td{border:solid 1px #ccc;font-weight:normal; vertical-a
 table.edit th{color:#4682b4;text-align:right;background:#f3f4f6;}
 table.edit td{text-align:left;}
 
+table.edit1 {border:solid 1px #ccc;}
+table.edit1 th,table.edit td{border:solid 1px #ccc;font-weight:normal; vertical-align:middle;padding:3px 5px;}
+table.edit1 th{color:#4682b4;text-align:right;background:#f3f4f6;}
+table.edit1 td{text-align:left;}
+
 .gray,.gray th,.gray td{background:#f8f8ff;}
 
 .taskList,.taskList li{margin:0;padding:0; list-style:none; list-style-position:outside}
