@@ -1,24 +1,19 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="HJXQEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.HJXQEdit" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="HJXQEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.HJXQEdit" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-                <style type="text/css">
-        .style1
-        {
-            width: 147px;
-        }
-        .text
-        {}
-    </style>
-    <script src="../../Scripts/calendar.js" type="text/javascript"></script>
-</head>
-<body>
-    <form id="form1" runat="server">
-    <div>
-        <table class="edit" style="width:800px;">
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+<script src="../../Scripts/calendar.js" type="text/javascript"></script>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
+</asp:Content>
+<asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
+    空间环境信息需求
+</asp:Content>
+<asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
+<table class="edit" style="width:800px;">
                 <tr>
             <th class="style1">计划开始时间</th>
             <td>
@@ -141,7 +136,4 @@
             </td>
         </tr>
     </table>
-    </div>
-    </form>
-</body>
-</html>
+</asp:Content>

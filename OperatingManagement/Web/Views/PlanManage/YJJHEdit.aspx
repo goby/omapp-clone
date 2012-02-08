@@ -1,24 +1,20 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="YJJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.YJJHEdit" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="YJJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.YJJHEdit" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+<script src="../../Scripts/calendar.js" type="text/javascript"></script>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
+</asp:Content>
+<asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
+    应用研究计划
+</asp:Content>
+<asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-    <style type="text/css">
-        .style1
-        {
-            width: 147px;
-        }
-        .text
-        {}
-    </style>
-    <script src="../../Scripts/calendar.js" type="text/javascript"></script>
-</head>
-<body>
-    <form id="form1" runat="server">
-    <div>
-        <table class="edit" style="width:800px;">
+<table class="edit" style="width:800px;">
         <tr>
             <th class="style1">计划开始时间</th>
             <td>
@@ -36,8 +32,11 @@
         <tr>
             <th class="style1">信息分类</th>
             <td>
-                <asp:TextBox ID="txtXXFL" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20"></asp:TextBox>
+                <asp:RadioButtonList ID="radBtnXXFL" runat="server" 
+                    RepeatDirection="Horizontal">
+                    <asp:ListItem Value="ZJ">周计划</asp:ListItem>
+                    <asp:ListItem Value="RJ">日计划</asp:ListItem>
+                </asp:RadioButtonList>
             </td>
         </tr>
         <tr>
@@ -50,8 +49,12 @@
         <tr>
             <th class="style1">系统名称</th>
             <td>
-                <asp:TextBox ID="txtSysName" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20"></asp:TextBox>
+                <asp:DropDownList ID="ddlSysName" runat="server" Height="16px" Width="298px">
+                    <asp:ListItem>天基目标观测应用研究分系统</asp:ListItem>
+                    <asp:ListItem>空间遥操作应用研究分系统</asp:ListItem>
+                    <asp:ListItem>空间机动应用研究分系统</asp:ListItem>
+                    <asp:ListItem>仿真推演分系统</asp:ListItem>
+                </asp:DropDownList>
             </td>
         </tr>
         <tr>
@@ -91,7 +94,5 @@
             </td>
         </tr>
     </table>
-    </div>
-    </form>
-</body>
-</html>
+</asp:Content>
+

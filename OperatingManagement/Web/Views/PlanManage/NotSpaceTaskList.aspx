@@ -68,9 +68,10 @@
                     <asp:Button class="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
                         Text="查询" Width="69px" />
                     &nbsp;&nbsp;
-                    <%--<asp:Button ID="btnReset" runat="server" Text="重置" Width="65px" />--%>
-                    <button class="button" onclick="return reset();" style="width: 65px;">
-                        重置</button>
+                    <asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
+                        onclick="btnReset_Click" />
+                    <%--<button class="button" onclick="return reset();" style="width: 65px;">
+                        重置</button>--%>
                 </td>
             </tr>
             <tr>

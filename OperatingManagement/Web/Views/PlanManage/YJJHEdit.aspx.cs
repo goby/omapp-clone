@@ -60,11 +60,13 @@ namespace OperatingManagement.Web.Views.PlanManage
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(HfFileIndex.Value);
             XmlNode root = xmlDoc.SelectSingleNode("应用研究工作计划/XXFL");
-            txtXXFL.Text = root.InnerText;
+            //txtXXFL.Text = root.InnerText;
+            radBtnXXFL.SelectedValue = root.InnerText;
             root = xmlDoc.SelectSingleNode("应用研究工作计划/JXH");
             txtJXH.Text = root.InnerText;
             root = xmlDoc.SelectSingleNode("应用研究工作计划/SysName");
-            txtSysName.Text = root.InnerText;
+            //txtSysName.Text = root.InnerText;
+            ddlSysName.SelectedValue = root.InnerText;
             root = xmlDoc.SelectSingleNode("应用研究工作计划/StartTime");
             txtStartTime.Text = root.InnerText;
             root = xmlDoc.SelectSingleNode("应用研究工作计划/EndTime");
@@ -86,9 +88,9 @@ namespace OperatingManagement.Web.Views.PlanManage
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             YJJH obj = new YJJH();
-            obj.XXFL = txtXXFL.Text;
+            obj.XXFL = radBtnXXFL.SelectedValue;
             obj.JXH = txtJXH.Text;
-            obj.SysName = txtSysName.Text;
+            obj.SysName = ddlSysName.SelectedValue;
             obj.StartTime = txtStartTime.Text;
             obj.EndTime = txtEndTime.Text;
             obj.Task = txtTask.Text;
@@ -104,7 +106,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     TaskID = obj.TaskID,
                     PlanType = "YJJH",
-                    PlanID = 0,
+                    PlanID = Convert.ToInt32(obj.JXH),
                     StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
                     EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
                     SRCType = 0,

@@ -49,8 +49,8 @@
                 <td class="style3" rowspan="3">
                     <asp:RadioButtonList ID="rbtType" runat="server">
                         <asp:ListItem Value="YJJH">应用研究工作计划</asp:ListItem>
-                        <asp:ListItem Value="MBXQ">空间信息需求</asp:ListItem>
-                        <asp:ListItem Value="HJXQ">空间信息需求</asp:ListItem>
+                        <asp:ListItem Value="MBXQ">空间目标信息需求</asp:ListItem>
+                        <asp:ListItem Value="HJXQ">空间环境信息需求</asp:ListItem>
                         <asp:ListItem Value="DMJH">地面站工作计划</asp:ListItem>
                         <asp:ListItem Value="ZXJH">中心运行计划</asp:ListItem>
                         <asp:ListItem Value="TYSJ">仿真推演试验数据</asp:ListItem>
@@ -93,9 +93,10 @@
                     <asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
                         Text="查询" Width="69px" />
                     &nbsp;&nbsp;
-                    <%--<asp:Button ID="btnReset" runat="server" Text="重置" Width="65px" />--%>
-                    <button class="button" onclick="return reset();" style="width: 65px;">
-                        重置</button>
+                    <asp:Button ID="btnReset" CssClass="button" runat="server" Text="重置" 
+                        Width="65px" onclick="btnReset_Click" />
+                    <%--<button class="button" onclick="return reset();" style="width: 65px;">
+                        重置</button>--%>
                         <div style="display:none;">
                         <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
                     <asp:TextBox ID="txtPlanID" runat="server" ClientIDMode="Static"></asp:TextBox>
@@ -135,9 +136,9 @@
                                     <th style="width: 70px;">
                                         编辑
                                     </th>
-                                    <th style="width: 70px;">
+<%--                                    <th style="width: 70px;">
                                         明细
-                                    </th>
+                                    </th>--%>
                                     <th style="width: 70px;">
                                         发送
                                     </th>
@@ -166,10 +167,10 @@
                                     <button class="button" onclick="return showEdit('<%# Eval("ID") %>','<%# Eval("PLANTYPE") %>')">
                                         编辑</button>
                                 </td>
-                                <td>
+<%--                                <td>
                                     <button class="button" onclick="return showDetail('<%# Eval("ID") %>','<%# Eval("PLANTYPE") %>')">
                                         明细</button>
-                                </td>
+                                </td>--%>
                                 <td>
                                     <button class="button" onclick="return showSend('<%# Eval("ID") %>','<%# Eval("PLANID") %>','<%# Eval("PLANTYPE") %>')">
                                         发送计划</button>

@@ -1,10 +1,7 @@
-﻿<%@ Page MaintainScrollPositionOnPostback="true"  Language="C#" AutoEventWireup="true" CodeBehind="ZXJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.ZXJHEdit" %>
+﻿<%@ Page MaintainScrollPositionOnPostback="true" MasterPageFile="~/Site.Master"  Language="C#" AutoEventWireup="true" CodeBehind="ZXJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.ZXJHEdit" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-    <style type="text/css">
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+<style type="text/css">
         .style2
         {
             width: 139px;
@@ -37,11 +34,20 @@
         {
         }
     </style>
-    <script src="../../Scripts/calendar.js" type="text/javascript"></script>
-    </head>
-<body>
-    <form id="form1" runat="server">
-    <div>
+<script src="../../Scripts/calendar.js" type="text/javascript"></script>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
+</asp:Content>
+<asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
+    中心运行计划
+</asp:Content>
+<asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
+
+<div>
         <table cellpadding="0" class="edit" style="width: 800px;">
             <tr>
                 <th>
@@ -675,6 +681,5 @@
                     onclick="btnSubmit_Click" />
 </div>
     </div>
-    </form>
-</body>
-</html>
+</asp:Content>
+
