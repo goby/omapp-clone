@@ -148,7 +148,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     healthStatus.ResourceID = resourceID;
                     healthStatus.ResourceType = resourceType;
                     healthStatus.FunctionType = trHealthStatusFunctionType.Visible ? dplFunctionType.SelectedValue : string.Empty;
-                    healthStatus.Status = trHealthStatusFunctionType.Visible ? Convert.ToInt32(dplHealthStatus.SelectedValue) : 0;
+                    healthStatus.Status = Convert.ToInt32(dplHealthStatus.SelectedValue);
                     healthStatus.BeginTime = beginTime;
                     healthStatus.EndTime = endTime;
                     healthStatus.CreatedTime = DateTime.Now;

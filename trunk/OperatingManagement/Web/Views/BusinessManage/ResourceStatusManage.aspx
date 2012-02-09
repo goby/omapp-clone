@@ -65,19 +65,19 @@
                 <th width="15%">
                     资源类型：
                 </th>
-                <td width="25%">
+                <td width="20%">
                     <asp:DropDownList ID="dplResourceType" runat="server" CssClass="norDpl">
                     </asp:DropDownList>
                 </td>
                 <th width="15%">
                     资源编号：
                 </th>
-                <td width="25%">
+                <td width="20%">
                     <asp:TextBox ID="txtResourceCode" runat="server" CssClass="norText"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtResourceCode" ErrorMessage="（必填）" ValidationGroup="SearchStatus"></asp:RequiredFieldValidator>
                 </td>
-                <td width="20%">
+                <td width="30%">
                 </td>
             </tr>
             <tr>
@@ -99,6 +99,7 @@
                </td>
                <td>
                     <asp:Button ID="btnSearch" runat="server" OnClick="btnSearch_Click" CssClass="button" ValidationGroup="SearchStatus" Text="查 询"/>
+                    <asp:Button ID="btnViewChart" runat="server" OnClick="btnViewChart_Click" CssClass="button" Text="图 示"/>
                     <asp:Button ID="btnAdd" runat="server" OnClick="btnAdd_Click" CssClass="button" Text="添 加"/>
                </td>
             </tr>

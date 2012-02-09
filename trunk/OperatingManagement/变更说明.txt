@@ -17,3 +17,4 @@
 2012-02-08 Web工程里增加了scripts/core/jquery.ui.datepicker.js，scripts/core/jquery.ui.datepicker-zh-CN.js，jquery.ui.widget.js，jquery.ui.core.js
 2012-02-08 修改了WebKernel的AspNetMasterPage.cs，增加scripts/core/jquery.ui.datepicker.js，scripts/core/jquery.ui.datepicker-zh-CN.js，jquery.ui.widget.js，jquery.ui.core.js的使用
 2012-02-08 修改了一些问题。App_Data下增加了PlanParameters.xml 计划管理用到的配置项 by Tangjia
+2012-02-09 更新UP_UseStatus_Search、UP_HealthStatus_Search存储过程，添加了单个资源状态图形显示页面 by liutao

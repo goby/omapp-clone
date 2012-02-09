@@ -100,8 +100,6 @@ end;
 
 
 
-
-
 create or replace procedure UP_HealthStatus_Search
 (
        p_ResourceType TB_HEALTHSTATUS.Resourcetype%type,
@@ -114,32 +112,36 @@ is
 begin
     IF p_ResourceType=1 Then
        open o_Cursor for
-            Select A.*,B.GRNAME as ResourceName,B.GRCODE as ResourceCode 
+            Select A.*,B.GRNAME as ResourceName,B.GRCODE as ResourceCode
             From TB_HEALTHSTATUS A
             Inner join TB_GROUNDRESOURCE B on (A.RESOURCETYPE=1 And A.Resourceid=B.GRID)
             Where ( p_BeginTime>= A.Begintime And p_BeginTime<=A.EndTime)
                Or ( p_EndTime>= A.Begintime And p_EndTime<=A.EndTime)
                Or ( p_BeginTime<=A.Begintime And p_EndTime>=A.EndTime)
+              And (A.Resourceid=p_ResourceID Or p_ResourceID Is Null)
             Order BY A.CreatedTime DESC;
      Elsif p_ResourceType=2 Then
          open o_Cursor for
-            Select A.*,B.ROUTENAME as ResourceName,B.ROUTECODE as ResourceCode 
+            Select A.*,B.ROUTENAME as ResourceName,B.ROUTECODE as ResourceCode
             From TB_HEALTHSTATUS A
             Inner join TB_COMMUNICATIONRESOURCE B on (A.RESOURCETYPE=2 And A.Resourceid=B.CRID)
             Where ( p_BeginTime>= A.Begintime And p_BeginTime<=A.EndTime)
                Or ( p_EndTime>= A.Begintime And p_EndTime<=A.EndTime)
                Or ( p_BeginTime<=A.Begintime And p_EndTime>=A.EndTime)
+              And (A.Resourceid=p_ResourceID Or p_ResourceID Is Null)
             Order BY A.CreatedTime DESC;
       Elsif p_ResourceType=3 Then
          open o_Cursor for
-            Select A.*,B.EQUIPMENTTYPE as ResourceName,B.EQUIPMENTCODE as ResourceCode 
+            Select A.*,B.EQUIPMENTTYPE as ResourceName,B.EQUIPMENTCODE as ResourceCode
             From TB_HEALTHSTATUS A
             Inner join TB_CENTERRESOURCE B on (A.RESOURCETYPE=3 And A.Resourceid=B.CRID)
             Where ( p_BeginTime>= A.Begintime And p_BeginTime<=A.EndTime)
                Or ( p_EndTime>= A.Begintime And p_EndTime<=A.EndTime)
                Or ( p_BeginTime<=A.Begintime And p_EndTime>=A.EndTime)
+              And (A.Resourceid=p_ResourceID Or p_ResourceID Is Null)
             Order BY A.CreatedTime DESC;
       END IF;
-      
+
 end;
+
 
