@@ -176,7 +176,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             OracleParameter o_Cursor = PrepareRefCursor();
             DataSet ds = _dataBase.SpExecuteDataSet("UP_HealthStatus_Search", new OracleParameter[]{
                                         new OracleParameter("p_ResourceType",resourceType),                        
-                                        new OracleParameter("p_ResourceID",resourceID),
+                                        new OracleParameter("p_ResourceID",resourceID < 1 ? DBNull.Value as object : resourceID),
                                         new OracleParameter("p_BeginTime",beginTime),
                                         new OracleParameter("p_EndTime", endTime),
                                         o_Cursor});

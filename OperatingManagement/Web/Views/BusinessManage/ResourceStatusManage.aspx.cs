@@ -113,6 +113,22 @@ namespace OperatingManagement.Web.Views.BusinessManage
             { }
         }
         /// <summary>
+        /// 查看资源状态图形
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnViewChart_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string url = @"~/Views/BusinessManage/ResourceStatusChartManage.aspx?resourcetype={0}&resourcecode={1}&begintime={2}&endtime={3}";
+                url = string.Format(url, Server.UrlEncode(dplResourceType.SelectedValue), Server.UrlEncode(txtResourceCode.Text.Trim()), Server.UrlEncode(txtBeginTime.Text), Server.UrlEncode(txtEndTime.Text));
+                Response.Redirect(url);
+            }
+            catch
+            { }
+        }
+        /// <summary>
         /// 添加资源状态
         /// </summary>
         /// <param name="sender"></param>

@@ -101,15 +101,18 @@
                </td>
                <td>
                     <asp:Button ID="btnSearch" runat="server" OnClick="btnSearch_Click" CssClass="button" ValidationGroup="SearchStatus" Text="查 询"/>
-                    <asp:Button ID="btnAdd" runat="server" OnClick="btnAdd_Click" CssClass="button" Text="添 加"/>
+                    <asp:Button ID="btnAdd" runat="server" OnClick="btnAdd_Click" CssClass="button" Text="添 加" Visible="false" />
                </td>
             </tr>
         </table>
     </div>
      <div id="divResourceStatus" class="index_content_view">
-        <asp:Chart ID="chartResourceStatus" runat="server" Width="900px" OnPreRender="chartResourceStatus_PreRender">
+        <asp:Chart ID="chartResourceStatus" runat="server" Width="1100px" OnPreRender="chartResourceStatus_PreRender">
+        <Titles>
+           <asp:Title Text="资源状态图形显示"></asp:Title>
+        </Titles>
         <Legends>
-            <asp:Legend Name="图例"></asp:Legend>
+            <asp:Legend Name="图例" Title="资源状态图例"></asp:Legend>
         </Legends>
         <Series>
             <asp:Series Name="seriesHealthStatus" ChartType="RangeBar" YValueType="Date" Legend="图例" LegendText="健康状态">
