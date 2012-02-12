@@ -113,7 +113,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 //从资源管理页面跳转过来需要绑定健康、占用状态
                 if (!string.IsNullOrEmpty(ResourceCode))
                 {
-                    BindResourceStatusChart();
+                    divOneResourceStatus.Visible = true;
+                    divAllResourceStatus.Visible = false;
+                    BindOneResourceStatusChart();
                 }
             }
         }
@@ -126,31 +128,45 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                BindResourceStatusChart();
+                //查询所有资源
+                if (string.IsNullOrEmpty(txtResourceCode.Text.Trim()))
+                {
+                    divOneResourceStatus.Visible = false;
+                    divAllResourceStatus.Visible = true;
+                    BindAllResourceStatusChart();
+                }
+                //查询某个资源
+                else
+                {
+                    divOneResourceStatus.Visible = true;
+                    divAllResourceStatus.Visible = false;
+                    BindOneResourceStatusChart();
+                }
             }
             catch
             { }
         }
         /// <summary>
-        /// 添加资源状态
+        /// 返回到资源状态管理页面
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void btnAdd_Click(object sender, EventArgs e)
+        protected void btnReturn_Click(object sender, EventArgs e)
         {
             try
             {
-                string url = @"~/Views/BusinessManage/ResourceStatusAdd.aspx";
+                string url = @"~/Views/BusinessManage/ResourceStatusManage.aspx?resourcetype={0}&resourcecode={1}&begintime={2}&endtime={3}";
+                url = string.Format(url, Server.UrlEncode(dplResourceType.SelectedValue), Server.UrlEncode(txtResourceCode.Text.Trim()), Server.UrlEncode(txtBeginTime.Text), Server.UrlEncode(txtEndTime.Text));
                 Response.Redirect(url);
             }
             catch
             { }
         }
 
-        protected void chartResourceStatus_PreRender(object sender, EventArgs e)
+        protected void chartOneResourceStatus_PreRender(object sender, EventArgs e)
         {
             string healthStatusStr = @"资源类型：{0}，资源名称：{1}，资源编码：{2}，{3}健康状态：{4}，开始时间：{5}，结束时间：{6}";
-            for (int i = 0; i < chartResourceStatus.Series["seriesHealthStatus"].Points.Count; i++)
+            for (int i = 0; i < chartOneResourceStatus.Series["seriesHealthStatus"].Points.Count; i++)
             {
                 string resourceType = SystemParameters.GetSystemParameterText(SystemParametersType.ResourceType, HealthStatusList[i].ResourceType.ToString());
                 string resourceName = HealthStatusList[i].ResourceName;
@@ -159,11 +175,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 string healthStatus = SystemParameters.GetSystemParameterText(SystemParametersType.HealthStatus, HealthStatusList[i].Status.ToString());
                 string beginTime = HealthStatusList[i].BeginTime.ToString("yyyy-MM-dd");
                 string endTime = HealthStatusList[i].EndTime.ToString("yyyy-MM-dd");
-                chartResourceStatus.Series["seriesHealthStatus"].Points[i].ToolTip = string.Format(healthStatusStr, resourceType, resourceName, resourceCode, functionType, healthStatus, beginTime, endTime);
+                chartOneResourceStatus.Series["seriesHealthStatus"].Points[i].Label = HealthStatusList[i].ResourceName;
+                chartOneResourceStatus.Series["seriesHealthStatus"].Points[i].ToolTip = string.Format(healthStatusStr, resourceType, resourceName, resourceCode, functionType, healthStatus, beginTime, endTime);
             }
 
             string useStatusStr = @"资源类型：{0}，资源名称：{1}，资源编码：{2}，占用类型：{3}，开始时间：{4}，结束时间：{5}{6}{7}{8}{9}";
-            for (int i = 0; i < chartResourceStatus.Series["seriesUseStatus"].Points.Count; i++)
+            for (int i = 0; i < chartOneResourceStatus.Series["seriesUseStatus"].Points.Count; i++)
             {
                 string resourceType = SystemParameters.GetSystemParameterText(SystemParametersType.ResourceType, UseStatusList[i].ResourceType.ToString());
                 string resourceName = UseStatusList[i].ResourceName;
@@ -175,7 +192,42 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 string usedCategory = UseStatusList[i].UsedType == 1 ? "，服务种类：" + UseStatusList[i].UsedCategory : "";
                 string usedFor = UseStatusList[i].UsedType == 3 ? "，占用原因：" + UseStatusList[i].UsedFor : "";
                 string canBeUsed = UseStatusList[i].UsedType == 3 ? "，是否可执行任务：" + SystemParameters.GetSystemParameterText(SystemParametersType.UseStatusCanBeUsed, UseStatusList[i].CanBeUsed.ToString()) : "";
-                chartResourceStatus.Series["seriesUseStatus"].Points[i].ToolTip = string.Format(useStatusStr, resourceType, resourceName, resourceCode, usedType, beginTime, endTime, usedBy, usedCategory, usedFor, canBeUsed);
+                chartOneResourceStatus.Series["seriesUseStatus"].Points[i].Label = UseStatusList[i].ResourceName;
+                chartOneResourceStatus.Series["seriesUseStatus"].Points[i].ToolTip = string.Format(useStatusStr, resourceType, resourceName, resourceCode, usedType, beginTime, endTime, usedBy, usedCategory, usedFor, canBeUsed);
+            }
+        }
+
+        protected void chartAllResourceStatus_PreRender(object sender, EventArgs e)
+        {
+            string healthStatusStr = @"资源类型：{0}，资源名称：{1}，资源编码：{2}，{3}健康状态：{4}，开始时间：{5}，结束时间：{6}";
+            for (int i = 0; i < chartAllResourceStatus.Series["seriesHealthStatus"].Points.Count; i++)
+            {
+                string resourceType = SystemParameters.GetSystemParameterText(SystemParametersType.ResourceType, HealthStatusList[i].ResourceType.ToString());
+                string resourceName = HealthStatusList[i].ResourceName;
+                string resourceCode = HealthStatusList[i].ResourceCode;
+                string functionType = HealthStatusList[i].ResourceType.ToString() == "1" ? ("功能类型：" + SystemParameters.GetSystemParameterText(SystemParametersType.HealthStatusFunctionType, HealthStatusList[i].FunctionType) + "，") : "";
+                string healthStatus = SystemParameters.GetSystemParameterText(SystemParametersType.HealthStatus, HealthStatusList[i].Status.ToString());
+                string beginTime = HealthStatusList[i].BeginTime.ToString("yyyy-MM-dd");
+                string endTime = HealthStatusList[i].EndTime.ToString("yyyy-MM-dd");
+                chartAllResourceStatus.Series["seriesHealthStatus"].Points[i].Label = HealthStatusList[i].ResourceName;
+                chartAllResourceStatus.Series["seriesHealthStatus"].Points[i].ToolTip = string.Format(healthStatusStr, resourceType, resourceName, resourceCode, functionType, healthStatus, beginTime, endTime);
+            }
+
+            string useStatusStr = @"资源类型：{0}，资源名称：{1}，资源编码：{2}，占用类型：{3}，开始时间：{4}，结束时间：{5}{6}{7}{8}{9}";
+            for (int i = 0; i < chartAllResourceStatus.Series["seriesUseStatus"].Points.Count; i++)
+            {
+                string resourceType = SystemParameters.GetSystemParameterText(SystemParametersType.ResourceType, UseStatusList[i].ResourceType.ToString());
+                string resourceName = UseStatusList[i].ResourceName;
+                string resourceCode = UseStatusList[i].ResourceCode;
+                string usedType = SystemParameters.GetSystemParameterText(SystemParametersType.UseStatusUsedType, UseStatusList[i].UsedType.ToString());
+                string beginTime = UseStatusList[i].BeginTime.ToString("yyyy-MM-dd");
+                string endTime = UseStatusList[i].EndTime.ToString("yyyy-MM-dd");
+                string usedBy = UseStatusList[i].UsedType == 1 ? "，服务对象：" + UseStatusList[i].UsedBy : "";
+                string usedCategory = UseStatusList[i].UsedType == 1 ? "，服务种类：" + UseStatusList[i].UsedCategory : "";
+                string usedFor = UseStatusList[i].UsedType == 3 ? "，占用原因：" + UseStatusList[i].UsedFor : "";
+                string canBeUsed = UseStatusList[i].UsedType == 3 ? "，是否可执行任务：" + SystemParameters.GetSystemParameterText(SystemParametersType.UseStatusCanBeUsed, UseStatusList[i].CanBeUsed.ToString()) : "";
+                chartAllResourceStatus.Series["seriesUseStatus"].Points[i].Label = UseStatusList[i].ResourceName;
+                chartAllResourceStatus.Series["seriesUseStatus"].Points[i].ToolTip = string.Format(useStatusStr, resourceType, resourceName, resourceCode, usedType, beginTime, endTime, usedBy, usedCategory, usedFor, canBeUsed);
             }
         }
 
@@ -209,9 +261,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
         }
 
         /// <summary>
-        /// 绑定资源状态列表
+        /// 绑定一个资源状态列表
         /// </summary>
-        private void BindResourceStatusChart()
+        private void BindOneResourceStatusChart()
         {
             int resourceType = 1;
             int.TryParse(dplResourceType.SelectedValue, out resourceType);
@@ -262,12 +314,64 @@ namespace OperatingManagement.Web.Views.BusinessManage
             //查询健康状态
             HealthStatus healthStatus = new HealthStatus();
             HealthStatusList = healthStatus.Search(resourceType, resourceID, beginTime, endTime);
-            chartResourceStatus.Series["seriesHealthStatus"].Points.DataBindXY(HealthStatusList, "ResourceName", HealthStatusList, "BeginTime,EndTime");
+            //chartOneResourceStatus.Series["seriesHealthStatus"].Points.DataBindXY(HealthStatusList, "ResourceName", HealthStatusList, "BeginTime,EndTime");
+            chartOneResourceStatus.Series["seriesHealthStatus"].Points.DataBindY(HealthStatusList, "BeginTime,EndTime");
 
             //查询占用状态
             UseStatus useStatus = new UseStatus();
             UseStatusList = useStatus.Search(resourceType, resourceID, beginTime, endTime);
-            chartResourceStatus.Series["seriesUseStatus"].Points.DataBindXY(UseStatusList, "ResourceName", UseStatusList, "BeginTime,EndTime");
+            //chartOneResourceStatus.Series["seriesUseStatus"].Points.DataBindXY(UseStatusList, "ResourceName", UseStatusList, "BeginTime,EndTime");
+            chartOneResourceStatus.Series["seriesUseStatus"].Points.DataBindY(UseStatusList, "BeginTime,EndTime");
+        }
+        /// <summary>
+        /// 绑定全部资源状态列表
+        /// </summary>
+        private void BindAllResourceStatusChart()
+        {
+            int resourceType = 1;
+            int.TryParse(dplResourceType.SelectedValue, out resourceType);
+            if (string.IsNullOrEmpty(txtBeginTime.Text.Trim()))
+            {
+                //起始时间不能为空
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"起始时间不能为空。\")", true);
+                return;
+            }
+            if (string.IsNullOrEmpty(txtEndTime.Text.Trim()))
+            {
+                //结束时间不能为空
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"结束时间不能为空。\")", true);
+                return;
+            }
+            DateTime beginTime = DateTime.Now;
+            DateTime endTime = DateTime.Now.AddDays(7);
+            if (!DateTime.TryParse(txtBeginTime.Text, out beginTime))
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"起始时间格式错误，请正确输入时间（yyyy-MM-dd）。\")", true);
+                return;
+            }
+            if (!DateTime.TryParse(txtEndTime.Text, out endTime))
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"结束时间格式错误，请正确输入时间（yyyy-MM-dd）。\")", true);
+                return;
+            }
+            endTime = endTime.AddSeconds(86399.9);//23:59:59
+            if (beginTime > endTime)
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"结束时间应大于起始时间。\")", true);
+                return;
+            }
+
+            //查询健康状态
+            HealthStatus healthStatus = new HealthStatus();
+            HealthStatusList = healthStatus.Search(resourceType, 0, beginTime, endTime);
+            //chartOneResourceStatus.Series["seriesHealthStatus"].Points.DataBindXY(HealthStatusList, "ResourceName", HealthStatusList, "BeginTime,EndTime");
+            chartAllResourceStatus.Series["seriesHealthStatus"].Points.DataBindY(HealthStatusList, "BeginTime,EndTime");
+
+            //查询占用状态
+            UseStatus useStatus = new UseStatus();
+            UseStatusList = useStatus.Search(resourceType, 0, beginTime, endTime);
+            //chartOneResourceStatus.Series["seriesUseStatus"].Points.DataBindXY(UseStatusList, "ResourceName", UseStatusList, "BeginTime,EndTime");
+            chartAllResourceStatus.Series["seriesUseStatus"].Points.DataBindY(UseStatusList, "BeginTime,EndTime");
         }
         /// <summary>
         /// 获得资源ID
