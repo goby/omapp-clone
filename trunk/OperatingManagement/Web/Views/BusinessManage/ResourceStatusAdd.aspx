@@ -27,13 +27,20 @@
     业务管理&gt;资源状态添加
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
+    <script type="text/javascript">
+        $(function () {
+            $("#txtBeginTime").datepicker();
+            $("#txtEndTime").datepicker();
+        });
+    </script>
     <table class="edit" style="width: 800px;">
         <tr>
             <th style="width: 150px;">
                 状态类型(<span class="red">*</span>)
             </th>
             <td>
-                <asp:DropDownList ID="dplStatusType" runat="server" CssClass="norDpl" AutoPostBack="True" onselectedindexchanged="dplStatusType_SelectedIndexChanged" CausesValidation="false">
+                <asp:DropDownList ID="dplStatusType" runat="server" CssClass="norDpl" AutoPostBack="True"
+                    OnSelectedIndexChanged="dplStatusType_SelectedIndexChanged" CausesValidation="false">
                 </asp:DropDownList>
             </td>
         </tr>
@@ -42,8 +49,8 @@
                 资源类型(<span class="red">*</span>)
             </th>
             <td>
-                <asp:DropDownList ID="dplResourceType" runat="server" CssClass="norDpl" 
-                    AutoPostBack="True" onselectedindexchanged="dplResourceType_SelectedIndexChanged" CausesValidation="false">
+                <asp:DropDownList ID="dplResourceType" runat="server" CssClass="norDpl" AutoPostBack="True"
+                    OnSelectedIndexChanged="dplResourceType_SelectedIndexChanged" CausesValidation="false">
                 </asp:DropDownList>
             </td>
         </tr>
@@ -84,7 +91,8 @@
                 占用类型(<span class="red">*</span>)
             </th>
             <td>
-                <asp:DropDownList ID="dplUsedType" runat="server" CssClass="norDpl" AutoPostBack="True" onselectedindexchanged="dplUsedType_SelectedIndexChanged" CausesValidation="false">
+                <asp:DropDownList ID="dplUsedType" runat="server" CssClass="norDpl" AutoPostBack="True"
+                    OnSelectedIndexChanged="dplUsedType_SelectedIndexChanged" CausesValidation="false">
                 </asp:DropDownList>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="dplUsedType" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
@@ -95,7 +103,7 @@
                 起始时间(<span class="red">*</span>)
             </th>
             <td>
-                <asp:TextBox ID="txtBeginTime" runat="server" onclick="setdayte(this);" CssClass="norText"></asp:TextBox>
+                <asp:TextBox ID="txtBeginTime" runat="server" ClientIDMode="Static" CssClass="norText"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtBeginTime" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
@@ -105,7 +113,7 @@
                 结束时间(<span class="red">*</span>)
             </th>
             <td>
-                <asp:TextBox ID="txtEndTime" runat="server" onclick="setdayte(this);" CssClass="norText"></asp:TextBox>
+                <asp:TextBox ID="txtEndTime" runat="server" ClientIDMode="Static" CssClass="norText"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtEndTime" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
                 <asp:CompareValidator ID="CompareValidator1" runat="server" Display="Dynamic" ForeColor="Red"
