@@ -165,6 +165,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         public override void OnPageLoaded()
         {
+            this.PagePermission = "OMB_GRes.Add";
             this.ShortTitle = "地面站资源添加";
             this.SetTitle();
         }
