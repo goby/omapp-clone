@@ -12,3 +12,10 @@ function hideAllButton() {
     $(":submit").css('display','none'); 
     return false;
 }
+
+function setdayte(o){
+    $(o).datepicker({
+			changeMonth: true,
+			changeYear: true
+		});
+}

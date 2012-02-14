@@ -98,7 +98,7 @@
                   起始时间：
                </th>
                <td>
-                  <asp:TextBox ID="txtBeginTime" runat="server" CssClass="norText" onclick="setday(this);"></asp:TextBox>
+                  <asp:TextBox ID="txtBeginTime" runat="server" CssClass="norText" onclick="setdayte(this);"></asp:TextBox>
                   <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtBeginTime" ErrorMessage="（必填）" ValidationGroup="SearchStatus"></asp:RequiredFieldValidator>
                </td>
@@ -106,7 +106,7 @@
                   结束时间：
                </th>
                <td>
-                 <asp:TextBox ID="txtEndTime" runat="server" CssClass="norText" onclick="setday(this);"></asp:TextBox>
+                 <asp:TextBox ID="txtEndTime" runat="server" CssClass="norText" onclick="setdayte(this);"></asp:TextBox>
                  <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtEndTime" ErrorMessage="（必填）" ValidationGroup="SearchStatus"></asp:RequiredFieldValidator>
                </td>

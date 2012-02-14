@@ -78,7 +78,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.PagePermission = "Plan.Edit";
             this.ShortTitle = "编辑计划";
             base.OnPageLoaded();
-            this.AddJavaScriptInclude("scripts/pages/TYSJEdit.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/PlanManage/TYSJEdit.aspx.js");
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)

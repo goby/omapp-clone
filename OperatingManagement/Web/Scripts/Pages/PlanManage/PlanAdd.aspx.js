@@ -10,3 +10,10 @@
     btn.text("所选设备计划： "+filepath + "    (点击取消选择)");
     return false;
 }
+
+function setdayte(o) {
+    $(o).datepicker({
+        changeMonth: true,
+        changeYear: true
+    });
+}

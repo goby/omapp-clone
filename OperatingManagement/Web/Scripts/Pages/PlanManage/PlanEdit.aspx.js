@@ -9,6 +9,12 @@ function showMsg(msg) {
     });
 }
 
+function setdayte(o){
+    $(o).datepicker({
+			changeMonth: true,
+			changeYear: true
+		});
+}
 
 function showMsgSuccess(){
    return  showMsg('计划已成功保存！');

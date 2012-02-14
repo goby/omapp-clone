@@ -2,8 +2,15 @@
     $('input:text').val('');
 }
 
+function setdayte(o) {
+    $(o).datepicker({
+        changeMonth: true,
+        changeYear: true
+    });
+}
+
 function showDetail(id) {
-    window.location.href = "/Views/PlanManage/OribitalQuantityDetail.aspx?id=" + id;
+    window.location.href = "/Views/PlanManage/YDSJDetail.aspx?id=" + id;
     return false;
 }
 
@@ -13,15 +20,15 @@ function selectAll() {
 }
 
 function checkAll(o) {
-    if ( $('#tbGDs').length>0){
-        $('#tbGDs').find('input:checkbox:not([disabled])').attr('checked', o.checked);
+    if ($('#tbYDSJs').length > 0) {
+        $('#tbYDSJs').find('input:checkbox:not([disabled])').attr('checked', o.checked);
     }
 }
 
-function sendGD1() {
-    var chks = $('#tbGDs').find('input:checkbox:not([disabled])').filter('[checked=true]');
+function sendYDSJ1() {
+    var chks = $('#tbYDSJs').find('input:checkbox:not([disabled])').filter('[checked=true]');
     if (chks.length == 0) {
-        showMsg('请选择您要发送的轨道数据。');
+        showMsg('请选择您要发送的引导数据。');
         return false;
     }
 

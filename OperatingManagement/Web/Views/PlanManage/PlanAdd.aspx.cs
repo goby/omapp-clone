@@ -10,6 +10,7 @@ using OperatingManagement.WebKernel.Route;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.Framework;
+using OperatingManagement.Framework.Storage;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using System.Web.Security;
 using System.Data;
@@ -115,6 +116,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         TaskID = txtTaskID.Text.Trim(),
                         SatID = ddlSat.SelectedValue,
+                        User = PlanParameters.ReadMBXQDefaultUser(),
+                        TargetInfo = PlanParameters.ReadMBXQDefaultTargetInfo(),
                         SatInfos = new List<MBXQSatInfo> {new MBXQSatInfo() }
                     };
                     filepath = fileCreater.CreateMBXQFile(objMBXQ, 0);
@@ -124,6 +127,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         TaskID = txtTaskID.Text.Trim(),
                         SatID = ddlSat.SelectedValue,
+                        User = PlanParameters.ReadHJXQDefaultUser(),
+                        EnvironInfo = PlanParameters.ReadHJXQHJXQDefaultEnvironInfo(),
                         SatInfos = new List<HJXQSatInfo> { new HJXQSatInfo ()}
                     };
                     filepath = fileCreater.CreateHJXQFile(objHJXQ, 0);
@@ -250,7 +255,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.PagePermission = "Plan.Add";
             this.ShortTitle = "新建计划";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/PlanAdd.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/PlanManage/PlanAdd.aspx.js");
         }
 
         protected void txtGetPlanInfo_Click(object sender, EventArgs e)
@@ -267,9 +272,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             startDate = new DateTime(1900, 1, 1);
             endDate = DateTime.Now.AddDays(1);
             string planType = "";
-            string planAging = "";
 
-            List<JH> listDatas = (new JH()).GetJHList(planType, planAging, startDate, endDate);
+            List<JH> listDatas = (new JH()).GetJHList(planType, startDate, endDate);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = 7;
             cpPager.BindToControl = rpDatas;

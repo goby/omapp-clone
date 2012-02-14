@@ -10,6 +10,7 @@ using OperatingManagement.WebKernel.Route;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.Framework;
+using OperatingManagement.Framework.Storage;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using System.Web.Security;
 using System.Data;
@@ -75,18 +76,12 @@ namespace OperatingManagement.Web.Views.PlanManage
             #endregion
 
             #region  空间信息需求
-            //XXXQ objXXXQ = new XXXQ();
-            //objXXXQ.ID = 6;
-            //objXXXQ.Source = "111运控评估中心YKZX(02 04 00 00)";
-            //objXXXQ.Destination = "空间信息综合应用中心ZCZX(02 6F 00 00)";
-            //objXXXQ.TaskID = "700任务(0501)";
-            //objXXXQ.InfoType = "空间目标信息需求(00 70 60 00)";
-            //objXXXQ.Format1 = "User  Time  TargetInfo  TimeSection1  TimeSection2  Sum";
-            //objXXXQ.Format2 = "SatName  InfoName  InfoTime";
-            //objXXXQ.SatID = "TS3";
+
             MBXQ objMBXQ = new MBXQ();
             objMBXQ.TaskID = "700任务(0501)";
             objMBXQ.SatID = "TS3";
+            objMBXQ.User = PlanParameters.ReadMBXQDefaultUser();
+            objMBXQ.TargetInfo = PlanParameters.ReadMBXQDefaultTargetInfo();
             objJH.FileIndex = (new CreatePlanFile()).CreateMBXQFile(objMBXQ,0);
             objJH.TaskID = objMBXQ.TaskID;
             objJH.PlanType = "MBXQ";
@@ -96,6 +91,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             HJXQ objHJXQ = new HJXQ();
             objHJXQ.TaskID = "700任务(0501)";
             objHJXQ.SatID = "TS3";
+            objHJXQ.User = PlanParameters.ReadHJXQDefaultUser();
+            objHJXQ.EnvironInfo = PlanParameters.ReadHJXQHJXQDefaultEnvironInfo();
             objJH.FileIndex = (new CreatePlanFile()).CreateHJXQFile(objHJXQ, 0);
             objJH.TaskID = objHJXQ.TaskID;
             objJH.PlanType = "HJXQ";
@@ -154,7 +151,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.PagePermission = "ExperimentProgram.List";
             this.ShortTitle = "查看试验程序";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/ExperimentProgramList.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/PlanManage/ExperimentProgramList.aspx.js");
         }
 
         protected void btnReset_Click(object sender, EventArgs e)

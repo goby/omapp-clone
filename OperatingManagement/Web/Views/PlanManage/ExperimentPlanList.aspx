@@ -42,19 +42,19 @@
     计划管理 &gt; 查看试验计划
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
-    <table  class="edit"  cellpadding="0">
+    <table  class="edit1"  cellpadding="0" width="850px">
         <tr>
             <th align="right" class="style2">
                 开始日期：
             </th>
             <td class="style3">
-                <asp:TextBox ID="txtStartDate" CssClass="text" runat="server" onclick="setday(this);"></asp:TextBox>
+                <asp:TextBox ID="txtStartDate" CssClass="text" runat="server" onclick="setdayte(this);"></asp:TextBox>
             </td>
             <th align="right" class="style4">
                 结束日期：
             </th>
             <td>
-                <asp:TextBox ID="txtEndDate" CssClass="text" runat="server" onclick="setday(this);"></asp:TextBox>
+                <asp:TextBox ID="txtEndDate" CssClass="text" runat="server" onclick="setdayte(this);"></asp:TextBox>
             </td>
         </tr>
         <tr>

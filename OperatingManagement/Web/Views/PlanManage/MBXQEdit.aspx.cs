@@ -11,6 +11,7 @@ using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.Framework;
+using OperatingManagement.Framework.Storage;
 using System.Web.Security;
 using System.Xml;
 using ServicesKernel.File;
@@ -95,7 +96,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.PagePermission = "Plan.Edit";
             this.ShortTitle = "编辑计划";
             base.OnPageLoaded();
-            this.AddJavaScriptInclude("scripts/pages/MBXQEdit.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/PlanManage/MBXQEdit.aspx.js");
         }
 
         protected void rpMB_ItemCommand(object source, RepeaterCommandEventArgs e)

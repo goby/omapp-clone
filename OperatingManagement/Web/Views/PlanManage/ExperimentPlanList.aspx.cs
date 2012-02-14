@@ -43,7 +43,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             if (!string.IsNullOrEmpty(txtEndDate.Text))
             {
-                endDate = Convert.ToDateTime(txtEndDate);
+                endDate = Convert.ToDateTime(txtEndDate.Text);
             }
             else
             {
@@ -63,7 +63,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.PagePermission = "ExperimentPlan.List";
             this.ShortTitle = "查看试验计划";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/ExperimentPlanList.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/PlanManage/ExperimentPlanList.aspx.js");
         }
 
         protected void btnReset_Click(object sender, EventArgs e)

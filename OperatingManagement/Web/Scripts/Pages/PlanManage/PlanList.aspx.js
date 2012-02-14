@@ -3,6 +3,13 @@
     return false;
 }
 
+function setdayte(o){
+    $(o).datepicker({
+			changeMonth: true,
+			changeYear: true
+		});
+}
+
 function showMsg(msg) {
     $.fn.modal({
         title: '提示信息',
@@ -52,25 +59,32 @@ function showEdit(planid,plantype) {
     switch (plantype)
         {
             case "YJJH":
-            window.open("/Views/PlanManage/YJJHEdit.aspx?id=" + planid ,"",feature2);
+            //window.open("/Views/PlanManage/YJJHEdit.aspx?id=" + planid ,"",feature2);
+            window.location.href = "/Views/PlanManage/YJJHEdit.aspx?id=" + planid;
                 break;
             case "XXXQ":
-            window.open("/Views/PlanManage/XXXQEdit.aspx?id=" + planid ,"",feature1);
+            //window.open("/Views/PlanManage/XXXQEdit.aspx?id=" + planid ,"",feature1);
+            window.location.href = "/Views/PlanManage/XXXQEdit.aspx?id=" + planid;
                 break;
             case "MBXQ":
-            window.open("/Views/PlanManage/MBXQEdit.aspx?id=" + planid ,"",feature1);
+            //window.open("/Views/PlanManage/MBXQEdit.aspx?id=" + planid ,"",feature1);
+            window.location.href = "/Views/PlanManage/MBXQEdit.aspx?id=" + planid;
                 break;
             case "HJXQ":
-            window.open("/Views/PlanManage/HJXQEdit.aspx?id=" + planid ,"",feature1);
+            //window.open("/Views/PlanManage/HJXQEdit.aspx?id=" + planid ,"",feature1);
+            window.location.href = "/Views/PlanManage/HJXQEdit.aspx?id=" + planid;
                 break;
             case "DMJH":
-            window.open("/Views/PlanManage/DMJHEdit.aspx?id=" + planid ,"",feature1);
+            //window.open("/Views/PlanManage/DMJHEdit.aspx?id=" + planid ,"",feature1);
+            window.location.href = "/Views/PlanManage/DMJHEdit.aspx?id=" + planid;
                 break;
             case "ZXJH":
-            window.open("/Views/PlanManage/ZXJHEdit.aspx?id=" + planid ,"",feature1);
+            //window.open("/Views/PlanManage/ZXJHEdit.aspx?id=" + planid ,"",feature1);
+            window.location.href = "/Views/PlanManage/ZXJHEdit.aspx?id=" + planid;
                 break;
             case "TYSJ":
-            window.open("/Views/PlanManage/TYSJEdit.aspx?id=" + planid ,"",feature2);
+            //window.open("/Views/PlanManage/TYSJEdit.aspx?id=" + planid ,"",feature2);
+            window.location.href = "/Views/PlanManage/TYSJEdit.aspx?id=" + planid;
                 break;
         }
   // window.open("/Views/PlanManage/PlanEdit.aspx?planid=" + planid + "&infotype="+plantype,"",feature1);

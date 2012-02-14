@@ -99,7 +99,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.PagePermission = "SpaceTask.List";
             this.ShortTitle = "查看空间机动任务";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/SpaceTaskList.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/PlanManage/SpaceTaskList.aspx.js");
         }
 
         protected void btnReset_Click(object sender, EventArgs e)
