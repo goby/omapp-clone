@@ -2,7 +2,6 @@
     CodeBehind="CenterOutputPolicyAdd.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyAdd" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-
     <style type="text/css">
         .norText
         {
