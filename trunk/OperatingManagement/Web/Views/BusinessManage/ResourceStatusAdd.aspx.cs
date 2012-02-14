@@ -274,6 +274,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         public override void OnPageLoaded()
         {
+            this.PagePermission = "OMB_ResStaMan.View";
             this.ShortTitle = "资源状态添加";
             this.SetTitle();
         }

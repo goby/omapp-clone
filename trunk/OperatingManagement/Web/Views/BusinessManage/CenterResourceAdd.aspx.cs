@@ -133,6 +133,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         public override void OnPageLoaded()
         {
+            this.PagePermission = "OMB_CRes.Add";
             this.ShortTitle = "中心资源添加";
             this.SetTitle();
         }
