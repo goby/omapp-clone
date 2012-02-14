@@ -39,12 +39,13 @@ namespace OperatingManagement.Framework.Storage
             try
             {
                 List<PlanParameter> items = (from q in xe.Elements(elementname)
-                                             select new PlanParameter()
-                                              {
-                                                  Text = q.Attribute("text").Value,
-                                                  Value = q.Attribute("value").Value
-                                                  //Hex = q.Attribute("hex").Value
-                                              }).ToList();
+                             from q1 in q.Elements("item")
+                             select new PlanParameter()
+                             {
+                                 Text = q1.Attribute("text").Value,
+                                 Value = q1.Attribute("value").Value
+                                 //Hex = q1.Attribute("hex").Value
+                             }).ToList();
                 AspNetCache.Instance.Insert(_CacheKey, items, fd);
                 return items;
             }
@@ -126,6 +127,26 @@ namespace OperatingManagement.Framework.Storage
             try
             {
                 item = xe.Element("HJXQDefaultEnvironInfo").Value;
+                return item;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 应用研究工作计划计划序号(用4位整型数表示)
+        /// </summary>
+        /// <returns></returns>
+        public static string ReadYJJHJXH()
+        {
+            string fullFileName = GlobalSettings.MapPath(_FullFileName);
+            XElement xe = XElement.Load(fullFileName);
+            string item;
+            try
+            {
+                item = xe.Element("YJJHJXH").Value;
                 return item;
             }
             catch

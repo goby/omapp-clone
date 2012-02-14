@@ -27,14 +27,14 @@
             <th class="style1">计划开始时间</th>
             <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
-                            MaxLength="10"   onclick="setdayte(this);" Width="300px"></asp:TextBox>
+                            MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
             </td>
         </tr>
         <tr>
             <th class="style1">计划结束时间</th>
             <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" 
-                            MaxLength="10"   onclick="setdayte(this);" Width="300px"></asp:TextBox>
+                            MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
             </td>
         </tr>
         <tr>

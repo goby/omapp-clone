@@ -11,10 +11,12 @@ using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.Framework;
+using OperatingManagement.Framework.Storage;
 using System.Web.Security;
 using System.Xml;
 using System.Collections;
 using ServicesKernel.File;
+using System.Data;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
@@ -104,6 +106,33 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
+                #region 初始化 工作方式，计划性质，工作模式 三个下拉列表的值
+                DropDownList ddlRFS = (DropDownList)e.Item.FindControl("ddlFS") as DropDownList;
+                ddlRFS.DataSource = PlanParameters.ReadParameters("DMJHFS");
+                ddlRFS.DataTextField = "Text";
+                ddlRFS.DataValueField = "Value";
+                ddlRFS.DataBind();
+
+                DropDownList ddlRJXZ = (DropDownList)e.Item.FindControl("ddlJXZ") as DropDownList;
+                ddlRJXZ.DataSource = PlanParameters.ReadParameters("DMJHJXZ");
+                ddlRJXZ.DataTextField = "Text";
+                ddlRJXZ.DataValueField = "Value";
+                ddlRJXZ.DataBind();
+
+                DropDownList ddlRMS = (DropDownList)e.Item.FindControl("ddlMS") as DropDownList;
+                ddlRMS.DataSource = PlanParameters.ReadParameters("DMJHMS");
+                ddlRMS.DataTextField = "Text";
+                ddlRMS.DataValueField = "Value";
+                ddlRMS.DataBind();
+
+                DMJH_Task view = (DMJH_Task)e.Item.DataItem;
+                ddlRFS.SelectedValue = view.WorkWay;
+                ddlRJXZ.SelectedValue = view.PlanPropertiy;
+                ddlRMS.SelectedValue = view.WorkMode;
+
+                #endregion
+
+                #region 添加,删除任务时，从ViewState里获取页面 “实时传输” 和“事后回放”的值
                 if (ViewState["arrR"] != null &&ViewState["arrA"] != null && ViewState["op"] != null)
                 {
                     ArrayList arrR = (ArrayList)ViewState["arrR"];
@@ -239,6 +268,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                     #endregion
                 }
+                #endregion
             }
         }
 
@@ -309,9 +339,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     #region Task
                     rt = new DMJH_Task();
                     TextBox txtTaskFlag = (TextBox)it.FindControl("txtTaskFlag");
-                    TextBox txtWorkWay = (TextBox)it.FindControl("txtWorkWay");
-                    TextBox txtPlanPropertiy = (TextBox)it.FindControl("txtPlanPropertiy");
-                    TextBox txtWorkMode = (TextBox)it.FindControl("txtWorkMode");
+                    DropDownList txtWorkWay = (DropDownList)it.FindControl("ddlFS");
+                    DropDownList txtPlanPropertiy = (DropDownList)it.FindControl("ddlJXZ");
+                    DropDownList txtWorkMode = (DropDownList)it.FindControl("ddlMS");
                     TextBox txtPreStartTime = (TextBox)it.FindControl("txtPreStartTime");
                     TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
                     TextBox txtTrackStartTime = (TextBox)it.FindControl("txtTrackStartTime");
@@ -321,9 +351,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
 
                     rt.TaskFlag = txtTaskFlag.Text;
-                    rt.WorkWay = txtWorkWay.Text;
-                    rt.PlanPropertiy = txtPlanPropertiy.Text;
-                    rt.WorkMode = txtWorkMode.Text;
+                    rt.WorkWay = txtWorkWay.SelectedValue;
+                    rt.PlanPropertiy = txtPlanPropertiy.SelectedValue;
+                    rt.WorkMode = txtWorkMode.SelectedValue;
                     rt.PreStartTime = txtPreStartTime.Text;
                     rt.StartTime = txtStartTime.Text;
                     rt.TrackStartTime = txtTrackStartTime.Text;
@@ -337,9 +367,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 rt = new DMJH_Task();
                 rt.TaskFlag = "";
-                rt.WorkWay = "";
-                rt.PlanPropertiy = "";
-                rt.WorkMode = "";
+                //rt.WorkWay = "";
+                //rt.PlanPropertiy = "";
+                //rt.WorkMode = "";
                 rt.PreStartTime = "";
                 rt.StartTime = "";
                 rt.TrackStartTime = "";
@@ -610,14 +640,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.DateTime = txtDatetime.Text;
             obj.StationName = txtStationName.Text;
             obj.EquipmentID = txtEquipmentID.Text;
-            obj.TaskCount = txtTaskCount.Text;
+           // obj.TaskCount = txtTaskCount.Text;
             obj.DMJHTasks = new List<DMJH_Task>();
-            //{ 
-            //    new DMJH_Task{
-            //        ReakTimeTransfors=new List<DMJH_Task_ReakTimeTransfor>(),
-            //        AfterFeedBacks = new List<DMJH_Task_AfterFeedBack>()
-            //    } 
-            //};
 
             DMJH_Task rt;
             DMJH_Task_ReakTimeTransfor rtt;
@@ -628,9 +652,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                 #region task
                 rt = new DMJH_Task();
                 TextBox txtTaskFlag = (TextBox)it.FindControl("txtTaskFlag");
-                TextBox txtWorkWay = (TextBox)it.FindControl("txtWorkWay");
-                TextBox txtPlanPropertiy = (TextBox)it.FindControl("txtPlanPropertiy");
-                TextBox txtWorkMode = (TextBox)it.FindControl("txtWorkMode");
+                DropDownList txtWorkWay = (DropDownList)it.FindControl("ddlFS");
+                DropDownList txtPlanPropertiy = (DropDownList)it.FindControl("ddlJXZ");
+                DropDownList txtWorkMode = (DropDownList)it.FindControl("ddlMS");
                 TextBox txtPreStartTime = (TextBox)it.FindControl("txtPreStartTime");
                 TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
                 TextBox txtTrackStartTime = (TextBox)it.FindControl("txtTrackStartTime");
@@ -639,9 +663,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                 TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
                 TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
                 rt.TaskFlag = txtTaskFlag.Text;
-                rt.WorkWay = txtWorkWay.Text;
-                rt.PlanPropertiy = txtPlanPropertiy.Text;
-                rt.WorkMode = txtWorkMode.Text;
+                rt.WorkWay = txtWorkWay.SelectedValue;
+                rt.PlanPropertiy = txtPlanPropertiy.SelectedValue;
+                rt.WorkMode = txtWorkMode.SelectedValue;
                 rt.PreStartTime = txtPreStartTime.Text;
                 rt.StartTime = txtStartTime.Text;
                 rt.TrackStartTime = txtTrackStartTime.Text;
@@ -700,7 +724,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 #endregion
                 obj.DMJHTasks.Add(rt);
             }
-
+            obj.TaskCount = obj.DMJHTasks.Count.ToString();
 
 
             CreatePlanFile creater = new CreatePlanFile();

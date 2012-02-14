@@ -1,6 +1,13 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="HJXQEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.HJXQEdit" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <style type="text/css">
+
+    .style3
+    {
+        color: #FF0000;
+    }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
@@ -17,14 +24,14 @@
             <th class="style1">计划开始时间</th>
             <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
-                            MaxLength="10"   onclick="setdayte(this);" Width="300px"></asp:TextBox>
+                            MaxLength="10"  ClientIDMode="Static"  Width="300px"></asp:TextBox>
             </td>
         </tr>
         <tr>
             <th class="style1">计划结束时间</th>
             <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" 
-                            MaxLength="10"   onclick="setdayte(this);" Width="300px"></asp:TextBox>
+                            MaxLength="10"  ClientIDMode="Static"  Width="300px"></asp:TextBox>
             </td>
         </tr>
         <tr>
@@ -38,7 +45,8 @@
             <th class="style1">需求制定时间</th>
             <td>
                 <asp:TextBox ID="txtHJTime" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20"></asp:TextBox>
+                    MaxLength="12"></asp:TextBox>
+                    &nbsp;<span class="style3">格式：YYYYMMDDHHMM</span>
             </td>
         </tr>
         <tr>
@@ -51,22 +59,24 @@
         <tr>
             <th class="style1">开始时间</th>
             <td>
-                <asp:TextBox ID="txtHJTimeSection1" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20"></asp:TextBox>
+                <asp:TextBox ID="txtHJTimeSection1" runat="server" ClientIDMode="Static" Width="300px" CssClass="text" 
+                    MaxLength="8"></asp:TextBox>
+                    &nbsp;<span class="style3">格式：YYYYMMDD</span>
             </td>
         </tr>
         <tr>
             <th class="style1">结束时间</th>
             <td>
-                <asp:TextBox ID="txtHJTimeSection2" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20"></asp:TextBox>
+                <asp:TextBox ID="txtHJTimeSection2" runat="server" ClientIDMode="Static" Width="300px" CssClass="text" 
+                    MaxLength="8"></asp:TextBox>
+                    &nbsp;<span class="style3">格式：YYYYMMDD</span>
             </td>
         </tr>
         <tr>
             <th class="style1">信息条数</th>
             <td>
                 <asp:TextBox ID="txtHJSum" runat="server" Width="300px"  CssClass="text" 
-                    MaxLength="50"></asp:TextBox>
+                    MaxLength="50" ReadOnly="True"></asp:TextBox>
             </td>
         </tr>
         <tr>

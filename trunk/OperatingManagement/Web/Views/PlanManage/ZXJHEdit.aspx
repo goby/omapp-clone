@@ -53,13 +53,13 @@
                     计划开始时间</th>
                 <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
-                            MaxLength="10"   onclick="setdayte(this);"></asp:TextBox>
+                            MaxLength="10"   ClientIDMode="Static"></asp:TextBox>
                 </td>
                 <th>
                     计划结束时间</th>
                 <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" 
-                            MaxLength="10"   onclick="setdayte(this);"></asp:TextBox>
+                            MaxLength="10"   ClientIDMode="Static"></asp:TextBox>
                 </td>
             </tr>
             <tr>

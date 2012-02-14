@@ -2,6 +2,7 @@
     CodeBehind="CenterOutputPolicyAdd.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyAdd" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+
     <style type="text/css">
         .norText
         {
@@ -27,6 +28,12 @@
     中心输出策略管理&gt;中心输出策略添加
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
+    <script type="text/javascript">
+        $(function () {
+            $("#txtEffectTime").datepicker();
+            $("#txtDefectTime").datepicker();
+        });
+    </script>
     <table class="edit" style="width: 800px;">
         <tr>
             <th style="width: 150px;">
@@ -88,7 +95,7 @@
                 生效时间(<span class="red">*</span>)
             </th>
             <td>
-                <asp:TextBox ID="txtEffectTime" runat="server" onclick="setdayte(this);" CssClass="norText"></asp:TextBox>
+                <asp:TextBox ID="txtEffectTime" runat="server" ClientIDMode="Static" CssClass="norText"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtEffectTime" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
@@ -98,7 +105,7 @@
                 失效时间(<span class="red">*</span>)
             </th>
             <td>
-                <asp:TextBox ID="txtDefectTime" runat="server" onclick="setdayte(this);" CssClass="norText"></asp:TextBox>
+                <asp:TextBox ID="txtDefectTime" runat="server" ClientIDMode="Static" CssClass="norText"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtDefectTime" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
                 <asp:CompareValidator ID="CompareValidator1" runat="server" Display="Dynamic" ForeColor="Red"

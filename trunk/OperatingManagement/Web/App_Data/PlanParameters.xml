@@ -56,4 +56,5 @@
         <item text="探索四号卫星" value="探索五号卫星"></item>
         <item text="探索五号卫星" value="探索五号卫星"></item>
     </TYSJSatName>
+    <YJJHJXH description="应用研究工作计划计划序号">0020</YJJHJXH>
 </PlanParameters>

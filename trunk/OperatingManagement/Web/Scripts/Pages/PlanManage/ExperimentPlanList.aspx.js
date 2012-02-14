@@ -1,4 +1,9 @@
 ﻿
+$(function () {
+    $("#txtStartDate").datepicker();
+    $("#txtEndDate").datepicker();
+});
+
 function resetAll() {
     $('input:text').val('');
     return false;

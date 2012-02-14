@@ -20,13 +20,13 @@
                     <th style="width: 140px">
                         开始日期：</th>
                     <td>
-                        <asp:TextBox ID="txtStartDate" runat="server" CssClass="text" onclick="setdayte(this);"></asp:TextBox>
+                        <asp:TextBox ID="txtStartDate" ClientIDMode="Static"   runat="server" CssClass="text"></asp:TextBox>
                     </td>
                     <th>
                         结束日期：
                     </th>
                     <td>
-                        <asp:TextBox ID="txtEndDate" runat="server" CssClass="text" onclick="setdayte(this);"></asp:TextBox>
+                        <asp:TextBox ID="txtEndDate" ClientIDMode="Static"   runat="server" CssClass="text"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>

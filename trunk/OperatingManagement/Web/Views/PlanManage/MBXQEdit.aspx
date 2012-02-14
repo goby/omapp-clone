@@ -25,14 +25,14 @@
             <th class="style1">计划开始时间</th>
             <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
-                            MaxLength="10"   onclick="setdayte(this);" Width="300px"></asp:TextBox>
+                            MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
             </td>
         </tr>
         <tr>
             <th class="style1">计划结束时间</th>
             <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" 
-                            MaxLength="10"   onclick="setdayte(this);" Width="300px"></asp:TextBox>
+                            MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
             </td>
         </tr>
         <tr>
@@ -60,14 +60,14 @@
         <tr>
             <th class="style1">开始时间</th>
             <td>
-                <asp:TextBox ID="txtMBTimeSection1" runat="server"   onclick="setdayte(this);" Width="300px" CssClass="text" 
+                <asp:TextBox ID="txtMBTimeSection1" runat="server"   ClientIDMode="Static" Width="300px" CssClass="text" 
                     MaxLength="8"></asp:TextBox>
             &nbsp;<span class="style3">格式：YYYYMMDD</span></td>
         </tr>
         <tr>
             <th class="style1">结束时间</th>
             <td>
-                <asp:TextBox ID="txtMBTimeSection2" runat="server"   onclick="setdayte(this);" Width="300px" CssClass="text" 
+                <asp:TextBox ID="txtMBTimeSection2" runat="server"   ClientIDMode="Static" Width="300px" CssClass="text" 
                     MaxLength="8"></asp:TextBox>
             &nbsp;<span class="style3">格式：YYYYMMDD</span></td>
         </tr>
@@ -75,7 +75,7 @@
             <th class="style1">信息条数</th>
             <td>
                 <asp:TextBox ID="txtMBSum" runat="server" Width="300px"  CssClass="text" 
-                    MaxLength="50"></asp:TextBox>
+                    MaxLength="50" ReadOnly="True"></asp:TextBox>
             </td>
         </tr>
         <tr>

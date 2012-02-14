@@ -1,4 +1,9 @@
-﻿function showMsg(msg) {
+﻿$(function () {
+    $("#txtPlanStartTime").datepicker();
+    $("#txtPlanEndTime").datepicker();
+});
+
+function showMsg(msg) {
     $.fn.modal({
         title: '提示信息',
         content: function (o, e) {
