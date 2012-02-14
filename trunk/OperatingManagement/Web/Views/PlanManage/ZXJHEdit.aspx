@@ -34,7 +34,6 @@
         {
         }
     </style>
-<script src="../../Scripts/calendar.js" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
@@ -54,13 +53,13 @@
                     计划开始时间</th>
                 <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
-                            MaxLength="10"   onclick="setday(this);"></asp:TextBox>
+                            MaxLength="10"   onclick="setdayte(this);"></asp:TextBox>
                 </td>
                 <th>
                     计划结束时间</th>
                 <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" 
-                            MaxLength="10"   onclick="setday(this);"></asp:TextBox>
+                            MaxLength="10"   onclick="setdayte(this);"></asp:TextBox>
                 </td>
             </tr>
             <tr>

@@ -138,7 +138,7 @@ table.edit th{color:#4682b4;text-align:right;background:#f3f4f6;}
 table.edit td{text-align:left;}
 
 table.edit1 {border:solid 1px #ccc;}
-table.edit1 th,table.edit td{border:solid 1px #ccc;font-weight:normal; vertical-align:middle;padding:3px 5px;}
+table.edit1 th,table.edit1 td{border:solid 1px #ccc;font-weight:normal; vertical-align:middle;padding:3px 5px;}
 table.edit1 th{color:#4682b4;text-align:right;background:#f3f4f6;}
 table.edit1 td{text-align:left;}
 

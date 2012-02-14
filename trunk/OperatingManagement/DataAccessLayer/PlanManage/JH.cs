@@ -84,11 +84,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 根据时间及类型获取计划列表
         /// </summary>
         /// <param name="planType"></param>
-        /// <param name="planAging"></param>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
-        public List<JH> GetJHList(string planType, string planAging, DateTime startDate, DateTime endDate)
+        public List<JH> GetJHList(string planType,  DateTime startDate, DateTime endDate)
         {
             DataSet ds = null;
 
@@ -96,7 +95,6 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 ds.Tables.Add();
                 OracleCommand command = _database.GetStoreProcCommand(GET_PlanList);
                 _database.AddInParameter(command, "p_planType", OracleDbType.Varchar2, planType);
-                _database.AddInParameter(command, "p_planAging", OracleDbType.Varchar2, planAging);
                 if (startDate == DateTime.MinValue)
                 {
                     _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);

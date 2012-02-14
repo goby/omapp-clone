@@ -2,10 +2,6 @@
     CodeBehind="PlanAdd.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.PlanAdd" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <style type="text/css">
-        .text
-        {}
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
@@ -18,7 +14,7 @@
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
 
-    <table class="edit" style="width:800px;">
+    <table class="edit1" style="width:800px;">
         <tr>
             <th style="width:100px;">
                 任务代号(<span class="red">*</span>)</th>
@@ -79,7 +75,7 @@
                 开始时间(<span class="red">*</span>)</th>
             <td>
                 <asp:TextBox ID="txtStartTime" runat="server" CssClass="text" 
-                     Width="300px" onclick="setday(this);"></asp:TextBox>
+                     Width="300px" onclick="setdayte(this);"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfv4" runat="server" 
                     ControlToValidate="txtStartTime" Display="Dynamic" ErrorMessage="必须填写“开始时间”。" 
                     ForeColor="Red"></asp:RequiredFieldValidator>
@@ -91,7 +87,7 @@
             <td>
 
                 <asp:TextBox ID="txtEndTime" runat="server" CssClass="text" 
-                     Width="300px"  onclick="setday(this);"></asp:TextBox>
+                     Width="300px"  onclick="setdayte(this);"></asp:TextBox>
 
                 <asp:RequiredFieldValidator ID="rfv5" runat="server" 
                     ControlToValidate="txtEndTime" Display="Dynamic" ErrorMessage="必须填写“结束时间”。" 

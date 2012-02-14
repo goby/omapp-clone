@@ -70,6 +70,7 @@
     <Compile Include="Components\CstMenu.cs" />
     <Compile Include="Components\OrbitParameter.cs" />
     <Compile Include="Components\SiteSetting.cs" />
+    <Compile Include="Components\PlanParameter.cs" />
     <Compile Include="Core\AspNetConfig.cs" />
     <Compile Include="Core\AspNetContext.cs" />
     <Compile Include="Core\AspNetCookie.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Reflector\AspNetSetting.cs" />
     <Compile Include="Storage\OrbitParameters.cs" />
     <Compile Include="Storage\Menus.cs" />
+    <Compile Include="Storage\PlanParameters.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

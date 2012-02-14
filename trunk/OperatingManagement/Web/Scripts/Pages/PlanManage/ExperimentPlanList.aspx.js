@@ -8,3 +8,4 @@ function showDetail(id) {
     window.open("/Views/PlanManage/ExperimentPlanDetail.aspx?id=" + id);
     return false;
 }
+

@@ -2,6 +2,13 @@
     $('input:text').val('');
 }
 
+function setdayte(o) {
+    $(o).datepicker({
+        changeMonth: true,
+        changeYear: true
+    });
+}
+
 function showDetail(id) {
     window.location.href = "/Views/PlanManage/YDSJDetail.aspx?id=" + id;
     return false;

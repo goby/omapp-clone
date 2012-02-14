@@ -59,7 +59,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.PagePermission = "Plan.Edit";
             this.ShortTitle = "编辑计划";
             base.OnPageLoaded();
-            this.AddJavaScriptInclude("scripts/pages/PlanEdit.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/PlanManage/PlanEdit.aspx.js");
         }
 
     }

@@ -291,9 +291,11 @@ namespace ServicesKernel.File
             xmlWriter.WriteString(obj.Sum);
             xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("卫星");
+           // xmlWriter.WriteStartElement("卫星");
             for (int i = 1; i <= obj.SatInfos.Count; i++)
             {
+                xmlWriter.WriteStartElement("卫星");
+
                 xmlWriter.WriteStartElement("SatName");
                 xmlWriter.WriteString(obj.SatInfos[i - 1].SatName);
                 xmlWriter.WriteEndElement();
@@ -305,8 +307,10 @@ namespace ServicesKernel.File
                 xmlWriter.WriteStartElement("InfoTime");
                 xmlWriter.WriteString(obj.SatInfos[i - 1].InfoTime);
                 xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteEndElement();
             }
-            xmlWriter.WriteEndElement();
+           // xmlWriter.WriteEndElement();
 
 
             xmlWriter.WriteEndElement();
@@ -353,9 +357,11 @@ namespace ServicesKernel.File
             xmlWriter.WriteString(obj.Sum);
             xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("卫星");
+            //xmlWriter.WriteStartElement("卫星");
             for (int i = 1; i <= obj.SatInfos.Count; i++)
             {
+                xmlWriter.WriteStartElement("卫星");
+
                 xmlWriter.WriteStartElement("SatName");
                 xmlWriter.WriteString(obj.SatInfos[i - 1].SatName);
                 xmlWriter.WriteEndElement();
@@ -371,8 +377,10 @@ namespace ServicesKernel.File
                 xmlWriter.WriteStartElement("InfoTime");
                 xmlWriter.WriteString(obj.SatInfos[i - 1].InfoTime);
                 xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteEndElement();
             }
-            xmlWriter.WriteEndElement();
+            //xmlWriter.WriteEndElement();
 
             xmlWriter.WriteEndElement();
             #endregion

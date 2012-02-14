@@ -24,7 +24,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.PagePermission = "Plan.List";
             this.ShortTitle = "查询计划";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/PlanList.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/PlanManage/PlanList.aspx.js");
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -67,9 +67,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 endDate = DateTime.Now.AddDays(1);
             }
             string planType = rbtType.Text;
-            string planAging = ddlAging.SelectedValue;
 
-            List<JH> listDatas = (new JH()).GetJHList(planType, planAging, startDate, endDate);
+            List<JH> listDatas = (new JH()).GetJHList(planType, startDate, endDate);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
             cpPager.BindToControl = rpDatas;

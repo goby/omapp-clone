@@ -97,7 +97,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.PagePermission = "OribitalQuantity.List";
             this.ShortTitle = "查看卫星轨道根数";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/OribitalQuantityList.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/PlanManage/OribitalQuantityList.aspx.js");
         }
 
         protected void btnReset_Click(object sender, EventArgs e)

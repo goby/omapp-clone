@@ -81,7 +81,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.ShortTitle = "编辑计划";
             base.OnPageLoaded();
            //this.SetTitle();
-           this.AddJavaScriptInclude("scripts/pages/YJJHEdit.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/PlanManage/YJJHEdit.aspx.js");
 
         }
 

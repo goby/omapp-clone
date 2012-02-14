@@ -26,7 +26,7 @@
                 时间
             </th>
             <td>
-                <asp:TextBox ID="txtSYTime" runat="server" CssClass="text" MaxLength="10" onclick="setday(this);"
+                <asp:TextBox ID="txtSYTime" runat="server" CssClass="text" MaxLength="10" onclick="setdayte(this);"
                     Width="300px"></asp:TextBox>
             </td>
         </tr>
@@ -48,8 +48,7 @@
             </td>
         </tr>
     </table>
-    <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="Repeater1_ItemDataBound"
-        OnItemCommand="Repeater1_ItemCommand">
+    <asp:Repeater ID="Repeater1" runat="server">
         <ItemTemplate>
             <table class="edit1" style="width: 800px;">
                 <tr>
