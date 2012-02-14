@@ -13,19 +13,19 @@
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
 
-<table class="edit" style="width:800px;">
+<table class="edit1" style="width:800px;">
         <tr>
             <th class="style1">计划开始时间</th>
             <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
-                            MaxLength="10"   onclick="setdayte(this);" Width="300px"></asp:TextBox>
+                            MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
             </td>
         </tr>
         <tr>
             <th class="style1">计划结束时间</th>
             <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" 
-                            MaxLength="10"   onclick="setdayte(this);" Width="300px"></asp:TextBox>
+                            MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
             </td>
         </tr>
         <tr>
@@ -61,14 +61,14 @@
             <td>
                 <asp:TextBox ID="txtStartTime" runat="server" Width="300px" CssClass="text" 
                     MaxLength="20"></asp:TextBox>
-            </td>
+            &nbsp;<span style="color:Red;">格式：YYMMDDHHmmss</span></td>
         </tr>
         <tr>
             <th class="style1">试验结束时间</th>
             <td>
                 <asp:TextBox ID="txtEndTime" runat="server" Width="300px" CssClass="text" 
                     MaxLength="20"></asp:TextBox>
-            </td>
+            &nbsp;<span style="color:Red;">格式：YYMMDDHHmmss</span></td>
         </tr>
         <tr>
             <th class="style1">系统任务</th>

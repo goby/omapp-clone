@@ -52,13 +52,13 @@
                     开始日期：
                 </th>
                 <td class="style3">
-                    <asp:TextBox ID="txtStartDate" CssClass="text" runat="server" onclick="setdayte(this);"></asp:TextBox>
+                    <asp:TextBox ID="txtStartDate"  ClientIDMode="Static"   CssClass="text" runat="server"></asp:TextBox>
                 </td>
                 <th align="right" class="style4">
                     结束日期：
                 </th>
                 <td>
-                    <asp:TextBox ID="txtEndDate" CssClass="text" runat="server" onclick="setdayte(this);"></asp:TextBox>
+                    <asp:TextBox ID="txtEndDate" ClientIDMode="Static"   CssClass="text" runat="server"></asp:TextBox>
                 </td>
             </tr>
             <tr>

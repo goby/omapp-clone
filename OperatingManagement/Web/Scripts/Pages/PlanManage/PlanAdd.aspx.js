@@ -1,4 +1,9 @@
-﻿function SelectSBJH(id, fileindex) {
+﻿$(function () {
+    $("#txtStartTime").datepicker();
+    $("#txtEndTime").datepicker();
+});
+
+function SelectSBJH(id, fileindex) {
     //    var divData = $('#divData');
     //    divData.hide();
     //    var indicator = $('#tartgetPanel');

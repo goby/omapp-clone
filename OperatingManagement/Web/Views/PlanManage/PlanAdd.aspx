@@ -75,7 +75,7 @@
                 开始时间(<span class="red">*</span>)</th>
             <td>
                 <asp:TextBox ID="txtStartTime" runat="server" CssClass="text" 
-                     Width="300px" onclick="setdayte(this);"></asp:TextBox>
+                     Width="300px" ClientIDMode="Static"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfv4" runat="server" 
                     ControlToValidate="txtStartTime" Display="Dynamic" ErrorMessage="必须填写“开始时间”。" 
                     ForeColor="Red"></asp:RequiredFieldValidator>
@@ -87,7 +87,7 @@
             <td>
 
                 <asp:TextBox ID="txtEndTime" runat="server" CssClass="text" 
-                     Width="300px"  onclick="setdayte(this);"></asp:TextBox>
+                     Width="300px"  ClientIDMode="Static"></asp:TextBox>
 
                 <asp:RequiredFieldValidator ID="rfv5" runat="server" 
                     ControlToValidate="txtEndTime" Display="Dynamic" ErrorMessage="必须填写“结束时间”。" 

@@ -167,7 +167,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.TargetInfo = txtMBTargetInfo.Text;
             obj.TimeSection1 = txtMBTimeSection1.Text;
             obj.TimeSection2 = txtMBTimeSection2.Text;
-            obj.Sum = txtMBSum.Text;
+            //obj.Sum = txtMBSum.Text;
             obj.SatInfos = new List<MBXQSatInfo>();
 
             MBXQSatInfo dm;
@@ -184,6 +184,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 obj.SatInfos.Add(dm);
             }
+            obj.Sum = obj.SatInfos.Count.ToString(); //信息条数，自动计算得到
 
             CreatePlanFile creater = new CreatePlanFile();
             if (hfOverDate.Value == "true")

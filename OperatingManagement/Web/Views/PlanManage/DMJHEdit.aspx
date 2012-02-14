@@ -29,13 +29,13 @@
                     计划开始时间</th>
                 <td class="style2">
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
-                            MaxLength="10"   onclick="setdayte(this);"></asp:TextBox>
+                            MaxLength="10"  ClientIDMode="Static"  ></asp:TextBox>
                 </td>
                 <th>
                     计划结束时间</th>
                 <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" 
-                            MaxLength="10"   onclick="setdayte(this);"></asp:TextBox>
+                            MaxLength="10"    ClientIDMode="Static"></asp:TextBox>
                     </td>
             </tr>
             <tr>
@@ -71,7 +71,7 @@
                     任务个数
                 </th>
                 <td class="style2">
-                    <asp:TextBox ID="txtTaskCount" CssClass="text"  runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtTaskCount" CssClass="text"  runat="server" ReadOnly="True"></asp:TextBox>
                 </td>
                 <th>
                      <asp:HiddenField ID="HfID" runat="server" />
@@ -83,7 +83,6 @@
                 <asp:HiddenField ID="hfOverDate" runat="server" />
                 </td>
             </tr>
-            
         </table>
         <table class="edit" style="width: 750px;">
             <tr>
@@ -107,7 +106,10 @@
                                         工作方式
                                     </th>
                                     <td>
-                                        <asp:TextBox ID="txtWorkWay" CssClass="text" runat="server" Text='<%# Eval("WorkWay")%>'></asp:TextBox>
+                                    <asp:DropDownList ID="ddlFS" runat="server" DataTextField="Text" 
+                                        DataValueField="Value"  Width="150px">
+                                    </asp:DropDownList>
+                                        <%--<asp:TextBox ID="txtWorkWay" CssClass="text" runat="server" Text='<%# Eval("WorkWay")%>'></asp:TextBox>--%>
                                     </td>
                                 </tr>
                                 <tr>
@@ -115,13 +117,19 @@
                                         计划性质
                                     </th>
                                     <td>
-                                        <asp:TextBox ID="txtPlanPropertiy" CssClass="text" runat="server" Text='<%# Eval("PlanPropertiy")%>'></asp:TextBox>
+                                    <asp:DropDownList ID="ddlJXZ" runat="server" DataTextField="Text" 
+                                        DataValueField="Value"  Width="150px">
+                                    </asp:DropDownList>
+                                       <%-- <asp:TextBox ID="txtPlanPropertiy" CssClass="text" runat="server" Text='<%# Eval("PlanPropertiy")%>'></asp:TextBox>--%>
                                     </td>
                                     <th>
                                         工作模式
                                     </th>
                                     <td>
-                                        <asp:TextBox ID="txtWorkMode" CssClass="text" runat="server" Text='<%# Eval("WorkMode")%>'></asp:TextBox>
+                                    <asp:DropDownList ID="ddlMS" runat="server" DataTextField="Text" 
+                                        DataValueField="Value"  Width="150px">
+                                    </asp:DropDownList>
+                                        <%--<asp:TextBox ID="txtWorkMode" CssClass="text" runat="server" Text='<%# Eval("WorkMode")%>'></asp:TextBox>--%>
                                     </td>
                                 </tr>
                                 <tr>
