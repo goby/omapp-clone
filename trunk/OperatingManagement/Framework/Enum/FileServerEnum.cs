@@ -82,11 +82,11 @@ namespace OperatingManagement.Framework
         /// <summary>
         /// 数据帧
         /// </summary>
-        DataFrame = 0,
+        DataFrame = 9,
         /// <summary>
         /// 文件
         /// </summary>
-        File = 1
+        File = 0
     }
 
     /// <summary>

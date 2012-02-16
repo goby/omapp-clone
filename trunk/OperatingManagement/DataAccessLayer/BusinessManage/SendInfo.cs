@@ -192,7 +192,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         {
             OracleParameter p = PrepareRefCursor();
             DataSet ds = _database.SpExecuteDataSet(s_up_sendinfo_selectbydatatype, new OracleParameter[] {
-                new OracleParameter("p_DataType", dataType),
+                new OracleParameter("p_DataType", Convert.ToInt32(dataType)),
                 p
             });
             List<SendInfo> sinfos = new List<SendInfo>();
@@ -291,7 +291,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// get the File SendInfos by XXTYPE id and submittime.
         /// </summary>
         /// <returns></returns>
-        public List<SendInfo> SelectFileSendInfoByXXTypeandTime(int xXTypeID, DateTime beginTime, DateTime endTime)
+        public List<SendInfo> SearchFileSendInfo(int xXTypeID, DateTime beginTime, DateTime endTime)
         {
             return SelectSendInfoByXXTypeTimeandDataType(xXTypeID, beginTime, endTime, InfoTypes.File);
         }
@@ -300,7 +300,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// get the DataFrame SendInfos by XXTYPE id and submittime.
         /// </summary>
         /// <returns></returns>
-        public List<SendInfo> SelectDFSendInfoByXXTypeandTime(int xXTypeID, DateTime beginTime, DateTime endTime)
+        public List<SendInfo> SearchDFSendInfo(int xXTypeID, DateTime beginTime, DateTime endTime)
         {
             return SelectSendInfoByXXTypeTimeandDataType(xXTypeID, beginTime, endTime, InfoTypes.DataFrame);
         }
@@ -349,7 +349,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             }
             #endregion
 
-            _database.SpExecuteNonQuery("up_sendinfo_insert", new OracleParameter[]{
+            _database.SpExecuteNonQuery(s_up_sendinfo_insert, new OracleParameter[]{
                 new OracleParameter("p_RID",this.Id),
                 new OracleParameter("p_FileName", oFileName),
                 new OracleParameter("p_FileCode", oFileCode),

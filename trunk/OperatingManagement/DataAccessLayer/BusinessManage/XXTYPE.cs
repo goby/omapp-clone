@@ -69,6 +69,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 }
                 return _xxTypeCache;
             }
+            set{}
         }
         #endregion
 
@@ -156,7 +157,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         /// <param name="rid">编号</param>
         /// <returns>信息类型DATANAME</returns>
-        public string GetXXTypeDATANAME(int rid)
+        public string GetName(int rid)
         {
             string dataName = string.Empty;
             if (XXTYPECache != null)

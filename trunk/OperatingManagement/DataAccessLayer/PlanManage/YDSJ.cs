@@ -149,7 +149,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <param name="endDate"></param>
         /// <param name="spaceType">1:空间机动任务;2:非空间机动任务</param>
         /// <returns></returns>
-        public List<YDSJ> GetYDSJListByDate(DateTime startDate, DateTime endDate,string spaceType)
+        public List<YDSJ> GetListByDate(DateTime startDate, DateTime endDate,string spaceType)
         {
             DataSet ds = null;
 

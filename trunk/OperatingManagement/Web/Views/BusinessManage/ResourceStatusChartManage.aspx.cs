@@ -134,7 +134,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     divOneResourceStatus.Visible = false;
                     divAllResourceStatus.Visible = true;
                     BindAllResourceStatusChart();
-                }
+            }
                 //查询某个资源
                 else
                 {

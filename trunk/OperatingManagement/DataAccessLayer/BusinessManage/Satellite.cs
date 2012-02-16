@@ -73,6 +73,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 }
                 return _satelliteCache;
             }
+            set{}
         }
         #endregion
 
@@ -161,7 +162,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         /// <param name="wxbm">卫星编码</param>
         /// <returns>卫星名称</returns>
-        public string GetSatelliteWXMC(string wxbm)
+        public string GetName(string wxbm)
         {
             string wxmc = string.Empty;
             if (SatelliteCache != null)

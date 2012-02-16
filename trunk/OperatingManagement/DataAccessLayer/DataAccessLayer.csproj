@@ -66,6 +66,7 @@
     <Compile Include="BusinessManage\HJXX.cs" />
     <Compile Include="BusinessManage\XXTYPE.cs" />
     <Compile Include="BusinessManage\XYXSInfo.cs" />
+    <Compile Include="BusinessManage\YCZZTSJ.cs" />
     <Compile Include="BusinessManage\YJBG.cs" />
     <Compile Include="BusinessManage\JHBG.cs" />
     <Compile Include="BusinessManage\SYXQ.cs" />

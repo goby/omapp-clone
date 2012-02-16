@@ -60,6 +60,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 }
                 return _xyxsInfoCache;
             }
+            set { }
         }
         #endregion
 
@@ -144,7 +145,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         /// <param name="inCode"></param>
         /// <returns>信源信宿的地址</returns>
-        public string GetXYXSADDRName(string inCode)
+        public string GetName(string inCode)
         {
             string addrName = string.Empty;
             if (XYXSInfoCache != null)
@@ -160,7 +161,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         /// <param name="rid">编号</param>
         /// <returns>信源信宿的地址</returns>
-        public string GetXYXSADDRName(int rid)
+        public string GetName(int rid)
         {
             string addrName = string.Empty;
             if (XYXSInfoCache != null)

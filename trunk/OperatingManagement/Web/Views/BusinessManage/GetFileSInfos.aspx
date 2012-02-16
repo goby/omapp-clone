@@ -16,8 +16,8 @@
             <td><div>信息类型<asp:DropDownList ID="ddlXXType"
                     runat="server">
                 </asp:DropDownList>
-                开始日期<asp:TextBox ID="txtBeginDate" runat="server"></asp:TextBox>
-                结束日期<asp:TextBox ID="txtEndDate" runat="server"></asp:TextBox>
+                开始日期<asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" runat="server"></asp:TextBox>
+                结束日期<asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" runat="server"></asp:TextBox>
                 </div>
             </td>
             <td><asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
@@ -59,7 +59,6 @@
                 <td><%# Eval("RID") %></td>
                 <td><%# Eval("FileName") %></td>
                 <td><%# Eval("FilePath") %></td>
-                <!--<td><%# Eval("Filesize") %></td> -->
                 <td><%# Eval("SendWay") %></td>
                 <td><%# Eval("SenderName") %></td>
                 <td><%# Eval("InfoTypeName")%></td>
@@ -80,6 +79,7 @@
     </asp:Repeater>
     <table class="listTitle">
         <tr>
+            <td class="listTitle-c1"><button class="button" onclick="return sendFile();">发送文件</button></td>
             <td class="listTitle-c2" align="right">
                 <om:CollectionPager ID="cpPager" runat="server" ></om:CollectionPager>
             </td>

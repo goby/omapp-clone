@@ -810,7 +810,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.DataManages.Add(dm);
             }
 
-            CreatePlanFile creater = new CreatePlanFile();
+            PlanFileCreator creater = new PlanFileCreator();
             if (hfOverDate.Value == "true")
             {
                 obj.TaskID = hfTaskID.Value;

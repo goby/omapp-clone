@@ -55,7 +55,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 endDate = DateTime.Now;
             }
 
-            List<YDSJ> listDatas = (new YDSJ()).GetYDSJListByDate(startDate, endDate,"1");
+            List<YDSJ> listDatas = (new YDSJ()).GetListByDate(startDate, endDate,"1");
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
             cpPager.BindToControl = rpDatas;

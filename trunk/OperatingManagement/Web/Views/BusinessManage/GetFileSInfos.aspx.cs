@@ -21,8 +21,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (!IsPostBack)
-            //    BindDataSource();
+            if (!IsPostBack)
+                InitialPageData();
         }
 
         protected void btnHidRSendFile_Click(object sender, EventArgs e)
@@ -32,14 +32,34 @@ namespace OperatingManagement.Web.Views.BusinessManage
             //status=0已提交发送；status=1发送中，这两种情况不能重发
             if (strStatus == "0" || strStatus == "1")
                 return;
-
+            if (strRID.Equals(string.Empty))
+                return;
+            ReSendFile(Convert.ToInt32(strRID));
         }
 
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            DateTime dtFrom = DateTime.MinValue;
+            DateTime dtTo = DateTime.MinValue;
+            if (txtFrom.Text != "")
+                dtFrom = DateTime.Parse(txtFrom.Text);
+            if (txtTo.Text != "")
+                dtTo = DateTime.Parse(txtTo.Text);
 
-        private void BindDataSource()
+            SendInfo oSend = new SendInfo();
+            List<SendInfo> listDatas = oSend.SearchFileSendInfo(Convert.ToInt32(ddlXXType.SelectedItem.Value), dtFrom, dtTo);
+            BindDataSource(listDatas);
+        }
+
+        private void InitialPageData()
         {
             SendInfo oSend = new SendInfo();
             List<SendInfo> listDatas = oSend.SelectAllFileSendInfo();
+            BindDataSource(listDatas);
+        }
+
+        private void BindDataSource(List<SendInfo> listDatas)
+        {
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
             cpPager.BindToControl = rpDatas;
@@ -47,8 +67,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
             rpDatas.DataBind();
         }
 
-        private void SendFile(int sendInfoID)
+        private bool ReSendFile(int sendInfoID)
         {
+            return true;
         }
 
         public override void OnPageLoaded()
@@ -57,11 +78,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
             this.ShortTitle = "查看文件发送记录";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/BusinessManage/GetFileSInfos.aspx.js");
-        }
-
-        protected void btnSearch_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

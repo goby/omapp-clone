@@ -727,7 +727,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.TaskCount = obj.DMJHTasks.Count.ToString();
 
 
-            CreatePlanFile creater = new CreatePlanFile();
+            PlanFileCreator creater = new PlanFileCreator();
             if (hfOverDate.Value == "true")
             {
                 obj.TaskID = hfTaskID.Value;

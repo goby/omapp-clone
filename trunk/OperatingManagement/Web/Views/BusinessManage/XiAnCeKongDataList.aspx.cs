@@ -55,7 +55,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             switch (dtype)
             {
                 case "tb_gdxa":
-                    List<GD> listDatasGDXA = (new GD()).GetGDListByDate(startDate, endDate);
+                    List<GD> listDatasGDXA = (new GD()).GetListByDate(startDate, endDate);
                     cpPager.DataSource = listDatasGDXA;
                     break;
                 case "tb_gdsh":

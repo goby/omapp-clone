@@ -90,7 +90,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             JH objJH = new JH();
             objJH.Id = Convert.ToInt32(id);
             FileNameMaker fm = new FileNameMaker();
-            CreatePlanFile cpf = new CreatePlanFile();
+            PlanFileCreator cpf = new PlanFileCreator();
             string filename="";
             switch (plantype)
             {

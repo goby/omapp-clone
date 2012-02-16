@@ -91,7 +91,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             objTYSJ.EndTime = txtEndTime.Text;
             objTYSJ.Condition = txtCondition.Text;
 
-            CreatePlanFile creater = new CreatePlanFile();
+            PlanFileCreator creater = new PlanFileCreator();
             if (hfOverDate.Value == "true")
             {
                 objTYSJ.TaskID = hfTaskID.Value;

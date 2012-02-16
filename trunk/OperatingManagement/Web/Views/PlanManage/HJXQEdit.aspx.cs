@@ -98,6 +98,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.ShortTitle = "编辑计划";
             base.OnPageLoaded();
             this.AddJavaScriptInclude("scripts/pages/PlanManage/HJXQEdit.aspx.js");
+
         }
 
         protected void rpHJ_ItemCommand(object source, RepeaterCommandEventArgs e)
@@ -174,6 +175,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.TimeSection1 = txtHJTimeSection1.Text;
             obj.TimeSection2 = txtHJTimeSection2.Text;
             //obj.Sum = txtHJSum.Text;
+
             obj.SatInfos = new List<HJXQSatInfo>();
 
             HJXQSatInfo dm;
@@ -194,7 +196,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             obj.Sum = obj.SatInfos.Count.ToString(); //信息条数，自动计算得到
 
-            CreatePlanFile creater = new CreatePlanFile();
+            PlanFileCreator creater = new PlanFileCreator();
             if (hfOverDate.Value == "true")
             {
                 obj.TaskID = hfTaskID.Value;

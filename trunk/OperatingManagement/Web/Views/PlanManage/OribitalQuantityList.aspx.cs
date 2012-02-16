@@ -53,7 +53,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 endDate = Convert.ToDateTime(txtEndDate);
             }
 
-            List<GD> listDatas = (new GD()).GetGDListByDate(startDate, endDate);
+            List<GD> listDatas = (new GD()).GetListByDate(startDate, endDate);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
             cpPager.BindToControl = rpDatas;

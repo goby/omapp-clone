@@ -36,7 +36,7 @@
                 <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" 
                             MaxLength="10"    ClientIDMode="Static"></asp:TextBox>
-                    </td>
+                </td>
             </tr>
             <tr>
                 <th class="style1">

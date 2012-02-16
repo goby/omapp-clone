@@ -40,22 +40,22 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.DropDownList ddlXXType;
         
         /// <summary>
-        /// txtBeginDate 控件。
+        /// txtFrom 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBeginDate;
+        protected global::System.Web.UI.WebControls.TextBox txtFrom;
         
         /// <summary>
-        /// txtEndDate 控件。
+        /// txtTo 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEndDate;
+        protected global::System.Web.UI.WebControls.TextBox txtTo;
         
         /// <summary>
         /// btnSearch 控件。
