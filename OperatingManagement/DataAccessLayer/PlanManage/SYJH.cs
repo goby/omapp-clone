@@ -66,7 +66,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <param name="startDate">开始时间</param>
         /// <param name="endDate">结束时间</param>
         /// <returns></returns>
-        public List<SYJH> GetSYJHListByDate(DateTime startDate, DateTime endDate)
+        public List<SYJH> GetListByDate(DateTime startDate, DateTime endDate)
         {
             DataSet ds = null;
 

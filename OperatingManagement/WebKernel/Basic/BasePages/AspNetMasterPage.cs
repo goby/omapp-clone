@@ -101,9 +101,9 @@ namespace OperatingManagement.WebKernel.Basic
             AddJavaScriptInclude("scripts/core/jquery-1.7.1.min.js", false, false);
             AddJavaScriptInclude("scripts/core/jquery-ui-1.8.17.custom.min.js", false, false);
             AddJavaScriptInclude("scripts/core/util.js", false, false);
-            AddJavaScriptInclude("scripts/core/jquery.ui.datepicker.js", false, false);
-            AddJavaScriptInclude("scripts/core/jquery.ui.datepicker-zh-CN.js", false, false);
-            AddJavaScriptInclude("scripts/core/jquery.ui.widget.js", false, false);
+            //AddJavaScriptInclude("scripts/core/jquery.ui.datepicker.js", false, false);
+            //AddJavaScriptInclude("scripts/core/jquery.ui.datepicker-zh-CN.js", false, false);
+            //AddJavaScriptInclude("scripts/core/jquery.ui.widget.js", false, false);
             AddJavaScriptInclude("scripts/core/jquery.ui.core.js", false, false);
             SetTitle();
         }

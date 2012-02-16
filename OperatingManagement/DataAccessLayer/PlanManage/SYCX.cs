@@ -89,7 +89,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
-        public List<SYCX> GetSYCXListByDate(DateTime startDate, DateTime endDate)
+        public List<SYCX> GetListByDate(DateTime startDate, DateTime endDate)
         {
             DataSet ds = null;
 

@@ -10,7 +10,6 @@ using OperatingManagement.WebKernel.Route;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.Framework;
-using OperatingManagement.Framework.Storage;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using System.Web.Security;
 using System.Data;
@@ -67,47 +66,19 @@ namespace OperatingManagement.Web.Views.PlanManage
             btnContinue.Visible = true;
             btnSubmit.Visible = false;
             btnGetPlanInfo.Visible = false;
-
-            #region 直接转到编辑页面
-            string sID = hfID.Value;
-            switch (hfPlanType.Value)
-            {
-                case "YJJH":
-                    Response.Redirect("YJJHEdit.aspx?id=" + sID);
-                    break;
-                case "MBXQ":
-                    Response.Redirect("MBXQEdit.aspx?id=" + sID);
-                    break;
-                case "HJXQ":
-                    Response.Redirect("HJXQEdit.aspx?id=" + sID);
-                    break;
-                case "DMJH":
-                    Response.Redirect("DMJHEdit.aspx?id=" + sID);
-                    break;
-                case "ZXJH":
-                    Response.Redirect("ZXJHEdit.aspx?id=" + sID);
-                    break;
-                case "TYSJ":
-                    Response.Redirect("TYSJEdit.aspx?id=" + sID);
-                    break;
             }
-
-            #endregion
-        }
 
         private string CreateFile()
         {
             string filepath="";
-            CreatePlanFile fileCreater = new CreatePlanFile();
+            PlanFileCreator fileCreater = new PlanFileCreator();
             switch (ddlPlanType.SelectedValue)
             { 
                 case "YJJH":
                     YJJH objYJJH = new YJJH
                     {
                         TaskID = txtTaskID.Text.Trim(),
-                        SatID = ddlSat.SelectedValue,
-                        XXFL = "ZJ",//默认周计划
-                        SysName = "天基目标观测应用研究分系统"
+                        SatID = ddlSat.SelectedValue
                     };
                     filepath = fileCreater.CreateYJJHFile(objYJJH,0);
                     break;
@@ -116,8 +87,6 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         TaskID = txtTaskID.Text.Trim(),
                         SatID = ddlSat.SelectedValue,
-                        User = PlanParameters.ReadMBXQDefaultUser(),
-                        TargetInfo = PlanParameters.ReadMBXQDefaultTargetInfo(),
                         SatInfos = new List<MBXQSatInfo> {new MBXQSatInfo() }
                     };
                     filepath = fileCreater.CreateMBXQFile(objMBXQ, 0);
@@ -127,8 +96,6 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         TaskID = txtTaskID.Text.Trim(),
                         SatID = ddlSat.SelectedValue,
-                        User = PlanParameters.ReadHJXQDefaultUser(),
-                        EnvironInfo = PlanParameters.ReadHJXQHJXQDefaultEnvironInfo(),
                         SatInfos = new List<HJXQSatInfo> { new HJXQSatInfo ()}
                     };
                     filepath = fileCreater.CreateHJXQFile(objHJXQ, 0);
@@ -255,7 +222,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.PagePermission = "Plan.Add";
             this.ShortTitle = "新建计划";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/PlanManage/PlanAdd.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/PlanAdd.aspx.js");
         }
 
         protected void txtGetPlanInfo_Click(object sender, EventArgs e)

@@ -130,7 +130,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
-        public List<GD> GetGDListByDate(DateTime startDate, DateTime endDate)
+        public List<GD> GetListByDate(DateTime startDate, DateTime endDate)
         {
             DataSet ds = null;
 

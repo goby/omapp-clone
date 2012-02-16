@@ -186,7 +186,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             obj.Sum = obj.SatInfos.Count.ToString(); //信息条数，自动计算得到
 
-            CreatePlanFile creater = new CreatePlanFile();
+            PlanFileCreator creater = new PlanFileCreator();
             if (hfOverDate.Value == "true")
             {
                 obj.TaskID = hfTaskID.Value;

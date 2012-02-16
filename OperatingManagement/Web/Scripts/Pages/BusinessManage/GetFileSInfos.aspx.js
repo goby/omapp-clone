@@ -1,4 +1,9 @@
-﻿function showMsg(msg) {
+﻿function () {
+    alert("hi");
+    $("#txtFrom, #txtTo").datepicker();
+}
+
+function showMsg(msg) {
     $.fn.modal({
         title: '提示信息',
         content: function (o, e) {
@@ -8,7 +13,10 @@
     });
 }
 
-
+function sendFile() {
+    window.location.href = "/views/businessManage/sendfile.aspx";
+    return false;
+}
 
 //重发文件，status=0，已提交发送，status=1，发送中
 function reSendFile(id, status) {

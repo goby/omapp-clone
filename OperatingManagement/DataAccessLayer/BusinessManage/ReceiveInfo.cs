@@ -165,7 +165,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         {
             OracleParameter p = PrepareRefCursor();
             DataSet ds = _database.SpExecuteDataSet(s_up_rcvinfo_selectbydatatype, new OracleParameter[] {
-                new OracleParameter("p_DataType", dataType),
+                new OracleParameter("p_DataType", Convert.ToInt32(dataType)),
                 p
             });
             List<ReceiveInfo> sinfos = new List<ReceiveInfo>();
@@ -264,7 +264,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// get the File ReceiveInfos by XXTYPE id and submittime.
         /// </summary>
         /// <returns></returns>
-        public List<ReceiveInfo> SelectFileRcvInfoByXXTypeandTime(int xXTypeID, DateTime beginTime, DateTime endTime)
+        public List<ReceiveInfo> SearchFileRcvInfo(int xXTypeID, DateTime beginTime, DateTime endTime)
         {
             return SelectRcvInfoByXXTypeTimeandDataType(xXTypeID, beginTime, endTime, InfoTypes.File);
         }
@@ -273,7 +273,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// get the DataFrame ReceiveInfos by XXTYPE id and submittime.
         /// </summary>
         /// <returns></returns>
-        public List<ReceiveInfo> SelectDFRcvInfoByXXTypeandTime(int xXTypeID, DateTime beginTime, DateTime endTime)
+        public List<ReceiveInfo> SearchDFRcvInfo(int xXTypeID, DateTime beginTime, DateTime endTime)
         {
             return SelectRcvInfoByXXTypeTimeandDataType(xXTypeID, beginTime, endTime, InfoTypes.DataFrame);
         }

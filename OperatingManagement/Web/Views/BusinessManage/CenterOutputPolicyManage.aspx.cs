@@ -201,7 +201,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         protected string GetXYXSADDRName(int rid)
         {
             XYXSInfo xyxs = new XYXSInfo();
-            return xyxs.GetXYXSADDRName(rid);
+            return xyxs.GetName(rid);
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         protected string GetXXTypeDATANAME(int rid)
         {
             XXTYPE xxType = new XXTYPE();
-            return xxType.GetXXTypeDATANAME(rid);
+            return xxType.GetName(rid);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         protected string GetSatelliteWXMC(string wxbm)
         {
             Satellite satellite = new Satellite();
-            return satellite.GetSatelliteWXMC(wxbm);
+            return satellite.GetName(wxbm);
         }
         #endregion
     }

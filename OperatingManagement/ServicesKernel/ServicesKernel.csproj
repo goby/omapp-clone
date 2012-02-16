@@ -41,7 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="File\CreatePlanFile.cs" />
+    <Compile Include="DataFrame\DataFrameBuilder.cs" />
+    <Compile Include="DataFrame\DataFrameParser.cs" />
+    <Compile Include="File\BizFileCreator.cs" />
+    <Compile Include="File\FileNameParser.cs" />
+    <Compile Include="File\FileParser.cs" />
+    <Compile Include="File\FTPProcessor.cs" />
+    <Compile Include="File\PlanFileCreator.cs" />
     <Compile Include="File\DataFileHandle.cs" />
     <Compile Include="File\FileMonitor.cs" />
     <Compile Include="File\FileNameMaker.cs" />
