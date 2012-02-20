@@ -185,6 +185,7 @@
     <Content Include="Views\BusinessManage\ResourceAdd.aspx" />
     <Content Include="Views\BusinessManage\ResourceEdit.aspx" />
     <Content Include="Views\BusinessManage\ResourceManage.aspx" />
+    <Content Include="Views\BusinessManage\ResourceRequirementAdd.aspx" />
     <Content Include="Views\BusinessManage\ResourceStatusAdd.aspx" />
     <Content Include="Views\BusinessManage\ResourceStatusChartManage.aspx" />
     <Content Include="Views\BusinessManage\ResourceStatusManage.aspx" />
@@ -383,6 +384,13 @@
     </Compile>
     <Compile Include="Views\BusinessManage\ResourceManage.aspx.designer.cs">
       <DependentUpon>ResourceManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ResourceRequirementAdd.aspx.cs">
+      <DependentUpon>ResourceRequirementAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ResourceRequirementAdd.aspx.designer.cs">
+      <DependentUpon>ResourceRequirementAdd.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\ResourceStatusAdd.aspx.cs">
       <DependentUpon>ResourceStatusAdd.aspx</DependentUpon>

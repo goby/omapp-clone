@@ -54,6 +54,7 @@
     <Compile Include="BusinessManage\HD.cs" />
     <Compile Include="BusinessManage\HealthStatus.cs" />
     <Compile Include="BusinessManage\ReceiveInfo.cs" />
+    <Compile Include="BusinessManage\ResourceRequirement.cs" />
     <Compile Include="BusinessManage\Satellite.cs" />
     <Compile Include="BusinessManage\SendInfo.cs" />
     <Compile Include="BusinessManage\SystemParameters.cs" />
