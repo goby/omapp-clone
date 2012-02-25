@@ -15,6 +15,40 @@
             margin: 0px;
             padding: 0px;
         }
+        .index_content_search
+        {
+            margin-top: 10px;
+        }
+        
+        .index_content_search table
+        {
+            border: 1px solid #eeeeee;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        .index_content_search table td
+        {
+            border: 1px solid #eeeeee;
+            line-height: 26px;
+            color: #333333;
+            text-align: left;
+            height: 26px;
+        }
+        .index_content_search table th
+        {
+            border: 1px solid #eeeeee;
+            font-weight: bold;
+            line-height: 26px;
+            color: #333333;
+            text-align: right;
+            height: 26px;
+        }
+        .index_content_view
+        {
+            width: 800px;
+            margin: 10px 0px 10px 0px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -34,14 +68,111 @@
             $("#txtEndTime").datepicker();
         });
     </script>
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+    </asp:ScriptManager>
+    <div class="index_content_view">
+        <asp:Repeater ID="rpResourceRequirementList" runat="server"
+            onitemdatabound="rpResourceRequirementList_ItemDataBound">
+            <HeaderTemplate>
+                <table class="list">
+                    <tr>
+                        <th style="width: 10%;">
+                            需求名称
+                        </th>
+                        <th style="width: 10%;">
+                            时间基准
+                        </th>
+                        <th style="width: 10%;">
+                            优先级
+                        </th>
+                        <th style="width: 10%;">
+                            卫星编码
+                        </th>
+                        <th style="width: 10%;">
+                            功能类型
+                        </th>
+                        <th style="width: 10%;">
+                            持续时长
+                        </th>
+                        <th style="width: 15%;">
+                            不可用设备
+                        </th>
+                         <th style="width: 15%;">
+                            支持时段
+                        </th>
+                        <th style="width: 5%;">
+                            编辑
+                        </th>
+                         <th style="width: 5%;">
+                            删除
+                        </th>
+                    </tr>
+                    <tbody id="tbResourceRequirementList">
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <td>
+                        <%# Eval("RequirementName")%>
+                    </td>
+                    <td>
+                        <%# Eval("TimeBenchmark")%>
+                    </td>
+                    <td>
+                        <%# Eval("Priority")%>
+                    </td>
+                    <td>
+                        <%# Eval("WXBM")%>
+                    </td>
+                    <td>
+                        <%# Eval("FunctionType")%>
+                    </td>
+                    <td>
+                        <%# Eval("PersistenceTime")%>
+                    </td>
+                    <td>
+                        <asp:Label ID="lblUnusedEquipment" runat="server" Text=""></asp:Label>
+                    </td>
+                    <td>
+                        <asp:Label ID="lblPeriodOfTime" runat="server" Text=""></asp:Label>
+                    </td>
+                     <td>
+                        <asp:LinkButton ID="lbtnEditResourceRequirement" runat="server" CausesValidation="false" OnClick="lbtnEditResourceRequirement_Click" CommandArgument='<%# Eval("RequirementName")%>'>编辑</asp:LinkButton>
+                    </td>
+                    <td>
+                        <asp:LinkButton ID="lbtnDeleteResourceRequirement" runat="server" CausesValidation="false" OnClick="lbtnDeleteResourceRequirement_Click" OnClientClick="javascript:return confirm('是否删除该资源需求？')" CommandArgument='<%# Eval("RequirementName")%>'>删除</asp:LinkButton>
+                    </td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                </tbody></table>
+            </FooterTemplate>
+        </asp:Repeater>
+        <table class="listTitle">
+            <tr>
+                <td class="listTitle-c1">
+                </td>
+                <td class="listTitle-c2">
+                    <om:CollectionPager ID="cpResourceRequirementPager" runat="server">
+                    </om:CollectionPager>
+                </td>
+            </tr>
+        </table>
+        </div>
     <table class="edit" style="width: 800px;">
         <tr>
             <th style="width: 150px;">
                 需求名称(<span class="red">*</span>)
             </th>
             <td>
-                <asp:Label ID="lblRequirementName" runat="server" Text=""></asp:Label>
-                <asp:HiddenField ID="hidWXBMIndex" runat="server" />
+                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+                    <ContentTemplate>
+                        <asp:Label ID="lblRequirementName" runat="server" Text=""></asp:Label>
+                        <asp:HiddenField ID="hidWXBMIndex" runat="server" />
+                    </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="dplSatName" />
+                    </Triggers>
+                </asp:UpdatePanel>
             </td>
         </tr>
         <tr>
@@ -90,7 +221,7 @@
                     ControlToValidate="dplFunctionType" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
-         <tr>
+        <tr>
             <th>
                 持续时长(<span class="red">*</span>)
             </th>
@@ -223,10 +354,10 @@
                                 <ItemTemplate>
                                     <tr>
                                         <td>
-                                            <%# Eval("BeginTime")%>
+                                            <%# Convert.ToDateTime(Eval("BeginTime")).ToString("yyyy-MM-dd")%>
                                         </td>
                                         <td>
-                                            <%# Eval("EndTime")%>
+                                            <%# Convert.ToDateTime(Eval("EndTime")).ToString("yyyy-MM-dd")%>
                                         </td>
                                         <td>
                                             <asp:LinkButton ID="lbtnDeletePeriodOfTime" runat="server" OnClick="lbtnDeletePeriodOfTime_Click"
@@ -267,9 +398,8 @@
                         </th>
                         <td>
                             <asp:TextBox ID="txtEndTime" runat="server" ClientIDMode="Static" CssClass="norText"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfvEndTime" runat="server" Display="Dynamic"
-                                ValidationGroup="PeriodOfTime" ForeColor="Red" ControlToValidate="txtEndTime"
-                                ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator ID="rfvEndTime" runat="server" Display="Dynamic" ValidationGroup="PeriodOfTime"
+                                ForeColor="Red" ControlToValidate="txtEndTime" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
                             <asp:CompareValidator ID="CompareValidator1" runat="server" Display="Dynamic" ForeColor="Red"
                                 ControlToValidate="txtEndTime" ControlToCompare="txtBeginTime" Type="Date" Operator="GreaterThanEqual"
                                 ValidationGroup="PeriodOfTime" ErrorMessage="起始时间应大于结束时间"></asp:CompareValidator>
@@ -299,8 +429,8 @@
                 &nbsp;
             </th>
             <td>
-                <asp:Button ID="btnAdd" runat="server" CssClass="button" Text="添 加" OnClick="btnAdd_Click" />
-                <asp:Button ID="btnComplete" runat="server" CssClass="button" Text="完 成" OnClick="btnComplete_Click"
+                <asp:Button ID="btnSave" runat="server" CssClass="button" Text="保 存" OnClick="btnSave_Click" />
+                <asp:Button ID="btnCalculate" runat="server" CssClass="button" Text="计 算" OnClick="btnCalculate_Click"
                     CausesValidation="false" />
             </td>
         </tr>
