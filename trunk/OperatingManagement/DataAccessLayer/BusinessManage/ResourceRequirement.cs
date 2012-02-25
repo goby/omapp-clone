@@ -18,19 +18,13 @@ using System.Xml;
 using OperatingManagement.Framework.Basic;
 using OperatingManagement.Framework;
 using OperatingManagement.Framework.Core;
-using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
     [Serializable]
-    public class ResourceRequirement : BaseEntity<int, ResourceRequirement>
+    public class ResourceRequirement
     {
-        public ResourceRequirement()
-        {
-            _dataBase = OracleDatabase.FromConfiguringNode("ApplicationServices");
-        }
         #region Properties
-        private OracleDatabase _dataBase = null;
         /// <summary>
         /// 需求名称
         /// </summary>
@@ -67,39 +61,6 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 卫星序号,与卫星编码组成需求名称,格式为:卫星编码+卫星序号,其中卫星序号三位数字如001,073,102
         /// </summary>
         public int WXBMIndex { get; set; }
-        #endregion
-
-        #region -Private Methods-
-        private OracleParameter PrepareRefCursor()
-        {
-            return new OracleParameter()
-            {
-                ParameterName = "o_Cursor",
-                Direction = ParameterDirection.Output,
-                OracleDbType = OracleDbType.RefCursor
-            };
-        }
-
-        private OracleParameter PrepareOutputResult()
-        {
-            return new OracleParameter()
-            {
-                ParameterName = "v_Result",
-                Direction = ParameterDirection.Output,
-                OracleDbType = OracleDbType.Int32,
-            };
-        }
-        #endregion
-
-        #region -Public Method-
-
-        #endregion
-
-        #region -Override BaseEntity-
-        protected override void ValidationRules()
-        {
-           
-        }
         #endregion
     }
 

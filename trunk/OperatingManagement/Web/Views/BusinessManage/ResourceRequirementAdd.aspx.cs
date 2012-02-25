@@ -24,7 +24,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
     {
         #region 属性
         /// <summary>
-        /// 资源需求列表缓存Guid
+        /// 资源需求列表缓存Guid，暂时未使用
         /// </summary>
         protected Guid CacheID
         {
@@ -40,6 +40,23 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     ViewState["cacheid"] = cacheID;
                 }
                 return new Guid(ViewState["cacheid"].ToString());
+            }
+        }
+        /// <summary>
+        /// 资源需求
+        /// </summary>
+        protected List<ResourceRequirement> ResourceRequirementList
+        {
+            get
+            {
+                if (ViewState["ResourceRequirement"] == null)
+                {
+                    return new List<ResourceRequirement>();
+                }
+                else
+                {
+                    return (ViewState["ResourceRequirement"] as List<ResourceRequirement>);
+                }
             }
         }
         /// <summary>
@@ -101,7 +118,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void btnAdd_Click(object sender, EventArgs e)
+        protected void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
@@ -168,9 +185,64 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "持续时长应为大于0的整数";
                     return;
                 }
+                if (UnusedEquipmentList.Count < 1)
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "不可用设备不能为空";
+                    return;
+                }
+                if (PeriodOfTimeList.Count < 1)
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "支持时段不能为空";
+                    return;
+                }
 
+                ResourceRequirement resourceRequirement = new ResourceRequirement();
+                resourceRequirement.RequirementName = lblRequirementName.Text.Trim();
+                resourceRequirement.TimeBenchmark = txtTimeBenchmark.Text.Trim();
+                resourceRequirement.Priority = priority;
+                resourceRequirement.WXBM = dplSatName.SelectedValue;
+                resourceRequirement.FunctionType = dplFunctionType.SelectedValue;
+                resourceRequirement.PersistenceTime = persistenceTime;
+                resourceRequirement.UnusedEquipmentList = UnusedEquipmentList;
+                resourceRequirement.PeriodOfTimeList = PeriodOfTimeList;
+                resourceRequirement.WXBMIndex = Convert.ToInt32(hidWXBMIndex.Value);
+
+                int resourceRequirementIndex = ResourceRequirementList.FindIndex(a => a.RequirementName.ToLower() == lblRequirementName.Text.Trim().ToLower());
+                //新增
+                if (resourceRequirementIndex < 0)
+                {
+                    List<ResourceRequirement> resourceRequirementList = ResourceRequirementList;
+                    resourceRequirementList.Add(resourceRequirement);
+                    ViewState["ResourceRequirement"] = resourceRequirementList;
+                    lblMessage.Text = "添加资源需求成功。";
+                }
+                //修改
+                else
+                {
+                    List<ResourceRequirement> resourceRequirementList = ResourceRequirementList;
+                    resourceRequirementList.RemoveAt(resourceRequirementIndex);
+                    resourceRequirementList.Insert(resourceRequirementIndex, resourceRequirement);
+                    ViewState["ResourceRequirement"] = resourceRequirementList;
+                    lblMessage.Text = "编辑资源需求成功。";
+                }
+                BindResourceRequirementList();
+                ResetControls();
                 trMessage.Visible = true;
-                lblMessage.Text = msg;
+                
+                //List<ResourceRequirement> resourceRequirementList = new List<ResourceRequirement>();
+                //if (HttpContext.Current.Cache[CacheID.ToString()] == null)
+                //{
+                //    resourceRequirementList.Add(resourceRequirement);
+                //    HttpContext.Current.Cache.Insert(CacheID.ToString(), resourceRequirementList, null, System.Web.Caching.Cache.NoAbsoluteExpiration, new TimeSpan(0, 30, 0));
+                //}
+                //else
+                //{
+                //    resourceRequirementList = (HttpContext.Current.Cache[CacheID.ToString()] as List<ResourceRequirement>);
+                //    resourceRequirementList.Add(resourceRequirement);
+                //    HttpContext.Current.Cache[CacheID.ToString()] = resourceRequirementList;
+                //}
             }
             catch
             {
@@ -178,11 +250,77 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 lblMessage.Text = "发生未知错误，操作失败。";
             }
         }
-        protected void btnComplete_Click(object sender, EventArgs e)
+        protected void btnCalculate_Click(object sender, EventArgs e)
         {
             try
             {
                
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch
+            { }
+        }
+        /// <summary>
+        /// 编辑资源需求
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbtnEditResourceRequirement_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LinkButton lbtnEditResourceRequirement = (sender as LinkButton);
+                string requirementName = lbtnEditResourceRequirement.CommandArgument;
+                ResourceRequirement resourceRequirement = ResourceRequirementList.Find(a => a.RequirementName.ToLower() == requirementName.ToLower());
+                if (resourceRequirement == null)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生了数据错误，无法完成请求的操作。\")", true);
+                    BindResourceRequirementList();
+                    return;
+                }
+
+                lblRequirementName.Text = resourceRequirement.RequirementName;
+                hidWXBMIndex.Value = resourceRequirement.WXBMIndex.ToString();
+                txtTimeBenchmark.Text = resourceRequirement.TimeBenchmark;
+                txtPriority.Text = resourceRequirement.Priority.ToString();
+                dplSatName.SelectedValue = resourceRequirement.WXBM;
+                dplFunctionType.SelectedValue = resourceRequirement.FunctionType;
+                txtPersistenceTime.Text = resourceRequirement.PersistenceTime.ToString();
+                ViewState["UnusedEquipment"] = resourceRequirement.UnusedEquipmentList;
+                ViewState["PeriodOfTime"] = resourceRequirement.PeriodOfTimeList;
+                BindUnusedEquipmentList();
+                BindPeriodOfTimeList();
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch
+            { }
+        }
+        /// <summary>
+        /// 删除资源需求
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbtnDeleteResourceRequirement_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LinkButton lbtnDeleteResourceRequirement = (sender as LinkButton);
+                string requirementName = lbtnDeleteResourceRequirement.CommandArgument;
+                ResourceRequirement resourceRequirement = ResourceRequirementList.Find(a => a.RequirementName.ToLower() == requirementName.ToLower());
+                if (resourceRequirement == null)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生了数据错误，无法完成请求的操作。\")", true);
+                    BindResourceRequirementList();
+                    return;
+                }
+
+                List<ResourceRequirement> resourceRequirementList = ResourceRequirementList;
+                resourceRequirementList.Remove(resourceRequirement);
+                ViewState["ResourceRequirement"] = resourceRequirementList;
+                BindResourceRequirementList();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"删除资源需求成功。\")", true);
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
@@ -346,6 +484,32 @@ namespace OperatingManagement.Web.Views.BusinessManage
             lblRequirementName.Text = GetRequirementName();
         }
 
+        protected void rpResourceRequirementList_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                Label lblUnusedEquipment = (e.Item.FindControl("lblUnusedEquipment") as Label);
+                Label lblPeriodOfTime = (e.Item.FindControl("lblPeriodOfTime") as Label);
+                ResourceRequirement resourceRequirement = (e.Item.DataItem as ResourceRequirement);
+                if (lblUnusedEquipment != null && lblPeriodOfTime != null && resourceRequirement != null)
+                {
+                    string unusedEquipmentStr = "{0}.地面站编码：{1},地面站设备编码：{2};";
+                    for (int i = 0; i < resourceRequirement.UnusedEquipmentList.Count; i++)
+                    {
+                        lblUnusedEquipment.ToolTip += string.Format(unusedEquipmentStr, i + 1, resourceRequirement.UnusedEquipmentList[i].GRCode, resourceRequirement.UnusedEquipmentList[i].EquipmentCode);
+                    }
+                    lblUnusedEquipment.Text = "共" + resourceRequirement.UnusedEquipmentList.Count.ToString() + "条记录";
+
+                    string periodOfTimeStr = "{0}.开始时间：{1},结束时间：{2};";
+                    for (int i = 0; i < resourceRequirement.PeriodOfTimeList.Count; i++)
+                    {
+                        lblPeriodOfTime.ToolTip += string.Format(periodOfTimeStr, i + 1, resourceRequirement.PeriodOfTimeList[i].BeginTime.ToString("yyyy-MM-dd"), resourceRequirement.PeriodOfTimeList[i].EndTime.ToString("yyyy-MM-dd"));
+                    }
+                    lblPeriodOfTime.Text = "共" + resourceRequirement.PeriodOfTimeList.Count.ToString() + "条记录";
+                }
+            }
+        }
+
         public override void OnPageLoaded()
         {
             //this.PagePermission = "OMB_ResStaMan.View";
@@ -389,14 +553,14 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 return wxbmIndex;
 
             //当缓存中为空时
-            if (HttpContext.Current.Cache[CacheID.ToString()] == null)
+            if (ResourceRequirementList == null || ResourceRequirementList.Count < 1)
             {
                 wxbmIndex = 1;
                 return wxbmIndex;
             }
 
             //其他情况
-            List<ResourceRequirement> resourceRequirementList = (HttpContext.Current.Cache[CacheID.ToString()] as List<ResourceRequirement>);
+            List<ResourceRequirement> resourceRequirementList = ResourceRequirementList;
             var query = resourceRequirementList.Where(a => a.WXBM.ToLower() == dplSatName.SelectedValue.ToLower()).OrderBy(a => a.WXBMIndex);
             resourceRequirementList = query.ToList();
             wxbmIndex = resourceRequirementList.Count() + 1;
@@ -482,6 +646,40 @@ namespace OperatingManagement.Web.Views.BusinessManage
             txtEndTime.Text = string.Empty;
             trMessage.Visible = false;
             lblMessage.Text = string.Empty;
+        }
+        /// <summary>
+        /// 绑定资源需求列表
+        /// </summary>
+        private void BindResourceRequirementList()
+        {
+            cpResourceRequirementPager.DataSource = ResourceRequirementList;
+            cpResourceRequirementPager.PageSize = this.SiteSetting.PageSize;
+            cpResourceRequirementPager.BindToControl = rpResourceRequirementList;
+            rpResourceRequirementList.DataSource = cpResourceRequirementPager.DataSourcePaged;
+            rpResourceRequirementList.DataBind();
+        }
+        /// <summary>
+        /// 重置控件
+        /// </summary>
+        private void ResetControls()
+        {
+            lblRequirementName.Text = string.Empty;
+            hidWXBMIndex.Value = string.Empty;
+            txtTimeBenchmark.Text = string.Empty;
+            txtPriority.Text = string.Empty;
+            dplSatName.SelectedIndex = 0;
+            dplFunctionType.SelectedIndex = 0;
+            txtPersistenceTime.Text = string.Empty;
+
+            txtGRCode.Text = string.Empty;
+            txtGREquipmentCode.Text = string.Empty;
+            ViewState["UnusedEquipment"] = null;
+            BindUnusedEquipmentList();
+
+            txtBeginTime.Text = string.Empty;
+            txtEndTime.Text = string.Empty;
+            ViewState["PeriodOfTime"] = null;
+            BindPeriodOfTimeList();
         }
         #endregion
     }
