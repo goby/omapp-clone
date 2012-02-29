@@ -211,7 +211,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <returns>信息类型DATANAME</returns>
         protected string GetXXTypeDATANAME(int rid)
         {
-            XXTYPE xxType = new XXTYPE();
+            InfoType xxType = new InfoType();
             return xxType.GetName(rid);
         }
 

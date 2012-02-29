@@ -50,7 +50,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             if (!string.IsNullOrEmpty(txtEndDate.Text))
             {
-                endDate = Convert.ToDateTime(txtEndDate);
+                endDate = Convert.ToDateTime(txtEndDate.Text);
             }
 
             List<GD> listDatas = (new GD()).GetListByDate(startDate, endDate);
