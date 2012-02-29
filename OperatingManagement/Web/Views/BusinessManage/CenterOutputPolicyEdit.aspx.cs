@@ -243,7 +243,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplInfoSource.Items.Insert(0, new ListItem("请选择", ""));
 
             //绑定信息类型数据源
-            XXTYPE xxType = new XXTYPE();
+            InfoType xxType = new InfoType();
             dplInfoType.Items.Clear();
             //dplInfoType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyInfoType);
             dplInfoType.DataSource = xxType.XXTYPECache;

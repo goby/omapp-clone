@@ -46,19 +46,20 @@ namespace OperatingManagement.Web.Views.BusinessManage
             if (txtTo.Text != "")
                 dtTo = DateTime.Parse(txtTo.Text);
 
-            SendInfo oSend = new SendInfo();
-            List<SendInfo> listDatas = oSend.SearchFileSendInfo(Convert.ToInt32(ddlXXType.SelectedItem.Value), dtFrom, dtTo);
+            FileSendInfo oSend = new FileSendInfo();
+            oSend.InfoTypeID = Convert.ToInt32(ddlXXType.SelectedItem.Value);
+            List<FileSendInfo> listDatas = oSend.Search(dtFrom, dtTo);
             BindDataSource(listDatas);
         }
 
         private void InitialPageData()
         {
-            SendInfo oSend = new SendInfo();
-            List<SendInfo> listDatas = oSend.SelectAllFileSendInfo();
+            FileSendInfo oSend = new FileSendInfo();
+            List<FileSendInfo> listDatas = oSend.SelectAll();
             BindDataSource(listDatas);
         }
 
-        private void BindDataSource(List<SendInfo> listDatas)
+        private void BindDataSource(List<FileSendInfo> listDatas)
         {
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;

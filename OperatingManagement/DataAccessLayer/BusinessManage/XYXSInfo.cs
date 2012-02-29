@@ -49,6 +49,26 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         public string EXCODE { get; set; }
 
+        /// <summary>
+        /// 主IP地址
+        /// </summary>
+        public string MainIP { get; set; }
+
+        /// <summary>
+        /// 主端口
+        /// </summary>
+        public int MainPort { get; set; }
+
+        /// <summary>
+        /// 副IP地址
+        /// </summary>
+        public string BakIP { get; set; }
+
+        /// <summary>
+        /// 副端口
+        /// </summary>
+        public int BakPort { get; set; }
+
         public static List<XYXSInfo> _xyxsInfoCache = null;
         public List<XYXSInfo> XYXSInfoCache
         {
@@ -60,7 +80,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 }
                 return _xyxsInfoCache;
             }
-            set { }
+            set
+            {
+                _xyxsInfoCache = value;
+            }
         }
         #endregion
 
@@ -106,7 +129,11 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     ADDRName = ds.Tables[0].Rows[0]["ADDRName"].ToString(),
                     ADDRMARK = ds.Tables[0].Rows[0]["ADDRMARK"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ADDRMARK"].ToString(),
                     INCODE = ds.Tables[0].Rows[0]["INCODE"].ToString(),
-                    EXCODE = ds.Tables[0].Rows[0]["EXCODE"].ToString()
+                    EXCODE = ds.Tables[0].Rows[0]["EXCODE"].ToString(),
+                    MainIP = ds.Tables[0].Rows[0]["MainIP"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["MainIP"].ToString(),
+                    MainPort = Convert.ToInt32(ds.Tables[0].Rows[0]["MainPort"].ToString()),
+                    BakIP = ds.Tables[0].Rows[0]["BakIP"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["BakIP"].ToString(),
+                    BakPort = Convert.ToInt32(ds.Tables[0].Rows[0]["BakPort"].ToString())
                 };
             }
             return info;
@@ -132,7 +159,11 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         ADDRName = dr["ADDRName"].ToString(),
                         ADDRMARK = dr["ADDRMARK"] == DBNull.Value ? string.Empty : dr["ADDRMARK"].ToString(),
                         INCODE = dr["INCODE"].ToString(),
-                        EXCODE = dr["EXCODE"].ToString()
+                        EXCODE = dr["EXCODE"].ToString(),
+                        MainIP = ds.Tables[0].Rows[0]["MainIP"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["MainIP"].ToString(),
+                        MainPort = Convert.ToInt32(ds.Tables[0].Rows[0]["MainPort"].ToString()),
+                        BakIP = ds.Tables[0].Rows[0]["BakIP"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["BakIP"].ToString(),
+                        BakPort = Convert.ToInt32(ds.Tables[0].Rows[0]["BakPort"].ToString())
                     };
 
                     infoList.Add(info);
@@ -171,6 +202,61 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     addrName = query.FirstOrDefault().ADDRName;
             }
             return addrName;
+        }
+
+        /// <summary>
+        /// 通过IP地址获取信源信宿信息
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <returns></returns>
+        public XYXSInfo GetByIP(string ipAddress)
+        {
+            if (XYXSInfoCache != null)
+            {
+                var query = XYXSInfoCache.Where(a => a.MainIP == ipAddress || a.BakIP == ipAddress);
+                if (query != null && query.Count() > 0)
+                    return (XYXSInfo)query.FirstOrDefault();
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// 通过id获取信源信宿信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public XYXSInfo GetByID(int id)
+        {
+            if (XYXSInfoCache != null)
+            {
+                var query = XYXSInfoCache.Where(a => a.Id == id);
+                if (query != null && query.Count() > 0)
+                    return (XYXSInfo)query.FirstOrDefault();
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// 获取信源信宿的IP地址和端口
+        /// </summary>
+        /// <param name="id"></param>
+        public bool GetIPandPort(out string ip, out int port)
+        {
+            ip = "";
+            port = 0;
+            if (this != null)
+            {
+                ip = string.IsNullOrEmpty(this.MainIP) ? this.MainIP : this.BakIP;
+                port = (this.MainPort == 0) ? this.MainPort : this.BakPort;
+                return true;
+            }
+            return false;
         }
         #endregion
 
