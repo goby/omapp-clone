@@ -62,6 +62,60 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         public int WXBMIndex { get; set; }
         #endregion
+
+        #region -Public Method-
+
+        public static string GeneraterResourceCalculateXML(List<ResourceRequirement> resourceRequirementList)
+        {
+            StringBuilder strBuilder = new StringBuilder("");
+            if (resourceRequirementList != null && resourceRequirementList.Count > 0)
+            {
+                strBuilder.Append("<?xml version=\"1.0\"?>");
+                strBuilder.Append("<!--注释区，需要时在此对文件内容进行说明。-->");
+                strBuilder.Append("<资源需求>");
+                strBuilder.Append("<需求个数>" + resourceRequirementList.Count.ToString() + "</需求个数>");
+                foreach (ResourceRequirement resourceRequirement in resourceRequirementList)
+                {
+                    strBuilder.Append("<需求>");
+
+                    strBuilder.Append("<需求名称>" + resourceRequirement.RequirementName + "</需求名称>");
+                    strBuilder.Append("<时间基准>" + resourceRequirement.TimeBenchmark + "</时间基准>");
+                    strBuilder.Append("<需求优先级>" + resourceRequirement.Priority.ToString() + "</需求优先级>");
+                    strBuilder.Append("<卫星编码>" + resourceRequirement.WXBM + "</卫星编码>");
+                    strBuilder.Append("<功能类型>" + resourceRequirement.FunctionType + "</功能类型>");
+
+                    strBuilder.Append("<不可用设备>");
+                    strBuilder.Append("<个数>" + resourceRequirement.UnusedEquipmentList.Count.ToString() + "</个数>");
+                    foreach (UnusedEquipment unUsedEquipment in resourceRequirement.UnusedEquipmentList)
+                    {
+                        strBuilder.Append("<设备描述>");
+                        strBuilder.Append("<地面站编码>" + unUsedEquipment.GRCode + "</地面站编码>");
+                        strBuilder.Append("<地面站设备编码>" + unUsedEquipment.EquipmentCode + "</地面站设备编码>");
+                        strBuilder.Append("</设备描述>");
+                    }
+                    strBuilder.Append("</不可用设备>");
+
+                    strBuilder.Append("<持续时长>" + resourceRequirement.PersistenceTime.ToString() + "</持续时长>");
+
+                    strBuilder.Append("<支持时段>");
+                    strBuilder.Append("<个数>" + resourceRequirement.PeriodOfTimeList.Count.ToString() + "</个数>");
+                    foreach (PeriodOfTime periodOfTime in resourceRequirement.PeriodOfTimeList)
+                    {
+                        strBuilder.Append("<时段描述>");
+                        strBuilder.Append("<开始时间>" + periodOfTime.BeginTime.ToString("yyyyMMddHHmmss") + "</开始时间>");
+                        strBuilder.Append("<结束时间>" + periodOfTime.EndTime.ToString("yyyyMMddHHmmss") + "</结束时间>");
+                        strBuilder.Append("</时段描述>");
+                    }
+                    strBuilder.Append("</支持时段>");
+
+                    strBuilder.Append("</需求>");
+                }
+                strBuilder.Append("</资源需求>");
+            }
+            return strBuilder.ToString();
+        }
+
+        #endregion
     }
 
     [Serializable]

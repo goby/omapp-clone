@@ -58,20 +58,20 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         public string DATATYPE { get; set; }
 
-        public static List<InfoType> _xxTypeCache = null;
-        public List<InfoType> XXTYPECache
+        public static List<InfoType> _infoTypeCache = null;
+        public List<InfoType> InfoTYPECache
         {
             get
             {
-                if (_xxTypeCache == null)
+                if (_infoTypeCache == null)
                 {
-                    _xxTypeCache = SelectAll();
+                    _infoTypeCache = SelectAll();
                 }
-                return _xxTypeCache;
+                return _infoTypeCache;
             }
             set
             {
-                _xxTypeCache = value;
+                _infoTypeCache = value;
             }
         }
         #endregion
@@ -106,7 +106,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public InfoType SelectByID()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
-            DataSet ds = _dataBase.SpExecuteDataSet("UP_XXTYPE_SelectByID", new OracleParameter[] { new OracleParameter("p_RID", Id), o_Cursor });
+            DataSet ds = _dataBase.SpExecuteDataSet("UP_InfoTYPE_SelectByID", new OracleParameter[] { new OracleParameter("p_RID", Id), o_Cursor });
 
             InfoType info = null;
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
@@ -132,7 +132,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public List<InfoType> SelectAll()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
-            DataSet ds = _dataBase.SpExecuteDataSet("UP_XXTYPE_SelectAll", new OracleParameter[] { o_Cursor });
+            DataSet ds = _dataBase.SpExecuteDataSet("UP_InfoTYPE_SelectAll", new OracleParameter[] { o_Cursor });
 
             List<InfoType> infoList = new List<InfoType>();
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
@@ -163,9 +163,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public string GetName(int rid)
         {
             string dataName = string.Empty;
-            if (XXTYPECache != null)
+            if (InfoTYPECache != null)
             {
-                var query = XXTYPECache.Where(a => a.Id == rid);
+                var query = InfoTYPECache.Where(a => a.Id == rid);
                 if (query != null && query.Count() > 0)
                     dataName = query.FirstOrDefault().DATANAME;
             }
@@ -180,9 +180,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public string GetInCodeByExCode(string exCode)
         {
             string strInCode = string.Empty;
-            if (XXTYPECache != null)
+            if (InfoTYPECache != null)
             {
-                var query = XXTYPECache.Where(a => a.EXCODE == exCode);
+                var query = InfoTYPECache.Where(a => a.EXCODE == exCode);
                 if (query != null && query.Count() > 0)
                     strInCode = query.FirstOrDefault().INCODE;
             }
@@ -197,9 +197,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public string GetExCodeByInCode(string inCode)
         {
             string strExCode = string.Empty;
-            if (XXTYPECache != null)
+            if (InfoTYPECache != null)
             {
-                var query = XXTYPECache.Where(a => a.EXCODE == inCode);
+                var query = InfoTYPECache.Where(a => a.EXCODE == inCode);
                 if (query != null && query.Count() > 0)
                     strExCode = query.FirstOrDefault().EXCODE;
             }

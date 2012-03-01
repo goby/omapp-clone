@@ -39,7 +39,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         HealthStatus =13,
         HealthStatusFunctionType = 14,
         UseStatusUsedType = 15,
-        UseStatusCanBeUsed = 16
+        UseStatusCanBeUsed = 16,
+
+        ResourceCalculate = 20
     }
 
     [Serializable]
@@ -101,6 +103,36 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 }
             }
             return text;
+        }
+
+        /// <summary>
+        /// 根据参数文本获得参数值
+        /// </summary>
+        /// <param name="type">参数类型</param>
+        /// <param name="text">参数文本</param>
+        /// <returns>参数值</returns>
+        public static string GetSystemParameterValue(SystemParametersType type, string text)
+        {
+            string filePath = GlobalSettings.MapPath(string.Format(AspNetConfig.Config["settingPattern"].ToString(), @"SystemParameters"));
+            XmlDocument doc = new XmlDocument();
+            doc.Load(filePath);
+
+            string xmlPath = string.Format(@"//{0}/item", type.ToString());
+            XmlNodeList xmlNodeList = doc.SelectNodes(xmlPath);
+
+            string value = string.Empty;
+            if (xmlNodeList != null)
+            {
+                foreach (XmlNode xmlNode in xmlNodeList)
+                {
+                    if (xmlNode.Attributes["text"].Value == text)
+                    {
+                        value = xmlNode.Attributes["value"].Value;
+                        break;
+                    }
+                }
+            }
+            return value;
         }
     }
 }
