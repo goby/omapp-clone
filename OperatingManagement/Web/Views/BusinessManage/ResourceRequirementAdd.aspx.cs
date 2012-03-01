@@ -14,6 +14,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.IO;
+using System.Xml;
 
 using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.WebKernel.Basic;
@@ -254,12 +256,35 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-               
+                if (ResourceRequirementList == null || ResourceRequirementList.Count < 1)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"请添加资源需求，计算失败。\")", true);
+                    return;
+                }
+
+                string xmlStr = ResourceRequirement.GeneraterResourceCalculateXML(ResourceRequirementList);
+                if (string.IsNullOrEmpty(xmlStr))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"请添加资源需求，计算失败。\")", true);
+                    return;
+                }
+                string filePath = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResourceCalculateFilePath");
+                filePath = filePath.TrimEnd(new char[] { '\\' }) + "\\" + Guid.NewGuid().ToString() + ".xml";
+                XmlDocument xmlDocument = new XmlDocument();
+                xmlDocument.LoadXml(xmlStr);
+                xmlDocument.Save(filePath);
+
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"计算成功。\")", true);
+                ViewState["ResourceRequirement"] = null;
+                BindResourceRequirementList();
+                ResetControls();
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
             catch
-            { }
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"系统异常，计算失败。\")", true);
+            }
         }
         /// <summary>
         /// 编辑资源需求

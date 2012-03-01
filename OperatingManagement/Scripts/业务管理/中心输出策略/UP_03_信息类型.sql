@@ -1,21 +1,21 @@
-create or replace procedure UP_XXTYPE_SelectByID
+create or replace procedure UP_InfoTYPE_SelectByID
 (
-       p_RID TB_XXTYPE.RID%type,
+       p_RID TB_InfoTYPE.RID%type,
        o_Cursor out sys_refcursor
 )
 is
 begin
        open o_Cursor for
-            Select * From TB_XXTYPE Where RID=p_RID;
+            Select * From TB_InfoTYPE Where RID=p_RID;
 end;
 
 
-create or replace procedure UP_XXTYPE_SelectAll
+create or replace procedure UP_InfoTYPE_SelectAll
 (
        o_Cursor out sys_refcursor
 )
 is
 begin
        open o_Cursor for
-            Select * From TB_XXTYPE Order By RID Desc;
+            Select * From TB_InfoTYPE Order By RID Desc;
 end;

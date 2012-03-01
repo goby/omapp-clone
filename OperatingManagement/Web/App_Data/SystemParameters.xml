@@ -77,4 +77,7 @@
     <item text="是" value="1"></item>
     <item text="否" value="2"></item>
   </UseStatusCanBeUsed>
+  <ResourceCalculate description="资源计算相关参数">
+    <item text="ResourceCalculateFilePath" value="D:\ResourceCalculateFiles\"></item>
+  </ResourceCalculate>
 </SystemParameters>

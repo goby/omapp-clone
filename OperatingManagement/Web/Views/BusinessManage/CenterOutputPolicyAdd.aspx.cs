@@ -221,7 +221,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             InfoType xxType = new InfoType();
             dplInfoType.Items.Clear();
             //dplInfoType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyInfoType);
-            dplInfoType.DataSource = xxType.XXTYPECache;
+            dplInfoType.DataSource = xxType.InfoTYPECache;
             dplInfoType.DataTextField = "DATANAME";
             dplInfoType.DataValueField = "Id";
             dplInfoType.DataBind();
