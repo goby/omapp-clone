@@ -78,6 +78,19 @@
     <item text="否" value="2"></item>
   </UseStatusCanBeUsed>
   <ResourceCalculate description="资源计算相关参数">
-    <item text="ResourceCalculateFilePath" value="D:\ResourceCalculateFiles\"></item>
+    <item text="RequirementFileDirectory" value="D:\ResourceCalculate\RequirementFileDirectory\"></item>
+    <item text="ResultFileDirectory" value="D:\ResourceCalculate\ResultFileDirectory\"></item>
   </ResourceCalculate>
+  <ResourceCalculateResultFileSource description="资源计算，资源计算结果来源：系统计算（1）、用户上传（2）">
+    <item text="系统计算" value="1"></item>
+    <item text="用户上传" value="2"></item>
+  </ResourceCalculateResultFileSource>
+  <ResourceCalculateResult description="资源计算，资源计算结果：计算成功（1）、计算失败（2）；；">
+    <item text="计算成功" value="1"></item>
+    <item text="计算失败" value="2"></item>
+  </ResourceCalculateResult>
+  <ResourceCalculateStatus description="资源计算，状态：等待计算（1）、计算完成（2）；">
+    <item text="等待计算" value="1"></item>
+    <item text="计算完成" value="2"></item>
+  </ResourceCalculateStatus>
 </SystemParameters>
