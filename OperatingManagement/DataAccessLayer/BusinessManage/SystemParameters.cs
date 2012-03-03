@@ -41,7 +41,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         UseStatusUsedType = 15,
         UseStatusCanBeUsed = 16,
 
-        ResourceCalculate = 20
+        ResourceCalculate = 20,
+        ResourceCalculateResultFileSource = 21,
+        ResourceCalculateResult = 22,
+        ResourceCalculateStatus = 23
     }
 
     [Serializable]

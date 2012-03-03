@@ -256,6 +256,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
+                //校验
                 if (ResourceRequirementList == null || ResourceRequirementList.Count < 1)
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"请添加资源需求，计算失败。\")", true);
@@ -268,16 +269,48 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"请添加资源需求，计算失败。\")", true);
                     return;
                 }
-                string filePath = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResourceCalculateFilePath");
-                filePath = filePath.TrimEnd(new char[] { '\\' }) + "\\" + Guid.NewGuid().ToString() + ".xml";
+                DateTime createdTime = DateTime.Now;
+                string requirementFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "RequirementFileDirectory").TrimEnd(new char[] { '\\' }) + "\\";
+                string requirementFileName = Guid.NewGuid().ToString() + ".xml";
+                string requirementFileDisplayName = "资源需求文件" + createdTime.ToString("yyyyMMddHHmmss") + ".xml";
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.LoadXml(xmlStr);
-                xmlDocument.Save(filePath);
+                xmlDocument.Save(requirementFileDirectory + requirementFileName);
 
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"计算成功。\")", true);
-                ViewState["ResourceRequirement"] = null;
-                BindResourceRequirementList();
-                ResetControls();
+                string resultFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResultFileDirectory").TrimEnd(new char[] { '\\' }) + "\\";
+                string resultFileName = Guid.NewGuid().ToString() + ".xml";
+                string resultFileDisplayName = string.Empty;
+                //TODO:调用计算软件计算，将以上字段赋值
+
+                ResourceCalculate resourceCalculate = new ResourceCalculate();
+                resourceCalculate.RequirementFileDirectory = requirementFileDirectory;
+                resourceCalculate.RequirementFileName = requirementFileName;
+                resourceCalculate.RequirementFileDisplayName = requirementFileDisplayName;
+                resourceCalculate.ResultFileDirectory = resultFileDirectory;
+                resourceCalculate.ResultFileName = resultFileName;
+                resourceCalculate.ResultFileDisplayName = resultFileDisplayName;
+                resourceCalculate.ResultFileSource = 1;
+                resourceCalculate.CalculateResult = 1;
+                resourceCalculate.Status = 1;
+                resourceCalculate.CreatedTime = createdTime;
+                resourceCalculate.UpdatedTime = createdTime;
+                Framework.FieldVerifyResult result = resourceCalculate.Add();
+
+                switch (result)
+                {
+                    case Framework.FieldVerifyResult.Error:
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生了数据错误，无法完成请求的操作。\")", true);
+                        break;
+                    case Framework.FieldVerifyResult.Success:
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"计算成功。\");window.location.href='/Views/BusinessManage/ResourceCalculateManage.aspx'", true);
+                        ViewState["ResourceRequirement"] = null;
+                        BindResourceRequirementList();
+                        ResetControls();
+                        break;
+                    default:
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生未知错误，计算失败。\")", true);
+                        break;
+                }   
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
