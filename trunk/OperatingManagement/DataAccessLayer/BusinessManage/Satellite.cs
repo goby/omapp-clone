@@ -63,7 +63,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public string GN { get; set; }
 
         public static List<Satellite> _satelliteCache = null;
-        public List<Satellite> SatelliteCache
+        public List<Satellite> Cache
         {
             get
             {
@@ -165,9 +165,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public string GetName(string wxbm)
         {
             string wxmc = string.Empty;
-            if (SatelliteCache != null)
+            if (Cache != null)
             {
-                var query = SatelliteCache.Where(a => a.Id == wxbm);
+                var query = Cache.Where(a => a.Id == wxbm);
                 if (query != null && query.Count() > 0)
                     wxmc = query.FirstOrDefault().WXMC;
             }

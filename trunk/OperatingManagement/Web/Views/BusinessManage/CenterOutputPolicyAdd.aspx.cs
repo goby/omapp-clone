@@ -211,7 +211,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             XYXSInfo xyxsInfo = new XYXSInfo();
             dplInfoSource.Items.Clear();
             //dplInfoSource.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyInfoSource);
-            dplInfoSource.DataSource = xyxsInfo.XYXSInfoCache;
+            dplInfoSource.DataSource = xyxsInfo.Cache;
             dplInfoSource.DataTextField = "ADDRName";
             dplInfoSource.DataValueField = "Id";
             dplInfoSource.DataBind();
@@ -221,7 +221,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             InfoType xxType = new InfoType();
             dplInfoType.Items.Clear();
             //dplInfoType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyInfoType);
-            dplInfoType.DataSource = xxType.InfoTYPECache;
+            dplInfoType.DataSource = xxType.Cache;
             dplInfoType.DataTextField = "DATANAME";
             dplInfoType.DataValueField = "Id";
             dplInfoType.DataBind();
@@ -230,7 +230,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             //绑定信宿数据源
             dplDdestination.Items.Clear();
             //dplDdestination.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyDdestination);
-            dplDdestination.DataSource = xyxsInfo.XYXSInfoCache;
+            dplDdestination.DataSource = xyxsInfo.Cache;
             dplDdestination.DataTextField = "ADDRName";
             dplDdestination.DataValueField = "Id";
             dplDdestination.DataBind();
@@ -243,7 +243,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             dplSatName.Items.Clear();
             Satellite satellite = new Satellite();
-            dplSatName.DataSource = satellite.SatelliteCache;
+            dplSatName.DataSource = satellite.Cache;
             dplSatName.DataTextField = "WXMC";
             dplSatName.DataValueField = "Id";
             dplSatName.DataBind();

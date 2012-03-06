@@ -18,11 +18,11 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
     public class FileSendInfo : BaseEntity<int, FileSendInfo>
     {
         private OracleDatabase _database = null;
-        private const string s_up_sendinfo_selectbydatatype = "up_sendinfo_selectbydatatype";
-        private const string s_up_sendinfo_selectbyxxtypeandtime = "up_sendinfo_selectbyxxtypeandtime";
-        private const string s_up_sendinfo_selectbyid = "up_sendinfo_selectbyid";
-        private const string s_up_sendinfo_insert = "up_sendinfo_insert";
-        private const string s_up_sendinfo_update = "up_sendinfo_update";
+        private const string s_up_fsendinfo_selectall = "up_fsendinfo_selectall";
+        private const string s_up_fsendinfo_search = "up_fsendinfo_search";
+        private const string s_up_fsendinfo_selectbyid = "up_fsendinfo_selectbyid";
+        private const string s_up_fsendinfo_insert = "up_fsendinfo_insert";
+        private const string s_up_fsendinfo_update = "up_fsendinfo_update";
         private string strFileFullName = "";
         private string strFilePath = "";
 
@@ -61,21 +61,21 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
             this.RetryTimes = Convert.ToInt32(dr["RetryTimes"].ToString());
             this.SenderID = Convert.ToInt32(dr["SenderID"].ToString());
-            this.SenderName = dr["SenderID"].ToString();
+            this.SenderName = dr["SenderName"].ToString();
             this.ReceiverID = Convert.ToInt32(dr["ReceiverID"].ToString());
-            this.ReceiverName = dr["ReceiverID"].ToString();
+            this.ReceiverName = dr["ReceiverName"].ToString();
             this.SendStatus = (SendStatuss)Convert.ToInt32(dr["SendStatus"].ToString());
 
             if (dr["Remark"] == DBNull.Value)
                 this.Remark = string.Empty;
             else
                 this.Remark = dr["Remark"].ToString();
-            this.SubmitTime = Convert.ToDateTime(dr["UserType"].ToString());
+            this.SubmitTime = Convert.ToDateTime(dr["SubmitTime"].ToString());
 
             if (dr["LastUpdateTime"] == DBNull.Value)
                 this.LastUpdateTime = DateTime.MinValue;
             else
-                this.LastUpdateTime = Convert.ToDateTime(dr["UserCatalog"].ToString());
+                this.LastUpdateTime = Convert.ToDateTime(dr["LastUpdateTime"].ToString());
 
             this.SendWay = (CommunicationWays)Convert.ToInt32(dr["SendWay"].ToString());
             this.InfoTypeID = Convert.ToInt32(dr["InfoTypeID"].ToString());
@@ -245,7 +245,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             else
                 oEndTime = endTime;
 
-            DataSet ds = _database.SpExecuteDataSet(s_up_sendinfo_selectbyxxtypeandtime, new OracleParameter[]{
+            DataSet ds = _database.SpExecuteDataSet(s_up_fsendinfo_search, new OracleParameter[]{
                 new OracleParameter("p_XXTypeID", OracleDbType.Int32, xXTypeID, ParameterDirection.Input),
                 new OracleParameter("p_BeginTime", OracleDbType.Date, oBeginTime, ParameterDirection.Input),
                 new OracleParameter("p_EndTime", OracleDbType.Date, oEndTime, ParameterDirection.Input),
@@ -273,7 +273,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public List<FileSendInfo> SelectAll()
         {
             OracleParameter p = PrepareRefCursor();
-            DataSet ds = _database.SpExecuteDataSet(s_up_sendinfo_selectbydatatype, new OracleParameter[] {
+            DataSet ds = _database.SpExecuteDataSet(s_up_fsendinfo_selectall, new OracleParameter[] {
                 p
             });
             List<FileSendInfo> sinfos = new List<FileSendInfo>();
@@ -291,22 +291,20 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// get the SendInfo by id.
         /// </summary>
         /// <returns></returns>
-        public List<FileSendInfo> SelectById()
+        public FileSendInfo SelectById()
         {
             OracleParameter p = PrepareRefCursor();
-            DataSet ds = _database.SpExecuteDataSet(s_up_sendinfo_selectbyid, new OracleParameter[]{
+            DataSet ds = _database.SpExecuteDataSet(s_up_fsendinfo_selectbyid, new OracleParameter[]{
                 new OracleParameter("p_RID", this.Id),
                 p
             });
-            List<FileSendInfo> sinfos = new List<FileSendInfo>();
+            FileSendInfo sinfo = null;
             if (ds != null && ds.Tables.Count == 1)
             {
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    sinfos.Add(new FileSendInfo(dr));
-                }
+                if (ds.Tables[0].Rows.Count == 1)
+                    sinfo = new FileSendInfo(ds.Tables[0].Rows[0]);
             }
-            return sinfos;
+            return sinfo;
         }
 
         /// <summary>
@@ -333,7 +331,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             };
             OracleParameter opId = new OracleParameter()
             {
-                ParameterName = "v_Id",
+                ParameterName = "v_rid",
                 Direction = ParameterDirection.Output,
                 OracleDbType = OracleDbType.Double
             };
@@ -362,8 +360,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             }
             #endregion
 
-            _database.SpExecuteNonQuery(s_up_sendinfo_insert, new OracleParameter[]{
-                new OracleParameter("p_RID",this.Id),
+            _database.SpExecuteNonQuery(s_up_fsendinfo_insert, new OracleParameter[]{
                 new OracleParameter("p_FileName", oFileName),
                 new OracleParameter("p_FileCode", oFileCode),
                 new OracleParameter("p_FilePath", oFilePath),
@@ -408,7 +405,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             else
                 oLastUpdateTime = this.LastUpdateTime;
 
-            _database.SpExecuteNonQuery(s_up_sendinfo_update, new OracleParameter[]{
+            _database.SpExecuteNonQuery(s_up_fsendinfo_update, new OracleParameter[]{
                 new OracleParameter("p_RID", this.Id),
                 new OracleParameter("p_CurPosition", this.CurPosition),
                 new OracleParameter("p_SendStatus", (int)this.SendStatus),

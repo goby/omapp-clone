@@ -168,7 +168,8 @@
     <Content Include="Scripts\Pages\PlanManage\YJJHEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\ZXJHEdit.aspx.js" />
     <Content Include="Scripts\Pages\common.js" />
-    <Content Include="ucs\ucXXType.ascx" />
+    <Content Include="ucs\ucInfoType.ascx" />
+    <Content Include="ucs\ucXYXSInfo.ascx" />
     <Content Include="Views\Account\MyProfile.aspx" />
     <Content Include="Views\BusinessManage\CenterOutputPolicyAdd.aspx" />
     <Content Include="Views\BusinessManage\CenterOutputPolicyEdit.aspx" />
@@ -177,6 +178,7 @@
     <Content Include="Views\BusinessManage\CenterResourceEdit.aspx" />
     <Content Include="Views\BusinessManage\CommunicationResourceAdd.aspx" />
     <Content Include="Views\BusinessManage\CommunicationResourceEdit.aspx" />
+    <Content Include="Views\BusinessManage\GetFileRcvInfos.aspx" />
     <Content Include="Views\BusinessManage\GetFileSInfos.aspx" />
     <Content Include="Views\BusinessManage\GroundResourceAdd.aspx" />
     <Content Include="Views\BusinessManage\GroundResourceEdit.aspx" />
@@ -190,6 +192,7 @@
     <Content Include="Views\BusinessManage\ResourceStatusAdd.aspx" />
     <Content Include="Views\BusinessManage\ResourceStatusChartManage.aspx" />
     <Content Include="Views\BusinessManage\ResourceStatusManage.aspx" />
+    <Content Include="Views\BusinessManage\SendFile.aspx" />
     <Content Include="Views\BusinessManage\XiAnCeKongDataDetail.aspx" />
     <Content Include="Views\BusinessManage\XiAnCeKongDataList.aspx" />
     <Content Include="Views\Exp\Exp.aspx" />
@@ -267,12 +270,19 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
-    <Compile Include="ucs\ucXXType.ascx.cs">
-      <DependentUpon>ucXXType.ascx</DependentUpon>
+    <Compile Include="ucs\ucInfoType.ascx.cs">
+      <DependentUpon>ucInfoType.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ucs\ucXXType.ascx.designer.cs">
-      <DependentUpon>ucXXType.ascx</DependentUpon>
+    <Compile Include="ucs\ucInfoType.ascx.designer.cs">
+      <DependentUpon>ucInfoType.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ucs\ucXYXSInfo.ascx.cs">
+      <DependentUpon>ucXYXSInfo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ucs\ucXYXSInfo.ascx.designer.cs">
+      <DependentUpon>ucXYXSInfo.ascx</DependentUpon>
     </Compile>
     <Compile Include="Views\Account\MyProfile.aspx.cs">
       <DependentUpon>MyProfile.aspx</DependentUpon>
@@ -329,6 +339,13 @@
     </Compile>
     <Compile Include="Views\BusinessManage\CommunicationResourceEdit.aspx.designer.cs">
       <DependentUpon>CommunicationResourceEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GetFileRcvInfos.aspx.cs">
+      <DependentUpon>GetFileRcvInfos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GetFileRcvInfos.aspx.designer.cs">
+      <DependentUpon>GetFileRcvInfos.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\GetFileSInfos.aspx.cs">
       <DependentUpon>GetFileSInfos.aspx</DependentUpon>
@@ -420,6 +437,13 @@
     </Compile>
     <Compile Include="Views\BusinessManage\ResourceStatusManage.aspx.designer.cs">
       <DependentUpon>ResourceStatusManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\SendFile.aspx.cs">
+      <DependentUpon>SendFile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\SendFile.aspx.designer.cs">
+      <DependentUpon>SendFile.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\XiAnCeKongDataDetail.aspx.cs">
       <DependentUpon>XiAnCeKongDataDetail.aspx</DependentUpon>
@@ -667,6 +691,14 @@
     <ProjectReference Include="..\Framework\Framework.csproj">
       <Project>{C301ECEB-1C07-4A0C-8F66-6BE801CECA02}</Project>
       <Name>Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RemotingClient\RemotingClient.csproj">
+      <Project>{AD1E6844-A8A5-4659-8796-B2D6080D7A5D}</Project>
+      <Name>RemotingClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RemotingObjectInterface\RemotingObjectInterface.csproj">
+      <Project>{07E34555-8503-4E7D-A158-10D46143B29E}</Project>
+      <Name>RemotingObjectInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\Security\Security.csproj">
       <Project>{2F26ECB8-6AE6-44CC-9C03-8A23B6D8CB37}</Project>

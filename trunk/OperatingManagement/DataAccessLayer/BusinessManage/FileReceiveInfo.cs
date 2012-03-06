@@ -15,11 +15,11 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
     public class FileReceiveInfo : BaseEntity<int, GroundResource>
     {
         private OracleDatabase _database = null;
-        private const string s_up_rcvinfo_selectbydatatype = "up_rcvinfo_selectbydatatype";
-        private const string s_up_rcvinfo_selectbyxxtypeandtime = "up_rcvinfo_selectbyxxtypeandtime";
-        private const string s_up_rcvinfo_selectbyid = "up_rcvinfo_selectbyid";
-        private const string s_up_rcvinfo_insert = "up_rcvinfo_insert";
-        private const string s_up_rcvinfo_update = "up_rcvinfo_update";
+        private const string s_up_frcvinfo_selectall = "up_frcvinfo_selectall";
+        private const string s_up_frcvinfo_search = "up_frcvinfo_search";
+        private const string s_up_frcvinfo_selectbyid = "up_frcvinfo_selectbyid";
+        private const string s_up_frcvinfo_insert = "up_frcvinfo_insert";
+        private const string s_up_frcvinfo_update = "up_frcvinfo_update";
         private string strFileFullName = "";
         private string strFilePath = "";
 
@@ -57,9 +57,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 this.CurPosition = Convert.ToInt32(dr["CurPosition"].ToString());
 
             this.SenderID = Convert.ToInt32(dr["SenderID"].ToString());
-            this.SenderName = dr["SenderID"].ToString();
+            this.SenderName = dr["SenderName"].ToString();
             this.ReceiverID = Convert.ToInt32(dr["ReceiverID"].ToString());
-            this.ReceiverName = dr["ReceiverID"].ToString();
+            this.ReceiverName = dr["ReceiverName"].ToString();
             this.ReceiveStatus = (ReceiveStatuss)Convert.ToInt32(dr["ReceiveStatus"].ToString());
             if (dr["Remark"] == DBNull.Value)
                 this.Remark = string.Empty;
@@ -218,7 +218,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             else
                 oEndTime = endTime;
 
-            DataSet ds = _database.SpExecuteDataSet(s_up_rcvinfo_selectbyxxtypeandtime, new OracleParameter[]{
+            DataSet ds = _database.SpExecuteDataSet(s_up_frcvinfo_search, new OracleParameter[]{
                 new OracleParameter("p_XXTypeID", OracleDbType.Int32, xXTypeID, ParameterDirection.Input),
                 new OracleParameter("p_BeginTime", OracleDbType.Date, oBeginTime, ParameterDirection.Input),
                 new OracleParameter("p_EndTime", OracleDbType.Date, oEndTime, ParameterDirection.Input),
@@ -246,7 +246,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public List<FileReceiveInfo> SelectAll()
         {
             OracleParameter p = PrepareRefCursor();
-            DataSet ds = _database.SpExecuteDataSet(s_up_rcvinfo_selectbydatatype, new OracleParameter[] {
+            DataSet ds = _database.SpExecuteDataSet(s_up_frcvinfo_selectall, new OracleParameter[] {
                 p
             });
             List<FileReceiveInfo> sinfos = new List<FileReceiveInfo>();
@@ -264,22 +264,20 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// get the ReceiveInfo by id.
         /// </summary>
         /// <returns></returns>
-        public List<FileReceiveInfo> SelectById()
+        public FileReceiveInfo SelectById()
         {
             OracleParameter p = PrepareRefCursor();
-            DataSet ds = _database.SpExecuteDataSet(s_up_rcvinfo_selectbyid, new OracleParameter[]{
+            DataSet ds = _database.SpExecuteDataSet(s_up_frcvinfo_selectbyid, new OracleParameter[]{
                 new OracleParameter("p_RID", this.Id),
                 p
             });
-            List<FileReceiveInfo> sinfos = new List<FileReceiveInfo>();
+            FileReceiveInfo sinfo = null;
             if (ds != null && ds.Tables.Count == 1)
             {
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    sinfos.Add(new FileReceiveInfo(dr));
-                }
+                if (ds.Tables[0].Rows.Count == 1)
+                    sinfo = new FileReceiveInfo(ds.Tables[0].Rows[0]);
             }
-            return sinfos;
+            return sinfo;
         }
 
         /// <summary>
@@ -306,7 +304,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             };
             OracleParameter opId = new OracleParameter()
             {
-                ParameterName = "v_Id",
+                ParameterName = "v_rid",
                 Direction = ParameterDirection.Output,
                 OracleDbType = OracleDbType.Double
             };
@@ -335,8 +333,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             }
             #endregion
 
-            _database.SpExecuteNonQuery(s_up_rcvinfo_insert, new OracleParameter[]{
-                new OracleParameter("p_RID", this.Id),
+            _database.SpExecuteNonQuery(s_up_frcvinfo_insert, new OracleParameter[]{
                 new OracleParameter("p_FileName", oFileName),
                 new OracleParameter("p_FileCode", oFileCode),
                 new OracleParameter("p_FilePath", oFilePath),
@@ -347,7 +344,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_ReceiveStatus", (int)this.ReceiveStatus),
                 new OracleParameter("p_Remark", DBNull.Value),
                 new OracleParameter("p_RecvBeginTime", OracleDbType.Date, this.RecvBeginTime, ParameterDirection.Input),
-                new OracleParameter("p_RecvEndTime", DBNull.Value),
+                new OracleParameter("p_RecvEndTime", OracleDbType.Date, this.RecvEndTime, ParameterDirection.Input),
                 new OracleParameter("p_InfoType", this.InfoTypeID),
                 new OracleParameter("p_ReceiveWay", (int)this.ReceiveWay),
                 opId,
@@ -380,7 +377,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             else
                 oRecvEndTime = this.RecvEndTime;
 
-            _database.SpExecuteNonQuery(s_up_rcvinfo_update, new OracleParameter[]{
+            _database.SpExecuteNonQuery(s_up_frcvinfo_update, new OracleParameter[]{
                 new OracleParameter("p_RID", this.Id),
                 new OracleParameter("p_CurPosition", this.CurPosition),
                 new OracleParameter("p_ReceiveStatus", (int)this.ReceiveStatus),

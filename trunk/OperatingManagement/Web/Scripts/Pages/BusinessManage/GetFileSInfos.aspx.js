@@ -1,7 +1,8 @@
-﻿function () {
-    alert("hi");
-    $("#txtFrom, #txtTo").datepicker();
-}
+﻿$(function () {
+    $("#txtFrom").datepicker();
+    $("#txtTo").datepicker();
+});
+
 
 function showMsg(msg) {
     $.fn.modal({

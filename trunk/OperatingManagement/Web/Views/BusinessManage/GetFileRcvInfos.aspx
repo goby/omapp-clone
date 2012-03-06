@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GetFileSInfos.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.GetFileSInfos" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="GetFileRcvInfos.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.GetFileRcvInfos" %>
 <%@ Register src="../../ucs/ucInfoType.ascx" tagname="ucInfoType" tagprefix="uc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -9,48 +9,35 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    业务管理 &gt; 查看文件发送记录
+    业务管理 &gt; 查看文件接收记录
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="listTitle" width="1500px">
         <tr>
-            <td width="80%"><div>信息类型<uc2:ucInfoType ID="ddlInfoType" runat="server"  />
+            <td width="80%"><div>信息类型<uc2:ucInfoType ID="ddlInfoType" runat="server" />
                 开始日期<asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" runat="server"></asp:TextBox>
                 结束日期<asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" runat="server"></asp:TextBox>
                 </div>
             </td>
             <td width="20%"><asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
                         Text="查询" Width="69px" /></td>
-        </tr>        
-        <tr>
-            <td class="listTitle-c1">
-                <div style="display:none;">
-                    <asp:TextBox ID="txtRID" runat="server" ClientIDMode="Static" CssClass="text" ></asp:TextBox>
-                    <asp:TextBox ID="txtStatus" runat="server" ClientIDMode="Static" CssClass="text" ></asp:TextBox>
-                    <asp:Button ID="btnHidRSendFile" runat="server" ClientIDMode="Static" Text="btnHidRSendFile" 
-                                onclick="btnHidRSendFile_Click" />
-                </div>
-            </td>
-            <td></td>
         </tr>
     </table>
-    <asp:Repeater ID="rpDatas" runat="server" 
-        onitemdatabound="rpDatas_ItemDataBound">
+    <asp:Repeater ID="rpDatas" runat="server">
         <HeaderTemplate>
             <table class="list">
                 <tr>
                     <th style="width:3.5%;">记录号</th>
                     <th style="width:13%;">文件名</th>
                     <th style="width:12%;">文件路径</th>
-                    <th style="width:4.5%;">发送方式</th>
+                    <th style="width:4.5%;">接收方式</th>
                     <th style="width:14%;">发送方</th>
                     <th style="width:10%;">信息类型</th>
                     <th style="width:14%;">接收方</th>
                     <th style="width:3.5%;">状态</th>
-                    <th style="width:3.5%;">重发次数</th>
                     <th style="width:10%;">备注</th>
-                    <th style="width:7%;">提交时间</th>
-                    <th style="width:4%;">操作</th>
+                    <th style="width:7%;">接收开始时间</th>
+                    <th style="width:7.5%;">接收结束时间</th>
                 </tr>  
                 <tbody id="tbRoles">        
         </HeaderTemplate>
@@ -59,17 +46,14 @@
                 <td><%# Eval("id") %></td>
                 <td><%# Eval("FileName") %></td>
                 <td><%# Eval("FilePath") %></td>
-                <td><%# Eval("SendWay") %></td>
+                <td><%# Eval("ReceiveWay") %></td>
                 <td><%# Eval("SenderName") %></td>
                 <td><%# Eval("InfoTypeName")%></td>
                 <td><%# Eval("ReceiverName")%></td>
-                <td><%# Eval("SendStatus")%></td>
-                <td><%# Eval("RetryTimes")%></td>
+                <td><%# Eval("ReceiveStatus")%></td>
                 <td><%# Eval("Remark")%></td>
-                <td><%# Eval("SubmitTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%></td>
-                <td>
-                <asp:Button CssClass="button" ID="btnResend" runat="server" OnClick="btnResend_Click" CommandArgument='<%# Eval("Id") %>' Text="重发"></asp:Button>
-                </td>
+                <td><%# Eval("RecvBeginTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%></td>
+                <td><%# Eval("RecvEndTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%></td>
             </tr>            
         </ItemTemplate>
         <FooterTemplate>   
@@ -83,7 +67,7 @@
             <td></td>
         </tr>
         <tr>
-            <td class="listTitle-c1"><button class="button" onclick="return sendFile();">发送文件</button></td>
+            <td class="listTitle-c1"></td>
             <td class="listTitle-c2" align="right">
                 <om:CollectionPager ID="cpPager" runat="server" ></om:CollectionPager>
             </td>

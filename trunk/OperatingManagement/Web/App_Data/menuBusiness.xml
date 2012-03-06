@@ -6,8 +6,8 @@
     </menu>
     <menu title="文件服务器">
       <item id="2-1" title="查看文件发送记录" roles="OMB_FSendInfo.View" href="Views/BusinessManage/GetFileSInfos.aspx" />
-      <item id="2-2" title="查看文件接收记录" roles="OMB_FRcvInfo.View" href="#" />
-      <item id="2-3" title="发送文件" roles="OMB_FSendFile.Do" href="#" />
+      <item id="2-2" title="查看文件接收记录" roles="OMB_FRcvInfo.View" href="Views/BusinessManage/GetFileRcvInfos.aspx" />
+      <item id="2-3" title="发送文件" roles="OMB_FSendFile.Do" href="Views/BusinessManage/SendFile.aspx" />
     </menu>
     <menu title="数据包收发">
       <item id="3-1" title="查看数据包发送记录" roles="OMB_DSendInfo.View" href="#" />

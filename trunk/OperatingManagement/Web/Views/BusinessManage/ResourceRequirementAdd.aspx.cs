@@ -583,7 +583,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             dplSatName.Items.Clear();
             Satellite satellite = new Satellite();
-            dplSatName.DataSource = satellite.SatelliteCache;
+            dplSatName.DataSource = satellite.Cache;
             dplSatName.DataTextField = "WXMC";
             dplSatName.DataValueField = "Id";
             dplSatName.DataBind();

@@ -59,7 +59,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public string DATATYPE { get; set; }
 
         public static List<InfoType> _infoTypeCache = null;
-        public List<InfoType> InfoTYPECache
+        public List<InfoType> Cache
         {
             get
             {
@@ -163,9 +163,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public string GetName(int rid)
         {
             string dataName = string.Empty;
-            if (InfoTYPECache != null)
+            if (Cache != null)
             {
-                var query = InfoTYPECache.Where(a => a.Id == rid);
+                var query = Cache.Where(a => a.Id == rid);
                 if (query != null && query.Count() > 0)
                     dataName = query.FirstOrDefault().DATANAME;
             }
@@ -180,9 +180,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public string GetInCodeByExCode(string exCode)
         {
             string strInCode = string.Empty;
-            if (InfoTYPECache != null)
+            if (Cache != null)
             {
-                var query = InfoTYPECache.Where(a => a.EXCODE == exCode);
+                var query = Cache.Where(a => a.EXCODE == exCode);
                 if (query != null && query.Count() > 0)
                     strInCode = query.FirstOrDefault().INCODE;
             }
@@ -197,9 +197,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public string GetExCodeByInCode(string inCode)
         {
             string strExCode = string.Empty;
-            if (InfoTYPECache != null)
+            if (Cache != null)
             {
-                var query = InfoTYPECache.Where(a => a.EXCODE == inCode);
+                var query = Cache.Where(a => a.EXCODE == inCode);
                 if (query != null && query.Count() > 0)
                     strExCode = query.FirstOrDefault().EXCODE;
             }
