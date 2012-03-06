@@ -24,8 +24,9 @@
   </menu>-->
   <menu title="业务管理">
     <item id="3-1" title="中心输出策略管理" roles="ExperimentPlan.List" href="Views/BusinessManage/CenterOutputPolicyManage.aspx" />
-    <item id="3-2" title="查看文件发送记录" roles="OMB_FSendInfo.View" href="#" />
-    <item id="3-3" title="查看文件接收记录" roles="OMB_FRcvInfo.View" href="#" />    <item id="3-5" title="资源信息管理" roles="Anyone" href="Views/BusinessManage/ResourceManage.aspx" />
+    <item id="3-2" title="查看文件发送记录" roles="OMB_FSendInfo.View" href="Views/BusinessManage/GetFileSInfos.aspx" />
+    <item id="3-3" title="查看文件接收记录" roles="OMB_FRcvInfo.View" href="Views/BusinessManage/GetFileRcvInfos.aspx" />
+    <item id="3-5" title="资源信息管理" roles="Anyone" href="Views/BusinessManage/ResourceManage.aspx" />
     <item id="3-4" title="资源状态管理" roles="Anyone" href="Views/BusinessManage/ResourceStatusManage.aspx" />
     <item id="3-5" title="资源调度计算" roles="Anyone" href="#" />
     <item id="3-6" title="轨道参数转换" roles="OMB_CSZH.Caculate" href="Views/BusinessManage/OrbitParaCalculate.aspx" />

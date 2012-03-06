@@ -5,10 +5,23 @@ using System.Text;
 
 namespace OperatingManagement.RemotingObjectInterface
 {
+    /// <summary>
+    /// 文件服务器的接口
+    /// </summary>
     public interface IFileServer
     {
-        //发送文件，返回结果为xml，提交结果，如果提交成功，返回FileID
-        string SendFile(string fileName, string filePath, int sendWay, int senderID, int receiverID, int infoTypeID, int retryTimes);
+        /// <summary>
+        /// 发送文件，返回结果为xml，提交结果，如果提交成功，返回FileID
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="filePath"></param>
+        /// <param name="sendWay"></param>
+        /// <param name="senderID"></param>
+        /// <param name="receiverID"></param>
+        /// <param name="infoTypeID"></param>
+        /// <param name="autoResend"></param>
+        /// <returns></returns>
+        string SendFile(string fileName, string filePath, int sendWay, int senderID, int receiverID, int infoTypeID, bool autoResend);
 
         /// <summary>
         /// 查询文件发送状态，返回文件发送状态及备注

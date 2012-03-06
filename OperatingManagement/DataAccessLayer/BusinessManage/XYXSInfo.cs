@@ -70,7 +70,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public int BakPort { get; set; }
 
         public static List<XYXSInfo> _xyxsInfoCache = null;
-        public List<XYXSInfo> XYXSInfoCache
+        public List<XYXSInfo> Cache
         {
             get
             {
@@ -161,9 +161,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         INCODE = dr["INCODE"].ToString(),
                         EXCODE = dr["EXCODE"].ToString(),
                         MainIP = ds.Tables[0].Rows[0]["MainIP"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["MainIP"].ToString(),
-                        MainPort = Convert.ToInt32(ds.Tables[0].Rows[0]["MainPort"].ToString()),
+                        MainPort = ds.Tables[0].Rows[0]["MainPort"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["MainPort"].ToString()),
                         BakIP = ds.Tables[0].Rows[0]["BakIP"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["BakIP"].ToString(),
-                        BakPort = Convert.ToInt32(ds.Tables[0].Rows[0]["BakPort"].ToString())
+                        BakPort = ds.Tables[0].Rows[0]["BakPort"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["BakPort"].ToString())
                     };
 
                     infoList.Add(info);
@@ -179,9 +179,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public string GetName(string inCode)
         {
             string addrName = string.Empty;
-            if (XYXSInfoCache != null)
+            if (Cache != null)
             {
-                var query = XYXSInfoCache.Where(a => a.INCODE.ToLower() == inCode.ToLower());
+                var query = Cache.Where(a => a.INCODE.ToLower() == inCode.ToLower());
                 if (query != null && query.Count() > 0)
                     addrName = query.FirstOrDefault().ADDRName;
             }
@@ -195,9 +195,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public string GetName(int rid)
         {
             string addrName = string.Empty;
-            if (XYXSInfoCache != null)
+            if (Cache != null)
             {
-                var query = XYXSInfoCache.Where(a => a.Id == rid);
+                var query = Cache.Where(a => a.Id == rid);
                 if (query != null && query.Count() > 0)
                     addrName = query.FirstOrDefault().ADDRName;
             }
@@ -211,9 +211,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <returns></returns>
         public XYXSInfo GetByIP(string ipAddress)
         {
-            if (XYXSInfoCache != null)
+            if (Cache != null)
             {
-                var query = XYXSInfoCache.Where(a => a.MainIP == ipAddress || a.BakIP == ipAddress);
+                var query = Cache.Where(a => a.MainIP == ipAddress || a.BakIP == ipAddress);
                 if (query != null && query.Count() > 0)
                     return (XYXSInfo)query.FirstOrDefault();
                 else
@@ -230,9 +230,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <returns></returns>
         public XYXSInfo GetByID(int id)
         {
-            if (XYXSInfoCache != null)
+            if (Cache != null)
             {
-                var query = XYXSInfoCache.Where(a => a.Id == id);
+                var query = Cache.Where(a => a.Id == id);
                 if (query != null && query.Count() > 0)
                     return (XYXSInfo)query.FirstOrDefault();
                 else

@@ -45,7 +45,7 @@ namespace OperatingManagement.RemotingClient
         }
 
         /// <summary>
-        /// Creates a proxy for the well-known object indicated by the specified type and URL.
+        /// Creates a proxy for the well-known object indicated by the specified type and URL，only for User Validate.
         /// </summary>
         /// <remarks>
         /// 
@@ -60,6 +60,18 @@ namespace OperatingManagement.RemotingClient
             Type type = typeof(T);
             //RemotingObjectElement element = RemotingClientConfiguration.Section.Objects[type.FullName];
             return (T)Activator.GetObject(type, @"tcp://" + ip + ":" + port + @"/account");
+        }
+        
+        /// <summary>
+        /// Creates a proxy for the well-known object indicated by the specified type and URL.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="configStr"></param>
+        /// <returns></returns>
+        public static T GetObjectByConfig<T>(string configStr)
+        {
+            Type type = typeof(T);
+            return (T)Activator.GetObject(type, configStr);
         }
     }
 }
