@@ -28,7 +28,7 @@
     <item id="3-3" title="查看文件接收记录" roles="OMB_FRcvInfo.View" href="Views/BusinessManage/GetFileRcvInfos.aspx" />
     <item id="3-5" title="资源信息管理" roles="Anyone" href="Views/BusinessManage/ResourceManage.aspx" />
     <item id="3-4" title="资源状态管理" roles="Anyone" href="Views/BusinessManage/ResourceStatusManage.aspx" />
-    <item id="3-5" title="资源调度计算" roles="Anyone" href="#" />
+    <item id="3-5" title="资源调度计算" roles="Anyone" href="Views/BusinessManage/ResourceRequirementAdd.aspx" />
     <item id="3-6" title="轨道参数转换" roles="OMB_CSZH.Caculate" href="Views/BusinessManage/OrbitParaCalculate.aspx" />
     <item id="3-7" title="轨道差值分析" roles="OMB_CZFX.Caculate" href="#" />
     <item id="3-8" title="轨道交会预报" roles="OMB_JHYB.Caculate" href="#" />

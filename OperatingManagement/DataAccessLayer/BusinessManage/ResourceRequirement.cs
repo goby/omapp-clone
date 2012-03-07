@@ -65,7 +65,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         #region -Public Method-
 
-        public static string GeneraterResourceCalculateXML(List<ResourceRequirement> resourceRequirementList)
+        public static string GeneraterResourceCalculateXML(DateTime timeBenchmark, List<ResourceRequirement> resourceRequirementList)
         {
             StringBuilder strBuilder = new StringBuilder("");
             if (resourceRequirementList != null && resourceRequirementList.Count > 0)
@@ -74,12 +74,12 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 strBuilder.Append("<!--注释区，需要时在此对文件内容进行说明。-->");
                 strBuilder.Append("<资源需求>");
                 strBuilder.Append("<需求个数>" + resourceRequirementList.Count.ToString() + "</需求个数>");
+                strBuilder.Append("<时间基准>" + timeBenchmark.ToString("yyyyMMddHHmmss") + "</时间基准>");
                 foreach (ResourceRequirement resourceRequirement in resourceRequirementList)
                 {
                     strBuilder.Append("<需求>");
 
                     strBuilder.Append("<需求名称>" + resourceRequirement.RequirementName + "</需求名称>");
-                    strBuilder.Append("<时间基准>" + resourceRequirement.TimeBenchmark + "</时间基准>");
                     strBuilder.Append("<需求优先级>" + resourceRequirement.Priority.ToString() + "</需求优先级>");
                     strBuilder.Append("<卫星编码>" + resourceRequirement.WXBM + "</卫星编码>");
                     strBuilder.Append("<功能类型>" + resourceRequirement.FunctionType + "</功能类型>");

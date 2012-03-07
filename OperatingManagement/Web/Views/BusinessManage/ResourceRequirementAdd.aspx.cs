@@ -106,6 +106,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 {
                     BindSatNameDataSource();
                     BindDataSource();
+                    BindUnusedEquipmentList();
+                    BindPeriodOfTimeList();
+                    BindResourceRequirementList();
                 }
             }
             catch
@@ -120,7 +123,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void btnSave_Click(object sender, EventArgs e)
+        protected void btnAdd_Click(object sender, EventArgs e)
         {
             try
             {
@@ -131,12 +134,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "需求名称不能为空";
                     return;
                 }
-                if (string.IsNullOrEmpty(txtTimeBenchmark.Text.Trim()))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "时间基准不能为空";
-                    return;
-                }
+                //if (string.IsNullOrEmpty(txtTimeBenchmark.Text.Trim()))
+                //{
+                //    trMessage.Visible = true;
+                //    lblMessage.Text = "时间基准不能为空";
+                //    return;
+                //}
                 if (string.IsNullOrEmpty(txtPriority.Text.Trim()))
                 {
                     trMessage.Visible = true;
@@ -202,7 +205,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
                 ResourceRequirement resourceRequirement = new ResourceRequirement();
                 resourceRequirement.RequirementName = lblRequirementName.Text.Trim();
-                resourceRequirement.TimeBenchmark = txtTimeBenchmark.Text.Trim();
+                resourceRequirement.TimeBenchmark = string.Empty;//txtTimeBenchmark.Text.Trim();
                 resourceRequirement.Priority = priority;
                 resourceRequirement.WXBM = dplSatName.SelectedValue;
                 resourceRequirement.FunctionType = dplFunctionType.SelectedValue;
@@ -252,6 +255,24 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 lblMessage.Text = "发生未知错误，操作失败。";
             }
         }
+
+        /// <summary>
+        /// 重置控件状态
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            ViewState["ResourceRequirement"] = null;
+            BindResourceRequirementList();
+            ResetControls();
+        }
+
+        /// <summary>
+        /// 提交计算资源需求
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnCalculate_Click(object sender, EventArgs e)
         {
             try
@@ -263,7 +284,19 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
-                string xmlStr = ResourceRequirement.GeneraterResourceCalculateXML(ResourceRequirementList);
+                if (string.IsNullOrEmpty(txtTimeBenchmark.Text.Trim()))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"时间基准不能为空，计算失败。\")", true);
+                    return;
+                }
+                DateTime timeBenchmark = DateTime.Now;
+                if (!DateTime.TryParse(txtTimeBenchmark.Text.Trim(), out timeBenchmark))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"时间基准格式错误，计算失败。\")", true);
+                    return;
+                }
+
+                string xmlStr = ResourceRequirement.GeneraterResourceCalculateXML(timeBenchmark, ResourceRequirementList);
                 if (string.IsNullOrEmpty(xmlStr))
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"请添加资源需求，计算失败。\")", true);
@@ -570,8 +603,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         public override void OnPageLoaded()
         {
-            //this.PagePermission = "OMB_ResStaMan.View";
-            this.ShortTitle = "资源需求添加";
+            this.PagePermission = "OMB_ResCac.Caculate";
+            this.ShortTitle = "资源调度计算";
             this.SetTitle();
         }
 
