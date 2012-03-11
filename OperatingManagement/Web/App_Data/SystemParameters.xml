@@ -80,6 +80,8 @@
   <ResourceCalculate description="资源计算相关参数">
     <item text="RequirementFileDirectory" value="D:\ResourceCalculate\RequirementFileDirectory\"></item>
     <item text="ResultFileDirectory" value="D:\ResourceCalculate\ResultFileDirectory\"></item>
+    <item text="ResultFileExtension" value="xml,txt"></item>
+    <item text="ResultFileMaxSize" value="4194304"></item>
   </ResourceCalculate>
   <ResourceCalculateResultFileSource description="资源计算，资源计算结果来源：系统计算（1）、用户上传（2）">
     <item text="系统计算" value="1"></item>
