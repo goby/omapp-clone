@@ -310,20 +310,20 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 xmlDocument.LoadXml(xmlStr);
                 xmlDocument.Save(requirementFileDirectory + requirementFileName);
 
-                string resultFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResultFileDirectory").TrimEnd(new char[] { '\\' }) + "\\";
-                string resultFileName = Guid.NewGuid().ToString() + ".xml";
-                string resultFileDisplayName = string.Empty;
+                //string resultFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResultFileDirectory").TrimEnd(new char[] { '\\' }) + "\\";
+                //string resultFileName = Guid.NewGuid().ToString() + ".xml";
+                //string resultFileDisplayName = string.Empty;
                 //TODO:调用计算软件计算，将以上字段赋值
 
                 ResourceCalculate resourceCalculate = new ResourceCalculate();
                 resourceCalculate.RequirementFileDirectory = requirementFileDirectory;
                 resourceCalculate.RequirementFileName = requirementFileName;
                 resourceCalculate.RequirementFileDisplayName = requirementFileDisplayName;
-                resourceCalculate.ResultFileDirectory = resultFileDirectory;
-                resourceCalculate.ResultFileName = resultFileName;
-                resourceCalculate.ResultFileDisplayName = resultFileDisplayName;
+                //resourceCalculate.ResultFileDirectory = resultFileDirectory;
+                //resourceCalculate.ResultFileName = resultFileName;
+                //resourceCalculate.ResultFileDisplayName = resultFileDisplayName;
                 resourceCalculate.ResultFileSource = 1;
-                resourceCalculate.CalculateResult = 1;
+                //resourceCalculate.CalculateResult = 1;
                 resourceCalculate.Status = 1;
                 resourceCalculate.CreatedTime = createdTime;
                 resourceCalculate.UpdatedTime = createdTime;
@@ -335,13 +335,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生了数据错误，无法完成请求的操作。\")", true);
                         break;
                     case Framework.FieldVerifyResult.Success:
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"计算成功。\");window.location.href='/Views/BusinessManage/ResourceCalculateManage.aspx'", true);
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"提交计算成功。\");window.location.href='/Views/BusinessManage/ResourceCalculateManage.aspx'", true);
                         ViewState["ResourceRequirement"] = null;
                         BindResourceRequirementList();
                         ResetControls();
                         break;
                     default:
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生未知错误，计算失败。\")", true);
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生未知错误，提交计算失败。\")", true);
                         break;
                 }   
             }
@@ -349,7 +349,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             { }
             catch
             {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"系统异常，计算失败。\")", true);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"系统异常，提交计算失败。\")", true);
             }
         }
         /// <summary>

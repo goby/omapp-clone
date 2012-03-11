@@ -106,7 +106,21 @@
                 <td width="20%">
                      <asp:Button ID="btnSearch" runat="server" OnClick="btnSearch_Click" CssClass="button" ValidationGroup="SearchResourceCalculate"
                         Text="查 询" />
-                    <asp:Button ID="btnAdd" runat="server" OnClick="btnAdd_Click" CssClass="button" Text="添 加" />
+                    <asp:Button ID="btnAdd" runat="server" OnClick="btnAdd_Click" CssClass="button" ToolTip="添加新的计算需求文件" Text="添 加" />
+                </td>
+            </tr>
+        </table>
+        <table cellspacing="0" cellpadding="0" style="margin-top:5px;" class="searchTable">
+            <tr>
+                <th width="15%">
+                    上传计算结果文件：
+                </th>
+                <td width="65%">
+                  <asp:FileUpload ID="fileUploadResultFile" runat="server" />
+                </td>
+                <td width="20%">
+                    <asp:Button ID="btnUpload" runat="server" OnClick="btnUpload_Click" CssClass="button"
+                        Text="上 传" />
                 </td>
             </tr>
         </table>

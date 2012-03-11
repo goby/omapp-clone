@@ -223,6 +223,87 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
         }
 
+        /// <summary>
+        /// 上传计算结果文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnUpload_Click(object sender, EventArgs e)
+        {
+            if (!fileUploadResultFile.HasFile)
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"请选择要上传的计算结果文件。\")", true);
+                return;
+            }
+            if(fileUploadResultFile.PostedFile.ContentLength == 0)
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"上传计算结果文件不能为空。\")", true);
+                return;
+            }
+            int fileSize = fileUploadResultFile.PostedFile.ContentLength;
+            string fileName = fileUploadResultFile.PostedFile.FileName.Substring(fileUploadResultFile.PostedFile.FileName.LastIndexOf('\\') + 1);
+            string fileExtension = fileName.Substring(fileName.LastIndexOf('.') + 1);
+            int resultFileMaxSize = int.Parse(SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResultFileMaxSize"));
+            string resultFileExtension = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResultFileExtension").Trim(new char[] { ',', '，', ';', '；' });
+            string[] extensionArray = resultFileExtension.Split(new char[] { ',', '，', ';', '；' }, StringSplitOptions.RemoveEmptyEntries);
+            bool allowExtension = false;
+            if (extensionArray != null && extensionArray.Length > 0)
+            {
+                foreach (string extension in extensionArray)
+                {
+                    if (extension.ToLower() == fileExtension.ToLower())
+                    {
+                        allowExtension = true;
+                        break;
+                    }
+                }
+            }
+            if (!allowExtension)
+            {
+                string message = string.Format("上传计算结果文件格式不正确，应为：{0}。", resultFileExtension);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"" + message + "\")", true);
+                return;
+            }
+            if (fileSize > resultFileMaxSize)
+            {
+                string message = string.Format("上传计算结果文件不能超过{0}字节", resultFileMaxSize.ToString());
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"" + message + "\")", true);
+                return;
+            }
+            string resultFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResultFileDirectory").TrimEnd(new char[] { '\\' }) + "\\";
+            string resultFileName = Guid.NewGuid().ToString() + "." + fileExtension;
+            fileUploadResultFile.PostedFile.SaveAs(resultFileDirectory + resultFileName);
+
+            DateTime createdTime = DateTime.Now;
+            ResourceCalculate resourceCalculate = new ResourceCalculate();
+            //resourceCalculate.RequirementFileDirectory = requirementFileDirectory;
+            //resourceCalculate.RequirementFileName = requirementFileName;
+            //resourceCalculate.RequirementFileDisplayName = requirementFileDisplayName;
+            resourceCalculate.ResultFileDirectory = resultFileDirectory;
+            resourceCalculate.ResultFileName = resultFileName;
+            resourceCalculate.ResultFileDisplayName = fileName;
+            resourceCalculate.ResultFileSource = 2;
+            //resourceCalculate.CalculateResult = 1;
+            resourceCalculate.Status = 2;
+            resourceCalculate.CreatedTime = createdTime;
+            resourceCalculate.UpdatedTime = createdTime;
+            Framework.FieldVerifyResult result = resourceCalculate.Add();
+
+            switch (result)
+            {
+                case Framework.FieldVerifyResult.Error:
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生了数据错误，无法完成请求的操作。\")", true);
+                    break;
+                case Framework.FieldVerifyResult.Success:
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"上传计算结果文件成功。\")", true);
+                    BindResourceCalculateList();
+                    break;
+                default:
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生未知错误，上传计算结果文件失败。\")", true);
+                    break;
+            }  
+        }
+
         #region ItemDataBound
         /// <summary>
         /// 资源计算结果单条数据绑定
