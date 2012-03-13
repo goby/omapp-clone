@@ -96,12 +96,29 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.Task = txtTask.Text;
 
             PlanFileCreator creater = new PlanFileCreator();
-            if (hfOverDate.Value == "true")
-            {
+
+                creater.FilePath = HfFileIndex.Value;
+                creater.CreateYJJHFile(obj, 1);
+
+            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
+        }
+
+        protected void btnSaveTo_Click(object sender, EventArgs e)
+        {
+            YJJH obj = new YJJH();
+            obj.XXFL = radBtnXXFL.SelectedValue;
+            obj.JXH = txtJXH.Text;
+            obj.SysName = ddlSysName.SelectedValue;
+            obj.StartTime = txtStartTime.Text;
+            obj.EndTime = txtEndTime.Text;
+            obj.Task = txtTask.Text;
+
+            PlanFileCreator creater = new PlanFileCreator();
+
                 obj.TaskID = hfTaskID.Value;
                 obj.SatID = hfSatID.Value;
                 obj.JXH = (new Sequence()).GetYJJHSequnce().ToString("0000");
-                string filepath=creater.CreateYJJHFile(obj, 0);
+                string filepath = creater.CreateYJJHFile(obj, 0);
 
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
                 {
@@ -116,14 +133,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     Reserve = ""
                 };
                 var result = jh.Add();
-            }
-            else
-            {
-                creater.FilePath = HfFileIndex.Value;
-                creater.CreateYJJHFile(obj, 1);
-            }
 
             ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
+       
         }
 
     }

@@ -92,8 +92,25 @@ namespace OperatingManagement.Web.Views.PlanManage
             objTYSJ.Condition = txtCondition.Text;
 
             PlanFileCreator creater = new PlanFileCreator();
-            if (hfOverDate.Value == "true") //另存
-            {
+
+                creater.FilePath = HfFileIndex.Value;
+                creater.CreateTYSJFile(objTYSJ, 1);
+
+            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
+        }
+
+        protected void btnSaveTo_Click(object sender, EventArgs e)
+        {
+            TYSJ objTYSJ = new TYSJ();
+            objTYSJ.SatName = txtSatName.Text;
+            objTYSJ.Type = txtType.Text;
+            objTYSJ.TestItem = txtTestItem.Text;
+            objTYSJ.StartTime = txtStartTime.Text;
+            objTYSJ.EndTime = txtEndTime.Text;
+            objTYSJ.Condition = txtCondition.Text;
+
+            PlanFileCreator creater = new PlanFileCreator();
+
                 objTYSJ.TaskID = hfTaskID.Value;
                 objTYSJ.SatID = hfSatID.Value;
                 string filepath = creater.CreateTYSJFile(objTYSJ, 0);
@@ -111,15 +128,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     Reserve = ""
                 };
                 var result = jh.Add();
-            }
-            else
-            {
-                //修改
-                creater.FilePath = HfFileIndex.Value;
-                creater.CreateTYSJFile(objTYSJ, 1);
-            }
 
             ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
+        
         }
     }
 }
