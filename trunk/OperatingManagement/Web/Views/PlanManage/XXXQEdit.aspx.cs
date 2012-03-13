@@ -329,8 +329,89 @@ namespace OperatingManagement.Web.Views.PlanManage
             objXXXQ.objHJXQ = objHJ;
 
             PlanFileCreator creater = new PlanFileCreator();
-            if (hfOverDate.Value == "true")
+
+                creater.FilePath = HfFileIndex.Value;
+                creater.CreateXXXQFile(objXXXQ, 1);
+
+            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
+        }
+
+
+        public override void OnPageLoaded()
+        {
+            this.PagePermission = "Plan.Edit";
+            this.ShortTitle = "空间信息需求编辑";
+            base.OnPageLoaded();
+            this.AddJavaScriptInclude("scripts/pages/PlanManage/XXXQEdit.aspx.js");
+        }
+
+        protected void btnSaveTo_Click(object sender, EventArgs e)
+        {
+            #region MBXQ
+            MBXQ objMB = new MBXQ();
+            objMB.User = txtMBUser.Text;
+            objMB.Time = txtMBTime.Text;
+            objMB.TargetInfo = txtMBTargetInfo.Text;
+            objMB.TimeSection1 = txtMBTimeSection1.Text;
+            objMB.TimeSection2 = txtMBTimeSection2.Text;
+            //obj.Sum = txtMBSum.Text;
+            objMB.SatInfos = new List<MBXQSatInfo>();
+
+            MBXQSatInfo dm;
+            foreach (RepeaterItem it in rpMB.Items)
             {
+                dm = new MBXQSatInfo();
+                TextBox txtMBSatName = (TextBox)it.FindControl("txtMBSatName");
+                TextBox txtMBInfoName = (TextBox)it.FindControl("txtMBInfoName");
+                TextBox txtMBInfoTime = (TextBox)it.FindControl("txtMBInfoTime");
+
+                dm.SatName = txtMBSatName.Text;
+                dm.InfoName = txtMBInfoName.Text;
+                dm.InfoTime = txtMBInfoTime.Text;
+
+                objMB.SatInfos.Add(dm);
+            }
+            objMB.Sum = objMB.SatInfos.Count.ToString(); //信息条数，自动计算得到
+
+            #endregion
+
+            #region HJXQ
+            HJXQ objHJ = new HJXQ();
+            objHJ.User = txtHJUser.Text;
+            objHJ.Time = txtHJTime.Text;
+            objHJ.EnvironInfo = txtHJEnvironInfo.Text;
+            objHJ.TimeSection1 = txtHJTimeSection1.Text;
+            objHJ.TimeSection2 = txtHJTimeSection2.Text;
+            //obj.Sum = txtHJSum.Text;
+
+            objHJ.SatInfos = new List<HJXQSatInfo>();
+
+            HJXQSatInfo dmhj;
+            foreach (RepeaterItem it in rpHJ.Items)
+            {
+                dmhj = new HJXQSatInfo();
+                TextBox txtHJSatName = (TextBox)it.FindControl("txtHJSatName");
+                TextBox txtHJInfoName = (TextBox)it.FindControl("txtHJInfoName");
+                TextBox txtHJInfoArea = (TextBox)it.FindControl("txtHJInfoArea");
+                TextBox txtHJInfoTime = (TextBox)it.FindControl("txtHJInfoTime");
+
+                dmhj.SatName = txtHJSatName.Text;
+                dmhj.InfoName = txtHJInfoName.Text;
+                dmhj.InfoArea = txtHJInfoArea.Text;
+                dmhj.InfoTime = txtHJInfoTime.Text;
+
+                objHJ.SatInfos.Add(dmhj);
+            }
+            objHJ.Sum = objHJ.SatInfos.Count.ToString(); //信息条数，自动计算得到
+
+            #endregion
+
+            XXXQ objXXXQ = new XXXQ();
+            objXXXQ.objMBXQ = objMB;
+            objXXXQ.objHJXQ = objHJ;
+
+            PlanFileCreator creater = new PlanFileCreator();
+
                 objXXXQ.TaskID = hfTaskID.Value;
                 objXXXQ.SatID = hfSatID.Value;
                 string filepath = creater.CreateXXXQFile(objXXXQ, 0);
@@ -348,23 +429,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     Reserve = ""
                 };
                 var result = jh.Add();
-            }
-            else
-            {
-                creater.FilePath = HfFileIndex.Value;
-                creater.CreateXXXQFile(objXXXQ, 1);
-            }
 
             ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
-        }
-
-
-        public override void OnPageLoaded()
-        {
-            this.PagePermission = "Plan.Edit";
-            this.ShortTitle = "空间信息需求编辑";
-            base.OnPageLoaded();
-            this.AddJavaScriptInclude("scripts/pages/PlanManage/XXXQEdit.aspx.js");
+       
         }
     }
 }

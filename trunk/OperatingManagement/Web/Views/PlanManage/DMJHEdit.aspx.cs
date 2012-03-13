@@ -728,8 +728,109 @@ namespace OperatingManagement.Web.Views.PlanManage
 
 
             PlanFileCreator creater = new PlanFileCreator();
-            if (hfOverDate.Value == "true") //另存
+
+                creater.FilePath = HfFileIndex.Value;
+                creater.CreateDMJHFile(obj, 1);
+
+            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
+        }
+
+        protected void btnSaveTo_Click(object sender, EventArgs e)
+        {
+            DMJH obj = new DMJH();
+            obj.Sequence = txtSequence.Text;
+            obj.DateTime = txtDatetime.Text;
+            obj.StationName = txtStationName.Text;
+            obj.EquipmentID = txtEquipmentID.Text;
+            // obj.TaskCount = txtTaskCount.Text;
+            obj.DMJHTasks = new List<DMJH_Task>();
+
+            DMJH_Task rt;
+            DMJH_Task_ReakTimeTransfor rtt;
+            DMJH_Task_AfterFeedBack afb;
+
+            foreach (RepeaterItem it in Repeater1.Items)
             {
+                #region task
+                rt = new DMJH_Task();
+                TextBox txtTaskFlag = (TextBox)it.FindControl("txtTaskFlag");
+                DropDownList txtWorkWay = (DropDownList)it.FindControl("ddlFS");
+                DropDownList txtPlanPropertiy = (DropDownList)it.FindControl("ddlJXZ");
+                DropDownList txtWorkMode = (DropDownList)it.FindControl("ddlMS");
+                TextBox txtPreStartTime = (TextBox)it.FindControl("txtPreStartTime");
+                TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                TextBox txtTrackStartTime = (TextBox)it.FindControl("txtTrackStartTime");
+                TextBox txtWaveOnStartTime = (TextBox)it.FindControl("txtWaveOnStartTime");
+                TextBox txtWaveOffStartTime = (TextBox)it.FindControl("txtWaveOffStartTime");
+                TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
+                TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+                rt.TaskFlag = txtTaskFlag.Text;
+                rt.WorkWay = txtWorkWay.SelectedValue;
+                rt.PlanPropertiy = txtPlanPropertiy.SelectedValue;
+                rt.WorkMode = txtWorkMode.SelectedValue;
+                rt.PreStartTime = txtPreStartTime.Text;
+                rt.StartTime = txtStartTime.Text;
+                rt.TrackStartTime = txtTrackStartTime.Text;
+                rt.WaveOnStartTime = txtWaveOnStartTime.Text;
+                rt.WaveOffStartTime = txtWaveOffStartTime.Text;
+                rt.TrackEndTime = txtTrackEndTime.Text;
+                rt.EndTime = txtEndTime.Text;
+                rt.ReakTimeTransfors = new List<DMJH_Task_ReakTimeTransfor>();
+                rt.AfterFeedBacks = new List<DMJH_Task_AfterFeedBack>();
+                //obj.DMJHTasks.Add(rt);
+                #endregion
+                #region ReakTimeTransfor
+                Repeater rps = it.FindControl("rpReakTimeTransfor") as Repeater;
+                foreach (RepeaterItem its in rps.Items)
+                {
+
+                    rtt = new DMJH_Task_ReakTimeTransfor();
+                    TextBox txtFormatFlag = (TextBox)its.FindControl("txtFormatFlag");
+                    TextBox txtInfoFlowFlag = (TextBox)its.FindControl("txtInfoFlowFlag");
+                    TextBox txtTransStartTime = (TextBox)its.FindControl("txtTransStartTime");
+                    TextBox txtTransEndTime = (TextBox)its.FindControl("txtTransEndTime");
+                    TextBox txtTransSpeedRate = (TextBox)its.FindControl("txtTransSpeedRate");
+
+                    rtt.FormatFlag = txtFormatFlag.Text;
+                    rtt.InfoFlowFlag = txtInfoFlowFlag.Text;
+                    rtt.TransStartTime = txtTransStartTime.Text;
+                    rtt.TransEndTime = txtTransEndTime.Text;
+                    rtt.TransSpeedRate = txtTransSpeedRate.Text;
+                    rt.ReakTimeTransfors.Add(rtt);
+
+                }
+
+                #endregion
+                #region AfterFeedBack
+                Repeater rpa = it.FindControl("rpAfterFeedBack") as Repeater;
+                foreach (RepeaterItem its in rpa.Items)
+                {
+
+                    afb = new DMJH_Task_AfterFeedBack();
+                    TextBox txtFormatFlag = (TextBox)its.FindControl("FormatFlag");
+                    TextBox txtInfoFlowFlag = (TextBox)its.FindControl("InfoFlowFlag");
+                    TextBox txtDataStartTime = (TextBox)its.FindControl("DataStartTime");
+                    TextBox txtDataEndTime = (TextBox)its.FindControl("DataEndTime");
+                    TextBox txtTransStartTime = (TextBox)its.FindControl("TransStartTime");
+                    TextBox txtTransSpeedRate = (TextBox)its.FindControl("TransSpeedRate");
+
+                    afb.FormatFlag = txtFormatFlag.Text;
+                    afb.InfoFlowFlag = txtInfoFlowFlag.Text;
+                    afb.DataStartTime = txtDataStartTime.Text;
+                    afb.DataEndTime = txtDataEndTime.Text;
+                    afb.TransStartTime = txtTransStartTime.Text;
+                    afb.TransSpeedRate = txtTransSpeedRate.Text;
+                    rt.AfterFeedBacks.Add(afb);
+
+                }
+                #endregion
+                obj.DMJHTasks.Add(rt);
+            }
+            obj.TaskCount = obj.DMJHTasks.Count.ToString();
+
+
+            PlanFileCreator creater = new PlanFileCreator();
+
                 obj.TaskID = hfTaskID.Value;
                 obj.SatID = hfSatID.Value;
                 string filepath = creater.CreateDMJHFile(obj, 0);
@@ -747,14 +848,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     Reserve = ""
                 };
                 var result = jh.Add();
-            }
-            else
-            {
-                //修改计划
-                creater.FilePath = HfFileIndex.Value;
-                creater.CreateDMJHFile(obj, 1);
-            }
+
             ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
+       
         }
         //
     }

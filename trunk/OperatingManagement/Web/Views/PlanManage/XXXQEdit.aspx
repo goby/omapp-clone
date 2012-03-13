@@ -262,13 +262,10 @@
             </tr>
         </table>
     </asp:Panel>
-    <table class="edit" style="width: 800px;">
-        <tr>
-            <td>
-                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" OnClick="btnSubmit_Click" />
+<div style="width:750px; text-align:center">
+                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" OnClick="btnSubmit_Click" />
                 &nbsp;&nbsp;&nbsp;
-                <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" OnClick="btnSubmit_Click" />
-            </td>
-        </tr>
-    </table>
+                <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
+                    OnClick="btnSaveTo_Click" />
+</div>
 </asp:Content>

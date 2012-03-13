@@ -677,7 +677,7 @@
                         onclick="btnSubmit_Click" />
                         &nbsp;&nbsp;&nbsp;
                     <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
-                    onclick="btnSubmit_Click" />
+                    onclick="btnSaveTo_Click" />
 </div>
     </div>
 </asp:Content>
