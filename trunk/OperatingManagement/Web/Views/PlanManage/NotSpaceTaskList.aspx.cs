@@ -11,6 +11,7 @@ using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.Framework;
 using OperatingManagement.DataAccessLayer.PlanManage;
+using OperatingManagement.DataAccessLayer.BusinessManage;
 using System.Web.Security;
 using System.Data;
 
@@ -49,7 +50,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 endDate = Convert.ToDateTime(txtEndDate.Text);
             }
-            List<YDSJ> listDatas = (new YDSJ()).GetListByDate(startDate, endDate, "2");
+            //List<YDSJ> listDatas = (new YDSJ()).GetListByDate(startDate, endDate, "2");
+            List<GD> listDatas = (new GD()).GetListByDate(startDate, endDate);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
             cpPager.BindToControl = rpDatas;

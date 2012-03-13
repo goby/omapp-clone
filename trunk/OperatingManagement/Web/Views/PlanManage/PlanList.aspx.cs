@@ -56,7 +56,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             else
             {
                 startDate = DateTime.Now.AddDays(-14);
-                txtStartDate.Text = startDate.ToString("yyyy-MM-dd");
+                //txtStartDate.Text = startDate.ToString("yyyy-MM-dd");
             }
             if (!string.IsNullOrEmpty(txtEndDate.Text))
             {
@@ -66,7 +66,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 endDate = DateTime.Now.AddDays(1);
             }
-            string planType = rbtType.Text;
+            string planType = ddlType.SelectedItem.Value;
 
             List<JH> listDatas = (new JH()).GetJHList(planType, startDate, endDate);
             cpPager.DataSource = listDatas;
@@ -84,76 +84,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            string plantype = txtPlanType.Text;
-            string planid = txtPlanID.Text;
-            string id = txtId.Text;
-            JH objJH = new JH();
-            objJH.Id = Convert.ToInt32(id);
-            FileNameMaker fm = new FileNameMaker();
-            PlanFileCreator cpf = new PlanFileCreator();
-            string filename="";
-            switch (plantype)
-            {
-                case "YJJH":
-                    filename =fm.GenarateFileNameTypeThree("YJJH", "YKZX", rbtDestination.SelectedValue, ".PLA");
-                    YJJH obj = new YJJH();
-                    obj = obj.SelectById(Convert.ToInt32(planid));
-                    cpf.ID = obj.ID;
-                    cpf.CTime = obj.CTime;
-                    cpf.Source = obj.Source;
-                    cpf.Destination = obj.Destination;
-                    cpf.Format1 = obj.Format1;
-                    cpf.DataSection = obj.DataSection;
-                    cpf.NewFile();
-                    obj.FileIndex = cpf.FilePath;
-                    obj.UpdateFileIndex();
 
-                    objJH.FileIndex = cpf.FilePath;
-                    break;
-                case "XXXQ":
-                    filename = fm.GenarateFileNameTypeThree("MBXQ", "YKZX", rbtDestination.SelectedValue, ".REG");
-                    XXXQ objx = new XXXQ();
-                    objx = objx.SelectById(Convert.ToInt32(planid));
-                    cpf.ID = objx.ID;
-                    cpf.CTime = objx.CTime;
-                    cpf.Source = objx.Source;
-                    cpf.Destination = objx.Destination;
-                    cpf.Format1 = objx.Format1;
-                    cpf.DataSection = objx.DataSection;
-                    cpf.NewFile();
-                    objx.FileIndex = cpf.FilePath;
-                    objx.UpdateFileIndex();
-
-                    objJH.FileIndex = cpf.FilePath;
-                    break;
-                case "GZJH":
-                    //filename = fm.GenarateFileNameTypeThree("GZJH", "YKZX", rbtDestination.SelectedValue, ".PLA");
-                    break;
-                case "ZXJH":
-                    //filename = fm.GenarateFileNameTypeThree("YJJH", "YKZX", rbtDestination.SelectedValue, ".PLA");
-                    break;
-                case "TYSJ":
-                    filename = fm.GenarateFileNameTypeThree("TYSJ", "YKZX", rbtDestination.SelectedValue, ".DAT");
-                    TYSJ objt = new TYSJ();
-                    objt = objt.SelectById(Convert.ToInt32(planid));
-                    cpf.ID = objt.ID;
-                    cpf.CTime = objt.CTime;
-                    cpf.Source = objt.Source;
-                    cpf.Destination = objt.Destination;
-                    cpf.Format1 = objt.Format1;
-                    cpf.DataSection = objt.DataSection;
-                    cpf.NewFile();
-                    objt.FileIndex = cpf.FilePath;
-                    objt.UpdateFileIndex();
-
-                    objJH.FileIndex = cpf.FilePath;
-                    break;
-                case "SBJH":
-                    filename = fm.GenarateFileNameTypeOne("SBJH","B",1);
-                    break;
-
-            }
-            objJH.UpdateFileIndex();//更新计划表
         }
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)

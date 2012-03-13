@@ -2,14 +2,14 @@
 <PlanParameters>
     <MBXQDefaultUser description="空间目标信息需求默认用户名称">运控评估中心</MBXQDefaultUser>
     <MBXQDefaultTargetInfo description="空间目标信息需求默认信息标志">TargetInfo</MBXQDefaultTargetInfo>
-    <MBXQDefaultTargetInfo description="空间目标信息需求产品名称">
+    <MBXQInfoName description="空间目标信息需求产品名称">
         <item text="国内双行根数" value="CODE" hex="1002H"></item>
         <item text="J2000星历数据" value="J2000" hex="1003H"></item>
         <item text="WGS84星历数据" value="WGS84" hex="1004H"></item>
-    </MBXQDefaultTargetInfo>
+    </MBXQInfoName>
     <HJXQDefaultUser description="空间环境信息需求默认用户名称">运控评估中心</HJXQDefaultUser>
-    <HJXQDefaultTargetInfo description="空间环境信息需求默认信息标志">TargetInfo</HJXQDefaultTargetInfo>
-    <HJXQDefaultTargetInfo description="空间环境信息需求产品名称">
+    <HJXQDefaultEnvironInfo description="空间环境信息需求默认信息标志">EnvironInfo</HJXQDefaultEnvironInfo>
+    <HJXQInfoName description="空间环境信息需求产品名称">
         <item text="LEO轨道器件单粒子翻转率" value="LEORevRate" hex="2011H"></item>
         <item text="磁层顶穿越事件警报" value="MfPassALARM" hex="2018H"></item>
         <item text="太阳X射线耀斑警报信息" value="XRayALERM" hex="2021H"></item>
@@ -26,7 +26,7 @@
         <item text="地磁KP现报信息" value="KP" hex="2035H"></item>
         <item text="地磁KP指数预报信息" value="KPPred" hex="2036H"></item>
         <item text="LEO轨道卫星轨道衰变信息" value="LEOOrbAtt" hex="2037H"></item>
-    </HJXQDefaultTargetInfo>
+    </HJXQInfoName>
     <DMJHFS description="地面计划工作方式">
         <item text="实战" value="SZ"></item>
         <item text="联调" value="LT"></item>

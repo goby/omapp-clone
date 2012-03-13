@@ -50,7 +50,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 endDate = DateTime.Now;
             }
 
-            List<SYJH> listDatas= (new SYJH()).GetListByDate(startDate, endDate);
+            List<JH> listDatas= (new JH()).GetSYJHList(startDate, endDate);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
             cpPager.BindToControl = rpDatas;

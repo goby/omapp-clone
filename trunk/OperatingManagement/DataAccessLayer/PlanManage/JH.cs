@@ -81,6 +81,63 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
 
         #region -Methods-
         /// <summary>
+        /// 根据时间及类型获取实验计划列表
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public List<JH> GetSYJHList(DateTime startDate, DateTime endDate)
+        {
+            DataSet ds = null;
+
+            ds = new DataSet();
+            ds.Tables.Add();
+            OracleCommand command = _database.GetStoreProcCommand("up_jh_getsyjhlist");
+            if (startDate == DateTime.MinValue)
+            {
+                _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
+            }
+            else
+            {
+                _database.AddInParameter(command, "p_startDate", OracleDbType.Date, startDate);
+            }
+            if (endDate == DateTime.MinValue)
+            {
+                _database.AddInParameter(command, "p_endDate", OracleDbType.Date, DBNull.Value);
+            }
+            else
+            {
+                _database.AddInParameter(command, "p_endDate", OracleDbType.Date, endDate);
+            }
+            using (IDataReader reader = _database.ExecuteReader(command))
+            {
+                ds.Tables[0].Load(reader);
+            }
+            List<JH> objDatas = new List<JH>();
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    objDatas.Add(new JH()
+                    {
+                        ID = Convert.ToInt32(dr["ID"].ToString()),
+                        CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        TaskID = dr["taskid"].ToString(),
+                        PlanType = dr["plantype"].ToString(),
+                        PlanID = Convert.ToInt32(dr["PlanID"].ToString()),
+                        StartTime = Convert.ToDateTime(dr["StartTime"].ToString()),
+                        EndTime = Convert.ToDateTime(dr["EndTime"].ToString()),
+                        SRCType = Convert.ToInt32(dr["SRCType"].ToString()),
+                        SRCID = Convert.ToInt32(dr["SRCID"].ToString()),
+                        FileIndex = dr["FileIndex"].ToString(),
+                        Reserve = dr["Reserve"].ToString()
+                    });
+                }
+            }
+            return objDatas;
+        }
+
+        /// <summary>
         /// 根据时间及类型获取计划列表
         /// </summary>
         /// <param name="planType"></param>

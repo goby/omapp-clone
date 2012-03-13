@@ -31,32 +31,36 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="NavigatorContent" runat="server">
-    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="MenuContent" runat="server">
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content6" ContentPlaceHolderID="MapPathContent" runat="server">
-    查看试验程序
+    计划管理 &gt; 查看试验程序
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
-    <table class="edit"  cellpadding="0" style="width:1000px;">
+    <table class="edit1"  cellpadding="0" style="width:850px;">
         <tr>
-            <th align="right" class="style2">
+            <th>
                 开始日期：</th>
-            <td class="style3">
-                <asp:TextBox ID="txtStartDate" ClientIDMode="Static"  CssClass="text" runat="server"></asp:TextBox>
-            </td>
-            <th align="right" class="style4">
-                结束日期：</th>
             <td>
-                <asp:TextBox ID="txtEndDate" ClientIDMode="Static"  CssClass="text" runat="server"></asp:TextBox>
+                <asp:TextBox ID="txtStartDate" ClientIDMode="Static"  CssClass="text" runat="server" Width="300px"></asp:TextBox>
             </td>
         </tr>
         <tr>
-            <td class="style5">
+        <th>
+        结束日期：
+        </th>
+        <td>
+             <asp:TextBox ID="txtEndDate" ClientIDMode="Static"  CssClass="text" runat="server"  Width="300px"></asp:TextBox>
+            
+        </td>
+        </tr>
+        <tr>
+            <td>
             </td>
-            <td class="style6" colspan="3">
+            <td>
                 <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
                     Width="69px" />
 &nbsp;&nbsp;

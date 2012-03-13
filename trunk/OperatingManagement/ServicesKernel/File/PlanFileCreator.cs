@@ -253,57 +253,63 @@ namespace ServicesKernel.File
             xmlWriter.Close();
             return FilePath;
         }
-
-        public string CreateMBXQFile(MBXQ obj,int type)
+        /// <summary>
+        /// 空间信息需求计划
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="type">0:新增; 1:修改</param>
+        /// <returns></returns>
+        public string CreateXXXQFile(XXXQ obj, int type)
         {
             if (type == 0)
             {
-                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("MBXQ", obj.TaskID, obj.SatID);
+                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("XXXQ", obj.TaskID, obj.SatID);
             }
             xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
             xmlWriter.Formatting = Formatting.Indented;
             xmlWriter.WriteStartDocument();
+            xmlWriter.WriteStartElement("空间信息需求");
 
             #region MBXQ
             xmlWriter.WriteStartElement("空间目标信息需求");
 
             xmlWriter.WriteStartElement("User");
-            xmlWriter.WriteString(obj.User);
+            xmlWriter.WriteString(obj.objMBXQ.User);
             xmlWriter.WriteEndElement();
 
             xmlWriter.WriteStartElement("Time");
-            xmlWriter.WriteString(obj.Time);
+            xmlWriter.WriteString(obj.objMBXQ.Time);
             xmlWriter.WriteEndElement();
 
             xmlWriter.WriteStartElement("TargetInfo");
-            xmlWriter.WriteString(obj.TargetInfo);
+            xmlWriter.WriteString(obj.objMBXQ.TargetInfo);
             xmlWriter.WriteEndElement();
 
             xmlWriter.WriteStartElement("TimeSection1");
-            xmlWriter.WriteString(obj.TimeSection1);
+            xmlWriter.WriteString(obj.objMBXQ.TimeSection1);
             xmlWriter.WriteEndElement();
 
             xmlWriter.WriteStartElement("TimeSection2");
-            xmlWriter.WriteString(obj.TimeSection2);
+            xmlWriter.WriteString(obj.objMBXQ.TimeSection2);
             xmlWriter.WriteEndElement();
 
             xmlWriter.WriteStartElement("Sum");
-            xmlWriter.WriteString(obj.Sum);
+            xmlWriter.WriteString(obj.objMBXQ.Sum);
             xmlWriter.WriteEndElement();
 
             xmlWriter.WriteStartElement("卫星");
-            for (int i = 1; i <= obj.SatInfos.Count; i++)
+            for (int i = 1; i <= obj.objMBXQ.SatInfos.Count; i++)
             {
                 xmlWriter.WriteStartElement("SatName");
-                xmlWriter.WriteString(obj.SatInfos[i - 1].SatName);
+                xmlWriter.WriteString(obj.objMBXQ.SatInfos[i - 1].SatName);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("InfoName");
-                xmlWriter.WriteString(obj.SatInfos[i - 1].InfoName);
+                xmlWriter.WriteString(obj.objMBXQ.SatInfos[i - 1].InfoName);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("InfoTime");
-                xmlWriter.WriteString(obj.SatInfos[i - 1].InfoTime);
+                xmlWriter.WriteString(obj.objMBXQ.SatInfos[i - 1].InfoTime);
                 xmlWriter.WriteEndElement();
             }
             xmlWriter.WriteEndElement();
@@ -311,65 +317,51 @@ namespace ServicesKernel.File
 
             xmlWriter.WriteEndElement();
             #endregion
-
-            xmlWriter.Close();
-            return FilePath;
-        }
-
-        public string CreateHJXQFile(HJXQ obj,int type)
-        {
-            if (type == 0)
-            {
-                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("HJXQ", obj.TaskID, obj.SatID);
-            }
-            xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
-            xmlWriter.Formatting = Formatting.Indented;
-            xmlWriter.WriteStartDocument();
 
             #region HJXQ
             xmlWriter.WriteStartElement("空间环境信息需求");
 
             xmlWriter.WriteStartElement("User");
-            xmlWriter.WriteString(obj.User);
+            xmlWriter.WriteString(obj.objHJXQ.User);
             xmlWriter.WriteEndElement();
 
             xmlWriter.WriteStartElement("Time");
-            xmlWriter.WriteString(obj.Time);
+            xmlWriter.WriteString(obj.objHJXQ.Time);
             xmlWriter.WriteEndElement();
 
             xmlWriter.WriteStartElement("EnvironInfo");
-            xmlWriter.WriteString(obj.EnvironInfo);
+            xmlWriter.WriteString(obj.objHJXQ.EnvironInfo);
             xmlWriter.WriteEndElement();
 
             xmlWriter.WriteStartElement("TimeSection1");
-            xmlWriter.WriteString(obj.TimeSection1);
+            xmlWriter.WriteString(obj.objHJXQ.TimeSection1);
             xmlWriter.WriteEndElement();
 
             xmlWriter.WriteStartElement("TimeSection2");
-            xmlWriter.WriteString(obj.TimeSection2);
+            xmlWriter.WriteString(obj.objHJXQ.TimeSection2);
             xmlWriter.WriteEndElement();
 
             xmlWriter.WriteStartElement("Sum");
-            xmlWriter.WriteString(obj.Sum);
+            xmlWriter.WriteString(obj.objHJXQ.Sum);
             xmlWriter.WriteEndElement();
 
             xmlWriter.WriteStartElement("卫星");
-            for (int i = 1; i <= obj.SatInfos.Count; i++)
+            for (int i = 1; i <= obj.objHJXQ.SatInfos.Count; i++)
             {
                 xmlWriter.WriteStartElement("SatName");
-                xmlWriter.WriteString(obj.SatInfos[i - 1].SatName);
+                xmlWriter.WriteString(obj.objHJXQ.SatInfos[i - 1].SatName);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("InfoName");
-                xmlWriter.WriteString(obj.SatInfos[i - 1].InfoName);
+                xmlWriter.WriteString(obj.objHJXQ.SatInfos[i - 1].InfoName);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("InfoArea");
-                xmlWriter.WriteString(obj.SatInfos[i - 1].InfoArea);
+                xmlWriter.WriteString(obj.objHJXQ.SatInfos[i - 1].InfoArea);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("InfoTime");
-                xmlWriter.WriteString(obj.SatInfos[i - 1].InfoTime);
+                xmlWriter.WriteString(obj.objHJXQ.SatInfos[i - 1].InfoTime);
                 xmlWriter.WriteEndElement();
             }
             xmlWriter.WriteEndElement();
@@ -377,12 +369,17 @@ namespace ServicesKernel.File
             xmlWriter.WriteEndElement();
             #endregion
 
+            xmlWriter.WriteEndElement();
             xmlWriter.Close();
             return FilePath;
         }
+
         /// <summary>
         /// 地面站工作计划
         /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="type">0:新增; 1:修改</param>
+        /// <returns></returns>
         public string CreateDMJHFile(DMJH obj,int type)
         {
             if (type == 0)

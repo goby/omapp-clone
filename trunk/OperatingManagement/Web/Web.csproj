@@ -156,6 +156,7 @@
     <Content Include="Scripts\Pages\PlanManage\PlanAdd.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\PlanEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\TYSJEdit.aspx.js" />
+    <Content Include="Scripts\Pages\PlanManage\XXXQEdit.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\userroleedit.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\roleadd.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\roles.aspx.js" />
@@ -202,9 +203,6 @@
     <Content Include="Views\PlanManage\ExperimentPlanList.aspx" />
     <Content Include="Views\PlanManage\ExperimentProgramDetail.aspx" />
     <Content Include="Views\PlanManage\ExperimentProgramList.aspx" />
-    <Content Include="Views\PlanManage\GenaratedPlanList.aspx" />
-    <Content Include="Views\PlanManage\HJXQEdit.aspx" />
-    <Content Include="Views\PlanManage\MBXQEdit.aspx" />
     <Content Include="Views\PlanManage\NotSpaceTaskList.aspx" />
     <Content Include="Views\BusinessManage\OrbitParaCalculate.aspx" />
     <Content Include="Views\PlanManage\OribitalQuantityDetail.aspx" />
@@ -508,27 +506,6 @@
     </Compile>
     <Compile Include="Views\PlanManage\ExperimentProgramList.aspx.designer.cs">
       <DependentUpon>ExperimentProgramList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PlanManage\GenaratedPlanList.aspx.cs">
-      <DependentUpon>GenaratedPlanList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\PlanManage\GenaratedPlanList.aspx.designer.cs">
-      <DependentUpon>GenaratedPlanList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PlanManage\HJXQEdit.aspx.cs">
-      <DependentUpon>HJXQEdit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\PlanManage\HJXQEdit.aspx.designer.cs">
-      <DependentUpon>HJXQEdit.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PlanManage\MBXQEdit.aspx.cs">
-      <DependentUpon>MBXQEdit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\PlanManage\MBXQEdit.aspx.designer.cs">
-      <DependentUpon>MBXQEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\PlanManage\NotSpaceTaskList.aspx.cs">
       <DependentUpon>NotSpaceTaskList.aspx</DependentUpon>

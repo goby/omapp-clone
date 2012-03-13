@@ -3,13 +3,13 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
-    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    应用研究计划
+    计划管理 &gt; 应用研究计划
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
 
@@ -42,13 +42,13 @@
             <th class="style1">计划序号</th>
             <td>
                 <asp:TextBox ID="txtJXH" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20"></asp:TextBox>
+                    MaxLength="20" ReadOnly="True"></asp:TextBox>
             </td>
         </tr>
         <tr>
             <th class="style1">系统名称</th>
             <td>
-                <asp:DropDownList ID="ddlSysName" runat="server" Height="16px" Width="298px">
+                <asp:DropDownList ID="ddlSysName" runat="server" Height="20px" Width="298px">
                     <asp:ListItem>天基目标观测应用研究分系统</asp:ListItem>
                     <asp:ListItem>空间遥操作应用研究分系统</asp:ListItem>
                     <asp:ListItem>空间机动应用研究分系统</asp:ListItem>

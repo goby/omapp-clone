@@ -54,6 +54,10 @@ namespace OperatingManagement.Web.Views.PlanManage
             rpDatas.DataBind();
         }
 
+        /// <summary>
+        /// 生成计划
+        /// </summary>
+        /// <param name="proid"></param>
         void CreatePlans(int proid)
         {
             JH objJH = new JH();
@@ -62,57 +66,58 @@ namespace OperatingManagement.Web.Views.PlanManage
 
             #region  应用程序计划
             YJJH objYJJH = new YJJH();
-            objYJJH.Source = "运控评估中心YKZX(02 04 00 00)";
-            objYJJH.Destination = "仿真推演分系统FZTY(02 E7 00 00)";
             objYJJH.TaskID = "700任务(0500)";
-            objYJJH.InfoType = "应用研究计划(00 70 06 00)";
             objYJJH.SatID = "TS3";
+            objYJJH.JXH = (new Sequence()).GetYJJHSequnce().ToString("0000");
             objJH.FileIndex=(new PlanFileCreator()).CreateYJJHFile(objYJJH,0);
 
             objJH.TaskID = objYJJH.TaskID;
             objJH.PlanType = "YJJH";
-            objJH.PlanID = objYJJH.Id;
+            objJH.PlanID = Convert.ToInt32(objYJJH.JXH);
             objJH.Add();
             #endregion
 
             #region  空间信息需求
+            XXXQ objXXXQ = new XXXQ();
+            objXXXQ.TaskID = "700任务(0501)";
+            objXXXQ.SatID = "TS3";
 
             MBXQ objMBXQ = new MBXQ();
-            objMBXQ.TaskID = "700任务(0501)";
-            objMBXQ.SatID = "TS3";
             objMBXQ.User = PlanParameters.ReadMBXQDefaultUser();
             objMBXQ.TargetInfo = PlanParameters.ReadMBXQDefaultTargetInfo();
-            objJH.FileIndex = (new PlanFileCreator()).CreateMBXQFile(objMBXQ,0);
-            objJH.TaskID = objMBXQ.TaskID;
-            objJH.PlanType = "MBXQ";
-            objJH.PlanID = objMBXQ.ID;
-            objJH.Add();
+            objMBXQ.SatInfos = new List<MBXQSatInfo> { new MBXQSatInfo() };
 
             HJXQ objHJXQ = new HJXQ();
-            objHJXQ.TaskID = "700任务(0501)";
-            objHJXQ.SatID = "TS3";
             objHJXQ.User = PlanParameters.ReadHJXQDefaultUser();
             objHJXQ.EnvironInfo = PlanParameters.ReadHJXQHJXQDefaultEnvironInfo();
-            objJH.FileIndex = (new PlanFileCreator()).CreateHJXQFile(objHJXQ, 0);
-            objJH.TaskID = objHJXQ.TaskID;
-            objJH.PlanType = "HJXQ";
-            objJH.PlanID = objHJXQ.ID;
+            objHJXQ.SatInfos = new List<HJXQSatInfo> { new HJXQSatInfo() };
+
+            objXXXQ.objMBXQ = objMBXQ;
+            objXXXQ.objHJXQ = objHJXQ;
+
+            objJH.FileIndex = (new PlanFileCreator()).CreateXXXQFile(objXXXQ, 0);
+            objJH.TaskID = objXXXQ.TaskID;
+            objJH.PlanType = "XXXQ";
+            objJH.PlanID = (new Sequence()).GetXXXQSequnce();
             objJH.Add();
             #endregion
 
             #region  地面站工作计划
             DMJH objGZJH = new DMJH();
-            objGZJH.Source = "运控评估中心YKZX(02 04 00 00)";
-            objGZJH.Destination = "空间信息综合应用中心ZCZX(02 6F 00 00)";
             objGZJH.TaskID = "700任务(0501)";
-            objGZJH.InfoType = "地面站工作计划(00 70 60 00)";
-            objGZJH.Format1 = "JXH  XXFL  DW  SB  QS";
-            objGZJH.Format2 = "QH  DH  FS  JXZ  MS  QB  GXZ  ZHB  RK  GZK  KSHX  GSHX  GZJ  JS  BID  SBZ  RTs  RTe  SL  BID  HBZ  Ts  Te  RTs  SL";
             objGZJH.SatID = "TS3";
+            objGZJH.DMJHTasks = new List<DMJH_Task> 
+                        {
+                            new DMJH_Task
+                            {
+                                ReakTimeTransfors = new List<DMJH_Task_ReakTimeTransfor>{new DMJH_Task_ReakTimeTransfor()},
+                                AfterFeedBacks = new List<DMJH_Task_AfterFeedBack>{new DMJH_Task_AfterFeedBack()}
+                            }
+                        };
             objJH.FileIndex = (new PlanFileCreator()).CreateDMJHFile(objGZJH, 0);
             objJH.TaskID = objGZJH.TaskID;
             objJH.PlanType = "DMJH";
-            objJH.PlanID = objGZJH.ID;
+            objJH.PlanID = (new Sequence()).GetDMJHSequnce();
             objJH.Add();
             #endregion
 
@@ -120,32 +125,33 @@ namespace OperatingManagement.Web.Views.PlanManage
             ZXJH objZXJH = new ZXJH();
             objZXJH.TaskID = "700任务(0501)";
             objZXJH.SatID = "TS3";
+            objZXJH.WorkContents = new List<ZXJH_WorkContent> { new ZXJH_WorkContent() };
+            objZXJH.SYDataHandles = new List<ZXJH_SYDataHandle> { new ZXJH_SYDataHandle() };
+            objZXJH.DirectAndMonitors = new List<ZXJH_DirectAndMonitor> { new ZXJH_DirectAndMonitor() };
+            objZXJH.RealTimeControls = new List<ZXJH_RealTimeControl> { new ZXJH_RealTimeControl() };
+            objZXJH.SYEstimates = new List<ZXJH_SYEstimate> { new ZXJH_SYEstimate() };
+            objZXJH.DataManages = new List<ZXJH_DataManage> { new ZXJH_DataManage() };
             objJH.FileIndex = (new PlanFileCreator()).CreateZXJHFile(objZXJH, 0);
             objJH.TaskID = objZXJH.TaskID;
             objJH.PlanType = "ZXJH";
-            objJH.PlanID = objZXJH.ID;
+            objJH.PlanID = (new Sequence()).GetZXJHSequnce();
             objJH.Add();
             #endregion
 
             #region  仿真推演试验数据
             TYSJ objTYSJ = new TYSJ();
-            objTYSJ.Source = "运控评估中心YKZX(02 04 00 00)";
-            objTYSJ.Destination = "仿真推演分系统FZTY(02 E7 00 00)";
             objTYSJ.TaskID = "700任务(0501)";
-            objTYSJ.InfoType = "仿真推演数据(00 70 32 00)";
-            objTYSJ.Format1 = "SatName  Type  TestItem  StartTime  EndTime  Condition";
             objTYSJ.SatID = "TS3";
 
             objJH.FileIndex = (new PlanFileCreator()).CreateTYSJFile(objTYSJ, 0);
             objJH.TaskID = objTYSJ.TaskID;
             objJH.PlanType = "TYSJ";
-            objJH.PlanID = objTYSJ.Id;
+            objJH.PlanID = (new Sequence()).GetTYSJSequnce();
             objJH.Add();
             #endregion
 
         }
 
-        
         public override void OnPageLoaded()
         {
             this.PagePermission = "ExperimentProgram.List";

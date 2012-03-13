@@ -17,7 +17,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
     public class GD : BaseEntity<int, GD>
     {
         private static readonly string GET_OribitalQuantityList_ByDate = "up_gd_getlist";
-        private static readonly string Insert = "up_gd_insert";
+        //private static readonly string Insert = "up_gd_insert";
         private static readonly string SelectByID = "up_gd_selectByID";
 
         /// <summary>
@@ -167,21 +167,21 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         {
                             Id = Convert.ToInt32(dr["ID"].ToString()),
                             CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
-                            Version = dr["Version"].ToString(),
-                            Flag = dr["Flag"].ToString(),
-                            MainType = dr["MainType"].ToString(),
-                            DataType = dr["DataType"].ToString(),
-                            SourceAddress = dr["SourceAddress"].ToString(),
-                            DestinationAddress = dr["DestinationAddress"].ToString(),
-                            MissionCode = dr["MissionCode"].ToString(),
-                            SatelliteCode = dr["SatelliteCode"].ToString(),
-                            DataDate = Convert.ToDateTime(dr["DataDate"].ToString()),
-                            DataTime = dr["DataTime"].ToString(),
-                            SequenceNumber = dr["SequenceNumber"].ToString(),
-                            ChildrenPackNumber = dr["ChildrenPackNumber"].ToString(),
-                            UDPReserve = dr["UDPReserve"].ToString(),
-                            DataLength = dr["DataLength"].ToString(),
-                            DataClass = dr["DataClass"].ToString(),
+                            //Version = dr["Version"].ToString(),
+                            //Flag = dr["Flag"].ToString(),
+                            //MainType = dr["MainType"].ToString(),
+                            //DataType = dr["DataType"].ToString(),
+                            //SourceAddress = dr["SourceAddress"].ToString(),
+                            //DestinationAddress = dr["DestinationAddress"].ToString(),
+                            //MissionCode = dr["MissionCode"].ToString(),
+                            //SatelliteCode = dr["SatelliteCode"].ToString(),
+                            //DataDate = Convert.ToDateTime(dr["DataDate"].ToString()),
+                            //DataTime = dr["DataTime"].ToString(),
+                            //SequenceNumber = dr["SequenceNumber"].ToString(),
+                            //ChildrenPackNumber = dr["ChildrenPackNumber"].ToString(),
+                            //UDPReserve = dr["UDPReserve"].ToString(),
+                            //DataLength = dr["DataLength"].ToString(),
+                            //DataClass = dr["DataClass"].ToString(),
                             Reserve = dr["RESERVE"].ToString(),
                             Satid = dr["Satid"].ToString(),
                             IType = dr["itype"].ToString(),
@@ -232,21 +232,21 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     {
                         Id = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
-                        Version = dr["Version"].ToString(),
-                        Flag = dr["Flag"].ToString(),
-                        MainType = dr["MainType"].ToString(),
-                        DataType = dr["DataType"].ToString(),
-                        SourceAddress = dr["SourceAddress"].ToString(),
-                        DestinationAddress = dr["DestinationAddress"].ToString(),
-                        MissionCode = dr["MissionCode"].ToString(),
-                        SatelliteCode = dr["SatelliteCode"].ToString(),
-                        DataDate = Convert.ToDateTime(dr["DataDate"].ToString()),
-                        DataTime = dr["DataTime"].ToString(),
-                        SequenceNumber = dr["SequenceNumber"].ToString(),
-                        ChildrenPackNumber = dr["ChildrenPackNumber"].ToString(),
-                        UDPReserve = dr["UDPReserve"].ToString(),
-                        DataLength = dr["DataLength"].ToString(),
-                        DataClass = dr["DataClass"].ToString(),
+                        //Version = dr["Version"].ToString(),
+                        //Flag = dr["Flag"].ToString(),
+                        //MainType = dr["MainType"].ToString(),
+                        //DataType = dr["DataType"].ToString(),
+                        //SourceAddress = dr["SourceAddress"].ToString(),
+                        //DestinationAddress = dr["DestinationAddress"].ToString(),
+                        //MissionCode = dr["MissionCode"].ToString(),
+                        //SatelliteCode = dr["SatelliteCode"].ToString(),
+                        //DataDate = Convert.ToDateTime(dr["DataDate"].ToString()),
+                        //DataTime = dr["DataTime"].ToString(),
+                        //SequenceNumber = dr["SequenceNumber"].ToString(),
+                        //ChildrenPackNumber = dr["ChildrenPackNumber"].ToString(),
+                        //UDPReserve = dr["UDPReserve"].ToString(),
+                        //DataLength = dr["DataLength"].ToString(),
+                        //DataClass = dr["DataClass"].ToString(),
                         Reserve = dr["RESERVE"].ToString(),
                         Satid = dr["Satid"].ToString(),
                         IType = dr["itype"].ToString(),
@@ -274,6 +274,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             return null;
         }
 
+        #region  bakup
+        /*
         /// <summary>
         /// Inserts a new record into database.
         /// </summary>
@@ -338,6 +340,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 this.Id = Convert.ToInt32(opId.Value);
             return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
+        */
+        #endregion
+
         #endregion
 
         #region -Private methods-
