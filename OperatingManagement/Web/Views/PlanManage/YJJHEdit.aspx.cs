@@ -100,6 +100,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 obj.TaskID = hfTaskID.Value;
                 obj.SatID = hfSatID.Value;
+                obj.JXH = (new Sequence()).GetYJJHSequnce().ToString("0000");
                 string filepath=creater.CreateYJJHFile(obj, 0);
 
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()

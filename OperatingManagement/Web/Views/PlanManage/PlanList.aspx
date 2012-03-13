@@ -4,53 +4,52 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="NavigatorContent" runat="server">
-    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="MenuContent" runat="server">
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content6" ContentPlaceHolderID="MapPathContent" runat="server">
-    查询计划
+    计划管理 &gt; 查询计划
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
         <asp:Panel ID="pnlData" runat="server">
     <div id="divData">
             <table cellpadding="0" class="edit1" width="850px">
             <tr>
-                    <th style="width: 140px">
+                    <th>
                         开始日期：</th>
                     <td>
-                        <asp:TextBox ID="txtStartDate" ClientIDMode="Static"   runat="server" CssClass="text"></asp:TextBox>
-                    </td>
-                    <th>
-                        结束日期：
-                    </th>
-                    <td>
-                        <asp:TextBox ID="txtEndDate" ClientIDMode="Static"   runat="server" CssClass="text"></asp:TextBox>
-                    </td>
+                        <asp:TextBox ID="txtStartDate" ClientIDMode="Static"   runat="server" CssClass="text" Width="300px"></asp:TextBox>
+                        &nbsp;</td>
                 </tr>
                 <tr>
-                    <th style="width: 140px">
+                    <th>
+                        结束日期：</th>
+                    <td>
+                        <asp:TextBox ID="txtEndDate" runat="server" ClientIDMode="Static" 
+                            CssClass="text" Width="300px"></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                    <th>
                     计划类型：
                 </th>
-                    <td colspan="3">
-                        <asp:RadioButtonList ID="rbtType" runat="server" RepeatColumns="4" 
-                            RepeatDirection="Horizontal">
-                        <asp:ListItem Value="YJJH">应用研究工作计划</asp:ListItem>
+                    <td>
+                        <asp:DropDownList ID="ddlType" runat="server" Width="305px" Height="20px">
+                            <asp:ListItem Value="YJJH">应用研究工作计划</asp:ListItem>
                             <asp:ListItem Value="XXXQ">空间信息需求</asp:ListItem>
-                            <%--<asp:ListItem Value="MBXQ">空间目标信息需求</asp:ListItem>
-                            <asp:ListItem Value="HJXQ">空间环境信息需求</asp:ListItem>--%>
-                        <asp:ListItem Value="DMJH">地面站工作计划</asp:ListItem>
-                        <asp:ListItem Value="ZXJH">中心运行计划</asp:ListItem>
-                        <asp:ListItem Value="TYSJ">仿真推演试验数据</asp:ListItem>
-                        <asp:ListItem Value="SBJH">设备工作计划</asp:ListItem>
-                    </asp:RadioButtonList>
+                            <asp:ListItem Value="DMJH">地面站工作计划</asp:ListItem>
+                            <asp:ListItem Value="ZXJH">中心运行计划</asp:ListItem>
+                            <asp:ListItem Value="TYSJ">仿真推演试验数据</asp:ListItem>
+                            <asp:ListItem Value="SBJH">设备工作计划</asp:ListItem>
+                        </asp:DropDownList>
                 </td>
             </tr>
             <tr>
                 <td>
                 </td>
-                    <td colspan="3">
+                    <td>
                     <asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
                         Text="查询" Width="69px" />
                     &nbsp;&nbsp;
@@ -68,12 +67,12 @@
                 </td>
             </tr>
             <tr>
-                <td class="style2" colspan="4">
+                <td class="style2" colspan="2">
                     &nbsp;
                 </td>
             </tr>
             <tr>
-                <td class="style2" colspan="4">
+                <td class="style2" colspan="2">
                     <asp:Repeater ID="rpDatas" runat="server">
                         <HeaderTemplate>
                             <table class="list">

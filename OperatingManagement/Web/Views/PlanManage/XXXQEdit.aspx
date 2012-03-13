@@ -10,27 +10,38 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
+<om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    空间信息需求
+    计划管理 &gt; 空间信息需求
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="edit" style="width:800px;">
                 <tr>
             <th class="style1">计划开始时间</th>
             <td>
-                    <asp:TextBox ID="TextBox1" runat="server" CssClass="text" 
+                    <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
                             MaxLength="10"  ClientIDMode="Static"  Width="300px"></asp:TextBox>
             </td>
         </tr>
         <tr>
             <th class="style1">计划结束时间</th>
             <td>
-                    <asp:TextBox ID="TextBox2" runat="server" CssClass="text" 
+                    <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" 
                             MaxLength="10"  ClientIDMode="Static"  Width="300px"></asp:TextBox>
             </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                    <asp:HiddenField ID="HfID" runat="server" />
+                    <asp:HiddenField ID="HfFileIndex" runat="server" />
+                    <asp:HiddenField ID="hfTaskID" runat="server" />
+                    <asp:HiddenField ID="hfSatID" runat="server" />
+                    <asp:HiddenField ID="hfOverDate" runat="server" />
+                </td>
         </tr>
 </table>
     <asp:Panel ID="pnlMBXQ" runat="server">
@@ -128,18 +139,6 @@
                             </table>
                         </ItemTemplate>
                     </asp:Repeater>
-                </td>
-            </tr>
-            <tr>
-                <th class="style1">
-                    &nbsp;
-                </th>
-                <td>
-                    <asp:HiddenField ID="HfMBID" runat="server" />
-                    <asp:HiddenField ID="HfMBFileIndex" runat="server" />
-                    <asp:HiddenField ID="hfMBTaskID" runat="server" />
-                    <asp:HiddenField ID="hfMBSatID" runat="server" />
-                    <asp:HiddenField ID="hfMBOverDate" runat="server" />
                 </td>
             </tr>
         </table>
@@ -259,12 +258,7 @@
                     &nbsp;
                 </th>
                 <td>
-                    <asp:HiddenField ID="HfHJID" runat="server" />
-                    <asp:HiddenField ID="HfHJFileIndex" runat="server" />
-                    <asp:HiddenField ID="hfHJTaskID" runat="server" />
-                    <asp:HiddenField ID="hfHJSatID" runat="server" />
-                    <asp:HiddenField ID="hfHJOverDate" runat="server" />
-                </td>
+                    &nbsp;</td>
             </tr>
         </table>
     </asp:Panel>

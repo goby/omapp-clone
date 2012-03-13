@@ -1,70 +1,40 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="NotSpaceTaskList.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.NotSpaceTaskList" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <style type="text/css">
-        .style1
-        {
-            width: 100%;
-            border-collapse: collapse;
-            border-style: solid;
-            border-width: 1px;
-        }
-        .style2
-        {
-        }
-        .style3
-        {
-            width: 179px;
-        }
-        .style4
-        {
-            width: 125px;
-        }
-        .style5
-        {
-            width: 131px;
-            height: 18px;
-        }
-        .style6
-        {
-            height: 18px;
-        }
-        .style7
-        {
-            width: 100%;
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
-    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="usernrole" />
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-非空间机动任务
+计划管理 &gt; 非空间机动任务
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <%--    <asp:Panel ID="pnlData" runat="server">--%>
     <div id="divData">
-        <table cellpadding="0"  class="edit" >
+        <table cellpadding="0"  class="edit1"  width="850px">
             <tr>
-                <th align="right" class="style2">
+                <th>
                     开始日期：
                 </th>
-                <td class="style3">
-                    <asp:TextBox ID="txtStartDate"  ClientIDMode="Static"   CssClass="text" runat="server"></asp:TextBox>
+                <td>
+                    <asp:TextBox ID="txtStartDate"  ClientIDMode="Static"   CssClass="text" runat="server"  Width="300px"></asp:TextBox>
                 </td>
-                <th align="right" class="style4">
+                
+            </tr>
+            <tr>
+                <th>
                     结束日期：
                 </th>
                 <td>
-                    <asp:TextBox ID="txtEndDate" ClientIDMode="Static"   CssClass="text" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtEndDate" ClientIDMode="Static"   CssClass="text" runat="server"  Width="300px"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="style5">
                 </td>
-                <td class="style6" colspan="3">
+                <td colspan="2">
                     <asp:Button class="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
                         Text="查询" Width="69px" />
                     &nbsp;&nbsp;
@@ -75,7 +45,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="style2" colspan="4">
+                <td colspan="2">
                     &nbsp;
                     &nbsp;
                     &nbsp;
@@ -83,7 +53,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="style2" colspan="4">
+                <td colspan="2">
                  <asp:Panel ID ="pnlAll1" runat="server">
                 <div id="selectAll1" >
                     <table class="listTitle">
@@ -109,22 +79,19 @@
                                     <th style="width: 20px;">
                                         <input type="checkbox" onclick="checkAll(this)" />
                                     </th>
-                                    <th style="width: 100px;">
-                                        信源
+                                    <th style="width: 150px;">
+                                        信息标识
                                     </th>
-                                    <th style="width: 100px;">
-                                        信宿
+                                    <th style="width: 150px;">
+                                        信息代号
                                     </th>
-                                    <th style="width: 100px;">
-                                        任务代码
-                                    </th>
-                                    <th style="width: 100px;">
+                                    <th style="width: 150px;">
                                         卫星编号
                                     </th>
                                     <th>
                                         创建时间
                                     </th>
-                                    <th style="width: 70px;">
+                                    <th style="width: 100px;">
                                         明细
                                     </th>
                                 </tr>
@@ -136,19 +103,16 @@
                                     <input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>" />
                                 </td>
                                 <td>
-                                    <%# Eval("SOURCEADDRESS")%>
+                                    <%# Eval("ITYPE")%>
                                 </td>
                                 <td>
-                                    <%# Eval("DESTINATIONADDRESS")%>
+                                    <%# Eval("ICODE")%>
                                 </td>
                                 <td>
-                                    <%# Eval("MISSIONCODEV")%>
+                                    <%# Eval("SATID")%>
                                 </td>
                                 <td>
-                                    <%# Eval("SATELLITECODE")%>
-                                </td>
-                                <td>
-                                    <%# Eval("CreatedTime","{0:"+this.SiteSetting.DateTimeFormat+"}") %>
+                                    <%# Eval("CTIME","{0:"+this.SiteSetting.DateTimeFormat+"}") %>
                                 </td>
                                 <td>
                                     <button class="button" onclick="return showDetail('<%# Eval("Id") %>')">
@@ -181,7 +145,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4" align="center">
+                <td colspan="2" align="center">
                     <%-- <asp:Button ID="btnSend" runat="server" Text="发送轨道数据" onclick="btnSend_Click" />--%>
                 </td>
             </tr>
@@ -193,8 +157,13 @@
         <table class="style7">
             <tr>
                 <td align="center">
-                    <asp:RadioButtonList ID="rbtDestination" runat="server">
-                    </asp:RadioButtonList>
+                    <asp:CheckBoxList ID="ckbDestination" runat="server">
+                        <asp:ListItem Value="0">天基目标观测应用研究分系统</asp:ListItem>
+                        <asp:ListItem Value="1">空间遥操作应用研究分系统</asp:ListItem>
+                        <asp:ListItem Value="2">空间机动应用研究分系统</asp:ListItem>
+                        <asp:ListItem Value="3">仿真推演分系统</asp:ListItem>
+                        <asp:ListItem Value="4">空间信息综合应用中心</asp:ListItem>
+                    </asp:CheckBoxList>
                 </td>
             </tr>
             <tr>

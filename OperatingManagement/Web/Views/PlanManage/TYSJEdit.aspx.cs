@@ -92,7 +92,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             objTYSJ.Condition = txtCondition.Text;
 
             PlanFileCreator creater = new PlanFileCreator();
-            if (hfOverDate.Value == "true")
+            if (hfOverDate.Value == "true") //另存
             {
                 objTYSJ.TaskID = hfTaskID.Value;
                 objTYSJ.SatID = hfSatID.Value;
@@ -102,7 +102,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     TaskID = objTYSJ.TaskID,
                     PlanType = "TYSJ",
-                    PlanID = 0,
+                    PlanID = (new Sequence()).GetTYSJSequnce(),
                     StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
                     EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
                     SRCType = 0,
@@ -114,6 +114,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             else
             {
+                //修改
                 creater.FilePath = HfFileIndex.Value;
                 creater.CreateTYSJFile(objTYSJ, 1);
             }

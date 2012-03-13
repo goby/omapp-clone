@@ -4,13 +4,13 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
-    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    新建计划
+    计划管理 &gt; 新建计划
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
 
@@ -32,8 +32,7 @@
             <td>
                 <asp:DropDownList ID="ddlPlanType" runat="server" Width="304px" Height="24px">
                     <asp:ListItem Value="YJJH">应用研究工作计划</asp:ListItem>
-                    <asp:ListItem Value="MBXQ">空间目标信息需求</asp:ListItem>
-                    <asp:ListItem Value="HJXQ">空间环境信息需求</asp:ListItem>
+                    <asp:ListItem Value="XXXQ">空间信息需求</asp:ListItem>
                     <asp:ListItem Value="DMJH">地面站工作计划</asp:ListItem>
                     <asp:ListItem Value="ZXJH">中心运行计划</asp:ListItem>
                     <asp:ListItem Value="TYSJ">仿真推演试验数据</asp:ListItem>
@@ -56,11 +55,11 @@
                 </asp:DropDownList>
             </td>
         </tr>
-        <tr>
+<%--        <tr>
             <th style="width:100px;">
                 计划编号(<span class="red">*</span>)</th>
             <td>
-                <asp:TextBox ID="txtPlanID" runat="server" CssClass="text" MaxLength="10" 
+                <asp:TextBox ID="txtPlanID" runat="server" CssClass="text" MaxLength="4" 
                     Width="300px"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfv3" runat="server" 
                     ControlToValidate="txtPlanID" Display="Dynamic" ErrorMessage="必须填写“计划编号”。" 
@@ -69,7 +68,7 @@
                      ControlToValidate="txtPlanID" ErrorMessage="只能输入数字"
                      ValidationExpression="^[0-9]*$"></asp:RegularExpressionValidator>
             </td>
-        </tr>
+        </tr>--%>
         <tr>
             <th style="width:100px;">
                 开始时间(<span class="red">*</span>)</th>

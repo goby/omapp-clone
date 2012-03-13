@@ -728,7 +728,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
 
             PlanFileCreator creater = new PlanFileCreator();
-            if (hfOverDate.Value == "true")
+            if (hfOverDate.Value == "true") //另存
             {
                 obj.TaskID = hfTaskID.Value;
                 obj.SatID = hfSatID.Value;
@@ -738,7 +738,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     TaskID = obj.TaskID,
                     PlanType = "DMJH",
-                    PlanID = 0,
+                    PlanID = (new Sequence()).GetDMJHSequnce(),
                     StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
                     EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
                     SRCType = 0,
@@ -750,6 +750,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             else
             {
+                //修改计划
                 creater.FilePath = HfFileIndex.Value;
                 creater.CreateDMJHFile(obj, 1);
             }

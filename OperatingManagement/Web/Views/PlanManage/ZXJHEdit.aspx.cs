@@ -821,7 +821,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     TaskID = obj.TaskID,
                     PlanType = "ZXJH",
-                    PlanID = 0,
+                    PlanID = (new Sequence()).GetZXJHSequnce(),
                     StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
                     EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
                     SRCType = 0,

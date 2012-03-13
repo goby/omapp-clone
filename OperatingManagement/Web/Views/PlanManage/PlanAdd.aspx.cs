@@ -10,6 +10,7 @@ using OperatingManagement.WebKernel.Route;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.Framework;
+using OperatingManagement.Framework.Storage;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using System.Web.Security;
 using System.Data;
@@ -32,14 +33,21 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
         }
 
+        /// <summary>
+        /// 提交
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            string filepath = CreateFile();
+            int seqnum = GetPlanID();   //计划编号
+            string filepath = CreateFile(seqnum);
             DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
             {
                 TaskID = txtTaskID.Text.Trim(),
                 PlanType = ddlPlanType.SelectedValue,
-                PlanID = Convert.ToInt32(txtPlanID.Text.Trim()),
+                //PlanID = Convert.ToInt32(txtPlanID.Text.Trim()),
+                PlanID = seqnum,
                 StartTime  = Convert.ToDateTime(txtStartTime.Text.Trim()),
                 EndTime = Convert.ToDateTime(txtEndTime.Text.Trim()),
                 SRCType = 0, 
@@ -68,7 +76,11 @@ namespace OperatingManagement.Web.Views.PlanManage
             btnGetPlanInfo.Visible = false;
             }
 
-        private string CreateFile()
+        /// <summary>
+        /// 生成计划文件
+        /// </summary>
+        /// <returns></returns>
+        private string CreateFile(int seqnum)
         {
             string filepath="";
             PlanFileCreator fileCreater = new PlanFileCreator();
@@ -78,27 +90,32 @@ namespace OperatingManagement.Web.Views.PlanManage
                     YJJH objYJJH = new YJJH
                     {
                         TaskID = txtTaskID.Text.Trim(),
+                        JXH = seqnum.ToString("0000"),
                         SatID = ddlSat.SelectedValue
                     };
                     filepath = fileCreater.CreateYJJHFile(objYJJH,0);
                     break;
-                case "MBXQ":
-                    MBXQ objMBXQ = new MBXQ
+                case "XXXQ":
+                    MBXQ objMBXQ1 = new MBXQ
                     {
-                        TaskID = txtTaskID.Text.Trim(),
-                        SatID = ddlSat.SelectedValue,
+                        User =PlanParameters.ReadMBXQDefaultUser(),
+                        TargetInfo = PlanParameters.ReadMBXQDefaultTargetInfo(),
                         SatInfos = new List<MBXQSatInfo> {new MBXQSatInfo() }
                     };
-                    filepath = fileCreater.CreateMBXQFile(objMBXQ, 0);
-                    break;
-                case "HJXQ":
-                    HJXQ objHJXQ = new HJXQ 
+                    HJXQ objHJXQ1 = new HJXQ
+                    {
+                        User = PlanParameters.ReadHJXQDefaultUser(),
+                        EnvironInfo = PlanParameters.ReadHJXQHJXQDefaultEnvironInfo(),
+                        SatInfos = new List<HJXQSatInfo> { new HJXQSatInfo() }
+                    };
+                    XXXQ objXXXQ = new XXXQ
                     {
                         TaskID = txtTaskID.Text.Trim(),
                         SatID = ddlSat.SelectedValue,
-                        SatInfos = new List<HJXQSatInfo> { new HJXQSatInfo ()}
+                        objMBXQ = objMBXQ1,
+                        objHJXQ  = objHJXQ1
                     };
-                    filepath = fileCreater.CreateHJXQFile(objHJXQ, 0);
+                    filepath = fileCreater.CreateXXXQFile(objXXXQ, 0);
                     break;
                 case "DMJH":
                     DMJH objDMJH = new DMJH
@@ -217,12 +234,13 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             return filepath;
         }
+
         public override void OnPageLoaded()
         {
             this.PagePermission = "Plan.Add";
             this.ShortTitle = "新建计划";
             this.SetTitle();
-            this.AddJavaScriptInclude("scripts/pages/PlanAdd.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/PlanManage/PlanAdd.aspx.js");
         }
 
         protected void txtGetPlanInfo_Click(object sender, EventArgs e)
@@ -248,6 +266,11 @@ namespace OperatingManagement.Web.Views.PlanManage
             rpDatas.DataBind();
         }
 
+        /// <summary>
+        /// 获取文件名
+        /// </summary>
+        /// <param name="objfilepath"></param>
+        /// <returns></returns>
         public  string GetFileName(object objfilepath)
         {
             string filename = "";
@@ -255,6 +278,39 @@ namespace OperatingManagement.Web.Views.PlanManage
             string savepath = System.Configuration.ConfigurationManager.AppSettings["savepath"];
             filename=filepath.Replace(savepath, "");
             return filename;
+        }
+
+        /// <summary>
+        /// 生成计划编号
+        /// </summary>
+        /// <returns></returns>
+        public int GetPlanID()
+        {
+            int result=1;
+
+            switch (ddlPlanType.SelectedValue)
+            { 
+                case "YJJH":
+                    result = (new Sequence()).GetYJJHSequnce();
+                    break;
+                case "XXXQ":
+                    result = (new Sequence()).GetXXXQSequnce();
+                    break;
+                case "DMJH":
+                    result = (new Sequence()).GetDMJHSequnce();
+                    break;
+                case "ZXJH":
+                    result = (new Sequence()).GetZXJHSequnce();
+                    break;
+                case "TYSJ":
+                    result = (new Sequence()).GetZXJHSequnce();
+                    break;
+                default:
+                    result = 1;
+                    break;
+            }
+
+            return result;
         }
 
         protected void btnContinue_Click(object sender, EventArgs e)
@@ -282,11 +338,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 case "YJJH":
                     Response.Redirect("YJJHEdit.aspx?id=" + sID);
                     break;
-                case "MBXQ":
-                    Response.Redirect("MBXQEdit.aspx?id=" + sID);
-                    break;
-                case "HJXQ":
-                    Response.Redirect("HJXQEdit.aspx?id=" + sID);
+                case "XXXQ":
+                    Response.Redirect("XXXQEdit.aspx?id=" + sID);
                     break;
                 case "DMJH":
                     Response.Redirect("DMJHEdit.aspx?id=" + sID);
