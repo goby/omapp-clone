@@ -37,8 +37,9 @@
                         <asp:RadioButtonList ID="rbtType" runat="server" RepeatColumns="4" 
                             RepeatDirection="Horizontal">
                         <asp:ListItem Value="YJJH">应用研究工作计划</asp:ListItem>
-                            <asp:ListItem Value="MBXQ">空间目标信息需求</asp:ListItem>
-                            <asp:ListItem Value="HJXQ">空间环境信息需求</asp:ListItem>
+                            <asp:ListItem Value="XXXQ">空间信息需求</asp:ListItem>
+                            <%--<asp:ListItem Value="MBXQ">空间目标信息需求</asp:ListItem>
+                            <asp:ListItem Value="HJXQ">空间环境信息需求</asp:ListItem>--%>
                         <asp:ListItem Value="DMJH">地面站工作计划</asp:ListItem>
                         <asp:ListItem Value="ZXJH">中心运行计划</asp:ListItem>
                         <asp:ListItem Value="TYSJ">仿真推演试验数据</asp:ListItem>
