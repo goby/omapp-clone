@@ -2,13 +2,6 @@
     Inherits="OperatingManagement.Web.Views.PlanManage.ExperimentPlanDetail" %>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="HeadContent" runat="server">
-    <style type="text/css">
-        .style1
-        {
-            width: 800px;
-            border-collapse: collapse;
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
@@ -17,7 +10,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content6" ContentPlaceHolderID="MapPathContent" runat="server">
-    试验计划明细
+    计划管理 &gt; 查看试验计划明细
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
     <table cellpadding="0" class="style1 edit1">

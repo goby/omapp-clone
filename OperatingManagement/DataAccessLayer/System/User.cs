@@ -16,6 +16,7 @@ namespace OperatingManagement.DataAccessLayer.System
     [Serializable]
     public class User : BaseEntity<double,User>
     {
+        private const string s_up_user_search = "up_user_search";
         /// <summary>
         /// Create a new instance of <see cref="User"/> class.
         /// </summary>
@@ -103,6 +104,10 @@ namespace OperatingManagement.DataAccessLayer.System
             }
             return users;
         }
+        /// <summary>
+        /// select all user rols by userid.
+        /// </summary>
+        /// <returns></returns>
         public List<Role> SelectRolesById()
         {
             OracleParameter p = PrepareRefCursor();
@@ -125,6 +130,83 @@ namespace OperatingManagement.DataAccessLayer.System
                 }
             }
             return roles;
+        }
+
+        /// <summary>
+        /// Selects Modules by keywords from database.
+        /// </summary>
+        /// <returns></returns>
+        public List<User> Search(string keyword)
+        {
+            OracleParameter pKeyword = new OracleParameter()
+            {
+                ParameterName = "p_keyword",
+                OracleDbType = OracleDbType.Varchar2,
+                Size = 50,
+                Value = keyword
+            }; 
+            OracleParameter p = PrepareRefCursor();
+            DataSet ds = _database.SpExecuteDataSet(s_up_user_search, new OracleParameter[]{
+                pKeyword,
+                p
+            });
+            List<User> users = new List<User>();
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    users.Add(new User()
+                    {
+                        Id = Convert.ToDouble(dr["UserID"].ToString()),
+                        CreatedTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        DisplayName = dr["DisplayName"].ToString(),
+                        LoginName = dr["LoginName"].ToString(),
+                        Mobile = dr["Mobile"].ToString(),
+                        Note = dr["Note"].ToString(),
+                        Password = dr["Password1"].ToString(),
+                        UpdatedTime = Convert.ToDateTime(dr["LastUpdatedTime"].ToString()),
+                        Status = (FieldStatus)(Convert.ToInt32(dr["Status"].ToString())),
+                        UserType = (UserType)(Convert.ToInt32(dr["UserType"].ToString())),
+                        UserCatalog = (UserCatalog)(Convert.ToInt32(dr["UserCatalog"].ToString()))
+                    });
+                }
+            }
+            return users;
+        }
+        
+        /// <summary>
+        /// Select all the users by roleid.
+        /// </summary>
+        /// <returns></returns>
+        public List<User> SelectByRoleId(int roleId)
+        {
+            OracleParameter p = PrepareRefCursor();
+            DataSet ds = _database.SpExecuteDataSet("up_user_selectbyroleid", new OracleParameter[]{
+                new OracleParameter("p_RoleId", roleId),
+                p
+            });
+            List<User> users = new List<User>();
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    users.Add(new User()
+                    {
+                        Id = Convert.ToDouble(dr["UserID"].ToString()),
+                        CreatedTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        DisplayName = dr["DisplayName"].ToString(),
+                        LoginName = dr["LoginName"].ToString(),
+                        Mobile = dr["Mobile"].ToString(),
+                        Note = dr["Note"].ToString(),
+                        Password = dr["Password1"].ToString(),
+                        UpdatedTime = Convert.ToDateTime(dr["LastUpdatedTime"].ToString()),
+                        Status = (FieldStatus)(Convert.ToInt32(dr["Status"].ToString())),
+                        UserType = (UserType)(Convert.ToInt32(dr["UserType"].ToString())),
+                        UserCatalog = (UserCatalog)(Convert.ToInt32(dr["UserCatalog"].ToString()))
+                    });
+                }
+            }
+            return users;
         }
         /// <summary>
         /// Inserts a new record into database.
@@ -245,9 +327,19 @@ namespace OperatingManagement.DataAccessLayer.System
         /// Deletes the users by identifications.
         /// </summary>
         /// <param name="ids">The identification of users to be deleted, split by ','.</param>
-        public void DeleteByIds(string ids)
+        public FieldVerifyResult DeleteByIds(string ids)
         {
-            _database.SpExecuteNonQuery("up_user_deletebyids", new OracleParameter("p_Ids", ids));
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _database.SpExecuteNonQuery("up_user_deletebyids", new OracleParameter[]{
+                new OracleParameter("p_Ids",ids),
+                p
+            });
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
         /// <summary>
         /// Selects the specific user by identification.

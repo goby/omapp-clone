@@ -31,94 +31,49 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::OperatingManagement.WebKernel.Controls.PageMenu PageMenu1;
         
         /// <summary>
-        /// dplTask 控件。
+        /// ddlTask 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dplTask;
+        protected global::OperatingManagement.Web.ucs.ucTask ddlTask;
         
         /// <summary>
-        /// RequiredFieldValidator1 控件。
+        /// ddlSatellite 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
+        protected global::OperatingManagement.Web.ucs.ucSatellite ddlSatellite;
         
         /// <summary>
-        /// dplSatName 控件。
+        /// ddlSource 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dplSatName;
+        protected global::OperatingManagement.Web.ucs.ucXYXSInfo ddlSource;
         
         /// <summary>
-        /// RequiredFieldValidator2 控件。
+        /// ddlInfoType 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
+        protected global::OperatingManagement.Web.ucs.ucInfoType ddlInfoType;
         
         /// <summary>
-        /// dplInfoSource 控件。
+        /// ddlDdestination 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dplInfoSource;
-        
-        /// <summary>
-        /// rfv1 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv1;
-        
-        /// <summary>
-        /// dplInfoType 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dplInfoType;
-        
-        /// <summary>
-        /// rfv2 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv2;
-        
-        /// <summary>
-        /// dplDdestination 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dplDdestination;
-        
-        /// <summary>
-        /// rfv3 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv3;
+        protected global::OperatingManagement.Web.ucs.ucXYXSInfo ddlDdestination;
         
         /// <summary>
         /// txtEffectTime 控件。

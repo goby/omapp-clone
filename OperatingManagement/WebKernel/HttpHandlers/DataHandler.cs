@@ -26,6 +26,9 @@ namespace OperatingManagement.WebKernel.HttpHandlers
                     case "deleteRolesByIds":
                         suc = DeleteRoleByIds(req["ids"], out msg);
                         break;
+                    case "deleteModulesByIds":
+                        suc = DeleteModulesByIds(req["ids"], out msg);
+                        break;
                 }
             }
             catch (Exception ex)
@@ -50,7 +53,24 @@ namespace OperatingManagement.WebKernel.HttpHandlers
         bool DeleteUserByIds(string ids, out string msg)
         {
             User u = new User();
-            u.DeleteByIds(ids);
+            var retValue = u.DeleteByIds(ids); 
+            if (retValue == FieldVerifyResult.Error)
+            {
+                msg = "删除关联数据失败。";
+                return true;
+            }
+            msg = string.Empty;
+            return true;
+        }
+        bool DeleteModulesByIds(string ids, out string msg)
+        {
+            Module m = new Module();
+            var retValue = m.DeleteByIds(ids);
+            if (retValue == FieldVerifyResult.Error)
+            {
+                msg = "删除关联数据失败。";
+                return true;
+            }
             msg = string.Empty;
             return true;
         }

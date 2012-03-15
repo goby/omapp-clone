@@ -2,44 +2,15 @@
     CodeBehind="XiAnCeKongDataList.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.XiAnCeKongDataList" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <style type="text/css">
-        .style1
-        {
-            width: 100%;
-            border-collapse: collapse;
-            border-style: solid;
-            border-width: 1px;
-        }
-        .style2
-        {
-        }
-        .style3
-        {
-            width: 179px;
-        }
-        .style4
-        {
-            width: 125px;
-        }
-        .style5
-        {
-            width: 131px;
-            height: 18px;
-        }
-        .style6
-        {
-            height: 18px;
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
-    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="bizmanage" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-查看西安卫星测控中心数据
+业务管理 &gt; 查看西安卫星测控中心数据
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <asp:Panel ID="pnlData" runat="server">

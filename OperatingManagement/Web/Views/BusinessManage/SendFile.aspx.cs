@@ -31,6 +31,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
+            if (ddlSender.SelectedItem.Value == ddlReceiver.SelectedItem.Value)
+            {
+                ShowMessage("信源与信宿不能相同");
+                return;
+            }
+
             if (!fuToSend.HasFile)
             {
                 ShowMessage("待发送文件不能为空。");

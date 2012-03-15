@@ -30,8 +30,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 lblMessage.Text = string.Empty;
                 if (!IsPostBack)
                 {
-                    BindDataSource();
-                    BindSatNameDataSource();
+                    InitialPageData();
                 }
             }
             catch
@@ -50,42 +49,42 @@ namespace OperatingManagement.Web.Views.BusinessManage
             try
             {
                 string msg = string.Empty;
-                if (string.IsNullOrEmpty(dplTask.SelectedValue))
+                if (string.IsNullOrEmpty(ddlTask.SelectedItem.Value))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "请选择任务代号";
                     return;
                 }
 
-                if (string.IsNullOrEmpty(dplSatName.SelectedValue))
+                if (string.IsNullOrEmpty(ddlSatellite.SelectedItem.Value))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "请选择卫星名称";
                     return;
                 }
 
-                if (string.IsNullOrEmpty(dplInfoSource.SelectedValue))
+                if (string.IsNullOrEmpty(ddlSource.SelectedItem.Value))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "请选择信源";
                     return;
                 }
 
-                if (string.IsNullOrEmpty(dplInfoType.SelectedValue))
+                if (string.IsNullOrEmpty(ddlInfoType.SelectedItem.Value))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "请选择信息类别";
                     return;
                 }
 
-                if (string.IsNullOrEmpty(dplDdestination.SelectedValue))
+                if (string.IsNullOrEmpty(ddlDdestination.SelectedItem.Value))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "请选择信宿";
                     return;
                 }
 
-                if (dplInfoSource.SelectedValue == dplDdestination.SelectedValue)
+                if (ddlSource.SelectedItem.Value == ddlDdestination.SelectedItem.Value)
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "信源与信宿不能相同";
@@ -133,11 +132,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 
                 Framework.FieldVerifyResult result;
                 CenterOutputPolicy centerOutputPolicy = new CenterOutputPolicy();
-                centerOutputPolicy.TaskID = dplTask.SelectedValue;
-                centerOutputPolicy.SatName = dplSatName.SelectedValue;
-                centerOutputPolicy.InfoSource = Convert.ToInt32(dplInfoSource.SelectedValue);
-                centerOutputPolicy.InfoType = Convert.ToInt32(dplInfoType.SelectedValue);
-                centerOutputPolicy.Ddestination = Convert.ToInt32(dplDdestination.SelectedValue);
+                centerOutputPolicy.TaskID = ddlTask.SelectedItem.Value;
+                centerOutputPolicy.SatName = ddlSatellite.SelectedItem.Value;
+                centerOutputPolicy.InfoSource = Convert.ToInt32(ddlSource.SelectedItem.Value);
+                centerOutputPolicy.InfoType = Convert.ToInt32(ddlInfoType.SelectedItem.Value);
+                centerOutputPolicy.Ddestination = Convert.ToInt32(ddlDdestination.SelectedItem.Value);
                 centerOutputPolicy.EffectTime = effectTime;
                 centerOutputPolicy.DefectTime = defectTime;
                 centerOutputPolicy.Note = txtNote.Text.Trim();
@@ -146,7 +145,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 if (centerOutputPolicy.HaveEffectivePolicy())
                 {
                     trMessage.Visible = true;
-                    lblMessage.Text = "任务" + dplTask.SelectedItem.Text + "在该时间范围已经存在中心输出策略";
+                    lblMessage.Text = "任务" + ddlTask.SelectedItem.Text + "在该时间范围已经存在中心输出策略";
                     return;
                 }
 
@@ -197,69 +196,24 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <summary>
         /// 绑定控件数据源
         /// </summary>
-        private void BindDataSource()
+        private void InitialPageData()
         {
-            //绑定任务列表数据源
-            dplTask.Items.Clear();
-            dplTask.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyTaskList);
-            dplTask.DataTextField = "key";
-            dplTask.DataValueField = "value";
-            dplTask.DataBind();
-            dplTask.Items.Insert(0, new ListItem("请选择", ""));
-
-            //绑定信源数据源
-            XYXSInfo xyxsInfo = new XYXSInfo();
-            dplInfoSource.Items.Clear();
-            //dplInfoSource.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyInfoSource);
-            dplInfoSource.DataSource = xyxsInfo.Cache;
-            dplInfoSource.DataTextField = "ADDRName";
-            dplInfoSource.DataValueField = "Id";
-            dplInfoSource.DataBind();
-            dplInfoSource.Items.Insert(0, new ListItem("请选择", ""));
-
-            //绑定信息类型数据源
-            InfoType xxType = new InfoType();
-            dplInfoType.Items.Clear();
-            //dplInfoType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyInfoType);
-            dplInfoType.DataSource = xxType.Cache;
-            dplInfoType.DataTextField = "DATANAME";
-            dplInfoType.DataValueField = "Id";
-            dplInfoType.DataBind();
-            dplInfoType.Items.Insert(0, new ListItem("请选择", ""));
-
-            //绑定信宿数据源
-            dplDdestination.Items.Clear();
-            //dplDdestination.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyDdestination);
-            dplDdestination.DataSource = xyxsInfo.Cache;
-            dplDdestination.DataTextField = "ADDRName";
-            dplDdestination.DataValueField = "Id";
-            dplDdestination.DataBind();
-            dplDdestination.Items.Insert(0, new ListItem("请选择", ""));
+            this.ddlDdestination.AllowBlankItem = false;
+            this.ddlInfoType.AllowBlankItem = false;
+            this.ddlSatellite.AllowBlankItem = false;
+            this.ddlSource.AllowBlankItem = false;
+            this.ddlTask.AllowBlankItem = false;
         }
-        /// <summary>
-        /// 绑定卫星数据源
-        /// </summary>
-        private void BindSatNameDataSource()
-        {
-            dplSatName.Items.Clear();
-            Satellite satellite = new Satellite();
-            dplSatName.DataSource = satellite.Cache;
-            dplSatName.DataTextField = "WXMC";
-            dplSatName.DataValueField = "Id";
-            dplSatName.DataBind();
-            dplSatName.Items.Insert(0, new ListItem("请选择", ""));
-        }
-
         /// <summary>
         /// 添加完成后将控件设置为初始状态
         /// </summary>
         private void ResetControls()
         {
-            dplTask.SelectedIndex = 0;
-            dplSatName.SelectedIndex = 0;
-            dplInfoSource.SelectedIndex = 0;
-            dplInfoType.SelectedIndex = 0;
-            dplDdestination.SelectedIndex = 0;
+            ddlTask.SelectedIndex = 0;
+            ddlSource.SelectedIndex = 0;
+            ddlSatellite.SelectedIndex = 0;
+            ddlInfoType.SelectedIndex = 0;
+            ddlDdestination.SelectedIndex = 0;
             txtEffectTime.Text = string.Empty;
             txtDefectTime.Text = string.Empty;
             txtNote.Text = string.Empty;

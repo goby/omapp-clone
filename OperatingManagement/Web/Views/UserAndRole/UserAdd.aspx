@@ -20,7 +20,7 @@
                      ControlToValidate="txtLoginName" ErrorMessage="必须填写“登录名”。"></asp:RequiredFieldValidator>
                 <asp:RegularExpressionValidator ID="fev1" runat="server" Display="Dynamic" ForeColor="Red"
                      ControlToValidate="txtLoginName" ErrorMessage="只能输入字母和数字，且首字符必须为字母，最小长度为6个字符。"
-                     ValidationExpression="^[a-zA-Z]\w{6,25}$"></asp:RegularExpressionValidator>
+                     ValidationExpression="^[a-zA-Z]\w{5,25}$"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>

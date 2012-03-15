@@ -8,7 +8,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuUserNRole" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    用户管理 &gt; 角色列表
+    用户管理 &gt; 查看角色
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="listTitle">

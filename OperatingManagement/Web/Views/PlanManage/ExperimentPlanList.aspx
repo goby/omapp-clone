@@ -15,7 +15,7 @@
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
     <table  class="edit1"  cellpadding="0" width="850px">
-         <tr>
+        <tr>
             <th>
                 开始日期：</th>
             <td>
@@ -24,12 +24,12 @@
         </tr>
         <tr>
         <th>
-        结束日期：
-        </th>
-        <td>
+                结束日期：
+            </th>
+            <td>
              <asp:TextBox ID="txtEndDate" ClientIDMode="Static"  CssClass="text" runat="server"  Width="300px"></asp:TextBox>
             
-        </td>
+            </td>
         </tr>
         <tr>
             <td>
@@ -55,18 +55,18 @@
                         <table class="list">
                             <tr>
                                 <%--<th style="width:20px;"><input type="checkbox" onclick="checkAll(this)" /></th>--%>
-                                    <th style="width: 150px;">
+                                <th style="width: 150px;">
                                         计划编号
-                                    </th>
-                                    <th style="width: 150px;">
+                                </th>
+                                <th style="width: 150px;">
                                         任务代号
-                                    </th>
-                                    <th style="width: 150px;">
+                                </th>
+                                <th style="width: 150px;">
                                         计划类别
-                                    </th>
-                                    <th style="width: 150px;">
+                                </th>
+                                <th style="width: 150px;">
                                         开始时间
-                                    </th>
+                                </th>
                                     <th style="width: 150px;">
                                         结束时间
                                     </th>
@@ -79,19 +79,19 @@
                     <ItemTemplate>
                         <tr>
                             <%--<td><input type="checkbox" <%# Eval("LoginName").ToString().Equals(this.Profile.UserName,StringComparison.InvariantCultureIgnoreCase)?"disabled=\"true\"":"" %> name="chkDelete" value="<%# Eval("Id") %>" /></td>--%>
-                                    <td>
+                            <td>
                                         <%# Eval("planid")%>
-                                    </td>
-                                    <td>
+                            </td>
+                            <td>
                                         <%# Eval("taskid")%>
-                                    </td>
-                                    <td>
+                            </td>
+                            <td>
                                         <%# Eval("plantype")%>
-                                    </td>
-                                    <td>
+                            </td>
+                            <td>
                                         <%# Eval("starttime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
-                                    </td>
-                                    <td>
+                            </td>
+                            <td>
                                         <%# Eval("endtime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
                                     </td>
                             <td>

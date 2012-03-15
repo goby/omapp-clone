@@ -33,22 +33,6 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         public int ID { get; set; }
         public DateTime CTime { get; set; }
-        public string Version { get; set; }
-        public string Flag { get; set; }
-        public string MainType { get; set; }
-        public string DataType { get; set; }
-        public string SourceAddress { get; set; }
-        public string DestinationAddress { get; set; }
-        public string MissionCode { get; set; }
-        public string SatelliteCode { get; set; }
-        public DateTime DataDate { get; set; }
-        public string DataTime { get; set; }
-        public string SequenceNumber { get; set; }
-        public string ChildrenPackNumber { get; set; }
-        public string UDPReserve { get; set; }
-        public string DataLength { get; set; }
-        public string DataClass { get; set; }
-        public string Reserve { get; set; }
 
         public string Satid { get; set; }
         public string IType { get; set; }
@@ -167,22 +151,6 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         {
                             Id = Convert.ToInt32(dr["ID"].ToString()),
                             CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
-                            //Version = dr["Version"].ToString(),
-                            //Flag = dr["Flag"].ToString(),
-                            //MainType = dr["MainType"].ToString(),
-                            //DataType = dr["DataType"].ToString(),
-                            //SourceAddress = dr["SourceAddress"].ToString(),
-                            //DestinationAddress = dr["DestinationAddress"].ToString(),
-                            //MissionCode = dr["MissionCode"].ToString(),
-                            //SatelliteCode = dr["SatelliteCode"].ToString(),
-                            //DataDate = Convert.ToDateTime(dr["DataDate"].ToString()),
-                            //DataTime = dr["DataTime"].ToString(),
-                            //SequenceNumber = dr["SequenceNumber"].ToString(),
-                            //ChildrenPackNumber = dr["ChildrenPackNumber"].ToString(),
-                            //UDPReserve = dr["UDPReserve"].ToString(),
-                            //DataLength = dr["DataLength"].ToString(),
-                            //DataClass = dr["DataClass"].ToString(),
-                            Reserve = dr["RESERVE"].ToString(),
                             Satid = dr["Satid"].ToString(),
                             IType = dr["itype"].ToString(),
                             ICode = dr["icode"].ToString(),
@@ -196,7 +164,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                             W = dr["W"].ToString(),
                             M = dr["M"].ToString(),
                             P = dr["P"].ToString(),
-                            DELTP = dr["Pi"].ToString(),
+                            DELTP = dr["PP"].ToString(),
                             Ra = dr["Ra"].ToString(),
                             Rp = dr["Rp"].ToString(),
                             CDSM = dr["CDSM"].ToString(),
@@ -232,22 +200,6 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     {
                         Id = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
-                        //Version = dr["Version"].ToString(),
-                        //Flag = dr["Flag"].ToString(),
-                        //MainType = dr["MainType"].ToString(),
-                        //DataType = dr["DataType"].ToString(),
-                        //SourceAddress = dr["SourceAddress"].ToString(),
-                        //DestinationAddress = dr["DestinationAddress"].ToString(),
-                        //MissionCode = dr["MissionCode"].ToString(),
-                        //SatelliteCode = dr["SatelliteCode"].ToString(),
-                        //DataDate = Convert.ToDateTime(dr["DataDate"].ToString()),
-                        //DataTime = dr["DataTime"].ToString(),
-                        //SequenceNumber = dr["SequenceNumber"].ToString(),
-                        //ChildrenPackNumber = dr["ChildrenPackNumber"].ToString(),
-                        //UDPReserve = dr["UDPReserve"].ToString(),
-                        //DataLength = dr["DataLength"].ToString(),
-                        //DataClass = dr["DataClass"].ToString(),
-                        Reserve = dr["RESERVE"].ToString(),
                         Satid = dr["Satid"].ToString(),
                         IType = dr["itype"].ToString(),
                         ICode = dr["icode"].ToString(),
@@ -295,22 +247,6 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 OracleDbType = OracleDbType.Double
             };
             _database.SpExecuteNonQuery(Insert, new OracleParameter[]{
-                new OracleParameter("p_Version",this.Version),
-                new OracleParameter("p_Flag",this.Flag),
-                new OracleParameter("p_Maintype",this.MainType),
-                new OracleParameter("p_datatype",this.DataType),
-                new OracleParameter("p_Source",this.SourceAddress),
-                new OracleParameter("p_Destination",this.DestinationAddress),
-                new OracleParameter("p_missioncode",this.MissionCode),
-                new OracleParameter("p_satellitecode",this.SatelliteCode),
-                new OracleParameter("p_datadate",(DateTime)this.DataDate),
-                new OracleParameter("p_datatime",this.DataTime),
-                new OracleParameter("p_sequencenumber",this.SequenceNumber),
-                new OracleParameter("p_childrenpacknumber",this.ChildrenPackNumber),
-                new OracleParameter("p_udpReserve",this.UDPReserve),
-                new OracleParameter("p_datalength",this.DataLength),
-                new OracleParameter("p_dataclass",this.DataClass),
-                new OracleParameter("p_Reserve",this.Reserve),
                 new OracleParameter("p_Satid",this.Satid),
                 new OracleParameter("p_IType",this.IType),
                 new OracleParameter("p_ICode",this.ICode),

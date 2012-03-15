@@ -2,8 +2,8 @@
 <navigator>
   <items>
     <item id="index" title="首页" href="index.aspx" />
-    <item id="usernrole" title="用户角色" href="views/userandrole/usernrole.aspx" />
-    <item id="planmanage" title="计划管理" href="views/PlanManage/ExperimentPlanList.aspx" />
+    <item id="usernrole" title="用户角色" href="views/userandrole/users.aspx" />
+    <item id="planmanage" title="计划管理" href="views/PlanManage/PlanList.aspx" />
     <!--
     <item id="runtimemanage" title="运行管理" href="index.aspx" /> -->
     <item id="bizmanage" title="业务管理" href="Views/BusinessManage/ResourceManage.aspx" />

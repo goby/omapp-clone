@@ -21,6 +21,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         private const string s_up_fsendinfo_selectall = "up_fsendinfo_selectall";
         private const string s_up_fsendinfo_search = "up_fsendinfo_search";
         private const string s_up_fsendinfo_selectbyid = "up_fsendinfo_selectbyid";
+        private const string s_up_fsendinfo_selectbystatus = "up_fsendinfo_selectbystatus";
+        private const string s_up_fsendinfo_selectbyname = "up_fsendinfo_selectbyname";
         private const string s_up_fsendinfo_insert = "up_fsendinfo_insert";
         private const string s_up_fsendinfo_update = "up_fsendinfo_update";
         private string strFileFullName = "";
@@ -40,9 +42,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 this.FileName = dr["FileName"].ToString();
 
             if (dr["FileCode"] == DBNull.Value)
-                this.FileCode = string.Empty;
+                this.FileCode = 0;
             else
-                this.FileCode = dr["FileCode"].ToString();
+                this.FileCode = Convert.ToInt32(dr["FileCode"].ToString());
 
             if (dr["FilePath"] == DBNull.Value)
                 this.FilePath = string.Empty;
@@ -91,12 +93,12 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 文件标识
         /// </summary>
-        public string FileCode { get; set; }
+        public int FileCode { get; set; }
 
         /// <summary>
         /// 文件路径，以"\"结束
         /// </summary>
-        public string FilePath 
+        public string FilePath
         {
             get
             {
@@ -115,12 +117,12 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 文件大小，单位字节
         /// </summary>
-        public long FileSize { get; set; }
+        public int FileSize { get; set; }
 
         /// <summary>
         /// 当前位置
         /// </summary>
-        public long CurPosition { get; set; }
+        public int CurPosition { get; set; }
 
         /// <summary>
         /// 重试次数
@@ -184,7 +186,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 文件全名，即文件路径+文件名
         /// </summary>
-        public string FileFullName 
+        public string FileFullName
         {
             get
             {
@@ -286,7 +288,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             }
             return sinfos;
         }
-                
+
         /// <summary>
         /// get the SendInfo by id.
         /// </summary>
@@ -296,6 +298,46 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             OracleParameter p = PrepareRefCursor();
             DataSet ds = _database.SpExecuteDataSet(s_up_fsendinfo_selectbyid, new OracleParameter[]{
                 new OracleParameter("p_RID", this.Id),
+                p
+            });
+            FileSendInfo sinfo = null;
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                if (ds.Tables[0].Rows.Count == 1)
+                    sinfo = new FileSendInfo(ds.Tables[0].Rows[0]);
+            }
+            return sinfo;
+        }
+
+        /// <summary>
+        /// get the SendInfo by status.
+        /// </summary>
+        /// <returns></returns>
+        public FileSendInfo SelectByStatus(int retryTimes)
+        {
+            OracleParameter p = PrepareRefCursor();
+            DataSet ds = _database.SpExecuteDataSet(s_up_fsendinfo_selectbystatus, new OracleParameter[]{
+                new OracleParameter("p_retrytimes", retryTimes),
+                p
+            });
+            FileSendInfo sinfo = null;
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                if (ds.Tables[0].Rows.Count == 1)
+                    sinfo = new FileSendInfo(ds.Tables[0].Rows[0]);
+            }
+            return sinfo;
+        }
+
+        /// <summary>
+        /// 按文件名获取
+        /// </summary>
+        /// <returns></returns>
+        public FileSendInfo SelectByFilename()
+        {
+            OracleParameter p = PrepareRefCursor();
+            DataSet ds = _database.SpExecuteDataSet(s_up_fsendinfo_selectbyname, new OracleParameter[]{
+                new OracleParameter("p_FileName", this.FileName),
                 p
             });
             FileSendInfo sinfo = null;
@@ -399,11 +441,6 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 Direction = ParameterDirection.Output,
                 OracleDbType = OracleDbType.Double
             };
-            object oLastUpdateTime = null;
-            if (this.LastUpdateTime == DateTime.MinValue)
-                oLastUpdateTime = DBNull.Value;
-            else
-                oLastUpdateTime = this.LastUpdateTime;
 
             _database.SpExecuteNonQuery(s_up_fsendinfo_update, new OracleParameter[]{
                 new OracleParameter("p_RID", this.Id),
@@ -411,10 +448,22 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_SendStatus", (int)this.SendStatus),
                 new OracleParameter("p_RetryTimes", this.RetryTimes),
                 new OracleParameter("p_Remark", this.Remark),
-                new OracleParameter("p_LastUpdateTime", oLastUpdateTime),
+                new OracleParameter("p_LastUpdateTime", DateTime.Now),
                 p
             });
             return (FieldVerifyResult)Convert.ToInt32(p.Value);
+        }
+
+        /// <summary>
+        /// Return whether has same filename in database
+        /// </summary>
+        /// <returns></returns>
+        public bool HasSameFileName()
+        {
+            if (SelectByFilename() == null)
+                return false;
+            else
+                return true;
         }
         #endregion
 

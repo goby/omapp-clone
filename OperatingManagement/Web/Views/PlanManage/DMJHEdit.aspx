@@ -1,16 +1,6 @@
 ﻿<%@ Page MaintainScrollPositionOnPostback="true" MasterPageFile="~/Site.Master" Language="C#"  AutoEventWireup="true" CodeBehind="DMJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.DMJHEdit" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-<style type="text/css">
-        .style1
-        {
-            width: 157px;
-        }
-        .style2
-        {
-            width: 236px;
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
@@ -19,7 +9,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    地面站工作计划
+    计划管理 &gt; 地面站工作计划
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <div>
@@ -340,7 +330,7 @@
         <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" onclick="btnSubmit_Click" />
         &nbsp;&nbsp;&nbsp;
                     <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
-                    onclick="btnSaveTo_Click" />
+                    onclick="btnSubmit_Click" />
     </div>
 </asp:Content>
 

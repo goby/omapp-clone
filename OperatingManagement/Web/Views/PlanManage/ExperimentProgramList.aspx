@@ -1,34 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ExperimentProgramList.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.ExperimentProgramList" %>
 <asp:Content ID="Content3" ContentPlaceHolderID="HeadContent" runat="server">
-    <style type="text/css">
-        .style1
-        {
-            width: 100%;
-            border-collapse: collapse;
-            border-style: solid;
-            border-width: 1px;
-        }
-        .style2
-        {
-        }
-        .style3
-        {
-            width: 179px;
-        }
-        .style4
-        {
-            width: 125px;
-        }
-        .style5
-        {
-            width: 131px;
-            height: 18px;
-        }
-        .style6
-        {
-            height: 18px;
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
@@ -40,27 +11,23 @@
     计划管理 &gt; 查看试验程序
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
-    <table class="edit1"  cellpadding="0" style="width:850px;">
+    <table class="edit"  cellpadding="0" style="width:1000px;">
         <tr>
-            <th>
+            <th align="right" class="style2">
                 开始日期：</th>
-            <td>
-                <asp:TextBox ID="txtStartDate" ClientIDMode="Static"  CssClass="text" runat="server" Width="300px"></asp:TextBox>
+            <td class="style3">
+                <asp:TextBox ID="txtStartDate" ClientIDMode="Static"  CssClass="text" runat="server"></asp:TextBox>
             </td>
-        </tr>
-        <tr>
-        <th>
-        结束日期：
-        </th>
+            <th align="right" class="style4">
+                结束日期：</th>
         <td>
-             <asp:TextBox ID="txtEndDate" ClientIDMode="Static"  CssClass="text" runat="server"  Width="300px"></asp:TextBox>
-            
+                <asp:TextBox ID="txtEndDate" ClientIDMode="Static"  CssClass="text" runat="server"></asp:TextBox>
         </td>
         </tr>
         <tr>
-            <td>
+            <td class="style5">
             </td>
-            <td>
+            <td class="style6" colspan="3">
                 <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
                     Width="69px" />
 &nbsp;&nbsp;

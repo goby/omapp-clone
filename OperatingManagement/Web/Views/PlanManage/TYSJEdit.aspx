@@ -1,14 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master"  AutoEventWireup="true" CodeBehind="TYSJEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.TYSJEdit" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-        <style type="text/css">
-        .style1
-        {
-            width: 147px;
-        }
-        .text
-        {}
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
@@ -82,11 +74,11 @@
         <tr>
             <th class="style1">&nbsp;</th>
             <td>
-                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" 
+                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
                     onclick="btnSubmit_Click" />
                     &nbsp;&nbsp;&nbsp;
                     <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
-                    onclick="btnSaveTo_Click" />
+                    onclick="btnSubmit_Click" />
                      <asp:HiddenField ID="HfID" runat="server" />
                     <asp:HiddenField ID="HfFileIndex" runat="server" />
                     <asp:HiddenField ID="hfTaskID" runat="server" />

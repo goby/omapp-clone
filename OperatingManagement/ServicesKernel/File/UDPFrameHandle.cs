@@ -220,7 +220,7 @@ namespace ServicesKernel.File
         {
             GD objData = new GD()
             {
-                Version = this.Version,
+                /*Version = this.Version,
                 Flag = this.Flag,
                 MainType =this.MainType,
                 DataType =this.DataType,
@@ -235,7 +235,7 @@ namespace ServicesKernel.File
                 UDPReserve = this.Reserve,
                 DataLength = this.DataLength,
                 DataClass ="GD",
-                Reserve = "",
+                Reserve = "",*/
 
                 D = InitialDate.AddDays( Convert.ToInt32( this.DataInfo.Substring(0, 2),2)).ToShortDateString(),
                 T = Convert.ToUInt32( this.DataInfo.Substring(2, 4),2).ToString(),

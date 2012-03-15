@@ -1,21 +1,13 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
     CodeBehind="CenterOutputPolicyAdd.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyAdd" %>
 
+<%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
+<%@ Register src="../../ucs/ucXYXSInfo.ascx" tagname="ucXYXSInfo" tagprefix="uc2" %>
+<%@ Register src="../../ucs/ucInfoType.ascx" tagname="ucInfoType" tagprefix="uc3" %>
+
+<%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc4" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <style type="text/css">
-        .norText
-        {
-            width: 155px;
-            margin: 0px;
-            padding: 0px;
-        }
-        .norDpl
-        {
-            width: 160px;
-            margin: 0px;
-            padding: 0px;
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="bizmanage" />
@@ -24,7 +16,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    中心输出策略管理&gt;中心输出策略添加
+    中心输出策略管理 &gt; 新增中心输出策略
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <script type="text/javascript">
@@ -39,10 +31,7 @@
                 任务代号(<span class="red">*</span>)
             </th>
             <td>
-                <asp:DropDownList ID="dplTask" runat="server" CssClass="norDpl">
-                </asp:DropDownList>
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic"
-                    ForeColor="Red" ControlToValidate="dplTask" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <uc1:ucTask ID="ddlTask" runat="server" />
             </td>
         </tr>
         <tr>
@@ -50,10 +39,7 @@
                 卫星名称(<span class="red">*</span>)
             </th>
             <td>
-                <asp:DropDownList ID="dplSatName" runat="server" CssClass="norDpl">
-                </asp:DropDownList>
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic"
-                    ForeColor="Red" ControlToValidate="dplSatName" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <uc4:ucSatellite ID="ddlSatellite" runat="server" />
             </td>
         </tr>
         <tr>
@@ -61,10 +47,7 @@
                 信源(<span class="red">*</span>)
             </th>
             <td>
-                <asp:DropDownList ID="dplInfoSource" runat="server" CssClass="norDpl">
-                </asp:DropDownList>
-                <asp:RequiredFieldValidator ID="rfv1" runat="server" Display="Dynamic" ForeColor="Red"
-                    ControlToValidate="dplInfoSource" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <uc2:ucXYXSInfo ID="ddlSource" runat="server" />
             </td>
         </tr>
         <tr>
@@ -72,10 +55,7 @@
                 信息类别(<span class="red">*</span>)
             </th>
             <td>
-                <asp:DropDownList ID="dplInfoType" runat="server" CssClass="norDpl">
-                </asp:DropDownList>
-                <asp:RequiredFieldValidator ID="rfv2" runat="server" Display="Dynamic" ForeColor="Red"
-                    ControlToValidate="dplInfoType" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <uc3:ucInfoType ID="ddlInfoType" runat="server" />
             </td>
         </tr>
         <tr>
@@ -83,10 +63,7 @@
                 信宿(<span class="red">*</span>)
             </th>
             <td>
-                <asp:DropDownList ID="dplDdestination" runat="server" CssClass="norDpl">
-                </asp:DropDownList>
-                <asp:RequiredFieldValidator ID="rfv3" runat="server" Display="Dynamic" ForeColor="Red"
-                    ControlToValidate="dplDdestination" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <uc2:ucXYXSInfo ID="ddlDdestination" runat="server" />
             </td>
         </tr>
         <tr>

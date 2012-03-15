@@ -44,5 +44,17 @@ namespace OperatingManagement.Web.ucs
                 isAllowBlankItem = value;
             }
         }
+
+        public int SelectedIndex
+        {
+            set
+            {
+                InfoTypeList.SelectedIndex = value;
+            }
+            get
+            {
+                return InfoTypeList.SelectedIndex;
+            }
+        }
     }
 }

@@ -14,7 +14,7 @@ function setdayte(o){
 			changeYear: true
 		});
 }
-
+/*
 function showMsg(msg) {
     $.fn.modal({
         title: '提示信息',
@@ -55,7 +55,7 @@ function showDetail(planid,plantype) {
         }
     //window.open("/Views/PlanManage/PlanDetail.aspx?id=" + planid);
     return false;
-}
+}*/
 
 function showEdit(planid,plantype) {
     //window.location.href = "/Views/PlanManage/PlanEdit.aspx?id=" + id;
