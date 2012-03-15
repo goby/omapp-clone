@@ -80,7 +80,7 @@
     <Compile Include="BusinessManage\GD.cs" />
     <Compile Include="BusinessManage\BASICINFODATA.cs" />
     <Compile Include="PlanManage\JDSJ.cs" />
-    <Compile Include="PlanManage\TJSJ.cs" />
+    <Compile Include="PlanManage\Sequence.cs" />
     <Compile Include="PlanManage\YJJH.cs" />
     <Compile Include="PlanManage\JH.cs" />
     <Compile Include="PlanManage\YDSJ.cs" />

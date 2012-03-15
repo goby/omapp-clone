@@ -156,7 +156,8 @@
     <Content Include="Scripts\Pages\PlanManage\PlanAdd.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\PlanEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\TYSJEdit.aspx.js" />
-    <Content Include="Scripts\Pages\PlanManage\XXXQEdit.aspx.js" />    <Content Include="Scripts\Pages\UserNRole\permissions.aspx.js" />
+    <Content Include="Scripts\Pages\PlanManage\XXXQEdit.aspx.js" />
+    <Content Include="Scripts\Pages\UserNRole\permissions.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\userroleedit.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\roleadd.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\roles.aspx.js" />
