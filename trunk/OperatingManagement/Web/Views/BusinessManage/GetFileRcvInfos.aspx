@@ -53,7 +53,7 @@
                 <td><%# Eval("ReceiveStatus")%></td>
                 <td><%# Eval("Remark")%></td>
                 <td><%# Eval("RecvBeginTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%></td>
-                <td><%# Eval("RecvEndTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%></td>
+                <td><%# Eval("LastUpdateTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%></td>
             </tr>            
         </ItemTemplate>
         <FooterTemplate>   

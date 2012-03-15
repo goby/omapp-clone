@@ -8,7 +8,7 @@ function selectAll() {
     return false;
 }
 function checkAll(o) {
-    $('#tbUsers').find('input:checkbox:not([disabled])').attr('checked', o.checked);
+    $('#tbRoles').find('input:checkbox:not([disabled])').attr('checked', o.checked);
 }
 function editRole(id) {
     window.location.href = "/views/userandrole/roleedit.aspx?id=" + id;

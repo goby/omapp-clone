@@ -12,12 +12,14 @@ using System.Data;
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
     [Serializable]
-    public class FileReceiveInfo : BaseEntity<int, GroundResource>
+    public class FileReceiveInfo : BaseEntity<int, FileReceiveInfo>
     {
         private OracleDatabase _database = null;
         private const string s_up_frcvinfo_selectall = "up_frcvinfo_selectall";
         private const string s_up_frcvinfo_search = "up_frcvinfo_search";
         private const string s_up_frcvinfo_selectbyid = "up_frcvinfo_selectbyid";
+        private const string s_up_frcvinfo_selectbyfileinfo = "up_frcvinfo_selectbyfileinfo";
+        private const string s_up_frcvinfo_selectmaxfilecode = "up_frcvinfo_selectmaxfilecode";
         private const string s_up_frcvinfo_insert = "up_frcvinfo_insert";
         private const string s_up_frcvinfo_update = "up_frcvinfo_update";
         private string strFileFullName = "";
@@ -37,9 +39,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 this.FileName = dr["FileName"].ToString();
 
             if (dr["FileCode"] == DBNull.Value)
-                this.FileCode = string.Empty;
+                this.FileCode = 0;
             else
-                this.FileCode = dr["FileCode"].ToString();
+                this.FileCode = Convert.ToInt32(dr["FileCode"].ToString());
 
             if (dr["FilePath"] == DBNull.Value)
                 this.FilePath = string.Empty;
@@ -66,15 +68,15 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             else
                 this.Remark = dr["Remark"].ToString();
             this.RecvBeginTime = Convert.ToDateTime(dr["RecvBeginTime"].ToString());
-            if (dr["RecvEndTime"] == DBNull.Value)
-                this.RecvEndTime = DateTime.MinValue;
+            if (dr["LastUpdateTime"] == DBNull.Value)
+                this.LastUpdateTime = DateTime.MinValue;
             else
-                this.RecvEndTime = Convert.ToDateTime(dr["RecvEndTime"].ToString());
+                this.LastUpdateTime = Convert.ToDateTime(dr["LastUpdateTime"].ToString());
             this.ReceiveWay = (CommunicationWays)Convert.ToInt32(dr["ReceiveWay"].ToString());
             this.InfoTypeID = Convert.ToInt32(dr["InfoTypeID"].ToString());
             this.InfoTypeName = dr["InfoTypeName"].ToString();
         }
-        
+
         #region -Properties-
         /// <summary>
         /// 文件名称
@@ -83,7 +85,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 文件标识
         /// </summary>
-        public string FileCode { get; set; }
+        public int FileCode { get; set; }
         /// <summary>
         /// 文件路径
         /// </summary>
@@ -123,11 +125,11 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 文件大小，单位字节
         /// </summary>
-        public long FileSize { get; set; }
+        public int FileSize { get; set; }
         /// <summary>
         /// 当前位置
         /// </summary>
-        public long CurPosition { get; set; }
+        public int CurPosition { get; set; }
         /// <summary>
         /// 发送方标识
         /// </summary>
@@ -161,7 +163,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 接收结束时间
         /// </summary>
-        public DateTime RecvEndTime { get; set; }
+        public DateTime LastUpdateTime { get; set; }
         /// <summary>
         /// 信息类型标识
         /// </summary>
@@ -185,7 +187,6 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 数据包的发送状态，非数据表结构，仅供文件服务器使用
         /// </summary>
         public int PackageSendStatus { get; set; }
-        //public 
         #endregion
 
         #region -Private methods-
@@ -281,6 +282,53 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
+        /// 获取最大filecode
+        /// </summary>
+        /// <returns></returns>
+        public int SelectMaxFilecode()
+        {
+
+            OracleParameter opCode = new OracleParameter()
+            {
+                ParameterName = "v_maxcode",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+
+            OracleParameter p = PrepareRefCursor();
+            DataSet ds = _database.SpExecuteDataSet(s_up_frcvinfo_selectmaxfilecode, new OracleParameter[]{
+                opCode,
+                p
+            });
+            if (opCode.Value != null && opCode.Value != DBNull.Value)
+            {
+                return Convert.ToInt32(opCode.Value.ToString());
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// 根据文件名或者filecode获取，优先按filename取
+        /// </summary>
+        /// <returns></returns>
+        public FileReceiveInfo SelectByFileinfo()
+        {
+            OracleParameter p = PrepareRefCursor();
+            DataSet ds = _database.SpExecuteDataSet(s_up_frcvinfo_selectbyfileinfo, new OracleParameter[]{
+                new OracleParameter("p_FileName", this.FileName),
+                new OracleParameter("p_FileCode", this.FileCode),
+                p
+            });
+            FileReceiveInfo sinfo = null;
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                if (ds.Tables[0].Rows.Count == 1)
+                    sinfo = new FileReceiveInfo(ds.Tables[0].Rows[0]);
+            }
+            return sinfo;
+        }
+
+        /// <summary>
         /// get the File ReceiveInfos by XXTYPE id and submittime.
         /// </summary>
         /// <returns></returns>
@@ -342,9 +390,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_Sender", this.SenderID),
                 new OracleParameter("p_Receiver", this.ReceiverID),
                 new OracleParameter("p_ReceiveStatus", (int)this.ReceiveStatus),
-                new OracleParameter("p_Remark", DBNull.Value),
+                new OracleParameter("p_Remark", (this.Remark == string.Empty? DBNull.Value : (object)this.Remark)),
                 new OracleParameter("p_RecvBeginTime", OracleDbType.Date, this.RecvBeginTime, ParameterDirection.Input),
-                new OracleParameter("p_RecvEndTime", OracleDbType.Date, this.RecvEndTime, ParameterDirection.Input),
+                new OracleParameter("p_LastUpdateTime", OracleDbType.Date, this.LastUpdateTime, ParameterDirection.Input),
                 new OracleParameter("p_InfoType", this.InfoTypeID),
                 new OracleParameter("p_ReceiveWay", (int)this.ReceiveWay),
                 opId,
@@ -371,21 +419,27 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 OracleDbType = OracleDbType.Double
             };
 
-            object oRecvEndTime = null;
-            if (this.RecvEndTime == DateTime.MinValue)
-                oRecvEndTime = DBNull.Value;
-            else
-                oRecvEndTime = this.RecvEndTime;
-
             _database.SpExecuteNonQuery(s_up_frcvinfo_update, new OracleParameter[]{
                 new OracleParameter("p_RID", this.Id),
                 new OracleParameter("p_CurPosition", this.CurPosition),
                 new OracleParameter("p_ReceiveStatus", (int)this.ReceiveStatus),
                 new OracleParameter("p_Remark", this.Remark),
-                new OracleParameter("p_RecvEndTime", oRecvEndTime),
+                new OracleParameter("p_LastUpdateTime", DateTime.Now),
                 p
             });
             return (FieldVerifyResult)Convert.ToInt32(p.Value);
+        }
+
+        /// <summary>
+        /// Return whether has same filename in database
+        /// </summary>
+        /// <returns></returns>
+        public bool HasSameFileName()
+        {
+            this.FileCode = 0;
+            if (SelectByFileinfo() == null)
+                return false;
+            return true;
         }
         #endregion
 

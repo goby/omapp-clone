@@ -17,5 +17,11 @@ namespace OperatingManagement.RemotingObjectInterface
         /// <param name="password">The password of user which to be validated.</param>
         /// <returns></returns>
         string ValidateUser(string userName, string password);
+
+        string GetAllRoles();
+
+        string GetUsersByRoleID(int roleID);
+
+        string GetAllUsers();
     }
 }

@@ -1,39 +1,6 @@
 ﻿<%@ Page MaintainScrollPositionOnPostback="true" MasterPageFile="~/Site.Master"  Language="C#" AutoEventWireup="true" CodeBehind="ZXJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.ZXJHEdit" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-<style type="text/css">
-        .style2
-        {
-            width: 139px;
-        }
-        .style3
-        {
-            width: 50px;
-        }
-        .style4
-        {
-            width: 184px;
-        }
-        .style5
-        {
-            width: 43px;
-        }
-        .style6
-        {
-            width: 100%;
-        }
-        .style7
-        {
-            width: 48px;
-        }
-        .style8
-        {
-            width: 140px;
-        }
-        .style9
-        {
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
@@ -677,7 +644,7 @@
                         onclick="btnSubmit_Click" />
                         &nbsp;&nbsp;&nbsp;
                     <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
-                    onclick="btnSaveTo_Click" />
+                    onclick="btnSubmit_Click" />
 </div>
     </div>
 </asp:Content>

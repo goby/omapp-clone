@@ -8,14 +8,14 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuUserNRole" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    用户管理 &gt; 用户列表
+    用户管理 &gt; 查看用户
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="listTitle">
         <tr>
-            <td class="listTitle-c1">
-                <button class="button" onclick="return selectAll();">全选</button>&nbsp;&nbsp;
-                <button class="button" onclick="return deleteUsers();">删除</button> 
+            <td class="listTitle-c1" valign="middle"><div>关键字&nbsp;&nbsp;&nbsp;<asp:TextBox ID="txtKeyword" runat="server"></asp:TextBox>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
+                        Text="查询" Width="69px" /></div>
             </td>
             <td class="listTitle-c2">
                 <div class="load" id="submitIndicator" style="display:none">提交中，请稍候。。。</div>

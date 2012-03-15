@@ -156,7 +156,7 @@
     <Content Include="Scripts\Pages\PlanManage\PlanAdd.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\PlanEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\TYSJEdit.aspx.js" />
-    <Content Include="Scripts\Pages\PlanManage\XXXQEdit.aspx.js" />
+    <Content Include="Scripts\Pages\PlanManage\XXXQEdit.aspx.js" />    <Content Include="Scripts\Pages\UserNRole\permissions.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\userroleedit.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\roleadd.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\roles.aspx.js" />
@@ -170,6 +170,8 @@
     <Content Include="Scripts\Pages\PlanManage\ZXJHEdit.aspx.js" />
     <Content Include="Scripts\Pages\common.js" />
     <Content Include="ucs\ucInfoType.ascx" />
+    <Content Include="ucs\ucSatellite.ascx" />
+    <Content Include="ucs\ucTask.ascx" />
     <Content Include="ucs\ucXYXSInfo.ascx" />
     <Content Include="Views\Account\MyProfile.aspx" />
     <Content Include="Views\BusinessManage\CenterOutputPolicyAdd.aspx" />
@@ -217,6 +219,8 @@
     <Content Include="Views\PlanManage\YDSJDetail.aspx" />
     <Content Include="Views\PlanManage\YJJHEdit.aspx" />
     <Content Include="Views\PlanManage\ZXJHEdit.aspx" />
+    <Content Include="Views\UserAndRole\PermissionAdd.aspx" />
+    <Content Include="Views\UserAndRole\Permissions.aspx" />
     <Content Include="Views\UserAndRole\RoleAdd.aspx" />
     <Content Include="Views\UserAndRole\RoleEdit.aspx" />
     <Content Include="Views\UserAndRole\Roles.aspx" />
@@ -225,6 +229,7 @@
     <Content Include="Views\UserAndRole\UserNRole.aspx" />
     <Content Include="Views\UserAndRole\UserRoleEdit.aspx" />
     <Content Include="Views\UserAndRole\Users.aspx" />
+    <Content Include="Views\UserAndRole\PermissionEdit.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -275,6 +280,20 @@
     </Compile>
     <Compile Include="ucs\ucInfoType.ascx.designer.cs">
       <DependentUpon>ucInfoType.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ucs\ucSatellite.ascx.cs">
+      <DependentUpon>ucSatellite.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ucs\ucSatellite.ascx.designer.cs">
+      <DependentUpon>ucSatellite.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ucs\ucTask.ascx.cs">
+      <DependentUpon>ucTask.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ucs\ucTask.ascx.designer.cs">
+      <DependentUpon>ucTask.ascx</DependentUpon>
     </Compile>
     <Compile Include="ucs\ucXYXSInfo.ascx.cs">
       <DependentUpon>ucXYXSInfo.ascx</DependentUpon>
@@ -605,6 +624,20 @@
     <Compile Include="Views\PlanManage\ZXJHEdit.aspx.designer.cs">
       <DependentUpon>ZXJHEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserAndRole\PermissionAdd.aspx.cs">
+      <DependentUpon>PermissionAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\UserAndRole\PermissionAdd.aspx.designer.cs">
+      <DependentUpon>PermissionAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserAndRole\Permissions.aspx.cs">
+      <DependentUpon>Permissions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\UserAndRole\Permissions.aspx.designer.cs">
+      <DependentUpon>Permissions.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserAndRole\RoleAdd.aspx.cs">
       <DependentUpon>RoleAdd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -660,6 +693,13 @@
     </Compile>
     <Compile Include="Views\UserAndRole\Users.aspx.designer.cs">
       <DependentUpon>Users.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserAndRole\PermissionEdit.aspx.cs">
+      <DependentUpon>PermissionEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\UserAndRole\PermissionEdit.aspx.designer.cs">
+      <DependentUpon>PermissionEdit.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

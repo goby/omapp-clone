@@ -8,7 +8,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    已生成计划列表
+    计划管理 &gt; 已生成计划列表
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
                     <asp:Repeater ID="rpDatas" runat="server">

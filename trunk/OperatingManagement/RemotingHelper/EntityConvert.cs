@@ -76,5 +76,43 @@ namespace OperatingManagement.RemotingHelper
             }
             return status;
         }
+
+        public static UMResult ToResult(string xml)
+        {
+            XElement root = XElement.Parse(xml);
+            UMResult oResult = new UMResult()
+            {
+                Msg = root.Element("msg").Value,
+            };
+
+            if (oResult.Msg == "")
+            {
+                //get users
+                var users = root.Elements("user");
+                if (users != null && users.Count() > 0)
+                {
+                    oResult.Users = (from q in users
+                                         select new User()
+                                         {
+                                             Id = Convert.ToInt32(q.Element("id").Value),
+                                             LoginName = q.Element("loginname").Value,
+                                             DisplayName = q.Element("displayname").Value
+                                         }).ToList();
+                }
+
+                //get roles
+                var roles = root.Elements("role");
+                if (roles != null && roles.Count() > 0)
+                {
+                    oResult.Roles = (from q in roles
+                                     select new Role()
+                                     {
+                                         Id = Convert.ToInt32(q.Element("id").Value),
+                                         Name = q.Element("name").Value
+                                     }).ToList();
+                }
+            }
+            return oResult;
+        }
     }
 }

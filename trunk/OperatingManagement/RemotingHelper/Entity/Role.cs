@@ -18,5 +18,10 @@ namespace OperatingManagement.RemotingHelper
         /// Gets./Sets the role name.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets./Sets the role permissions.
+        /// </summary>
+        public List<Permission> Permissions { get; set; }
     }
 }

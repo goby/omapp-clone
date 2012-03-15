@@ -2,7 +2,6 @@
     CodeBehind="OribitalQuantityList.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.OribitalQuantityList" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />

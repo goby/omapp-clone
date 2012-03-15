@@ -14,9 +14,9 @@ namespace OperatingManagement.Web.Views.UserAndRole
         {
 
             if (!IsPostBack)
-                BindUsers();
+                BindRolers();
         }
-        void BindUsers()
+        void BindRolers()
         {
             DataAccessLayer.System.Role r = new DataAccessLayer.System.Role();
             List<DataAccessLayer.System.Role> roles = r.SelectAll();

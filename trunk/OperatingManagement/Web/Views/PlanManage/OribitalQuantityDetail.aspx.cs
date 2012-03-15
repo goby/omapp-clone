@@ -37,7 +37,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             DataAccessLayer.BusinessManage.GD g = new DataAccessLayer.BusinessManage.GD { Id = id };
             DataAccessLayer.BusinessManage.GD obj = g.SelectById();
 
-            lblVersion.Text = obj.Version;
+            /*lblVersion.Text = obj.Version;
             lblFlag.Text = obj.Flag;
             lblMainType.Text = obj.MainType;
             lblDataType.Text = obj.DataType;
@@ -47,7 +47,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             lblSatelliteCode.Text = obj.SatelliteCode;
             lblDataDate.Text = obj.DataDate.ToShortDateString();
             lblDataTime.Text = obj.DataTime;
-
+            */
             lblD.Text = obj.D;
             lblT.Text = obj.T;
             lblA.Text = obj.A;

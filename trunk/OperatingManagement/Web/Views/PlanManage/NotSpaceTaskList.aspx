@@ -13,28 +13,25 @@
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <%--    <asp:Panel ID="pnlData" runat="server">--%>
     <div id="divData">
-        <table cellpadding="0"  class="edit1"  width="850px">
+        <table cellpadding="0"  class="edit" >
             <tr>
-                <th>
+                <th align="right" class="style2">
                     开始日期：
                 </th>
-                <td>
-                    <asp:TextBox ID="txtStartDate"  ClientIDMode="Static"   CssClass="text" runat="server"  Width="300px"></asp:TextBox>
+                <td class="style3">
+                    <asp:TextBox ID="txtStartDate"  ClientIDMode="Static"   CssClass="text" runat="server"></asp:TextBox>
                 </td>
-                
-            </tr>
-            <tr>
-                <th>
+                <th align="right" class="style4">
                     结束日期：
                 </th>
                 <td>
-                    <asp:TextBox ID="txtEndDate" ClientIDMode="Static"   CssClass="text" runat="server"  Width="300px"></asp:TextBox>
+                    <asp:TextBox ID="txtEndDate" ClientIDMode="Static"   CssClass="text" runat="server"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="style5">
                 </td>
-                <td colspan="2">
+                <td class="style6" colspan="3">
                     <asp:Button class="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
                         Text="查询" Width="69px" />
                     &nbsp;&nbsp;
@@ -45,7 +42,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td class="style2" colspan="4">
                     &nbsp;
                     &nbsp;
                     &nbsp;
@@ -53,7 +50,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td class="style2" colspan="4">
                  <asp:Panel ID ="pnlAll1" runat="server">
                 <div id="selectAll1" >
                     <table class="listTitle">
@@ -79,19 +76,22 @@
                                     <th style="width: 20px;">
                                         <input type="checkbox" onclick="checkAll(this)" />
                                     </th>
-                                    <th style="width: 150px;">
-                                        信息标识
+                                    <th style="width: 100px;">
+                                        信源
                                     </th>
-                                    <th style="width: 150px;">
-                                        信息代号
+                                    <th style="width: 100px;">
+                                        信宿
                                     </th>
-                                    <th style="width: 150px;">
+                                    <th style="width: 100px;">
+                                        任务代码
+                                    </th>
+                                    <th style="width: 100px;">
                                         卫星编号
                                     </th>
                                     <th>
                                         创建时间
                                     </th>
-                                    <th style="width: 100px;">
+                                    <th style="width: 70px;">
                                         明细
                                     </th>
                                 </tr>
@@ -103,16 +103,19 @@
                                     <input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>" />
                                 </td>
                                 <td>
-                                    <%# Eval("ITYPE")%>
+                                    <%# Eval("SOURCEADDRESS")%>
                                 </td>
                                 <td>
-                                    <%# Eval("ICODE")%>
+                                    <%# Eval("DESTINATIONADDRESS")%>
                                 </td>
                                 <td>
-                                    <%# Eval("SATID")%>
+                                    <%# Eval("MISSIONCODEV")%>
                                 </td>
                                 <td>
-                                    <%# Eval("CTIME","{0:"+this.SiteSetting.DateTimeFormat+"}") %>
+                                    <%# Eval("SATELLITECODE")%>
+                                </td>
+                                <td>
+                                    <%# Eval("CreatedTime","{0:"+this.SiteSetting.DateTimeFormat+"}") %>
                                 </td>
                                 <td>
                                     <button class="button" onclick="return showDetail('<%# Eval("Id") %>')">
@@ -145,7 +148,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2" align="center">
+                <td colspan="4" align="center">
                     <%-- <asp:Button ID="btnSend" runat="server" Text="发送轨道数据" onclick="btnSend_Click" />--%>
                 </td>
             </tr>
@@ -157,13 +160,8 @@
         <table class="style7">
             <tr>
                 <td align="center">
-                    <asp:CheckBoxList ID="ckbDestination" runat="server">
-                        <asp:ListItem Value="0">天基目标观测应用研究分系统</asp:ListItem>
-                        <asp:ListItem Value="1">空间遥操作应用研究分系统</asp:ListItem>
-                        <asp:ListItem Value="2">空间机动应用研究分系统</asp:ListItem>
-                        <asp:ListItem Value="3">仿真推演分系统</asp:ListItem>
-                        <asp:ListItem Value="4">空间信息综合应用中心</asp:ListItem>
-                    </asp:CheckBoxList>
+                    <asp:RadioButtonList ID="rbtDestination" runat="server">
+                    </asp:RadioButtonList>
                 </td>
             </tr>
             <tr>

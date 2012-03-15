@@ -2,12 +2,6 @@
 <%@ Register src="../../ucs/ucInfoType.ascx" tagname="ucInfoType" tagprefix="uc1" %>
 <%@ Register src="../../ucs/ucXYXSInfo.ascx" tagname="ucXYXSInfo" tagprefix="uc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <style type="text/css">
-        .button
-        {
-            height: 21px;
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="bizmanage" />

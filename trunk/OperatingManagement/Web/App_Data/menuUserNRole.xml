@@ -8,4 +8,8 @@
     <item id="2-1" title="新增角色" roles="OMRoleManage.Add" href="views/userandrole/roleadd.aspx" />
     <item id="2-2" title="查看角色" roles="OMRoleManage.View" href="views/userandrole/roles.aspx" />
   </menu>
+  <menu title="权限管理">
+    <item id="3-1" title="新增权限" roles="OMPermissionManage.Add" href="views/userandrole/permissionadd.aspx" />
+    <item id="3-2" title="查看权限" roles="OMPermissionManage.View" href="views/userandrole/permissions.aspx" />
+  </menu>
 </menus>

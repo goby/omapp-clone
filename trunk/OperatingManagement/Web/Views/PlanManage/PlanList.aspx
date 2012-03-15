@@ -10,7 +10,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content6" ContentPlaceHolderID="MapPathContent" runat="server">
-    计划管理 &gt; 查询计划
+    计划管理 &gt; 查看计划
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
         <asp:Panel ID="pnlData" runat="server">
@@ -29,20 +29,20 @@
                     <td>
                         <asp:TextBox ID="txtEndDate" runat="server" ClientIDMode="Static" 
                             CssClass="text" Width="300px"></asp:TextBox>
-                </td>
-            </tr>
-            <tr>
+                    </td>
+                </tr>
+                <tr>
                     <th>
                     计划类型：
                 </th>
                     <td>
                         <asp:DropDownList ID="ddlType" runat="server" Width="305px" Height="20px">
-                            <asp:ListItem Value="YJJH">应用研究工作计划</asp:ListItem>
+                        <asp:ListItem Value="YJJH">应用研究工作计划</asp:ListItem>
                             <asp:ListItem Value="XXXQ">空间信息需求</asp:ListItem>
-                            <asp:ListItem Value="DMJH">地面站工作计划</asp:ListItem>
-                            <asp:ListItem Value="ZXJH">中心运行计划</asp:ListItem>
-                            <asp:ListItem Value="TYSJ">仿真推演试验数据</asp:ListItem>
-                            <asp:ListItem Value="SBJH">设备工作计划</asp:ListItem>
+                        <asp:ListItem Value="DMJH">地面站工作计划</asp:ListItem>
+                        <asp:ListItem Value="ZXJH">中心运行计划</asp:ListItem>
+                        <asp:ListItem Value="TYSJ">仿真推演试验数据</asp:ListItem>
+                        <asp:ListItem Value="SBJH">设备工作计划</asp:ListItem>
                         </asp:DropDownList>
                 </td>
             </tr>

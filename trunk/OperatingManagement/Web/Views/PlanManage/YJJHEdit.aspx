@@ -42,13 +42,13 @@
             <th class="style1">计划序号</th>
             <td>
                 <asp:TextBox ID="txtJXH" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20" ReadOnly="True"></asp:TextBox>
+                    MaxLength="20"></asp:TextBox>
             </td>
         </tr>
         <tr>
             <th class="style1">系统名称</th>
             <td>
-                <asp:DropDownList ID="ddlSysName" runat="server" Height="20px" Width="298px">
+                <asp:DropDownList ID="ddlSysName" runat="server" Height="16px" Width="298px">
                     <asp:ListItem>天基目标观测应用研究分系统</asp:ListItem>
                     <asp:ListItem>空间遥操作应用研究分系统</asp:ListItem>
                     <asp:ListItem>空间机动应用研究分系统</asp:ListItem>
@@ -84,7 +84,7 @@
                     onclick="btnSubmit_Click" />
                     &nbsp;&nbsp;&nbsp;
                     <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
-                    onclick="btnSaveTo_Click" />
+                    onclick="btnSubmit_Click" />
                      <asp:HiddenField ID="HfID" runat="server" />
                     <asp:HiddenField ID="HfFileIndex" runat="server" />
                 <asp:HiddenField ID="hfTaskID" runat="server" />

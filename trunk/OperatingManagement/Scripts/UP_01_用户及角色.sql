@@ -309,13 +309,26 @@ end;
 /
 create or replace procedure up_user_deletebyids
 (
-       p_Ids varchar2
+       p_Ids varchar2,       
+       v_result out number
 )
 is
 begin
+       savepoint p1;
        delete from tb_user where userid in
        (select column_value from table(split(p_Ids,',')));
        commit;
+       
+       delete from tb_userrole where userid in
+       (select column_value from table(split(p_Ids,',')));
+       commit;
+       v_result:=5; -- Success
+       
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK TO SAVEPOINT p1;
+          COMMIT;
+          v_result:=4; --Error       
 end;
 /
 create or replace procedure up_role_deletebyids
@@ -344,4 +357,16 @@ begin
           ROLLBACK TO SAVEPOINT p1;
           COMMIT;
           v_result:=4; --Error
+end;
+
+create or replace procedure up_user_selectbyroleid
+(
+       p_RoleId tb_role.roleid%type,
+       o_cursor out sys_refcursor
+)
+is
+begin
+       open o_cursor for
+            select * from tb_user
+                   where userid in (select userid from tb_userrole where roleid = p_RoleId);
 end;

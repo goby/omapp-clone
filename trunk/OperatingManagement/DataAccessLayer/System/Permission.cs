@@ -15,6 +15,8 @@ namespace OperatingManagement.DataAccessLayer.System
     [Serializable]
     public class Permission : BaseEntity<double, Permission>
     {
+        private const string s_up_permission_selectbyln = "up_permission_selectbyln";
+        private const string s_up_permission_selectall = "up_permission_selectall";
         /// <summary>
         /// Create a new instance of <see cref="Permission"/> class.
         /// </summary>
@@ -48,6 +50,7 @@ namespace OperatingManagement.DataAccessLayer.System
         #endregion
 
         #region -Public methods-
+        
         /// <summary>
         /// Selects all Permissions from database.
         /// </summary>
@@ -55,7 +58,7 @@ namespace OperatingManagement.DataAccessLayer.System
         public List<Permission> SelectAll()
         {
             OracleParameter p = PrepareRefCursor();
-            DataSet ds = _database.SpExecuteDataSet("up_permission_selectall", new OracleParameter[]{
+            DataSet ds = _database.SpExecuteDataSet(s_up_permission_selectall, new OracleParameter[]{
                 p
             });
             List<Permission> ps = new List<Permission>();
@@ -91,7 +94,7 @@ namespace OperatingManagement.DataAccessLayer.System
         public List<Permission> SelectByLoginName(string loginName)
         {
             OracleParameter p = PrepareRefCursor();
-            DataSet ds = _database.SpExecuteDataSet("up_permission_selectbyln", new OracleParameter[]{
+            DataSet ds = _database.SpExecuteDataSet(s_up_permission_selectbyln, new OracleParameter[]{
                 new OracleParameter("p_LoginName",loginName),
                 p
             });
@@ -120,6 +123,7 @@ namespace OperatingManagement.DataAccessLayer.System
             }
             return ps;
         }
+
         #endregion
         
         #region -Override BaseEntity-
