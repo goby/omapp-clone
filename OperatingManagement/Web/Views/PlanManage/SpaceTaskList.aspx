@@ -13,25 +13,28 @@
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <%--    <asp:Panel ID="pnlData" runat="server">--%>
     <div id="divData">
-        <table cellpadding="0"  class="edit" >
+        <table cellpadding="0"  class="edit1" width="850px">
             <tr>
-                <th align="right" class="style2">
+                <th>
                     开始日期：
                 </th>
-                <td class="style3">
-                    <asp:TextBox ID="txtStartDate" ClientIDMode="Static"   runat="server"></asp:TextBox>
+                <td>
+                    <asp:TextBox ID="txtStartDate" ClientIDMode="Static"   runat="server"  Width="300px"></asp:TextBox>
                 </td>
-                <th align="right" class="style4">
+                
+            </tr>
+            <tr>
+                <th>
                     结束日期：
                 </th>
                 <td>
-                    <asp:TextBox ID="txtEndDate" ClientIDMode="Static"   runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtEndDate" ClientIDMode="Static"   runat="server" Width="300px"></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td class="style5">
+                <td>
                 </td>
-                <td class="style6" colspan="3">
+                <td>
                     <asp:Button ID="Button1"  class="button" Width="69px" runat="server" Text="查询" 
                         onclick="Button1_Click" />
                     &nbsp;&nbsp;
@@ -42,7 +45,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="style2" colspan="4">
+                <td colspan="2">
                     &nbsp;
                     &nbsp;
                     &nbsp;
@@ -50,7 +53,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="style2" colspan="4">
+                <td colspan="2">
                 <asp:Panel ID ="pnlAll1" runat="server">
                     <table class="listTitle">
                         <tr>
@@ -144,7 +147,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4" align="center">
+                <td colspan="2" align="center">
                     <%-- <asp:Button ID="btnSend" runat="server" Text="发送轨道数据" onclick="btnSend_Click" />--%>
                 </td>
             </tr>
