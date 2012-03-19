@@ -1,4 +1,5 @@
-﻿$(function () {
+﻿
+$(function () {
     $("#txtPlanStartTime").datepicker();
     $("#txtPlanEndTime").datepicker();
 
@@ -17,15 +18,24 @@
 		});
 });
 
-function showMsg(msg) {
-    $.fn.modal({
-        title: '提示信息',
-        content: function (o, e) {
-            o.content.html(msg);
-        },
-        cancelText: '关闭',
-    });
-}
+    function showMsg(msg) {
+        var _dialog;
+        _dialog = $("#dialog-form");
+        _dialog.dialog({
+            autoOpen: false,
+            height: 150,
+            width: 350,
+            modal: true,
+            buttons: {
+                '关闭': function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        _dialog.find('p.content').eq(0).html(msg);
+        _dialog.dialog('open');
+        return false;
+    }
 
 function hideAllButton() {
     $(":submit").css('display','none'); 

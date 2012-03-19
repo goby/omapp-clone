@@ -73,11 +73,29 @@
             </tr>
             <tr>
                 <td class="style2" colspan="2">
+                <asp:Panel ID ="pnlAll1" runat="server">
+                    <div id="selectAll1" >
+                    <table class="listTitle">
+                        <tr>
+                            <td class="listTitle-c1">
+                                <button class="button" onclick="return selectAll();">
+                                    全选</button>&nbsp;&nbsp;
+                                <button class="button" onclick="return sendPlan();">
+                                    发送所选计划</button>
+                            </td>
+                            <td class="listTitle-c2">
+                                <div class="load" id="submitIndicator" style="display: none">
+                                    提交中，请稍候。。。</div>
+                            </td>
+                        </tr>
+                    </table>
+                    </div>
+                    </asp:Panel>
                     <asp:Repeater ID="rpDatas" runat="server">
                         <HeaderTemplate>
                             <table class="list">
                                 <tr>
-                                    <%--<th style="width:20px;"><input type="checkbox" onclick="checkAll(this)" /></th>--%>
+                                    <th style="width:20px;"><input type="checkbox" onclick="checkAll(this)" /></th>
                                     <th style="width: 150px;">
                                         计划编号
                                     </th>
@@ -103,11 +121,13 @@
                                             发送
                                         </th>
                                     </tr>
-                                    <tbody id="tbUsers">
+                           <tbody id="tbPlans">
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <tr>
-                                    <%--<td><input type="checkbox" <%# Eval("LoginName").ToString().Equals(this.Profile.UserName,StringComparison.InvariantCultureIgnoreCase)?"disabled=\"true\"":"" %> name="chkDelete" value="<%# Eval("Id") %>" /></td>--%>
+                                    <td>
+                                    <input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>" />
+                                    </td>
                                     <td>
                                         <%# Eval("planid")%>
                                     </td>
@@ -141,9 +161,15 @@
                             </tbody> </table>
                         </FooterTemplate>
                     </asp:Repeater>
+                    <asp:Panel ID ="pnlAll2" runat="server">
+                    <div id="selectAll2" >
                     <table class="listTitle">
                         <tr>
                             <td class="listTitle-c1">
+                                <button class="button" onclick="return selectAll();">
+                                    全选</button>&nbsp;&nbsp;
+                                <button class="button" onclick="return sendPlan();">
+                                    发送所选计划</button>
                             </td>
                             <td class="listTitle-c2">
                                 <om:CollectionPager ID="cpPager" runat="server">
@@ -151,13 +177,15 @@
                             </td>
                         </tr>
                     </table>
+                    </div>
+                    </asp:Panel>
                 </td>
             </tr>
         </table>
     </div>
        </asp:Panel>
         <asp:Panel ID="pnlDestination" runat="server">
-<%--    <div id="tartgetPanel" style="display: none">--%>
+    <div id="tartgetPanel">
         <table style = " text-align:center;">
             <tr>
                 <td align="center"  style="text-align: center">
@@ -176,6 +204,9 @@
                 </td>
             </tr>
         </table>
-<%--    </div>--%>
+    </div>
         </asp:Panel>
+            <div id="dialog-form" style="display:none" title="提示信息">
+	    <p class="content"></p>
+    </div>
 </asp:Content>

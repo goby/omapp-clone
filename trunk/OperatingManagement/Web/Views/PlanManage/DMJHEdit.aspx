@@ -1,4 +1,6 @@
 ﻿<%@ Page MaintainScrollPositionOnPostback="true" MasterPageFile="~/Site.Master" Language="C#"  AutoEventWireup="true" CodeBehind="DMJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.DMJHEdit" %>
+<%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
+<%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc2" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -14,6 +16,101 @@
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <div>
         <table cellpadding="0" class="edit1" style="width: 750px;">
+        <tr>
+            <th>
+                <asp:Button ID="btnGetPlanInfo" runat="server" CssClass="button" onclick="txtGetPlanInfo_Click" 
+                    Text="选择设备计划" CausesValidation="False" />
+                <asp:HiddenField ID="hfSBJHID" runat="server" ClientIDMode="Static" />
+                <div style="display:none;">
+                    <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" 
+                                OnClick="btnHidden_Click" />
+                        </div>
+            </th>
+            <td colspan="3">
+                <asp:LinkButton ID="btnSBJH" runat="server" ClientIDMode="Static" 
+                    onclick="btnSBJH_Click" CausesValidation="False"></asp:LinkButton>
+                
+                <br />
+                <asp:Repeater ID="rpDatas" runat="server">
+                        <HeaderTemplate>
+                            <table class="list">
+                                <tr>
+                                    <%--<th style="width:20px;"><input type="checkbox" onclick="checkAll(this)" /></th>--%>
+                                    <th style="width: 150px;">
+                                        计划编号
+                                    </th>
+                                    <th style="width: 150px;">
+                                        任务代号
+                                    </th>
+                                    <th style="width: 150px;">
+                                        计划类别
+                                    </th>
+                                    <th style="width: 150px;">
+                                        开始时间
+                                    </th>
+                                    <th style="width: 150px;">
+                                        结束时间
+                                    </th>
+                                    <th style="width: 70px;">
+                                        选择
+                                    </th>
+                                </tr>
+                                <tbody id="tbUsers">
+                        </HeaderTemplate>
+                        <ItemTemplate>
+                            <tr>
+                                <%--<td><input type="checkbox" <%# Eval("LoginName").ToString().Equals(this.Profile.UserName,StringComparison.InvariantCultureIgnoreCase)?"disabled=\"true\"":"" %> name="chkDelete" value="<%# Eval("Id") %>" /></td>--%>
+                                <td>
+                                    <%# Eval("planid")%>
+                                </td>
+                                <td>
+                                    <%# Eval("taskid")%>
+                                </td>
+                                <td>
+                                    <%# Eval("plantype")%>
+                                </td>
+                                <td>
+                                    <%# Eval("starttime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
+                                </td>
+                                <td>
+                                    <%# Eval("endtime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
+                                </td>
+                                <td>
+                                    <button class="button" 
+                                        onclick="return SelectSBJH('<%# Eval("ID") %>',escape('<%# GetFileName(Eval("FileIndex")) %>'))">
+                                        选择</button>
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            </tbody> </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
+                    <table class="listTitle">
+                        <tr>
+                            <td class="listTitle-c1">
+
+                            </td>
+                            <td class="listTitle-c2">
+                                <om:CollectionPager ID="cpPager" runat="server" PageSize="5">
+                                </om:CollectionPager>
+                            </td>
+                        </tr>
+                    </table>
+            </td>
+        </tr>
+
+        <tr>
+            <th>任务代号(<span class="red">*</span>)</th>
+            <td>
+                <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" />
+            </td>
+            <th class="style1">卫星(<span class="red">*</span>)</th>
+            <td>
+                <uc2:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
+            </td>
+        </tr>
+
             <tr>
                 <th class="style1">
                     计划开始时间</th>
@@ -28,6 +125,15 @@
                             MaxLength="10"    ClientIDMode="Static"></asp:TextBox>
                 </td>
             </tr>
+            <tr>
+            <th>备注</th>
+            <td>
+                <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="50" 
+                    Width="300px" Height="75px" TextMode="MultiLine"></asp:TextBox>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
             <tr>
                 <th class="style1">
                     编号
@@ -70,7 +176,7 @@
                 <td>
                     <asp:HiddenField ID="hfTaskID" runat="server" />
                 <asp:HiddenField ID="hfSatID" runat="server" />
-                <asp:HiddenField ID="hfOverDate" runat="server" />
+                <asp:HiddenField ID="hfStatus" runat="server" />
                 </td>
             </tr>
         </table>
@@ -330,7 +436,10 @@
         <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" onclick="btnSubmit_Click" />
         &nbsp;&nbsp;&nbsp;
                     <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
-                    onclick="btnSubmit_Click" />
+                    onclick="btnSaveTo_Click" />
+    </div>
+    <div id="dialog-form" style="display:none" title="提示信息">
+	    <p class="content"></p>
     </div>
 </asp:Content>
 

@@ -53,5 +53,17 @@ namespace OperatingManagement.Web.ucs
                 return TaskList.SelectedIndex;
             }
         }
+
+        public string SelectedValue
+        {
+            set
+            {
+                TaskList.SelectedValue = value;
+            }
+            get
+            {
+                return TaskList.SelectedItem.Value;
+            }
+        }
     }
 }

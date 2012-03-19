@@ -33,6 +33,9 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 pnlDestination.Visible = false;
                 pnlData.Visible = true;
+
+                pnlAll1.Visible = false;
+                pnlAll2.Visible = false;
             }
         }
 
@@ -74,6 +77,17 @@ namespace OperatingManagement.Web.Views.PlanManage
             cpPager.BindToControl = rpDatas;
             rpDatas.DataSource = cpPager.DataSourcePaged;
             rpDatas.DataBind();
+
+            if (listDatas.Count > 0)
+            {
+                pnlAll1.Visible = true;
+                pnlAll2.Visible = true;
+            }
+            else
+            {
+                pnlAll1.Visible = false;
+                pnlAll2.Visible = false;
+            }
         }
 
 
@@ -97,7 +111,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             pnlDestination.Visible = true;
             pnlData.Visible = false;
-            string plantype = txtPlanType.Text;
+            //string plantype = txtPlanType.Text;
+            string plantype = ddlType.SelectedValue;
             switch (plantype)
             {
                 case "YJJH":

@@ -1,16 +1,26 @@
-﻿$(function () {
+﻿
+$(function () {
     $("#txtPlanStartTime").datepicker();
     $("#txtPlanEndTime").datepicker();
 });
 
 function showMsg(msg) {
-    $.fn.modal({
-        title: '提示信息',
-        content: function (o, e) {
-            o.content.html(msg);
-        },
-        cancelText: '关闭',
+    var _dialog;
+    _dialog = $("#dialog-form");
+    _dialog.dialog({
+        autoOpen: false,
+        height: 150,
+        width: 350,
+        modal: true,
+        buttons: {
+            '关闭': function () {
+                $(this).dialog("close");
+            }
+        }
     });
+    _dialog.find('p.content').eq(0).html(msg);
+    _dialog.dialog('open');
+    return false;
 }
 
 function hideAllButton() {
@@ -23,4 +33,15 @@ function setdayte(o){
 			changeMonth: true,
 			changeYear: true
 		});
+}
+
+function SelectSBJH(id, fileindex) {
+    var txtId = $('#hfSBJHID');
+    txtId.val(id);
+    var btn = $('#btnSBJH');
+    var filepath = unescape(fileindex);
+    btn.text("所选设备计划： "+filepath + "    (点击取消选择)");
+    var btn = $('#btnHidden');
+    btn.click();
+    return false;
 }

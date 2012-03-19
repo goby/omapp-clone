@@ -281,6 +281,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 new OracleParameter("p_TaskID",this.TaskID),
                 new OracleParameter("p_StartTime",(DateTime)this.StartTime),
                 new OracleParameter("p_EndTime",(DateTime)this.EndTime),
+                 new OracleParameter("p_FileIndex",this.FileIndex),
                 p
             });
             return (FieldVerifyResult)Convert.ToInt32(p.Value);

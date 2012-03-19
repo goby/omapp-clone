@@ -226,6 +226,7 @@ create or replace procedure htcuser.up_jh_update
        p_taskid tb_jh.taskid%type,
        p_starttime tb_jh.starttime%type,
        p_endtime tb_jh.endtime%type,
+       p_FileIndex tb_jh.fileindex%type,
        v_result out number
 )
 is
@@ -233,7 +234,8 @@ begin
      update   tb_jh t set
      t.taskid = p_taskid,
      t.starttime = p_starttime,
-     t.endtime = p_endtime
+     t.endtime = p_endtime,
+     t.fileindex = p_FileIndex
       where t.Id = v_Id;
        commit;
        v_result:=5; -- Success

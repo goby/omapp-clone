@@ -32,17 +32,17 @@
         <item text="联调" value="LT"></item>
         <item text="全区合练" value="HL"></item>
     </DMJHFS>
-    <DMJHFS description="地面计划计划性质">
+    <DMJHJXZ description="地面计划计划性质">
         <item text="正常计划" value="ZC"></item>
         <item text="应急计划" value="YJ"></item>
-    </DMJHFS>
-    <DMJHFS description="地面计划设备工作模式">
+    </DMJHJXZ>
+    <DMJHMS description="地面计划设备工作模式">
         <item text="标准TTC模式" value="B"></item>
         <item text="扩频模式1" value="K1"></item>
         <item text="扩频模式2" value="K2"></item>
         <item text="S频段数传接收模式" value="SC"></item>
         <item text="X频段数传接收模式" value="XC"></item>
-    </DMJHFS>
+    </DMJHMS>
     <DMJHBID description="地面计划信息类别标志">
         <item text="数传数据" value="01"></item>
         <item text="遥测数据" value="02"></item>

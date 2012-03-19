@@ -1,11 +1,18 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
     CodeBehind="XXXQEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.XXXQEdit" %>
 
+<%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
+<%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc2" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
         .style3
         {
             color: #FF0000;
+        }
+        .style4
+        {
+            text-align: center;
         }
     </style>
 </asp:Content>
@@ -20,7 +27,19 @@
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="edit" style="width:800px;">
-                <tr>
+         <tr>
+            <th>任务代号(<span class="red">*</span>)</th>
+            <td>
+                <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" />
+            </td>
+        </tr>
+        <tr>
+            <th class="style1">卫星(<span class="red">*</span>)</th>
+            <td>
+                <uc2:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
+            </td>
+        </tr>
+        <tr>
             <th class="style1">计划开始时间</th>
             <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
@@ -35,23 +54,35 @@
             </td>
         </tr>
         <tr>
+            <th>备注</th>
+            <td>
+                <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="50" 
+                    Width="300px" Height="75px" TextMode="MultiLine"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
             <td colspan="2">
                     <asp:HiddenField ID="HfID" runat="server" />
                     <asp:HiddenField ID="HfFileIndex" runat="server" />
                     <asp:HiddenField ID="hfTaskID" runat="server" />
                     <asp:HiddenField ID="hfSatID" runat="server" />
-                    <asp:HiddenField ID="hfOverDate" runat="server" />
+                    <asp:HiddenField ID="hfStatus" runat="server" />
                 </td>
         </tr>
 </table>
     <asp:Panel ID="pnlMBXQ" runat="server">
         <table class="edit" style="width: 800px;">
             <tr>
+                <td colspan="2" class="style4">
+                    <strong>空间目标信息需求</strong></td>
+            </tr>
+            <tr>
                 <th class="style1">
-                    用户名称
+                    用户名称 
                 </th>
                 <td>
-                    <asp:TextBox ID="txtMBUser" runat="server" Width="300px" CssClass="text" MaxLength="20"></asp:TextBox>
+                    <asp:TextBox ID="txtMBUser" runat="server" CssClass="text" MaxLength="20" 
+                        Width="300px">运控评估中心</asp:TextBox>
                 </td>
             </tr>
             <tr>
@@ -147,11 +178,16 @@
     <asp:Panel ID="pnlHJXQ" runat="server">
         <table class="edit" style="width: 800px;">
             <tr>
+                <td colspan="2" class="style4">
+                    <strong>空间环境信息需求</strong></td>
+            </tr>
+            <tr>
                 <th class="style1">
-                    用户名称
+                    用户名称 
                 </th>
                 <td>
-                    <asp:TextBox ID="txtHJUser" runat="server" Width="300px" CssClass="text" MaxLength="20"></asp:TextBox>
+                    <asp:TextBox ID="txtHJUser" runat="server" CssClass="text" MaxLength="20" 
+                        Width="300px">运控评估中心</asp:TextBox>
                 </td>
             </tr>
             <tr>
@@ -268,4 +304,7 @@
                 <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
                     OnClick="btnSaveTo_Click" />
 </div>
+<div id="dialog-form" style="display:none" title="提示信息">
+	    <p class="content"></p>
+    </div>
 </asp:Content>

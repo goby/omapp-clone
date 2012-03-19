@@ -14,7 +14,7 @@ namespace OperatingManagement.Web.ucs
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            BindDataSource();
         }
 
         private void BindDataSource()
@@ -23,7 +23,8 @@ namespace OperatingManagement.Web.ucs
             SatelliteList.Items.Clear();
             SatelliteList.DataSource = objSatellite.Cache;
             SatelliteList.DataTextField = "WXMC";
-            SatelliteList.DataValueField = "WXBM";
+            SatelliteList.DataValueField = "WXMC";
+            //SatelliteList.DataValueField = "WXBM";
             SatelliteList.DataBind();
             if (isAllowBlankItem)
                 SatelliteList.Items.Insert(0, new ListItem("请选择", "0"));
@@ -53,6 +54,18 @@ namespace OperatingManagement.Web.ucs
             get
             {
                 return SatelliteList.SelectedIndex;
+            }
+        }
+
+        public string SelectedValue
+        {
+            set
+            {
+                SatelliteList.SelectedValue = value;
+            }
+            get
+            {
+                return SatelliteList.SelectedItem.Value;
             }
         }
     }
