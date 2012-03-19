@@ -1,7 +1,13 @@
-﻿$(function () {
+﻿var _dialog;
+$(window).ready(function () {
+    _dialog = $("#dialog-form");
+});
+
+$(function () {
     $("#txtStartDate").datepicker();
     $("#txtEndDate").datepicker();
 });
+
 
 function reset(o) {
     $('input:text').val('');
@@ -14,48 +20,43 @@ function setdayte(o){
 			changeYear: true
 		});
 }
-/*
-function showMsg(msg) {
-    $.fn.modal({
-        title: '提示信息',
-        content: function (o, e) {
-            o.content.html(msg);
-        },
-        cancelText: '关闭',
-    });
+
+function selectAll() {
+    $('input:checkbox:not([disabled])').attr('checked', true);
+    return false;
 }
 
-function showDetail(planid,plantype) {
-    //window.location.href = "/Views/PlanManage/PlanDetail.aspx?id=" + id;
-    var feature1 = 'width=820px;height=700px,toolbar=no, menubar=no,scrollbars=yes,resizable=yes,location=no,status=yes,';
-    var feature2 = 'width=500px;height=300px,toolbar=no, menubar=no,scrollbars=no,resizable=yes,location=no,status=yes,';
-        switch (plantype)
-        {
-            case "YJJH":
-            window.open("/Views/PlanManage/YJJHEdit.aspx?id=" + planid + "&op=detail","",feature2);
-                break;
-            case "XXXQ":
-            window.open("/Views/PlanManage/XXXQEdit.aspx?id=" + planid + "&op=detail","",feature1);
-                break;
-            case "MBXQ":
-            window.open("/Views/PlanManage/MBXQEdit.aspx?id=" + planid + "&op=detail","",feature1);
-                break;
-            case "HJXQ":
-            window.open("/Views/PlanManage/HJXQEdit.aspx?id=" + planid + "&op=detail","",feature1);
-                break;
-            case "DMJH":
-            window.open("/Views/PlanManage/DMJHEdit.aspx?id=" + planid + "&op=detail","",feature1);
-                break;
-            case "ZXJH":
-            window.open("/Views/PlanManage/ZXJHEdit.aspx?id=" + planid + "&op=detail","",feature1);
-                break;
-            case "TYSJ":
-            window.open("/Views/PlanManage/TYSJEdit.aspx?id=" + planid + "&op=detail","",feature2);
-                break;
-        }
-    //window.open("/Views/PlanManage/PlanDetail.aspx?id=" + planid);
+function checkAll(o) {
+    if ($('#tbPlans').length > 0) {
+        $('#tbPlans').find('input:checkbox:not([disabled])').attr('checked', o.checked);
+    }
+}
+
+function sendPlan() {
+    //var chks = $('#tbPlans').find('input:checkbox:not([disabled])').filter('[checked=true]');
+    var chks = $('#tbPlans').find('input:checkbox:[checked]');
+    if (chks.length == 0) {
+            _dialog.dialog({
+            autoOpen: false,
+            height: 150,
+            width: 350,
+            modal: true,
+            buttons: {
+                '关闭': function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        _dialog.find('p.content').eq(0).html('请选择您要发送的轨道数据。');
+        _dialog.dialog('open');
+        return false;
+    }
+
+    var ids = chks.map(function () { return this.value; }).get().join(',');
+
+    showSend(ids);
     return false;
-}*/
+}
 
 function showEdit(planid,plantype) {
     //window.location.href = "/Views/PlanManage/PlanEdit.aspx?id=" + id;
@@ -96,17 +97,18 @@ function showEdit(planid,plantype) {
     return false;
 }
 
-function showSend(id,planid,plantype) {
+//function showSend(id,planid,plantype) {
+function showSend(id) {
 //    var divData = $('#divData');
 //    divData.hide();
 //    var indicator = $('#tartgetPanel');
 //    indicator.show();
     var txtId = $('#txtId'); 
     txtId.val(id);
-    var txtPlanID = $('#txtPlanID'); 
-    txtPlanID.val(planid);
-    var txtPlanType = $('#txtPlanType'); 
-    txtPlanType.val(plantype);
+//    var txtPlanID = $('#txtPlanID'); 
+//    txtPlanID.val(planid);
+//    var txtPlanType = $('#txtPlanType'); 
+//    txtPlanType.val(plantype);
     var btn = $('#btnHidden');
     btn.click();
     return false;

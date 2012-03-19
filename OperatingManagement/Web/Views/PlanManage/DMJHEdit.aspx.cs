@@ -30,16 +30,38 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     string sID = Request.QueryString["id"];
                     HfID.Value = sID;
+                    hfStatus.Value = "edit";    //编辑
+                    hfSBJHID.Value = "-1";
                     BindJhTable(sID);
                     BindXML();
                     if ("detail" == Request.QueryString["op"])
                     {
                         ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");
-                    }
-                    
+                    }  
                 }
-               
+                else
+                {
+                    hfStatus.Value = "new"; //新建
+                    btnSaveTo.Visible = false;
+                }
+                initial();
             }
+        }
+
+        public void initial()
+        {
+            List<DMJH_Task> listTask = new List<DMJH_Task>();
+            List<DMJH_Task_AfterFeedBack> listaf = new List<DMJH_Task_AfterFeedBack>();
+            List<DMJH_Task_ReakTimeTransfor> listrt = new List<DMJH_Task_ReakTimeTransfor>();
+            listaf.Add(new DMJH_Task_AfterFeedBack());
+            listrt.Add(new DMJH_Task_ReakTimeTransfor());
+            DMJH_Task dm = new DMJH_Task { 
+                AfterFeedBacks = listaf,
+                ReakTimeTransfors = listrt
+            };
+            listTask.Add(dm);
+            Repeater1.DataSource = listTask;
+            Repeater1.DataBind();
         }
         private void BindJhTable(string sID)
         {
@@ -48,15 +70,18 @@ namespace OperatingManagement.Web.Views.PlanManage
             txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
             hfTaskID.Value = jh[0].TaskID.ToString();
+            ucTask1.SelectedValue = jh[0].TaskID.ToString();
             string[] strTemp = jh[0].FileIndex.Split('_');
             if (strTemp.Length >= 2)
             {
                 hfSatID.Value = strTemp[strTemp.Length - 2];
+                ucSatellite1.SelectedValue = strTemp[strTemp.Length - 2];
             }
+            txtNote.Text = jh[0].Reserve.ToString();
             if (DateTime.Now > jh[0].StartTime)
             {
                 btnSubmit.Visible = false;
-                hfOverDate.Value = "true";
+                //hfOverDate.Value = "true";
             }
         }
         private void BindXML()
@@ -100,7 +125,6 @@ namespace OperatingManagement.Web.Views.PlanManage
             Repeater1.DataSource = listTask;
             Repeater1.DataBind();
         }
-
 
         protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -219,47 +243,55 @@ namespace OperatingManagement.Web.Views.PlanManage
                     List<DMJH_Task_AfterFeedBack> list2 = new List<DMJH_Task_AfterFeedBack>();
                     DMJH_Task_ReakTimeTransfor rt;
                     DMJH_Task_AfterFeedBack afb;
-                    XmlDocument xmlDoc = new XmlDocument();
-                    xmlDoc.Load(HfFileIndex.Value);
-                    XmlNode root = xmlDoc.SelectSingleNode("地面站工作计划");
-                    int i = 0;
-                    
-                    foreach (XmlNode n in root.ChildNodes)
+                    if (hfStatus.Value == "new")
                     {
-                        #region 任务
-                        if (n.Name == "任务")
+                        list1.Add(new DMJH_Task_ReakTimeTransfor());
+                        list2.Add(new DMJH_Task_AfterFeedBack());
+                    }
+                    else
+                    {
+                        XmlDocument xmlDoc = new XmlDocument();
+                        xmlDoc.Load(HfFileIndex.Value);
+                        XmlNode root = xmlDoc.SelectSingleNode("地面站工作计划");
+                        int i = 0;
+
+                        foreach (XmlNode n in root.ChildNodes)
                         {
-                            foreach (XmlNode nd in n.ChildNodes)
+                            #region 任务
+                            if (n.Name == "任务")
                             {
-                                if (row == i)
+                                foreach (XmlNode nd in n.ChildNodes)
                                 {
-                                    if (nd.Name == "实时传输")
+                                    if (row == i)
                                     {
-                                        rt = new DMJH_Task_ReakTimeTransfor();
-                                        rt.FormatFlag = nd["格式标志"].InnerText;
-                                        rt.InfoFlowFlag = nd["信息流标志"].InnerText;
-                                        rt.TransStartTime = nd["数据传输开始时间"].InnerText;
-                                        rt.TransEndTime = nd["数据传输结束时间"].InnerText;
-                                        rt.TransSpeedRate = nd["数据传输速率"].InnerText;
-                                        list1.Add(rt);
-                                    }
-                                    if (nd.Name == "事后回放")
-                                    {
-                                        afb = new DMJH_Task_AfterFeedBack();
-                                        afb.FormatFlag = nd["格式标志"].InnerText;
-                                        afb.InfoFlowFlag = nd["信息流标志"].InnerText;
-                                        afb.DataStartTime = nd["数据起始时间"].InnerText;
-                                        afb.DataEndTime = nd["数据结束时间"].InnerText;
-                                        afb.TransStartTime = nd["数据传输开始时间"].InnerText;
-                                        afb.TransSpeedRate = nd["数据传输速率"].InnerText;
-                                        list2.Add(afb);
+                                        if (nd.Name == "实时传输")
+                                        {
+                                            rt = new DMJH_Task_ReakTimeTransfor();
+                                            rt.FormatFlag = nd["格式标志"].InnerText;
+                                            rt.InfoFlowFlag = nd["信息流标志"].InnerText;
+                                            rt.TransStartTime = nd["数据传输开始时间"].InnerText;
+                                            rt.TransEndTime = nd["数据传输结束时间"].InnerText;
+                                            rt.TransSpeedRate = nd["数据传输速率"].InnerText;
+                                            list1.Add(rt);
+                                        }
+                                        if (nd.Name == "事后回放")
+                                        {
+                                            afb = new DMJH_Task_AfterFeedBack();
+                                            afb.FormatFlag = nd["格式标志"].InnerText;
+                                            afb.InfoFlowFlag = nd["信息流标志"].InnerText;
+                                            afb.DataStartTime = nd["数据起始时间"].InnerText;
+                                            afb.DataEndTime = nd["数据结束时间"].InnerText;
+                                            afb.TransStartTime = nd["数据传输开始时间"].InnerText;
+                                            afb.TransSpeedRate = nd["数据传输速率"].InnerText;
+                                            list2.Add(afb);
+                                        }
                                     }
                                 }
+                                i = i + 1;//记录是第几个任务
                             }
-                            i = i + 1;//记录是第几个任务
+                            #endregion
+
                         }
-                        #endregion
-                        
                     }
                     rpR.DataSource = list1;
                     rpR.DataBind();
@@ -387,7 +419,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 if (rp.Items.Count <= 1)
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
                 }
                 else
                 {
@@ -521,7 +553,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 Repeater rp = (Repeater)source;
                 if (rp.Items.Count <= 1)
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
                 }
                 else
                 {
@@ -593,7 +625,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 Repeater rp = (Repeater)source;
                 if (rp.Items.Count <= 1)
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
                 }
                 else
                 {
@@ -725,14 +757,57 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.DMJHTasks.Add(rt);
             }
             obj.TaskCount = obj.DMJHTasks.Count.ToString();
-
+            obj.TaskID = ucTask1.SelectedItem.Value;
+            obj.SatID = ucSatellite1.SelectedItem.Value;
 
             PlanFileCreator creater = new PlanFileCreator();
+            if (hfStatus.Value == "new")
+            {
+                string filepath = creater.CreateDMJHFile(obj, 0);
 
-                creater.FilePath = HfFileIndex.Value;
-                creater.CreateDMJHFile(obj, 1);
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                {
+                    TaskID = obj.TaskID,
+                    PlanType = "DMJH",
+                    PlanID = (new Sequence()).GetDMJHSequnce(),
+                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    SRCType = 0,
+                    FileIndex = filepath,
+                    SatID = obj.SatID,
+                    Reserve = txtNote.Text
+                };
+                var result = jh.Add();
+            }
+            else
+            {
+                //当任务和卫星更新时，需要更新文件名称
+                if (hfSatID.Value != ucSatellite1.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
+                {
+                    string filepath = creater.CreateDMJHFile(obj, 0);
 
-            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
+                    DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                    {
+                        Id = Convert.ToInt32(HfID.Value),
+                        TaskID = obj.TaskID,
+                        StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                        EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                        FileIndex = filepath,
+                        SatID = obj.SatID,
+                        Reserve = txtNote.Text
+                    };
+                    var result = jh.Update();
+                    //更新隐藏域的任务ID和卫星ID
+                    hfTaskID.Value = jh.TaskID;
+                    hfSatID.Value = jh.SatID;
+                }
+                else
+                {
+                    creater.FilePath = HfFileIndex.Value;
+                    creater.CreateDMJHFile(obj, 1);
+                }
+            }
+            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
         }
 
         protected void btnSaveTo_Click(object sender, EventArgs e)
@@ -831,8 +906,8 @@ namespace OperatingManagement.Web.Views.PlanManage
 
             PlanFileCreator creater = new PlanFileCreator();
 
-                obj.TaskID = hfTaskID.Value;
-                obj.SatID = hfSatID.Value;
+                obj.TaskID = ucTask1.SelectedItem.Value;
+                obj.SatID = ucSatellite1.SelectedItem.Value;
                 string filepath = creater.CreateDMJHFile(obj, 0);
 
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
@@ -845,12 +920,154 @@ namespace OperatingManagement.Web.Views.PlanManage
                     SRCType = 0,
                     FileIndex = filepath,
                     SatID = obj.SatID,
-                    Reserve = ""
+                    Reserve = txtNote.Text
                 };
                 var result = jh.Add();
 
-            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
        
+        }
+
+        protected void txtGetPlanInfo_Click(object sender, EventArgs e)
+        {
+            BindGridView();
+        }
+
+        //绑定列表
+        void BindGridView()
+        {
+
+            DateTime startDate = new DateTime();
+            DateTime endDate = new DateTime();
+            startDate = new DateTime(1900, 1, 1);
+            endDate = DateTime.Now.AddDays(1);
+            string planType = "SBJH";
+
+            List<JH> listDatas = (new JH()).GetJHList(planType, startDate, endDate);
+            cpPager.DataSource = listDatas;
+            cpPager.PageSize = 7;
+            cpPager.BindToControl = rpDatas;
+            rpDatas.DataSource = cpPager.DataSourcePaged;
+            rpDatas.DataBind();
+        }
+
+        protected void btnSBJH_Click(object sender, EventArgs e)
+        {
+            hfSBJHID.Value = "-1";
+            btnSBJH.Text = "";
+        }
+
+        /// <summary>
+        /// 获取文件名
+        /// </summary>
+        /// <param name="objfilepath"></param>
+        /// <returns></returns>
+        public string GetFileName(object objfilepath)
+        {
+            string filename = "";
+            string filepath = Convert.ToString(objfilepath);
+            string savepath = System.Configuration.ConfigurationManager.AppSettings["savepath"];
+            filename = filepath.Replace(savepath, "");
+            return filename;
+        }
+
+        protected void btnHidden_Click(object sender, EventArgs e)
+        {
+            #region 从设备工作计划获取信息
+            DMJH objDMJH = new DMJH
+            {
+                DMJHTasks = new List<DMJH_Task> 
+                        {
+                            new DMJH_Task
+                            {
+                                ReakTimeTransfors = new List<DMJH_Task_ReakTimeTransfor>{new DMJH_Task_ReakTimeTransfor()},
+                                AfterFeedBacks = new List<DMJH_Task_AfterFeedBack>{new DMJH_Task_AfterFeedBack()}
+                            }
+                        }
+            };
+            List<JH> jh = (new JH()).SelectByIDS(hfSBJHID.Value);
+            objDMJH.TaskID = jh[0].TaskID;
+            string[] strTemp = jh[0].FileIndex.Split('_');
+            if (strTemp.Length >= 2)
+            {
+                objDMJH.SatID = strTemp[strTemp.Length - 2];
+            }
+            objDMJH.DMJHTasks.Clear();
+
+            DMJH_Task task;
+            DMJH_Task_ReakTimeTransfor rt;
+            DMJH_Task_AfterFeedBack afb;
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(jh[0].FileIndex);
+            XmlNode root = xmlDoc.SelectSingleNode("设备工作计划/编号");
+            objDMJH.Sequence = root.InnerText;
+            root = xmlDoc.SelectSingleNode("设备工作计划/时间");
+            objDMJH.DateTime = root.InnerText;
+            root = xmlDoc.SelectSingleNode("设备工作计划/工作单位");
+            objDMJH.StationName = root.InnerText;
+            root = xmlDoc.SelectSingleNode("设备工作计划/设备代号");
+            objDMJH.EquipmentID = root.InnerText;
+            root = xmlDoc.SelectSingleNode("设备工作计划/任务个数");
+            objDMJH.TaskCount = root.InnerText;
+
+            root = xmlDoc.SelectSingleNode("设备工作计划");
+            foreach (XmlNode n in root.ChildNodes)
+            {
+                if (n.Name == "任务")
+                {
+                    task = new DMJH_Task();
+                    task.TaskFlag = n["任务标志"].InnerText;
+                    task.WorkWay = n["工作方式"].InnerText;
+                    task.PlanPropertiy = n["计划性质"].InnerText;
+                    task.WorkMode = n["工作模式"].InnerText;
+                    task.PreStartTime = n["任务准备开始时间"].InnerText;
+                    task.StartTime = n["任务开始时间"].InnerText;
+                    task.TrackStartTime = n["跟踪开始时间"].InnerText;
+                    task.WaveOnStartTime = n["开上行载波时间"].InnerText;
+                    task.WaveOffStartTime = n["关上行载波时间"].InnerText;
+                    task.TrackEndTime = n["跟踪结束时间"].InnerText;
+                    task.EndTime = n["任务结束时间"].InnerText;
+                    task.ReakTimeTransfors = new List<DMJH_Task_ReakTimeTransfor>();
+                    task.AfterFeedBacks = new List<DMJH_Task_AfterFeedBack>();
+                    foreach (XmlNode nd in n)
+                    {
+                        if (nd.Name == "实时传输")
+                        {
+                            rt = new DMJH_Task_ReakTimeTransfor();
+                            rt.FormatFlag = nd["格式标志"].InnerText;
+                            rt.InfoFlowFlag = nd["信息流标志"].InnerText;
+                            rt.TransStartTime = nd["数据传输开始时间"].InnerText;
+                            rt.TransEndTime = nd["数据传输结束时间"].InnerText;
+                            rt.TransSpeedRate = nd["数据传输速率"].InnerText;
+                            task.ReakTimeTransfors.Add(rt);
+                        }
+                        if (nd.Name == "事后回放")
+                        {
+                            afb = new DMJH_Task_AfterFeedBack();
+                            afb.FormatFlag = nd["格式标志"].InnerText;
+                            afb.InfoFlowFlag = nd["信息流标志"].InnerText;
+                            afb.DataStartTime = nd["数据起始时间"].InnerText;
+                            afb.DataEndTime = nd["数据结束时间"].InnerText;
+                            afb.TransStartTime = nd["数据传输开始时间"].InnerText;
+                            afb.TransSpeedRate = nd["数据传输速率"].InnerText;
+                            task.AfterFeedBacks.Add(afb);
+                        }
+                    }
+                    objDMJH.DMJHTasks.Add(task);
+                }
+            }
+            #endregion
+
+            #region BindtoPage
+            txtSequence.Text = objDMJH.Sequence;
+            txtDatetime.Text = objDMJH.DateTime;
+            txtStationName.Text = objDMJH.StationName;
+            txtEquipmentID.Text = objDMJH.EquipmentID;
+            txtTaskCount.Text = objDMJH.TaskCount;
+
+            Repeater1.DataSource = objDMJH.DMJHTasks;
+            Repeater1.DataBind();
+            #endregion
         }
         //
     }

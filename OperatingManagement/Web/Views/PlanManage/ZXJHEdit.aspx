@@ -1,4 +1,6 @@
 ﻿<%@ Page MaintainScrollPositionOnPostback="true" MasterPageFile="~/Site.Master"  Language="C#" AutoEventWireup="true" CodeBehind="ZXJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.ZXJHEdit" %>
+<%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
+<%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc2" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -15,6 +17,16 @@
 
 <div>
         <table cellpadding="0" class="edit" style="width: 800px;">
+         <tr>
+            <th>任务代号(<span class="red">*</span>)</th>
+            <td>
+                <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" />
+            </td>
+            <th class="style1">卫星(<span class="red">*</span>)</th>
+            <td>
+                <uc2:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
+            </td>
+        </tr>
             <tr>
                 <th>
                     计划开始时间</th>
@@ -30,20 +42,33 @@
                 </td>
             </tr>
             <tr>
+            <th>备注</th>
+            <td>
+                <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="50" 
+                    Width="300px" Height="75px" TextMode="MultiLine"></asp:TextBox>
+            </td>
+            <td>
+                    <asp:HiddenField ID="HfID" runat="server" />
+                     <asp:HiddenField ID="HfFileIndex" runat="server" />
+            </td>
+            <td>
+            <asp:HiddenField ID="hfTaskID" runat="server" />
+                <asp:HiddenField ID="hfSatID" runat="server" />
+                <asp:HiddenField ID="hfStatus" runat="server" />
+            </td>
+        </tr>
+            <tr>
                 <th>
                     日期
                 </th>
                 <td>
-                    <asp:TextBox ID="txtDate" CssClass="text" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtDate" CssClass="text" runat="server" MaxLength="10"   ClientIDMode="Static"></asp:TextBox>
                 </td>
                 <th>
-                     <asp:HiddenField ID="HfID" runat="server" />
-                     <asp:HiddenField ID="HfFileIndex" runat="server" />
+                     
                 </th>
                 <td>
-                 <asp:HiddenField ID="hfTaskID" runat="server" />
-                <asp:HiddenField ID="hfSatID" runat="server" />
-                <asp:HiddenField ID="hfOverDate" runat="server" />
+                 
                 </td>
             </tr>
             
@@ -644,8 +669,11 @@
                         onclick="btnSubmit_Click" />
                         &nbsp;&nbsp;&nbsp;
                     <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
-                    onclick="btnSubmit_Click" />
+                    onclick="btnSaveTo_Click" />
 </div>
+    </div>
+    <div id="dialog-form" style="display:none" title="提示信息">
+	    <p class="content"></p>
     </div>
 </asp:Content>
 

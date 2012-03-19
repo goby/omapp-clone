@@ -24,10 +24,13 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
+                initial();
+
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
                     HfID.Value = sID;
+                    hfStatus.Value = "edit";    //编辑
                     BindJhTable(sID);
                     BindXML();
 
@@ -36,7 +39,42 @@ namespace OperatingManagement.Web.Views.PlanManage
                         ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");
                     }
                 }
+                else
+                {
+                    hfStatus.Value = "new"; //新建
+                    btnSaveTo.Visible = false;
+                }
             }
+        }
+
+        private void initial()
+        {
+            List<ZXJH_WorkContent> listWC = new List<ZXJH_WorkContent>();
+            List<ZXJH_SYDataHandle> listDH = new List<ZXJH_SYDataHandle>();
+            List<ZXJH_DirectAndMonitor> listDM = new List<ZXJH_DirectAndMonitor>();
+            List<ZXJH_RealTimeControl> listRC = new List<ZXJH_RealTimeControl>();
+            List<ZXJH_SYEstimate> listE = new List<ZXJH_SYEstimate>();
+            List<ZXJH_DataManage> listM = new List<ZXJH_DataManage>();
+
+            listWC.Add(new ZXJH_WorkContent());
+            listDH.Add(new ZXJH_SYDataHandle());
+            listDM.Add(new ZXJH_DirectAndMonitor());
+            listRC.Add(new ZXJH_RealTimeControl());
+            listE.Add(new ZXJH_SYEstimate());
+            listM.Add(new ZXJH_DataManage());
+
+            rpWork.DataSource = listWC;
+            rpWork.DataBind();
+            rpSYDataHandle.DataSource = listDH;
+            rpSYDataHandle.DataBind();
+            rpDirectAndMonitor.DataSource = listDM;
+            rpDirectAndMonitor.DataBind();
+            rpRealTimeControl.DataSource = listRC;
+            rpRealTimeControl.DataBind();
+            rpSYEstimate.DataSource = listE;
+            rpSYEstimate.DataBind();
+            rpDataManage.DataSource = listM;
+            rpDataManage.DataBind();
         }
         private void BindJhTable(string sID)
         {
@@ -45,15 +83,18 @@ namespace OperatingManagement.Web.Views.PlanManage
             txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
             hfTaskID.Value = jh[0].TaskID.ToString();
+            ucTask1.SelectedValue = jh[0].TaskID.ToString();
             string[] strTemp = jh[0].FileIndex.Split('_');
             if (strTemp.Length >= 2)
             {
                 hfSatID.Value = strTemp[strTemp.Length - 2];
+                ucSatellite1.SelectedValue = strTemp[strTemp.Length - 2];
             }
+            txtNote.Text = jh[0].Reserve.ToString();
             if (DateTime.Now > jh[0].StartTime)
             {
                 btnSubmit.Visible = false;
-                hfOverDate.Value = "true";
+                //hfOverDate.Value = "true";
             }
         }
         private void BindXML()
@@ -279,7 +320,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 Repeater rp = (Repeater)source;
                 if (rp.Items.Count <= 1)
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
                 }
                 else
                 {
@@ -364,7 +405,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 Repeater rp = (Repeater)source;
                 if (rp.Items.Count <= 1)
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
                 }
                 else
                 {
@@ -439,7 +480,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 Repeater rp = (Repeater)source;
                 if (rp.Items.Count <= 1)
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
                 }
                 else
                 {
@@ -504,7 +545,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 Repeater rp = (Repeater)source;
                 if (rp.Items.Count <= 1)
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
                 }
                 else
                 {
@@ -566,7 +607,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 Repeater rp = (Repeater)source;
                 if (rp.Items.Count <= 1)
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
                 }
                 else
                 {
@@ -629,7 +670,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 Repeater rp = (Repeater)source;
                 if (rp.Items.Count <= 1)
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>alert('最后一条，无法删除!');</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
                 }
                 else
                 {
@@ -810,12 +851,57 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.DataManages.Add(dm);
             }
 
+            obj.TaskID = ucTask1.SelectedItem.Value;
+            obj.SatID = ucSatellite1.SelectedItem.Value;
+
             PlanFileCreator creater = new PlanFileCreator();
+            if (hfStatus.Value == "new")
+            {
+                string filepath = creater.CreateZXJHFile(obj, 0);
 
-                creater.FilePath = HfFileIndex.Value;
-                creater.CreateZXJHFile(obj, 1);
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                {
+                    TaskID = obj.TaskID,
+                    PlanType = "ZXJH",
+                    PlanID = (new Sequence()).GetZXJHSequnce(),
+                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    SRCType = 0,
+                    FileIndex = filepath,
+                    SatID = obj.SatID,
+                    Reserve = txtNote.Text
+                };
+                var result = jh.Add();
+            }
+            else
+            {
+                //当任务和卫星更新时，需要更新文件名称
+                if (hfSatID.Value != ucSatellite1.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
+                {
+                    string filepath = creater.CreateZXJHFile(obj, 0);
 
-            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
+                    DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                    {
+                        Id = Convert.ToInt32(HfID.Value),
+                        TaskID = obj.TaskID,
+                        StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                        EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                        FileIndex = filepath,
+                        SatID = obj.SatID,
+                        Reserve = txtNote.Text
+                    };
+                    var result = jh.Update();
+                    //更新隐藏域的任务ID和卫星ID
+                    hfTaskID.Value = jh.TaskID;
+                    hfSatID.Value = jh.SatID;
+                }
+                else
+                {
+                    creater.FilePath = HfFileIndex.Value;
+                    creater.CreateZXJHFile(obj, 1);
+                }
+            }
+            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
         }
 
         protected void btnSaveTo_Click(object sender, EventArgs e)
@@ -974,8 +1060,8 @@ namespace OperatingManagement.Web.Views.PlanManage
 
             PlanFileCreator creater = new PlanFileCreator();
 
-                obj.TaskID = hfTaskID.Value;
-                obj.SatID = hfSatID.Value;
+                obj.TaskID = ucTask1.SelectedItem.Value;
+                obj.SatID = ucSatellite1.SelectedItem.Value;
                 string filepath = creater.CreateZXJHFile(obj, 0);
 
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
@@ -988,11 +1074,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                     SRCType = 0,
                     FileIndex = filepath,
                     SatID = obj.SatID,
-                    Reserve = ""
+                    Reserve = txtNote.Text
                 };
                 var result = jh.Add();
 
-            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>alert('计划保存成功');</script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
        
         }
     }

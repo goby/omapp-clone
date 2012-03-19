@@ -4,10 +4,6 @@
 });
 
 function SelectSBJH(id, fileindex) {
-    //    var divData = $('#divData');
-    //    divData.hide();
-    //    var indicator = $('#tartgetPanel');
-    //    indicator.show();
     var txtId = $('#hfSBJHID');
     txtId.val(id);
     var btn = $('#btnSBJH');

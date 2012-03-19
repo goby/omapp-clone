@@ -926,5 +926,16 @@ namespace ServicesKernel.File
             xmlWriter.Close();
             return FilePath;
         }
+
+        /// <summary>
+        /// 重命名计划文件
+        /// </summary>
+        /// <param name="oldfile"></param>
+        /// <param name="newfile"></param>
+        public void RenamePlanFile(string oldfile,string newfile)
+        {
+            FileInfo fi = new FileInfo(oldfile);
+            fi.MoveTo(newfile);
+        }
     }
 }

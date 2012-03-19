@@ -1,5 +1,8 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="YJJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.YJJHEdit" %>
 
+<%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
+<%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc2" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -15,21 +18,40 @@
 
 <table class="edit1" style="width:800px;">
         <tr>
-            <th class="style1">计划开始时间</th>
+            <th>任务代号(<span class="red">*</span>)</th>
+            <td>
+                <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" />
+            </td>
+        </tr>
+        <tr>
+            <th class="style1">卫星(<span class="red">*</span>)</th>
+            <td>
+                <uc2:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
+            </td>
+        </tr>
+        <tr>
+            <th>计划开始时间</th>
             <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
                             MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
             </td>
         </tr>
         <tr>
-            <th class="style1">计划结束时间</th>
+            <th>计划结束时间</th>
             <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" 
                             MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
             </td>
         </tr>
         <tr>
-            <th class="style1">信息分类</th>
+            <th>备注</th>
+            <td>
+                <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="50" 
+                    Width="300px" Height="75px" TextMode="MultiLine"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <th>信息分类</th>
             <td>
                 <asp:RadioButtonList ID="radBtnXXFL" runat="server" 
                     RepeatDirection="Horizontal">
@@ -39,16 +61,17 @@
             </td>
         </tr>
         <tr>
-            <th class="style1">计划序号</th>
+            <th>计划序号</th>
             <td>
                 <asp:TextBox ID="txtJXH" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20"></asp:TextBox>
+                    MaxLength="20" Enabled="False" ReadOnly="True"></asp:TextBox>
+                    &nbsp;<span style="color:Red;">自动生成，不可编辑</span>
             </td>
         </tr>
         <tr>
             <th class="style1">系统名称</th>
             <td>
-                <asp:DropDownList ID="ddlSysName" runat="server" Height="16px" Width="298px">
+                <asp:DropDownList ID="ddlSysName" runat="server" Height="20px" Width="305px">
                     <asp:ListItem>天基目标观测应用研究分系统</asp:ListItem>
                     <asp:ListItem>空间遥操作应用研究分系统</asp:ListItem>
                     <asp:ListItem>空间机动应用研究分系统</asp:ListItem>
@@ -60,15 +83,15 @@
             <th class="style1">试验开始时间</th>
             <td>
                 <asp:TextBox ID="txtStartTime" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20"></asp:TextBox>
-            &nbsp;<span style="color:Red;">格式：YYMMDDHHmmss</span></td>
+                    MaxLength="14"></asp:TextBox>
+            &nbsp;<span style="color:Red;">格式：YYYYMMDDHHmmss</span></td>
         </tr>
         <tr>
             <th class="style1">试验结束时间</th>
             <td>
                 <asp:TextBox ID="txtEndTime" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20"></asp:TextBox>
-            &nbsp;<span style="color:Red;">格式：YYMMDDHHmmss</span></td>
+                    MaxLength="14"></asp:TextBox>
+            &nbsp;<span style="color:Red;">格式：YYYYMMDDHHmmss</span></td>
         </tr>
         <tr>
             <th class="style1">系统任务</th>
@@ -84,14 +107,17 @@
                     onclick="btnSubmit_Click" />
                     &nbsp;&nbsp;&nbsp;
                     <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
-                    onclick="btnSubmit_Click" />
+                    onclick="btnSaveTo_Click" />
                      <asp:HiddenField ID="HfID" runat="server" />
                     <asp:HiddenField ID="HfFileIndex" runat="server" />
                 <asp:HiddenField ID="hfTaskID" runat="server" />
                 <asp:HiddenField ID="hfSatID" runat="server" />
-                <asp:HiddenField ID="hfOverDate" runat="server" />
+                <asp:HiddenField ID="hfStatus" runat="server" />
             </td>
         </tr>
     </table>
+    <div id="dialog-form" style="display:none" title="提示信息">
+	    <p class="content"></p>
+    </div>
 </asp:Content>
 
