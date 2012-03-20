@@ -11,7 +11,7 @@
 计划管理 &gt; 非空间机动任务
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-    <%--    <asp:Panel ID="pnlData" runat="server">--%>
+        <asp:Panel ID="pnlData" runat="server">
     <div id="divData">
         <table cellpadding="0"  class="edit1"  width="850px">
             <tr>
@@ -42,6 +42,11 @@
                         onclick="btnReset_Click" />
                     <%--<button class="button" onclick="return reset();" style="width: 65px;">
                         重置</button>--%>
+                        <div style="display:none;">
+                    <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
+                    <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" 
+                                OnClick="btnHidden_Click" />
+                        </div>
                 </td>
             </tr>
             <tr>
@@ -151,9 +156,9 @@
             </tr>
         </table>
     </div>
-    <%--    </asp:Panel>--%>
-    <%--    <asp:Panel ID="pnlDestination" runat="server">--%>
-    <div id="tartgetPanel" style="display: none">
+        </asp:Panel>
+        <asp:Panel ID="pnlDestination" runat="server">
+    <div id="tartgetPanel">
         <table class="style7">
             <tr>
                 <td align="center">
@@ -175,8 +180,8 @@
             </tr>
         </table>
     </div>
-    <div id="dialog-form" style="display:none" title="提示信息">
+        </asp:Panel>
+        <div id="dialog-form" style="display:none" title="提示信息">
 	    <p class="content"></p>
     </div>
-    <%--    </asp:Panel>--%>
 </asp:Content>

@@ -87,7 +87,14 @@ namespace OperatingManagement.Web.Views.PlanManage
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)
         {
+            pnlDestination.Visible = false;
+            pnlData.Visible = true;
+        }
 
+        protected void btnHidden_Click(object sender, EventArgs e)
+        {
+            pnlDestination.Visible = true;
+            pnlData.Visible = false;
         }
 
         public override void OnPageLoaded()

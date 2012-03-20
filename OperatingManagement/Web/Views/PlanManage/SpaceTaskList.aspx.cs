@@ -25,6 +25,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                 //btnSend.Attributes.Add("onclick", "javascript:return confirm('确定要发送所选数据吗?');");
                 pnlAll1.Visible = false;
                 pnlAll2.Visible = false;
+
+                pnlDestination.Visible = false;
+                pnlData.Visible = true;
             }
         }
 
@@ -91,7 +94,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-
+            pnlDestination.Visible = false;
+            pnlData.Visible = true;
         }
 
         public override void OnPageLoaded()
@@ -100,6 +104,12 @@ namespace OperatingManagement.Web.Views.PlanManage
             this.ShortTitle = "查看空间机动任务";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/PlanManage/SpaceTaskList.aspx.js");
+        }
+
+        protected void btnHidden_Click(object sender, EventArgs e)
+        {
+            pnlDestination.Visible = true;
+            pnlData.Visible = false;
         }
 
         protected void btnReset_Click(object sender, EventArgs e)

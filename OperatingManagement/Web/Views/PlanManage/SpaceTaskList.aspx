@@ -11,7 +11,7 @@
 计划管理 &gt; 空间机动任务
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-    <%--    <asp:Panel ID="pnlData" runat="server">--%>
+        <asp:Panel ID="pnlData" runat="server">
     <div id="divData">
         <table cellpadding="0"  class="edit1" width="850px">
             <tr>
@@ -42,6 +42,11 @@
                         onclick="btnReset_Click" />
                    <%-- <button class="button" onclick="return reset();" style="width: 65px;">
                         重置</button>--%>
+                        <div style="display:none;">
+                    <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
+                    <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" 
+                                OnClick="btnHidden_Click" />
+                        </div>
                 </td>
             </tr>
             <tr>
@@ -78,16 +83,13 @@
                                         <input type="checkbox" onclick="checkAll(this)" />
                                     </th>
                                     <th style="width: 100px;">
-                                        信源
+                                        历元日期
                                     </th>
                                     <th style="width: 100px;">
-                                        信宿
+                                        历元时刻
                                     </th>
                                     <th style="width: 100px;">
-                                        任务代码
-                                    </th>
-                                    <th style="width: 100px;">
-                                        卫星编号
+                                        轨道半长轴
                                     </th>
                                     <th>
                                         创建时间
@@ -104,16 +106,13 @@
                                     <input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>" />
                                 </td>
                                 <td>
-                                    <%# Eval("SOURCEADDRESS")%>
+                                    <%# Eval("D")%>
                                 </td>
                                 <td>
-                                    <%# Eval("DESTINATIONADDRESS")%>
+                                    <%# Eval("T")%>
                                 </td>
                                 <td>
-                                    <%# Eval("MISSIONCODEV")%>
-                                </td>
-                                <td>
-                                    <%# Eval("SATELLITECODE")%>
+                                    <%# Eval("A")%>
                                 </td>
                                 <td>
                                     <%# Eval("CreatedTime","{0:"+this.SiteSetting.DateTimeFormat+"}") %>
@@ -153,14 +152,20 @@
             </tr>
         </table>
     </div>
-    <%--    </asp:Panel>--%>
-    <%--    <asp:Panel ID="pnlDestination" runat="server">--%>
-    <div id="tartgetPanel" style="display: none">
-        <table class="style7">
+        </asp:Panel>
+        <asp:Panel ID="pnlDestination" runat="server">
+    <div id="tartgetPanel">
+        <table>
             <tr>
                 <td align="center">
-                    <asp:RadioButtonList ID="rbtDestination" runat="server">
-                    </asp:RadioButtonList>
+                    <asp:CheckBoxList ID="ckbDestination" runat="server">
+                        <asp:ListItem Value="0">863-YZ4701机动站</asp:ListItem>
+                        <asp:ListItem Value="1">863-YZ4702机动站</asp:ListItem>
+                        <asp:ListItem Value="2">西安卫星测控中心（转发到S、X地面站、东风站）</asp:ListItem>
+                        <asp:ListItem Value="3">总参二部信息处理中心（转发到相关地面站）</asp:ListItem>
+                        <asp:ListItem Value="4">总参三部技侦中心（转发到相关地面站）</asp:ListItem>
+                        <asp:ListItem Value="5">总参气象水文空间天气总站资料处理中心（转发到相关地面站）</asp:ListItem>
+                    </asp:CheckBoxList>
                 </td>
             </tr>
             <tr>
@@ -175,6 +180,6 @@
     <div id="dialog-form" style="display:none" title="提示信息">
 	    <p class="content"></p>
     </div>
-    <%--    </asp:Panel>--%>
+        </asp:Panel>
     
 </asp:Content>

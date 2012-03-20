@@ -74,7 +74,6 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         void BindRadDestination()
         {
-
         }
 
         protected void btnSend_Click(object sender, EventArgs e)
@@ -89,7 +88,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-
+            pnlDestination.Visible = false;
+            pnlData.Visible = true;
         }
 
         public override void OnPageLoaded()
@@ -101,6 +101,17 @@ namespace OperatingManagement.Web.Views.PlanManage
         }
 
         protected void btnReset_Click(object sender, EventArgs e)
+        {
+            Page.Response.Redirect(Request.CurrentExecutionFilePath);
+        }
+
+        protected void btnHidden_Click(object sender, EventArgs e)
+        {
+            pnlDestination.Visible = true;
+            pnlData.Visible = false;
+        }
+
+        protected void btnReset_Click1(object sender, EventArgs e)
         {
             Page.Response.Redirect(Request.CurrentExecutionFilePath);
         }
