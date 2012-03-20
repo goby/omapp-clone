@@ -31,7 +31,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         #region -Properties-
         private OracleDatabase _database = null;
 
-        public int ID { get; set; }
+        public int GDID { get; set; }
         public DateTime CTime { get; set; }
 
         public string Satid { get; set; }
@@ -164,7 +164,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                             W = dr["W"].ToString(),
                             M = dr["M"].ToString(),
                             P = dr["P"].ToString(),
-                            DELTP = dr["PP"].ToString(),
+                            DELTP = dr["DeltP"].ToString(),
                             Ra = dr["Ra"].ToString(),
                             Rp = dr["Rp"].ToString(),
                             CDSM = dr["CDSM"].ToString(),
@@ -198,7 +198,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 {
                     return new GD()
                     {
-                        Id = Convert.ToInt32(dr["ID"].ToString()),
+                        Id = Convert.ToInt32(dr["Id"].ToString()),
                         CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
                         Satid = dr["Satid"].ToString(),
                         IType = dr["itype"].ToString(),
@@ -213,7 +213,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         W = dr["W"].ToString(),
                         M = dr["M"].ToString(),
                         P = dr["P"].ToString(),
-                        DELTP = dr["Pi"].ToString(),
+                        DELTP = dr["DeltP"].ToString(),
                         Ra = dr["Ra"].ToString(),
                         Rp = dr["Rp"].ToString(),
                         CDSM = dr["CDSM"].ToString(),

@@ -15,7 +15,7 @@ using System.Xml;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
-    public partial class YDSJDetail : AspNetPage, IRouteContext
+    public partial class NotSpaceTaskDetail : AspNetPage, IRouteContext
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -23,7 +23,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 if (this.QueryStringObserver("id"))
                 {
-                    //string sID = this.DecryptString(Request.QueryString["ydsjid"]);
+                    //string sID = this.DecryptString(Request.QueryString["gdid"]);
                     string sID = Request.QueryString["id"];
                     int id = 0;
                     Int32.TryParse(sID, out id);
@@ -34,11 +34,10 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         void BindFileInfo(int id)
         {
-            DataAccessLayer.PlanManage.YDSJ y = new DataAccessLayer.PlanManage.YDSJ { Id = id };
-            DataAccessLayer.PlanManage.YDSJ obj = y.SelectById();
+            DataAccessLayer.BusinessManage.GD g = new DataAccessLayer.BusinessManage.GD { Id = id };
+            DataAccessLayer.BusinessManage.GD obj = g.SelectById();
 
-            /*
-            lblVersion.Text = obj.Version;
+            /*lblVersion.Text = obj.Version;
             lblFlag.Text = obj.Flag;
             lblMainType.Text = obj.MainType;
             lblDataType.Text = obj.DataType;
@@ -52,19 +51,24 @@ namespace OperatingManagement.Web.Views.PlanManage
             lblD.Text = obj.D;
             lblT.Text = obj.T;
             lblA.Text = obj.A;
+            lblRa.Text = obj.Ra;
+            lblRp.Text = obj.Rp;
             lblE.Text = obj.E;
             lblI.Text = obj.I;
-            lblOhm.Text = obj.Ohm;
-            lblOmega.Text = obj.Omega;
+            lblOhm.Text = obj.Q;
+            lblOmega.Text = obj.W;
             lblM.Text = obj.M;
+            lblP.Text = obj.P;
+            lblPi.Text = obj.DELTP;
         }
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "YDSJ.Detail";
-            this.ShortTitle = "引导数据明细";
+            this.PagePermission = "NotSpaceTask.Detail";
+            this.ShortTitle = "非空间引导数据明细";
             base.OnPageLoaded();
             //this.AddJavaScriptInclude("scripts/pages/");
         }
+
     }
 }

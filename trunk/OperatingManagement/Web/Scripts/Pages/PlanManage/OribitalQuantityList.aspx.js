@@ -4,13 +4,22 @@
 });
 
 function showMsg(msg) {
-    $.fn.modal({
-        title: '提示信息',
-        content: function (o, e) {
-            o.content.html(msg);
-        },
-        cancelText: '关闭'
+    var _dialog;
+    _dialog = $("#dialog-form");
+    _dialog.dialog({
+        autoOpen: false,
+        height: 150,
+        width: 350,
+        modal: true,
+        buttons: {
+            '关闭': function () {
+                $(this).dialog("close");
+            }
+        }
     });
+    _dialog.find('p.content').eq(0).html(msg);
+    _dialog.dialog('open');
+    return false;
 }
 
 function reset(o) {
@@ -25,7 +34,9 @@ function setdayte(o) {
 }
 
 function showDetail(id) {
-    window.location.href = "/Views/PlanManage/OribitalQuantityDetail.aspx?id=" + id;
+   var feature2 = 'width=700px;height=200px,toolbar=no, menubar=no,scrollbars=no,resizable=yes,location=no,status=yes,';
+    //window.location.href = "/Views/PlanManage/OribitalQuantityDetail.aspx?id=" + id;
+    window.open("/Views/PlanManage/OribitalQuantityDetail.aspx?id=" + id, "", feature2);
     return false;
 }
 
@@ -41,7 +52,8 @@ function checkAll(o) {
 }
 
 function sendGD1() {
-    var chks = $('#tbGDs').find('input:checkbox:not([disabled])').filter('[checked=true]');
+    //var chks = $('#tbGDs').find('input:checkbox:not([disabled])').filter('[checked=true]');
+    var chks = $('#tbGDs').find('input:checkbox:[checked]');
     if (chks.length == 0) {
         showMsg('请选择您要发送的轨道数据。');
         return false;
