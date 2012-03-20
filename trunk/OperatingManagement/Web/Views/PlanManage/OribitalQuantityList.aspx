@@ -39,9 +39,15 @@
                     <asp:Button class="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
                         Text="查询" Width="69px" />
                     &nbsp;&nbsp;
-                    <%--<asp:Button ID="btnReset" runat="server" Text="重置" Width="65px" />--%>
-                    <button class="button" onclick="return reset();" style="width: 65px;">
-                        重置</button>
+                    <asp:Button ID="btnReset" runat="server" Text="重置" Width="65px" />
+                    <%--<button class="button" onclick="return reset();" style="width: 65px;">
+                        重置</button>--%>
+
+                    <div style="display:none;">
+                    <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
+                    <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" 
+                                OnClick="btnHidden_Click" />
+                        </div>
                 </td>
             </tr>
             <tr>
@@ -154,7 +160,7 @@
         </asp:Panel>
         <asp:Panel ID="pnlDestination" runat="server">
 <%--    <div id="tartgetPanel" style="display: ">--%>
-        <table class="style7">
+        <table>
             <tr>
                 <td align="center">
                     <asp:CheckBoxList ID="ckbDestination" runat="server">

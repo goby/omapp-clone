@@ -59,11 +59,17 @@ function sendYDSJ1() {
         return false;
     }
 
-    var divData = $('#divData');
-    divData.hide();
-    var indicator = $('#tartgetPanel');
-    indicator.show();
+    var ids = chks.map(function () { return this.value; }).get().join(',');
+    showSend(ids);
+    return false;
+}
 
+function showSend(id) {
+    var txtId = $('#txtId');
+    txtId.val(id);
+
+    var btn = $('#btnHidden');
+    btn.click();
     return false;
 }
 
