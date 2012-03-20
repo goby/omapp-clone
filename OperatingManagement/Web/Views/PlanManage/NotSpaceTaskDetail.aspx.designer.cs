@@ -10,7 +10,7 @@
 namespace OperatingManagement.Web.Views.PlanManage {
     
     
-    public partial class OribitalQuantityDetail {
+    public partial class NotSpaceTaskDetail {
         
         /// <summary>
         /// form1 控件。
