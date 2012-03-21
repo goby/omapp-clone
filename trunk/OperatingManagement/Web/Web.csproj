@@ -11,7 +11,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OperatingManagement.Web</RootNamespace>
-    <AssemblyName>OperatingManagement.Web</AssemblyName>
+    <AssemblyName>OM.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -220,7 +220,6 @@
     <Content Include="Views\PlanManage\YDSJDetail.aspx" />
     <Content Include="Views\PlanManage\YJJHEdit.aspx" />
     <Content Include="Views\PlanManage\ZXJHEdit.aspx" />
-    <Content Include="Views\PlanManage\NotSpaceTaskDetail.aspx" />
     <Content Include="Views\UserAndRole\PermissionAdd.aspx" />
     <Content Include="Views\UserAndRole\Permissions.aspx" />
     <Content Include="Views\UserAndRole\RoleAdd.aspx" />
@@ -625,13 +624,6 @@
     </Compile>
     <Compile Include="Views\PlanManage\ZXJHEdit.aspx.designer.cs">
       <DependentUpon>ZXJHEdit.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PlanManage\NotSpaceTaskDetail.aspx.cs">
-      <DependentUpon>NotSpaceTaskDetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\PlanManage\NotSpaceTaskDetail.aspx.designer.cs">
-      <DependentUpon>NotSpaceTaskDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\UserAndRole\PermissionAdd.aspx.cs">
       <DependentUpon>PermissionAdd.aspx</DependentUpon>
