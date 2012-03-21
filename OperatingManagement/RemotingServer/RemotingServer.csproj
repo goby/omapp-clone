@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OperatingManagement.RemotingServer</RootNamespace>
-    <AssemblyName>OperatingManagement.RemotingServer</AssemblyName>
+    <AssemblyName>OM.RemotingServer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

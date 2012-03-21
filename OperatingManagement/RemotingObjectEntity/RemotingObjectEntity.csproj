@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OperatingManagement.RemotingObjectEntity</RootNamespace>
-    <AssemblyName>OperatingManagement.RemotingObjectEntity</AssemblyName>
+    <AssemblyName>OM.RemotingObjectEntity</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

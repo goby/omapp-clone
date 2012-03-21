@@ -17,12 +17,13 @@ using System.Web.UI.WebControls;
 using System.IO;
 using System.Xml;
 
+using OperatingManagement.WebKernel.Route;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.WebKernel.Basic;
 
 namespace OperatingManagement.Web.Views.BusinessManage
 {
-    public partial class ResourceRequirementAdd : AspNetPage
+    public partial class ResourceRequirementAdd : AspNetPage, IRouteContext
     {
         #region 属性
         /// <summary>

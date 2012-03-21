@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OperatingManagement.Framework</RootNamespace>
-    <AssemblyName>OperatingManagement.Framework</AssemblyName>
+    <AssemblyName>OM.Framework</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -59,7 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Basic\BaseEntities\BaseEntity.cs" />
+    <Compile Include="Basic\BaseEntities\BaseEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Cache\AspNetCache.cs" />
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheStrategy.cs" />
@@ -89,7 +91,9 @@
     <Compile Include="Helper\Serializer.cs" />
     <Compile Include="Helper\TypeHelper.cs" />
     <Compile Include="Helper\WebHelper.cs" />
-    <Compile Include="Oracle\OracleDatabase.cs" />
+    <Compile Include="Oracle\OracleDatabase.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflector\AspNetSetting.cs" />
     <Compile Include="Storage\OrbitParameters.cs" />

@@ -40,7 +40,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         ///// <summary>
         ///// 卫星代码、卫星唯一标识
         ///// </summary>
-        //public string WXBM { get; set; }
+        public string WXBM { get; set; }
         /// <summary>
         /// 状态，T为可用，F为不可用
         /// </summary>

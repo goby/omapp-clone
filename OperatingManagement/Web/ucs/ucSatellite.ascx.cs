@@ -23,8 +23,7 @@ namespace OperatingManagement.Web.ucs
             SatelliteList.Items.Clear();
             SatelliteList.DataSource = objSatellite.Cache;
             SatelliteList.DataTextField = "WXMC";
-            SatelliteList.DataValueField = "WXMC";
-            //SatelliteList.DataValueField = "WXBM";
+            SatelliteList.DataValueField = "Id";
             SatelliteList.DataBind();
             if (isAllowBlankItem)
                 SatelliteList.Items.Insert(0, new ListItem("请选择", "0"));
@@ -62,7 +61,7 @@ namespace OperatingManagement.Web.ucs
             set
             {
                 SatelliteList.SelectedValue = value;
-            }
+    }
             get
             {
                 return SatelliteList.SelectedItem.Value;

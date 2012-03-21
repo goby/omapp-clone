@@ -381,7 +381,6 @@
                 &nbsp;
             </th>
             <td>
-                <asp:Button ID="btnSave" runat="server" CssClass="button" Text="保 存" OnClick="btnSave_Click" />
                     <asp:Button ID="btnCalculate" runat="server" CssClass="button" Text="计 算" OnClick="btnCalculate_Click"
                     CausesValidation="false" />
                 </td>
