@@ -49,42 +49,42 @@ namespace OperatingManagement.Web.Views.BusinessManage
             try
             {
                 string msg = string.Empty;
-                if (string.IsNullOrEmpty(ddlTask.SelectedItem.Value))
+                if (string.IsNullOrEmpty(dplTask.SelectedValue))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "请选择任务代号";
                     return;
                 }
 
-                if (string.IsNullOrEmpty(ddlSatellite.SelectedItem.Value))
+                if (string.IsNullOrEmpty(dplSatellite.SelectedValue))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "请选择卫星名称";
                     return;
                 }
 
-                if (string.IsNullOrEmpty(ddlSource.SelectedItem.Value))
+                if (string.IsNullOrEmpty(dplSource.SelectedValue))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "请选择信源";
                     return;
                 }
 
-                if (string.IsNullOrEmpty(ddlInfoType.SelectedItem.Value))
+                if (string.IsNullOrEmpty(dplInfoType.SelectedValue))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "请选择信息类别";
                     return;
                 }
 
-                if (string.IsNullOrEmpty(ddlDdestination.SelectedItem.Value))
+                if (string.IsNullOrEmpty(dplDdestination.SelectedValue))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "请选择信宿";
                     return;
                 }
 
-                if (ddlSource.SelectedItem.Value == ddlDdestination.SelectedItem.Value)
+                if (dplSource.SelectedValue == dplDdestination.SelectedValue)
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "信源与信宿不能相同";
@@ -132,11 +132,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 
                 Framework.FieldVerifyResult result;
                 CenterOutputPolicy centerOutputPolicy = new CenterOutputPolicy();
-                centerOutputPolicy.TaskID = ddlTask.SelectedItem.Value;
-                centerOutputPolicy.SatName = ddlSatellite.SelectedItem.Value;
-                centerOutputPolicy.InfoSource = Convert.ToInt32(ddlSource.SelectedItem.Value);
-                centerOutputPolicy.InfoType = Convert.ToInt32(ddlInfoType.SelectedItem.Value);
-                centerOutputPolicy.Ddestination = Convert.ToInt32(ddlDdestination.SelectedItem.Value);
+                centerOutputPolicy.TaskID = dplTask.SelectedValue;
+                centerOutputPolicy.SatName = dplSatellite.SelectedValue;
+                centerOutputPolicy.InfoSource = Convert.ToInt32(dplSource.SelectedValue);
+                centerOutputPolicy.InfoType = Convert.ToInt32(dplInfoType.SelectedValue);
+                centerOutputPolicy.Ddestination = Convert.ToInt32(dplDdestination.SelectedValue);
                 centerOutputPolicy.EffectTime = effectTime;
                 centerOutputPolicy.DefectTime = defectTime;
                 centerOutputPolicy.Note = txtNote.Text.Trim();
@@ -145,7 +145,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 if (centerOutputPolicy.HaveEffectivePolicy())
                 {
                     trMessage.Visible = true;
-                    lblMessage.Text = "任务" + ddlTask.SelectedItem.Text + "在该时间范围已经存在中心输出策略";
+                    lblMessage.Text = "任务" + dplTask.SelectedItem.Text + "在该时间范围已经存在中心输出策略";
                     return;
                 }
 
@@ -198,22 +198,22 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void InitialPageData()
         {
-            this.ddlDdestination.AllowBlankItem = false;
-            this.ddlInfoType.AllowBlankItem = false;
-            this.ddlSatellite.AllowBlankItem = false;
-            this.ddlSource.AllowBlankItem = false;
-            this.ddlTask.AllowBlankItem = false;
+            dplTask.AllowBlankItem = false;
+            dplSatellite.AllowBlankItem = false;
+            dplSource.AllowBlankItem = false;
+            dplInfoType.AllowBlankItem = false;
+            dplDdestination.AllowBlankItem = false;
         }
         /// <summary>
         /// 添加完成后将控件设置为初始状态
         /// </summary>
         private void ResetControls()
         {
-            ddlTask.SelectedIndex = 0;
-            ddlSource.SelectedIndex = 0;
-            ddlSatellite.SelectedIndex = 0;
-            ddlInfoType.SelectedIndex = 0;
-            ddlDdestination.SelectedIndex = 0;
+            dplTask.SelectedIndex = 0;
+            dplSatellite.SelectedIndex = 0;
+            dplSource.SelectedIndex = 0;
+            dplInfoType.SelectedIndex = 0;
+            dplDdestination.SelectedIndex = 0;
             txtEffectTime.Text = string.Empty;
             txtDefectTime.Text = string.Empty;
             txtNote.Text = string.Empty;

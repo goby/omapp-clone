@@ -2,6 +2,53 @@
     CodeBehind="ResourceCalculateManage.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.ResourceCalculateManage" %>
 <%@ Import Namespace="OperatingManagement.DataAccessLayer.BusinessManage" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+  <style type="text/css">
+        .norText
+        {
+            width: 155px;
+            margin: 0px;
+            padding: 0px;
+        }
+        .norDpl
+        {
+            width: 160px;
+            margin: 0px;
+            padding: 0px;
+        }
+        .index_content_search
+        {
+            margin-top: 10px;
+        }
+        
+        .index_content_search table
+        {
+            border: 1px solid #eeeeee;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        .index_content_search table td
+        {
+            border: 1px solid #eeeeee;
+            line-height: 26px;
+            color: #333333;
+            text-align: left;
+            height: 26px;
+        }
+        .index_content_search table th
+        {
+            border: 1px solid #eeeeee;
+            font-weight: bold;
+            line-height: 26px;
+            color: #333333;
+            text-align: right;
+            height: 26px;
+        }
+        .index_content_view
+        {
+            margin-top: 10px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="bizmanage" />
@@ -10,7 +57,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    业务管理 &gt; 资源调度计算结果
+    业务管理 &gt; 资源调度计算管理
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
 <script type="text/javascript">
@@ -60,6 +107,20 @@
                      <asp:Button ID="btnSearch" runat="server" OnClick="btnSearch_Click" CssClass="button" ValidationGroup="SearchResourceCalculate"
                         Text="查 询" />
                     <asp:Button ID="btnAdd" runat="server" OnClick="btnAdd_Click" CssClass="button" Text="添 加" />
+                </td>
+            </tr>
+        </table>
+         <table cellspacing="0" cellpadding="0" style="margin-top:5px;" class="searchTable">
+            <tr>
+                <th width="15%">
+                    上传计算结果文件：
+                </th>
+                <td width="65%">
+                  <asp:FileUpload ID="fileUploadResultFile" runat="server" />
+                </td>
+                <td width="20%">
+                    <asp:Button ID="btnUpload" runat="server" OnClick="btnUpload_Click" CssClass="button"
+                        Text="上 传" />
                 </td>
             </tr>
         </table>

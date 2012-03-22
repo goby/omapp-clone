@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
     CodeBehind="CenterOutputPolicyManage.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyManage" %>
+<%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
+<%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc4" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -20,15 +22,13 @@
                     任务代号：
                 </th>
                 <td width="25%">
-                    <asp:DropDownList ID="dplTask" runat="server" CssClass="norDpl">
-                    </asp:DropDownList>
+                    <uc1:ucTask ID="dplTask" runat="server" />
                 </td>
                 <th width="15%">
                     卫星名称：
                 </th>
                 <td width="25%">
-                    <asp:DropDownList ID="dplSatName" runat="server" CssClass="norDpl">
-                    </asp:DropDownList>
+                    <uc4:ucSatellite ID="dplSatellite" runat="server" />
                 </td>
                 <td width="20%">
                     <asp:Button ID="btnSearch" runat="server" OnClick="btnSearch_Click" CssClass="button" Text="查 询" />

@@ -17,5 +17,5 @@ create or replace procedure UP_InfoTYPE_SelectAll
 is
 begin
        open o_Cursor for
-            Select * From TB_InfoTYPE Order By RID Desc;
+            Select * From TB_InfoTYPE Order By DataName;
 end;

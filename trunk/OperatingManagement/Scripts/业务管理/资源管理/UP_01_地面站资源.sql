@@ -45,7 +45,8 @@ create or replace procedure UP_GroundRes_Insert
 is
 begin
        savepoint p1;
-       v_GRID:=to_number(fn_genseqnum('4002'));
+       --v_GRID:=to_number(fn_genseqnum('4002'));
+	   Select SEQ_TB_GroundResource.NEXTVAL INTO v_GRID From DUAL;
        Insert into TB_GroundResource(GRID,GRName,GRCode,EquipmentName,EquipmentCode,Owner,Coordinate,FunctionType,Status,ExtProperties,CreatedTime,CreatedUserID,UpdatedTime,UpdatedUserID)
        Values(v_GRID,p_GRName,p_GRCode,p_EquipmentName,p_EquipmentCode,p_Owner,p_Coordinate,p_FunctionType,p_Status,p_ExtProperties,p_CreatedTime,p_CreatedUserID,p_UpdatedTime,p_UpdatedUserID);
        commit;

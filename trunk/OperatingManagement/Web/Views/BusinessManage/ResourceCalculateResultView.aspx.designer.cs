@@ -10,7 +10,7 @@
 namespace OperatingManagement.Web.Views.BusinessManage {
     
     
-    public partial class CenterOutputPolicyAdd {
+    public partial class ResourceCalculateResultView {
         
         /// <summary>
         /// navMain 控件。
@@ -31,130 +31,76 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::OperatingManagement.WebKernel.Controls.PageMenu PageMenu1;
         
         /// <summary>
-        /// dplTask 控件。
+        /// lblRequirementNumber 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::OperatingManagement.Web.ucs.ucTask dplTask;
+        protected global::System.Web.UI.WebControls.Label lblRequirementNumber;
         
         /// <summary>
-        /// dplSatellite 控件。
+        /// lblCompleteRequirementNumber 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::OperatingManagement.Web.ucs.ucSatellite dplSatellite;
+        protected global::System.Web.UI.WebControls.Label lblCompleteRequirementNumber;
         
         /// <summary>
-        /// dplSource 控件。
+        /// lblTotalScore 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::OperatingManagement.Web.ucs.ucXYXSInfo dplSource;
+        protected global::System.Web.UI.WebControls.Label lblTotalScore;
         
         /// <summary>
-        /// dplInfoType 控件。
+        /// lblPriorityScore 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::OperatingManagement.Web.ucs.ucInfoType dplInfoType;
+        protected global::System.Web.UI.WebControls.Label lblPriorityScore;
         
         /// <summary>
-        /// dplDdestination 控件。
+        /// lblEfficiencyScore 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::OperatingManagement.Web.ucs.ucXYXSInfo dplDdestination;
+        protected global::System.Web.UI.WebControls.Label lblEfficiencyScore;
         
         /// <summary>
-        /// txtEffectTime 控件。
+        /// lblFocusScore 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEffectTime;
+        protected global::System.Web.UI.WebControls.Label lblFocusScore;
         
         /// <summary>
-        /// RequiredFieldValidator3 控件。
+        /// lblGroundStationProportionScore 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator3;
+        protected global::System.Web.UI.WebControls.Label lblGroundStationProportionScore;
         
         /// <summary>
-        /// txtDefectTime 控件。
+        /// lblSatelliteProportionScore 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDefectTime;
-        
-        /// <summary>
-        /// RequiredFieldValidator4 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator4;
-        
-        /// <summary>
-        /// CompareValidator1 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator1;
-        
-        /// <summary>
-        /// txtNote 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNote;
-        
-        /// <summary>
-        /// trMessage 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableRow trMessage;
-        
-        /// <summary>
-        /// lblMessage 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMessage;
-        
-        /// <summary>
-        /// btnSubmit 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmit;
+        protected global::System.Web.UI.WebControls.Label lblSatelliteProportionScore;
         
         /// <summary>
         /// btnReturn 控件。
@@ -164,5 +110,23 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnReturn;
+        
+        /// <summary>
+        /// rpResourceCalculateResultList 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpResourceCalculateResultList;
+        
+        /// <summary>
+        /// cpResourceCalculateResultPager 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpResourceCalculateResultPager;
     }
 }

@@ -47,8 +47,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 lblMessage.Text = string.Empty;
                 if (!IsPostBack)
                 {
-                    BindDataSource();
-                    BindSatNameDataSource();
+                    InitialPageData();
                     BindControls();
                 }
             }
@@ -75,14 +74,14 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
-                if (string.IsNullOrEmpty(dplSatName.SelectedValue))
+                if (string.IsNullOrEmpty(dplSatellite.SelectedValue))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "请选择卫星名称";
                     return;
                 }
 
-                if (string.IsNullOrEmpty(dplInfoSource.SelectedValue))
+                if (string.IsNullOrEmpty(dplSource.SelectedValue))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "请选择信源";
@@ -103,7 +102,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
-                if (dplInfoSource.SelectedValue == dplDdestination.SelectedValue)
+                if (dplSource.SelectedValue == dplDdestination.SelectedValue)
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "信源与信宿不能相同";
@@ -160,7 +159,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 }
                 //centerOutputPolicy.TaskID = dplTask.SelectedValue;
                 //centerOutputPolicy.SatName = dplSatName.SelectedValue;
-                centerOutputPolicy.InfoSource = Convert.ToInt32(dplInfoSource.SelectedValue);
+                centerOutputPolicy.InfoSource = Convert.ToInt32(dplSource.SelectedValue);
                 centerOutputPolicy.InfoType = Convert.ToInt32(dplInfoType.SelectedValue);
                 centerOutputPolicy.Ddestination = Convert.ToInt32(dplDdestination.SelectedValue);
                 centerOutputPolicy.EffectTime = effectTime;
@@ -221,59 +220,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <summary>
         /// 绑定控件数据源
         /// </summary>
-        private void BindDataSource()
+        private void InitialPageData()
         {
-            //绑定任务列表数据源
-            dplTask.Items.Clear();
-            dplTask.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyTaskList);
-            dplTask.DataTextField = "key";
-            dplTask.DataValueField = "value";
-            dplTask.DataBind();
-            dplTask.Items.Insert(0, new ListItem("请选择", ""));
+            dplTask.AllowBlankItem = false;
+            dplSatellite.AllowBlankItem = false;
+            dplSource.AllowBlankItem = false;
+            dplInfoType.AllowBlankItem = false;
+            dplDdestination.AllowBlankItem = false;
+
             dplTask.Enabled = false;
-
-            //绑定信源数据源
-            XYXSInfo xyxsInfo = new XYXSInfo();
-            dplInfoSource.Items.Clear();
-            //dplInfoSource.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyInfoSource);
-            dplInfoSource.DataSource = xyxsInfo.Cache;
-            dplInfoSource.DataTextField = "ADDRName";
-            dplInfoSource.DataValueField = "Id";
-            dplInfoSource.DataBind();
-            dplInfoSource.Items.Insert(0, new ListItem("请选择", ""));
-
-            //绑定信息类型数据源
-            InfoType xxType = new InfoType();
-            dplInfoType.Items.Clear();
-            //dplInfoType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyInfoType);
-            dplInfoType.DataSource = xxType.Cache;
-            dplInfoType.DataTextField = "DATANAME";
-            dplInfoType.DataValueField = "Id";
-            dplInfoType.DataBind();
-            dplInfoType.Items.Insert(0, new ListItem("请选择", ""));
-
-            //绑定信宿数据源
-            dplDdestination.Items.Clear();
-            //dplDdestination.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyDdestination);
-            dplDdestination.DataSource = xyxsInfo.Cache;
-            dplDdestination.DataTextField = "ADDRName";
-            dplDdestination.DataValueField = "Id";
-            dplDdestination.DataBind();
-            dplDdestination.Items.Insert(0, new ListItem("请选择", ""));
-        }
-        /// <summary>
-        /// 绑定卫星数据源
-        /// </summary>
-        private void BindSatNameDataSource()
-        {
-            dplSatName.Items.Clear();
-            Satellite satellite = new Satellite();
-            dplSatName.DataSource = satellite.Cache;
-            dplSatName.DataTextField = "WXMC";
-            dplSatName.DataValueField = "Id";
-            dplSatName.DataBind();
-            dplSatName.Items.Insert(0, new ListItem("请选择", ""));
-            dplSatName.Enabled = false;
+            dplSatellite.Enabled = false;
         }
 
         /// <summary>
@@ -286,11 +242,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
             centerOutputPolicy = centerOutputPolicy.SelectByID();
             if (centerOutputPolicy != null)
             {
-                dplTask.SelectedIndex = dplTask.Items.IndexOf(dplTask.Items.FindByValue(centerOutputPolicy.TaskID));
-                dplSatName.SelectedIndex = dplSatName.Items.IndexOf(dplSatName.Items.FindByValue(centerOutputPolicy.SatName));
-                dplInfoSource.SelectedIndex = dplInfoSource.Items.IndexOf(dplInfoSource.Items.FindByValue(centerOutputPolicy.InfoSource.ToString()));
-                dplInfoType.SelectedIndex = dplInfoType.Items.IndexOf(dplInfoType.Items.FindByValue(centerOutputPolicy.InfoType.ToString()));
-                dplDdestination.SelectedIndex = dplDdestination.Items.IndexOf(dplDdestination.Items.FindByValue(centerOutputPolicy.Ddestination.ToString()));
+                dplTask.SelectedValue = centerOutputPolicy.TaskID;
+                dplSatellite.SelectedValue = centerOutputPolicy.SatName;
+                dplSource.SelectedValue = centerOutputPolicy.InfoSource.ToString();
+                dplInfoType.SelectedValue = centerOutputPolicy.InfoType.ToString();
+                dplDdestination.SelectedValue = centerOutputPolicy.Ddestination.ToString();
                 txtEffectTime.Text = centerOutputPolicy.EffectTime.ToString("yyyy-MM-dd");
                 txtDefectTime.Text = centerOutputPolicy.DefectTime.ToString("yyyy-MM-dd");
                 txtNote.Text = centerOutputPolicy.Note;

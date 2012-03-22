@@ -120,11 +120,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
         }
 
         /// <summary>
-        /// 提交添加资源需求记录
+        /// 提交保存资源需求记录
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void btnAdd_Click(object sender, EventArgs e)
+        protected void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
@@ -266,6 +266,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             ViewState["ResourceRequirement"] = null;
             BindResourceRequirementList();
+            txtTimeBenchmark.Text = string.Empty;
+            dplTimeBenchmarkHour.SelectedIndex = 0;
+            dplTimeBenchmarkMinute.SelectedIndex = 0;
+            dplTimeBenchmarkSecond.SelectedIndex = 0;
             ResetControls();
         }
 
@@ -296,8 +300,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"时间基准格式错误，计算失败。\")", true);
                     return;
                 }
+                timeBenchmark = timeBenchmark.AddHours(Convert.ToDouble(dplTimeBenchmarkHour.SelectedValue));
+                timeBenchmark = timeBenchmark.AddMinutes(Convert.ToDouble(dplTimeBenchmarkMinute.SelectedValue));
+                timeBenchmark = timeBenchmark.AddSeconds(Convert.ToDouble(dplTimeBenchmarkSecond.SelectedValue));
 
-                string xmlStr = ResourceRequirement.GeneraterResourceCalculateXML(timeBenchmark, ResourceRequirementList);
+                string xmlStr = ResourceRequirement.GenerateResourceCalculateXML(timeBenchmark, ResourceRequirementList);
                 if (string.IsNullOrEmpty(xmlStr))
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"请添加资源需求，计算失败。\")", true);
@@ -354,7 +361,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
         }
         /// <summary>
-        /// 编辑资源需求
+        /// 编辑资源需求(功能暂时隐藏)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -374,7 +381,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
                 lblRequirementName.Text = resourceRequirement.RequirementName;
                 hidWXBMIndex.Value = resourceRequirement.WXBMIndex.ToString();
-                txtTimeBenchmark.Text = resourceRequirement.TimeBenchmark;
+                //txtTimeBenchmark.Text = Convert.ToDateTime(resourceRequirement.TimeBenchmark).ToString("yyyy-MM-dd");
+                //dplTimeBenchmarkHour.SelectedValue = Convert.ToDateTime(resourceRequirement.TimeBenchmark).Hour.ToString();
+                //dplTimeBenchmarkMinute.SelectedValue = Convert.ToDateTime(resourceRequirement.TimeBenchmark).Minute.ToString();
+                //dplTimeBenchmarkSecond.SelectedValue = Convert.ToDateTime(resourceRequirement.TimeBenchmark).Second.ToString();
                 txtPriority.Text = resourceRequirement.Priority.ToString();
                 dplSatName.SelectedValue = resourceRequirement.WXBM;
                 dplFunctionType.SelectedValue = resourceRequirement.FunctionType;
@@ -390,7 +400,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             { }
         }
         /// <summary>
-        /// 删除资源需求
+        /// 删除资源需求(功能暂时隐藏)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -509,12 +519,18 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "开始时间格式错误";
                     return;
                 }
+                beginTime = beginTime.AddHours(Convert.ToDouble(dplBeginTimeHour.SelectedValue));
+                beginTime = beginTime.AddMinutes(Convert.ToDouble(dplBeginTimeMinute.SelectedValue));
+                beginTime = beginTime.AddSeconds(Convert.ToDouble(dplBeginTimeSecond.SelectedValue));
                 if (!DateTime.TryParse(txtEndTime.Text.Trim(), out endTime))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "结束时间格式错误";
                     return;
                 }
+                endTime = endTime.AddHours(Convert.ToDouble(dplEndTimeHour.SelectedValue));
+                endTime = endTime.AddMinutes(Convert.ToDouble(dplEndTimeMinute.SelectedValue));
+                endTime = endTime.AddSeconds(Convert.ToDouble(dplEndTimeSecond.SelectedValue));
                 if (beginTime > endTime)
                 {
                     trMessage.Visible = true;
@@ -633,6 +649,32 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplFunctionType.DataTextField = "key";
             dplFunctionType.DataValueField = "value";
             dplFunctionType.DataBind();
+
+            dplBeginTimeHour.Items.Clear();
+            dplEndTimeHour.Items.Clear();
+            dplTimeBenchmarkHour.Items.Clear();
+            for (int i = 0; i < 24; i++)
+            {
+                dplBeginTimeHour.Items.Add(new ListItem(i.ToString() + "时", i.ToString()));
+                dplEndTimeHour.Items.Add(new ListItem(i.ToString() + "时", i.ToString()));
+                dplTimeBenchmarkHour.Items.Add(new ListItem(i.ToString() + "时", i.ToString()));
+            }
+            dplBeginTimeMinute.Items.Clear();
+            dplEndTimeMinute.Items.Clear();
+            dplTimeBenchmarkMinute.Items.Clear();
+            dplBeginTimeSecond.Items.Clear();
+            dplEndTimeSecond.Items.Clear();
+            dplTimeBenchmarkSecond.Items.Clear();
+            for (int i = 0; i < 60; i++)
+            {
+                dplBeginTimeMinute.Items.Add(new ListItem(i.ToString() + "分", i.ToString()));
+                dplEndTimeMinute.Items.Add(new ListItem(i.ToString() + "分", i.ToString()));
+                dplTimeBenchmarkMinute.Items.Add(new ListItem(i.ToString() + "分", i.ToString()));
+
+                dplBeginTimeSecond.Items.Add(new ListItem(i.ToString() + "秒", i.ToString()));
+                dplEndTimeSecond.Items.Add(new ListItem(i.ToString() + "秒", i.ToString()));
+                dplTimeBenchmarkSecond.Items.Add(new ListItem(i.ToString() + "秒", i.ToString()));
+            }       
         }
         /// <summary>
         /// 根据卫星编码生成卫星序号
@@ -736,6 +778,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             txtBeginTime.Text = string.Empty;
             txtEndTime.Text = string.Empty;
+            dplBeginTimeHour.SelectedIndex = 0;
+            dplBeginTimeMinute.SelectedIndex = 0;
+            dplBeginTimeSecond.SelectedIndex = 0;
+            dplEndTimeHour.SelectedIndex = 0;
+            dplEndTimeMinute.SelectedIndex = 0;
+            dplEndTimeSecond.SelectedIndex = 0;
             trMessage.Visible = false;
             lblMessage.Text = string.Empty;
         }
@@ -757,7 +805,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             lblRequirementName.Text = string.Empty;
             hidWXBMIndex.Value = string.Empty;
-            txtTimeBenchmark.Text = string.Empty;
+            //txtTimeBenchmark.Text = string.Empty;
             txtPriority.Text = string.Empty;
             dplSatName.SelectedIndex = 0;
             dplFunctionType.SelectedIndex = 0;
@@ -770,6 +818,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
             txtBeginTime.Text = string.Empty;
             txtEndTime.Text = string.Empty;
+            dplBeginTimeHour.SelectedIndex = 0;
+            dplBeginTimeMinute.SelectedIndex = 0;
+            dplBeginTimeSecond.SelectedIndex = 0;
+            dplEndTimeHour.SelectedIndex = 0;
+            dplEndTimeMinute.SelectedIndex = 0;
+            dplEndTimeSecond.SelectedIndex = 0;
             ViewState["PeriodOfTime"] = null;
             BindPeriodOfTimeList();
         }

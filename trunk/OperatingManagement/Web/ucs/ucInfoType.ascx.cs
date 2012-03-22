@@ -11,11 +11,20 @@ namespace OperatingManagement.Web.ucs
     public partial class ucInfoType : System.Web.UI.UserControl
     {
         private bool isAllowBlankItem = true;
+        private string blankItemText = "请选择";
+        private string blankItemValue = "0";
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
+            {
                 BindDataSource();
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
         }
 
         private void BindDataSource()
@@ -27,34 +36,41 @@ namespace OperatingManagement.Web.ucs
             InfoTypeList.DataValueField = "id";
             InfoTypeList.DataBind();
             if (isAllowBlankItem)
-                InfoTypeList.Items.Insert(0, new ListItem("请选择", "0"));
+                InfoTypeList.Items.Insert(0, new ListItem(blankItemText, blankItemValue));
         }
 
         public ListItem SelectedItem
         {
-            get {
-                return InfoTypeList.SelectedItem;
-            }
+            get { return InfoTypeList.SelectedItem; }
+        }
+
+        public string SelectedValue
+        {
+            get { return InfoTypeList.SelectedValue; }
+            set { InfoTypeList.SelectedValue = value; }
         }
 
         public bool AllowBlankItem
         {
-            set
-            {
-                isAllowBlankItem = value;
-            }
+            set { isAllowBlankItem = value; }
+        }
+
+        public string BlankItemText
+        {
+            get { return blankItemText; }
+            set { blankItemText = value; }
+        }
+
+        public string BlankItemValue
+        {
+            get { return blankItemValue; }
+            set { blankItemValue = value; }
         }
 
         public int SelectedIndex
         {
-            set
-            {
-                InfoTypeList.SelectedIndex = value;
-            }
-            get
-            {
-                return InfoTypeList.SelectedIndex;
-            }
+            set { InfoTypeList.SelectedIndex = value; }
+            get { return InfoTypeList.SelectedIndex; }
         }
     }
 }

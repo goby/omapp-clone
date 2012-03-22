@@ -42,7 +42,8 @@ create or replace procedure UP_ComRes_Insert
 is
 begin  
        savepoint p1;
-       v_CRID:=to_number(fn_genseqnum('4003'));
+       --v_CRID:=to_number(fn_genseqnum('4003'));
+	   Select SEQ_TB_CommunicationResource.NEXTVAL INTO v_CRID From DUAL;
        Insert into TB_CommunicationResource(CRID,RouteName,RouteCode,Direction,BandWidth,Status,ExtProperties,CreatedTime,CreatedUserID,UpdatedTime,UpdatedUserID) 
        Values(v_CRID,p_RouteName,p_RouteCode,p_Direction,p_BandWidth,p_Status,p_ExtProperties,p_CreatedTime,p_CreatedUserID,p_UpdatedTime,p_UpdatedUserID);
        commit;
