@@ -11,6 +11,8 @@ namespace OperatingManagement.Web.ucs
     public partial class ucTask : System.Web.UI.UserControl
     {
         private bool isAllowBlankItem = true;
+        private string blankItemText = "请选择";
+        private string blankItemValue = "0";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -22,48 +24,53 @@ namespace OperatingManagement.Web.ucs
                 TaskList.DataValueField = "value";
                 TaskList.DataBind();
                 if (isAllowBlankItem)
-                    TaskList.Items.Insert(0, new ListItem("请选择", ""));
+                    TaskList.Items.Insert(0, new ListItem(blankItemText, blankItemValue));
             }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {  
+            base.OnInit(e);
         }
 
         public ListItem SelectedItem
         {
-            get
-            {
-                return TaskList.SelectedItem;
-            }
-        }
-
-        public bool AllowBlankItem
-        {
-            set
-            {
-                isAllowBlankItem = value;
-            }
-        }
-
-        public int SelectedIndex
-        {
-            set
-            {
-                TaskList.SelectedIndex = value;
-            }
-            get
-            {
-                return TaskList.SelectedIndex;
-            }
+            get { return TaskList.SelectedItem; }
         }
 
         public string SelectedValue
         {
-            set
-            {
-                TaskList.SelectedValue = value;
-            }
-            get
-            {
-                return TaskList.SelectedItem.Value;
-            }
+            get { return TaskList.SelectedValue; }
+            set { TaskList.SelectedValue = value; }
+        }
+
+        public bool AllowBlankItem
+        {
+            set { isAllowBlankItem = value; }
+        }
+
+        public string BlankItemText
+        {
+            get { return blankItemText; }
+            set { blankItemText = value; }
+        }
+
+        public string BlankItemValue
+        {
+            get { return blankItemValue; }
+            set { blankItemValue = value; }
+        }
+
+        public int SelectedIndex
+        {
+            set { TaskList.SelectedIndex = value; }
+            get { return TaskList.SelectedIndex; }
+        }
+
+        public bool Enabled
+        {
+            set { TaskList.Enabled = value; }
+            get { return TaskList.Enabled; }
         }
     }
 }
