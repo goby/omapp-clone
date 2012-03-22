@@ -114,7 +114,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindResourceCalculateList();
                     return;
                 }
-                string url = @"~/Views/BusinessManage/ResourceCalculateView.aspx?rcid=" + Server.UrlEncode(lbtnCalculateResultView.CommandArgument);
+                string url = @"~/Views/BusinessManage/ResourceCalculateResultView.aspx?rcid=" + Server.UrlEncode(lbtnCalculateResultView.CommandArgument);
                 Response.Redirect(url);
             }
             catch (System.Threading.ThreadAbortException ex1)
@@ -304,6 +304,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }  
         }
 
+        public override void OnPageLoaded()
+        {
+            this.ShortTitle = "资源调度计算结果查询";
+            this.SetTitle();
+        }
+
         #region ItemDataBound
         /// <summary>
         /// 资源计算结果单条数据绑定
@@ -328,12 +334,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
         }
 
         #endregion
-
-        public override void OnPageLoaded()
-        {
-            this.ShortTitle = "资源调度计算结果查询";
-            this.SetTitle();
-        }
 
         #region Method
         /// <summary>

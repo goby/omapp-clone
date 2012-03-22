@@ -190,6 +190,7 @@
     <Content Include="Views\BusinessManage\MeasureDataList.aspx" />
     <Content Include="Views\BusinessManage\ResourceAdd.aspx" />
     <Content Include="Views\BusinessManage\ResourceCalculateManage.aspx" />
+    <Content Include="Views\BusinessManage\ResourceCalculateResultView.aspx" />
     <Content Include="Views\BusinessManage\ResourceEdit.aspx" />
     <Content Include="Views\BusinessManage\ResourceManage.aspx" />
     <Content Include="Views\BusinessManage\ResourceRequirementAdd.aspx" />
@@ -414,6 +415,13 @@
     </Compile>
     <Compile Include="Views\BusinessManage\ResourceCalculateManage.aspx.designer.cs">
       <DependentUpon>ResourceCalculateManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ResourceCalculateResultView.aspx.cs">
+      <DependentUpon>ResourceCalculateResultView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ResourceCalculateResultView.aspx.designer.cs">
+      <DependentUpon>ResourceCalculateResultView.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\ResourceEdit.aspx.cs">
       <DependentUpon>ResourceEdit.aspx</DependentUpon>

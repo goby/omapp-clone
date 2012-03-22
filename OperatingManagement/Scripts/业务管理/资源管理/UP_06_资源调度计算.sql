@@ -43,7 +43,8 @@ create or replace procedure UP_ResCalculate_Insert
 is
 begin  
        savepoint p1;
-       v_RCID:=to_number(fn_genseqnum('4007'));
+       --v_RCID:=to_number(fn_genseqnum('4007'));
+       Select SEQ_TB_ResourceCalculate.NEXTVAL INTO v_RCID From DUAL;
        Insert into TB_ResourceCalculate(RCID,RequirementFileDirectory,RequirementFileName,RequirementFileDisplayName,ResultFileDirectory,ResultFileName,ResultFileDisplayName,ResultFileSource,CalculateResult,Status,CreatedTime,CreatedUserID,UpdatedTime,UpdatedUserID) 
        Values(v_RCID,p_RequirementFileDirectory,p_RequirementFileName,p_RequirementFileDisplayName,p_ResultFileDirectory,p_ResultFileName,p_ResultFileDisplayName,p_ResultFileSource,p_CalculateResult,p_Status,p_CreatedTime,p_CreatedUserID,p_UpdatedTime,p_UpdatedUserID);
        commit;

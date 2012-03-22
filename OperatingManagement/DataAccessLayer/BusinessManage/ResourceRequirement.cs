@@ -65,7 +65,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         #region -Public Method-
 
-        public static string GeneraterResourceCalculateXML(DateTime timeBenchmark, List<ResourceRequirement> resourceRequirementList)
+        public static string GenerateResourceCalculateXML(DateTime timeBenchmark, List<ResourceRequirement> resourceRequirementList)
         {
             StringBuilder strBuilder = new StringBuilder("");
             if (resourceRequirementList != null && resourceRequirementList.Count > 0)

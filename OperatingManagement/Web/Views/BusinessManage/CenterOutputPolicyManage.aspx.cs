@@ -29,7 +29,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 if (!IsPostBack)
                 {
                     BindDataSource();
-                    BindSatNameDataSource();
+                    BindSatelliteDataSource();
                     BindCOPList();
                 }
             }
@@ -156,26 +156,25 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void BindDataSource()
         {
-            dplTask.Items.Clear();
-            dplTask.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyTaskList);
-            dplTask.DataTextField = "key";
-            dplTask.DataValueField = "value";
-            dplTask.DataBind();
-            dplTask.Items.Insert(0, new ListItem("全部", ""));
+            //dplTask.Items.Clear();
+            //dplTask.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyTaskList);
+            //dplTask.DataTextField = "key";
+            //dplTask.DataValueField = "value";
+            //dplTask.DataBind();
+            //dplTask.Items.Insert(0, new ListItem("全部", ""));
+            dplTask.AllowBlankItem = true;
+            dplTask.BlankItemText = "请选择";
+            dplTask.BlankItemValue = "";
         }
 
         /// <summary>
         /// 绑定卫星数据源
         /// </summary>
-        private void BindSatNameDataSource()
+        private void BindSatelliteDataSource()
         {
-            dplSatName.Items.Clear();
-            Satellite satellite = new Satellite();
-            dplSatName.DataSource = satellite.Cache;
-            dplSatName.DataTextField = "WXMC";
-            dplSatName.DataValueField = "Id";
-            dplSatName.DataBind();
-            dplSatName.Items.Insert(0, new ListItem("全部", ""));
+            dplSatellite.AllowBlankItem = true;
+            dplSatellite.BlankItemText = "请选择";
+            dplSatellite.BlankItemValue = "";
         }
 
         /// <summary>
@@ -185,7 +184,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             CenterOutputPolicy centerOutputPolicy = new CenterOutputPolicy();
             centerOutputPolicy.TaskID = dplTask.SelectedValue;
-            centerOutputPolicy.SatName = dplSatName.SelectedValue;
+            centerOutputPolicy.SatName = dplSatellite.SelectedValue;
             cpPager.DataSource = centerOutputPolicy.SelectByParameters();
             cpPager.PageSize = this.SiteSetting.PageSize;
             cpPager.BindToControl = rpCOPList;

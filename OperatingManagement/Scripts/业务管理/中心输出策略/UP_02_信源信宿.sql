@@ -17,5 +17,5 @@ create or replace procedure UP_XYXSINFO_SelectAll
 is
 begin
        open o_Cursor for
-            Select * From TB_XYXSINFO Order By RID Desc;
+            Select * From TB_XYXSINFO Order By ADDRName;
 end;

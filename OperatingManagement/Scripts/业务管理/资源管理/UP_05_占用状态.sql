@@ -45,7 +45,8 @@ create or replace procedure UP_UseStatus_Insert
 is
 begin  
        savepoint p1;
-       v_USID:=to_number(fn_genseqnum('4006'));
+       --v_USID:=to_number(fn_genseqnum('4006'));
+       Select SEQ_TB_UseStatus.NEXTVAL INTO v_USID From DUAL;
        Insert into TB_UseStatus(USID,ResourceID,ResourceType,UsedType,BeginTime,EndTime,UsedBy,UsedCategory,UsedFor,CanBeUsed,CreatedTime,CreatedUserID,UpdatedTime,UpdatedUserID) 
        Values(v_USID,p_ResourceID,p_ResourceType,p_UsedType,p_BeginTime,p_EndTime,p_UsedBy,p_UsedCategory,p_UsedFor,p_CanBeUsed,p_CreatedTime,p_CreatedUserID,p_UpdatedTime,p_UpdatedUserID);
        commit;

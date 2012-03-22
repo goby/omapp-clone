@@ -42,7 +42,8 @@ create or replace procedure UP_HealthStatus_Insert
 is
 begin  
        savepoint p1;
-       v_HSID:=to_number(fn_genseqnum('4005'));
+       --v_HSID:=to_number(fn_genseqnum('4005'));
+	     Select SEQ_TB_HealthStatus.NEXTVAL INTO v_HSID From DUAL;
        Insert into TB_HealthStatus(HSID,ResourceID,ResourceType,FunctionType,Status,BeginTime,EndTime,CreatedTime,CreatedUserID,UpdatedTime,UpdatedUserID) 
        Values(v_HSID,p_ResourceID,p_ResourceType,p_FunctionType,p_Status,p_BeginTime,p_EndTime,p_CreatedTime,p_CreatedUserID,p_UpdatedTime,p_UpdatedUserID);
        commit;

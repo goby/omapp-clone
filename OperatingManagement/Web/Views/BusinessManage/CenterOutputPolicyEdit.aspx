@@ -1,6 +1,11 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
     CodeBehind="CenterOutputPolicyEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyEdit" %>
 
+<%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
+<%@ Register src="../../ucs/ucXYXSInfo.ascx" tagname="ucXYXSInfo" tagprefix="uc2" %>
+<%@ Register src="../../ucs/ucInfoType.ascx" tagname="ucInfoType" tagprefix="uc3" %>
+<%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc4" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -25,10 +30,7 @@
                 任务代号(<span class="red">*</span>)
             </th>
             <td>
-                <asp:DropDownList ID="dplTask" runat="server" CssClass="norDpl">
-                </asp:DropDownList>
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic"
-                    ForeColor="Red" ControlToValidate="dplTask" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <uc1:ucTask ID="dplTask" runat="server" />
             </td>
         </tr>
         <tr>
@@ -36,10 +38,7 @@
                 卫星名称(<span class="red">*</span>)
             </th>
             <td>
-                <asp:DropDownList ID="dplSatName" runat="server" CssClass="norDpl">
-                </asp:DropDownList>
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic"
-                    ForeColor="Red" ControlToValidate="dplSatName" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <uc4:ucSatellite ID="dplSatellite" runat="server" />
             </td>
         </tr>
         <tr>
@@ -47,10 +46,7 @@
                 信源(<span class="red">*</span>)
             </th>
             <td>
-                <asp:DropDownList ID="dplInfoSource" runat="server" CssClass="norDpl">
-                </asp:DropDownList>
-                <asp:RequiredFieldValidator ID="rfv1" runat="server" Display="Dynamic" ForeColor="Red"
-                    ControlToValidate="dplInfoSource" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <uc2:ucXYXSInfo ID="dplSource" runat="server" />
             </td>
         </tr>
         <tr>
@@ -58,10 +54,7 @@
                 信息类别(<span class="red">*</span>)
             </th>
             <td>
-                <asp:DropDownList ID="dplInfoType" runat="server" CssClass="norDpl">
-                </asp:DropDownList>
-                <asp:RequiredFieldValidator ID="rfv2" runat="server" Display="Dynamic" ForeColor="Red"
-                    ControlToValidate="dplInfoType" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <uc3:ucInfoType ID="dplInfoType" runat="server" />
             </td>
         </tr>
         <tr>
@@ -69,10 +62,7 @@
                 信宿(<span class="red">*</span>)
             </th>
             <td>
-                <asp:DropDownList ID="dplDdestination" runat="server" CssClass="norDpl">
-                </asp:DropDownList>
-                <asp:RequiredFieldValidator ID="rfv3" runat="server" Display="Dynamic" ForeColor="Red"
-                    ControlToValidate="dplDdestination" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <uc2:ucXYXSInfo ID="dplDdestination" runat="server" />
             </td>
         </tr>
         <tr>

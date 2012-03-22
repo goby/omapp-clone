@@ -42,7 +42,8 @@ create or replace procedure UP_CenterRes_Insert
 is
 begin  
        savepoint p1;
-       v_CRID:=to_number(fn_genseqnum('4004'));
+       --v_CRID:=to_number(fn_genseqnum('4004'));
+	   Select SEQ_TB_CenterResource.NEXTVAL INTO v_CRID From DUAL;
        Insert into TB_CenterResource(CRID,EquipmentCode,EquipmentType,SupportTask,DataProcess,Status,ExtProperties,CreatedTime,CreatedUserID,UpdatedTime,UpdatedUserID) 
        Values(v_CRID,p_EquipmentCode,p_EquipmentType,p_SupportTask,p_DataProcess,p_Status,p_ExtProperties,p_CreatedTime,p_CreatedUserID,p_UpdatedTime,p_UpdatedUserID);
        commit;

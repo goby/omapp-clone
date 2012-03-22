@@ -21,7 +21,7 @@
       <item id="4-5" title="资源状态管理" roles="OMB_ResStaMan.View" href="Views/BusinessManage/ResourceStatusManage.aspx" />
       <item id="4-6" title="新增资源状态" roles="OMB_ResStaMan.View" href="Views/BusinessManage/ResourceStatusAdd.aspx" />
       <item id="4-7" title="资源调度计算" roles="OMB_ResCac.Caculate" href="Views/BusinessManage/ResourceRequirementAdd.aspx" />
-      <item id="4-8" title="查看资源调度计算结果" roles="OMB_ResCac.View" href="#" />
+      <item id="4-8" title="查看资源调度计算结果" roles="OMB_ResCac.View" href="Views/BusinessManage/ResourceCalculateManage.aspx" />
     </menu>
     <menu title="轨道分析">
       <item id="5-1" title="轨道参数转换" roles="OMB_CSZH.Caculate" href="Views/BusinessManage/OrbitParaCalculate.aspx" />

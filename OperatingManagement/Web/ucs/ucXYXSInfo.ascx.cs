@@ -11,11 +11,20 @@ namespace OperatingManagement.Web.ucs
     public partial class ucXYXSInfo : System.Web.UI.UserControl
     {
         private bool isAllowBlankItem = true;
+        private string blankItemText = "请选择";
+        private string blankItemValue = "0";
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
+            {
                 BindDataSource();
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
         }
 
         private void BindDataSource()
@@ -27,29 +36,41 @@ namespace OperatingManagement.Web.ucs
             XYXSList.DataValueField = "id";
             XYXSList.DataBind();
             if (isAllowBlankItem)
-                XYXSList.Items.Insert(0, new ListItem("请选择", "0"));
+                XYXSList.Items.Insert(0, new ListItem(blankItemText, blankItemValue));
         }
 
         public ListItem SelectedItem
         {
-            get
-            {
-                return XYXSList.SelectedItem;
-            }
+            get { return XYXSList.SelectedItem; }
+        }
+
+        public string SelectedValue
+        {
+            get { return XYXSList.SelectedValue; }
+            set { XYXSList.SelectedValue = value; }
+        }
+
+        public bool AllowBlankItem
+        {
+            set { isAllowBlankItem = value; }
+        }
+
+        public string BlankItemText
+        {
+            get { return blankItemText; }
+            set { blankItemText = value; }
+        }
+
+        public string BlankItemValue
+        {
+            get { return blankItemValue; }
+            set { blankItemValue = value; }
         }
 
         public int SelectedIndex
         {
             get { return XYXSList.SelectedIndex; }
             set { XYXSList.SelectedIndex = value; }
-        }
-
-        public bool AllowBlankItem
-        {
-            set
-            {
-                isAllowBlankItem = value;
-            }
         }
     }
 }

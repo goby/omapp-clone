@@ -4,7 +4,6 @@
 <%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
 <%@ Register src="../../ucs/ucXYXSInfo.ascx" tagname="ucXYXSInfo" tagprefix="uc2" %>
 <%@ Register src="../../ucs/ucInfoType.ascx" tagname="ucInfoType" tagprefix="uc3" %>
-
 <%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc4" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
@@ -31,7 +30,7 @@
                 任务代号(<span class="red">*</span>)
             </th>
             <td>
-                <uc1:ucTask ID="ddlTask" runat="server" />
+                <uc1:ucTask ID="dplTask" runat="server" />
             </td>
         </tr>
         <tr>
@@ -39,7 +38,7 @@
                 卫星名称(<span class="red">*</span>)
             </th>
             <td>
-                <uc4:ucSatellite ID="ddlSatellite" runat="server" />
+                <uc4:ucSatellite ID="dplSatellite" runat="server" />
             </td>
         </tr>
         <tr>
@@ -47,7 +46,7 @@
                 信源(<span class="red">*</span>)
             </th>
             <td>
-                <uc2:ucXYXSInfo ID="ddlSource" runat="server" />
+                <uc2:ucXYXSInfo ID="dplSource" runat="server" />
             </td>
         </tr>
         <tr>
@@ -55,7 +54,7 @@
                 信息类别(<span class="red">*</span>)
             </th>
             <td>
-                <uc3:ucInfoType ID="ddlInfoType" runat="server" />
+                <uc3:ucInfoType ID="dplInfoType" runat="server" />
             </td>
         </tr>
         <tr>
@@ -63,7 +62,7 @@
                 信宿(<span class="red">*</span>)
             </th>
             <td>
-                <uc2:ucXYXSInfo ID="ddlDdestination" runat="server" />
+                <uc2:ucXYXSInfo ID="dplDdestination" runat="server" />
             </td>
         </tr>
         <tr>

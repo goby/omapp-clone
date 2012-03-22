@@ -44,7 +44,8 @@ create or replace procedure UP_COP_Insert
 is
 begin  
        savepoint p1;
-       v_COPID:=to_number(fn_genseqnum('4001'));
+       --v_COPID:=to_number(fn_genseqnum('4001'));
+       Select SEQ_TB_CenterOutputPolicy.NEXTVAL INTO v_COPID FROM DUAL;
        Insert into TB_CenterOutputPolicy(COPID,TaskID,SatName,InfoSource,InfoType,DDestination,EffectTime,DefectTime,Note,CreatedTime,CreatedUserID,UpdatedTime,UpdatedUserID) Values(v_COPID,p_TaskID,p_SatName,p_InfoSource,p_InfoType,p_DDestination,p_EffectTime,p_DefectTime,p_Note,p_CreatedTime,p_CreatedUserID,p_UpdatedTime,p_UpdatedUserID);
        commit;
        v_Result:=5; -- Success
