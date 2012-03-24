@@ -114,6 +114,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 //communicationResource.Status = 1;//正常，状态不更新
                 //communicationResource.CreatedTime = DateTime.Now;//创建时间不更新
                 communicationResource.UpdatedTime = DateTime.Now;
+                communicationResource.UpdatedUserID = LoginUserInfo.Id;
 
                 if (communicationResource.HaveActiveRouteCode())
                 {
@@ -160,7 +161,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         public override void OnPageLoaded()
         {
-            this.ShortTitle = "通信资源编辑";
+            this.ShortTitle = "编辑通信资源";
             this.SetTitle();
         }
 
@@ -175,7 +176,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplDirection.DataTextField = "key";
             dplDirection.DataValueField = "value";
             dplDirection.DataBind();
-            dplDirection.Items.Insert(0, new ListItem("请选择", ""));
+            //dplDirection.Items.Insert(0, new ListItem("请选择", ""));
         }
         /// <summary>
         /// 绑定控件值

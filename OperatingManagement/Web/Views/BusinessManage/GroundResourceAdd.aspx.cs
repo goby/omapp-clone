@@ -117,7 +117,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 groundResource.FunctionType = functionType;
                 groundResource.Status = 1;//正常
                 groundResource.CreatedTime = DateTime.Now;
-                groundResource.UpdatedTime = DateTime.Now;
+                groundResource.CreatedUserID = LoginUserInfo.Id;
 
                 if (groundResource.HaveActiveGRCode())
                 {
@@ -166,7 +166,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_GRes.Add";
-            this.ShortTitle = "地面站资源添加";
+            this.ShortTitle = "新增地面站资源";
             this.SetTitle();
         }
 
@@ -181,14 +181,14 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplOwner.DataTextField = "key";
             dplOwner.DataValueField = "value";
             dplOwner.DataBind();
-            dplOwner.Items.Insert(0, new ListItem("请选择", ""));
+            //dplOwner.Items.Insert(0, new ListItem("请选择", ""));
 
             dplCoordinate.Items.Clear();
             dplCoordinate.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.GroundResourceCoordinate);
             dplCoordinate.DataTextField = "key";
             dplCoordinate.DataValueField = "value";
             dplCoordinate.DataBind();
-            dplCoordinate.Items.Insert(0, new ListItem("请选择", ""));
+            //dplCoordinate.Items.Insert(0, new ListItem("请选择", ""));
 
             cblFunctionType.Items.Clear();
             cblFunctionType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.GroundResourceFunctionType);

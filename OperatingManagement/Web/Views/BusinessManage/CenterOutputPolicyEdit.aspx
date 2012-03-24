@@ -12,10 +12,10 @@
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="bizmanage" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuIndex" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    中心输出策略管理 &gt; 修改中心输出策略
+    中心输出策略管理 &gt; 编辑中心输出策略
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <script type="text/javascript">

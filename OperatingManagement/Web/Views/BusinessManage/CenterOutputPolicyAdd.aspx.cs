@@ -141,7 +141,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 centerOutputPolicy.DefectTime = defectTime;
                 centerOutputPolicy.Note = txtNote.Text.Trim();
                 centerOutputPolicy.CreatedTime = DateTime.Now;
-                centerOutputPolicy.UpdatedTime = DateTime.Now;
+                centerOutputPolicy.CreatedUserID = LoginUserInfo.Id;
                 if (centerOutputPolicy.HaveEffectivePolicy())
                 {
                     trMessage.Visible = true;
@@ -188,7 +188,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         
         public override void OnPageLoaded()
         {
-            this.ShortTitle = "中心输出策略添加";
+            this.ShortTitle = "新增中心输出策略";
             this.SetTitle();
         }
 

@@ -85,7 +85,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 centerResource.DataProcess = txtDataProcess.Text.Trim();
                 centerResource.Status = 1;//正常
                 centerResource.CreatedTime = DateTime.Now;
-                centerResource.UpdatedTime = DateTime.Now;
+                centerResource.CreatedUserID = LoginUserInfo.Id;
 
                 if (centerResource.HaveActiveEquipmentCode())
                 {
@@ -134,7 +134,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_CRes.Add";
-            this.ShortTitle = "中心资源添加";
+            this.ShortTitle = "新增中心资源";
             this.SetTitle();
         }
 
@@ -149,7 +149,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplEquipmentType.DataTextField = "key";
             dplEquipmentType.DataValueField = "value";
             dplEquipmentType.DataBind();
-            dplEquipmentType.Items.Insert(0, new ListItem("请选择", ""));
+            //dplEquipmentType.Items.Insert(0, new ListItem("请选择", ""));
         }
         /// <summary>
         /// 添加完成后将控件设置为初始状态

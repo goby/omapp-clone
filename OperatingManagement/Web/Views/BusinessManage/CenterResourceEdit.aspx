@@ -7,10 +7,10 @@
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="bizmanage" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuIndex" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    业务管理 &gt; 修改中心资源
+    业务管理 &gt; 编辑中心资源
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="edit" style="width: 800px;">

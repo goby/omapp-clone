@@ -9,7 +9,7 @@
 <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-业务管理 &gt; 资源状态管理
+业务管理 &gt; 查询资源状态
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
 <script type="text/javascript">
@@ -111,10 +111,10 @@
                         <%# SystemParameters.GetSystemParameterText(SystemParametersType.HealthStatus, Eval("Status").ToString())%>
                     </td>
                     <td>
-                         <%# Eval("BeginTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
+                         <%# Eval("BeginTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
                     </td>
                     <td>
-                        <%# Eval("EndTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
+                        <%# Eval("EndTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
                     </td>
                 </tr>
             </ItemTemplate>
@@ -137,22 +137,22 @@
             <HeaderTemplate>
                 <table class="list">
                     <tr>
-                         <th style="width: 10%;">
+                         <th style="width: 8%;">
                             资源类型
                         </th>
                         <th style="width: 10%;">
                             资源名称
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 8%;">
                             资源编号
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 8%;">
                             占用类型
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 13%;">
                             起始时间
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 13%;">
                             结束时间
                         </th>
                           <th style="width: 10%;">
@@ -185,10 +185,10 @@
                         <%# SystemParameters.GetSystemParameterText(SystemParametersType.UseStatusUsedType, Eval("UsedType").ToString())%>
                     </td>
                     <td>
-                         <%# Eval("BeginTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
+                         <%# Eval("BeginTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
                     </td>
                     <td>
-                        <%# Eval("EndTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
+                        <%# Eval("EndTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
                     </td>
                      <td>
                         <%# Eval("UsedBy")%>

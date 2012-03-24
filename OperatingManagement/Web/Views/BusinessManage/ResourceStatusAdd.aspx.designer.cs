@@ -157,6 +157,24 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.TextBox txtBeginTime;
         
         /// <summary>
+        /// dplBeginTimeHour 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dplBeginTimeHour;
+        
+        /// <summary>
+        /// dplBeginTimeMinute 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dplBeginTimeMinute;
+        
+        /// <summary>
         /// RequiredFieldValidator3 控件。
         /// </summary>
         /// <remarks>
@@ -173,6 +191,24 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEndTime;
+        
+        /// <summary>
+        /// dplEndTimeHour 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dplEndTimeHour;
+        
+        /// <summary>
+        /// dplEndTimeMinute 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dplEndTimeMinute;
         
         /// <summary>
         /// RequiredFieldValidator4 控件。
@@ -317,6 +353,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMessage;
+        
+        /// <summary>
+        /// lbtnReSubmit 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtnReSubmit;
         
         /// <summary>
         /// btnSubmit 控件。

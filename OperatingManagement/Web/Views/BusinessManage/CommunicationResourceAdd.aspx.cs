@@ -85,7 +85,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 communicationResource.BandWidth = txtBandWidth.Text.Trim();
                 communicationResource.Status = 1;//正常
                 communicationResource.CreatedTime = DateTime.Now;
-                communicationResource.UpdatedTime = DateTime.Now;
+                communicationResource.CreatedUserID = LoginUserInfo.Id;
 
                 if (communicationResource.HaveActiveRouteCode())
                 {
@@ -134,7 +134,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_ComRes.Add";
-            this.ShortTitle = "通信资源添加";
+            this.ShortTitle = "新增通信资源";
             this.SetTitle();
         }
 
@@ -149,7 +149,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplDirection.DataTextField = "key";
             dplDirection.DataValueField = "value";
             dplDirection.DataBind();
-            dplDirection.Items.Insert(0, new ListItem("请选择", ""));
+            //dplDirection.Items.Insert(0, new ListItem("请选择", ""));
         }
         /// <summary>
         /// 添加完成后将控件设置为初始状态

@@ -113,6 +113,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 //centerResource.Status = 1;//正常，状态不更新
                 //centerResource.CreatedTime = DateTime.Now;
                 centerResource.UpdatedTime = DateTime.Now;
+                centerResource.UpdatedUserID = LoginUserInfo.Id;
 
                 if (centerResource.HaveActiveEquipmentCode())
                 {
@@ -159,7 +160,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         public override void OnPageLoaded()
         {
-            this.ShortTitle = "中心资源编辑";
+            this.ShortTitle = "编辑中心资源";
             this.SetTitle();
         }
 
@@ -174,7 +175,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplEquipmentType.DataTextField = "key";
             dplEquipmentType.DataValueField = "value";
             dplEquipmentType.DataBind();
-            dplEquipmentType.Items.Insert(0, new ListItem("请选择", ""));
+            //dplEquipmentType.Items.Insert(0, new ListItem("请选择", ""));
         }
         /// <summary>
         /// 绑定控件值

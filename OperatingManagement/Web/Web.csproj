@@ -188,6 +188,7 @@
     <Content Include="Views\BusinessManage\GroundResourceEdit.aspx" />
     <Content Include="Views\BusinessManage\MeasureDataDetail.aspx" />
     <Content Include="Views\BusinessManage\MeasureDataList.aspx" />
+    <Content Include="Views\BusinessManage\OrbitParaCalculate.aspx" />
     <Content Include="Views\BusinessManage\ResourceAdd.aspx" />
     <Content Include="Views\BusinessManage\ResourceCalculateManage.aspx" />
     <Content Include="Views\BusinessManage\ResourceCalculateResultView.aspx" />
@@ -208,7 +209,6 @@
     <Content Include="Views\PlanManage\ExperimentProgramDetail.aspx" />
     <Content Include="Views\PlanManage\ExperimentProgramList.aspx" />
     <Content Include="Views\PlanManage\NotSpaceTaskList.aspx" />
-    <Content Include="Views\BusinessManage\OrbitParaCalculate.aspx" />
     <Content Include="Views\PlanManage\OribitalQuantityDetail.aspx" />
     <Content Include="Views\PlanManage\OribitalQuantityList.aspx" />
     <Content Include="Views\PlanManage\PlanAdd.aspx" />
@@ -402,6 +402,13 @@
     <Compile Include="Views\BusinessManage\MeasureDataList.aspx.designer.cs">
       <DependentUpon>MeasureDataList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\BusinessManage\OrbitParaCalculate.aspx.cs">
+      <DependentUpon>OrbitParaCalculate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\OrbitParaCalculate.aspx.designer.cs">
+      <DependentUpon>OrbitParaCalculate.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\BusinessManage\ResourceAdd.aspx.cs">
       <DependentUpon>ResourceAdd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -541,13 +548,6 @@
     </Compile>
     <Compile Include="Views\PlanManage\NotSpaceTaskList.aspx.designer.cs">
       <DependentUpon>NotSpaceTaskList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\BusinessManage\OrbitParaCalculate.aspx.cs">
-      <DependentUpon>OrbitParaCalculate.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\BusinessManage\OrbitParaCalculate.aspx.designer.cs">
-      <DependentUpon>OrbitParaCalculate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\PlanManage\OribitalQuantityDetail.aspx.cs">
       <DependentUpon>OribitalQuantityDetail.aspx</DependentUpon>
@@ -760,7 +760,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1976</DevelopmentServerPort>
+          <DevelopmentServerPort>4544</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

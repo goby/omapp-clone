@@ -52,13 +52,13 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
-    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="index" />
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="bizmanage" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuIndex" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    业务管理&gt;资源调度计算
+    业务管理 &gt; 新增资源调度计算
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <script type="text/javascript">
@@ -289,7 +289,8 @@
                             开始时间(<span class="red">*</span>)
                         </th>
                         <td>
-                            <asp:TextBox ID="txtBeginTime" runat="server" ClientIDMode="Static" CssClass="norText" Width="80px"></asp:TextBox>
+                            <asp:TextBox ID="txtBeginTime" runat="server" ClientIDMode="Static" CssClass="norText"
+                                Width="80px"></asp:TextBox>
                             <asp:DropDownList ID="dplBeginTimeHour" runat="server" CssClass="norDpl" Width="60px">
                             </asp:DropDownList>
                             <asp:DropDownList ID="dplBeginTimeMinute" runat="server" CssClass="norDpl" Width="60px">
@@ -305,7 +306,8 @@
                             结束时间(<span class="red">*</span>)
                         </th>
                         <td>
-                            <asp:TextBox ID="txtEndTime" runat="server" ClientIDMode="Static" CssClass="norText" Width="80px"></asp:TextBox>
+                            <asp:TextBox ID="txtEndTime" runat="server" ClientIDMode="Static" CssClass="norText"
+                                Width="80px"></asp:TextBox>
                             <asp:DropDownList ID="dplEndTimeHour" runat="server" CssClass="norDpl" Width="60px">
                             </asp:DropDownList>
                             <asp:DropDownList ID="dplEndTimeMinute" runat="server" CssClass="norDpl" Width="60px">
@@ -343,6 +345,7 @@
                 &nbsp;
             </th>
             <td>
+                <asp:Button ID="btnSave" runat="server" CssClass="button" Text="保 存" OnClick="btnSave_Click" />
             </td>
         </tr>
     </table>
@@ -372,10 +375,10 @@
                         <th style="width: 15%;">
                             支持时段
                         </th>
-                        <th style="width: 5%;display: none;">
+                        <th style="width: 5%; display: none;">
                             编辑
                         </th>
-                        <th style="width: 5%;display: none;">
+                        <th style="width: 5%; display: none;">
                             删除
                         </th>
                     </tr>
@@ -435,8 +438,8 @@
                     时间基准(<span class="red">*</span>)
                 </th>
                 <td style="width: 350px;">
-                    <asp:TextBox ID="txtTimeBenchmark" runat="server" ClientIDMode="Static" CssClass="norText" Width="80px"
-                        ValidationGroup="Calculate"></asp:TextBox>
+                    <asp:TextBox ID="txtTimeBenchmark" runat="server" ClientIDMode="Static" CssClass="norText"
+                        Width="80px" ValidationGroup="Calculate"></asp:TextBox>
                     <asp:DropDownList ID="dplTimeBenchmarkHour" runat="server" CssClass="norDpl" Width="60px">
                     </asp:DropDownList>
                     <asp:DropDownList ID="dplTimeBenchmarkMinute" runat="server" CssClass="norDpl" Width="60px">

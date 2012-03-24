@@ -9,7 +9,7 @@
 <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
- 业务管理 &gt; 资源管理
+ 业务管理 &gt; 查询资源
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
  <div class="index_content_search">
