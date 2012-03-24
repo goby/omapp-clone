@@ -7,7 +7,7 @@
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="bizmanage" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuIndex" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
     业务管理 &gt; 新增资源状态
@@ -89,7 +89,12 @@
                 起始时间(<span class="red">*</span>)
             </th>
             <td>
-                <asp:TextBox ID="txtBeginTime" runat="server" ClientIDMode="Static" CssClass="norText"></asp:TextBox>
+                <asp:TextBox ID="txtBeginTime" runat="server" ClientIDMode="Static" CssClass="norText"
+                    Width="80px"></asp:TextBox>
+                <asp:DropDownList ID="dplBeginTimeHour" runat="server" CssClass="norDpl" Width="60px">
+                </asp:DropDownList>
+                <asp:DropDownList ID="dplBeginTimeMinute" runat="server" CssClass="norDpl" Width="60px">
+                </asp:DropDownList>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtBeginTime" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
@@ -99,7 +104,11 @@
                 结束时间(<span class="red">*</span>)
             </th>
             <td>
-                <asp:TextBox ID="txtEndTime" runat="server" ClientIDMode="Static" CssClass="norText"></asp:TextBox>
+                <asp:TextBox ID="txtEndTime" runat="server" ClientIDMode="Static" CssClass="norText" Width="80px"></asp:TextBox>
+                <asp:DropDownList ID="dplEndTimeHour" runat="server" CssClass="norDpl" Width="60px">
+                </asp:DropDownList>
+                <asp:DropDownList ID="dplEndTimeMinute" runat="server" CssClass="norDpl" Width="60px">
+                </asp:DropDownList>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtEndTime" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
                 <asp:CompareValidator ID="CompareValidator1" runat="server" Display="Dynamic" ForeColor="Red"
@@ -153,7 +162,7 @@
                 &nbsp;
             </th>
             <td>
-                <asp:Label ID="lblMessage" runat="server" CssClass="error" Text=""></asp:Label>
+                <asp:Label ID="lblMessage" runat="server" CssClass="error" Text=""></asp:Label><asp:LinkButton ID="lbtnReSubmit" runat="server" CommandName="ReSubmit" Visible="false" Text="继 续" OnClick="btnSubmit_Click" ></asp:LinkButton>
             </td>
         </tr>
         <tr>

@@ -147,7 +147,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_ResStaMan.View";
-            this.ShortTitle = "资源状态管理";
+            this.ShortTitle = "查询资源状态";
             this.SetTitle();
         }
 
@@ -179,55 +179,56 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void BindResourceStatusList()
         {
+            bool validateResult = true;
             int resourceType = 1;
             int.TryParse(dplResourceType.SelectedValue, out resourceType);
-            if (string.IsNullOrEmpty(txtResourceCode.Text.Trim()))
+            if (validateResult && string.IsNullOrEmpty(txtResourceCode.Text.Trim()))
             {
                 //资源编号不能为空
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"资源编号不能为空。\")", true);
-                return;
+                validateResult = false;
             }
             int resourceID = GetResourceID(resourceType, txtResourceCode.Text.Trim());
-            if (resourceID < 1)
+            if (validateResult && resourceID < 1)
             {
                 //资源不存在
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"资源不存在，请确认输入的资源编号是否正确。\")", true);
-                return;
+                validateResult = false;
             }
-            if (string.IsNullOrEmpty(txtBeginTime.Text.Trim()))
+            if (validateResult && string.IsNullOrEmpty(txtBeginTime.Text.Trim()))
             {
                 //起始时间不能为空
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"起始时间不能为空。\")", true);
-                return;
+                validateResult = false;
             }
-            if (string.IsNullOrEmpty(txtEndTime.Text.Trim()))
+            if (validateResult && string.IsNullOrEmpty(txtEndTime.Text.Trim()))
             {
                 //结束时间不能为空
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"结束时间不能为空。\")", true);
-                return;
+                validateResult = false;
             }
             DateTime beginTime = DateTime.Now;
             DateTime endTime = DateTime.Now.AddDays(7);
-            if (!DateTime.TryParse(txtBeginTime.Text, out beginTime))
+            if (validateResult && !DateTime.TryParse(txtBeginTime.Text, out beginTime))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"起始时间格式错误，请正确输入时间（yyyy-MM-dd）。\")", true);
-                return;
+                validateResult = false;
             }
-            if (!DateTime.TryParse(txtEndTime.Text, out endTime))
+            if (validateResult && !DateTime.TryParse(txtEndTime.Text, out endTime))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"结束时间格式错误，请正确输入时间（yyyy-MM-dd）。\")", true);
-                return;
+                validateResult = false;
             }
             endTime = endTime.AddSeconds(86399.9);//23:59:59
-            if (beginTime > endTime)
+            if (validateResult && beginTime > endTime)
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"结束时间应大于起始时间。\")", true);
-                return;
+                validateResult = false;
             }
 
             //查询健康状态
             HealthStatus healthStatus = new HealthStatus();
-            cpResourceHealthStatusPager.DataSource = healthStatus.Search(resourceType, resourceID, beginTime, endTime);
+            cpResourceHealthStatusPager.DataSource = validateResult ? healthStatus.Search(resourceType, resourceID, beginTime, endTime) : new List<HealthStatus>();
             cpResourceHealthStatusPager.PageSize = this.SiteSetting.PageSize;
             cpResourceHealthStatusPager.BindToControl = rpResourceHealthStatusList;
             rpResourceHealthStatusList.DataSource = cpResourceHealthStatusPager.DataSourcePaged;
@@ -235,7 +236,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
             //查询占用状态
             UseStatus useStatus = new UseStatus();
-            cpResourceUseStatusPager.DataSource = useStatus.Search(resourceType, resourceID, beginTime, endTime);
+            cpResourceUseStatusPager.DataSource = validateResult ? useStatus.Search(resourceType, resourceID, beginTime, endTime) : new List<UseStatus>();
             cpResourceUseStatusPager.PageSize = this.SiteSetting.PageSize;
             cpResourceUseStatusPager.BindToControl = rpResourceUseStatusList;
             rpResourceUseStatusList.DataSource = cpResourceUseStatusPager.DataSourcePaged;

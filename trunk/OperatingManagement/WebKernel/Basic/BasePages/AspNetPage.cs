@@ -111,6 +111,24 @@ namespace OperatingManagement.WebKernel.Basic
                 return new WebProfile(this.Context.Profile);
             }
         }
+
+        /// <summary>
+        /// 获得当前登录用户信息
+        /// </summary>
+        public DataAccessLayer.System.User LoginUserInfo
+        {
+            get 
+            {
+                DataAccessLayer.System.User user = null;
+                if (User.Identity.IsAuthenticated)
+                {
+                    user = new DataAccessLayer.System.User();
+                    user.LoginName = User.Identity.Name;
+                    user = user.SelectByLoginName();
+                }
+                return user;
+            }
+        }
         #endregion
 
         #region -Abstract method-

@@ -214,7 +214,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_ResMan.View";
-            this.ShortTitle = "资源管理";
+            this.ShortTitle = "查询资源";
             this.SetTitle();
         }
 
@@ -308,7 +308,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplResourceStatus.DataTextField = "key";
             dplResourceStatus.DataValueField = "value";
             dplResourceStatus.DataBind();
-            dplResourceStatus.Items.Insert(0, new ListItem("全部", ""));
+            dplResourceStatus.Items.Insert(0, new ListItem("请选择", ""));
         }
         /// <summary>
         /// 绑定数据源

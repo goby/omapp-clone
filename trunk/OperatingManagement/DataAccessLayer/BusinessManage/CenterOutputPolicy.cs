@@ -68,11 +68,11 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 创建用户ID
         /// </summary>
-        public int CreatedUserID { get; set; }
+        public double CreatedUserID { get; set; }
         /// <summary>
         /// 最后修改用户ID
         /// </summary>
-        public int UpdatedUserID { get; set; }
+        public double UpdatedUserID { get; set; }
         #endregion
 
         #region -Private Methods-
@@ -123,9 +123,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     DefectTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["DefectTime"]),
                     Note = ds.Tables[0].Rows[0]["Note"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["Note"].ToString(),
                     CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
-                    CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["CreatedUserID"]),
+                    CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(ds.Tables[0].Rows[0]["CreatedUserID"]),
                     UpdatedTime = ds.Tables[0].Rows[0]["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["UpdatedTime"]),
-                    UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["UpdatedUserID"])
+                    UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(ds.Tables[0].Rows[0]["UpdatedUserID"])
                 };
             }
             return info;
@@ -157,9 +157,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         DefectTime = Convert.ToDateTime(dr["DefectTime"]),
                         Note = dr["Note"] == DBNull.Value ? string.Empty : dr["Note"].ToString(),
                         CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
-                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["CreatedUserID"]),
+                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["CreatedUserID"]),
                         UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
-                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["UpdatedUserID"])
+                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"])
                     };
 
                     infoList.Add(info);
@@ -192,9 +192,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                                         new OracleParameter("p_DefectTime",DefectTime),
                                         new OracleParameter("p_Note",string.IsNullOrEmpty(Note) ? DBNull.Value as object : Note),
                                         new OracleParameter("p_CreatedTime",CreatedTime),
-                                        new OracleParameter("p_CreatedUserID",CreatedUserID == 0 ? DBNull.Value as object : CreatedUserID),
+                                        new OracleParameter("p_CreatedUserID",CreatedUserID == 0.0 ? DBNull.Value as object : CreatedUserID),
                                         new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
-                                        new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0 ? DBNull.Value as object : UpdatedUserID),
+                                        new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0.0 ? DBNull.Value as object : UpdatedUserID),
                                         v_ID,
                                         v_Result});
             if (v_ID.Value != null && v_ID.Value != DBNull.Value)
@@ -221,9 +221,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                                         new OracleParameter("p_DefectTime",DefectTime),
                                         new OracleParameter("p_Note", string.IsNullOrEmpty(Note) ? DBNull.Value as object : Note),
                                         new OracleParameter("p_CreatedTime",CreatedTime),
-                                        new OracleParameter("p_CreatedUserID",CreatedUserID == 0 ? DBNull.Value as object : CreatedUserID),
+                                        new OracleParameter("p_CreatedUserID",CreatedUserID == 0.0 ? DBNull.Value as object : CreatedUserID),
                                         new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
-                                        new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0 ? DBNull.Value as object : UpdatedUserID),
+                                        new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0.0 ? DBNull.Value as object : UpdatedUserID),
                                         v_Result});
             return (FieldVerifyResult)Convert.ToInt32(v_Result.Value);
         }

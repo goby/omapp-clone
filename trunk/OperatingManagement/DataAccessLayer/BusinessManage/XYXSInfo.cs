@@ -48,22 +48,18 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 外部十六进制编码
         /// </summary>
         public string EXCODE { get; set; }
-
         /// <summary>
         /// 主IP地址
         /// </summary>
         public string MainIP { get; set; }
-
         /// <summary>
         /// 主端口
         /// </summary>
         public int MainPort { get; set; }
-
         /// <summary>
         /// 副IP地址
         /// </summary>
         public string BakIP { get; set; }
-
         /// <summary>
         /// 副端口
         /// </summary>

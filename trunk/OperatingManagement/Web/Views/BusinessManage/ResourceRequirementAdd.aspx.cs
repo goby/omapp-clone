@@ -110,6 +110,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindUnusedEquipmentList();
                     BindPeriodOfTimeList();
                     BindResourceRequirementList();
+                    hidWXBMIndex.Value = GetWXBMIndex().ToString();
+                    lblRequirementName.Text = GetRequirementName();
                 }
             }
             catch
@@ -334,7 +336,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 //resourceCalculate.CalculateResult = 1;
                 resourceCalculate.Status = 1;
                 resourceCalculate.CreatedTime = createdTime;
-                resourceCalculate.UpdatedTime = createdTime;
+                resourceCalculate.CreatedUserID = LoginUserInfo.Id;
                 Framework.FieldVerifyResult result = resourceCalculate.Add();
 
                 switch (result)
@@ -621,7 +623,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_ResCac.Caculate";
-            this.ShortTitle = "资源调度计算";
+            this.ShortTitle = "新增资源调度计算";
             this.SetTitle();
         }
 
@@ -637,7 +639,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplSatName.DataTextField = "WXMC";
             dplSatName.DataValueField = "Id";
             dplSatName.DataBind();
-            dplSatName.Items.Insert(0, new ListItem("请选择", ""));
+            //dplSatName.Items.Insert(0, new ListItem("请选择", ""));
         }
         /// <summary>
         /// 绑定控件数据源,暂时这样做,没有提供表结构
@@ -803,8 +805,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void ResetControls()
         {
-            lblRequirementName.Text = string.Empty;
-            hidWXBMIndex.Value = string.Empty;
+            hidWXBMIndex.Value = GetWXBMIndex().ToString();
+            lblRequirementName.Text = GetRequirementName();
             //txtTimeBenchmark.Text = string.Empty;
             txtPriority.Text = string.Empty;
             dplSatName.SelectedIndex = 0;

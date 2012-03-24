@@ -49,6 +49,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
+                LinkButton lbtn = (sender as LinkButton);
                 string msg = string.Empty;
                 //资源管理资源类型列表：地面站资源=1、通信资源=2、中心资源=3
                 int resourceType = 0;
@@ -98,6 +99,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "起始时间格式错误";
                     return;
                 }
+                beginTime = beginTime.AddHours(Convert.ToDouble(dplBeginTimeHour.SelectedValue));
+                beginTime = beginTime.AddMinutes(Convert.ToDouble(dplBeginTimeMinute.SelectedValue));
 
                 if (!DateTime.TryParse(txtEndTime.Text.Trim(), out endTime))
                 {
@@ -105,7 +108,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "结束时间格式错误";
                     return;
                 }
-                endTime = endTime.AddSeconds(86399.9);//23:59:59
+                endTime = endTime.AddHours(Convert.ToDouble(dplEndTimeHour.SelectedValue));
+                endTime = endTime.AddMinutes(Convert.ToDouble(dplEndTimeMinute.SelectedValue));
+
                 if (beginTime > endTime)
                 {
                     trMessage.Visible = true;
@@ -152,7 +157,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     healthStatus.BeginTime = beginTime;
                     healthStatus.EndTime = endTime;
                     healthStatus.CreatedTime = DateTime.Now;
-                    healthStatus.UpdatedTime = DateTime.Now;
+                    healthStatus.CreatedUserID = LoginUserInfo.Id;
                     result = healthStatus.Add();
 
                     switch (result)
@@ -184,7 +189,17 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     useStatus.UsedFor = trUseStatusUsedFor.Visible ? txtUsedCategory.Text : string.Empty;
                     useStatus.CanBeUsed = trUseStatusCanBeUsed.Visible ? Convert.ToInt32(dplCanBeUsed.SelectedValue) : 0;
                     useStatus.CreatedTime = DateTime.Now;
-                    useStatus.UpdatedTime = DateTime.Now;
+                    useStatus.CreatedUserID = LoginUserInfo.Id;
+
+                    if (lbtn == null && useStatus.HaveEffectiveUseStatus())
+                    {
+                        msg = "该资源任务占用和其他占用存在重叠时间段，是否继续提交？";
+                        trMessage.Visible = true;
+                        lblMessage.Text = msg;
+                        lbtnReSubmit.Visible = true;
+                        return;
+                    }
+
                     result = useStatus.Add();
 
                     switch (result)
@@ -203,6 +218,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 }
                 trMessage.Visible = true;
                 lblMessage.Text = msg;
+                lbtnReSubmit.Visible = false;
             }
             catch
             {
@@ -275,7 +291,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_ResStaMan.View";
-            this.ShortTitle = "资源状态添加";
+            this.ShortTitle = "新增资源状态";
             this.SetTitle();
         }
 
@@ -305,7 +321,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplFunctionType.DataTextField = "key";
             dplFunctionType.DataValueField = "value";
             dplFunctionType.DataBind();
-            dplFunctionType.Items.Insert(0, new ListItem("请选择", ""));
+            //dplFunctionType.Items.Insert(0, new ListItem("请选择", ""));
 
             //健康状态列表：正常=1、异常=2
             dplHealthStatus.Items.Clear();
@@ -313,7 +329,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplHealthStatus.DataTextField = "key";
             dplHealthStatus.DataValueField = "value";
             dplHealthStatus.DataBind();
-            dplHealthStatus.Items.Insert(0, new ListItem("请选择", ""));
+            //dplHealthStatus.Items.Insert(0, new ListItem("请选择", ""));
             dplHealthStatus.SelectedValue = "2";
             dplHealthStatus.Enabled = false;
 
@@ -331,7 +347,22 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplCanBeUsed.DataTextField = "key";
             dplCanBeUsed.DataValueField = "value";
             dplCanBeUsed.DataBind();
-            dplCanBeUsed.Items.Insert(0, new ListItem("请选择", ""));
+            //dplCanBeUsed.Items.Insert(0, new ListItem("请选择", ""));
+
+            dplBeginTimeHour.Items.Clear();
+            dplEndTimeHour.Items.Clear();
+            for (int i = 0; i < 24; i++)
+            {
+                dplBeginTimeHour.Items.Add(new ListItem(i.ToString() + "时", i.ToString()));
+                dplEndTimeHour.Items.Add(new ListItem(i.ToString() + "时", i.ToString()));
+            }
+            dplBeginTimeMinute.Items.Clear();
+            dplEndTimeMinute.Items.Clear();
+            for (int i = 0; i < 60; i++)
+            {
+                dplBeginTimeMinute.Items.Add(new ListItem(i.ToString() + "分", i.ToString()));
+                dplEndTimeMinute.Items.Add(new ListItem(i.ToString() + "分", i.ToString()));
+            }       
         }
         /// <summary>
         /// 设置控件是否可见
@@ -385,8 +416,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 }
                 else if (dplUsedType.SelectedValue == "3")
                 {
-                    trUseStatusUsedFor.Visible = false;
-                    trUseStatusCanBeUsed.Visible = false;
+                    trUseStatusUsedBy.Visible = false;
+                    trUseStatusUsedCategory.Visible = false;
                 }
             }
         }
@@ -400,11 +431,15 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplHealthStatus.SelectedValue = "2";
             dplUsedType.SelectedIndex = 0;
             txtBeginTime.Text = string.Empty;
+            dplBeginTimeHour.SelectedIndex = 0;
+            dplBeginTimeMinute.SelectedIndex = 0;
             txtEndTime.Text = string.Empty;
+            dplEndTimeHour.SelectedIndex = 0;
+            dplEndTimeMinute.SelectedIndex = 0;
             txtUsedBy.Text = string.Empty;
             txtUsedCategory.Text = string.Empty;
             txtUsedFor.Text = string.Empty;
-            dplCanBeUsed.Text = string.Empty;
+            dplCanBeUsed.SelectedIndex = 0;
 
             SetControlsVisible();
         }

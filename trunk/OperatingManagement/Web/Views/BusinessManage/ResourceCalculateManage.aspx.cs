@@ -306,7 +306,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         public override void OnPageLoaded()
         {
-            this.ShortTitle = "资源调度计算结果查询";
+            this.ShortTitle = "查询资源调度计算";
             this.SetTitle();
         }
 
@@ -346,14 +346,14 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplStatus.DataTextField = "key";
             dplStatus.DataValueField = "value";
             dplStatus.DataBind();
-            dplStatus.Items.Insert(0, new ListItem("全部", "0"));
+            dplStatus.Items.Insert(0, new ListItem("请选择", "0"));
 
             dplResultFileSource.Items.Clear();
             dplResultFileSource.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.ResourceCalculateResultFileSource);
             dplResultFileSource.DataTextField = "key";
             dplResultFileSource.DataValueField = "value";
             dplResultFileSource.DataBind();
-            dplResultFileSource.Items.Insert(0, new ListItem("全部", "0"));
+            dplResultFileSource.Items.Insert(0, new ListItem("请选择", "0"));
 
             txtBeginTime.Text = DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd");
             txtEndTime.Text = DateTime.Now.ToString("yyyy-MM-dd");

@@ -146,7 +146,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         public override void OnPageLoaded()
         {
-            this.ShortTitle = "中心输出策略查询";
+            this.ShortTitle = "查询中心输出策略";
             this.SetTitle();
         }
 

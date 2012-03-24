@@ -167,6 +167,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 centerOutputPolicy.Note = txtNote.Text.Trim();
                 //centerOutputPolicy.CreatedTime = DateTime.Now;
                 centerOutputPolicy.UpdatedTime = DateTime.Now;
+                centerOutputPolicy.UpdatedUserID = LoginUserInfo.Id;
                 if (centerOutputPolicy.HaveEffectivePolicy())
                 {
                     trMessage.Visible = true;
@@ -212,7 +213,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         public override void OnPageLoaded()
         {
-            this.ShortTitle = "中心输出策略编辑";
+            this.ShortTitle = "编辑中心输出策略";
             this.SetTitle();
         }
 

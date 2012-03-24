@@ -57,7 +57,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    业务管理 &gt; 资源调度计算管理
+    业务管理 &gt; 查询资源调度计算
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
 <script type="text/javascript">
