@@ -208,6 +208,7 @@
     <Content Include="Views\PlanManage\ExperimentPlanList.aspx" />
     <Content Include="Views\PlanManage\ExperimentProgramDetail.aspx" />
     <Content Include="Views\PlanManage\ExperimentProgramList.aspx" />
+    <Content Include="Views\PlanManage\NotSpaceTaskDetail.aspx" />
     <Content Include="Views\PlanManage\NotSpaceTaskList.aspx" />
     <Content Include="Views\PlanManage\OribitalQuantityDetail.aspx" />
     <Content Include="Views\PlanManage\OribitalQuantityList.aspx" />
@@ -541,6 +542,13 @@
     </Compile>
     <Compile Include="Views\PlanManage\ExperimentProgramList.aspx.designer.cs">
       <DependentUpon>ExperimentProgramList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlanManage\NotSpaceTaskDetail.aspx.cs">
+      <DependentUpon>NotSpaceTaskDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\PlanManage\NotSpaceTaskDetail.aspx.designer.cs">
+      <DependentUpon>NotSpaceTaskDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\PlanManage\NotSpaceTaskList.aspx.cs">
       <DependentUpon>NotSpaceTaskList.aspx</DependentUpon>
