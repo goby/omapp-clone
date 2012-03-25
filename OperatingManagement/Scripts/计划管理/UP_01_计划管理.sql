@@ -1,9 +1,9 @@
 ---------------------------------------------
 -- Export file for user HTCUSER            --
--- Created by taiji on 2012/3/13, 21:35:04 --
+-- Created by taiji on 2012/3/25, 20:37:41 --
 ---------------------------------------------
 
-spool UP_01_计划管理20120313.log
+spool UP_01_计划管理20120325.log
 
 prompt
 prompt Creating procedure UP_GD_GETLIST
@@ -47,7 +47,7 @@ create or replace procedure htcuser.up_gd_selectByID
 is
 begin
        open o_cursor for
-            select * from v_GD where id=p_Id;
+            select * from TB_GD where id=p_Id;
 end;
 /
 
@@ -411,6 +411,22 @@ v_sql:='SELECT * FROM TB_YDSJ t '||
 
 
 end up_ydsj_Getlist;
+/
+
+prompt
+prompt Creating procedure UP_YDSJ_SELECTBYID
+prompt =====================================
+prompt
+create or replace procedure htcuser.up_ydsj_selectByID
+(
+       p_Id tb_ydsj.id%type,
+       o_cursor out sys_refcursor
+)
+is
+begin
+       open o_cursor for
+            select * from TB_YDSJ where id=p_Id;
+end;
 /
 
 

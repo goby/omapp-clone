@@ -19,3 +19,5 @@
 2012-02-08 修改了一些问题。App_Data下增加了PlanParameters.xml 计划管理用到的配置项 by Tangjia
 2012-02-09 更新UP_UseStatus_Search、UP_HealthStatus_Search存储过程，添加了单个资源状态图形显示页面 by liutao
 2012-03-19 更新up_jh_update存储过程,更新v_gd,v_ydsj视图  by TangJia
+2012-03-25 更新表tb_ydsj（删除Data_ID字段）; 删除v_gd,v_ydsj视图；删除表tb_basicinfodata  --- by TangJia
+2012-03-25 更新up_gd_selectbyid ，up_ydsj_selectbyid存储过程  --- by TangJia

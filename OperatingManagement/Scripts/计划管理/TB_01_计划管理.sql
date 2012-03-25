@@ -206,8 +206,7 @@ create table HTCUSER.TB_YDSJ
   DATA_I     NUMBER(18,6),
   DATA_OHM   NUMBER(18,6),
   DATA_OMEGA NUMBER(18,6),
-  DATA_M     NUMBER(18,6),
-  DATA_ID    NUMBER(20)
+  DATA_M     NUMBER(18,6)
 )
 tablespace TSHTC
   pctfree 10
