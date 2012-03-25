@@ -39,7 +39,8 @@
                     <asp:Button class="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
                         Text="查询" Width="69px" />
                     &nbsp;&nbsp;
-                    <asp:Button ID="btnReset" runat="server" Text="重置" Width="65px" />
+                    <asp:Button  class="button" ID="btnReset" runat="server" Text="重置" Width="65px" 
+                        onclick="btnReset_Click1" />
                     <%--<button class="button" onclick="return reset();" style="width: 65px;">
                         重置</button>--%>
 
@@ -174,9 +175,9 @@
             </tr>
             <tr>
                 <td style="text-align: center">
-                    <asp:Button ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="发送" />
+                    <asp:Button  class="button" ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="发送" />
                     &nbsp;&nbsp;
-                    <asp:Button ID="btnCancel" runat="server" OnClick="btnCancel_Click" Text="取消" />
+                    <asp:Button  class="button" ID="btnCancel" runat="server" OnClick="btnCancel_Click" Text="取消" />
                 </td>
             </tr>
         </table>

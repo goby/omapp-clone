@@ -115,5 +115,6 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             Page.Response.Redirect(Request.CurrentExecutionFilePath);
         }
+
     }
 }

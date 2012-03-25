@@ -66,7 +66,7 @@
                                 <button class="button" onclick="return selectAll();">
                                     全选</button>&nbsp;&nbsp;
                                 <button class="button" onclick="return sendYDSJ1();">
-                                    发送引导数据</button>
+                                    发送任务</button>
                             </td>
                             <td class="listTitle-c2">
                                 <div class="load" id="submitIndicator" style="display: none">
@@ -134,7 +134,7 @@
                                 <button class="button" onclick="return selectAll();">
                                     全选</button>&nbsp;&nbsp;
                                 <button class="button" onclick="return sendYDSJ1();">
-                                    发送引导数据</button>
+                                    发送任务</button>
                             </td>
                             <td class="listTitle-c2">
                                 <om:CollectionPager ID="cpPager" runat="server">
@@ -147,7 +147,7 @@
             </tr>
             <tr>
                 <td colspan="2" align="center">
-                    <%-- <asp:Button ID="btnSend" runat="server" Text="发送轨道数据" onclick="btnSend_Click" />--%>
+                    <%-- <asp:Button ID="btnSend" runat="server" Text="发送任务" onclick="btnSend_Click" />--%>
                 </td>
             </tr>
         </table>
@@ -170,9 +170,9 @@
             </tr>
             <tr>
                 <td style="text-align: center">
-                    <asp:Button ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="发送" />
+                    <asp:Button  class="button" ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="发送" />
                     &nbsp;&nbsp;
-                    <asp:Button ID="btnCancel" runat="server" OnClick="btnCancel_Click" Text="取消" />
+                    <asp:Button  class="button" ID="btnCancel" runat="server" OnClick="btnCancel_Click" Text="取消" />
                 </td>
             </tr>
         </table>

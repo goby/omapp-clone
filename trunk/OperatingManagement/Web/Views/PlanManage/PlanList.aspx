@@ -117,9 +117,9 @@
                                         <%--                                    <th style="width: 70px;">
                                         明细
                                     </th>--%>
-                                        <th style="width: 70px;">
+                                       <%-- <th style="width: 70px;">
                                             发送
-                                        </th>
+                                        </th>--%>
                                     </tr>
                            <tbody id="tbPlans">
                             </HeaderTemplate>
@@ -151,10 +151,10 @@
                                     <button class="button" onclick="return showDetail('<%# Eval("ID") %>','<%# Eval("PLANTYPE") %>')">
                                         明细</button>
                                 </td>--%>
-                                <td>
+                                <%--<td>
                                     <button class="button" onclick="return showSend('<%# Eval("ID") %>','<%# Eval("PLANID") %>','<%# Eval("PLANTYPE") %>')">
                                         发送计划</button>
-                                </td>
+                                </td>--%>
                             </tr>
                         </ItemTemplate>
                         <FooterTemplate>
