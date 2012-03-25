@@ -24,6 +24,10 @@ namespace OperatingManagement.Web.Views.PlanManage
             if (!IsPostBack)
             {
                 //btnSend.Attributes.Add("onclick", "javascript:return confirm('确定要发送所选数据吗?');");
+
+                pnlDestination.Visible = false;
+                pnlData.Visible = true;
+
                 pnlAll1.Visible = false;
                 pnlAll2.Visible = false;
                 ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>hideSelectAll();</script>");
