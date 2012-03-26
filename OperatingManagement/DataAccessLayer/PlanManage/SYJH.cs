@@ -177,7 +177,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         /// <param name="format">1:xml;3:DATA</param>
         /// <returns></returns>
-        protected override string ToString(int format)
+        public override string ToString()
         {
             int iSYCount = 0;
             XDocument doc = new XDocument();

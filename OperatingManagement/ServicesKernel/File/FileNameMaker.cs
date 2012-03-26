@@ -23,7 +23,7 @@ namespace ServicesKernel.File
             string flag = System.Configuration.ConfigurationManager.AppSettings["ObjectCode"];
             string mode = System.Configuration.ConfigurationManager.AppSettings["RunningMode"];
 
-            if (ver == null || flag == null || source == null || mode == null)
+            if (ver == null || flag == null ||  mode == null)
                 return null;
 
             string DateFlag = "";
