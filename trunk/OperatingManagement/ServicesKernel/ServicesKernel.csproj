@@ -44,6 +44,7 @@
     <Compile Include="DataFrame\DataFrameBuilder.cs" />
     <Compile Include="DataFrame\DataFrameParser.cs" />
     <Compile Include="File\BizFileCreator.cs" />
+    <Compile Include="File\FileExchangeConfig.cs" />
     <Compile Include="File\FileNameParser.cs" />
     <Compile Include="File\FileParser.cs" />
     <Compile Include="File\PlanFileCreator.cs" />
