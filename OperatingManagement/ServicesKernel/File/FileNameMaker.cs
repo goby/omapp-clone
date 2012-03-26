@@ -2,23 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace ServicesKernel.File
 {
     public class FileNameMaker
     {
+        private static string seperator = "_";
+
         #region 外部文件命名
-        public string GenarateFileNameTypeOne(string infotype,string dateType,int sequence)
+        /// <summary>
+        /// 只有外发才需要：版本号_对象标识_信源标识_模式标识_信息类型标识_日期_编号. xml
+        /// </summary>
+        /// <param name="infotype"></param>
+        /// <param name="dateType"></param>
+        /// <returns></returns>
+        public static string GenarateFileNameTypeOne(string infotype,string dateType)
         {
-            //版本号_对象标识_信源标识_模式标识_信息类型标识_日期_编号. xml
-            string fileName="";
-            string extName = ".xml";
-            string ver = "01";
-            string flag = "7000";
-            string source = GetSourceForTypeOne(infotype);
-            string mode = ""; //TS  ,OP
-            mode = System.Configuration.ConfigurationManager.AppSettings["FileNameMode"];
-            string Infotype = infotype;
+            string ver = System.Configuration.ConfigurationManager.AppSettings["Version"];
+            string flag = System.Configuration.ConfigurationManager.AppSettings["ObjectCode"];
+            string mode = System.Configuration.ConfigurationManager.AppSettings["RunningMode"];
+
+            if (ver == null || flag == null || source == null || mode == null)
+                return null;
+
             string DateFlag = "";
             if (dateType == "U")
             {
@@ -28,30 +35,49 @@ namespace ServicesKernel.File
             {
                 DateFlag = "B" + DateTime.Now.ToString("yyyyMMdd");
             }
-            string sequencenumber = sequence.ToString("0000");
-
-            fileName = ver + flag + source + mode + Infotype + DateFlag + sequencenumber+extName;
-            return fileName;
+            return GetFileName(infotype, "", DateFlag, 1, ver, flag, mode);
         }
 
-        private string GetSourceForTypeOne(string infotype)
+        /// <summary>
+        /// 获取文件名
+        /// </summary>
+        /// <param name="infoCode"></param>
+        /// <param name="fromMark"></param>
+        /// <param name="toMark"></param>
+        /// <param name="time"></param>
+        /// <param name="nameWay">1,2,3分别代表命名方式一二三</param>
+        /// <param name="version"></param>
+        /// <param name="objectCode"></param>
+        /// <param name="runningMode"></param>
+        /// <returns></returns>
+        private static string GetFileName(string infoCode, string toMark, string time
+            , int nameWay, string version, string objectCode, string runningMode)
         {
-            string result = "";
-            switch (infotype)
-            { 
-                case "SYJH":
-                case "GZJH":
-                case "YJJH":
-                    result = "YKZX";
-                    break;
-                case "SBJH":
-                    result = "XSCC";
-                    break;
+            string fromMark = System.Configuration.ConfigurationManager.AppSettings["ZXBM"];
+            string sSuffix = FileExchangeConfig.GetSuffixForSending(infoCode, fromMark, toMark);
+            if (sSuffix == null)
+                return null;
+            else
+            {
+                switch (nameWay)
+                {
+                    case 1:
+                        //版本号_对象标识_信源标识_模式标识_信息类型标识_日期_编号. xml
+                        string sequence = GetSequenceID(infoCode);
+                        return version + seperator + objectCode + seperator + fromMark + seperator + runningMode +
+                            seperator + infoCode + seperator + time + sequence + ".xml";
+                    case 2:
+                        return "";
+                    case 3:
+                        //信息名称_信息时间_发送方标识_接收方标识.扩展名
+                        return infoCode + seperator + time + seperator + fromMark + seperator + toMark + "." + sSuffix;
+                    default:
+                        return null;
+                }
             }
-            return result;
         }
 
-        public string GenarateFileNameTypeTwo(string type,string source,string target,string coordinate,int sequence)
+        public static string GenarateFileNameTypeTwo(string type, string source, string target, string coordinate, int sequence)
         {
             string fileName = "";
             string extName = "";
@@ -69,169 +95,31 @@ namespace ServicesKernel.File
             return fileName;
         }
 
-        public string GenarateFileNameTypeThree(string infotype,string sou,string des,string ext)
+        /// <summary>
+        /// 外发时才需要，信息名称_信息时间_发送方标识_接收方标识.扩展名
+        /// </summary>
+        /// <param name="infotype"></param>
+        /// <param name="source"></param>
+        /// <param name="des"></param>
+        /// <returns></returns>
+        public static string GenarateFileNameTypeThree(string infotype, string des)
         {
-            //信息名称_信息时间_发送方标识_接收方标识.扩展名
-            string fileName = "";
-            string extName = ext;
             string DateFlag = DateTime.Now.ToString("yyyyMMddHHmm");
-            string source = sou;
-            string destination = des;
-
-            fileName = infotype + DateFlag + source + destination + ext;
-            return fileName;
+            return GetFileName(infotype, des, DateFlag, 3, "", "", "");
         }
 
-        private string GetSourceForTypeThree(string infotype)
+        /// <summary>
+        /// 获取当日某类信息的流水号0000-9999
+        /// sequence file: <sequence><info><name></name><value></value></info><info><name></name><value></value></info></sequence>>
+        /// </summary>
+        /// <param name="infoCode"></param>
+        /// <returns></returns>
+        private static string GetSequenceID(string infoCode)
         {
-            string result = "";
-            switch (infotype)
-            {
-                case "GDGS":
-                case "MBXQ":
-                case "HJXQ":
-                case "TYSJ":
-                case "GCSJ":
-                case "GCZT":
-                case "PGEO":
-                case "GLEO":
-                case "PLEO":
-                case "JDSJ":
-                case "JDZT":
-                case "JDCL": 
-                    result = "YKZX";
-                    break;
-                case "GCJG":
-                case "TWDW":
-                case "XLSJ":
-                case "TXSJ":
-                //case "PLEO":
-                    result = "GCYJ";
-                    break;
-                case "CZJG":
-                case "MXCS":
-                    result = "CZYJ";
-                    break;
-                case "JDJG":
-                case "YDSJ":
-                //case "JDZT":
-                //case "JDCL":
-                //case "MXCS":
-                //case "TXSJ":
-                    result = "JDYJ";
-                    break;
-                case "TYJG":
-                //case "GCZT":
-                    //case "JDZT":
-                    //case "JDCL":
-                    //case "MXCS":
-                    //case "TXSJ":
-                    result = "FZTY";
-                    break;
-                case "HJXX":
-                case "YJBG":
-                case "JHBG":
-                    result = "XXZX";
-                    break;
-
-            }
-            return result;
-        }
-
-        private string GetDestinationForTypeThree(string infotype)
-        {
-            string result = "";
-            switch (infotype)
-            {
-                case "SYXQ":
-                case "GCJG":
-                case "TWDW":
-                case "XLSJ":
-                case "TXSJ":
-                case "CZJG":
-                case "MXCS":
-                case "JDJG":
-                case "YDSJ":
-                case "TYJG":
-                case "HJXX":
-                case "YJBG":
-                case "JHBG":
-                    result = "YKZX";
-                    break;
-                case "MBXQ":
-                case "HJXQ":
-                    result = "XXZX";
-                    break;
-                case "TYSJ":
-                    result = "XXZX";
-                    break;
-                case "GCSJ":
-                case "GCZT":
-                case "PGEO":
-                case "GLEO":
-                    result = "GCYJ";
-                    break;
-            }
-            return result;
-        }
-
-        private string GetExtNameForTypeThree(string infotype)
-        {
-            string result = "";
-            switch (infotype)
-            {
-                case "SYXQ":
-                case "MBXQ":
-                case "HJXQ":
-                    result = "REQ";
-                    break;
-                case "GDGS":
-                    result = "ORB";
-                    break;
-               // case "TYSJ":
-                case "GCSJ":
-                case "JDSJ":
-                case "GCJG":
-                case "CZJG":
-                case "JDJG":
-                case "TYJG":
-                case "HJXX":
-                    result = "DAT";
-                    break;
-                case "GCZT":
-                case "JDZT":
-                    result = "TM";
-                    break;
-                case "PLEO":
-                case "PGEO":
-                case "GLEO":
-                //case "TXSJ":
-                    result = "RAW";
-                    break;
-                case "JDCL": 
-                    result = "RNG";
-                    break;
-                case "TWDW":
-                    result = "GTW";
-                    break;
-                case "XLSJ":
-                    result = "EPH";
-                    break;
-                case "TXSJ":
-                    result = "SPE";
-                    break;
-                case "MXCS":
-                    result = "MOD";
-                    break;
-                case "YDSJ":
-                    result = "YDSJ";
-                    break;
-                case "YJBG":
-                case "JHBG":
-                    result = "REP";
-                    break;
-            }
-            return result;
+            string strSeqPath = @"../app_data/sequence.xml";
+            XDocument doc = XDocument.Load(strSeqPath);
+            var infos = doc.Elements("info");
+            return "";
         }
         #endregion
 

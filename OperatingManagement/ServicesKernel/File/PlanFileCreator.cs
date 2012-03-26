@@ -35,6 +35,8 @@ namespace ServicesKernel.File
         public string FileIndex { get; set; }
         public string Reserve { get; set; }
 
+        private string strOutputPath = null;
+        private string strSavePath = null;
         private string _filepath=null;
         public string FilePath 
         {
@@ -58,12 +60,28 @@ namespace ServicesKernel.File
         {
             get
             {
-                string savepath =System.Configuration.ConfigurationManager.AppSettings["savepath"];
-                if (savepath[savepath.Length-1] !='\\')
+                if (string.IsNullOrEmpty(strSavePath))
+                    strSavePath =System.Configuration.ConfigurationManager.AppSettings["savepath"];
+
+                if (strSavePath[strSavePath.Length - 1] != '\\')
                 {
-                    savepath += "\\";
+                    strSavePath += "\\";
                 }
-                return savepath;
+                return strSavePath;
+            }
+        }
+
+        public string OutPutPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(strOutputPath))
+                    strOutputPath = System.Configuration.ConfigurationManager.AppSettings["outputpath"];
+                if (strOutputPath[strOutputPath.Length - 1] != '\\')
+                {
+                    strOutputPath += "\\";
+                }
+                return strOutputPath;
             }
         }
 
@@ -375,157 +393,14 @@ namespace ServicesKernel.File
         }
 
         /// <summary>
-        /// 地面站工作计划
+        /// 内部存储地面站工作计划
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="type">0:新增; 1:修改</param>
         /// <returns></returns>
         public string CreateDMJHFile(DMJH obj,int type)
         {
-            if (type == 0)
-            {
-                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("DMJH", obj.TaskID, obj.SatID);
-            }
-            xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
-            xmlWriter.Formatting = Formatting.Indented;
-            xmlWriter.WriteStartDocument();
-
-            xmlWriter.WriteStartElement("地面站工作计划");
-            #region basicinfo
-            xmlWriter.WriteStartElement("编号");
-            xmlWriter.WriteString(obj.Sequence);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("时间");
-            xmlWriter.WriteString(obj.DateTime);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("工作单位");
-            xmlWriter.WriteString(obj.StationName);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("设备代号");
-            xmlWriter.WriteString(obj.EquipmentID);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("任务个数");
-            xmlWriter.WriteString(obj.TaskCount);
-            xmlWriter.WriteEndElement();
-            #endregion
-            #region 任务
-            for (int i = 0; i < obj.DMJHTasks.Count; i++)
-            {
-                xmlWriter.WriteStartElement("任务");
-                #region BasicInfo
-                xmlWriter.WriteStartElement("任务标志");
-                xmlWriter.WriteString(obj.DMJHTasks[i].TaskFlag);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("工作方式");
-                xmlWriter.WriteString(obj.DMJHTasks[i].WorkWay);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("计划性质");
-                xmlWriter.WriteString(obj.DMJHTasks[i].PlanPropertiy);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("工作模式");
-                xmlWriter.WriteString(obj.DMJHTasks[i].WorkMode);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("任务准备开始时间");
-                xmlWriter.WriteString(obj.DMJHTasks[i].PreStartTime);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("任务开始时间");
-                xmlWriter.WriteString(obj.DMJHTasks[i].StartTime);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("跟踪开始时间");
-                xmlWriter.WriteString(obj.DMJHTasks[i].TrackStartTime);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("开上行载波时间");
-                xmlWriter.WriteString(obj.DMJHTasks[i].WaveOnStartTime);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("关上行载波时间");
-                xmlWriter.WriteString(obj.DMJHTasks[i].WaveOffStartTime);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("跟踪结束时间");
-                xmlWriter.WriteString(obj.DMJHTasks[i].TrackEndTime);
-                xmlWriter.WriteEndElement();
-                #endregion
-                #region 实时传输
-                for (int j = 0; j < obj.DMJHTasks[i].ReakTimeTransfors.Count; j++)
-                {
-                    xmlWriter.WriteStartElement("实时传输");
-
-                    xmlWriter.WriteStartElement("格式标志");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].FormatFlag);
-                    xmlWriter.WriteEndElement();
-
-                    xmlWriter.WriteStartElement("信息流标志");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].InfoFlowFlag);
-                    xmlWriter.WriteEndElement();
-
-                    xmlWriter.WriteStartElement("数据传输开始时间");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].TransStartTime);
-                    xmlWriter.WriteEndElement();
-
-                    xmlWriter.WriteStartElement("数据传输结束时间");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].TransEndTime);
-                    xmlWriter.WriteEndElement();
-
-                    xmlWriter.WriteStartElement("数据传输速率");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].TransSpeedRate);
-                    xmlWriter.WriteEndElement();
-                    xmlWriter.WriteEndElement();
-                }
-                #endregion
-                #region 事后回放
-                for (int j = 0; j < obj.DMJHTasks[i].AfterFeedBacks.Count; j++)
-                {
-                    xmlWriter.WriteStartElement("事后回放");
-
-                    xmlWriter.WriteStartElement("格式标志");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].FormatFlag);
-                    xmlWriter.WriteEndElement();
-
-                    xmlWriter.WriteStartElement("信息流标志");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].InfoFlowFlag);
-                    xmlWriter.WriteEndElement();
-
-                    xmlWriter.WriteStartElement("数据起始时间");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].DataStartTime);
-                    xmlWriter.WriteEndElement();
-
-                    xmlWriter.WriteStartElement("数据结束时间");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].DataEndTime);
-                    xmlWriter.WriteEndElement();
-
-                    xmlWriter.WriteStartElement("数据传输开始时间");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].TransStartTime);
-                    xmlWriter.WriteEndElement();
-
-                    xmlWriter.WriteStartElement("数据传输速率");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].TransSpeedRate);
-                    xmlWriter.WriteEndElement();
-
-                    xmlWriter.WriteEndElement();
-                }
-                #endregion
-                xmlWriter.WriteStartElement("任务结束时间");
-                xmlWriter.WriteString(obj.DMJHTasks[i].EndTime);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteEndElement();
-            }
-            #endregion
-            xmlWriter.WriteEndElement();
-            xmlWriter.Close();
-            return FilePath;
+            return CreateDMJHFile(obj, type, 0);
         }
         /// <summary>
         /// 中心计划
@@ -937,5 +812,186 @@ namespace ServicesKernel.File
             FileInfo fi = new FileInfo(oldfile);
             fi.MoveTo(newfile);
         }
+
+        /// <summary>
+        /// 写地面站工作计划
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="type">内部存储：0:新增; 1:修改；外部发送:0:北京时间;1:UTC日期</param>
+        /// <param name="direction">0:内部存储;1:外部发送</param>
+        /// <returns></returns>
+        private string CreateDMJHFile(DMJH obj, int type, int direction)
+        {
+            if (direction == 1)
+            {
+                filename = FileNameMaker.GenarateFileNameTypeOne("DMJH", (type == 0 ? "B" : "U"));
+                FilePath = OutPutPath + filename;
+            }
+            else if (type == 0)
+            {
+                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("DMJH", obj.TaskID, obj.SatID);
+                FilePath = SavePath + filename;
+            }
+            
+            xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
+            xmlWriter.Formatting = Formatting.Indented;
+            xmlWriter.WriteStartDocument();
+
+            xmlWriter.WriteStartElement("地面站工作计划");
+            #region basicinfo
+            xmlWriter.WriteStartElement("编号");
+            xmlWriter.WriteString(obj.Sequence);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("时间");
+            xmlWriter.WriteString(obj.DateTime);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("工作单位");
+            xmlWriter.WriteString(obj.StationName);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("设备代号");
+            xmlWriter.WriteString(obj.EquipmentID);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("任务个数");
+            xmlWriter.WriteString(obj.TaskCount);
+            xmlWriter.WriteEndElement();
+            #endregion
+
+            #region 任务
+            for (int i = 0; i < obj.DMJHTasks.Count; i++)
+            {
+                xmlWriter.WriteStartElement("任务");
+                #region BasicInfo
+                xmlWriter.WriteStartElement("任务标志");
+                xmlWriter.WriteString(obj.DMJHTasks[i].TaskFlag);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("工作方式");
+                xmlWriter.WriteString(obj.DMJHTasks[i].WorkWay);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("计划性质");
+                xmlWriter.WriteString(obj.DMJHTasks[i].PlanPropertiy);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("工作模式");
+                xmlWriter.WriteString(obj.DMJHTasks[i].WorkMode);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("任务准备开始时间");
+                xmlWriter.WriteString(obj.DMJHTasks[i].PreStartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("任务开始时间");
+                xmlWriter.WriteString(obj.DMJHTasks[i].StartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("跟踪开始时间");
+                xmlWriter.WriteString(obj.DMJHTasks[i].TrackStartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("开上行载波时间");
+                xmlWriter.WriteString(obj.DMJHTasks[i].WaveOnStartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("关上行载波时间");
+                xmlWriter.WriteString(obj.DMJHTasks[i].WaveOffStartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("跟踪结束时间");
+                xmlWriter.WriteString(obj.DMJHTasks[i].TrackEndTime);
+                xmlWriter.WriteEndElement();
+                #endregion
+
+                #region 实时传输
+                for (int j = 0; j < obj.DMJHTasks[i].ReakTimeTransfors.Count; j++)
+                {
+                    xmlWriter.WriteStartElement("实时传输");
+
+                    xmlWriter.WriteStartElement("格式标志");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].FormatFlag);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("信息流标志");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].InfoFlowFlag);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("数据传输开始时间");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].TransStartTime);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("数据传输结束时间");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].TransEndTime);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("数据传输速率");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].TransSpeedRate);
+                    xmlWriter.WriteEndElement();
+                    xmlWriter.WriteEndElement();
+                }
+                #endregion
+
+                #region 事后回放
+                for (int j = 0; j < obj.DMJHTasks[i].AfterFeedBacks.Count; j++)
+                {
+                    xmlWriter.WriteStartElement("事后回放");
+
+                    xmlWriter.WriteStartElement("格式标志");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].FormatFlag);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("信息流标志");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].InfoFlowFlag);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("数据起始时间");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].DataStartTime);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("数据结束时间");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].DataEndTime);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("数据传输开始时间");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].TransStartTime);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("数据传输速率");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].TransSpeedRate);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteEndElement();
+                }
+                #endregion
+                xmlWriter.WriteStartElement("任务结束时间");
+                xmlWriter.WriteString(obj.DMJHTasks[i].EndTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteEndElement();
+            }
+            #endregion
+            xmlWriter.WriteEndElement();
+            xmlWriter.Close();
+            return FilePath;
+        }
+
+
+        #region <External file>
+
+        /// <summary>
+        /// 外发地面站工作计划
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="type">0:北京时间;1:UTC日期</param>
+        /// <returns></returns>
+        public string OutputDMJHFile(DMJH obj, int dateType)
+        {
+            return CreateDMJHFile(obj, dateType, 1);
+        }
+
+        #endregion
     }
 }
