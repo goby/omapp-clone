@@ -80,6 +80,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 占4个字节，用二进制整数补码表示，量化单位为2E-20秒/天
         /// </summary>
+        public string PP { get; set; }
+        /// <summary>
+        /// 占4个字节，用二进制整数补码表示，量化单位为2E-20秒/天
+        /// </summary>
         public string DELTP { get; set; }
         /// <summary>
         /// 4个字节，用无符号二进制整数表示，量化单位为0.1m
@@ -163,8 +167,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                             Q = dr["Q"].ToString(),
                             W = dr["W"].ToString(),
                             M = dr["M"].ToString(),
-                            P = dr["P"].ToString(),
                             DELTP = dr["DeltP"].ToString(),
+                            P = dr["P"].ToString(),
+                            PP = dr["PP"].ToString(),
                             Ra = dr["Ra"].ToString(),
                             Rp = dr["Rp"].ToString(),
                             CDSM = dr["CDSM"].ToString(),
@@ -212,8 +217,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         Q = dr["Q"].ToString(),
                         W = dr["W"].ToString(),
                         M = dr["M"].ToString(),
-                        P = dr["P"].ToString(),
                         DELTP = dr["DeltP"].ToString(),
+                        P = dr["P"].ToString(),
+                        PP = dr["PP"].ToString(),
                         Ra = dr["Ra"].ToString(),
                         Rp = dr["Rp"].ToString(),
                         CDSM = dr["CDSM"].ToString(),

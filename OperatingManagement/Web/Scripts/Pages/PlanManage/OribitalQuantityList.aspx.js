@@ -34,7 +34,7 @@ function setdayte(o) {
 }
 
 function showDetail(id) {
-    var feature2 = 'height=170px,width=400px,toolbar=no, menubar=no,scrollbars=no,resizable=yes,location=no,status=yes,';
+    var feature2 = 'height=170px,width=480px,toolbar=no, menubar=no,scrollbars=no,resizable=yes,location=no,status=yes,';
     //window.location.href = "/Views/PlanManage/OribitalQuantityDetail.aspx?id=" + id;
     window.open("/Views/PlanManage/OribitalQuantityDetail.aspx?id=" + id, "", feature2);
     return false;

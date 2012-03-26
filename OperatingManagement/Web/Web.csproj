@@ -209,8 +209,8 @@
     <Content Include="Views\PlanManage\ExperimentPlanList.aspx" />
     <Content Include="Views\PlanManage\ExperimentProgramDetail.aspx" />
     <Content Include="Views\PlanManage\ExperimentProgramList.aspx" />
-    <Content Include="Views\PlanManage\NotSpaceTaskDetail.aspx" />    <Content Include="Views\PlanManage\NotSpaceTaskList.aspx" />
-
+    <Content Include="Views\PlanManage\NotSpaceTaskDetail.aspx" />
+    <Content Include="Views\PlanManage\NotSpaceTaskList.aspx" />
     <Content Include="Views\PlanManage\OribitalQuantityDetail.aspx" />
     <Content Include="Views\PlanManage\OribitalQuantityList.aspx" />
     <Content Include="Views\PlanManage\PlanAdd.aspx" />
@@ -223,7 +223,6 @@
     <Content Include="Views\PlanManage\YDSJDetail.aspx" />
     <Content Include="Views\PlanManage\YJJHEdit.aspx" />
     <Content Include="Views\PlanManage\ZXJHEdit.aspx" />
-
     <Content Include="Views\UserAndRole\PermissionAdd.aspx" />
     <Content Include="Views\UserAndRole\Permissions.aspx" />
     <Content Include="Views\UserAndRole\RoleAdd.aspx" />
@@ -545,6 +544,13 @@
     <Compile Include="Views\PlanManage\ExperimentProgramList.aspx.designer.cs">
       <DependentUpon>ExperimentProgramList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\PlanManage\NotSpaceTaskDetail.aspx.cs">
+      <DependentUpon>NotSpaceTaskDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\PlanManage\NotSpaceTaskDetail.aspx.designer.cs">
+      <DependentUpon>NotSpaceTaskDetail.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\PlanManage\NotSpaceTaskList.aspx.cs">
       <DependentUpon>NotSpaceTaskList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -636,7 +642,6 @@
     <Compile Include="Views\PlanManage\ZXJHEdit.aspx.designer.cs">
       <DependentUpon>ZXJHEdit.aspx</DependentUpon>
     </Compile>
-
     <Compile Include="Views\UserAndRole\PermissionAdd.aspx.cs">
       <DependentUpon>PermissionAdd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
