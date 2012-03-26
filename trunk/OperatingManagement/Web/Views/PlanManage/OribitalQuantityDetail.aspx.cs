@@ -59,7 +59,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             lblOmega.Text = obj.W;
             lblM.Text = obj.M;
             lblP.Text = obj.P;
-            lblPi.Text = obj.DELTP;
+            lblPi.Text = obj.PP;
         }
 
         public override void OnPageLoaded()
