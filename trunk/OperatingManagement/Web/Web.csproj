@@ -552,13 +552,6 @@
     <Compile Include="Views\PlanManage\NotSpaceTaskList.aspx.designer.cs">
       <DependentUpon>NotSpaceTaskList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\BusinessManage\OrbitParaCalculate.aspx.cs">
-      <DependentUpon>OrbitParaCalculate.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\BusinessManage\OrbitParaCalculate.aspx.designer.cs">
-      <DependentUpon>OrbitParaCalculate.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Views\PlanManage\OribitalQuantityDetail.aspx.cs">
       <DependentUpon>OribitalQuantityDetail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
