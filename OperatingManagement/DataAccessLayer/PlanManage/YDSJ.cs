@@ -16,8 +16,9 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
     /// </summary>
     public class YDSJ : BaseEntity<int, YDSJ>
     {
-        private static readonly string GET_YDSJList_ByDate = "up_ydsj_getlist"; 
+        private static readonly string GET_YDSJList_ByDate = "up_ydsj_getlist";
         private static readonly string SelectByID = "up_ydsj_selectByID";
+        private static readonly string s_up_ydsj_insert = "up_ydsj_insert";
 
         /// <summary>
         /// Create a new instance of <see cref="YDSJ"/> class.
@@ -30,115 +31,54 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         #region -Properties-
         private OracleDatabase _database = null;
 
-        public int YDSJID { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>
         public DateTime CTime { get; set; }
         /// <summary>
-        /// 版本
-        /// </summary>
-        public string Version { get; set; }
-        /// <summary>
-        /// 标志
-        /// </summary>
-        public string Flag { get; set; }
-        /// <summary>
-        /// 数据类别
-        /// </summary>
-        public string MainType { get; set; }
-        /// <summary>
-        /// 数据次类别
-        /// </summary>
-        public string DataType { get; set; }
-        /// <summary>
-        /// 信源地址
-        /// </summary>
-        public string SourceAddress { get; set; }
-        /// <summary>
-        /// 住宿地址
-        /// </summary>
-        public string DestinationAddress { get; set; }
-        /// <summary>
         /// 任务代号
         /// </summary>
-        public string MissionCode { get; set; }
+        public string TaskID { get; set; }
         /// <summary>
-        /// 卫星编号 
+        /// 卫星名称
         /// </summary>
-        public string SatelliteCode { get; set; }
+        public string SatName { get; set; }
         /// <summary>
-        /// 数据日期
+        /// 历元日期
         /// </summary>
-        public DateTime DataDate { get; set; }
+        public DateTime D { get; set; }
         /// <summary>
-        /// 数据时间
+        /// 历元时间
         /// </summary>
-        public string DataTime { get; set; }
+        public string T { get; set; }
         /// <summary>
-        /// 数据报顺序编号
+        /// 轨道半长径
         /// </summary>
-        public string SequenceNumber { get; set; }
+        public double A { get; set; }
         /// <summary>
-        /// 子包数
+        /// 轨道偏心率
         /// </summary>
-        public string ChildrenPackNumber { get; set; }
+        public double E { get; set; }
         /// <summary>
-        /// 保留字段
+        /// 轨道倾角
         /// </summary>
-        public string UDPReserve { get; set; }
+        public double I { get; set; }
         /// <summary>
-        /// 数据长度
+        /// 轨道升交点赤径 
         /// </summary>
-        public string DataLength { get; set; }
+        public double O { get; set; }
         /// <summary>
-        /// 数据
+        /// 轨道近地点幅角
         /// </summary>
-        public string DataClass { get; set; }
+        public double W { get; set; }
         /// <summary>
-        /// SpaceType 1:空间机动任务;2:非空间机动任务;
+        /// 平近点角
         /// </summary>
-        public string SpaceType { get; set; }
+        public double M { get; set; }
         /// <summary>
         /// 备注
         /// </summary>
         public string Reserve { get; set; }
-
-        /// <summary>
-        /// 占2个字节，用无符号二进制整数表示，
-        /// 量化单位为1天，北京时2000年1月1日计为第1天
-        /// </summary>
-        public string D { get; set; }
-        /// <summary>
-        /// 占4个字节，用无符号二进制整数表示，
-        /// 量化单位为0.1ms
-        /// </summary>
-        public string T { get; set; }
-        /// <summary>
-        /// 4个字节，用无符号二进制整数表示，
-        /// 量化单位为0.1m
-        /// </summary>
-        public string A { get; set; }
-        /// <summary>
-        /// 占4个字节，用无符号二进制整数表示，量化单位 为2E-31
-        /// </summary>
-        public string E { get; set; }
-        /// <summary>
-        /// 占4个字节，用无符号二进制整数表示，量化单位为2E-24度
-        /// </summary>
-        public string I { get; set; }
-        /// <summary>
-        /// 占4个字节，用无符号二进制整数表示，量化单位为2E-22度
-        /// </summary>
-        public string Ohm { get; set; }
-        /// <summary>
-        /// 占4个字节，用无符号二进制整数表示，量化单位为2E-22度
-        /// </summary>
-        public string Omega { get; set; }
-        /// <summary>
-        /// 占4个字节，用无符号二进制整数表示，量化单位为2E-22度
-        /// </summary>
-        public string M { get; set; }
         #endregion
 
         #region -Methods-
@@ -149,73 +89,60 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <param name="endDate"></param>
         /// <param name="spaceType">1:空间机动任务;2:非空间机动任务</param>
         /// <returns></returns>
-        public List<YDSJ> GetListByDate(DateTime startDate, DateTime endDate,string spaceType)
+        public List<YDSJ> GetListByDate(DateTime startDate, DateTime endDate, string spaceType)
         {
             DataSet ds = null;
 
-                ds = new DataSet();
-                ds.Tables.Add();
-                OracleCommand command = _database.GetStoreProcCommand(GET_YDSJList_ByDate);
+            ds = new DataSet();
+            ds.Tables.Add();
+            OracleCommand command = _database.GetStoreProcCommand(GET_YDSJList_ByDate);
 
-                _database.AddInParameter(command, "p_spaceType", OracleDbType.Varchar2, spaceType);
-                if (startDate == DateTime.MinValue)
-                {
-                    _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
-                }
-                else
-                {
-                    _database.AddInParameter(command, "p_startDate", OracleDbType.Date, startDate);
-                }
-                if (endDate == DateTime.MinValue)
-                {
-                    _database.AddInParameter(command, "p_endDate", OracleDbType.Date, DBNull.Value);
-                }
-                else
-                {
-                    _database.AddInParameter(command, "p_endDate", OracleDbType.Date, endDate);
-                }
-                using (IDataReader reader = _database.ExecuteReader(command))
-                {
-                    ds.Tables[0].Load(reader);
-                }
+            _database.AddInParameter(command, "p_spaceType", OracleDbType.Varchar2, spaceType);
+            if (startDate == DateTime.MinValue)
+            {
+                _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
+            }
+            else
+            {
+                _database.AddInParameter(command, "p_startDate", OracleDbType.Date, startDate);
+            }
+            if (endDate == DateTime.MinValue)
+            {
+                _database.AddInParameter(command, "p_endDate", OracleDbType.Date, DBNull.Value);
+            }
+            else
+            {
+                _database.AddInParameter(command, "p_endDate", OracleDbType.Date, endDate);
+            }
+            using (IDataReader reader = _database.ExecuteReader(command))
+            {
+                ds.Tables[0].Load(reader);
+            }
 
-                List<YDSJ> objDatas = new List<YDSJ>();
-                if (ds != null && ds.Tables.Count == 1)
+            List<YDSJ> objDatas = new List<YDSJ>();
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    objDatas.Add(new YDSJ()
                     {
-                        objDatas.Add(new YDSJ()
-                        {
-                            Id = Convert.ToInt32(dr["ID"].ToString()),
-                            CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
-                            Version = dr["Version"].ToString(),
-                            Flag = dr["Flag"].ToString(),
-                            MainType = dr["MainType"].ToString(),
-                            DataType = dr["DataType"].ToString(),
-                            SourceAddress = dr["SourceAddress"].ToString(),
-                            DestinationAddress = dr["DestinationAddress"].ToString(),
-                            MissionCode = dr["MissionCode"].ToString(),
-                            SatelliteCode = dr["SatelliteCode"].ToString(),
-                            DataDate = Convert.ToDateTime(dr["DataDate"].ToString()),
-                            DataTime = dr["DataTime"].ToString(),
-                            SequenceNumber = dr["SequenceNumber"].ToString(),
-                            ChildrenPackNumber = dr["ChildrenPackNumber"].ToString(),
-                            UDPReserve = dr["UDPReserve"].ToString(),
-                            DataLength = dr["DataLength"].ToString(),
-                            DataClass = dr["DataClass"].ToString(),
-                            Reserve = dr["RESERVE"].ToString(),
-                            D = dr["D"].ToString(),
-                            T = dr["T"].ToString(),
-                            A = dr["A"].ToString(),
-                            E = dr["E"].ToString(),
-                            I = dr["I"].ToString(),
-                            Ohm = dr["Ohm"].ToString(),
-                            Omega = dr["Omega"].ToString(),
-                            M = dr["M"].ToString()
-                        });
-                    }
+                        Id = Convert.ToInt32(dr["ID"].ToString()),
+                        CTime = DateTime.Parse(dr["CTIME"].ToString()),
+                        TaskID = dr["TaskID"].ToString(),
+                        SatName = dr["SatName"].ToString(),
+                        D = DateTime.Parse(dr["D"].ToString()),
+                        T = dr["T"].ToString(),
+                        A = Convert.ToDouble(dr["A"].ToString()),
+                        E = Convert.ToDouble(dr["E"].ToString()),
+                        I = Convert.ToDouble(dr["I"].ToString()),
+                        O = Convert.ToDouble(dr["Ohm"].ToString()),
+                        W = Convert.ToDouble(dr["W"].ToString()),
+                        M = Convert.ToDouble(dr["M"].ToString()),
+                        Reserve = dr["RESERVE"].ToString()
+                    });
                 }
-                return objDatas;
+            }
+            return objDatas;
         }
 
         /// <summary>
@@ -238,35 +165,60 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                     return new YDSJ()
                     {
                         Id = Convert.ToInt32(dr["ID"].ToString()),
-                        CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
-                        Version = dr["Version"].ToString(),
-                        Flag = dr["Flag"].ToString(),
-                        MainType = dr["MainType"].ToString(),
-                        DataType = dr["DataType"].ToString(),
-                        SourceAddress = dr["SourceAddress"].ToString(),
-                        DestinationAddress = dr["DestinationAddress"].ToString(),
-                        MissionCode = dr["MissionCode"].ToString(),
-                        SatelliteCode = dr["SatelliteCode"].ToString(),
-                        DataDate = Convert.ToDateTime(dr["DataDate"].ToString()),
-                        DataTime = dr["DataTime"].ToString(),
-                        SequenceNumber = dr["SequenceNumber"].ToString(),
-                        ChildrenPackNumber = dr["ChildrenPackNumber"].ToString(),
-                        UDPReserve = dr["UDPReserve"].ToString(),
-                        DataLength = dr["DataLength"].ToString(),
-                        DataClass = dr["DataClass"].ToString(),
-                        Reserve = dr["RESERVE"].ToString(),
-                        D = dr["D"].ToString(),
+                        CTime = DateTime.Parse(dr["CTIME"].ToString()),
+                        TaskID = dr["TaskID"].ToString(),
+                        SatName = dr["SatName"].ToString(),
+                        D = DateTime.Parse(dr["D"].ToString()),
                         T = dr["T"].ToString(),
-                        A = dr["A"].ToString(),
-                        E = dr["E"].ToString(),
-                        I = dr["I"].ToString(),
-                        Ohm = dr["Ohm"].ToString(),
-                        Omega = dr["Omega"].ToString(),
-                        M = dr["M"].ToString()
+                        A = Convert.ToDouble(dr["A"].ToString()),
+                        E = Convert.ToDouble(dr["E"].ToString()),
+                        I = Convert.ToDouble(dr["I"].ToString()),
+                        O = Convert.ToDouble(dr["Ohm"].ToString()),
+                        W = Convert.ToDouble(dr["W"].ToString()),
+                        M = Convert.ToDouble(dr["M"].ToString()),
+                        Reserve = dr["RESERVE"].ToString()
                     };
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// Inserts a new record into database.
+        /// </summary>
+        /// <returns></returns>
+        public FieldVerifyResult Add()
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            OracleParameter opId = new OracleParameter()
+            {
+                ParameterName = "v_Id",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _database.SpExecuteNonQuery(s_up_ydsj_insert, new OracleParameter[]{
+                new OracleParameter("p_CTime", DateTime.Now),
+                new OracleParameter("p_TaskID", this.TaskID),
+                new OracleParameter("p_SatName", this.SatName),
+                new OracleParameter("p_D", this.D),
+                new OracleParameter("p_T", this.T),
+                new OracleParameter("p_A", this.A),
+                new OracleParameter("p_E", this.E),
+                new OracleParameter("p_I", this.I),
+                new OracleParameter("p_O", this.O),
+                new OracleParameter("p_W", this.W),
+                new OracleParameter("p_Reserve", this.Reserve),
+                opId,
+                p
+            });
+            if (opId.Value != null && opId.Value != DBNull.Value)
+                this.Id = Convert.ToInt32(opId.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
 
         #endregion

@@ -385,7 +385,6 @@ prompt ==================================
 prompt
 create or replace procedure htcuser.up_ydsj_Getlist
 (
-       p_sapceType in TB_YDSJ.Spacetype%type,
        p_startTime in TB_YDSJ.Ctime%type Default null,
        p_endTime in TB_YDSJ.Ctime%type Default null,
        o_cursor out sys_refcursor
@@ -395,7 +394,6 @@ begin
 v_sql:='SELECT * FROM TB_YDSJ t '||
           ' where 1=1 ';
 
-   v_sql :=v_sql||' and t.spacetype = '''|| p_sapceType || '''';
    if (p_startTime is not null)
    then
       v_sql:=v_sql||' and t.ctime >= '''|| p_startTime ||'''';
