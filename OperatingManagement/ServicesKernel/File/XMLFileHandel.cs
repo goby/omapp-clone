@@ -8,17 +8,17 @@ using System.IO;
 
 namespace OperatingManagement.ServicesKernel.File
 {
-    public class XMLFileHandel
+    public class XMLFileHandle
     {
 
         #region -Properties-
         private XmlDocument XmlDoc = null;
         private static object configLocker = new object();
-        private static XMLFileHandel _config = null;
+        private static XMLFileHandle _config = null;
         private string _path = null;
         #endregion
 
-        public XMLFileHandel(XmlDocument doc)
+        public XMLFileHandle(XmlDocument doc)
         {
             XmlDoc = doc;
             LoadValuesFromConfigurationXml();
@@ -53,7 +53,7 @@ namespace OperatingManagement.ServicesKernel.File
         }
         #endregion
 
-        public XMLFileHandel Config
+        public XMLFileHandle Config
         {
             get
             {
@@ -66,7 +66,7 @@ namespace OperatingManagement.ServicesKernel.File
                             string path = _path;
                             XmlDocument doc = new XmlDocument();
                             doc.Load(path);
-                            _config = new XMLFileHandel(doc);
+                            _config = new XMLFileHandle(doc);
                         }
                     }
                 }

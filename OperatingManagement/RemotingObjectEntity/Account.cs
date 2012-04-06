@@ -12,7 +12,7 @@ namespace OperatingManagement.RemotingObjectEntity
 {
     public class Account:MarshalByRefObject, IAccount
     {
-        private static bool IsTest = false;
+        private static bool IsTest = true;
 
         /// <summary>
         /// 验证用户名密码

@@ -102,6 +102,48 @@ namespace OperatingManagement.ServicesKernel.File
 
         }
 
+
+        /// <summary>
+        /// 创建文件格式三的文件
+        /// </summary>
+        /// <param name="oFileInfo"></param>
+        /// <param name="fields"></param>
+        /// <param name="datas"></param>
+        /// <returns></returns>
+        public FileCreateResult CreateFormat3File(FileBaseInfo oFileInfo, string[] fields, string[] datas)
+        {
+            if (oFileInfo == null || oFileInfo.FullName == string.Empty)
+                return FileCreateResult.LackFileInfo;
+
+            if (System.IO.File.Exists(oFileInfo.FullName))
+                return FileCreateResult.FileExisted;
+
+            StreamWriter oSW = new StreamWriter(oFileInfo.FullName);
+            oSW.WriteLine("<说明区>");
+            oSW.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm"));
+            oSW.WriteLine("[信源S]：" + oFileInfo.From);
+            oSW.WriteLine("[信宿D]：" + oFileInfo.To);
+            oSW.WriteLine("[任务代码M]：" + oFileInfo.TaskID);
+            oSW.WriteLine("[信息类别B]：" + oFileInfo.InfoTypeName);
+            oSW.WriteLine("[数据区行数L]：" + oFileInfo.LineCount);
+            oSW.WriteLine("<符号区>");
+            for (int i = 0; i < fields.Length; i++)
+            {
+                oSW.WriteLine("[格式标识" + i.ToString() + "]：" + fields[i]);
+            }
+            oSW.WriteLine("[数据区]：");
+            for (int j = 0; j < datas.Length; j++)
+            {
+                oSW.WriteLine(datas[j]);
+            }
+            oSW.WriteLine("<辅助区>");
+            oSW.WriteLine("[备注]：");
+            oSW.WriteLine("[结束]：END");
+
+            oSW.Close();
+            return FileCreateResult.CreateSuccess;
+        }
+
         public void GetDataFileBaseInfo(out string ctime,out string source, out string destination,out string taskid,
             out string infotype,out string linecount)
         {
@@ -206,5 +248,46 @@ namespace OperatingManagement.ServicesKernel.File
 
         #endregion
 
+    }
+
+
+    public enum FileCreateResult
+    {
+        CreateSuccess = 0,
+        FileExisted = 1,
+        LackFileInfo = 2
+    }
+
+    public class FileBaseInfo
+    {
+        /// <summary>
+        /// File GenerateTime
+        /// </summary>
+        public DateTime CTime { get; set; }
+        /// <summary>
+        /// Format:tb_xyxsinfo.AddrName+AddrMark+(Excode)
+        /// </summary>
+        public string From { get; set; }
+        /// <summary>
+        /// Format:tb_xyxsinfo.AddrName+AddrMark+(Excode)
+        /// </summary>
+        public string To { get; set; }
+        /// <summary>
+        /// Format:Name(Code)
+        /// </summary>
+        public string TaskID { get; set; }
+        /// <summary>
+        /// Format:tb_InfoType.DataName+(Excode)
+        /// </summary>
+        public string InfoTypeName { get; set; }
+        public int LineCount { get; set; }
+        /// <summary>
+        /// File Path + File Name
+        /// </summary>
+        public string FullName { get; set; }
+
+        public FileBaseInfo()
+        {
+        }
     }
 }

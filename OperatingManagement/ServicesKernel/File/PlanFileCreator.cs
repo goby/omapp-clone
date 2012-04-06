@@ -112,6 +112,8 @@ namespace ServicesKernel.File
                 sw.Close();
         }
 
+        #region <Internal file>
+
         /// <summary>
         /// 应用研究
         /// </summary>
@@ -801,6 +803,7 @@ namespace ServicesKernel.File
             xmlWriter.Close();
             return FilePath;
         }
+        #endregion
 
         /// <summary>
         /// 重命名计划文件
