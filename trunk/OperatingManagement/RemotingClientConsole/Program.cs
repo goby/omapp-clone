@@ -16,7 +16,18 @@ namespace RemotingClientConsole
         [STAThread]
         static void Main(string[] args)
         {
-            strIP = Dns.GetHostEntry(Environment.MachineName).AddressList[0].ToString();
+            IPAddress[] addrList = Dns.GetHostEntry(Environment.MachineName).AddressList;
+            for (int i = 0; i < addrList.Length; i++)
+            {
+                if (!addrList[i].IsIPv6LinkLocal)
+                {
+                    strIP = addrList[i].ToString();
+                    break;
+                }
+            }
+
+            if (strIP == string.Empty)
+                return;
             string strResult = "";
             strResult = validateuser();
             Console.WriteLine(strResult);
@@ -38,7 +49,7 @@ namespace RemotingClientConsole
         private static string validateuser()
         {
             IAccount account = OperatingManagement.RemotingClient.RemotingActivator.GetObject<IAccount>(strIP, strPort);
-            string pwd = PasswordEncryptHelper.EncryptPasswordBySalt("w1235", "MSFTJOM@web#");
+            string pwd = PasswordEncryptHelper.EncryptPasswordBySalt("w12345", "MSFTJOM@web#");
 
             string xml = account.ValidateUser("wfuser3", pwd);
             //xml to entity

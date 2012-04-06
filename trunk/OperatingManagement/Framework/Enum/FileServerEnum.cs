@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OperatingManagement.DataAccessLayer.BusinessManage
+namespace OperatingManagement.Framework
 {
     /// <summary>
     /// 发送状态

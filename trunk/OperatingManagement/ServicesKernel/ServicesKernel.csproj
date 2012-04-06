@@ -47,6 +47,8 @@
     <Compile Include="File\FileExchangeConfig.cs" />
     <Compile Include="File\FileNameParser.cs" />
     <Compile Include="File\FileParser.cs" />
+    <Compile Include="File\FileSender.cs" />
+    <Compile Include="File\FileSenderClientAgent.cs" />
     <Compile Include="File\PlanFileCreator.cs" />
     <Compile Include="File\DataFileHandle.cs" />
     <Compile Include="File\FileMonitor.cs" />
@@ -62,6 +64,10 @@
     <ProjectReference Include="..\Framework\Framework.csproj">
       <Project>{C301ECEB-1C07-4A0C-8F66-6BE801CECA02}</Project>
       <Name>Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RemotingObjectInterface\RemotingObjectInterface.csproj">
+      <Project>{07E34555-8503-4E7D-A158-10D46143B29E}</Project>
+      <Name>RemotingObjectInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

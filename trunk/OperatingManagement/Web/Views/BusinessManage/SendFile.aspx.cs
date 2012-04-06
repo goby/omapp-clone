@@ -127,7 +127,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string strResult = string.Empty;
             if (strPath != string.Empty)
             {
-                IFileServer oFileServer = RemotingActivator.GetObjectByConfig<IFileServer>(strPath);
+                IFileSender oFileServer = RemotingActivator.GetObjectByConfig<IFileSender>(strPath);
                 strResult = oFileServer.SendFile(fileName, filePath, sendWay, senderID, receiverID, infoTypeID, autoResend);
             }
             return strResult;
@@ -143,7 +143,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string strResult = string.Empty;
             if (strPath != string.Empty)
             {
-                IFileServer oFileServer = RemotingActivator.GetObjectByConfig<IFileServer>(strPath);
+                IFileSender oFileServer = RemotingActivator.GetObjectByConfig<IFileSender>(strPath);
                 strResult = oFileServer.GetSendStatus(fileID);
             }
             return strResult;
@@ -159,7 +159,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string strResult = string.Empty;
             if (strPath != string.Empty)
             {
-                IFileServer oFileServer = RemotingActivator.GetObjectByConfig<IFileServer>(strPath);
+                IFileSender oFileServer = RemotingActivator.GetObjectByConfig<IFileSender>(strPath);
                 strResult = oFileServer.ReSendFile(fileID);
             }
             return strResult;
