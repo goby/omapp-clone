@@ -87,9 +87,8 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
-        /// <param name="spaceType">1:空间机动任务;2:非空间机动任务</param>
         /// <returns></returns>
-        public List<YDSJ> GetListByDate(DateTime startDate, DateTime endDate, string spaceType)
+        public List<YDSJ> GetListByDate(DateTime startDate, DateTime endDate)
         {
             DataSet ds = null;
 
@@ -97,7 +96,6 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             ds.Tables.Add();
             OracleCommand command = _database.GetStoreProcCommand(GET_YDSJList_ByDate);
 
-            _database.AddInParameter(command, "p_spaceType", OracleDbType.Varchar2, spaceType);
             if (startDate == DateTime.MinValue)
             {
                 _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
@@ -135,7 +133,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                         A = Convert.ToDouble(dr["A"].ToString()),
                         E = Convert.ToDouble(dr["E"].ToString()),
                         I = Convert.ToDouble(dr["I"].ToString()),
-                        O = Convert.ToDouble(dr["Ohm"].ToString()),
+                        O = Convert.ToDouble(dr["O"].ToString()),
                         W = Convert.ToDouble(dr["W"].ToString()),
                         M = Convert.ToDouble(dr["M"].ToString()),
                         Reserve = dr["RESERVE"].ToString()
@@ -173,7 +171,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                         A = Convert.ToDouble(dr["A"].ToString()),
                         E = Convert.ToDouble(dr["E"].ToString()),
                         I = Convert.ToDouble(dr["I"].ToString()),
-                        O = Convert.ToDouble(dr["Ohm"].ToString()),
+                        O = Convert.ToDouble(dr["O"].ToString()),
                         W = Convert.ToDouble(dr["W"].ToString()),
                         M = Convert.ToDouble(dr["M"].ToString()),
                         Reserve = dr["RESERVE"].ToString()
