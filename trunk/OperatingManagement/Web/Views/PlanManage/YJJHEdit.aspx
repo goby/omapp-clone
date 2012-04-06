@@ -4,6 +4,10 @@
 <%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc2" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <style type="text/css">
+        .text
+        {}
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
@@ -24,30 +28,27 @@
             </td>
         </tr>
         <tr>
-            <th class="style1">卫星(<span class="red">*</span>)</th>
+            <th>卫星(<span class="red">*</span>)</th>
             <td>
                 <uc2:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
             </td>
         </tr>
         <tr>
-            <th>计划开始时间</th>
+            <th>计划开始时间(<span class="red">*</span>)</th>
             <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
                             MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
+            &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
+                        ControlToValidate="txtPlanStartTime" ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
-            <th>计划结束时间</th>
+            <th>计划结束时间(<span class="red">*</span>)</th>
             <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" 
                             MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
-            </td>
-        </tr>
-        <tr>
-            <th>备注</th>
-            <td>
-                <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="50" 
-                    Width="300px" Height="75px" TextMode="MultiLine"></asp:TextBox>
+            &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
+                        ControlToValidate="txtPlanEndTime" ErrorMessage="结束时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
@@ -65,7 +66,7 @@
             <td>
                 <asp:TextBox ID="txtJXH" runat="server" Width="300px" CssClass="text" 
                     MaxLength="20" Enabled="False" ReadOnly="True"></asp:TextBox>
-                    &nbsp;<span style="color:Red;">自动生成，不可编辑</span>
+                    &nbsp;<span style="color:#3399FF;">自动生成，不可编辑</span>
             </td>
         </tr>
         <tr>
@@ -84,20 +85,27 @@
             <td>
                 <asp:TextBox ID="txtStartTime" runat="server" Width="300px" CssClass="text" 
                     MaxLength="14"></asp:TextBox>
-            &nbsp;<span style="color:Red;">格式：YYYYMMDDHHmmss</span></td>
+            &nbsp;<span style="color:#3399FF;">格式：YYYYMMDDHHmmss</span></td>
         </tr>
         <tr>
             <th class="style1">试验结束时间</th>
             <td>
                 <asp:TextBox ID="txtEndTime" runat="server" Width="300px" CssClass="text" 
                     MaxLength="14"></asp:TextBox>
-            &nbsp;<span style="color:Red;">格式：YYYYMMDDHHmmss</span></td>
+            &nbsp;<span style="color:#3399FF;">格式：YYYYMMDDHHmmss</span></td>
         </tr>
         <tr>
             <th class="style1">系统任务</th>
             <td>
-                <asp:TextBox ID="txtTask" runat="server" Width="300px"  CssClass="text" 
-                    MaxLength="50"></asp:TextBox>
+                <asp:TextBox ID="txtTask" runat="server" Width="390px"  CssClass="text" 
+                    MaxLength="128" Height="47px" TextMode="MultiLine"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <th>备注</th>
+            <td>
+                <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="50" 
+                    Width="390px" Height="75px" TextMode="MultiLine"></asp:TextBox>
             </td>
         </tr>
         <tr>

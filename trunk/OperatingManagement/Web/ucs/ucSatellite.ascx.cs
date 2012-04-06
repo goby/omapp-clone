@@ -39,6 +39,16 @@ namespace OperatingManagement.Web.ucs
                 SatelliteList.Items.Insert(0, new ListItem(blankItemText, blankItemValue));
         }
 
+        public void ReBindData()
+        {
+            BindDataSource();
+        }
+
+        public ListItemCollection Items
+        {
+            get { return SatelliteList.Items; }
+        }
+
         public ListItem SelectedItem
         {
             get { return SatelliteList.SelectedItem; }

@@ -11,40 +11,34 @@
     计划管理 &gt; 查看试验程序
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
-    <table class="edit"  cellpadding="0" style="width:1000px;">
-        <tr>
-            <th align="right" class="style2">
-                开始日期：</th>
-            <td class="style3">
+ <div class="index_content_search">
+        <table cellspacing="0" cellpadding="0" class="searchTable">
+            <tr>
+               <th>
+                  起始时间：
+               </th>
+               <td>
                 <asp:TextBox ID="txtStartDate" ClientIDMode="Static"  CssClass="text" runat="server"></asp:TextBox>
-            </td>
-            <th align="right" class="style4">
-                结束日期：</th>
-        <td>
+               </td>
+               <th>
+                  结束时间：
+               </th>
+               <td>
+                
                 <asp:TextBox ID="txtEndDate" ClientIDMode="Static"  CssClass="text" runat="server"></asp:TextBox>
-        </td>
-        </tr>
-        <tr>
-            <td class="style5">
-            </td>
-            <td class="style6" colspan="3">
-                <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
+                
+               </td>
+               <td>
+               <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
                     Width="69px" />
-&nbsp;&nbsp;
-                <asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
+&nbsp;<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
                     onclick="btnReset_Click" />
-                 <%--<button class="button" onclick="return reset();" style="width:65px;">重置</button>--%>
-                 
-            </td>
-        </tr>
-        <tr>
-            <td class="style2" colspan="4">
-                &nbsp;</td>
-        </tr>
-        <tr>
-            <td class="style2" colspan="4">
-
-        <asp:Repeater ID="rpDatas" runat="server">
+                   </td>
+            </tr>
+        </table>
+ </div>
+ <div id="divResourceStatus" class="index_content_view">
+ <asp:Repeater ID="rpDatas" runat="server">
         <HeaderTemplate>
             <table class="list">
                 <tr>
@@ -80,7 +74,7 @@
             </table>            
         </FooterTemplate>
     </asp:Repeater>
-    <table class="listTitle">
+        <table class="listTitle">
         <tr>
             <td class="listTitle-c1">
                           
@@ -90,8 +84,5 @@
             </td>
         </tr>
     </table>
-
-            </td>
-        </tr>
-    </table>
+ </div>
 </asp:Content>

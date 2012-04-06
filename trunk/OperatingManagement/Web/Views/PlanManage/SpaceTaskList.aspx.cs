@@ -31,7 +31,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
         }
 
-        protected void Button1_Click(object sender, EventArgs e)
+        protected void btnSearch_Click(object sender, EventArgs e)
         {
             BindGridView();
         }
@@ -58,7 +58,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 endDate = DateTime.Now;
             }
 
-            List<YDSJ> listDatas = (new YDSJ()).GetListByDate(startDate, endDate,"1");
+            List<YDSJ> listDatas = (new YDSJ()).GetListByDate(startDate, endDate);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
             cpPager.BindToControl = rpDatas;

@@ -40,6 +40,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     hfStatus.Value = "new"; //新建
                     btnSaveTo.Visible = false;
+                    txtJXH.Text = (new Sequence()).GetYJJHSequnce().ToString("0000");   //新建时先给出计划序号
                 }
             }
             
@@ -112,7 +113,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
             if (hfStatus.Value == "new")
             {
-                obj.JXH = (new Sequence()).GetYJJHSequnce().ToString("0000");
+                //obj.JXH = (new Sequence()).GetYJJHSequnce().ToString("0000");
                 string filepath = creater.CreateYJJHFile(obj, 0);
 
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
@@ -163,7 +164,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             YJJH obj = new YJJH();
             obj.XXFL = radBtnXXFL.SelectedValue;
-            obj.JXH = txtJXH.Text;
+            //obj.JXH = txtJXH.Text;
             obj.SysName = ddlSysName.SelectedValue;
             obj.StartTime = txtStartTime.Text;
             obj.EndTime = txtEndTime.Text;
@@ -174,6 +175,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.TaskID = ucTask1.SelectedItem.Value;
                 obj.SatID = ucSatellite1.SelectedItem.Value;
                 obj.JXH = (new Sequence()).GetYJJHSequnce().ToString("0000");
+
                 string filepath = creater.CreateYJJHFile(obj, 0);
 
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
@@ -190,6 +192,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 };
                 var result = jh.Add();
 
+                txtJXH.Text = obj.JXH;  //另存后显示新的序号
                 ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
        
         }

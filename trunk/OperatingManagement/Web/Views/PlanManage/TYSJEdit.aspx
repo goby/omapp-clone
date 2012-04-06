@@ -3,6 +3,10 @@
 <%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc2" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <style type="text/css">
+        .text
+        {}
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
@@ -34,41 +38,44 @@
             <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
                             MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
+            &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
+                        ControlToValidate="txtPlanStartTime" ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
-            <th class="style1">计划结束时间</th>
+            <th>计划结束时间</th>
             <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" 
                             MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
-            </td>
-        </tr>
-        <tr>
-            <th>备注</th>
-            <td>
-                <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="50" 
-                    Width="300px" Height="75px" TextMode="MultiLine"></asp:TextBox>
+            &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
+                        ControlToValidate="txtPlanEndTime" ErrorMessage="结束时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
             <th class="style1">卫星名称</th>
             <td>
-                <asp:TextBox ID="txtSatName" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20"></asp:TextBox>
+                <asp:DropDownList ID="ddlSatName" runat="server" AutoPostBack="True" 
+                    Height="20px" onselectedindexchanged="ddlSatName_SelectedIndexChanged" 
+                    Width="150px">
+                    <asp:ListItem>探索三号卫星</asp:ListItem>
+                    <asp:ListItem>探索四号卫星</asp:ListItem>
+                    <asp:ListItem>探索五号卫星</asp:ListItem>
+                </asp:DropDownList>
             </td>
         </tr>
         <tr>
             <th class="style1">试验类别</th>
             <td>
-                <asp:TextBox ID="txtType" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20"></asp:TextBox>
+                <asp:DropDownList ID="ddlType" runat="server" AutoPostBack="True" Height="20px" 
+                    onselectedindexchanged="ddlType_SelectedIndexChanged" Width="150px">
+                </asp:DropDownList>
             </td>
         </tr>
         <tr>
             <th class="style1">试验项目</th>
             <td>
-                <asp:TextBox ID="txtTestItem" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20"></asp:TextBox>
+                <asp:DropDownList ID="ddlTestItem" runat="server" Height="20px" Width="150px">
+                </asp:DropDownList>
             </td>
         </tr>
         <tr>
@@ -76,7 +83,7 @@
             <td>
                 <asp:TextBox ID="txtStartTime" runat="server" Width="300px" CssClass="text" 
                     MaxLength="14"></asp:TextBox>
-                    &nbsp;<span style="color:Red;">格式：YYYYMMDDHHmmss</span>
+                    &nbsp;<span style="color:#3399FF;">格式：YYYYMMDDHHmmss</span>
             </td>
         </tr>
         <tr>
@@ -84,20 +91,27 @@
             <td>
                 <asp:TextBox ID="txtEndTime" runat="server" Width="300px" CssClass="text" 
                     MaxLength="14"></asp:TextBox>
-                    &nbsp;<span style="color:Red;">格式：YYYYMMDDHHmmss</span>
+                    &nbsp;<span style="color:#3399FF;">格式：YYYYMMDDHHmmss</span>
             </td>
         </tr>
         <tr>
             <th class="style1">试验条件</th>
             <td>
                 <asp:TextBox ID="txtCondition" runat="server" Width="300px"  CssClass="text" 
-                    MaxLength="50"></asp:TextBox>
+                  Height="40px" TextMode="MultiLine"></asp:TextBox>
             </td>
         </tr>
         <tr>
-            <th class="style1">&nbsp;</th>
+            <th>备注</th>
             <td>
-                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
+                <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="100" 
+                    Width="300px" Height="75px" TextMode="MultiLine"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <th>&nbsp;</th>
+            <td>
+                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" 
                     onclick="btnSubmit_Click" />
                     &nbsp;&nbsp;&nbsp;
                     <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
