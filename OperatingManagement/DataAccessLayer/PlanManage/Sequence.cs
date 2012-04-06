@@ -28,7 +28,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <returns></returns>
         public int GetYJJHSequnce()
         {
-            return GetSequence("0061", "seq_tb_yjjh");
+            return GetSequence("seq_tb_yjjh");
         }
         /// <summary>
         /// 获取空间信息需求编号
@@ -36,7 +36,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <returns></returns>
         public int GetXXXQSequnce()
         {
-            return GetSequence("0062", "seq_tb_xxxq");
+            return GetSequence("seq_tb_xxxq");
         }
         /// <summary>
         /// 获取地面站工作计划编号
@@ -44,7 +44,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <returns></returns>
         public int GetDMJHSequnce()
         {
-            return GetSequence("0063", "seq_tb_dmjh");
+            return GetSequence("seq_tb_dmjh");
         }
         /// <summary>
         /// 获取中心运行计划编号
@@ -52,7 +52,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <returns></returns>
         public int GetZXJHSequnce()
         {
-            return GetSequence("0064", "seq_tb_zxjh");
+            return GetSequence("seq_tb_zxjh");
         }
         /// <summary>
         /// 获取仿真推演试验数据编号
@@ -60,7 +60,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <returns></returns>
         public int GetTYSJSequnce()
         {
-            return GetSequence("0065", "seq_tb_tysj");
+            return GetSequence("seq_tb_tysj");
         }
         /// <summary>
         /// 获取设备工作计划编号
@@ -68,16 +68,15 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <returns></returns>
         public int GetSBJHSequnce()
         {
-            return GetSequence("0066", "seq_tb_sbjh");
+            return GetSequence("seq_tb_sbjh");
         }
 
         /// <summary>
         /// 生成计划编号
         /// </summary>
-        /// <param name="seqtype"></param>
         /// <param name="seqname"></param>
         /// <returns></returns>
-        public int GetSequence(string seqtype, string seqname)
+        public int GetSequence(string seqname)
         {
             int result=1;
             OracleParameter seqnum = new OracleParameter
@@ -88,7 +87,6 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             };
 
             DataSet ds = _database.SpExecuteDataSet("up_gen_sequence", new OracleParameter[]{
-                new OracleParameter("p_seqtype", seqtype), 
                 new OracleParameter("p_seqname",seqname),
                 seqnum
             });
