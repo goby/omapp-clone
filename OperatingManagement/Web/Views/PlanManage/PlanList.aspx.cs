@@ -31,8 +31,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
-                pnlDestination.Visible = false;
-                pnlData.Visible = true;
+                //pnlDestination.Visible = false;
+                //pnlData.Visible = true;
 
                 pnlAll1.Visible = false;
                 pnlAll2.Visible = false;
@@ -58,8 +58,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             else
             {
-                startDate = DateTime.Now.AddDays(-14);
-                //txtStartDate.Text = startDate.ToString("yyyy-MM-dd");
+                startDate = DateTime.Now.AddDays(-14);  //默认查询14天的数据
             }
             if (!string.IsNullOrEmpty(txtEndDate.Text))
             {
@@ -69,7 +68,11 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 endDate = DateTime.Now.AddDays(1);
             }
-            string planType = ddlType.SelectedItem.Value;
+            string planType = null;
+            if (ddlType.SelectedItem.Value != "0")
+            { 
+                planType = ddlType.SelectedItem.Value;
+            }
 
             List<JH> listDatas = (new JH()).GetJHList(planType, startDate, endDate);
             cpPager.DataSource = listDatas;
@@ -90,7 +93,6 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
         }
 
-
         /// <summary>
         /// 最终发送
         /// </summary>
@@ -98,19 +100,19 @@ namespace OperatingManagement.Web.Views.PlanManage
         /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-
+            //SendFile();
         }
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-            pnlDestination.Visible = false;
-            pnlData.Visible = true;
+            //pnlDestination.Visible = false;
+            //pnlData.Visible = true;
         }
 
         protected void btnHidden_Click(object sender, EventArgs e)
         {
-            pnlDestination.Visible = true;
-            pnlData.Visible = false;
+            //pnlDestination.Visible = true;
+            //pnlData.Visible = false;
             //string plantype = txtPlanType.Text;
             string plantype = ddlType.SelectedValue;
             switch (plantype)
@@ -146,8 +148,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     rbtDestination.Items.Clear();
                     rbtDestination.Items.Add(new ListItem("运控评估中心YKZX(02 04 00 00)", "YKZX"));
                     break;
-
             }
+
+            ClientScript.RegisterStartupScript(this.GetType(), "pop", "<script type='text/javascript'>showPopSendForm();</script>");
             
         }
 

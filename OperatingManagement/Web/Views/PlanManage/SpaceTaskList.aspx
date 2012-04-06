@@ -12,54 +12,38 @@
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
         <asp:Panel ID="pnlData" runat="server">
-    <div id="divData">
-        <table cellpadding="0"  class="edit1" width="850px">
+        <div class="index_content_search">
+            <table cellspacing="0" cellpadding="0" class="searchTable">
             <tr>
-                <th>
-                    开始日期：
-                </th>
-                <td>
-                    <asp:TextBox ID="txtStartDate" ClientIDMode="Static"   runat="server"  Width="300px"></asp:TextBox>
-                </td>
+               <th>
+                  起始时间：
+               </th>
+               <td>
+                <asp:TextBox ID="txtStartDate" ClientIDMode="Static"  CssClass="text" runat="server"></asp:TextBox>
+               </td>
+               <th>
+                  结束时间：
+               </th>
+               <td>
                 
-            </tr>
-            <tr>
-                <th>
-                    结束日期：
-                </th>
-                <td>
-                    <asp:TextBox ID="txtEndDate" ClientIDMode="Static"   runat="server" Width="300px"></asp:TextBox>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                </td>
-                <td>
-                    <asp:Button ID="Button1"  class="button" Width="69px" runat="server" Text="查询" 
-                        onclick="Button1_Click" />
-                    &nbsp;&nbsp;
-                    <asp:Button ID="btnReset" class="button"  runat="server" Text="重置" Width="65px" 
-                        onclick="btnReset_Click" />
-                   <%-- <button class="button" onclick="return reset();" style="width: 65px;">
-                        重置</button>--%>
-                        <div style="display:none;">
+                <asp:TextBox ID="txtEndDate" ClientIDMode="Static"  CssClass="text" runat="server"></asp:TextBox>
+                
+               </td>
+               <td>
+               <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
+                    Width="69px" />
+&nbsp;<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
+                    onclick="btnReset_Click" />
+                    <div style="display:none;">
                     <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
-                    <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" 
-                                OnClick="btnHidden_Click" />
-                        </div>
-                </td>
+                    <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden"  OnClick="btnHidden_Click" />
+                    </div>
+                   </td>
             </tr>
-            <tr>
-                <td colspan="2">
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                <asp:Panel ID ="pnlAll1" runat="server">
+        </table>
+        </div>
+        <div id="divResourceStatus" class="index_content_view">
+            <asp:Panel ID ="pnlAll1" runat="server">
                     <table class="listTitle">
                         <tr>
                             <td class="listTitle-c1">
@@ -75,26 +59,29 @@
                         </tr>
                     </table>
                     </asp:Panel>
-                    <asp:Repeater ID="rpDatas" runat="server">
+            <asp:Repeater ID="rpDatas" runat="server">
                         <HeaderTemplate>
                             <table class="list">
                                 <tr>
                                     <th style="width: 20px;">
                                         <input type="checkbox" onclick="checkAll(this)" />
                                     </th>
-                                    <th style="width: 100px;">
+                                    <th style="width: 150px;">
+                                        任务代号
+                                    </th>
+                                    <th style="width: 150px;">
+                                        卫星名称
+                                    </th>
+                                    <th style="width: 150px;">
                                         历元日期
                                     </th>
-                                    <th style="width: 100px;">
+                                    <th style="width: 150px;">
                                         历元时刻
-                                    </th>
-                                    <th style="width: 100px;">
-                                        轨道半长轴
                                     </th>
                                     <th>
                                         创建时间
                                     </th>
-                                    <th style="width: 70px;">
+                                    <th style="width: 110px;">
                                         明细
                                     </th>
                                 </tr>
@@ -106,13 +93,16 @@
                                     <input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>" />
                                 </td>
                                 <td>
+                                    <%# Eval("TaskID")%>
+                                </td>
+                                <td>
+                                    <%# Eval("SatName")%>
+                                </td>
+                                <td>
                                     <%# Eval("D")%>
                                 </td>
                                 <td>
                                     <%# Eval("T")%>
-                                </td>
-                                <td>
-                                    <%# Eval("A")%>
                                 </td>
                                 <td>
                                     <%# Eval("CreatedTime","{0:"+this.SiteSetting.DateTimeFormat+"}") %>
@@ -127,7 +117,7 @@
                             </tbody> </table>
                         </FooterTemplate>
                     </asp:Repeater>
-                    <asp:Panel ID ="pnlAll2" runat="server">
+            <asp:Panel ID ="pnlAll2" runat="server">
                     <table class="listTitle">
                         <tr>
                             <td class="listTitle-c1">
@@ -143,18 +133,10 @@
                         </tr>
                     </table>
                     </asp:Panel>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center">
-                    <%-- <asp:Button ID="btnSend" runat="server" Text="发送任务" onclick="btnSend_Click" />--%>
-                </td>
-            </tr>
-        </table>
-    </div>
+        </div>
         </asp:Panel>
         <asp:Panel ID="pnlDestination" runat="server">
-    <div id="tartgetPanel">
+        <div id="tartgetPanel">
         <table>
             <tr>
                 <td align="center">
@@ -177,9 +159,8 @@
             </tr>
         </table>
     </div>
-    <div id="dialog-form" style="display:none" title="提示信息">
+        </asp:Panel>
+        <div id="dialog-form" style="display:none" title="提示信息">
 	    <p class="content"></p>
     </div>
-        </asp:Panel>
-    
 </asp:Content>

@@ -14,65 +14,54 @@
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
         <asp:Panel ID="pnlData" runat="server">
-    <div id="divData">
-            <table cellpadding="0" class="edit1" width="850px">
+        <div class="index_content_search">
+        <table cellspacing="0" cellpadding="0" class="searchTable">
             <tr>
-                    <th>
-                        开始日期：</th>
-                    <td>
-                        <asp:TextBox ID="txtStartDate" ClientIDMode="Static"   runat="server" CssClass="text" Width="300px"></asp:TextBox>
-                        &nbsp;</td>
-                </tr>
-                <tr>
-                    <th>
-                        结束日期：</th>
-                    <td>
-                        <asp:TextBox ID="txtEndDate" runat="server" ClientIDMode="Static" 
-                            CssClass="text" Width="300px"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
+               <th>
+                  起始时间：
+               </th>
+               <td>
+                <asp:TextBox ID="txtStartDate" ClientIDMode="Static"  CssClass="text" runat="server"></asp:TextBox>
+               </td>
+               <th>
+                  结束时间：
+               </th>
+               <td>
+                
+                <asp:TextBox ID="txtEndDate" ClientIDMode="Static"  CssClass="text" runat="server"></asp:TextBox>
+                
+               </td>
+               <th>
                     计划类型：
                 </th>
-                    <td>
-                        <asp:DropDownList ID="ddlType" runat="server" Width="305px" Height="20px">
+                <td>
+                        <asp:DropDownList ID="ddlType" runat="server" Width="150px" Height="20px">
+                        <%--<asp:ListItem Value="0">==全部==</asp:ListItem>--%>
                         <asp:ListItem Value="YJJH">应用研究工作计划</asp:ListItem>
-                            <asp:ListItem Value="XXXQ">空间信息需求</asp:ListItem>
+                        <asp:ListItem Value="XXXQ">空间信息需求</asp:ListItem>
                         <asp:ListItem Value="DMJH">地面站工作计划</asp:ListItem>
                         <asp:ListItem Value="ZXJH">中心运行计划</asp:ListItem>
                         <asp:ListItem Value="TYSJ">仿真推演试验数据</asp:ListItem>
                         <asp:ListItem Value="SBJH">设备工作计划</asp:ListItem>
                         </asp:DropDownList>
                 </td>
-            </tr>
-            <tr>
-                <td>
-                </td>
-                    <td>
-                    <asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
-                        Text="查询" Width="69px" />
-                    &nbsp;&nbsp;
-                        <asp:Button ID="btnReset" CssClass="button" runat="server" Text="重置" Width="65px"
-                            OnClick="btnReset_Click" />
-                        <%--<button class="button" onclick="return reset();" style="width: 65px;">
-                        重置</button>--%>
-                        <div style="display:none;">
+               <td>
+               <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
+                    Width="69px" />
+&nbsp;<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
+                    onclick="btnReset_Click" />
+                    <div style="display:none;">
                         <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
-                    <asp:TextBox ID="txtPlanID" runat="server" ClientIDMode="Static"></asp:TextBox>
-                    <asp:TextBox ID="txtPlanType" runat="server" ClientIDMode="Static"></asp:TextBox>
-                    <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" 
+                        <asp:TextBox ID="txtPlanID" runat="server" ClientIDMode="Static"></asp:TextBox>
+                        <asp:TextBox ID="txtPlanType" runat="server" ClientIDMode="Static"></asp:TextBox>
+                        <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" 
                                 OnClick="btnHidden_Click" />
                         </div>
-                </td>
+                   </td>
             </tr>
-            <tr>
-                <td class="style2" colspan="2">
-                    &nbsp;
-                </td>
-            </tr>
-            <tr>
-                <td class="style2" colspan="2">
+        </table>
+        </div>
+        <div id="divResourceStatus" class="index_content_view">
                 <asp:Panel ID ="pnlAll1" runat="server">
                     <div id="selectAll1" >
                     <table class="listTitle">
@@ -90,8 +79,8 @@
                         </tr>
                     </table>
                     </div>
-                    </asp:Panel>
-                    <asp:Repeater ID="rpDatas" runat="server">
+         </asp:Panel>
+                <asp:Repeater ID="rpDatas" runat="server">
                         <HeaderTemplate>
                             <table class="list">
                                 <tr>
@@ -161,7 +150,7 @@
                             </tbody> </table>
                         </FooterTemplate>
                     </asp:Repeater>
-                    <asp:Panel ID ="pnlAll2" runat="server">
+                <asp:Panel ID ="pnlAll2" runat="server">
                     <div id="selectAll2" >
                     <table class="listTitle">
                         <tr>
@@ -179,16 +168,17 @@
                     </table>
                     </div>
                     </asp:Panel>
-                </td>
-            </tr>
-        </table>
-    </div>
+        </div>
        </asp:Panel>
         <asp:Panel ID="pnlDestination" runat="server">
-    <div id="tartgetPanel">
+        
+        </asp:Panel>
+        <div id="tartgetPanel" style="display:none">
         <table style = " text-align:center;">
             <tr>
                 <td align="center"  style="text-align: center">
+                <b>请选择计划待发送的目标系统，可以多选</b>
+                <br />
                     <asp:RadioButtonList ID="rbtDestination" runat="server">
                     </asp:RadioButtonList>
                     <br />
@@ -196,17 +186,19 @@
             </tr>
             <tr>
                 <td style="text-align: center">
-                    <asp:Button ID="btnSubmit" class="button" runat="server" OnClick="btnSubmit_Click"
+                <%--<button class="button"  onclick="callSend();">发送</button>--%>
+                <div>
+                    <asp:Button ClientIDMode="Static" ID="btnSubmit" class="button" runat="server" OnClick="btnSubmit_Click"
                         Text="发送" />
                     &nbsp;&nbsp;
                     <asp:Button ID="btnCancel" class="button" runat="server" OnClick="btnCancel_Click"
                         Text="取消" />
+                        </div>
                 </td>
             </tr>
         </table>
     </div>
-        </asp:Panel>
-            <div id="dialog-form" style="display:none" title="提示信息">
+        <div id="dialog-form" style="display:none" title="提示信息">
 	    <p class="content"></p>
-    </div>
+        </div>
 </asp:Content>

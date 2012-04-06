@@ -479,9 +479,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                             #region Task
                             rt = new DMJH_Task();
                             TextBox txtTaskFlag = (TextBox)it.FindControl("txtTaskFlag");
-                            TextBox txtWorkWay = (TextBox)it.FindControl("txtWorkWay");
-                            TextBox txtPlanPropertiy = (TextBox)it.FindControl("txtPlanPropertiy");
-                            TextBox txtWorkMode = (TextBox)it.FindControl("txtWorkMode");
+                            DropDownList txtWorkWay = (DropDownList)it.FindControl("ddlFS");
+                            DropDownList txtPlanPropertiy = (DropDownList)it.FindControl("ddlJXZ");
+                            DropDownList txtWorkMode = (DropDownList)it.FindControl("ddlMS");
                             TextBox txtPreStartTime = (TextBox)it.FindControl("txtPreStartTime");
                             TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
                             TextBox txtTrackStartTime = (TextBox)it.FindControl("txtTrackStartTime");
@@ -491,9 +491,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                             TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
 
                             rt.TaskFlag = txtTaskFlag.Text;
-                            rt.WorkWay = txtWorkWay.Text;
-                            rt.PlanPropertiy = txtPlanPropertiy.Text;
-                            rt.WorkMode = txtWorkMode.Text;
+                            rt.WorkWay = txtWorkWay.SelectedValue;
+                            rt.PlanPropertiy = txtPlanPropertiy.SelectedValue;
+                            rt.WorkMode = txtWorkMode.SelectedValue;
                             rt.PreStartTime = txtPreStartTime.Text;
                             rt.StartTime = txtStartTime.Text;
                             rt.TrackStartTime = txtTrackStartTime.Text;
@@ -669,7 +669,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             DMJH obj = new DMJH();
             obj.Sequence = txtSequence.Text;
-            obj.DateTime = txtDatetime.Text;
+            obj.DateTime = DateTime.Now.ToString("YYYYMMDDHHmmss");
             obj.StationName = txtStationName.Text;
             obj.EquipmentID = txtEquipmentID.Text;
            // obj.TaskCount = txtTaskCount.Text;
@@ -931,6 +931,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         protected void txtGetPlanInfo_Click(object sender, EventArgs e)
         {
             BindGridView();
+            ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>showSBJHForm();</script>");
         }
 
         //绑定列表

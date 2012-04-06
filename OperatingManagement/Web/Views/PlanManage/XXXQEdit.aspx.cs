@@ -172,15 +172,16 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<MBXQSatInfo> list2 = new List<MBXQSatInfo>();
                 MBXQSatInfo dm;
                 Repeater rp = (Repeater)source;
+                ViewState["opMB"] = "Add";
                 foreach (RepeaterItem it in rp.Items)
                 {
                     dm = new MBXQSatInfo();
-                    TextBox txtMBSatName = (TextBox)it.FindControl("txtMBSatName");
-                    TextBox txtMBInfoName = (TextBox)it.FindControl("txtMBInfoName");
+                    ucs.ucSatellite txtMBSatName = (ucs.ucSatellite)it.FindControl("ucSatelliteMB");
+                    DropDownList txtMBInfoName = (DropDownList)it.FindControl("ddlMBInfoName");
                     TextBox txtMBInfoTime = (TextBox)it.FindControl("txtMBInfoTime");
 
-                    dm.SatName = txtMBSatName.Text;
-                    dm.InfoName = txtMBInfoName.Text;
+                    dm.SatName = txtMBSatName.SelectedItem.Text;
+                    dm.InfoName = txtMBInfoName.SelectedItem.Text;
                     dm.InfoTime = txtMBInfoTime.Text;
                     list2.Add(dm);
                 }
@@ -198,6 +199,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<MBXQSatInfo> list2 = new List<MBXQSatInfo>();
                 MBXQSatInfo dm;
                 Repeater rp = (Repeater)source;
+                ViewState["opMB"] = "Del";
                 if (rp.Items.Count <= 1)
                 {
                     ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
@@ -209,12 +211,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                         if (e.Item.ItemIndex != it.ItemIndex)
                         {
                             dm = new MBXQSatInfo();
-                            TextBox txtMBSatName = (TextBox)it.FindControl("txtMBSatName");
-                            TextBox txtMBInfoName = (TextBox)it.FindControl("txtMBInfoName");
+                            ucs.ucSatellite txtMBSatName = (ucs.ucSatellite)it.FindControl("ucSatelliteMB");
+                            DropDownList txtMBInfoName = (DropDownList)it.FindControl("ddlMBInfoName");
                             TextBox txtMBInfoTime = (TextBox)it.FindControl("txtMBInfoTime");
 
-                            dm.SatName = txtMBSatName.Text;
-                            dm.InfoName = txtMBInfoName.Text;
+                            dm.SatName = txtMBSatName.SelectedItem.Text;
+                            dm.InfoName = txtMBInfoName.SelectedItem.Text;
                             dm.InfoTime = txtMBInfoTime.Text;
                             list2.Add(dm);
                         }
@@ -232,16 +234,17 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<HJXQSatInfo> list2 = new List<HJXQSatInfo>();
                 HJXQSatInfo dm;
                 Repeater rp = (Repeater)source;
+                ViewState["opHJ"] = "Add";
                 foreach (RepeaterItem it in rp.Items)
                 {
                     dm = new HJXQSatInfo();
-                    TextBox txtHJSatName = (TextBox)it.FindControl("txtHJSatName");
-                    TextBox txtHJInfoName = (TextBox)it.FindControl("txtHJInfoName");
+                    ucs.ucSatellite txtHJSatName = (ucs.ucSatellite)it.FindControl("ucSatelliteHJ");
+                    DropDownList txtHJInfoName = (DropDownList)it.FindControl("ddlHJInfoName");
                     TextBox txtHJInfoArea = (TextBox)it.FindControl("txtHJInfoArea");
                     TextBox txtHJInfoTime = (TextBox)it.FindControl("txtHJInfoTime");
 
-                    dm.SatName = txtHJSatName.Text;
-                    dm.InfoName = txtHJInfoName.Text;
+                    dm.SatName = txtHJSatName.SelectedItem.Text;
+                    dm.InfoName = txtHJInfoName.SelectedItem.Text;
                     dm.InfoArea = txtHJInfoArea.Text;
                     dm.InfoTime = txtHJInfoTime.Text;
                     list2.Add(dm);
@@ -261,6 +264,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<HJXQSatInfo> list2 = new List<HJXQSatInfo>();
                 HJXQSatInfo dm;
                 Repeater rp = (Repeater)source;
+                ViewState["opHJ"] = "Del";
                 if (rp.Items.Count <= 1)
                 {
                     ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
@@ -272,13 +276,13 @@ namespace OperatingManagement.Web.Views.PlanManage
                         if (e.Item.ItemIndex != it.ItemIndex)
                         {
                             dm = new HJXQSatInfo();
-                            TextBox txtHJSatName = (TextBox)it.FindControl("txtHJSatName");
-                            TextBox txtHJInfoName = (TextBox)it.FindControl("txtHJInfoName");
+                            ucs.ucSatellite txtHJSatName = (ucs.ucSatellite)it.FindControl("ucSatelliteHJ");
+                            DropDownList txtHJInfoName = (DropDownList)it.FindControl("ddlHJInfoName");
                             TextBox txtHJInfoArea = (TextBox)it.FindControl("txtHJInfoArea");
                             TextBox txtHJInfoTime = (TextBox)it.FindControl("txtHJInfoTime");
 
-                            dm.SatName = txtHJSatName.Text;
-                            dm.InfoName = txtHJInfoName.Text;
+                            dm.SatName = txtHJSatName.SelectedItem.Text;
+                            dm.InfoName = txtHJInfoName.SelectedItem.Text;
                             dm.InfoArea = txtHJInfoArea.Text;
                             dm.InfoTime = txtHJInfoTime.Text;
                             list2.Add(dm);
@@ -306,12 +310,12 @@ namespace OperatingManagement.Web.Views.PlanManage
             foreach (RepeaterItem it in rpMB.Items)
             {
                 dm = new MBXQSatInfo();
-                TextBox txtMBSatName = (TextBox)it.FindControl("txtMBSatName");
-                TextBox txtMBInfoName = (TextBox)it.FindControl("txtMBInfoName");
+                ucs.ucSatellite txtMBSatName = (ucs.ucSatellite)it.FindControl("ucSatelliteMB");
+                DropDownList txtMBInfoName = (DropDownList)it.FindControl("ddlMBInfoName");
                 TextBox txtMBInfoTime = (TextBox)it.FindControl("txtMBInfoTime");
 
-                dm.SatName = txtMBSatName.Text;
-                dm.InfoName = txtMBInfoName.Text;
+                dm.SatName = txtMBSatName.SelectedItem.Text;
+                dm.InfoName = txtMBInfoName.SelectedItem.Text;
                 dm.InfoTime = txtMBInfoTime.Text;
 
                 objMB.SatInfos.Add(dm);
@@ -335,13 +339,13 @@ namespace OperatingManagement.Web.Views.PlanManage
             foreach (RepeaterItem it in rpHJ.Items)
             {
                 dmhj = new HJXQSatInfo();
-                TextBox txtHJSatName = (TextBox)it.FindControl("txtHJSatName");
-                TextBox txtHJInfoName = (TextBox)it.FindControl("txtHJInfoName");
+                ucs.ucSatellite txtHJSatName = (ucs.ucSatellite)it.FindControl("ucSatelliteHJ");
+                DropDownList txtHJInfoName = (DropDownList)it.FindControl("ddlHJInfoName");
                 TextBox txtHJInfoArea = (TextBox)it.FindControl("txtHJInfoArea");
                 TextBox txtHJInfoTime = (TextBox)it.FindControl("txtHJInfoTime");
 
-                dmhj.SatName = txtHJSatName.Text;
-                dmhj.InfoName = txtHJInfoName.Text;
+                dmhj.SatName = txtHJSatName.SelectedItem.Text;
+                dmhj.InfoName = txtHJInfoName.SelectedItem.Text;
                 dmhj.InfoArea = txtHJInfoArea.Text;
                 dmhj.InfoTime = txtHJInfoTime.Text;
 
@@ -432,12 +436,12 @@ namespace OperatingManagement.Web.Views.PlanManage
             foreach (RepeaterItem it in rpMB.Items)
             {
                 dm = new MBXQSatInfo();
-                TextBox txtMBSatName = (TextBox)it.FindControl("txtMBSatName");
-                TextBox txtMBInfoName = (TextBox)it.FindControl("txtMBInfoName");
+                ucs.ucSatellite txtMBSatName = (ucs.ucSatellite)it.FindControl("ucSatelliteMB");
+                DropDownList txtMBInfoName = (DropDownList)it.FindControl("ddlMBInfoName");
                 TextBox txtMBInfoTime = (TextBox)it.FindControl("txtMBInfoTime");
 
-                dm.SatName = txtMBSatName.Text;
-                dm.InfoName = txtMBInfoName.Text;
+                dm.SatName = txtMBSatName.SelectedItem.Text;
+                dm.InfoName = txtMBInfoName.SelectedItem.Text;
                 dm.InfoTime = txtMBInfoTime.Text;
 
                 objMB.SatInfos.Add(dm);
@@ -461,13 +465,13 @@ namespace OperatingManagement.Web.Views.PlanManage
             foreach (RepeaterItem it in rpHJ.Items)
             {
                 dmhj = new HJXQSatInfo();
-                TextBox txtHJSatName = (TextBox)it.FindControl("txtHJSatName");
-                TextBox txtHJInfoName = (TextBox)it.FindControl("txtHJInfoName");
+                ucs.ucSatellite txtHJSatName = (ucs.ucSatellite)it.FindControl("ucSatelliteHJ");
+                DropDownList txtHJInfoName = (DropDownList)it.FindControl("ddlHJInfoName");
                 TextBox txtHJInfoArea = (TextBox)it.FindControl("txtHJInfoArea");
                 TextBox txtHJInfoTime = (TextBox)it.FindControl("txtHJInfoTime");
 
-                dmhj.SatName = txtHJSatName.Text;
-                dmhj.InfoName = txtHJInfoName.Text;
+                dmhj.SatName = txtHJSatName.SelectedItem.Text;
+                dmhj.InfoName = txtHJInfoName.SelectedItem.Text;
                 dmhj.InfoArea = txtHJInfoArea.Text;
                 dmhj.InfoTime = txtHJInfoTime.Text;
 
@@ -503,6 +507,56 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
        
+        }
+
+        protected void rpMB_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                ucs.ucSatellite txtMBSatName = (ucs.ucSatellite)e.Item.FindControl("ucSatelliteMB");
+                txtMBSatName.ReBindData();
+
+                DropDownList ddlRFS = (DropDownList)e.Item.FindControl("ddlMBInfoName") as DropDownList;
+                ddlRFS.DataSource = PlanParameters.ReadParameters("MBXQInfoName");
+                ddlRFS.DataTextField = "Text";
+                ddlRFS.DataValueField = "Text";
+                ddlRFS.DataBind();
+
+                MBXQSatInfo mbs = (MBXQSatInfo)e.Item.DataItem;
+                if ( !string.IsNullOrEmpty( mbs.SatName ))
+                {
+                    txtMBSatName.Items.FindByText(DataBinder.Eval(e.Item.DataItem, "SatName").ToString()).Selected = true;
+                }
+                if (mbs.InfoName != null)
+                {
+                    ddlRFS.SelectedValue = DataBinder.Eval(e.Item.DataItem, "InfoName").ToString();
+                }
+            }
+        }
+
+        protected void rpHJ_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                ucs.ucSatellite txtHJSatName = (ucs.ucSatellite)e.Item.FindControl("ucSatelliteHJ");
+                txtHJSatName.ReBindData();
+                
+                DropDownList ddlRFS = (DropDownList)e.Item.FindControl("ddlHJInfoName") as DropDownList;
+                ddlRFS.DataSource = PlanParameters.ReadParameters("HJXQInfoName");
+                ddlRFS.DataTextField = "Text";
+                ddlRFS.DataValueField = "Text";
+                ddlRFS.DataBind();
+
+                HJXQSatInfo hjs = (HJXQSatInfo)e.Item.DataItem;
+                if ( !string.IsNullOrEmpty(hjs.SatName))
+                {
+                    txtHJSatName.Items.FindByText(DataBinder.Eval(e.Item.DataItem, "SatName").ToString()).Selected = true;
+                }
+                if (hjs.InfoName != null)
+                {
+                    ddlRFS.SelectedValue = DataBinder.Eval(e.Item.DataItem, "InfoName").ToString();
+                }
+            }
         }
     }
 }

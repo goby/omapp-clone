@@ -114,3 +114,28 @@ function showSend(id) {
     return false;
 }
 
+function showPopSendForm() {
+    var _dialog;
+    _dialog = $("#tartgetPanel");
+    _dialog.dialog({
+        autoOpen: false,
+        height: 350,
+        width: 330,
+        modal: true,
+        buttons: {
+            '关闭': function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+    _dialog.dialog('open');
+    _dialog.parent().appendTo($("form:first"));
+    return false;
+}
+
+function callSend() {
+    var btn = $('#btnSubmit');
+    btn.click();
+    return false;
+}
+

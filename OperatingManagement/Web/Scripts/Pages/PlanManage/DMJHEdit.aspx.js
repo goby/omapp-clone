@@ -22,6 +22,26 @@ function showMsg(msg) {
     _dialog.dialog('open');
     return false;
 }
+//弹出选择设备计划窗口
+function showSBJHForm() {
+    var _dialog;
+    _dialog = $("#dialog-sbjh");
+    _dialog.dialog({
+        autoOpen: false,
+        height: 450,
+        width: 550,
+        modal: true,
+        buttons: {
+            '关闭': function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+    //_dialog.find('p.content').eq(0).html(msg);
+    _dialog.dialog('open');
+    _dialog.parent().appendTo($("form:first"));
+    return false;
+}
 
 function hideAllButton() {
     $(":submit").css('display','none'); 
