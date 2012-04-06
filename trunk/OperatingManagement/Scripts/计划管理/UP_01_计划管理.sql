@@ -57,14 +57,13 @@ prompt ==================================
 prompt
 create or replace procedure htcuser.UP_Gen_SEQUENCE
 (
-       p_seqtype varchar2,
        p_seqname varchar2,
        o_seqnum out number
 )
 as
  
 begin
-o_seqnum := to_number(fn_genseqnum(p_seqtype));
+  execute immediate ' select ' || p_seqname || '.nextval from dual' into o_seqnum;
 
 if o_seqnum >= 9999 then
   up_reset_sequence (p_seqname);
