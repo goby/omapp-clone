@@ -17,6 +17,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
     public class XXXQ
     {
         #region -Properties-
+        public DateTime CTime { get; set; }
         public string TaskID { get; set; }
         public string SatID { get; set; }
         public MBXQ objMBXQ { get; set; }
