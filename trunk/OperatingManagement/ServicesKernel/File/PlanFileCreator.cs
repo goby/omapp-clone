@@ -24,7 +24,17 @@ namespace ServicesKernel.File
 
         public int ID { get; set; }
         public DateTime CTime { get; set; }
-        public string Source { get; set; }
+        /// <summary>
+        /// 发送源名称
+        /// </summary>
+        public string Source 
+        {
+            get
+            {
+                return System.Configuration.ConfigurationManager.AppSettings["ZXBMName"];
+            }
+            set; 
+        }
         public string Destination { get; set; }
         public string TaskID { get; set; }
         public string InfoType { get; set; }
@@ -38,6 +48,9 @@ namespace ServicesKernel.File
         private string strOutputPath = null;
         private string strSavePath = null;
         private string _filepath=null;
+        /// <summary>
+        /// 内部文件完整路径
+        /// </summary>
         public string FilePath 
         {
             get
@@ -56,6 +69,30 @@ namespace ServicesKernel.File
                 _filepath = value;
             }
         }
+        /// <summary>
+        /// 外发文件完整路径
+        /// </summary>
+        public string SendingPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_filepath))
+                {
+                    return OutPutPath + filename;
+                }
+                else
+                {
+                    return _filepath;
+                }
+            }
+            set
+            {
+                _filepath = value;
+            }
+        }
+        /// <summary>
+        /// 内部文件保存目录
+        /// </summary>
         public string SavePath 
         {
             get
@@ -70,7 +107,9 @@ namespace ServicesKernel.File
                 return strSavePath;
             }
         }
-
+        /// <summary>
+        /// 外发文件保存目录
+        /// </summary>
         public string OutPutPath
         {
             get
@@ -161,118 +200,7 @@ namespace ServicesKernel.File
 
             return FilePath;
         }
-        /// <summary>
-        /// 信息空间
-        /// </summary>
-        public string CreateXXXQFile(XXXQ obj)
-        {
-            filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("XXXQ", obj.TaskID, obj.SatID);
-            xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
-            xmlWriter.Formatting = Formatting.Indented;
-            xmlWriter.WriteStartDocument();
 
-            #region MBXQ
-            xmlWriter.WriteStartElement("空间目标信息需求");
-
-            xmlWriter.WriteStartElement("User");
-            xmlWriter.WriteString(obj.objMBXQ.User);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("Time");
-            xmlWriter.WriteString(obj.objMBXQ.Time);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("TargetInfo");
-            xmlWriter.WriteString(obj.objMBXQ.TargetInfo);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("TimeSection1");
-            xmlWriter.WriteString(obj.objMBXQ.TimeSection1);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("TimeSection2");
-            xmlWriter.WriteString(obj.objMBXQ.TimeSection2);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("Sum");
-            xmlWriter.WriteString(obj.objMBXQ.Sum);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("卫星");
-            for (int i = 1; i <= obj.objMBXQ.SatInfos.Count; i++)
-            {
-                xmlWriter.WriteStartElement("SatName");
-                xmlWriter.WriteString(obj.objMBXQ.SatInfos[i-1].SatName);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("InfoName");
-                xmlWriter.WriteString(obj.objMBXQ.SatInfos[i-1].InfoName);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("InfoTime");
-                xmlWriter.WriteString(obj.objMBXQ.SatInfos[i-1].InfoTime);
-                xmlWriter.WriteEndElement();
-            }
-            xmlWriter.WriteEndElement();
-
-
-            xmlWriter.WriteEndElement();
-            #endregion
-
-            #region HJXQ
-            xmlWriter.WriteStartElement("空间环境信息需求");
-
-            xmlWriter.WriteStartElement("User");
-            xmlWriter.WriteString(obj.objHJXQ.User);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("Time");
-            xmlWriter.WriteString(obj.objHJXQ.Time);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("EnvironInfo");
-            xmlWriter.WriteString(obj.objHJXQ.EnvironInfo);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("TimeSection1");
-            xmlWriter.WriteString(obj.objHJXQ.TimeSection1);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("TimeSection2");
-            xmlWriter.WriteString(obj.objHJXQ.TimeSection2);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("Sum");
-            xmlWriter.WriteString(obj.objHJXQ.Sum);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("卫星");
-            for (int i = 1; i <= obj.objHJXQ.SatInfos.Count; i++)
-            {
-                xmlWriter.WriteStartElement("SatName");
-                xmlWriter.WriteString(obj.objHJXQ.SatInfos[i - 1].SatName);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("InfoName");
-                xmlWriter.WriteString(obj.objHJXQ.SatInfos[i - 1].InfoName);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("InfoArea");
-                xmlWriter.WriteString(obj.objHJXQ.SatInfos[i - 1].InfoArea);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("InfoTime");
-                xmlWriter.WriteString(obj.objHJXQ.SatInfos[i - 1].InfoTime);
-                xmlWriter.WriteEndElement();
-            }
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteEndElement();
-            #endregion
-
-            xmlWriter.Close();
-            return FilePath;
-        }
         /// <summary>
         /// 空间信息需求计划
         /// </summary>
@@ -810,6 +738,68 @@ namespace ServicesKernel.File
 
             xmlWriter.Close();
             return FilePath;
+        }
+        #endregion
+
+        #region <Sending File>
+        /// <summary>
+        /// 创建外部应用计划文件
+        /// </summary>
+        /// <param name="id">计划ID串</param>
+        /// <returns></returns>
+        public string CreateSendingYJJHFile(string ids,string desValue,string destinationName)
+        {
+            string SendFileNames  ="";
+            List<JH> listJH = (new JH()).SelectByIDS(ids);
+            YJJH obj;
+            foreach (JH jh in listJH)
+            {
+                #region 读取计划XML文件，变量赋值
+                obj = new YJJH();
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(jh.FileIndex);
+
+                obj.CTime = jh.CTime;
+                XmlNode root = xmlDoc.SelectSingleNode("应用研究工作计划/XXFL");
+                obj.XXFL = root.InnerText;
+                root = xmlDoc.SelectSingleNode("应用研究工作计划/JXH");
+                obj.JXH= root.InnerText;
+                root = xmlDoc.SelectSingleNode("应用研究工作计划/SysName");
+                obj.SysName = root.InnerText;
+                root = xmlDoc.SelectSingleNode("应用研究工作计划/StartTime");
+                obj.StartTime = root.InnerText;
+                root = xmlDoc.SelectSingleNode("应用研究工作计划/EndTime");
+                obj.EndTime = root.InnerText;
+                root = xmlDoc.SelectSingleNode("应用研究工作计划/Task");
+                obj.Task = root.InnerText;
+                #endregion
+
+                #region 写入文件
+                filename = FileNameMaker.GenarateFileNameTypeThree("YJJH", desValue);
+                SendFileNames += SendingPath;
+
+                sw = new StreamWriter(SendingPath);
+                sw.WriteLine("<说明区>");
+                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH-mm"));
+                sw.WriteLine("[信源S]：" + this.Source);
+                sw.WriteLine("[信宿D]：" + destinationName);
+                sw.WriteLine("[任务代码M]：700任务(0500)");
+                sw.WriteLine("[信息类别B]：应用研究计划(00 70 06 00)");
+                sw.WriteLine("[数据区行数L]：0001");
+                sw.WriteLine("<符号区>");
+                sw.WriteLine("[格式标识1]：XXFL  JXH  SysName  StartTime  EndTime  Task");
+                sw.WriteLine("[数据区]：");
+                sw.WriteLine(obj.XXFL + "  " + obj.JXH + "  " + obj.SysName + "  " + obj.StartTime + "  " + obj.EndTime + "  "+obj.Task);
+                sw.WriteLine("<辅助区>");
+                sw.WriteLine("[备注]：");
+                sw.WriteLine("[结束]：END");
+
+                sw.Close();
+                #endregion
+
+            }
+
+            return SendFileNames;
         }
         #endregion
 
