@@ -71,7 +71,9 @@
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\PassportSSO.aspx" />
     <Content Include="App_Data\accountCentre.xml" />
-    <Content Include="App_Data\FileExchangeConfig.xml" />
+    <Content Include="App_Data\FileExchangeConfig.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\menuIndex.xml">
       <SubType>Designer</SubType>
     </Content>

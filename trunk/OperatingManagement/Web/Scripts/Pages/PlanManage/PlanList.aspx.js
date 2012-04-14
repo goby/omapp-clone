@@ -98,13 +98,13 @@ function showEdit(planid,plantype) {
 }
 
 //function showSend(id,planid,plantype) {
-function showSend(id) {
+function showSend(ids) {
 //    var divData = $('#divData');
 //    divData.hide();
 //    var indicator = $('#tartgetPanel');
 //    indicator.show();
     var txtId = $('#txtId'); 
-    txtId.val(id);
+    txtId.val(ids);
 //    var txtPlanID = $('#txtPlanID'); 
 //    txtPlanID.val(planid);
 //    var txtPlanType = $('#txtPlanType'); 

@@ -100,7 +100,27 @@ namespace OperatingManagement.Web.Views.PlanManage
         /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            //SendFile();
+            PlanFileCreator creater = new PlanFileCreator();
+            string SendingFilePaths = "";
+            switch (txtPlanType.Text)
+            {
+                case "YJJH":
+                    SendingFilePaths = creater.CreateSendingYJJHFile(txtId.Text, rbtDestination.SelectedValue, rbtDestination.SelectedItem.Text);
+                    break;
+                case "XXXQ":
+                    SendingFilePaths = creater.CreateSendingXXXQFile(txtId.Text, rbtDestination.SelectedValue, rbtDestination.SelectedItem.Text);
+                    break;
+                case "DMJH":
+                case "GZJH":
+                    SendingFilePaths = creater.CreateSendingDMJHFile(txtId.Text, rbtDestination.SelectedValue, rbtDestination.SelectedItem.Text);
+                    break;
+                case "TYSJ":
+                    SendingFilePaths = creater.CreateSendingTYSJFile(txtId.Text, rbtDestination.SelectedValue, rbtDestination.SelectedItem.Text);
+                    break;
+            }
+
+            //FileSender.SendFile(SendingFilePaths);
+            
         }
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)
@@ -115,6 +135,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             //pnlData.Visible = false;
             //string plantype = txtPlanType.Text;
             string plantype = ddlType.SelectedValue;
+            txtPlanType.Text = plantype;
             switch (plantype)
             {
                 case "YJJH":
@@ -128,6 +149,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     rbtDestination.Items.Clear();
                     rbtDestination.Items.Add(new ListItem("空间信息综合应用中心(XXZX)", "XXZX"));
                     break;
+                case "DMJH":
                 case "GZJH":
                     rbtDestination.Items.Clear();
                     rbtDestination.Items.Add(new ListItem("西安中心（XSCC）", "XSCC"));
