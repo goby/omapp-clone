@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.Threading;
+using System.IO;
 
 namespace ServicesKernel.File
 {
@@ -12,7 +14,7 @@ namespace ServicesKernel.File
 
         #region 外部文件命名
         /// <summary>
-        /// 只有外发才需要：版本号_对象标识_信源标识_模式标识_信息类型标识_日期_编号. xml
+        /// 只有外发才需要：版本号_对象标识_信源标识_模式标识_信息类型标识_日期_编号.xml
         /// </summary>
         /// <param name="infotype"></param>
         /// <param name="dateType">日期类型U:UTC日期;B:北京日期</param>
@@ -23,7 +25,7 @@ namespace ServicesKernel.File
             string ver = System.Configuration.ConfigurationManager.AppSettings["Version"];
             //对象标识用4个字符表示，采用可读性ASCII码字符，本任务固定为“7000”，程序中配置为“7000”；
             string flag = System.Configuration.ConfigurationManager.AppSettings["ObjectCode"];
-            //	模式标识用2个字符表示，用来标识文件内信息所对应的运行模式。“OP”代表实战，“TS”代表联试；
+            //模式标识用2个字符表示，用来标识文件内信息所对应的运行模式。“OP”代表实战，“TS”代表联试；
             string mode = System.Configuration.ConfigurationManager.AppSettings["RunningMode"];
 
             if (ver == null || flag == null ||  mode == null)
@@ -68,7 +70,7 @@ namespace ServicesKernel.File
                 {
                     case 1:
                         //版本号_对象标识_信源标识_模式标识_信息类型标识_日期_编号. xml
-                        string sequence = GetSequenceID(infoCode);
+                        string sequence = GetSequenceNO(infoCode);
                         return version + seperator + objectCode + seperator + fromMark + seperator + runningMode +
                             seperator + infoCode + seperator + time + sequence + ".xml";
                     case 2:
@@ -119,12 +121,34 @@ namespace ServicesKernel.File
         /// </summary>
         /// <param name="infoCode"></param>
         /// <returns></returns>
-        private static string GetSequenceID(string infoCode)
+        private static string GetSequenceNO(string infoCode)
         {
             string strSeqPath = @"../app_data/sequence.xml";
-            XDocument doc = XDocument.Load(strSeqPath);
-            var infos = doc.Elements("info");
-            return "";
+            string strSeqNo = "";
+
+            ReaderWriterLock rwl = new ReaderWriterLock();
+            try
+            {
+                rwl.AcquireWriterLock(1000);
+                XDocument doc = XDocument.Load(strSeqPath);
+                XElement root = doc.Root;
+                XElement element = root.Element(infoCode);
+                strSeqNo = element.Value;
+                int iSeq = Convert.ToInt32(strSeqNo);
+                element.Value = (iSeq + 1).ToString().PadLeft(4, '0');
+                StreamWriter oSW = new StreamWriter(strSeqPath);
+                oSW.Write(doc.ToString());
+                oSW.Close();
+            }
+            catch (Exception ex)
+            {
+                strSeqNo = string.Empty;
+            }
+            finally
+            {
+                rwl.ReleaseWriterLock();
+            }
+            return strSeqNo;
         }
         #endregion
 
