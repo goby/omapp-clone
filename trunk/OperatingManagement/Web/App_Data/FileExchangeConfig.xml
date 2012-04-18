@@ -18,6 +18,14 @@
       <SrcCode>YKZX</SrcCode>
       <TgtList>
         <TgtCode>XSCC</TgtCode>
+      </TgtList>
+    </Info>
+    <Info>
+      <Type>GZJH</Type>
+      <Name>地面站工作计划</Name>
+      <Suffix>pla</Suffix>
+      <SrcCode>YKZX</SrcCode>
+      <TgtList>
         <TgtCode>XXZX</TgtCode>
         <TgtCode>JZZX</TgtCode>
         <TgtCode>ZLZX</TgtCode>
