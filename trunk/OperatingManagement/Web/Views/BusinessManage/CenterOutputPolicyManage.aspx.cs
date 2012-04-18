@@ -127,7 +127,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 strBuilder.AppendFormat("SatName={0}\r\n", GetSatelliteWXMC(centerOutputPolicy.SatName));
                 strBuilder.AppendFormat("Source={0}\r\n", GetXYXSADDRName(centerOutputPolicy.InfoSource));
                 strBuilder.AppendFormat("InfoType={0}\r\n", GetXXTypeDATANAME(centerOutputPolicy.InfoType));
-                strBuilder.AppendFormat("Ddestination={0}\r\n", GetXYXSADDRName(centerOutputPolicy.Ddestination));
+                strBuilder.AppendFormat("Ddestination={0}\r\n", GetXYXSADDRName(centerOutputPolicy.Destination));
                 strBuilder.AppendFormat("EffectTime={0}\r\n", centerOutputPolicy.EffectTime.ToString("yyyy-MM-dd HH:mm:ss"));
                 strBuilder.AppendFormat("DefectTime={0}\r\n", centerOutputPolicy.DefectTime.ToString("yyyy-MM-dd HH:mm:ss"));
                 Response.Clear();
