@@ -4,6 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
+using System.Web.Security;
+using System.Data;
+using ServicesKernel.File;
 
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.WebKernel.Route;
@@ -11,10 +15,7 @@ using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.Framework;
 using OperatingManagement.DataAccessLayer.BusinessManage;
-using System.Xml.Linq;
-using System.Web.Security;
-using System.Data;
-using ServicesKernel.File;
+using OperatingManagement.RemotingObjectInterface;
 
 namespace OperatingManagement.Web.Views.BusinessManage
 {
@@ -115,8 +116,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
         private void ReSendFile(int sendInfoID)
         {
             string strResult = string.Empty;
-            FileSender oSender = new FileSender();
-            //strResult = oSender.ReSendFile(sendInfoID);
+            IFileSender oSender = FileSenderClientAgent.GetObject<IFileSender>();
+            strResult = oSender.ReSendFile(sendInfoID);
             if (strResult != string.Empty)
             {
                 XElement root = XElement.Parse(strResult);

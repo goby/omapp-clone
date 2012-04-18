@@ -61,8 +61,13 @@
                     </div>
                 </div>
                 <div class="content">
-                    <div class="ctnx">                        
+                    <div class="ctnx" style="width:auto;height:auto">
+                        <table style="width:1000px;height:500px">
+                        <tr>
+                            <td valign="top" style="width:1000px" align="left">
                         <asp:ContentPlaceHolder ID="BodyContent" runat="server"></asp:ContentPlaceHolder>
+                        </td>
+                        </tr></table>
                     </div>
                     <%--<div id="leftMenuIndicator">分系统监控</div>--%>
                 </div>

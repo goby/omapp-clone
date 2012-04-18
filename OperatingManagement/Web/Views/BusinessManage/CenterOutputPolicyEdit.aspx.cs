@@ -161,7 +161,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 //centerOutputPolicy.SatName = dplSatName.SelectedValue;
                 centerOutputPolicy.InfoSource = Convert.ToInt32(dplSource.SelectedValue);
                 centerOutputPolicy.InfoType = Convert.ToInt32(dplInfoType.SelectedValue);
-                centerOutputPolicy.Ddestination = Convert.ToInt32(dplDdestination.SelectedValue);
+                centerOutputPolicy.Destination = Convert.ToInt32(dplDdestination.SelectedValue);
                 centerOutputPolicy.EffectTime = effectTime;
                 centerOutputPolicy.DefectTime = defectTime;
                 centerOutputPolicy.Note = txtNote.Text.Trim();
@@ -247,7 +247,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 dplSatellite.SelectedValue = centerOutputPolicy.SatName;
                 dplSource.SelectedValue = centerOutputPolicy.InfoSource.ToString();
                 dplInfoType.SelectedValue = centerOutputPolicy.InfoType.ToString();
-                dplDdestination.SelectedValue = centerOutputPolicy.Ddestination.ToString();
+                dplDdestination.SelectedValue = centerOutputPolicy.Destination.ToString();
                 txtEffectTime.Text = centerOutputPolicy.EffectTime.ToString("yyyy-MM-dd");
                 txtDefectTime.Text = centerOutputPolicy.DefectTime.ToString("yyyy-MM-dd");
                 txtNote.Text = centerOutputPolicy.Note;

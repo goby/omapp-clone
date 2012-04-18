@@ -136,7 +136,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 centerOutputPolicy.SatName = dplSatellite.SelectedValue;
                 centerOutputPolicy.InfoSource = Convert.ToInt32(dplSource.SelectedValue);
                 centerOutputPolicy.InfoType = Convert.ToInt32(dplInfoType.SelectedValue);
-                centerOutputPolicy.Ddestination = Convert.ToInt32(dplDdestination.SelectedValue);
+                centerOutputPolicy.Destination = Convert.ToInt32(dplDdestination.SelectedValue);
                 centerOutputPolicy.EffectTime = effectTime;
                 centerOutputPolicy.DefectTime = defectTime;
                 centerOutputPolicy.Note = txtNote.Text.Trim();

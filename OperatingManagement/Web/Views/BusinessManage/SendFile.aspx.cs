@@ -46,7 +46,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string fileFullName = fuToSend.FileName;
             string fileName = fileFullName.Substring(fileFullName.LastIndexOf(@"\",0)+1);
             string filePath = fileFullName.Substring(0,fileFullName.LastIndexOf(@"\",0)+1);
-            FileSender oSender = new FileSender();
+            IFileSender oSender = FileSenderClientAgent.GetObject<IFileSender>();
+            strResult = oSender.SendFile(fileName, filePath, Convert.ToInt32(rblSendWay.SelectedValue), Convert.ToInt32(ddlSender.SelectedValue)
+                , Convert.ToInt32(ddlReceiver.SelectedValue), Convert.ToInt32(ddlInfoType.SelectedValue), rblAutoResend.SelectedValue == "1");
+            //FileSender oSender = new FileSender();
             //strResult = oSender.SendFile(fileName, filePath, Convert.ToInt32(rblSendWay.SelectedValue),
             //    Convert.ToInt32(ddlSender.SelectedItem.Value), Convert.ToInt32(ddlReceiver.SelectedItem.Value),
             //    Convert.ToInt32(ddlInfoType.SelectedItem.Value), (rblAutoResend.SelectedValue == "1" ? true : false));

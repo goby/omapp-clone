@@ -52,7 +52,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 信宿
         /// </summary>
-        public int Ddestination { get; set; }
+        public int Destination { get; set; }
         /// <summary>
         /// 生效时间
         /// </summary>
@@ -118,7 +118,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     SatName = ds.Tables[0].Rows[0]["SatName"].ToString(),
                     InfoSource = Convert.ToInt32(ds.Tables[0].Rows[0]["InfoSource"]),
                     InfoType = Convert.ToInt32(ds.Tables[0].Rows[0]["InfoType"]),
-                    Ddestination = Convert.ToInt32(ds.Tables[0].Rows[0]["Ddestination"]),
+                    Destination = Convert.ToInt32(ds.Tables[0].Rows[0]["Ddestination"]),
                     EffectTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["EffectTime"]),
                     DefectTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["DefectTime"]),
                     Note = ds.Tables[0].Rows[0]["Note"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["Note"].ToString(),
@@ -152,7 +152,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         SatName = dr["SatName"].ToString(),
                         InfoSource = Convert.ToInt32(dr["InfoSource"]),
                         InfoType = Convert.ToInt32(dr["InfoType"]),
-                        Ddestination = Convert.ToInt32(dr["Ddestination"]),
+                        Destination = Convert.ToInt32(dr["Ddestination"]),
                         EffectTime = Convert.ToDateTime(dr["EffectTime"]),
                         DefectTime = Convert.ToDateTime(dr["DefectTime"]),
                         Note = dr["Note"] == DBNull.Value ? string.Empty : dr["Note"].ToString(),
@@ -187,7 +187,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                                         new OracleParameter("p_SatName",SatName),
                                         new OracleParameter("p_InfoSource",InfoSource),
                                         new OracleParameter("p_InfoType",InfoType),
-                                        new OracleParameter("p_Ddestination",Ddestination),
+                                        new OracleParameter("p_Ddestination",Destination),
                                         new OracleParameter("p_EffectTime",EffectTime),
                                         new OracleParameter("p_DefectTime",DefectTime),
                                         new OracleParameter("p_Note",string.IsNullOrEmpty(Note) ? DBNull.Value as object : Note),
@@ -216,7 +216,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                                         new OracleParameter("p_SatName",SatName),
                                         new OracleParameter("p_InfoSource",InfoSource),
                                         new OracleParameter("p_InfoType",InfoType),
-                                        new OracleParameter("p_Ddestination",Ddestination),
+                                        new OracleParameter("p_Ddestination",Destination),
                                         new OracleParameter("p_EffectTime",EffectTime),
                                         new OracleParameter("p_DefectTime",DefectTime),
                                         new OracleParameter("p_Note", string.IsNullOrEmpty(Note) ? DBNull.Value as object : Note),
@@ -235,7 +235,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         {
             List<CenterOutputPolicy> infoList = SelectAll();
             var query = infoList.Where(a =>a.Id != Id && a.TaskID.ToLower() == TaskID.ToLower() && a.SatName.ToLower() == SatName.ToLower() && 
-                a.InfoType == InfoType && a.InfoSource == InfoSource && a.Ddestination == Ddestination &&
+                a.InfoType == InfoType && a.InfoSource == InfoSource && a.Destination == Destination &&
                 ((a.EffectTime <= EffectTime && EffectTime <= a.DefectTime) 
                   || (a.EffectTime <= DefectTime && DefectTime <= a.DefectTime) 
                   || (EffectTime <= a.EffectTime && DefectTime >= a.DefectTime)));
@@ -265,7 +265,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             this.AddValidRules("SatName", "卫星名称不能为空。", string.IsNullOrEmpty(SatName));
             this.AddValidRules("InfoSource", "信源不能为空。", InfoSource < 1);
             this.AddValidRules("InfoType", "信息类别不能为空。", InfoType < 1);
-            this.AddValidRules("Ddestination", "信宿不能为空。", Ddestination < 1);
+            this.AddValidRules("Ddestination", "信宿不能为空。", Destination < 1);
         }
         #endregion
     }
