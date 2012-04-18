@@ -33,7 +33,7 @@ namespace ServicesKernel.File
             {
                 return System.Configuration.ConfigurationManager.AppSettings["ZXBMName"];
             }
-            set; 
+            set{}
         }
         public string Destination { get; set; }
         public string TaskID { get; set; }
