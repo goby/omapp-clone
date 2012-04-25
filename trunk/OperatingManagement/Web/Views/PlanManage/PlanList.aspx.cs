@@ -118,8 +118,13 @@ namespace OperatingManagement.Web.Views.PlanManage
                     SendingFilePaths = creater.CreateSendingTYSJFile(txtId.Text, rbtDestination.SelectedValue, rbtDestination.SelectedItem.Text);
                     break;
             }
-
-            //FileSender.SendFile(SendingFilePaths);
+            FileSender objSender = new FileSender();
+            string[] filePaths = SendingFilePaths.Split(',');
+            for (int i = 0; i < filePaths.Length; i++)
+            {
+                objSender.SendFile(GetFileNameByFilePath(filePaths[i]), filePaths[i], CommunicationWays.FEPwithUDP, 0, 0, 0, true);
+                //FileSender.SendFile(SendingFilePaths);
+            }
             
         }
         //取消
@@ -179,6 +184,16 @@ namespace OperatingManagement.Web.Views.PlanManage
         protected void btnReset_Click(object sender, EventArgs e)
         {
             Page.Response.Redirect(Request.CurrentExecutionFilePath);
+        }
+
+        /// <summary>
+        /// 获取文件完整路径下的文件名
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        private string GetFileNameByFilePath(string filepath)
+        {
+            return filepath.Substring(filepath.LastIndexOf("\\")+1);
         }
     }
 }
