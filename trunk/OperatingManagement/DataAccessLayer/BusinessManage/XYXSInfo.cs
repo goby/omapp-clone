@@ -29,6 +29,34 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         {
             _dataBase = OracleDatabase.FromConfiguringNode("ApplicationServices");
         }
+
+        public XYXSInfo(DataRow dr)
+        {
+            _dataBase = OracleDatabase.FromConfiguringNode("ApplicationServices");
+            this.Id = Convert.ToInt32(dr["RID"]);
+            this.ADDRName = dr["ADDRName"].ToString();
+            this.ADDRMARK = dr["ADDRMARK"] == DBNull.Value ? string.Empty : dr["ADDRMARK"].ToString();
+            this.INCODE = dr["INCODE"].ToString();
+            this.EXCODE = dr["EXCODE"].ToString();
+            this.MainIP = dr["MainIP"] == DBNull.Value ? string.Empty : dr["MainIP"].ToString();
+            this.TCPPort = Convert.ToInt32(dr["TCPPort"].ToString());
+            this.BakIP = dr["BakIP"] == DBNull.Value ? string.Empty : dr["BakIP"].ToString();
+            this.UDPPort = Convert.ToInt32(dr["UDPPort"].ToString());
+
+            if (dr["FTPPath"] != null)
+            {
+                string ftps = dr["FTPPath"].ToString();
+                if (!String.IsNullOrEmpty(ftps))
+                {
+                    string[] strFTP = ftps.Split(new char[] { '@' });
+                    this.FTPPath = strFTP[0];
+                    this.FTPUser = strFTP[1];
+                    this.FTPPwd = strFTP[2];
+                }
+
+            }
+        }
+
         #region Properties
         private OracleDatabase _dataBase = null;
 
@@ -52,18 +80,36 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 主IP地址
         /// </summary>
         public string MainIP { get; set; }
+
         /// <summary>
-        /// 主端口
+        /// TCP端口
         /// </summary>
-        public int MainPort { get; set; }
+        public int TCPPort { get; set; }
+
         /// <summary>
         /// 副IP地址
         /// </summary>
         public string BakIP { get; set; }
+
         /// <summary>
-        /// 副端口
+        /// UDP端口
         /// </summary>
-        public int BakPort { get; set; }
+        public int UDPPort { get; set; }
+
+        /// <summary>
+        /// FTPPath
+        /// </summary>
+        public string FTPPath { get; set; }
+
+        /// <summary>
+        /// FTP User Name
+        /// </summary>
+        public string FTPUser { get; set; }
+
+        /// <summary>
+        /// FTP User Password
+        /// </summary>
+        public string FTPPwd { get; set; }
 
         public static List<XYXSInfo> _xyxsInfoCache = null;
         public List<XYXSInfo> Cache
@@ -119,18 +165,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             XYXSInfo info = null;
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
-                info = new XYXSInfo()
-                {
-                    Id = Convert.ToInt32(ds.Tables[0].Rows[0]["RID"]),
-                    ADDRName = ds.Tables[0].Rows[0]["ADDRName"].ToString(),
-                    ADDRMARK = ds.Tables[0].Rows[0]["ADDRMARK"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ADDRMARK"].ToString(),
-                    INCODE = ds.Tables[0].Rows[0]["INCODE"].ToString(),
-                    EXCODE = ds.Tables[0].Rows[0]["EXCODE"].ToString(),
-                    MainIP = ds.Tables[0].Rows[0]["MainIP"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["MainIP"].ToString(),
-                    MainPort = Convert.ToInt32(ds.Tables[0].Rows[0]["MainPort"].ToString()),
-                    BakIP = ds.Tables[0].Rows[0]["BakIP"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["BakIP"].ToString(),
-                    BakPort = Convert.ToInt32(ds.Tables[0].Rows[0]["BakPort"].ToString())
-                };
+                info = new XYXSInfo(ds.Tables[0].Rows[0]);
             }
             return info;
         }
@@ -149,18 +184,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             {
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    XYXSInfo info = new XYXSInfo()
-                    {
-                        Id = Convert.ToInt32(dr["RID"]),
-                        ADDRName = dr["ADDRName"].ToString(),
-                        ADDRMARK = dr["ADDRMARK"] == DBNull.Value ? string.Empty : dr["ADDRMARK"].ToString(),
-                        INCODE = dr["INCODE"].ToString(),
-                        EXCODE = dr["EXCODE"].ToString(),
-                        MainIP = ds.Tables[0].Rows[0]["MainIP"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["MainIP"].ToString(),
-                        MainPort = ds.Tables[0].Rows[0]["MainPort"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["MainPort"].ToString()),
-                        BakIP = ds.Tables[0].Rows[0]["BakIP"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["BakIP"].ToString(),
-                        BakPort = ds.Tables[0].Rows[0]["BakPort"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["BakPort"].ToString())
-                    };
+                    XYXSInfo info = new XYXSInfo(dr);
 
                     infoList.Add(info);
                 }
@@ -201,6 +225,23 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
+        /// 根据ADDRMark获得信源信宿的Id
+        /// </summary>
+        /// <param name="addrMark">编号</param>
+        /// <returns>信源信宿的地址</returns>
+        public int GetIdByAddrMark(string addrMark)
+        {
+            int xid = 0;
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => a.ADDRMARK == addrMark);
+                if (query != null && query.Count() > 0)
+                    xid = query.FirstOrDefault().Id;
+            }
+            return xid;
+        }
+
+        /// <summary>
         /// 通过IP地址获取信源信宿信息
         /// </summary>
         /// <param name="ipAddress"></param>
@@ -210,6 +251,27 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             if (Cache != null)
             {
                 var query = Cache.Where(a => a.MainIP == ipAddress || a.BakIP == ipAddress);
+                if (query != null && query.Count() > 0)
+                    return (XYXSInfo)query.FirstOrDefault();
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// 通过IP和port获取信源信宿信息(test)
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <param name="port"></param>
+        /// <returns></returns>
+        public XYXSInfo GetByIPAndPort(string ipAddress, int port)
+        {
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => (a.MainIP == ipAddress || a.BakIP == ipAddress)
+                    && (a.TCPPort == port || a.UDPPort == port));
                 if (query != null && query.Count() > 0)
                     return (XYXSInfo)query.FirstOrDefault();
                 else
@@ -239,17 +301,38 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
+        /// 根据AddrMark获取信源信息
+        /// </summary>
+        /// <param name="addrMark"></param>
+        /// <returns></returns>
+        public XYXSInfo GetByAddrMark(string addrMark)
+        {
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => a.ADDRMARK == addrMark);
+                if (query != null && query.Count() > 0)
+                    return (XYXSInfo)query.FirstOrDefault();
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
+        /// <summary>
         /// 获取信源信宿的IP地址和端口
         /// </summary>
         /// <param name="id"></param>
-        public bool GetIPandPort(out string ip, out int port)
+        public bool GetIPandPort(out string ip, out int tcpport, out int udpport)
         {
             ip = "";
-            port = 0;
+            tcpport = 0;
+            udpport = 0;
             if (this != null)
             {
-                ip = string.IsNullOrEmpty(this.MainIP) ? this.MainIP : this.BakIP;
-                port = (this.MainPort == 0) ? this.MainPort : this.BakPort;
+                ip = !string.IsNullOrEmpty(this.MainIP) ? this.MainIP : this.BakIP;
+                tcpport = this.TCPPort;
+                udpport = this.UDPPort;
                 return true;
             }
             return false;
