@@ -11,6 +11,7 @@ using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.Framework;
 using OperatingManagement.DataAccessLayer.PlanManage;
+using OperatingManagement.DataAccessLayer.BusinessManage;
 using System.Web.Security;
 using System.Data;
 using ServicesKernel.File;
@@ -36,12 +37,19 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 pnlAll1.Visible = false;
                 pnlAll2.Visible = false;
+
+                lblMessage.Text = ""; //文件发送消息清空
             }
         }
 
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-
+            lblMessage.Text = ""; //文件发送消息清空
             BindGridView();
         }
 
@@ -118,12 +126,39 @@ namespace OperatingManagement.Web.Views.PlanManage
                     SendingFilePaths = creater.CreateSendingTYSJFile(txtId.Text, rbtDestination.SelectedValue, rbtDestination.SelectedItem.Text);
                     break;
             }
+
+            XYXSInfo objXYXSInfo = new XYXSInfo();
+            //发送方ID （运控中心 YKZX）
+            int senderid = objXYXSInfo.GetIdByAddrMark(System.Configuration.ConfigurationManager.AppSettings["ZXBM"]);
+            //接收方ID 
+            int reveiverid = objXYXSInfo.GetIdByAddrMark(rbtDestination.SelectedValue);
+            //信息类型id
+            int infotypeid = (new InfoType()).GetIDByExMark(txtPlanType.Text);
+            bool boolResult = true; //文件发送结果
             FileSender objSender = new FileSender();
             string[] filePaths = SendingFilePaths.Split(',');
             for (int i = 0; i < filePaths.Length; i++)
             {
-                objSender.SendFile(GetFileNameByFilePath(filePaths[i]), filePaths[i], CommunicationWays.FEPwithUDP, 0, 0, 0, true);
-                //FileSender.SendFile(SendingFilePaths);
+                if (txtPlanType.Text == "XXXQ")
+                {
+                    if (filePaths[i].Contains("MBXQ"))
+                    {
+                        infotypeid = (new InfoType()).GetIDByExMark("MBXX");
+                    }
+                    else if (filePaths[i].Contains("HJXX"))
+                    {
+                        infotypeid = (new InfoType()).GetIDByExMark("HJXX");
+                    }
+                }
+                boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), filePaths[i], CommunicationWays.FEPwithTCP, senderid, reveiverid, infotypeid, true);
+                if (boolResult)
+                {
+                    lblMessage.Text = GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
+                }
+                else
+                {
+                    lblMessage.Text = GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
+                }
             }
             
         }
@@ -173,10 +208,18 @@ namespace OperatingManagement.Web.Views.PlanManage
                     break;
                 case "SBJH":
                     rbtDestination.Items.Clear();
-                    rbtDestination.Items.Add(new ListItem("运控评估中心YKZX(02 04 00 00)", "YKZX"));
+                    //rbtDestination.Items.Add(new ListItem("运控评估中心YKZX(02 04 00 00)", "YKZX"));
                     break;
             }
-
+            if (rbtDestination.Items.Count > 0)
+            {
+                rbtDestination.SelectedIndex = 0;
+                btnSubmit.Visible = true;
+            }
+            else
+            {
+                btnSubmit.Visible = false;
+            }
             ClientScript.RegisterStartupScript(this.GetType(), "pop", "<script type='text/javascript'>showPopSendForm();</script>");
             
         }

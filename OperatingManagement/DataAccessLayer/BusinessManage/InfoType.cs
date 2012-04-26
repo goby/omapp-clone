@@ -205,6 +205,23 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             }
             return strExCode;
         }
+
+        /// <summary>
+        /// 根据EXMARK获得信息类型的rid
+        /// </summary>
+        /// <param name="exMark">EXMARK</param>
+        /// <returns>rid</returns>
+        public int GetIDByExMark(string exMark)
+        {
+            int rid = -1;
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => a.EXMARK == exMark);
+                if (query != null && query.Count() > 0)
+                    rid = query.FirstOrDefault().Id;
+            }
+            return rid;
+        }
         #endregion
 
         #region -Override BaseEntity-
