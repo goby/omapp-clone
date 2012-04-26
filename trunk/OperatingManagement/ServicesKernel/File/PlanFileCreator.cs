@@ -926,7 +926,7 @@ namespace ServicesKernel.File
 
                 #region 写入文件
                 filename = FileNameMaker.GenarateFileNameTypeThree("YJJH", desValue);
-                SendFileNames += SendingPath;
+                SendFileNames = SendFileNames+SendingPath+",";
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
@@ -949,6 +949,10 @@ namespace ServicesKernel.File
 
             }
 
+            if (SendFileNames[SendFileNames.Length - 1] == ',')
+            {
+                SendFileNames = SendFileNames.Substring(0,SendFileNames.Length-1);
+            }
             return SendFileNames;
         }
         /// <summary>
@@ -1039,7 +1043,7 @@ namespace ServicesKernel.File
 
                 #region MBXQ
                 filename = FileNameMaker.GenarateFileNameTypeThree("MBXQ", desValue);
-                SendFileNames += SendingPath;
+                SendFileNames = SendFileNames + SendingPath + ",";
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
@@ -1066,7 +1070,7 @@ namespace ServicesKernel.File
                 #endregion
                 #region HJXQ
                 filename = FileNameMaker.GenarateFileNameTypeThree("HJXQ", desValue);
-                SendFileNames += SendingPath;
+                SendFileNames = SendFileNames + SendingPath + ",";
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
@@ -1095,6 +1099,10 @@ namespace ServicesKernel.File
                 #endregion
             }
 
+            if (SendFileNames[SendFileNames.Length - 1] == ',')
+            {
+                SendFileNames = SendFileNames.Substring(0, SendFileNames.Length - 1);
+            }
             return SendFileNames;
         }
         /// <summary>
@@ -1114,7 +1122,12 @@ namespace ServicesKernel.File
                 filename = FileNameMaker.GenarateFileNameTypeOne("GZJH", "B");
                 RenamePlanFile(jh.FileIndex, SendingPath);  //移动并重命名文件到外发目录
 
-                SendFileNames += SendingPath;
+                SendFileNames = SendFileNames + SendingPath + ",";
+            }
+
+            if (SendFileNames[SendFileNames.Length - 1] == ',')
+            {
+                SendFileNames = SendFileNames.Substring(0,SendFileNames.Length-1);
             }
             return SendFileNames;
         }
@@ -1175,7 +1188,7 @@ namespace ServicesKernel.File
 
                 #region 写入文件
                 filename = FileNameMaker.GenarateFileNameTypeThree("TYSJ", desValue);
-                SendFileNames += SendingPath;
+                SendFileNames = SendFileNames + SendingPath + ",";
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
@@ -1198,6 +1211,10 @@ namespace ServicesKernel.File
                 
             }
 
+            if (SendFileNames[SendFileNames.Length - 1] == ',')
+            {
+                SendFileNames = SendFileNames.Substring(0, SendFileNames.Length - 1);
+            }
             return SendFileNames;
         }
         #endregion
