@@ -22,7 +22,7 @@ namespace OperatingManagement.RemotingObjectInterface
         /// <param name="destination"></param>
         /// <param name="dataTime"></param>
         /// <returns></returns>
-        string SendDF(byte[] data, string taskCode, string satelliteID, string mainType, string secondType, int source, int destination, DateTime dataTime);
+        string SendDF(byte[] data, string taskCode, string satelliteID, int infoTypeID, int source, int destination, DateTime dataTime);
 
         /// <summary>
         /// 查询文件发送状态，返回数据发送状态及备注
