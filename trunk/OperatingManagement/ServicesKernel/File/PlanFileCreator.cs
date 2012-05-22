@@ -852,6 +852,10 @@ namespace ServicesKernel.File
             {
                 filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("TYSJ", obj.TaskID, obj.SatID);
             }
+            if (TestFileName())
+            {
+                return "EXIST";
+            }
             xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
             xmlWriter.Formatting = Formatting.Indented;
             xmlWriter.WriteStartDocument();
@@ -886,6 +890,56 @@ namespace ServicesKernel.File
 
             xmlWriter.Close();
             return FilePath;
+        }
+        /// <summary>
+        /// 测试要生成的文件文件名是否已存在
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool TestYJJHFileName(YJJH obj)
+        {
+            filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("YJJH", obj.TaskID, obj.SatID);
+            return TestFileName();
+        }
+        /// <summary>
+        /// 测试要生成的文件文件名是否已存在
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool TestXXXQFileName(XXXQ obj)
+        {
+            filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("XXXQ", obj.TaskID, obj.SatID);
+             return TestFileName();
+        }
+        /// <summary>
+        /// 测试要生成的文件文件名是否已存在
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool TestDMJHFileName(DMJH obj)
+        { 
+            filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("DMJH", obj.TaskID, obj.SatID);
+             return TestFileName();
+        }
+        /// <summary>
+        /// 测试要生成的文件文件名是否已存在
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool TestZXJHFileName(ZXJH obj)
+        { 
+            filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("ZXJH", obj.TaskID, obj.SatID);
+             return TestFileName();
+        }
+        /// <summary>
+        /// 测试要生成的文件文件名是否已存在
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool TestTYSJFileName(TYSJ obj)
+        { 
+             filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("TYSJ", obj.TaskID, obj.SatID);
+             return TestFileName();
         }
         #endregion
 
@@ -965,12 +1019,16 @@ namespace ServicesKernel.File
         public string CreateSendingXXXQFile(string ids, string desValue, string destinationName)
         { 
             string SendFileNames  ="";
+            string filenameMBXQ = "";
+            string filenameHJXQ = "";
             List<JH> listJH = (new JH()).SelectByIDS(ids);
             XXXQ obj;
             foreach (JH jh in listJH)
             {
                 #region 读取计划XML文件，变量赋值
                 obj = new XXXQ();
+                obj.objMBXQ = new MBXQ();
+                obj.objHJXQ = new HJXQ();
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(jh.FileIndex);
 
@@ -1044,6 +1102,7 @@ namespace ServicesKernel.File
                 #region MBXQ
                 filename = FileNameMaker.GenarateFileNameTypeThree("MBXQ", desValue);
                 SendFileNames = SendFileNames + SendingPath + ",";
+                filenameMBXQ = filename;    //用于在XXXQ文件里的数据行记录
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
@@ -1071,6 +1130,7 @@ namespace ServicesKernel.File
                 #region HJXQ
                 filename = FileNameMaker.GenarateFileNameTypeThree("HJXQ", desValue);
                 SendFileNames = SendFileNames + SendingPath + ",";
+                filenameHJXQ = filename;    //用于在XXXQ文件里的数据行记录
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
@@ -1095,7 +1155,28 @@ namespace ServicesKernel.File
 
                 sw.Close();
                 #endregion
+                #region XXXQ
+                filename = FileNameMaker.GenarateFileNameTypeThree("XXXQ", desValue);
+                SendFileNames = SendFileNames + SendingPath + ",";
 
+                sw = new StreamWriter(SendingPath);
+                sw.WriteLine("<说明区>");
+                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH-mm"));
+                sw.WriteLine("[信源S]：" + this.Source);
+                sw.WriteLine("[信宿D]：" + destinationName);
+                sw.WriteLine("[任务代码M]：700任务(0501)");
+                sw.WriteLine("[信息类别B]：空间信息需求");
+                sw.WriteLine("[数据区行数L]：0002");
+                sw.WriteLine("<符号区>");
+                sw.WriteLine("[数据区]：");
+                sw.WriteLine(filenameMBXQ);
+                sw.WriteLine(filenameHJXQ);
+                sw.WriteLine("<辅助区>");
+                sw.WriteLine("[备注]：");
+                sw.WriteLine("[结束]：END");
+
+                sw.Close();
+                #endregion
                 #endregion
             }
 
@@ -1228,6 +1309,15 @@ namespace ServicesKernel.File
         {
             FileInfo fi = new FileInfo(oldfile);
             fi.MoveTo(newfile);
+        }
+
+        /// <summary>
+        /// 判断要新生成要的文件，文件名是否已经存在
+        /// </summary>
+        /// <returns></returns>
+        private bool TestFileName()
+        {
+            return System.IO.File.Exists(FilePath);
         }
 
     }

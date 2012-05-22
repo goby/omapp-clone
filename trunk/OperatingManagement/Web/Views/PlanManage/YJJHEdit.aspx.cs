@@ -176,6 +176,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.SatID = ucSatellite1.SelectedItem.Value;
                 obj.JXH = (new Sequence()).GetYJJHSequnce().ToString("0000");
 
+                if (creater.TestYJJHFileName(obj))
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('操作过快，请稍后重试');</script>");
+                    return;
+                }
+
                 string filepath = creater.CreateYJJHFile(obj, 0);
 
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()

@@ -54,6 +54,15 @@
         <TgtCode>FZTY</TgtCode>
       </TgtList>
     </Info>
+      <Info>
+          <Type>XXXQ</Type>
+          <Name>空间信息需求</Name>
+          <Suffix>REQ</Suffix>
+          <SrcCode>YKZX</SrcCode>
+          <TgtList>
+              <TgtCode>XXZX</TgtCode>
+          </TgtList>
+      </Info>
     <Info>
       <Type>MBXQ</Type>
       <Name>空间目标信息需求</Name>

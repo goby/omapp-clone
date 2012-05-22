@@ -139,17 +139,17 @@ namespace OperatingManagement.Web.Views.PlanManage
             string[] filePaths = SendingFilePaths.Split(',');
             for (int i = 0; i < filePaths.Length; i++)
             {
-                if (txtPlanType.Text == "XXXQ")
-                {
-                    if (filePaths[i].Contains("MBXQ"))
-                    {
-                        infotypeid = (new InfoType()).GetIDByExMark("MBXX");
-                    }
-                    else if (filePaths[i].Contains("HJXX"))
-                    {
-                        infotypeid = (new InfoType()).GetIDByExMark("HJXX");
-                    }
-                }
+                //if (txtPlanType.Text == "XXXQ")
+                //{
+                //    if (filePaths[i].Contains("MBXQ"))
+                //    {
+                //        infotypeid = (new InfoType()).GetIDByExMark("MBXX");
+                //    }
+                //    else if (filePaths[i].Contains("HJXX"))
+                //    {
+                //        infotypeid = (new InfoType()).GetIDByExMark("HJXX");
+                //    }
+                //}
                 boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), filePaths[i], CommunicationWays.FEPwithTCP, senderid, reveiverid, infotypeid, true);
                 if (boolResult)
                 {

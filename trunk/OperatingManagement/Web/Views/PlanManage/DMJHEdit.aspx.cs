@@ -908,6 +908,13 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 obj.TaskID = ucTask1.SelectedItem.Value;
                 obj.SatID = ucSatellite1.SelectedItem.Value;
+
+                //检查文件是否已经存在
+                if (creater.TestDMJHFileName(obj))
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('操作过快，请稍后重试');</script>");
+                    return;
+                }
                 string filepath = creater.CreateDMJHFile(obj, 0);
 
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
