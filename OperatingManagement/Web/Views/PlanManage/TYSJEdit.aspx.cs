@@ -168,6 +168,13 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 objTYSJ.TaskID = ucTask1.SelectedItem.Value;
                 objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
+
+                //检查文件是否已经存在
+                if (creater.TestTYSJFileName(objTYSJ))
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('操作过快，请稍后重试');</script>");
+                    return;
+                }
                 string filepath = creater.CreateTYSJFile(objTYSJ, 0);
 
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
