@@ -43,7 +43,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             DateTime endDate = new DateTime();
             if (!string.IsNullOrEmpty(txtStartDate.Text))
             {
-                startDate = Convert.ToDateTime(txtStartDate.Text);
+                startDate = Convert.ToDateTime(txtStartDate.Text.Trim());
             }
             else
             {
@@ -51,7 +51,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             if (!string.IsNullOrEmpty(txtEndDate.Text))
             {
-                endDate = Convert.ToDateTime(txtEndDate);
+                endDate = Convert.ToDateTime(txtEndDate.Text.Trim());
             }
             else
             {

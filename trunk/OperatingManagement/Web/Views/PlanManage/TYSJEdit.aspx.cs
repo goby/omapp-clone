@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Globalization;
 
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.WebKernel.Route;
@@ -48,11 +49,10 @@ namespace OperatingManagement.Web.Views.PlanManage
         private void BindJhTable(string sID)
         {
             List<JH> jh = (new JH()).SelectByIDS(sID);
-            txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
-            txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
             hfTaskID.Value = jh[0].TaskID.ToString();
             ucTask1.SelectedValue = jh[0].TaskID.ToString();
+            txtJXH.Text = jh[0].PlanID.ToString("0000");
             string[] strTemp = jh[0].FileIndex.Split('_');
             if (strTemp.Length >= 2)
             {
@@ -103,25 +103,26 @@ namespace OperatingManagement.Web.Views.PlanManage
             objTYSJ.Condition = txtCondition.Text;
             objTYSJ.TaskID = ucTask1.SelectedItem.Value;
             objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
+            CultureInfo provider = CultureInfo.InvariantCulture;
 
             PlanFileCreator creater = new PlanFileCreator();
             if (hfStatus.Value == "new")
             {
                 string filepath = creater.CreateTYSJFile(objTYSJ, 0);
-
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
                 {
                     TaskID = objTYSJ.TaskID,
                     PlanType = "TYSJ",
                     PlanID = (new Sequence()).GetTYSJSequnce(),
-                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
-                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddHHmmss", provider),
+                    EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddHHmmss", provider),
                     SRCType = 0,
                     FileIndex = filepath,
                     SatID = objTYSJ.SatID,
                     Reserve = txtNote.Text
                 };
                 var result = jh.Add();
+                txtJXH.Text = jh.PlanID.ToString("0000");
             }
             else
             {
@@ -134,8 +135,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         Id = Convert.ToInt32(HfID.Value),
                         TaskID = objTYSJ.TaskID,
-                        StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
-                        EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                        StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddhhmmss", provider),
+                        EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddhhmmss", provider),
                         FileIndex = filepath,
                         SatID = objTYSJ.SatID,
                         Reserve = txtNote.Text
@@ -163,6 +164,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             objTYSJ.StartTime = txtStartTime.Text;
             objTYSJ.EndTime = txtEndTime.Text;
             objTYSJ.Condition = txtCondition.Text;
+            CultureInfo provider = CultureInfo.InvariantCulture;
 
             PlanFileCreator creater = new PlanFileCreator();
 
@@ -182,8 +184,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TaskID = objTYSJ.TaskID,
                     PlanType = "TYSJ",
                     PlanID = (new Sequence()).GetTYSJSequnce(),
-                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
-                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddhhmmss", provider),
+                    EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddhhmmss", provider),
                     SRCType = 0,
                     FileIndex = filepath,
                     SatID = objTYSJ.SatID,
