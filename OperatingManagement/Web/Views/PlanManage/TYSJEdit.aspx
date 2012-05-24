@@ -34,21 +34,11 @@
             </td>
         </tr>
         <tr>
-            <th class="style1">计划开始时间</th>
+            <th>计划序号</th>
             <td>
-                    <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
-                            MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
-            &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
-                        ControlToValidate="txtPlanStartTime" ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
-            </td>
-        </tr>
-        <tr>
-            <th>计划结束时间</th>
-            <td>
-                    <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" 
-                            MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
-            &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
-                        ControlToValidate="txtPlanEndTime" ErrorMessage="结束时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
+                <asp:TextBox ID="txtJXH" runat="server" Width="300px" CssClass="text" 
+                    MaxLength="20" Enabled="False" ReadOnly="True"></asp:TextBox>
+                    &nbsp;<span style="color:#3399FF;">自动生成，不可编辑</span>
             </td>
         </tr>
         <tr>

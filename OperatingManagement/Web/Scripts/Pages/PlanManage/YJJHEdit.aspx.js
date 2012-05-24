@@ -1,9 +1,4 @@
-﻿$(function () {
-    $("#txtPlanStartTime").datepicker();
-    $("#txtPlanEndTime").datepicker();
-});
-
-function showMsg(msg) {
+﻿function showMsg(msg) {
     var _dialog;
     _dialog = $("#dialog-form");
     _dialog.dialog({

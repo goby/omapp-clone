@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Globalization;
 
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.WebKernel.Route;
@@ -40,7 +41,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     hfStatus.Value = "new"; //新建
                     btnSaveTo.Visible = false;
-                    txtJXH.Text = (new Sequence()).GetYJJHSequnce().ToString("0000");   //新建时先给出计划序号
+                    //txtJXH.Text = (new Sequence()).GetYJJHSequnce().ToString("0000");   //新建时先给出计划序号
                 }
             }
             
@@ -49,10 +50,11 @@ namespace OperatingManagement.Web.Views.PlanManage
         private void BindJhTable(string sID)
         {
             List<JH> jh = (new JH()).SelectByIDS(sID);
-            txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
-            txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
+            txtStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
+            txtEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
             HfFileIndex.Value = jh[0].FileIndex;
             hfTaskID.Value = jh[0].TaskID.ToString();
+            txtJXH.Text = jh[0].PlanID.ToString("0000");
             ucTask1.SelectedValue = jh[0].TaskID.ToString();
             string[] strTemp= jh[0].FileIndex.Split('_');
             if (strTemp.Length >= 2)
@@ -108,21 +110,23 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.Task = txtTask.Text;
             obj.TaskID = ucTask1.SelectedItem.Value;
             obj.SatID = ucSatellite1.SelectedItem.Value;
+            CultureInfo provider = CultureInfo.InvariantCulture;
 
             PlanFileCreator creater = new PlanFileCreator();
 
             if (hfStatus.Value == "new")
             {
-                //obj.JXH = (new Sequence()).GetYJJHSequnce().ToString("0000");
+                //保存时才生成计划序号
+                obj.JXH = (new Sequence()).GetYJJHSequnce().ToString("0000");
+                txtJXH.Text = obj.JXH;
                 string filepath = creater.CreateYJJHFile(obj, 0);
-
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
                 {
                     TaskID = obj.TaskID,
                     PlanType = "YJJH",
                     PlanID = Convert.ToInt32(obj.JXH),
-                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
-                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddhhmmss", provider),
+                    EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddhhmmss", provider),
                     SRCType = 0,
                     FileIndex = filepath,
                     SatID = obj.SatID,
@@ -140,8 +144,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         Id = Convert.ToInt32( HfID.Value),
                         TaskID = obj.TaskID,
-                        StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
-                        EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                        StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddhhmmss", provider),
+                        EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddhhmmss", provider),
                         FileIndex = filepath,
                         SatID = obj.SatID,
                         Reserve = txtNote.Text
@@ -169,6 +173,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.StartTime = txtStartTime.Text;
             obj.EndTime = txtEndTime.Text;
             obj.Task = txtTask.Text;
+            CultureInfo provider = CultureInfo.InvariantCulture;
 
             PlanFileCreator creater = new PlanFileCreator();
 
@@ -189,8 +194,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TaskID = obj.TaskID,
                     PlanType = "YJJH",
                     PlanID = Convert.ToInt32(obj.JXH),
-                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
-                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddhhmmss", provider),
+                    EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddhhmmss", provider),
                     SRCType = 0,
                     FileIndex = filepath,
                     SatID = obj.SatID,
@@ -198,7 +203,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 };
                 var result = jh.Add();
 
-                txtJXH.Text = obj.JXH;  //另存后显示新的序号
+                //txtJXH.Text = obj.JXH;  //另存后显示新的序号
                 ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
        
         }

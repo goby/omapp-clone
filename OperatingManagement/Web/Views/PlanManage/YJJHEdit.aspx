@@ -34,24 +34,6 @@
             </td>
         </tr>
         <tr>
-            <th>计划开始时间(<span class="red">*</span>)</th>
-            <td>
-                    <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" 
-                            MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
-            &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
-                        ControlToValidate="txtPlanStartTime" ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
-            </td>
-        </tr>
-        <tr>
-            <th>计划结束时间(<span class="red">*</span>)</th>
-            <td>
-                    <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" 
-                            MaxLength="10"   ClientIDMode="Static" Width="300px"></asp:TextBox>
-            &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
-                        ControlToValidate="txtPlanEndTime" ErrorMessage="结束时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
-            </td>
-        </tr>
-        <tr>
             <th>信息分类</th>
             <td>
                 <asp:RadioButtonList ID="radBtnXXFL" runat="server" 
