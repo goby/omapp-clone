@@ -179,8 +179,10 @@
                 <td align="center"  style="text-align: center">
                 <b>请选择计划待发送的目标系统，可以多选</b>
                 <br />
-                    <asp:RadioButtonList ID="rbtDestination" runat="server">
-                    </asp:RadioButtonList>
+                    <%--<asp:RadioButtonList ID="rbtDestination" runat="server">
+                    </asp:RadioButtonList>--%>
+                    <asp:CheckBoxList ID="ckbDestination" runat="server">
+                    </asp:CheckBoxList>
                     <br />
                 </td>
             </tr>

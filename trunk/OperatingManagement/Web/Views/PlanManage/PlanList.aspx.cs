@@ -110,55 +110,64 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             PlanFileCreator creater = new PlanFileCreator();
             string SendingFilePaths = "";
-            switch (txtPlanType.Text)
+            lblMessage.Text = "";//清空发送信息
+            foreach (ListItem li in ckbDestination.Items)
             {
-                case "YJJH":
-                    SendingFilePaths = creater.CreateSendingYJJHFile(txtId.Text, rbtDestination.SelectedValue, rbtDestination.SelectedItem.Text);
-                    break;
-                case "XXXQ":
-                    SendingFilePaths = creater.CreateSendingXXXQFile(txtId.Text, rbtDestination.SelectedValue, rbtDestination.SelectedItem.Text);
-                    break;
-                case "DMJH":
-                case "GZJH":
-                    SendingFilePaths = creater.CreateSendingDMJHFile(txtId.Text, rbtDestination.SelectedValue, rbtDestination.SelectedItem.Text);
-                    break;
-                case "TYSJ":
-                    SendingFilePaths = creater.CreateSendingTYSJFile(txtId.Text, rbtDestination.SelectedValue, rbtDestination.SelectedItem.Text);
-                    break;
-            }
+                if (li.Selected)
+                {
 
-            XYXSInfo objXYXSInfo = new XYXSInfo();
-            //发送方ID （运控中心 YKZX）
-            int senderid = objXYXSInfo.GetIdByAddrMark(System.Configuration.ConfigurationManager.AppSettings["ZXBM"]);
-            //接收方ID 
-            int reveiverid = objXYXSInfo.GetIdByAddrMark(rbtDestination.SelectedValue);
-            //信息类型id
-            int infotypeid = (new InfoType()).GetIDByExMark(txtPlanType.Text);
-            bool boolResult = true; //文件发送结果
-            FileSender objSender = new FileSender();
-            string[] filePaths = SendingFilePaths.Split(',');
-            for (int i = 0; i < filePaths.Length; i++)
-            {
-                //if (txtPlanType.Text == "XXXQ")
-                //{
-                //    if (filePaths[i].Contains("MBXQ"))
-                //    {
-                //        infotypeid = (new InfoType()).GetIDByExMark("MBXX");
-                //    }
-                //    else if (filePaths[i].Contains("HJXX"))
-                //    {
-                //        infotypeid = (new InfoType()).GetIDByExMark("HJXX");
-                //    }
-                //}
-                boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), filePaths[i], CommunicationWays.FEPwithTCP, senderid, reveiverid, infotypeid, true);
-                if (boolResult)
-                {
-                    lblMessage.Text = GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
-                }
-                else
-                {
-                    lblMessage.Text = GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
-                }
+                    switch (txtPlanType.Text)
+                    {
+                        case "YJJH":
+                            SendingFilePaths = creater.CreateSendingYJJHFile(txtId.Text, li.Value, li.Text);
+                            break;
+                        case "XXXQ":
+                            SendingFilePaths = creater.CreateSendingXXXQFile(txtId.Text, li.Value, li.Text);
+                            break;
+                        case "DMJH":
+                        case "GZJH":
+                            SendingFilePaths = creater.CreateSendingDMJHFile(txtId.Text, li.Value, li.Text);
+                            break;
+                        case "TYSJ":
+                            SendingFilePaths = creater.CreateSendingTYSJFile(txtId.Text, li.Value, li.Text);
+                            break;
+                    }
+
+                    XYXSInfo objXYXSInfo = new XYXSInfo();
+                    //发送方ID （运控中心 YKZX）
+                    int senderid = objXYXSInfo.GetIdByAddrMark(System.Configuration.ConfigurationManager.AppSettings["ZXBM"]);
+                    //接收方ID 
+                    int reveiverid = objXYXSInfo.GetIdByAddrMark(li.Value);
+                    //信息类型id
+                    int infotypeid = (new InfoType()).GetIDByExMark(txtPlanType.Text);
+                    bool boolResult = true; //文件发送结果
+                    FileSender objSender = new FileSender();
+                    string[] filePaths = SendingFilePaths.Split(',');
+                    for (int i = 0; i < filePaths.Length; i++)
+                    {
+                        //if (txtPlanType.Text == "XXXQ")
+                        //{
+                        //    if (filePaths[i].Contains("MBXQ"))
+                        //    {
+                        //        infotypeid = (new InfoType()).GetIDByExMark("MBXX");
+                        //    }
+                        //    else if (filePaths[i].Contains("HJXX"))
+                        //    {
+                        //        infotypeid = (new InfoType()).GetIDByExMark("HJXX");
+                        //    }
+                        //}
+                        boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), filePaths[i], CommunicationWays.FEPwithTCP, senderid, reveiverid, infotypeid, true);
+                        if (boolResult)
+                        {
+                            lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
+                        }
+                        else
+                        {
+                            lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
+                        }
+                    }
+
+                }//li
             }
             
         }
@@ -179,41 +188,41 @@ namespace OperatingManagement.Web.Views.PlanManage
             switch (plantype)
             {
                 case "YJJH":
-                    rbtDestination.Items.Clear();
-                    rbtDestination.Items.Add(new ListItem("天基目标观测应用研究分系统（GCYJ）", "GCYJ"));
-                    rbtDestination.Items.Add(new ListItem("遥操作应用研究分系统（CZYJ）", "CZYJ"));
-                    rbtDestination.Items.Add(new ListItem("空间机动应用研究分系统（JDYJ）", "JDYJ"));
-                    rbtDestination.Items.Add(new ListItem("仿真推演分系统（FZTY）", "FZTY"));
+                    ckbDestination.Items.Clear();
+                    ckbDestination.Items.Add(new ListItem("天基目标观测应用研究分系统（GCYJ）", "GCYJ"));
+                    ckbDestination.Items.Add(new ListItem("遥操作应用研究分系统（CZYJ）", "CZYJ"));
+                    ckbDestination.Items.Add(new ListItem("空间机动应用研究分系统（JDYJ）", "JDYJ"));
+                    ckbDestination.Items.Add(new ListItem("仿真推演分系统（FZTY）", "FZTY"));
                     break;
                 case "XXXQ":
-                    rbtDestination.Items.Clear();
-                    rbtDestination.Items.Add(new ListItem("空间信息综合应用中心(XXZX)", "XXZX"));
+                    ckbDestination.Items.Clear();
+                    ckbDestination.Items.Add(new ListItem("空间信息综合应用中心(XXZX)", "XXZX"));
                     break;
                 case "DMJH":
                 case "GZJH":
-                    rbtDestination.Items.Clear();
-                    rbtDestination.Items.Add(new ListItem("西安中心（XSCC）", "XSCC"));
-                    rbtDestination.Items.Add(new ListItem("总参二部信息处理中心（XXZX）", "XXZX"));
-                    rbtDestination.Items.Add(new ListItem("总参三部技侦中心（JZZX）", "JZZX"));
-                    rbtDestination.Items.Add(new ListItem("总参气象水文空间天气总站资料处理中心（ZLZX）", "ZLZX"));
-                    rbtDestination.Items.Add(new ListItem("863-YZ4701遥科学综合站（JYZ1）", "JYZ1"));
-                    rbtDestination.Items.Add(new ListItem("863-YZ4702遥科学综合站（JYZ2）", "JYZ2"));
+                    ckbDestination.Items.Clear();
+                    ckbDestination.Items.Add(new ListItem("西安中心（XSCC）", "XSCC"));
+                    ckbDestination.Items.Add(new ListItem("总参二部信息处理中心（XXZX）", "XXZX"));
+                    ckbDestination.Items.Add(new ListItem("总参三部技侦中心（JZZX）", "JZZX"));
+                    ckbDestination.Items.Add(new ListItem("总参气象水文空间天气总站资料处理中心（ZLZX）", "ZLZX"));
+                    ckbDestination.Items.Add(new ListItem("863-YZ4701遥科学综合站（JYZ1）", "JYZ1"));
+                    ckbDestination.Items.Add(new ListItem("863-YZ4702遥科学综合站（JYZ2）", "JYZ2"));
                     break;
                 case "ZXJH":
-                    rbtDestination.Items.Clear();
+                    ckbDestination.Items.Clear();
                     break;
                 case "TYSJ":
-                    rbtDestination.Items.Clear();
-                    rbtDestination.Items.Add(new ListItem("仿真推演分系统(FZTY)", "FZTY"));
+                    ckbDestination.Items.Clear();
+                    ckbDestination.Items.Add(new ListItem("仿真推演分系统(FZTY)", "FZTY"));
                     break;
                 case "SBJH":
-                    rbtDestination.Items.Clear();
-                    //rbtDestination.Items.Add(new ListItem("运控评估中心YKZX(02 04 00 00)", "YKZX"));
+                    ckbDestination.Items.Clear();
+                    //ckbDestination.Items.Add(new ListItem("运控评估中心YKZX(02 04 00 00)", "YKZX"));
                     break;
             }
-            if (rbtDestination.Items.Count > 0)
+            if (ckbDestination.Items.Count > 0)
             {
-                rbtDestination.SelectedIndex = 0;
+                ckbDestination.SelectedIndex = 0;
                 btnSubmit.Visible = true;
             }
             else
