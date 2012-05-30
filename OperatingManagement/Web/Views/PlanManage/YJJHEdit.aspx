@@ -66,14 +66,14 @@
             <th class="style1">试验开始时间</th>
             <td>
                 <asp:TextBox ID="txtStartTime" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="14"></asp:TextBox>
+                    MaxLength="14" ClientIDMode="Static"></asp:TextBox>
             &nbsp;<span style="color:#3399FF;">格式：YYYYMMDDHHmmss</span></td>
         </tr>
         <tr>
             <th class="style1">试验结束时间</th>
             <td>
                 <asp:TextBox ID="txtEndTime" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="14"></asp:TextBox>
+                    MaxLength="14" ClientIDMode="Static"></asp:TextBox>
             &nbsp;<span style="color:#3399FF;">格式：YYYYMMDDHHmmss</span></td>
         </tr>
         <tr>
