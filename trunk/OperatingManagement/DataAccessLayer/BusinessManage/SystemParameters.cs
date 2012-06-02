@@ -44,7 +44,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         ResourceCalculate = 20,
         ResourceCalculateResultFileSource = 21,
         ResourceCalculateResult = 22,
-        ResourceCalculateStatus = 23
+        ResourceCalculateStatus = 23,
+
+        OrbitDifferenceAnalysis = 31
     }
 
     [Serializable]
