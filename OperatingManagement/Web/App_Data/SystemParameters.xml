@@ -95,4 +95,12 @@
     <item text="等待计算" value="1"></item>
     <item text="计算完成" value="2"></item>
   </ResourceCalculateStatus>
+  <OrbitDifferenceAnalysis description="轨道分析-差值分析相关参数">
+    <item text="XLDataFileDirectory" value="D:\OrbitDifferenceAnalysis\XLDataFileDirectory\"></item>
+    <item text="XLDataFileExtension" value="dat,txt"></item>
+    <item text="XLDataFileMaxSize" value="4194304"></item>
+    <item text="DifCalTimeFileDirectory" value="D:\OrbitDifferenceAnalysis\DifCalTimeFileDirectory\"></item>
+    <item text="DifCalTimeFileExtension" value="dat,txt"></item>
+    <item text="DifCalTimeFileMaxSize" value="4194304"></item>
+  </OrbitDifferenceAnalysis>
 </SystemParameters>

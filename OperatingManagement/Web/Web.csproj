@@ -193,6 +193,7 @@
     <Content Include="Views\BusinessManage\GroundResourceEdit.aspx" />
     <Content Include="Views\BusinessManage\MeasureDataDetail.aspx" />
     <Content Include="Views\BusinessManage\MeasureDataList.aspx" />
+    <Content Include="Views\BusinessManage\OrbitDifferenceAnalysis.aspx" />
     <Content Include="Views\BusinessManage\OrbitParaCalculate.aspx" />
     <Content Include="Views\BusinessManage\ResourceAdd.aspx" />
     <Content Include="Views\BusinessManage\ResourceCalculateManage.aspx" />
@@ -407,6 +408,13 @@
     </Compile>
     <Compile Include="Views\BusinessManage\MeasureDataList.aspx.designer.cs">
       <DependentUpon>MeasureDataList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\OrbitDifferenceAnalysis.aspx.cs">
+      <DependentUpon>OrbitDifferenceAnalysis.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\OrbitDifferenceAnalysis.aspx.designer.cs">
+      <DependentUpon>OrbitDifferenceAnalysis.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\OrbitParaCalculate.aspx.cs">
       <DependentUpon>OrbitParaCalculate.aspx</DependentUpon>
