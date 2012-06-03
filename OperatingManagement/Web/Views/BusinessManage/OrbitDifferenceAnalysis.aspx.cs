@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-#region
+﻿#region
 //------------------------------------------------------
 //Assembly:OperatingManagement.Web
 //FileName:OrbitDifferenceAnalysis.cs
 //Remark:业务管理-轨道分析-差值分析
 //------------------------------------------------------
 //VERSION       AUTHOR      DATE        CONTENT
-//1.0           liutao      2012519    Create     
+//1.0           liutao      2012519     Create     
 //------------------------------------------------------
 #endregion
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -22,6 +22,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
 {
     public partial class OrbitDifferenceAnalysis : AspNetPage
     {
+        #region 属性
+        #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
             trMessage.Visible = false;
@@ -37,6 +39,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
+                divCalResult.Visible = false;
                 if (!fuXLDataFile.HasFile)
                 {
                     //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"请选择星历数据文件。\")", true);
@@ -136,25 +139,42 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
-                string xlDataFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitDifferenceAnalysis, "XLDataFileDirectory").TrimEnd(new char[] { '\\' }) + "\\";
+                string xlDataFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitDifferenceAnalysis, "XLDataFileDirectory");
                 if (!Directory.Exists(xlDataFileDirectory))
                     Directory.CreateDirectory(xlDataFileDirectory);
                 string xlDataFilePath = Path.Combine(xlDataFileDirectory, Guid.NewGuid().ToString() + Path.GetExtension(fuXLDataFile.PostedFile.FileName));
                 fuXLDataFile.PostedFile.SaveAs(xlDataFilePath);
 
-                string difCalTimeFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitDifferenceAnalysis, "DifCalTimeFileDirectory").TrimEnd(new char[] { '\\' }) + "\\";
+                string difCalTimeFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitDifferenceAnalysis, "DifCalTimeFileDirectory");
                 if (!Directory.Exists(difCalTimeFileDirectory))
                     Directory.CreateDirectory(difCalTimeFileDirectory);
                 string difCalTimeFilePath = Path.Combine(difCalTimeFileDirectory, Guid.NewGuid().ToString() + Path.GetExtension(fuDifCalTimeFile.PostedFile.FileName));
                 fuDifCalTimeFile.PostedFile.SaveAs(difCalTimeFilePath);
 
+                ltXLDataFilePath.Text = fuXLDataFile.PostedFile.FileName;
+                ltDifCalTimeFilePath.Text = fuDifCalTimeFile.PostedFile.FileName;
+
+                ltXLDataFile.Text = File.ReadAllText(xlDataFilePath, System.Text.Encoding.Default);
+                ltDifCalTimeFile.Text = File.ReadAllText(difCalTimeFilePath, System.Text.Encoding.Default);
+
+                //定义计算结果
+                bool calResult = false;
+                //定义结果文件路径
+                string resultFilePath = string.Empty;//@"D:\ResourceCalculate\ResultFileDirectory\2f318cd1-82ba-4593-9884-263cfb2887bd.txt";
                 /**
-                * TODO: 在这里开始计算。
+                * TODO: 在这里开始计算，将结果calResult和结果文件路径resultFilePath赋值
                 * */
+                //System.Threading.Thread.Sleep(10000);
+
+                lblResultFilePath.Text = resultFilePath;
+                lblCalResult.Text = calResult ? "计算成功" : "计算失败";
+                ltResultFile.Text = File.ReadAllText(resultFilePath, System.Text.Encoding.Default);
+                divCalResult.Visible = true;
+
                 ClientScript.RegisterClientScriptBlock(this.GetType(),
-                    "open-dialog",
-                    "var _autoOpen=true;",
-                    true);
+                   "open-dialog",
+                   "var _autoOpen=true;",
+                   true);
             }
             catch
             {
@@ -163,12 +183,54 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
         }
 
+        /// <summary>
+        /// 下载计算结果文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbtnResultFileDownload_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string resultFilePath = lblResultFilePath.Text.Trim();
+                if (string.IsNullOrEmpty(resultFilePath))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "计算结果文件不存在。";
+                    return;
+                }
+
+                if (!File.Exists(resultFilePath))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "计算结果文件不存在。";
+                    return;
+                }
+
+                Response.Clear();
+                Response.Buffer = false;
+                Response.ContentType = "application/octet-stream";
+                Response.AppendHeader("content-disposition", "attachment;filename=" + Path.GetFileName(resultFilePath) + ";");
+                Response.Write(File.ReadAllText(resultFilePath));
+                Response.Flush();
+                Response.End();
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch
+            {
+                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"下载计算结果文件失败。\")", true);
+                trMessage.Visible = true;
+                lblMessage.Text = "下载计算结果文件失败。";
+            }
+        }
+
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_CZFX.Caculate";
             this.ShortTitle = "差值分析";
             this.SetTitle();
-            //this.AddJavaScriptInclude("scripts/pages/businessmanage/orbitparacalculate.aspx.js");
+            this.AddJavaScriptInclude("scripts/pages/businessmanage/OrbitDifferenceAnalysis.aspx.js");
         }
 
         #region Method
