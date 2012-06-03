@@ -5,7 +5,7 @@
 //Remark:业务管理-轨道分析-差值分析
 //------------------------------------------------------
 //VERSION       AUTHOR      DATE        CONTENT
-//1.0           liutao      2012519     Create     
+//1.0           liutao      20120519     Create     
 //------------------------------------------------------
 #endregion
 using System;
@@ -22,8 +22,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
 {
     public partial class OrbitDifferenceAnalysis : AspNetPage
     {
-        #region 属性
-        #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
             trMessage.Visible = false;
@@ -142,12 +140,14 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 string xlDataFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitDifferenceAnalysis, "XLDataFileDirectory");
                 if (!Directory.Exists(xlDataFileDirectory))
                     Directory.CreateDirectory(xlDataFileDirectory);
+                //星历数据文件服务器路径
                 string xlDataFilePath = Path.Combine(xlDataFileDirectory, Guid.NewGuid().ToString() + Path.GetExtension(fuXLDataFile.PostedFile.FileName));
                 fuXLDataFile.PostedFile.SaveAs(xlDataFilePath);
 
                 string difCalTimeFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitDifferenceAnalysis, "DifCalTimeFileDirectory");
                 if (!Directory.Exists(difCalTimeFileDirectory))
                     Directory.CreateDirectory(difCalTimeFileDirectory);
+                //差值计算时间文件服务器路径
                 string difCalTimeFilePath = Path.Combine(difCalTimeFileDirectory, Guid.NewGuid().ToString() + Path.GetExtension(fuDifCalTimeFile.PostedFile.FileName));
                 fuDifCalTimeFile.PostedFile.SaveAs(difCalTimeFilePath);
 
@@ -168,8 +168,14 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
                 lblResultFilePath.Text = resultFilePath;
                 lblCalResult.Text = calResult ? "计算成功" : "计算失败";
-                ltResultFile.Text = File.ReadAllText(resultFilePath, System.Text.Encoding.Default);
+                if (!string.IsNullOrEmpty(resultFilePath) && File.Exists(resultFilePath))
+                {
+                    ltResultFile.Text = File.ReadAllText(resultFilePath, System.Text.Encoding.Default);
+                }
                 divCalResult.Visible = true;
+
+                DeleteFile(xlDataFilePath);
+                DeleteFile(difCalTimeFilePath);
 
                 ClientScript.RegisterClientScriptBlock(this.GetType(),
                    "open-dialog",

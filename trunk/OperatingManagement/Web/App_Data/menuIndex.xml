@@ -39,7 +39,7 @@
     <item id="3-5" title="资源调度计算" roles="Anyone" href="Views/BusinessManage/ResourceRequirementAdd.aspx" />
     <item id="3-6" title="轨道参数转换" roles="OMB_CSZH.Caculate" href="Views/BusinessManage/OrbitParaCalculate.aspx" />
     <item id="3-7" title="轨道差值分析" roles="OMB_CZFX.Caculate" href="Views/BusinessManage/OrbitDifferenceAnalysis.aspx" />
-    <item id="3-8" title="轨道交会预报" roles="OMB_JHYB.Caculate" href="#" />
+    <item id="3-8" title="轨道交会预报" roles="OMB_JHYB.Caculate" href="Views/BusinessManage/OrbitIntersectionReport.aspx" />
     <item id="3-9" title="轨道交会分析" roles="OMB_JHFX.Caculate" href="#" />
     <item id="3-10" title="轨道预报" roles="OMB_GDYB.Caculate" href="#" />  </menu>
 </menus>
