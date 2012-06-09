@@ -160,7 +160,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 //定义计算结果
                 bool calResult = false;
                 //定义结果文件路径
-                string resultFilePath = string.Empty;//@"D:\ResourceCalculate\ResultFileDirectory\2f318cd1-82ba-4593-9884-263cfb2887bd.txt";
+                string resultFilePath = string.Empty; //@"D:\ResourceCalculate\ResultFileDirectory\2f318cd1-82ba-4593-9884-263cfb2887bd.txt";
+
                 /**
                 * TODO: 在这里开始计算，将结果calResult和结果文件路径resultFilePath赋值
                 * */
