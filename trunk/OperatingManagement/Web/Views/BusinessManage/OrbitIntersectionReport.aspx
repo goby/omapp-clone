@@ -118,7 +118,36 @@
                      主星(<span class="red">*</span>)
                   </th>
                   <td colspan="3">
-                      <uc4:ucSatellite ID="dplCutMainSatellite" runat="server" />
+                      <asp:DropDownList ID="dplCutMainSatellite" runat="server" CssClass="norDpl" AutoPostBack="true" OnSelectedIndexChanged="dplCutMainSatellite_SelectedIndexChanged">
+                      </asp:DropDownList>
+                  </td>
+              </tr>
+              <tr>
+                  <th>
+                     NO(<span class="red">*</span>)
+                  </th>
+                  <td>
+                      <asp:TextBox ID="txtCutMainSatelliteNO" runat="server" Enabled="false" CssClass="norText"></asp:TextBox>
+                  </td>
+                  <th>
+                     KK(<span class="red">*</span>)
+                  </th>
+                  <td>
+                       <asp:TextBox ID="txtCutMainSatelliteKK" runat="server" Enabled="false" CssClass="norText"></asp:TextBox>
+                  </td>
+              </tr>
+              <tr>
+                  <th>
+                     Sm(<span class="red">*</span>)
+                  </th>
+                  <td>
+                      <asp:TextBox ID="txtCutMainSatelliteSm" runat="server" Enabled="false" CssClass="norText"></asp:TextBox>
+                  </td>
+                   <th>
+                     Ref(<span class="red">*</span>)
+                  </th>
+                  <td>
+                      <asp:TextBox ID="txtCutMainSatelliteRef" runat="server" Enabled="false" CssClass="norText"></asp:TextBox>
                   </td>
               </tr>
                <tr>
