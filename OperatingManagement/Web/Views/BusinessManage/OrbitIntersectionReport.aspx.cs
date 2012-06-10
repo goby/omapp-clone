@@ -31,6 +31,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 if (!IsPostBack)
                 {
                     BindDataSource();
+                    BindSatelliteProperty();
                 }
             }
             catch
@@ -44,7 +45,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             mvCut.ActiveViewIndex = Convert.ToInt32(menuCut.SelectedValue);
         }
-
+        /// <summary>
+        /// CutMain文件选项
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void rblCutMainFileOption_SelectedIndexChanged(object sender, EventArgs e)
         {
             //手工录入
@@ -60,7 +65,20 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 tbCutMainFillIn.Visible = false;
             }
         }
-
+        /// <summary>
+        /// 主星SelectedIndexChanged
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void dplCutMainSatellite_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindSatelliteProperty();
+        }
+        /// <summary>
+        /// 是否考虑KAE
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void rblCutMainKAE_SelectedIndexChanged(object sender, EventArgs e)
         {
             //考虑KAE
@@ -113,7 +131,55 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 dplCutMainLYTimeSecond.Items.Add(new ListItem(i.ToString() + "秒", i.ToString()));
             }
 
-            dplCutMainSatellite.AllowBlankItem = false;
+            Satellite objSatellite = new Satellite();
+            dplCutMainSatellite.Items.Clear();
+            dplCutMainSatellite.DataSource = objSatellite.Cache;
+            dplCutMainSatellite.DataTextField = "WXMC";
+            dplCutMainSatellite.DataValueField = "Id";//WXBM，该字段统一为基类中的ID
+            dplCutMainSatellite.DataBind();
+        }
+
+        /// <summary>
+        /// 绑定卫星属性及与属性相关的值
+        /// </summary>
+        private void BindSatelliteProperty()
+        {
+            Satellite objSatellite = new Satellite();
+            objSatellite.Id = dplCutMainSatellite.SelectedValue;
+            objSatellite.SelectByID();
+            txtCutMainSatelliteNO.Text = objSatellite.Id;
+            txtCutMainSatelliteKK.Text = objSatellite.State;
+            txtCutMainSatelliteSm.Text = objSatellite.MZB.ToString();
+            txtCutMainSatelliteRef.Text = objSatellite.BMFSXS.ToString();
+            switch (txtCutMainSatelliteKK.Text)
+            {
+                case "1":
+                case "2":
+                    lblCutMainD1Unit.Text = "米";
+                    lblCutMainD2Unit.Text = string.Empty;
+                    lblCutMainD3Unit.Text = "度";
+                    lblCutMainD4Unit.Text = "度";
+                    lblCutMainD5Unit.Text = "度";
+                    lblCutMainD6Unit.Text = "度";
+                    break;
+                case "3":
+                    lblCutMainD1Unit.Text = "米";
+                    lblCutMainD2Unit.Text = "米";
+                    lblCutMainD3Unit.Text = "米";
+                    lblCutMainD4Unit.Text = "米/秒";
+                    lblCutMainD5Unit.Text = "米/秒";
+                    lblCutMainD6Unit.Text = "米/秒";
+                    break;
+                default:
+                    lblCutMainD1Unit.Text = "米";
+                    lblCutMainD2Unit.Text = string.Empty;
+                    lblCutMainD3Unit.Text = "度";
+                    lblCutMainD4Unit.Text = "度";
+                    lblCutMainD5Unit.Text = "度";
+                    lblCutMainD6Unit.Text = "度";
+                    break;
+
+            }
         }
         #endregion
     }

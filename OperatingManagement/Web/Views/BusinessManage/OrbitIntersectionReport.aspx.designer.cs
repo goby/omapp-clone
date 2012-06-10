@@ -253,7 +253,43 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::OperatingManagement.Web.ucs.ucSatellite dplCutMainSatellite;
+        protected global::System.Web.UI.WebControls.DropDownList dplCutMainSatellite;
+        
+        /// <summary>
+        /// txtCutMainSatelliteNO 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCutMainSatelliteNO;
+        
+        /// <summary>
+        /// txtCutMainSatelliteKK 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCutMainSatelliteKK;
+        
+        /// <summary>
+        /// txtCutMainSatelliteSm 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCutMainSatelliteSm;
+        
+        /// <summary>
+        /// txtCutMainSatelliteRef 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCutMainSatelliteRef;
         
         /// <summary>
         /// txtCutMainD1 控件。
