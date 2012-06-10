@@ -46,7 +46,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         ResourceCalculateResult = 22,
         ResourceCalculateStatus = 23,
 
-        OrbitDifferenceAnalysis = 31
+        OrbitDifferenceAnalysis = 31,
+        OrbitIntersectionReport = 32
     }
 
     [Serializable]
