@@ -112,13 +112,13 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.TextBox txtCutMainReportBeginDate;
         
         /// <summary>
-        /// RequiredFieldValidator2 控件。
+        /// rfvCutMainReportBeginDate 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMainReportBeginDate;
         
         /// <summary>
         /// dplCutMainReportBeginTimeHour 控件。
@@ -157,13 +157,13 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.TextBox txtCutMainReportBeginTimeMilliSecond;
         
         /// <summary>
-        /// RequiredFieldValidator6 控件。
+        /// rfvCutMainReportBeginTimeMilliSecond 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator6;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMainReportBeginTimeMilliSecond;
         
         /// <summary>
         /// txtCutMainReportTime 控件。
@@ -175,13 +175,13 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.TextBox txtCutMainReportTime;
         
         /// <summary>
-        /// RequiredFieldValidator3 控件。
+        /// rfvCutMainReportTime 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator3;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMainReportTime;
         
         /// <summary>
         /// txtCutMainLYDate 控件。
@@ -193,13 +193,13 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.TextBox txtCutMainLYDate;
         
         /// <summary>
-        /// RequiredFieldValidator4 控件。
+        /// rfvCutMainLYDate 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator4;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMainLYDate;
         
         /// <summary>
         /// dplCutMainLYTimeHour 控件。
@@ -238,13 +238,13 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.TextBox txtCutMainLYTimeMilliSecond;
         
         /// <summary>
-        /// RequiredFieldValidator5 控件。
+        /// rfvCutMainLYTimeMilliSecond 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator5;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMainLYTimeMilliSecond;
         
         /// <summary>
         /// dplCutMainSatellite 控件。
@@ -310,13 +310,13 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.Label lblCutMainD1Unit;
         
         /// <summary>
-        /// RequiredFieldValidator7 控件。
+        /// rfvCutMainD1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator7;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMainD1;
         
         /// <summary>
         /// txtCutMainD2 控件。
@@ -337,13 +337,13 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.Label lblCutMainD2Unit;
         
         /// <summary>
-        /// RequiredFieldValidator8 控件。
+        /// rfvCutMainD2 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator8;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMainD2;
         
         /// <summary>
         /// txtCutMainD3 控件。
@@ -364,13 +364,13 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.Label lblCutMainD3Unit;
         
         /// <summary>
-        /// RequiredFieldValidator9 控件。
+        /// rfvCutMainD3 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator9;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMainD3;
         
         /// <summary>
         /// txtCutMainD4 控件。
@@ -391,13 +391,13 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.Label lblCutMainD4Unit;
         
         /// <summary>
-        /// RequiredFieldValidator10 控件。
+        /// rfvCutMainD4 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator10;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMainD4;
         
         /// <summary>
         /// txtCutMainD5 控件。
@@ -418,13 +418,13 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.Label lblCutMainD5Unit;
         
         /// <summary>
-        /// RequiredFieldValidator11 控件。
+        /// rfvCutMainD5 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator11;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMainD5;
         
         /// <summary>
         /// txtCutMainD6 控件。
@@ -445,13 +445,13 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.Label lblCutMainD6Unit;
         
         /// <summary>
-        /// RequiredFieldValidator12 控件。
+        /// rfvCutMainD6 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator12;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMainD6;
         
         /// <summary>
         /// txtCutMaindR 控件。
@@ -472,13 +472,13 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.Label lblCutMaindRUnit;
         
         /// <summary>
-        /// RequiredFieldValidator13 控件。
+        /// rfvCutMaindR 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator13;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMaindR;
         
         /// <summary>
         /// rblCutMainKAE 控件。
@@ -508,13 +508,13 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.Label lblCutMaindAUnit;
         
         /// <summary>
-        /// RequiredFieldValidator15 控件。
+        /// rfvCutMaindA 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator15;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMaindA;
         
         /// <summary>
         /// txtCutMaindE 控件。
@@ -535,13 +535,13 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.Label lblCutMaindEUnit;
         
         /// <summary>
-        /// RequiredFieldValidator16 控件。
+        /// rfvCutMaindE 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator16;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMaindE;
         
         /// <summary>
         /// cutSub 控件。
@@ -875,6 +875,123 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.View cutOptional;
+        
+        /// <summary>
+        /// rblCutOptionalFileOption 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rblCutOptionalFileOption;
+        
+        /// <summary>
+        /// tbCutOptionalUpload 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable tbCutOptionalUpload;
+        
+        /// <summary>
+        /// fuCutOptionalFile 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload fuCutOptionalFile;
+        
+        /// <summary>
+        /// RequiredFieldValidator17 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator17;
+        
+        /// <summary>
+        /// tbCutOptionalFillIn 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable tbCutOptionalFillIn;
+        
+        /// <summary>
+        /// txtCutOptionalTimeInterval 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCutOptionalTimeInterval;
+        
+        /// <summary>
+        /// RequiredFieldValidator18 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator18;
+        
+        /// <summary>
+        /// RangeValidator1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator RangeValidator1;
+        
+        /// <summary>
+        /// rblCutOptionalGravitation 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rblCutOptionalGravitation;
+        
+        /// <summary>
+        /// rblCutOptionalTide 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rblCutOptionalTide;
+        
+        /// <summary>
+        /// rblCutOptionalLight 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rblCutOptionalLight;
+        
+        /// <summary>
+        /// rblCutOptionalEther 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rblCutOptionalEther;
+        
+        /// <summary>
+        /// rblCutOptionalNewton 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rblCutOptionalNewton;
         
         /// <summary>
         /// trMessage 控件。
