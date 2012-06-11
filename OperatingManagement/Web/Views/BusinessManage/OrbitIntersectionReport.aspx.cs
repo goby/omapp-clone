@@ -87,6 +87,26 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
         }
         /// <summary>
+        /// CutOptional文件选项
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rblCutOptionalFileOption_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //手工录入
+            if (rblCutOptionalFileOption.SelectedValue == "1")
+            {
+                tbCutOptionalUpload.Visible = false;
+                tbCutOptionalFillIn.Visible = true;
+            }
+            //文件上传
+            else if (rblCutOptionalFileOption.SelectedValue == "0")
+            {
+                tbCutOptionalUpload.Visible = true;
+                tbCutOptionalFillIn.Visible = false;
+            }
+        }
+        /// <summary>
         /// CutMain主星SelectedIndexChanged
         /// </summary>
         /// <param name="sender"></param>
@@ -135,7 +155,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
         protected void btnCalculate_Click(object sender, EventArgs e)
         {
             if (!ValidateCutMainProperty())
-            { }
+            {
+                mvCut.ActiveViewIndex = 0;
+            }
         }
 
         /// <summary>
@@ -324,6 +346,90 @@ namespace OperatingManagement.Web.Views.BusinessManage
             //手工录入
             if (rblCutMainFileOption.SelectedValue == "1")
             {
+                if (string.IsNullOrEmpty(txtCutMainReportBeginDate.Text.Trim()))
+                {
+                    rfvCutMainReportBeginDate.IsValid = false;
+                    txtCutMainReportBeginDate.Focus();
+                    return result;
+                }
+                if (string.IsNullOrEmpty(txtCutMainReportBeginTimeMilliSecond.Text.Trim()))
+                {
+                    rfvCutMainReportBeginTimeMilliSecond.IsValid = false;
+                    txtCutMainReportBeginTimeMilliSecond.Focus();
+                    return result;
+                }
+                if (string.IsNullOrEmpty(txtCutMainReportTime.Text.Trim()))
+                {
+                    rfvCutMainReportTime.IsValid = false;
+                    txtCutMainReportTime.Focus();
+                    return result;
+                }
+                if (string.IsNullOrEmpty(txtCutMainLYDate.Text.Trim()))
+                {
+                    rfvCutMainLYDate.IsValid = false;
+                    txtCutMainLYDate.Focus();
+                    return result;
+                }
+                if (string.IsNullOrEmpty(txtCutMainLYTimeMilliSecond.Text.Trim()))
+                {
+                    rfvCutMainLYTimeMilliSecond.IsValid = false;
+                    txtCutMainLYTimeMilliSecond.Focus();
+                    return result;
+                }
+                if (string.IsNullOrEmpty(txtCutMainD1.Text.Trim()))
+                {
+                    rfvCutMainD1.IsValid = false;
+                    txtCutMainD1.Focus();
+                    return result;
+                }
+                if (string.IsNullOrEmpty(txtCutMainD2.Text.Trim()))
+                {
+                    rfvCutMainD2.IsValid = false;
+                    txtCutMainD2.Focus();
+                    return result;
+                }
+                if (string.IsNullOrEmpty(txtCutMainD3.Text.Trim()))
+                {
+                    rfvCutMainD3.IsValid = false;
+                    txtCutMainD3.Focus();
+                    return result;
+                }
+                if (string.IsNullOrEmpty(txtCutMainD4.Text.Trim()))
+                {
+                    rfvCutMainD4.IsValid = false;
+                    txtCutMainD4.Focus();
+                    return result;
+                }
+                if (string.IsNullOrEmpty(txtCutMainD5.Text.Trim()))
+                {
+                    rfvCutMainD5.IsValid = false;
+                    txtCutMainD5.Focus();
+                    return result;
+                }
+                if (string.IsNullOrEmpty(txtCutMainD6.Text.Trim()))
+                {
+                    rfvCutMainD6.IsValid = false;
+                    txtCutMainD6.Focus();
+                    return result;
+                }
+                if (string.IsNullOrEmpty(txtCutMaindR.Text.Trim()))
+                {
+                    rfvCutMaindR.IsValid = false;
+                    txtCutMaindR.Focus();
+                    return result;
+                }
+                if (string.IsNullOrEmpty(txtCutMaindA.Text.Trim()))
+                {
+                    rfvCutMaindA.IsValid = false;
+                    txtCutMaindA.Focus();
+                    return result;
+                }
+                if (string.IsNullOrEmpty(txtCutMaindE.Text.Trim()))
+                {
+                    rfvCutMaindE.IsValid = false;
+                    txtCutMaindE.Focus();
+                    return result;
+                }
                 DateTime cutMainReportBeginDate = DateTime.MinValue;
                 if(!DateTime.TryParse(txtCutMainReportBeginDate.Text.Trim(), out cutMainReportBeginDate))
                 {
