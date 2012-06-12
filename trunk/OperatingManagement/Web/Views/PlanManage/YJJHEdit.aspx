@@ -3,6 +3,8 @@
 <%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
 <%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc2" %>
 
+<%@ Register src="../../ucs/ucTimer.ascx" tagname="ucTimer" tagprefix="uc3" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
         .text
@@ -65,16 +67,24 @@
         <tr>
             <th class="style1">试验开始时间</th>
             <td>
-                <asp:TextBox ID="txtStartTime" runat="server" Width="300px" CssClass="text" 
+                <asp:TextBox ID="txtStartTime" runat="server" Width="150px" CssClass="text" 
                     MaxLength="14" ClientIDMode="Static"></asp:TextBox>
-            &nbsp;<span style="color:#3399FF;">格式：YYYYMMDDHHmmss</span></td>
+            &nbsp;<uc3:ucTimer ID="ucStartTimer" runat="server" Seperator="empty" 
+                    ShowSecond="True" />
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartTime"
+                        ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
+                </td>
         </tr>
         <tr>
             <th class="style1">试验结束时间</th>
             <td>
-                <asp:TextBox ID="txtEndTime" runat="server" Width="300px" CssClass="text" 
+                <asp:TextBox ID="txtEndTime" runat="server" Width="150px" CssClass="text" 
                     MaxLength="14" ClientIDMode="Static"></asp:TextBox>
-            &nbsp;<span style="color:#3399FF;">格式：YYYYMMDDHHmmss</span></td>
+            &nbsp;<span style="color:#3399FF;"><uc3:ucTimer ID="ucEndTimer" runat="server" 
+                    Seperator="empty" ShowSecond="True" />
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndTime"
+                        ErrorMessage="结束时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
+                </span></td>
         </tr>
         <tr>
             <th class="style1">系统任务</th>

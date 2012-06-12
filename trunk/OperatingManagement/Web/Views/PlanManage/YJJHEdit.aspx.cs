@@ -71,6 +71,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         }
         private void BindXML()
         {
+            CultureInfo provider = CultureInfo.InvariantCulture;
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(HfFileIndex.Value);
             XmlNode root = xmlDoc.SelectSingleNode("应用研究工作计划/XXFL");
@@ -82,9 +83,11 @@ namespace OperatingManagement.Web.Views.PlanManage
             //txtSysName.Text = root.InnerText;
             ddlSysName.SelectedValue = root.InnerText;
             root = xmlDoc.SelectSingleNode("应用研究工作计划/StartTime");
-            txtStartTime.Text = root.InnerText;
+            txtStartTime.Text = DateTime.ParseExact(root.InnerText, "yyyyMMddHHmmss", provider).ToString("yyyy-MM-dd");
+            ucStartTimer.Timer = root.InnerText.Substring(8);
             root = xmlDoc.SelectSingleNode("应用研究工作计划/EndTime");
-            txtEndTime.Text = root.InnerText;
+            txtEndTime.Text = DateTime.ParseExact(root.InnerText, "yyyyMMddHHmmss", provider).ToString("yyyy-MM-dd");
+            ucEndTimer.Timer = root.InnerText.Substring(8);
             root = xmlDoc.SelectSingleNode("应用研究工作计划/Task");
             txtTask.Text = root.InnerText;
 
@@ -105,8 +108,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.XXFL = radBtnXXFL.SelectedValue;
             obj.JXH = txtJXH.Text;
             obj.SysName = ddlSysName.SelectedValue;
-            obj.StartTime = txtStartTime.Text;
-            obj.EndTime = txtEndTime.Text;
+            obj.StartTime = Convert.ToDateTime( txtStartTime.Text).ToString("yyyyMMdd") + ucStartTimer.ToString();
+            obj.EndTime = Convert.ToDateTime(txtEndTime.Text).ToString("yyyyMMdd") + ucStartTimer.ToString();
             obj.Task = txtTask.Text;
             obj.TaskID = ucTask1.SelectedItem.Value;
             obj.SatID = ucSatellite1.SelectedItem.Value;
@@ -125,8 +128,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TaskID = obj.TaskID,
                     PlanType = "YJJH",
                     PlanID = Convert.ToInt32(obj.JXH),
-                    StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddhhmmss", provider),
-                    EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddhhmmss", provider),
+                    StartTime = DateTime.ParseExact(obj.StartTime, "yyyyMMddHHmmss", provider),
+                    EndTime = DateTime.ParseExact(obj.EndTime, "yyyyMMddHHmmss", provider),
                     SRCType = 0,
                     FileIndex = filepath,
                     SatID = obj.SatID,
@@ -144,8 +147,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         Id = Convert.ToInt32( HfID.Value),
                         TaskID = obj.TaskID,
-                        StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddhhmmss", provider),
-                        EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddhhmmss", provider),
+                        StartTime = DateTime.ParseExact(obj.StartTime, "yyyyMMddHHmmss", provider),
+                        EndTime = DateTime.ParseExact(obj.EndTime, "yyyyMMddHHmmss", provider),
                         FileIndex = filepath,
                         SatID = obj.SatID,
                         Reserve = txtNote.Text
@@ -170,8 +173,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.XXFL = radBtnXXFL.SelectedValue;
             //obj.JXH = txtJXH.Text;
             obj.SysName = ddlSysName.SelectedValue;
-            obj.StartTime = txtStartTime.Text;
-            obj.EndTime = txtEndTime.Text;
+            obj.StartTime = Convert.ToDateTime(txtStartTime.Text).ToString("yyyyMMdd") + ucStartTimer.ToString();
+            obj.EndTime = Convert.ToDateTime(txtEndTime.Text).ToString("yyyyMMdd") + ucStartTimer.ToString();
             obj.Task = txtTask.Text;
             CultureInfo provider = CultureInfo.InvariantCulture;
 
@@ -194,8 +197,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TaskID = obj.TaskID,
                     PlanType = "YJJH",
                     PlanID = Convert.ToInt32(obj.JXH),
-                    StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddhhmmss", provider),
-                    EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddhhmmss", provider),
+                    StartTime = DateTime.ParseExact(obj.StartTime, "yyyyMMddHHmmss", provider),
+                    EndTime = DateTime.ParseExact(obj.EndTime, "yyyyMMddHHmmss", provider),
                     SRCType = 0,
                     FileIndex = filepath,
                     SatID = obj.SatID,

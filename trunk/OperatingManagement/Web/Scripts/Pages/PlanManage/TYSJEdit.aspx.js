@@ -1,7 +1,7 @@
 ﻿
 $(function () {
-    $("#txtPlanStartTime").datepicker();
-    $("#txtPlanEndTime").datepicker();
+    $("#txtStartTime").datepicker();
+    $("#txtEndTime").datepicker();
 });
 
 function showMsg(msg) {

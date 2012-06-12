@@ -94,6 +94,24 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.TextBox txtStartTime;
         
         /// <summary>
+        /// ucStartTimer 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::OperatingManagement.Web.ucs.ucTimer ucStartTimer;
+        
+        /// <summary>
+        /// RequiredFieldValidator1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
+        
+        /// <summary>
         /// txtEndTime 控件。
         /// </summary>
         /// <remarks>
@@ -101,6 +119,24 @@ namespace OperatingManagement.Web.Views.PlanManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEndTime;
+        
+        /// <summary>
+        /// ucEndTimer 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::OperatingManagement.Web.ucs.ucTimer ucEndTimer;
+        
+        /// <summary>
+        /// RequiredFieldValidator2 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
         
         /// <summary>
         /// txtCondition 控件。
