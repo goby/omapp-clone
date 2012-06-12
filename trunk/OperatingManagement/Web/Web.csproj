@@ -179,6 +179,7 @@
     <Content Include="ucs\ucInfoType.ascx" />
     <Content Include="ucs\ucSatellite.ascx" />
     <Content Include="ucs\ucTask.ascx" />
+    <Content Include="ucs\ucTimer.ascx" />
     <Content Include="ucs\ucXYXSInfo.ascx" />
     <Content Include="Views\Account\MyProfile.aspx" />
     <Content Include="Views\BusinessManage\CenterOutputPolicyAdd.aspx" />
@@ -305,6 +306,13 @@
     </Compile>
     <Compile Include="ucs\ucTask.ascx.designer.cs">
       <DependentUpon>ucTask.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ucs\ucTimer.ascx.cs">
+      <DependentUpon>ucTimer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ucs\ucTimer.ascx.designer.cs">
+      <DependentUpon>ucTimer.ascx</DependentUpon>
     </Compile>
     <Compile Include="ucs\ucXYXSInfo.ascx.cs">
       <DependentUpon>ucXYXSInfo.ascx</DependentUpon>
