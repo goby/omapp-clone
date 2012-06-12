@@ -68,6 +68,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         }
         private void BindXML()
         {
+            CultureInfo provider = CultureInfo.InvariantCulture;
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(HfFileIndex.Value);
             XmlNode root = xmlDoc.SelectSingleNode("仿真推演试验数据/SatName");
@@ -77,9 +78,12 @@ namespace OperatingManagement.Web.Views.PlanManage
             root = xmlDoc.SelectSingleNode("仿真推演试验数据/TestItem");
             ddlTestItem.SelectedValue = root.InnerText;
             root = xmlDoc.SelectSingleNode("仿真推演试验数据/StartTime");
-            txtStartTime.Text = root.InnerText;
+            //txtStartTime.Text = root.InnerText;
+            txtStartTime.Text = DateTime.ParseExact(root.InnerText, "yyyyMMddHHmmss", provider).ToString("yyyy-MM-dd");
+            ucStartTimer.Timer = root.InnerText.Substring(8);
             root = xmlDoc.SelectSingleNode("仿真推演试验数据/EndTime");
-            txtEndTime.Text = root.InnerText;
+            txtEndTime.Text = DateTime.ParseExact(root.InnerText, "yyyyMMddHHmmss", provider).ToString("yyyy-MM-dd");
+            ucEndTimer.Timer = root.InnerText.Substring(8);
             root = xmlDoc.SelectSingleNode("仿真推演试验数据/Condition");
             txtCondition.Text = root.InnerText;
 
@@ -98,8 +102,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             objTYSJ.SatName = ddlSatName.SelectedItem.Text;
             objTYSJ.Type = ddlType.SelectedItem.Text;
             objTYSJ.TestItem = ddlTestItem.SelectedItem.Text;
-            objTYSJ.StartTime = txtStartTime.Text;
-            objTYSJ.EndTime = txtEndTime.Text;
+            objTYSJ.StartTime = Convert.ToDateTime(txtStartTime.Text).ToString("yyyyMMdd") + ucStartTimer.ToString();
+            objTYSJ.EndTime = Convert.ToDateTime(txtEndTime.Text).ToString("yyyyMMdd") + ucStartTimer.ToString();
             objTYSJ.Condition = txtCondition.Text;
             objTYSJ.TaskID = ucTask1.SelectedItem.Value;
             objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
@@ -114,8 +118,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TaskID = objTYSJ.TaskID,
                     PlanType = "TYSJ",
                     PlanID = (new Sequence()).GetTYSJSequnce(),
-                    StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddHHmmss", provider),
-                    EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddHHmmss", provider),
+                    //StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddHHmmss", provider),
+                    //EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddHHmmss", provider),
+                    StartTime = DateTime.ParseExact(objTYSJ.StartTime, "yyyyMMddHHmmss", provider),
+                    EndTime = DateTime.ParseExact(objTYSJ.EndTime, "yyyyMMddHHmmss", provider),
                     SRCType = 0,
                     FileIndex = filepath,
                     SatID = objTYSJ.SatID,
@@ -135,8 +141,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         Id = Convert.ToInt32(HfID.Value),
                         TaskID = objTYSJ.TaskID,
-                        StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddhhmmss", provider),
-                        EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddhhmmss", provider),
+                        StartTime = DateTime.ParseExact(objTYSJ.StartTime, "yyyyMMddHHmmss", provider),
+                        EndTime = DateTime.ParseExact(objTYSJ.EndTime, "yyyyMMddHHmmss", provider),
                         FileIndex = filepath,
                         SatID = objTYSJ.SatID,
                         Reserve = txtNote.Text
@@ -161,8 +167,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             objTYSJ.SatName = ddlSatName.SelectedItem.Text;
             objTYSJ.Type = ddlType.SelectedItem.Text;
             objTYSJ.TestItem = ddlTestItem.SelectedItem.Text;
-            objTYSJ.StartTime = txtStartTime.Text;
-            objTYSJ.EndTime = txtEndTime.Text;
+            objTYSJ.StartTime = Convert.ToDateTime(txtStartTime.Text).ToString("yyyyMMdd") + ucStartTimer.ToString();
+            objTYSJ.EndTime = Convert.ToDateTime(txtEndTime.Text).ToString("yyyyMMdd") + ucStartTimer.ToString();
             objTYSJ.Condition = txtCondition.Text;
             CultureInfo provider = CultureInfo.InvariantCulture;
 
@@ -184,8 +190,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TaskID = objTYSJ.TaskID,
                     PlanType = "TYSJ",
                     PlanID = (new Sequence()).GetTYSJSequnce(),
-                    StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddhhmmss", provider),
-                    EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddhhmmss", provider),
+                    StartTime = DateTime.ParseExact(objTYSJ.StartTime, "yyyyMMddHHmmss", provider),
+                    EndTime = DateTime.ParseExact(objTYSJ.EndTime, "yyyyMMddHHmmss", provider),
                     SRCType = 0,
                     FileIndex = filepath,
                     SatID = objTYSJ.SatID,

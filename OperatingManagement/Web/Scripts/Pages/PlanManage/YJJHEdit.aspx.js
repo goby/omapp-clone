@@ -1,4 +1,9 @@
-﻿function showMsg(msg) {
+﻿$(function () {
+    $("#txtStartTime").datepicker();
+    $("#txtEndTime").datepicker();
+});
+
+function showMsg(msg) {
     var _dialog;
     _dialog = $("#dialog-form");
     _dialog.dialog({
