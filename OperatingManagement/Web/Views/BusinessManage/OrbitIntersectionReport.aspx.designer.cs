@@ -598,6 +598,24 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.HtmlControls.HtmlTable tbCutSubFillIn;
         
         /// <summary>
+        /// rpCutSubList 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpCutSubList;
+        
+        /// <summary>
+        /// cpCuSubPager 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpCuSubPager;
+        
+        /// <summary>
         /// txtCutSubLYDate 控件。
         /// </summary>
         /// <remarks>

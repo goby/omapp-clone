@@ -160,6 +160,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
         }
 
+        protected void lbtnDeleteCutSub_Click(object sender, EventArgs e)
+        {
+        }
+
         /// <summary>
         /// 下载计算结果文件
         /// </summary>

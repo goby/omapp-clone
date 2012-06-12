@@ -281,6 +281,118 @@
           </table>
           <table id="tbCutSubFillIn" runat="server" visible="true" class="edit" style="width: 800px;">
               <tr>
+                 <th>
+                   主星列表信息
+                 </th>
+                 <td colspan="3">
+                 <asp:Repeater ID="rpCutSubList" runat="server">
+                                <HeaderTemplate>
+                                    <table class="list">
+                                        <tr>
+                                            <th style="width: 15%; text-align: center;">
+                                                主星
+                                            </th>
+                                            <th style="width: 10%; text-align: center;">
+                                                NO
+                                            </th>
+                                            <th style="width: 15%; text-align: center;">
+                                                历元
+                                            </th>
+                                            <th style="width: 6%; text-align: center;">
+                                                KK
+                                            </th>
+                                            <th style="width: 6%; text-align: center;">
+                                                D1
+                                            </th>
+                                            <th style="width: 6%; text-align: center;">
+                                                D2
+                                            </th>
+                                            <th style="width: 6%; text-align: center;">
+                                                D3
+                                            </th>
+                                            <th style="width: 6%; text-align: center;">
+                                                D4
+                                            </th>
+                                            <th style="width: 6%; text-align: center;">
+                                                D5
+                                            </th>
+                                            <th style="width: 6%; text-align: center;">
+                                                D6
+                                            </th>
+                                            <th style="width: 6%; text-align: center;">
+                                                Sm
+                                            </th>
+                                            <th style="width: 6%; text-align: center;">
+                                                Ref
+                                            </th>
+                                             <th style="width: 6%; text-align: center;">
+                                                删除
+                                            </th>
+                                        </tr>
+                                        <tbody id="tbCutSubList">
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <tr>
+                                        <td style="text-align: center;">
+                                            <%# Eval("Name")%>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <%# Eval("NO")%>
+                                        </td>
+                                         <td style="text-align: center;">
+                                            <%# Eval("LYSK")%>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <%# Eval("KK")%>
+                                        </td>
+                                         <td style="text-align: center;">
+                                            <%# Eval("D1")%>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <%# Eval("D2")%>
+                                        </td>
+                                         <td style="text-align: center;">
+                                            <%# Eval("D3")%>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <%# Eval("D4")%>
+                                        </td>
+                                         <td style="text-align: center;">
+                                            <%# Eval("D5")%>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <%# Eval("D6")%>
+                                        </td>
+                                         <td style="text-align: center;">
+                                            <%# Eval("Sm")%>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <%# Eval("Ref")%>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <asp:LinkButton ID="lbtnDeleteCutSub" runat="server" OnClick="lbtnDeleteCutSub_Click"
+                                                OnClientClick="javascript:return confirm('是否删除该条主星记录？')" CausesValidation="false"
+                                                CommandName="delete" CommandArgument='<%# Eval("Name").ToString() + "$" + Eval("NO").ToString()%>'>删除</asp:LinkButton>
+                                        </td>
+                                    </tr>
+                                </ItemTemplate>
+                                <FooterTemplate>
+                                    </tbody></table>
+                                </FooterTemplate>
+                            </asp:Repeater>
+                            <table class="listTitle">
+                                <tr>
+                                    <td class="listTitle-c1">
+                                    </td>
+                                    <td class="listTitle-c2">
+                                        <om:CollectionPager ID="cpCuSubPager" runat="server">
+                                        </om:CollectionPager>
+                                    </td>
+                                </tr>
+                            </table>
+                 </td>
+              </tr>
+              <tr>
                   <th style="width: 140px;">
                       历元日期(<span class="red">*</span>)
                   </th>
