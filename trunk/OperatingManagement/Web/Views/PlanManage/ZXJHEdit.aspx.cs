@@ -1087,5 +1087,21 @@ namespace OperatingManagement.Web.Views.PlanManage
                 ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
        
         }
+
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(HfID.ID))
+            {
+                Page.Response.Redirect(Request.CurrentExecutionFilePath);
+            }
+            else
+            {
+                string sID = HfID.Value;
+                HfID.Value = sID;
+                hfStatus.Value = "edit";    //编辑
+                BindJhTable(sID);
+                BindXML();
+            }
+        }
     }
 }

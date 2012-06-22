@@ -108,7 +108,10 @@
                     &nbsp;&nbsp;&nbsp;
                     <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
                     onclick="btnSaveTo_Click" />
-                     <asp:HiddenField ID="HfID" runat="server" />
+                     &nbsp;&nbsp; <asp:Button ID="btnReset" class="button" runat="server" 
+                    Text="重置" Width="65px" 
+                    onclick="btnReset_Click" CausesValidation="False" />
+                    &nbsp;<asp:HiddenField ID="HfID" runat="server" />
                     <asp:HiddenField ID="HfFileIndex" runat="server" />
                 <asp:HiddenField ID="hfTaskID" runat="server" />
                 <asp:HiddenField ID="hfSatID" runat="server" />
