@@ -722,6 +722,9 @@
             <asp:Button ID="btnSubmit" CssClass="button" runat="server" Text="保存计划" OnClick="btnSubmit_Click" />
             &nbsp;&nbsp;&nbsp;
             <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" OnClick="btnSaveTo_Click" />
+        &nbsp;&nbsp;
+            <asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
+                    onclick="btnReset_Click" CausesValidation="False" />
         </div>
         <div>
             <asp:HiddenField ID="HfID" runat="server" />

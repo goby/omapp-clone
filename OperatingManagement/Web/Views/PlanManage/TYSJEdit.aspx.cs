@@ -295,5 +295,21 @@ namespace OperatingManagement.Web.Views.PlanManage
                     break;
             }
         }
+
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(HfID.ID))
+            {
+                Page.Response.Redirect(Request.CurrentExecutionFilePath);
+            }
+            else
+            {
+                string sID = HfID.Value;
+                HfID.Value = sID;
+                hfStatus.Value = "edit";    //编辑
+                BindJhTable(sID);
+                BindXML();
+            }
+        }
     }
 }
