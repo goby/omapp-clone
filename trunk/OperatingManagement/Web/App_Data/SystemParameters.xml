@@ -110,5 +110,12 @@
     <item text="CuSubFileDirectory" value="D:\OrbitIntersectionReport\CuSubFileDirectory\"></item>
     <item text="CuSubFileExtension" value="dat,txt"></item>
     <item text="CuSubFileMaxSize" value="4194304"></item>
+    <item text="CuOptionalFileDirectory" value="D:\OrbitIntersectionReport\CuOptionalFileDirectory\"></item>
+    <item text="CuOptionalFileExtension" value="dat,txt"></item>
+    <item text="CuOptionalFileMaxSize" value="4194304"></item>
+    <item text="JPLEPHFilePath" value="D:\Include\JPLEPH"></item>
+    <item text="TESTRECLFilePath" value="D:\Include\TESTRECL"></item>
+    <item text="WGS84FilePath" value="D:\Include\WGS84.GEO"></item>
+    <item text="eopc04_IAU2000FilePath" value="D:\Include\eopc04_IAU2000.dat"></item>
   </OrbitIntersectionReport>
 </SystemParameters>
