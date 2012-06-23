@@ -48,6 +48,7 @@
     <Compile Include="BusinessManage\CenterOutputPolicy.cs" />
     <Compile Include="BusinessManage\CenterResource.cs" />
     <Compile Include="BusinessManage\CommunicationResource.cs" />
+    <Compile Include="BusinessManage\CutSubItemInfo.cs" />
     <Compile Include="BusinessManage\DFInfo.cs" />
     <Compile Include="BusinessManage\GDXA.cs" />
     <Compile Include="BusinessManage\GDSH.cs" />
