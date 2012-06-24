@@ -146,6 +146,7 @@
     <Content Include="Scripts\Core\jquery.ui.datepicker-zh-CN.js" />
     <Content Include="Scripts\Core\jquery.ui.datepicker.js" />
     <Content Include="Scripts\Core\jquery.ui.widget.js" />
+    <Content Include="Scripts\Core\jquery.validate.js" />
     <Content Include="Scripts\Core\util.js" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
