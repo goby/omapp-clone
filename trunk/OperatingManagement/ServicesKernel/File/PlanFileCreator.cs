@@ -1193,16 +1193,97 @@ namespace ServicesKernel.File
         /// <param name="desValue">信宿地址值</param>
         /// <param name="destinationName">信宿地址名称</param>
         /// <returns>生成的外发文件完整路径名串</returns>
-        public string CreateSendingDMJHFile(string ids, string desValue, string destinationName)
+        public string CreateSendingGZJHFile(string ids, string desValue, string destinationName)
         {
             string SendFileNames = "";
             List<JH> listJH = (new JH()).SelectByIDS(ids);
-
+            DMJH obj;
             foreach (JH jh in listJH)
             {
+                //if (desValue == "XSCC")
+                //{
+                //    filename = FileNameMaker.GenarateFileNameTypeOne("GZJH", "B");
+                //    RenamePlanFile(jh.FileIndex, SendingPath);  //移动并重命名文件到外发目录
+                //}
+                //else
+                //{
+                    #region 有问题，暂时空着
+                    /*
+                    #region 读取计划XML文件，变量赋值
+                    obj = new DMJH();
+                    List<DMJH_Task> listTask = new List<DMJH_Task>();
+                    DMJH_Task task;
+                    XmlDocument xmlDoc = new XmlDocument();
+                    xmlDoc.Load(jh.FileIndex);
+
+                    obj.CTime = jh.CTime;
+                    XmlNode root = xmlDoc.SelectSingleNode("地面站工作计划/编号");
+                    obj.Sequence = root.InnerText;
+                    root = xmlDoc.SelectSingleNode("地面站工作计划/时间");
+                    obj.DateTime = root.InnerText;
+                    root = xmlDoc.SelectSingleNode("地面站工作计划/工作单位");
+                    obj.StationName = root.InnerText;
+                    root = xmlDoc.SelectSingleNode("地面站工作计划/设备代号");
+                    obj.EquipmentID = root.InnerText;
+                    root = xmlDoc.SelectSingleNode("地面站工作计划/任务个数");
+                    obj.TaskCount = root.InnerText;
+
+                    root = xmlDoc.SelectSingleNode("地面站工作计划");
+                    foreach (XmlNode n in root.ChildNodes)
+                    {
+                        if (n.Name == "任务")
+                        {
+                            task = new DMJH_Task();
+                            task.TaskFlag = n["任务标志"].InnerText;
+                            task.WorkWay = n["工作方式"].InnerText;
+                            task.PlanPropertiy = n["计划性质"].InnerText;
+                            task.WorkMode = n["工作模式"].InnerText;
+                            task.PreStartTime = n["任务准备开始时间"].InnerText;
+                            task.StartTime = n["任务开始时间"].InnerText;
+                            task.TrackStartTime = n["跟踪开始时间"].InnerText;
+                            task.WaveOnStartTime = n["开上行载波时间"].InnerText;
+                            task.WaveOffStartTime = n["关上行载波时间"].InnerText;
+                            task.TrackEndTime = n["跟踪结束时间"].InnerText;
+                            task.EndTime = n["任务结束时间"].InnerText;
+                            listTask.Add(task);
+                        }
+                    }
+                    #endregion
+
+                    #region 写入文件
+                    filename = FileNameMaker.GenarateFileNameTypeThree("GZJH", desValue);
+
+                    sw = new StreamWriter(SendingPath);
+                    sw.WriteLine("<说明区>");
+                    sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH-mm"));
+                    sw.WriteLine("[信源S]：" + this.Source);
+                    sw.WriteLine("[信宿D]：" + destinationName);
+                    sw.WriteLine("[任务代码M]：700任务(0501)");
+                    sw.WriteLine("[信息类别B]：地面站工作计划");
+                    sw.WriteLine("[数据区行数L]：" + (Convert.ToInt32( obj.TaskCount) +1).ToString("0000") );
+                    sw.WriteLine("<符号区>");
+                    sw.WriteLine("[格式标识1]：JXH  XXFL  DW  SB	QS");
+                    sw.WriteLine("[格式标识2]：QH  DH  FS  JXZ  MS  QB  GXZ  ZHB  RK  GZK  KSHX  GSHX  GZJ  JS  BID  SBZ  RTs  RTe  SL  BID  HBZ  Ts  Te  RTs  SL");
+                    sw.WriteLine("[数据区]：");
+                    sw.WriteLine(obj.Sequence + "  " + "ZJ" + "  " + obj.StationName + "  " + obj.EquipmentID + "  " + "0001");
+                    foreach (DMJH_Task t in obj.DMJHTasks)
+                    {
+                        sw.WriteLine("0001"+ "  " + t.TaskFlag + "  " + t.WorkWay + "  " + t.PlanPropertiy + "  " + t.WorkMode + "  "
+                            + "Q1" + "  " + "M" + "  " + t.PreStartTime + "  " + t.StartTime + "  " +t.TrackStartTime + "  " +t.WaveOnStartTime
+                             + "  " +t.WaveOffStartTime + "  " +t.TrackEndTime + "  " +t.EndTime + "  ");
+                    }
+                    sw.WriteLine("<辅助区>");
+                    sw.WriteLine("[备注]：");
+                    sw.WriteLine("[结束]：END");
+
+                    sw.Close();
+                    #endregion
+ */
+                    #endregion
+                //}
+
                 filename = FileNameMaker.GenarateFileNameTypeOne("GZJH", "B");
                 RenamePlanFile(jh.FileIndex, SendingPath);  //移动并重命名文件到外发目录
-
                 SendFileNames = SendFileNames + SendingPath + ",";
             }
 

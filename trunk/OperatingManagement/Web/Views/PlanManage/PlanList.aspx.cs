@@ -126,7 +126,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                             break;
                         case "DMJH":
                         case "GZJH":
-                            SendingFilePaths = creater.CreateSendingDMJHFile(txtId.Text, li.Value, li.Text);
+                            SendingFilePaths = creater.CreateSendingGZJHFile(txtId.Text, li.Value, li.Text);
                             break;
                         case "TYSJ":
                             SendingFilePaths = creater.CreateSendingTYSJFile(txtId.Text, li.Value, li.Text);
@@ -184,42 +184,54 @@ namespace OperatingManagement.Web.Views.PlanManage
             //pnlData.Visible = false;
             //string plantype = txtPlanType.Text;
             string plantype = ddlType.SelectedValue;
+            if (plantype =="DMJH")
+            { plantype = "GZJH"; }
             txtPlanType.Text = plantype;
-            switch (plantype)
+            List<string> targetList;
+            ckbDestination.Items.Clear();
+            targetList = FileExchangeConfig.GetTgtListForSending(plantype);
+            foreach (string tgt in targetList)
             {
-                case "YJJH":
-                    ckbDestination.Items.Clear();
-                    ckbDestination.Items.Add(new ListItem("天基目标观测应用研究分系统（GCYJ）", "GCYJ"));
-                    ckbDestination.Items.Add(new ListItem("遥操作应用研究分系统（CZYJ）", "CZYJ"));
-                    ckbDestination.Items.Add(new ListItem("空间机动应用研究分系统（JDYJ）", "JDYJ"));
-                    ckbDestination.Items.Add(new ListItem("仿真推演分系统（FZTY）", "FZTY"));
-                    break;
-                case "XXXQ":
-                    ckbDestination.Items.Clear();
-                    ckbDestination.Items.Add(new ListItem("空间信息综合应用中心(XXZX)", "XXZX"));
-                    break;
-                case "DMJH":
-                case "GZJH":
-                    ckbDestination.Items.Clear();
-                    ckbDestination.Items.Add(new ListItem("西安中心（XSCC）", "XSCC"));
-                    ckbDestination.Items.Add(new ListItem("总参二部信息处理中心（XXZX）", "XXZX"));
-                    ckbDestination.Items.Add(new ListItem("总参三部技侦中心（JZZX）", "JZZX"));
-                    ckbDestination.Items.Add(new ListItem("总参气象水文空间天气总站资料处理中心（ZLZX）", "ZLZX"));
-                    ckbDestination.Items.Add(new ListItem("863-YZ4701遥科学综合站（JYZ1）", "JYZ1"));
-                    ckbDestination.Items.Add(new ListItem("863-YZ4702遥科学综合站（JYZ2）", "JYZ2"));
-                    break;
-                case "ZXJH":
-                    ckbDestination.Items.Clear();
-                    break;
-                case "TYSJ":
-                    ckbDestination.Items.Clear();
-                    ckbDestination.Items.Add(new ListItem("仿真推演分系统(FZTY)", "FZTY"));
-                    break;
-                case "SBJH":
-                    ckbDestination.Items.Clear();
-                    //ckbDestination.Items.Add(new ListItem("运控评估中心YKZX(02 04 00 00)", "YKZX"));
-                    break;
+                ckbDestination.Items.Add(new ListItem(FileExchangeConfig.GetNameForType(tgt), tgt));
             }
+
+            #region Add Destination 
+            //switch (plantype)
+            //{
+            //    case "YJJH":
+            //        ckbDestination.Items.Clear();
+            //        ckbDestination.Items.Add(new ListItem("天基目标观测应用研究分系统（GCYJ）", "GCYJ"));
+            //        ckbDestination.Items.Add(new ListItem("遥操作应用研究分系统（CZYJ）", "CZYJ"));
+            //        ckbDestination.Items.Add(new ListItem("空间机动应用研究分系统（JDYJ）", "JDYJ"));
+            //        ckbDestination.Items.Add(new ListItem("仿真推演分系统（FZTY）", "FZTY"));
+            //        break;
+            //    case "XXXQ":
+            //        ckbDestination.Items.Clear();
+            //        ckbDestination.Items.Add(new ListItem("空间信息综合应用中心(XXZX)", "XXZX"));
+            //        break;
+            //    case "DMJH":
+            //    case "GZJH":
+            //        ckbDestination.Items.Clear();
+            //        ckbDestination.Items.Add(new ListItem("西安中心（XSCC）", "XSCC"));
+            //        ckbDestination.Items.Add(new ListItem("总参二部信息处理中心（XXZX）", "XXZX"));
+            //        ckbDestination.Items.Add(new ListItem("总参三部技侦中心（JZZX）", "JZZX"));
+            //        ckbDestination.Items.Add(new ListItem("总参气象水文空间天气总站资料处理中心（ZLZX）", "ZLZX"));
+            //        ckbDestination.Items.Add(new ListItem("863-YZ4701遥科学综合站（JYZ1）", "JYZ1"));
+            //        ckbDestination.Items.Add(new ListItem("863-YZ4702遥科学综合站（JYZ2）", "JYZ2"));
+            //        break;
+            //    case "ZXJH":
+            //        ckbDestination.Items.Clear();
+            //        break;
+            //    case "TYSJ":
+            //        ckbDestination.Items.Clear();
+            //        ckbDestination.Items.Add(new ListItem("仿真推演分系统(FZTY)", "FZTY"));
+            //        break;
+            //    case "SBJH":
+            //        ckbDestination.Items.Clear();
+            //        //ckbDestination.Items.Add(new ListItem("运控评估中心YKZX(02 04 00 00)", "YKZX"));
+            //        break;
+            //}
+            #endregion
             if (ckbDestination.Items.Count > 0)
             {
                 ckbDestination.SelectedIndex = 0;
