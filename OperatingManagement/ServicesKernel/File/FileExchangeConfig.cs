@@ -13,6 +13,8 @@ namespace ServicesKernel.File
         private static string sSeperator = "-";
         private static Dictionary<string, string> sendList = null;
         private static Dictionary<string, string> recvList = null;
+        private static Dictionary<string, List<string>> tgtList = null;
+        private static Dictionary<string, string> nameList = null;
         private static List<string> recvSuffixList = null;
 
         public static string GetSuffixForSending(string infoCode, string fromMark, string toMark)
@@ -29,6 +31,32 @@ namespace ServicesKernel.File
                 return null;
         }
 
+        public static List<string> GetTgtListForSending(string infoCode)
+        {
+            if (tgtList == null)
+            { Load(); }
+            if (sendList == null)
+            { return null; }
+
+            if (tgtList.ContainsKey(infoCode))
+            { return tgtList[infoCode]; }
+            else
+            { return null; }
+        }
+
+        public static string GetNameForType(string infoCode)
+        {
+            if (nameList == null)
+            { Load(); }
+            if (nameList == null)
+            { return null; }
+
+            if (nameList.ContainsKey(infoCode))
+            { return nameList[infoCode]; }
+            else
+            { return null; }
+        }
+
         private static void Load()
         {
             XDocument doc = XDocument.Load(filePath);
@@ -39,24 +67,39 @@ namespace ServicesKernel.File
             string sType = "";
             string sSrc = "";
             string sSuffix = "";
+            string sName = "";
             XElement node = null;
+
+            #region toSend
             var sInfos = root.Element("toSend").Elements("Info");
             if (sInfos != null && sInfos.Count() > 0)
             {
                 sendList = new Dictionary<string, string>();
+                tgtList = new Dictionary<string,List<string>>();
+                List<string> listtgt;
                 for (int i = 0; i < sInfos.Count(); i++)
                 {
                     node = sInfos.ElementAt(i);
                     sType = node.Element("Type").Value;
                     sSrc = node.Element("SrcCode").Value;
                     sSuffix = node.Element("Suffix").Value;
+                    listtgt= new List<string>();
                     foreach (XElement tgt in node.Element("TgtList").Elements("TgtCode"))
                     {
                         sendList.Add(sType + sSeperator + sSrc + sSeperator + tgt.Value, sSuffix);
+                        listtgt.Add(tgt.Value);
+                    }
+                    if (!tgtList.ContainsKey(sType))
+                    { tgtList.Add(sType, listtgt); }
+                    else
+                    {
+                        tgtList[sType].AddRange(listtgt);
                     }
                 }
             }
+            #endregion
 
+            #region toReceive
             var rInfos = root.Element("toReceive").Elements("Info");
             if (rInfos != null && rInfos.Count() > 0)
             {
@@ -83,6 +126,23 @@ namespace ServicesKernel.File
                         recvSuffixList.Add(sSuffix);
                 }
             }
+        #endregion
+
+            #region target
+            var tInfos = root.Element("target").Elements("Info");
+            if (tInfos != null && tInfos.Count() > 0)
+            {
+                nameList = new Dictionary<string, string>();
+                for (int i = 0; i < tInfos.Count(); i++)
+                {
+                    node = tInfos.ElementAt(i);
+                    sType = node.Element("Type").Value;
+                    sName = node.Element("Name").Value;
+                    nameList.Add(sType, sName);
+                }
+            }
+
+            #endregion
             doc = null;
         }
     }

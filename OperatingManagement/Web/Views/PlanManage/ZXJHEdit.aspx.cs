@@ -1090,7 +1090,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         protected void btnReset_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(HfID.ID))
+            if (string.IsNullOrEmpty(HfID.Value))
             {
                 Page.Response.Redirect(Request.CurrentExecutionFilePath);
             }

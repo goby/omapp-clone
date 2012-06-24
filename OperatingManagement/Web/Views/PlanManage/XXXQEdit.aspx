@@ -41,7 +41,7 @@
             </th>
             <td>
                 <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" MaxLength="10"
-                    ClientIDMode="Static"></asp:TextBox>
+                    ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
                         ControlToValidate="txtPlanStartTime" ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
             </td>
@@ -49,7 +49,8 @@
                 计划结束时间
             </th>
             <td>
-                <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" MaxLength="10" ClientIDMode="Static"></asp:TextBox>
+                <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" MaxLength="10" 
+                    ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
                 &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
                         ControlToValidate="txtPlanEndTime" ErrorMessage="结束时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
             </td>
@@ -91,14 +92,14 @@
             </th>
             <td>
                 <asp:TextBox ID="txtMBTimeSection1" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8"></asp:TextBox>
+                    MaxLength="8" ReadOnly="True"></asp:TextBox>
             </td>
             <th style="width:100px;">
                 结束时间
             </th>
             <td>
                 <asp:TextBox ID="txtMBTimeSection2" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8"></asp:TextBox>
+                    MaxLength="8" ReadOnly="True"></asp:TextBox>
             </td>
         </tr>
         <tr>
@@ -196,14 +197,14 @@
             </th>
             <td>
                 <asp:TextBox ID="txtHJTimeSection1" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8"></asp:TextBox>
+                    MaxLength="8" ReadOnly="True"></asp:TextBox>
             </td>
             <th style="width:100px;">
                 结束时间
             </th>
             <td>
                 <asp:TextBox ID="txtHJTimeSection2" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8"></asp:TextBox>
+                    MaxLength="8" ReadOnly="True"></asp:TextBox>
             </td>
         </tr>
         <tr>

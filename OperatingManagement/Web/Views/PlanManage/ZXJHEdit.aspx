@@ -37,7 +37,7 @@
                 </th>
                 <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" MaxLength="10"
-                        ClientIDMode="Static"></asp:TextBox>
+                        ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtPlanStartTime"
                         ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
                 </td>
@@ -45,7 +45,8 @@
                     计划结束时间
                 </th>
                 <td>
-                    <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" MaxLength="10" ClientIDMode="Static"></asp:TextBox>
+                    <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" MaxLength="10" 
+                        ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtPlanEndTime"
                         ErrorMessage="结束时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
                 </td>

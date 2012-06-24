@@ -73,7 +73,7 @@
             <th class="style1">试验开始时间</th>
             <td>
                 <asp:TextBox ID="txtStartTime" runat="server" Width="150px" CssClass="text" 
-                    MaxLength="14" ClientIDMode="Static"></asp:TextBox>
+                    MaxLength="14" ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
             &nbsp;<uc3:uctimer ID="ucStartTimer" runat="server" Seperator="empty" 
                     ShowSecond="True" />
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartTime"
@@ -84,7 +84,7 @@
             <th class="style1">试验结束时间</th>
             <td>
                 <asp:TextBox ID="txtEndTime" runat="server" Width="150px" CssClass="text" 
-                    MaxLength="14" ClientIDMode="Static"></asp:TextBox>
+                    MaxLength="14" ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
             &nbsp;<span style="color:#3399FF;"><uc3:uctimer ID="ucEndTimer" runat="server" 
                     Seperator="empty" ShowSecond="True" />
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndTime"

@@ -403,4 +403,50 @@
       </TgtList>
     </Info>
   </toReceive>
+    <target>
+        <Info>
+            <Type>GCYJ</Type>
+            <Name>天基目标观测应用研究分系统（GCYJ）</Name>
+        </Info>
+        <Info>
+            <Type>CZYJ</Type>
+            <Name>遥操作应用研究分系统（CZYJ）</Name>
+        </Info>
+        <Info>
+            <Type>JDYJ</Type>
+            <Name>空间机动应用研究分系统（JDYJ）</Name>
+        </Info>
+        <Info>
+            <Type>FZTY</Type>
+            <Name>仿真推演分系统（FZTY）</Name>
+        </Info>
+        <Info>
+            <Type>XXZX</Type>
+            <Name>空间信息综合应用中心（XXZX）</Name>
+        </Info>
+        <Info>
+            <Type>XSCC</Type>
+            <Name>西安中心（XSCC）</Name>
+        </Info>
+        <!--<Info>
+            <Type>XXZX</Type>
+            <Name>总参二部信息处理中心（XXZX）</Name>
+        </Info>-->
+        <Info>
+            <Type>JZZX</Type>
+            <Name>总参三部技侦中心（JZZX）</Name>
+        </Info>
+        <Info>
+            <Type>ZLZX</Type>
+            <Name>总参气象水文空间天气总站资料处理中心（ZLZX）</Name>
+        </Info>
+        <Info>
+            <Type>JYZ1</Type>
+            <Name>863-YZ4701遥科学综合站（JYZ1）</Name>
+        </Info>
+        <Info>
+            <Type>JYZ2</Type>
+            <Name>863-YZ4702遥科学综合站（JYZ2）</Name>
+        </Info>
+    </target>
 </FileList>
