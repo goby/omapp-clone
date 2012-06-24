@@ -24,6 +24,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
+                txtStartTime.Attributes.Add("readonly", "true");
+                txtEndTime.Attributes.Add("readonly", "true");
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
@@ -39,6 +41,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 else
                 {
+                    btnReturn.Visible = false;
                     hfStatus.Value = "new"; //新建
                     btnSaveTo.Visible = false;
                     //txtJXH.Text = (new Sequence()).GetYJJHSequnce().ToString("0000");   //新建时先给出计划序号
@@ -225,6 +228,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                 BindJhTable(sID);
                 BindXML();
             }
+        }
+
+        protected void btnReturn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("PlanList.aspx");
         }
 
     }

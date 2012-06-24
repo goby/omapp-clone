@@ -37,7 +37,7 @@
                 </th>
                 <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" MaxLength="10"
-                        ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
+                        ClientIDMode="Static"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtPlanStartTime"
                         ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
                 </td>
@@ -46,9 +46,13 @@
                 </th>
                 <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" MaxLength="10" 
-                        ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
+                        ClientIDMode="Static"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtPlanEndTime"
-                        ErrorMessage="结束时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
+                        ErrorMessage="结束时间不能为空" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
+                    <asp:CompareValidator ID="CompareValidator1" runat="server" 
+                        ControlToCompare="txtPlanStartTime" ControlToValidate="txtPlanEndTime" 
+                        Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                        Operator="GreaterThan" Type="Date"></asp:CompareValidator>
                 </td>
             </tr>
             <tr>
@@ -726,6 +730,10 @@
         &nbsp;&nbsp;
             <asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
                     onclick="btnReset_Click" CausesValidation="False" />
+                    &nbsp;&nbsp; 
+            <asp:Button ID="btnReturn" class="button" runat="server" 
+                    Text="返回" Width="65px" 
+                    onclick="btnReturn_Click" CausesValidation="False" />
         </div>
         <div>
             <asp:HiddenField ID="HfID" runat="server" />

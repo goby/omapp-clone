@@ -41,7 +41,7 @@
             </th>
             <td>
                 <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" MaxLength="10"
-                    ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
+                    ClientIDMode="Static"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
                         ControlToValidate="txtPlanStartTime" ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
             </td>
@@ -50,9 +50,14 @@
             </th>
             <td>
                 <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" MaxLength="10" 
-                    ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
+                    ClientIDMode="Static"></asp:TextBox>
                 &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
-                        ControlToValidate="txtPlanEndTime" ErrorMessage="结束时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
+                        ControlToValidate="txtPlanEndTime" ErrorMessage="结束时间不能为空" 
+                    ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
+                <asp:CompareValidator ID="CompareValidator1" runat="server" 
+                    ControlToCompare="txtPlanStartTime" ControlToValidate="txtPlanEndTime" 
+                    Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                    Operator="GreaterThan" Type="Date"></asp:CompareValidator>
             </td>
         </tr>
         <tr>
@@ -92,14 +97,14 @@
             </th>
             <td>
                 <asp:TextBox ID="txtMBTimeSection1" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8" ReadOnly="True"></asp:TextBox>
+                    MaxLength="8"></asp:TextBox>
             </td>
             <th style="width:100px;">
                 结束时间
             </th>
             <td>
                 <asp:TextBox ID="txtMBTimeSection2" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8" ReadOnly="True"></asp:TextBox>
+                    MaxLength="8"></asp:TextBox>
             </td>
         </tr>
         <tr>
@@ -114,7 +119,7 @@
             </th>
             <td>
             <div style="display:none">
-                <asp:TextBox ID="txtMBSum" runat="server" CssClass="text" MaxLength="50" ReadOnly="True"></asp:TextBox>
+                <asp:TextBox ID="txtMBSum" runat="server" CssClass="text" MaxLength="50" Enabled="false"></asp:TextBox>
                 </div>
             </td>
         </tr>
@@ -197,14 +202,14 @@
             </th>
             <td>
                 <asp:TextBox ID="txtHJTimeSection1" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8" ReadOnly="True"></asp:TextBox>
+                    MaxLength="8"></asp:TextBox>
             </td>
             <th style="width:100px;">
                 结束时间
             </th>
             <td>
                 <asp:TextBox ID="txtHJTimeSection2" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8" ReadOnly="True"></asp:TextBox>
+                    MaxLength="8"></asp:TextBox>
             </td>
         </tr>
         <tr>
@@ -219,7 +224,7 @@
             </th>
             <td>
             <div style="display:none">
-                <asp:TextBox ID="txtHJSum" runat="server" CssClass="text" MaxLength="50" ReadOnly="True"></asp:TextBox>
+                <asp:TextBox ID="txtHJSum" runat="server" CssClass="text" MaxLength="50" Enabled="false"></asp:TextBox>
                 </div>
             </td>
         </tr>
@@ -289,6 +294,10 @@
     &nbsp;&nbsp;
         <asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
                     onclick="btnReset_Click" CausesValidation="False" />
+                    &nbsp;&nbsp; 
+        <asp:Button ID="btnReturn" class="button" runat="server" 
+                    Text="返回" Width="65px" 
+                    onclick="btnReturn_Click" CausesValidation="False" />
     </div>
     <div style="display: none">
         <asp:HiddenField ID="HfID" runat="server" />

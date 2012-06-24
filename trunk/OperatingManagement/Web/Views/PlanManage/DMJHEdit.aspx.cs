@@ -26,6 +26,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
+                txtPlanStartTime.Attributes.Add("readonly", "true");
+                txtPlanEndTime.Attributes.Add("readonly", "true");
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
@@ -41,10 +43,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 else
                 {
+                    btnReturn.Visible = false;
                     hfStatus.Value = "new"; //新建
                     btnSaveTo.Visible = false;
+                    initial();
                 }
-                initial();
+
             }
         }
 
@@ -157,7 +161,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 #endregion
 
                 #region 添加,删除任务时，从ViewState里获取页面 “实时传输” 和“事后回放”的值
-                if (ViewState["arrR"] != null &&ViewState["arrA"] != null && ViewState["op"] != null)
+                if (ViewState["arrR"] != null && ViewState["arrA"] != null && ViewState["op"] != null)
                 {
                     ArrayList arrR = (ArrayList)ViewState["arrR"];
                     ArrayList arrA = (ArrayList)ViewState["arrA"];
@@ -669,7 +673,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             DMJH obj = new DMJH();
             obj.Sequence = txtSequence.Text;
-            obj.DateTime = DateTime.Now.ToString("YYYYMMDDHHmmss");
+            obj.DateTime = DateTime.Now.ToString("yyyyMMddHHmmss");
             obj.StationName = txtStationName.Text;
             obj.EquipmentID = txtEquipmentID.Text;
            // obj.TaskCount = txtTaskCount.Text;
@@ -1094,6 +1098,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                 BindXML();
             }
         }
+
+        protected void btnReturn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("PlanList.aspx");
+        }
+
         //
     }
 }
