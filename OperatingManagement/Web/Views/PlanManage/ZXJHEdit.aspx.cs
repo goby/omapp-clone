@@ -24,8 +24,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
-                initial();
-
+                txtPlanStartTime.Attributes.Add("readonly", "true");
+                txtPlanEndTime.Attributes.Add("readonly", "true");
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
@@ -41,8 +41,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 else
                 {
+                    btnReturn.Visible = false;
                     hfStatus.Value = "new"; //新建
                     btnSaveTo.Visible = false;
+                    initial();
                 }
             }
         }
@@ -1102,6 +1104,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                 BindJhTable(sID);
                 BindXML();
             }
+        }
+
+        protected void btnReturn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("PlanList.aspx");
         }
     }
 }

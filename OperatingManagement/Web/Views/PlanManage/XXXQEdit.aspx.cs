@@ -41,6 +41,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 else
                 {
+                    btnReturn.Visible = false;
                     hfStatus.Value = "new"; //新建
                     btnSaveTo.Visible = false;
                 }
@@ -49,6 +50,13 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         private void initial()
         {
+            txtPlanStartTime.Attributes.Add("readonly", "true");
+            txtPlanEndTime.Attributes.Add("readonly", "true");
+            txtMBTimeSection1.Attributes.Add("readonly", "true");
+            txtMBTimeSection2.Attributes.Add("readonly", "true");
+            txtHJTimeSection1.Attributes.Add("readonly", "true");
+            txtHJTimeSection2.Attributes.Add("readonly", "true"); 
+
             txtMBUser.Text = PlanParameters.ReadMBXQDefaultUser();
             txtHJUser.Text = PlanParameters.ReadHJXQDefaultUser();
             txtMBTargetInfo.Text = PlanParameters.ReadMBXQDefaultTargetInfo();
@@ -580,6 +588,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                 BindJhTable(sID);
                 BindXML();
             }
+        }
+
+        protected void btnReturn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("PlanList.aspx");
         }
     }
 }

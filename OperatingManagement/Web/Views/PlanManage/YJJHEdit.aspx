@@ -9,6 +9,10 @@
     <style type="text/css">
         .text
         {}
+        .style1
+        {
+            width: 130px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -21,35 +25,34 @@
     计划管理 &gt; 应用研究计划
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-
 <table class="edit1" style="width:800px;">
         <tr>
-            <th>任务代号(<span class="red">*</span>)</th>
+            <th class="style1">任务代号(<span class="red">*</span>)</th>
             <td>
                 <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" />
             </td>
         </tr>
         <tr>
-            <th>卫星(<span class="red">*</span>)</th>
+            <th class="style1">卫星(<span class="red">*</span>)</th>
             <td>
                 <uc2:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
             </td>
         </tr>
         <tr>
-            <th>信息分类</th>
+            <th class="style1">信息分类</th>
             <td>
                 <asp:RadioButtonList ID="radBtnXXFL" runat="server" 
-                    RepeatDirection="Horizontal">
+                    RepeatDirection="Horizontal" ClientIDMode="Static">
                     <asp:ListItem Value="ZJ" Selected>周计划</asp:ListItem>
-                    <asp:ListItem Value="RJ">日计划</asp:ListItem>
+                    <asp:ListItem Value="RJ">日计划</asp:ListItem> 
                 </asp:RadioButtonList>
             </td>
         </tr>
         <tr>
-            <th>计划序号</th>
+            <th class="style1">计划序号</th>
             <td>
                 <asp:TextBox ID="txtJXH" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20" Enabled="False" ReadOnly="True"></asp:TextBox>
+                    MaxLength="20" Enabled="False"></asp:TextBox>
                     &nbsp;<span style="color:#3399FF;">自动生成，不可编辑</span>
             </td>
         </tr>
@@ -67,8 +70,8 @@
         <tr>
             <th class="style1">试验开始时间</th>
             <td>
-                <asp:TextBox ID="txtStartTime" runat="server" Width="150px" CssClass="text" 
-                    MaxLength="14" ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
+                <asp:TextBox ID="txtStartTime" runat="server" Width="90px" CssClass="text" 
+                    MaxLength="14" ClientIDMode="Static"></asp:TextBox>
             &nbsp;<uc3:ucTimer ID="ucStartTimer" runat="server" Seperator="empty" 
                     ShowSecond="True" />
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartTime"
@@ -78,12 +81,17 @@
         <tr>
             <th class="style1">试验结束时间</th>
             <td>
-                <asp:TextBox ID="txtEndTime" runat="server" Width="150px" CssClass="text" 
-                    MaxLength="14" ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
+                <asp:TextBox ID="txtEndTime" runat="server" Width="90px" CssClass="text" 
+                    MaxLength="14" ClientIDMode="Static"></asp:TextBox>
             &nbsp;<span style="color:#3399FF;"><uc3:ucTimer ID="ucEndTimer" runat="server" 
                     Seperator="empty" ShowSecond="True" />
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndTime"
-                        ErrorMessage="结束时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
+                        ErrorMessage="结束时间不能为空" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
+                </span><span style="color:#3399FF;">
+                <asp:CompareValidator ID="CompareValidator1" runat="server" 
+                    ControlToCompare="txtStartTime" ControlToValidate="txtEndTime" 
+                    Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                    Operator="GreaterThan" Type="Date"></asp:CompareValidator>
                 </span></td>
         </tr>
         <tr>
@@ -94,7 +102,7 @@
             </td>
         </tr>
         <tr>
-            <th>备注</th>
+            <th class="style1">备注</th>
             <td>
                 <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="50" 
                     Width="390px" Height="75px" TextMode="MultiLine"></asp:TextBox>
@@ -111,7 +119,11 @@
                      &nbsp;&nbsp; <asp:Button ID="btnReset" class="button" runat="server" 
                     Text="重置" Width="65px" 
                     onclick="btnReset_Click" CausesValidation="False" />
-                    &nbsp;<asp:HiddenField ID="HfID" runat="server" />
+                    &nbsp;&nbsp; 
+                <asp:Button ID="btnReturn" class="button" runat="server" 
+                    Text="返回" Width="65px" 
+                    onclick="btnReturn_Click" CausesValidation="False" />
+                    <asp:HiddenField ID="HfID" runat="server" />
                     <asp:HiddenField ID="HfFileIndex" runat="server" />
                 <asp:HiddenField ID="hfTaskID" runat="server" />
                 <asp:HiddenField ID="hfSatID" runat="server" />

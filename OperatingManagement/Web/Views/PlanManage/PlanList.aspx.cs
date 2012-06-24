@@ -35,6 +35,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                 //pnlDestination.Visible = false;
                 //pnlData.Visible = true;
 
+                txtStartDate.Attributes.Add("readonly", "true");
+                txtEndDate.Attributes.Add("readonly", "true");
+
                 pnlAll1.Visible = false;
                 pnlAll2.Visible = false;
 

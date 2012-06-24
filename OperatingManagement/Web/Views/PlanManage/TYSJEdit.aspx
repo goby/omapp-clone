@@ -7,6 +7,10 @@
     <style type="text/css">
         .text
         {}
+        .style1
+        {
+            width: 130px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -23,7 +27,7 @@
 <div>
     <table class="edit" style="width:800px;">
             <tr>
-            <th>任务代号(<span class="red">*</span>)</th>
+            <th class="style1">任务代号(<span class="red">*</span>)</th>
             <td>
                 <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" />
             </td>
@@ -35,10 +39,10 @@
             </td>
         </tr>
         <tr>
-            <th>计划序号</th>
+            <th class="style1">计划序号</th>
             <td>
                 <asp:TextBox ID="txtJXH" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="20" Enabled="False" ReadOnly="True"></asp:TextBox>
+                    MaxLength="20" Enabled="False"></asp:TextBox>
                     &nbsp;<span style="color:#3399FF;">自动生成，不可编辑</span>
             </td>
         </tr>
@@ -72,8 +76,8 @@
         <tr>
             <th class="style1">试验开始时间</th>
             <td>
-                <asp:TextBox ID="txtStartTime" runat="server" Width="150px" CssClass="text" 
-                    MaxLength="14" ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
+                <asp:TextBox ID="txtStartTime" runat="server" Width="90px" CssClass="text" 
+                    MaxLength="14" ClientIDMode="Static"></asp:TextBox>
             &nbsp;<uc3:uctimer ID="ucStartTimer" runat="server" Seperator="empty" 
                     ShowSecond="True" />
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartTime"
@@ -83,12 +87,18 @@
         <tr>
             <th class="style1">试验结束时间</th>
             <td>
-                <asp:TextBox ID="txtEndTime" runat="server" Width="150px" CssClass="text" 
-                    MaxLength="14" ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
+                <asp:TextBox ID="txtEndTime" runat="server" Width="90px" CssClass="text" 
+                    MaxLength="14" ClientIDMode="Static"></asp:TextBox>
             &nbsp;<span style="color:#3399FF;"><uc3:uctimer ID="ucEndTimer" runat="server" 
                     Seperator="empty" ShowSecond="True" />
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndTime"
-                        ErrorMessage="结束时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
+                        ErrorMessage="结束时间不能为空" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
+                <span style="color:#3399FF;">
+                <asp:CompareValidator ID="CompareValidator1" runat="server" 
+                    ControlToCompare="txtStartTime" ControlToValidate="txtEndTime" 
+                    Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                    Operator="GreaterThan" Type="Date"></asp:CompareValidator>
+                </span>
                 </span></td>
         </tr>
         <tr>
@@ -99,14 +109,14 @@
             </td>
         </tr>
         <tr>
-            <th>备注</th>
+            <th class="style1">备注</th>
             <td>
                 <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="100" 
                     Width="300px" Height="75px" TextMode="MultiLine"></asp:TextBox>
             </td>
         </tr>
         <tr>
-            <th>&nbsp;</th>
+            <th class="style1">&nbsp;</th>
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" 
                     onclick="btnSubmit_Click" />
@@ -116,6 +126,10 @@
                      &nbsp;&nbsp; <asp:Button ID="btnReset" class="button" runat="server" 
                     Text="重置" Width="65px" 
                     onclick="btnReset_Click" CausesValidation="False" />
+                    &nbsp;&nbsp; 
+                <asp:Button ID="btnReturn" class="button" runat="server" 
+                    Text="返回" Width="65px" 
+                    onclick="btnReturn_Click" CausesValidation="False" />
                      <asp:HiddenField ID="HfID" runat="server" />
                     <asp:HiddenField ID="HfFileIndex" runat="server" />
                     <asp:HiddenField ID="hfTaskID" runat="server" />
