@@ -12,7 +12,7 @@ namespace OperatingManagement.RemotingObjectEntity
 {
     public class Account:MarshalByRefObject, IAccount
     {
-        private static bool IsTest = true;
+        private static bool IsTest = false;
 
         /// <summary>
         /// 验证用户名密码
@@ -28,6 +28,9 @@ namespace OperatingManagement.RemotingObjectEntity
             XElement user = new XElement("user");
             XElement roles = new XElement("roles");
             XElement permissions = new XElement("permissions");
+            string sTmp = string.Empty;
+            
+            Logger.Info("收到认证用户请求，Name:" + userName + ",Password:" + password);
 
             #region forTest---
             if (IsTest)
@@ -108,10 +111,16 @@ namespace OperatingManagement.RemotingObjectEntity
             catch (Exception ex)
             {
                 code.Value = "0";
-                msg.Add(new XCData(ex.Message));
+                sTmp = "认证过程出现异常";
+                msg.Add(sTmp);
+                Logger.Error(sTmp, ex);
             }
             root.Add(code, msg, user, roles, permissions);
-            return root.ToString();
+
+            sTmp = root.ToString();
+            Logger.Info("认证完成，Name:" + userName + "，Result:" + code.Value.ToString());
+            Logger.Debug(sTmp);
+            return sTmp;
         }
 
         /// <summary>
@@ -123,6 +132,9 @@ namespace OperatingManagement.RemotingObjectEntity
             XElement root = new XElement("roles");
             Role oRole = new Role();
             List<Role> roles;
+            string sTmp = string.Empty;
+
+            Logger.Info("收到获取所有角色请求");
 
             #region for Test...
             if (IsTest)
@@ -148,13 +160,21 @@ namespace OperatingManagement.RemotingObjectEntity
             }
             catch (Exception ex)
             {
-                root.Add(new XElement("msg", ex.Message.ToString()));
+                sTmp = "获取所有角色信息出现异常";
+                root.Add(new XElement("msg", sTmp));
+                Logger.Error(sTmp, ex);
             }
             finally
             {
             }
 
-            return root.ToString();
+            if (sTmp == string.Empty)
+            {
+                sTmp = root.ToString();
+                Logger.Info("获取所有角色信息成功");
+                Logger.Debug(sTmp);
+            }
+            return sTmp;
         }
 
         /// <summary>
@@ -165,6 +185,9 @@ namespace OperatingManagement.RemotingObjectEntity
         public string GetUsersByRoleID(int roleID)
         {
             XElement root = new XElement("users");
+            string sTmp = string.Empty;
+
+            Logger.Info("收到获取角色：" + roleID.ToString() + "用户的请求");
 
             #region for Test...
             if (IsTest)
@@ -198,12 +221,21 @@ namespace OperatingManagement.RemotingObjectEntity
             }
             catch (Exception ex)
             {
-                root.Add(new XElement("msg", ex.Message.ToString()));
+                sTmp = "获取角色" + roleID.ToString() + "用户出现异常";
+                root.Add(new XElement("msg", sTmp));
+                Logger.Error(sTmp, ex);
             }
             finally
             {
             }
-            return root.ToString();
+
+            if (sTmp == string.Empty)
+            {
+                sTmp = root.ToString();
+                Logger.Info("获取角色" + roleID.ToString() + "用户成功");
+                Logger.Debug(sTmp);
+            }
+            return sTmp;
         }
 
         /// <summary>
@@ -213,6 +245,9 @@ namespace OperatingManagement.RemotingObjectEntity
         public string GetAllUsers()
         {
             XElement root = new XElement("users");
+            string sTmp = string.Empty;
+
+            Logger.Info("收到获取所有用户请求");
 
             #region for Test...
             if (IsTest)
@@ -239,12 +274,21 @@ namespace OperatingManagement.RemotingObjectEntity
             }
             catch (Exception ex)
             {
-                root.Add(new XElement("msg", ex.Message.ToString()));
+                sTmp = "获取所有用户信息出现异常";
+                root.Add(new XElement("msg", sTmp));
+                Logger.Error(sTmp, ex);
             }
             finally
             {
             }
-            return root.ToString();
+
+            if (sTmp == string.Empty)
+            {
+                sTmp = root.ToString();
+                Logger.Info("获取所有用户信息成功");
+                Logger.Debug(sTmp);
+            }
+            return sTmp;
         }
     }
 }

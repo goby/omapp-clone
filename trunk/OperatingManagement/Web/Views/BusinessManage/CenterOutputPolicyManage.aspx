@@ -67,7 +67,7 @@
                             编辑
                         </th>
                         <th style="width: 5%;">
-                            下载
+                            导出文件
                         </th>
                     </tr>
                     <tbody id="tbCOPList">
@@ -87,7 +87,7 @@
                          <%#GetXXTypeDATANAME(Convert.ToInt32(Eval("InfoType")))%>
                     </td>
                     <td>
-                        <%#GetXYXSADDRName(Convert.ToInt32(Eval("Ddestination")))%>
+                        <%#GetXYXSADDRName(Convert.ToInt32(Eval("Destination")))%>
                     </td>
                     <td>
                         <%# Eval("EffectTime", "{0:" + this.SiteSetting.DateFormat + "}")%>
@@ -99,7 +99,7 @@
                         <asp:LinkButton ID="lbtnEdit" runat="server" OnClick="lbtnEdit_Click" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnDownload" runat="server" OnClick="lbtnDownload_Click" CommandArgument='<%# Eval("Id")%>'>下载</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnDownload" runat="server" OnClick="lbtnDownload_Click" CommandArgument='<%# Eval("Id")%>'>导出</asp:LinkButton>
                     </td>
                 </tr>
             </ItemTemplate>
