@@ -1,4 +1,22 @@
 ﻿///<reference path="../jquery-1.4.1-vsdoc.js" />
+var _dialog;
+var tbRoles, hfRoles;
+$(window).ready(function () {
+    _dialog = $("#dialog-form");
+    tbRoles = $('#tbRoles');
+    hfRoles = $('#hfRoles');
+    tbRoles.find('span.spanTaskNotes').each(function (i, n) {
+        var chk = $(n).prev();
+        n.onclick = function () {
+            chk.attr('checked', !chk.attr('checked'));
+            wrapKeyValues(chk.get(0))
+        }
+        chk.click(function () {
+            wrapKeyValues(this);
+        });
+    });
+    initKeyValues();
+});
 function showMsg(msg) {
     var _dialog;
     _dialog = $("#dialog-form");
@@ -46,19 +64,3 @@ function verifyRole() {
     }
     return true;
 }
-var tbRoles, hfRoles;
-$(window).ready(function () {
-    tbRoles = $('#tbRoles');
-    hfRoles = $('#hfRoles');
-    tbRoles.find('span.spanTaskNotes').each(function (i, n) {
-        var chk = $(n).prev();
-        n.onclick = function () {
-            chk.attr('checked', !chk.attr('checked'));
-            wrapKeyValues(chk.get(0))
-        }
-        chk.click(function () {
-            wrapKeyValues(this);
-        });
-    }); 
-    initKeyValues();
-});
