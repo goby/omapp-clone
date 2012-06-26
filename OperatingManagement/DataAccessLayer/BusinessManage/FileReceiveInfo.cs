@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 
 using OperatingManagement.Framework.Basic;
 using OperatingManagement.Framework;
 using OperatingManagement.Framework.Core;
 using Oracle.DataAccess.Client;
-using System.Data;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {

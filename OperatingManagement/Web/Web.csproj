@@ -166,6 +166,7 @@
     <Content Include="Scripts\Pages\PlanManage\TYSJEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\XXXQEdit.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\permissions.aspx.js" />
+    <Content Include="Scripts\Pages\UserNRole\useredit.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\userroleedit.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\roleadd.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\roles.aspx.js" />
@@ -210,6 +211,7 @@
     <Content Include="Views\BusinessManage\ResourceStatusChartManage.aspx" />
     <Content Include="Views\BusinessManage\ResourceStatusManage.aspx" />
     <Content Include="Views\BusinessManage\SendFile.aspx" />
+    <Content Include="Views\BusinessManage\SYSJFF.aspx" />
     <Content Include="Views\BusinessManage\XiAnCeKongDataDetail.aspx" />
     <Content Include="Views\BusinessManage\XiAnCeKongDataList.aspx" />
     <Content Include="Views\Exp\Exp.aspx" />
@@ -511,6 +513,13 @@
     </Compile>
     <Compile Include="Views\BusinessManage\SendFile.aspx.designer.cs">
       <DependentUpon>SendFile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\SYSJFF.aspx.cs">
+      <DependentUpon>SYSJFF.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\SYSJFF.aspx.designer.cs">
+      <DependentUpon>SYSJFF.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\XiAnCeKongDataDetail.aspx.cs">
       <DependentUpon>XiAnCeKongDataDetail.aspx</DependentUpon>

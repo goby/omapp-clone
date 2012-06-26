@@ -62,6 +62,7 @@
     <Compile Include="BusinessManage\Satellite.cs" />
     <Compile Include="BusinessManage\FileSendInfo.cs" />
     <Compile Include="BusinessManage\SystemParameters.cs" />
+    <Compile Include="BusinessManage\UserFrame.cs" />
     <Compile Include="BusinessManage\UseStatus.cs" />
     <Compile Include="BusinessManage\XDSC.cs" />
     <Compile Include="BusinessManage\T0.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="BusinessManage\HJXX.cs" />
     <Compile Include="BusinessManage\InfoType.cs" />
     <Compile Include="BusinessManage\XYXSInfo.cs" />
+    <Compile Include="BusinessManage\YCPG.cs" />
     <Compile Include="BusinessManage\YCZZTSJ.cs" />
     <Compile Include="BusinessManage\YJBG.cs" />
     <Compile Include="BusinessManage\JHBG.cs" />

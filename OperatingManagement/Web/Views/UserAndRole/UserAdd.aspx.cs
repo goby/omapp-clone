@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using OperatingManagement.WebKernel.Basic;
+using OperatingManagement.Framework.Core;
 using System.Drawing;
 
 namespace OperatingManagement.Web.Views.UserAndRole
@@ -17,12 +18,14 @@ namespace OperatingManagement.Web.Views.UserAndRole
                 RenderRoleNav();
             }
         }
+
         void RenderRoleNav() {
             if (string.IsNullOrEmpty(hfUserId.Value))
                 ltHref.Text = "<span title=\"创建用户完成后，可点击此链接为其分配角色。\">[分配角色]</span>";
             else
                 ltHref.Text = "<a href=\"userroleedit.aspx?id=" + hfUserId.Value + "\">[分配角色]</a>";
         }
+
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             DataAccessLayer.System.User u = new DataAccessLayer.System.User()
@@ -36,7 +39,16 @@ namespace OperatingManagement.Web.Views.UserAndRole
                 UserType = (Framework.UserType)Convert.ToInt32(rdlTypes.SelectedValue),
                 UserCatalog = (Framework.UserCatalog)Convert.ToInt32(rdlUserCat.SelectedValue)
             };
-            var result = u.Add();
+            var result = Framework.FieldVerifyResult.Error;
+            try
+            {
+                result = u.Add();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增用户页面保存用户出现异常，异常原因", ex));
+            }
+            finally { }
             string msg = string.Empty;
             switch (result)
             {
@@ -59,11 +71,17 @@ namespace OperatingManagement.Web.Views.UserAndRole
             ltMessage.Text = msg;
             RenderRoleNav();
         }
+
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMUserManage.Add";
             this.ShortTitle = "新增用户";
             this.SetTitle();
+        }
+
+        protected void btnEmpty_Click(object sender, EventArgs e)
+        {
+            Page.Response.Redirect(Request.CurrentExecutionFilePath);
         }
 
     }

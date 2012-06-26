@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using OperatingManagement.WebKernel.Basic;
+using OperatingManagement.Framework.Core;
 
 namespace OperatingManagement.Web.Views.UserAndRole
 {
@@ -26,6 +27,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             }
             catch (Exception ex)
             {
+                throw (new AspNetException("用户列表页面初始化出现异常，异常原因", ex));
             }
             finally { }
         }
@@ -34,6 +36,8 @@ namespace OperatingManagement.Web.Views.UserAndRole
         {
             cpPager.DataSource = users;
             cpPager.PageSize = this.SiteSetting.PageSize;
+            if (users.Count > this.SiteSetting.PageSize)
+                cpPager.Visible = true;
             cpPager.BindToControl = rpUsers;
             rpUsers.DataSource = cpPager.DataSourcePaged;
             rpUsers.DataBind();
@@ -77,6 +81,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             }
             catch (Exception ex)
             {
+                throw (new AspNetException("用户列表页面搜索出现异常，异常原因", ex));
             }
             finally { }
         }

@@ -78,15 +78,15 @@
         </FooterTemplate>
     </asp:Repeater>
     <table class="listTitle">
-        <tr id="trMessage" runat="server" visible="false">
-            <td><asp:Label ID="lblMessage" runat="server" CssClass="error" Text=""></asp:Label></td>
-            <td></td>
-        </tr>
         <tr>
-            <td class="listTitle-c1"><button class="button" onclick="return sendFile();">发送文件</button></td>
+            <td></td>
             <td class="listTitle-c2" align="right">
                 <om:CollectionPager ID="cpPager" runat="server" ></om:CollectionPager>
             </td>
+        </tr>
+        <tr id="trMessage" runat="server" visible="false">
+            <td><asp:Label ID="lblMessage" runat="server" CssClass="error" Text=""></asp:Label></td>
+            <td class="listTitle-c1"><button class="button" onclick="return sendFile();">发送文件</button></td>
         </tr>
     </table>
 </asp:Content>

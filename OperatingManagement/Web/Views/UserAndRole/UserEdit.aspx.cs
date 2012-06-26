@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using OperatingManagement.WebKernel.Basic;
+using OperatingManagement.Framework.Core;
 
 namespace OperatingManagement.Web.Views.UserAndRole
 {
@@ -24,7 +25,17 @@ namespace OperatingManagement.Web.Views.UserAndRole
             {
                 throw new Exception("You cant edit administrator's profile.");
             }
-            var user = u.SelectById();
+            var user = new DataAccessLayer.System.User();
+            try
+            {
+                user = u.SelectById();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("修改用户页面读取用户数据出现异常，异常原因", ex));
+            }
+            finally { }
+
             ltLoginName.Text = user.LoginName;
             txtDisplayName.Text = user.DisplayName;
             txtMobile.Text = user.Mobile;
@@ -48,7 +59,17 @@ namespace OperatingManagement.Web.Views.UserAndRole
                 UserType = (Framework.UserType)Convert.ToInt32(rdlTypes.SelectedValue),
                 UserCatalog = (Framework.UserCatalog)Convert.ToInt32(rdlUserCat.SelectedValue)
             };
-            var result = u.Update();
+            var result = Framework.FieldVerifyResult.Error;
+            try
+            {
+                result = u.Update();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("修改用户页面保存用户数据出现异常，异常原因", ex));
+            }
+            finally { }
+            
             string msg = string.Empty;
             switch (result)
             {
@@ -69,6 +90,17 @@ namespace OperatingManagement.Web.Views.UserAndRole
             this.PagePermission = "OMUserManage.Edit";
             this.ShortTitle = "编辑用户";
             this.SetTitle();
+            //this.AddJavaScriptInclude("scripts/pages/usernrole/useredit.aspx.js");
+        }
+
+        protected void btnReturn_Click(object sender, EventArgs e)
+        {
+            Page.Response.Redirect("users.aspx");
+        }
+
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            Page.Response.Redirect(Request.CurrentExecutionFilePath + "?id=" + Request.QueryString["Id"]);
         }
 
     }

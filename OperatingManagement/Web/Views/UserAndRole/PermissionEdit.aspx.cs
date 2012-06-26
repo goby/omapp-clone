@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.WebKernel.Basic;
+using OperatingManagement.Framework.Core;
 
 namespace OperatingManagement.Web.Views.UserAndRole
 {
@@ -56,23 +57,34 @@ namespace OperatingManagement.Web.Views.UserAndRole
             }
 
             oModule.ActionIds = strActionIds.Substring(1);
-            Framework.FieldVerifyResult result = oModule.Update();
-            string msg = "";
-            switch (result)
+            try
             {
-                case Framework.FieldVerifyResult.Error:
-                    msg = "发生了数据错误，无法完成请求的操作。";
-                    break;
-                case Framework.FieldVerifyResult.Success:
-                    msg = "编辑权限已成功。";
-                    break;
-                case Framework.FieldVerifyResult.NameDuplicated2:
-                    msg = "已存在相同名称，请输入其他“名称”。";
-                    break;
+                Framework.FieldVerifyResult result = oModule.Update();
+                string msg = "";
+                switch (result)
+                {
+                    case Framework.FieldVerifyResult.Error:
+                        msg = "发生了数据错误，无法完成请求的操作。";
+                        break;
+                    case Framework.FieldVerifyResult.Success:
+                        msg = "编辑权限已成功。";
+                        break;
+                    case Framework.FieldVerifyResult.NameDuplicated2:
+                        msg = "已存在相同名称，请输入其他“名称”。";
+                        break;
+                }
+                ShowMessage(msg);
             }
-            ShowMessage(msg);
+            catch (Exception ex)
+            {
+                throw (new AspNetException("修改权限页面保存权限数据出现异常，异常原因", ex));
+            }
+            finally { }
         }
 
+        /// <summary>
+        /// 初始化页面，按当前ID初始化
+        /// </summary>
         private void InitialPageData()
         {
             HideMessage();
@@ -82,6 +94,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             }
             catch (Exception ex)
             {
+                throw (new AspNetException("修改权限页面初始化出现异常，异常原因", ex));
             }
             finally
             {
@@ -93,17 +106,28 @@ namespace OperatingManagement.Web.Views.UserAndRole
             if (oModule != null)
             {
                 oModule.Id = ModuleID;
-                oModule = oModule.SelectById();
-                txtName.Text = oModule.ModuleName;
-                txtNote.Text = oModule.ModuleNote;
-                string[] slModuleIds = oModule.ActionIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (ListItem item in cblActions.Items)
+                try
                 {
-                    item.Selected = slModuleIds.Contains(item.Value);
+                    oModule = oModule.SelectById();
+                    txtName.Text = oModule.ModuleName;
+                    txtNote.Text = oModule.ModuleNote;
+                    string[] slModuleIds = oModule.ActionIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (ListItem item in cblActions.Items)
+                    {
+                        item.Selected = slModuleIds.Contains(item.Value);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    throw (new AspNetException("修改权限页面读取权限数据出现异常，异常原因", ex));
+                }
+                finally { }
             }
         }
 
+        /// <summary>
+        /// 绑定操作列表
+        /// </summary>
         private void BindDataSource()
         {
             cblActions.Items.Clear();

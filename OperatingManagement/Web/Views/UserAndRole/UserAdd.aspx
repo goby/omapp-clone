@@ -46,7 +46,8 @@
             <th style="width:100px;">确认密码(<span class="red">*</span>)</th>
             <td>
                 <asp:TextBox ID="txtPasswordConfirm" runat="server" TextMode="Password" Width="300px" CssClass="text" MaxLength="15"></asp:TextBox>
-                <asp:CompareValidator ID="cv1" runat="server" Display="Dynamic" ForeColor="Red"
+                <asp:RequiredFieldValidator ID="cv2" runat="server" Display="Dynamic" ForeColor="Red"
+                     ControlToValidate="txtPasswordConfirm" ErrorMessage="必须填写“确认密码”。"></asp:RequiredFieldValidator><asp:CompareValidator ID="cv1" runat="server" Display="Dynamic" ForeColor="Red"
                      ControlToCompare="txtPassword" ControlToValidate="txtPasswordConfirm" ErrorMessage="“确认密码”与“密码”不一致。"></asp:CompareValidator>
             </td>
         </tr>
@@ -112,6 +113,8 @@
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
                     onclick="btnSubmit_Click" />
+                <asp:Button ID="btnEmpty" runat="server" CssClass="button" Text="清空" CausesValidation="False"
+                    onclick="btnEmpty_Click" />
             </td>
         </tr>
     </table>
