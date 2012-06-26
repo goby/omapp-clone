@@ -104,7 +104,7 @@ namespace OperatingManagement.Web
             }
 
 
-            //exp.Log();
+            exp.Log();
 
             Server.Transfer("~/views/exp/exp.aspx");
         }

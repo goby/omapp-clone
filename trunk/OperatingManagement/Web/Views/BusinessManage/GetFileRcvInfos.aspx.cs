@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Security;
+using System.Data;
 
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.WebKernel.Route;
@@ -11,8 +13,6 @@ using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.Framework;
 using OperatingManagement.DataAccessLayer.BusinessManage;
-using System.Web.Security;
-using System.Data;
 using ServicesKernel.File;
 
 namespace OperatingManagement.Web.Views.BusinessManage
@@ -31,9 +31,27 @@ namespace OperatingManagement.Web.Views.BusinessManage
             DateTime dtFrom = DateTime.MinValue;
             DateTime dtTo = DateTime.MinValue;
             if (txtFrom.Text != "")
-                dtFrom = DateTime.Parse(txtFrom.Text);
+            {
+                if (!DateTime.TryParse(txtFrom.Text.Trim(), out dtFrom))
+                {
+                    ShowMessage("开始日期格式非法");
+                    return;
+                }
+            }
             if (txtTo.Text != "")
-                dtTo = DateTime.Parse(txtTo.Text);
+            {
+                if (!DateTime.TryParse(txtTo.Text.Trim(), out dtTo))
+                {
+                    ShowMessage("结束日期格式非法");
+                    return;
+                }
+            }
+
+            if (dtFrom > dtTo)
+            {
+                ShowMessage("结束日期必须大于开始日期");
+                return;
+            }
 
             FileReceiveInfo oRecv = new FileReceiveInfo();
             oRecv.InfoTypeID = Convert.ToInt32(ddlInfoType.SelectedItem.Value);
@@ -63,6 +81,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
+            if (listDatas.Count > this.SiteSetting.PageSize)
+                cpPager.Visible = true;
             cpPager.BindToControl = rpDatas;
             rpDatas.DataSource = cpPager.DataSourcePaged;
             rpDatas.DataBind();

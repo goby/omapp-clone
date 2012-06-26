@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace OperatingManagement.Web.Views.UserAndRole {
+namespace OperatingManagement.Web.Views.BusinessManage {
     
     
-    public partial class UserAdd {
+    public partial class SYSJFF {
         
         /// <summary>
         /// navMain 控件。
@@ -31,201 +31,156 @@ namespace OperatingManagement.Web.Views.UserAndRole {
         protected global::OperatingManagement.WebKernel.Controls.PageMenu PageMenu1;
         
         /// <summary>
-        /// txtLoginName 控件。
+        /// ucTask1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLoginName;
+        protected global::OperatingManagement.Web.ucs.ucTask ucTask1;
         
         /// <summary>
-        /// rfv1 控件。
+        /// ucSatellite1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv1;
+        protected global::OperatingManagement.Web.ucs.ucSatellite ucSatellite1;
         
         /// <summary>
-        /// fev1 控件。
+        /// ddlDataType 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator fev1;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDataType;
         
         /// <summary>
-        /// txtDisplayName 控件。
+        /// txtFrom 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDisplayName;
+        protected global::System.Web.UI.WebControls.TextBox txtFrom;
         
         /// <summary>
-        /// rfv2 控件。
+        /// txtTo 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv2;
+        protected global::System.Web.UI.WebControls.TextBox txtTo;
         
         /// <summary>
-        /// txtPassword 控件。
+        /// btnSearch 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPassword;
+        protected global::System.Web.UI.WebControls.Button btnSearch;
         
         /// <summary>
-        /// rfv3 控件。
+        /// vYCData 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv3;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl vYCData;
         
         /// <summary>
-        /// rev2 控件。
+        /// rpYCData 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator rev2;
+        protected global::System.Web.UI.WebControls.Repeater rpYCData;
         
         /// <summary>
-        /// txtPasswordConfirm 控件。
+        /// cpYCData 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPasswordConfirm;
+        protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpYCData;
         
         /// <summary>
-        /// cv2 控件。
+        /// vUFData 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator cv2;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl vUFData;
         
         /// <summary>
-        /// cv1 控件。
+        /// rpUFData 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator cv1;
+        protected global::System.Web.UI.WebControls.Repeater rpUFData;
         
         /// <summary>
-        /// rdlTypes 控件。
+        /// cpUFData 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rdlTypes;
+        protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpUFData;
         
         /// <summary>
-        /// rdlUserCat 控件。
+        /// vFZData 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rdlUserCat;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl vFZData;
         
         /// <summary>
-        /// rdlStatus 控件。
+        /// rpFZData 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rdlStatus;
+        protected global::System.Web.UI.WebControls.Repeater rpFZData;
         
         /// <summary>
-        /// txtMobile 控件。
+        /// cpFZData 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMobile;
+        protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpFZData;
         
         /// <summary>
-        /// rev3 控件。
+        /// trMessage 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator rev3;
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trMessage;
         
         /// <summary>
-        /// txtNote 控件。
+        /// lblMessage 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNote;
-        
-        /// <summary>
-        /// hfUserId 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfUserId;
-        
-        /// <summary>
-        /// ltHref 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltHref;
-        
-        /// <summary>
-        /// ltMessage 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ltMessage;
-        
-        /// <summary>
-        /// btnSubmit 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmit;
-        
-        /// <summary>
-        /// btnEmpty 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnEmpty;
+        protected global::System.Web.UI.WebControls.Label lblMessage;
     }
 }

@@ -15,8 +15,10 @@
     <table class="listTitle" width="1500px">
         <tr>
             <td width="80%"><div>信息类型<uc2:ucInfoType ID="ddlInfoType" runat="server" />
-                开始日期<asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" runat="server"></asp:TextBox>
-                结束日期<asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" runat="server"></asp:TextBox>
+                开始日期<asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" 
+                    runat="server"></asp:TextBox>
+                结束日期<asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" 
+                    runat="server"></asp:TextBox>
                 </div>
             </td>
             <td width="20%"><asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
@@ -62,15 +64,13 @@
         </FooterTemplate>
     </asp:Repeater>
     <table class="listTitle">
-        <tr id="trMessage" runat="server" visible="false">
-            <td><asp:Label ID="lblMessage" runat="server" CssClass="error" Text=""></asp:Label></td>
-            <td></td>
-        </tr>
         <tr>
-            <td class="listTitle-c1"></td>
             <td class="listTitle-c2" align="right">
                 <om:CollectionPager ID="cpPager" runat="server" ></om:CollectionPager>
             </td>
+        </tr>
+        <tr id="trMessage" runat="server" visible="false">
+            <td><asp:Label ID="lblMessage" runat="server" CssClass="error" Text=""></asp:Label></td>
         </tr>
     </table>
 </asp:Content>

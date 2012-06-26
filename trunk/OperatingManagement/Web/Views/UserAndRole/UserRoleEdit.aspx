@@ -60,5 +60,8 @@
             </td>
         </tr>
     </table>
+    <div id="dialog-form" style="display:none" title="提示信息">
+	    <p class="content"></p>
+    </div>
 </asp:Content>
 

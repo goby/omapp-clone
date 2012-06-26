@@ -30,5 +30,11 @@ namespace OperatingManagement.RemotingObjectInterface
         /// <param name="ID"></param>
         /// <returns></returns>
         string GetSendStatus(int ID);
+
+        /// <summary>
+        /// 获取DFServer的运行状态，xml字符串，for运行管理
+        /// </summary>
+        /// <returns></returns>
+        string GetDFSvrStatus();
     }
 }

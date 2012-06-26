@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using OperatingManagement.WebKernel.Basic;
+using OperatingManagement.Framework.Core;
 
 namespace OperatingManagement.Web.Views.UserAndRole
 {
@@ -26,6 +27,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             }
             catch (Exception ex)
             {
+                throw (new AspNetException("权限列表页面初始化出现异常，异常原因", ex));
             }
             finally { }
         }
@@ -35,6 +37,8 @@ namespace OperatingManagement.Web.Views.UserAndRole
             cpPager.DataSource = modules;
             cpPager.PageSize = this.SiteSetting.PageSize;
             cpPager.BindToControl = rpRermissions;
+            if (modules.Count > this.SiteSetting.PageSize)
+                cpPager.Visible = true;
             rpRermissions.DataSource = cpPager.DataSourcePaged;
             rpRermissions.DataBind();
         }
@@ -61,6 +65,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             }
             catch (Exception ex)
             {
+                throw (new AspNetException("权限搜索过程中出现异常，异常原因", ex));
             }
             finally { }
         }

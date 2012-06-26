@@ -1,5 +1,11 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="RoleEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.UserAndRole.RoleEdit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <style type="text/css">
+        .button
+        {
+            width: 40px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="usernrole" />
@@ -21,9 +27,11 @@
             </td>
         </tr>
         <tr>
-            <th>描述</th>
+            <th>描述(<span class="red">*</span>)</th>
             <td>
                 <asp:TextBox ID="txtNote" runat="server" Width="300px"  CssClass="text" MaxLength="50"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic" ForeColor="Red"
+                     ControlToValidate="txtNote" ErrorMessage="必须填写“描述”。"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
@@ -73,6 +81,10 @@
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
                     onclick="btnSubmit_Click" />
+                <asp:Button ID="btnReset" runat="server" CssClass="button" Text="重置" 
+                    onclick="btnReset_Click" />
+                <asp:Button ID="btnReturn" runat="server" CssClass="button" Text="返回" 
+                    onclick="btnReturn_Click" />
             </td>
         </tr>
     </table>

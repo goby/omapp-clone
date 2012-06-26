@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.WebKernel.Basic;
+using OperatingManagement.Framework.Core;
 
 namespace OperatingManagement.Web.Views.UserAndRole
 {
@@ -26,6 +27,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             }
             catch (Exception ex)
             {
+                throw (new AspNetException("新增权限页面初始化出现异常，异常原因", ex));
             }
             finally
             {
@@ -58,22 +60,36 @@ namespace OperatingManagement.Web.Views.UserAndRole
                     strActionIds += "," + item.Value;
             }
 
-            oModule.ActionIds = strActionIds.Substring(1);
-            Framework.FieldVerifyResult result = oModule.Add();
-            string msg = "";
-            switch (result)
+            if (strActionIds.Length == 0)
             {
-                case Framework.FieldVerifyResult.Error:
-                    msg = "发生了数据错误，无法完成请求的操作。";
-                    break;
-                case Framework.FieldVerifyResult.Success:
-                    msg = "新增权限已成功。";
-                    break;
-                case Framework.FieldVerifyResult.NameDuplicated2:
-                    msg = "已存在相同名称，请输入其他“名称”。";
-                    break;
+                ShowMessage("没有为权限指定任何操作。");
+                return;
             }
-            ShowMessage(msg);
+            oModule.ActionIds = strActionIds.Substring(1);
+            try
+            {
+                Framework.FieldVerifyResult result = oModule.Add();
+                string msg = "";
+                switch (result)
+                {
+                    case Framework.FieldVerifyResult.Error:
+                        msg = "发生了数据错误，无法完成请求的操作。";
+                        break;
+                    case Framework.FieldVerifyResult.Success:
+                        msg = "新增权限已成功。";
+                        break;
+                    case Framework.FieldVerifyResult.NameDuplicated:
+                    case Framework.FieldVerifyResult.NameDuplicated2:
+                        msg = "已存在相同名称，请输入其他“名称”。";
+                        break;
+                }
+                ShowMessage(msg);
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增权限页面保存出现异常，异常原因", ex));
+            }
+            finally { }
         }
 
         /// <summary>

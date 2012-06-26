@@ -21,9 +21,11 @@
             </td>
         </tr>
         <tr>
-            <th>描述</th>
+            <th>描述(<span class="red">*</span>)</th>
             <td>
                 <asp:TextBox ID="txtNote" runat="server" Width="300px"  CssClass="text" MaxLength="50"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic" ForeColor="Red"
+                     ControlToValidate="txtNote" ErrorMessage="必须填写“描述”。"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
@@ -73,6 +75,8 @@
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
                     onclick="btnSubmit_Click" />
+                <asp:Button ID="btnEmpty" runat="server" CssClass="button" Text="清空" CausesValidation=false
+                    onclick="btnEmpty_Click" />
             </td>
         </tr>
     </table>

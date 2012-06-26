@@ -29,7 +29,7 @@
         <tr>
             <th style="width:100px;">密码(<span class="red">*</span>)</th>
             <td>
-                <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" Width="300px" CssClass="text" MaxLength="15"></asp:TextBox>
+                <asp:TextBox ID="txtPassword" runat="server" ClientIDMode="Static" TextMode="Password" Width="300px" CssClass="text" MaxLength="15"></asp:TextBox>
                 <asp:RegularExpressionValidator ID="rev2" runat="server" Display="Dynamic" ForeColor="Red"
                      ControlToValidate="txtPassword" ErrorMessage="只能输入字母和数字，且首字符必须为字母，最小长度为6个字符。"
                      ValidationExpression="^[a-zA-Z]\w{5,15}$"></asp:RegularExpressionValidator>
@@ -38,7 +38,7 @@
         <tr>
             <th style="width:100px;">确认密码(<span class="red">*</span>)</th>
             <td>
-                <asp:TextBox ID="txtPasswordConfirm" runat="server" TextMode="Password" Width="300px" CssClass="text" MaxLength="15"></asp:TextBox>
+                <asp:TextBox ID="txtPasswordConfirm" runat="server" ClientIDMode="Static" TextMode="Password" Width="300px" CssClass="text" MaxLength="15"></asp:TextBox>
                 <asp:CompareValidator ID="cv1" runat="server" Display="Dynamic" ForeColor="Red"
                      ControlToCompare="txtPassword" ControlToValidate="txtPasswordConfirm" ErrorMessage="“确认密码”与“密码”不一致。"></asp:CompareValidator>
             </td>
@@ -95,16 +95,29 @@
         <tr>
             <th>&nbsp;</th>
             <td>
-                <asp:Label ID="ltMessage" runat="server" CssClass="error" Text="“显示名称”必须唯一，“密码”为空时将保持原密码不变。"></asp:Label>
+                <asp:Label ID="ltMessage" runat="server" CssClass="error" Text="“显示名称”必须唯一，“密码”为空时将保持原密码不变。" ClientIDMode="Static"></asp:Label>
             </td>
         </tr>
         <tr>
             <th>&nbsp;</th>
             <td>
-                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
-                    onclick="btnSubmit_Click" />
+                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" OnClientClick="return ComparePassword();"
+                    onclick="btnSubmit_Click" /><asp:Button ID="btnReset" runat="server" 
+                    CssClass="button" Text="重置"  CausesValidation="False" onclick="btnReset_Click" />
+                <asp:Button ID="btnReturn" class="button" runat="server" 
+                    Text="返回" onclick="btnReturn_Click" CausesValidation="False" />
             </td>
         </tr>
     </table>
+    <script type="text/javascript">
+        function ComparePassword() {
+            if (document.getElementById("txtPasswordConfirm").value != document.getElementById("txtPassword").value)
+            {
+                document.getElementById("ltMessage").innerText = "确认密码与密码不一致";
+                return false;
+            }
+            return true;
+        }
+    </script>
 </asp:Content>
 
