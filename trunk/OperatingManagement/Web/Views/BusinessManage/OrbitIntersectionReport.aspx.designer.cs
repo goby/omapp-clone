@@ -211,22 +211,31 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.RangeValidator rvCutMainReportBeginTimeMilliSecond;
         
         /// <summary>
-        /// txtCutMainReportTime 控件。
+        /// txtCutMainDU 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCutMainReportTime;
+        protected global::System.Web.UI.WebControls.TextBox txtCutMainDU;
         
         /// <summary>
-        /// rfvCutMainReportTime 控件。
+        /// rfvCutMainDU 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMainReportTime;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCutMainDU;
+        
+        /// <summary>
+        /// rvCutMainDU 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator rvCutMainDU;
         
         /// <summary>
         /// txtCutMainLYDate 控件。

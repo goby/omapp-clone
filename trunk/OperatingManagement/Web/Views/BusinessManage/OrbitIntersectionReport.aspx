@@ -104,7 +104,7 @@
                                 Width="60px">
                             </asp:DropDownList>
                             <asp:TextBox ID="txtCutMainReportBeginTimeMilliSecond" runat="server" Width="40px"
-                                MaxLength="6" CssClass="norText"></asp:TextBox>毫秒
+                                MaxLength="7" CssClass="norText"></asp:TextBox>毫秒
                             <asp:RequiredFieldValidator ID="rfvCutMainReportBeginTimeMilliSecond" runat="server"
                                 Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMainReportBeginTimeMilliSecond"
                                 ErrorMessage="（必填）"></asp:RequiredFieldValidator>
@@ -118,9 +118,12 @@
                             预报时长(<span class="red">*</span>)
                         </th>
                         <td colspan="3">
-                            <asp:TextBox ID="txtCutMainReportTime" runat="server" CssClass="norText"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfvCutMainReportTime" runat="server" Display="Dynamic"
-                                ForeColor="Red" ControlToValidate="txtCutMainReportTime" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                            <asp:TextBox ID="txtCutMainDU" runat="server" CssClass="norText"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvCutMainDU" runat="server" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutMainDU" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                             <asp:RangeValidator ID="rvCutMainDU" runat="server" Type="Double" MaximumValue="9999999999.999999"
+                                MinimumValue="0.0" Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMainDU"
+                                ErrorMessage="（范围F16.6）"></asp:RangeValidator>
                         </td>
                     </tr>
                     <tr>
@@ -142,7 +145,7 @@
                             </asp:DropDownList>
                             <asp:DropDownList ID="dplCutMainLYTimeSecond" runat="server" CssClass="norDpl" Width="60px">
                             </asp:DropDownList>
-                            <asp:TextBox ID="txtCutMainLYTimeMilliSecond" runat="server" Width="40px" MaxLength="6"
+                            <asp:TextBox ID="txtCutMainLYTimeMilliSecond" runat="server" Width="40px" MaxLength="7"
                                 CssClass="norText"></asp:TextBox>毫秒
                             <asp:RequiredFieldValidator ID="rfvCutMainLYTimeMilliSecond" runat="server" Display="Dynamic"
                                 ForeColor="Red" ControlToValidate="txtCutMainLYTimeMilliSecond" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
@@ -602,7 +605,7 @@
                             <asp:RequiredFieldValidator ID="rfvCutOptionalTimeInterval" runat="server" Display="Dynamic"
                                 ForeColor="Red" ControlToValidate="txtCutOptionalTimeInterval" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
                             <asp:RangeValidator ID="rvCutOptionalTimeInterval" runat="server" ControlToValidate="txtCutOptionalTimeInterval"
-                                ForeColor="Red" Type="Double" MinimumValue="1.0" MaximumValue="30.0" ErrorMessage="（F8.6）"></asp:RangeValidator>
+                                ForeColor="Red" Type="Double" MinimumValue="1.0" MaximumValue="30.0" ErrorMessage="（1-30秒）"></asp:RangeValidator>
                         </td>
                         <th style="width: 120px;">
                             第三体引力(<span class="red">*</span>)
