@@ -15,6 +15,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.IO;
+using System.Text;
+
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 
@@ -49,8 +51,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                //trMessage.Visible = false;
-                //lblMessage.Text = string.Empty;
+                trMessage.Visible = false;
+                lblMessage.Text = string.Empty;
+                ClientScript.RegisterClientScriptBlock(this.GetType(),
+                                                          "open-dialog",
+                                                          "var _autoOpen=false;",
+                                                          true);
                 if (!IsPostBack)
                 {
                     BindDataSource();
@@ -60,8 +66,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch
             {
-                //trMessage.Visible = true;
-                //lblMessage.Text = "发生未知错误，操作失败。";
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
             }
         }
         /// <summary>
@@ -112,7 +118,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             else if (rblFileOption.SelectedValue == "1")
             {
- 
+                CreateFileAndCalculate();
             }
         }
         /// <summary>
@@ -715,32 +721,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 ltCutSubFile.Text = File.ReadAllText(cutSubFilePath, System.Text.Encoding.Default);
                 ltCutOptinalFile.Text = File.ReadAllText(cutOptionalFilePath, System.Text.Encoding.Default);
 
-                //定义计算结果
-                bool calResult = false;
-                //定义结果文件路径
-                string resultFilePath = @"D:\ResourceCalculate\ResultFileDirectory\2f318cd1-82ba-4593-9884-263cfb2887bd.txt";
-
-                /**
-                * TODO: 在这里开始计算，将结果calResult和结果文件路径resultFilePath赋值
-                * */
-                System.Threading.Thread.Sleep(10000);
-
-                lblResultFilePath.Text = resultFilePath;
-                lblCalResult.Text = calResult ? "计算成功" : "计算失败";
-                if (!string.IsNullOrEmpty(resultFilePath) && File.Exists(resultFilePath))
-                {
-                    ltResultFile.Text = File.ReadAllText(resultFilePath, System.Text.Encoding.Default);
-                }
-                divCalResult.Visible = true;
-
-                DeleteFile(cuMainFilePath);
-                DeleteFile(cutSubFilePath);
-                DeleteFile(cutOptionalFilePath);
-
-                ClientScript.RegisterClientScriptBlock(this.GetType(),
-                   "open-dialog",
-                   "var _autoOpen=true;",
-                   true);
+                CalculateOrbitIntersectionReport(cuMainFilePath, cutSubFilePath, cutOptionalFilePath);
             }
             catch
             {
@@ -776,19 +757,18 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 mvCut.ActiveViewIndex = activeViewIndex;
                 return;
             }
-            if (string.IsNullOrEmpty(txtCutMainReportTime.Text.Trim()))
+            if (string.IsNullOrEmpty(txtCutMainDU.Text.Trim()))
             {
-                rfvCutMainReportTime.IsValid = false;
-                txtCutMainReportTime.Focus();
+                rfvCutMainDU.IsValid = false;
+                txtCutMainDU.Focus();
                 mvCut.ActiveViewIndex = activeViewIndex;
                 return;
             }
-            double cutMainReportTime = 0.0;
-            if (!double.TryParse(txtCutMainReportTime.Text.Trim(), out cutMainReportTime))
+            double cutMainDU = 0.0;
+            if (!double.TryParse(txtCutMainDU.Text.Trim(), out cutMainDU))
             {
-                trMessage.Visible = true;
-                lblMessage.Text = "预报时长格式错误";
-                txtCutMainReportTime.Focus();
+                rvCutMainDU.IsValid = false;
+                txtCutMainDU.Focus();
                 mvCut.ActiveViewIndex = activeViewIndex;
                 return;
             }
@@ -1011,8 +991,152 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 mvCut.ActiveViewIndex = activeViewIndex;
                 return;
             }
-            //
+            
+            //开始生成文件
+            //CutMain文件
+            double cutMainSatelliteSm = 0.0;
+            double.TryParse(txtCutMainSatelliteSm.Text.Trim(), out cutMainSatelliteSm);
 
+            double cutMainSatelliteRef = 0.0;
+            double.TryParse(txtCutMainSatelliteRef.Text.Trim(), out cutMainSatelliteRef);
+
+            int kk = 0;
+            int.TryParse(txtCutMainSatelliteKK.Text.Trim(), out kk);
+
+            StringBuilder cutMainBuilder = new StringBuilder();
+            cutMainBuilder.AppendFormat("  {0}  {1}\r\n", 
+                reportBeginDate, 
+                FillWithSpace(string.Format("{0:F6}", cutMainDU), 17)
+                );
+            cutMainBuilder.AppendFormat("  {0}  {1}  {2}  {3}  {4}  {5}  {6}  {7}  {8}  {9}  {10}  {11}\r\n",
+                 FillWithSpace(dplCutMainSatellite.SelectedItem.Text, 12),
+                 FillWithSpace(txtCutMainSatelliteNO.Text, 6),
+                 lydate,
+                 FillWithSpace(kk, 2),
+                 FillWithSpace(string.Format("{0:F6}", d1), 17),
+                 FillWithSpace(string.Format("{0:F6}", d2), 17),
+                 FillWithSpace(string.Format("{0:F6}", d3), 17),
+                 FillWithSpace(string.Format("{0:F6}", d4), 17),
+                 FillWithSpace(string.Format("{0:F6}", d5), 17),
+                 FillWithSpace(string.Format("{0:F6}", d6), 17),
+                 FillWithSpace(string.Format("{0:F6}", cutMainSatelliteSm), 17),
+                 FillWithSpace(string.Format("{0:F6}", cutMainSatelliteRef), 17)  
+                 );
+            cutMainBuilder.AppendFormat("  {0}  {1}  {2}  {3}  {4}\r\n",
+                FillWithSpace(CutSubItemInfoList.Count, 3),
+                FillWithSpace(string.Format("{0:F6}", dR), 17),
+                FillWithSpace(kae, 2),
+                FillWithSpace(string.Format("{0:F6}", dA), 17),
+                FillWithSpace(string.Format("{0:F6}", dE), 17)
+                );
+            foreach(CutSubItemInfo itemInfo in CutSubItemInfoList)
+            {
+                cutMainBuilder.AppendFormat("  {0}\r\n",
+                    FillWithSpace(itemInfo.SatelliteNO, 6)
+                    );
+            }
+            //CutSub文件
+            StringBuilder cutSubBuilder = new StringBuilder();
+            foreach (CutSubItemInfo itemInfo in CutSubItemInfoList)
+            {
+                cutSubBuilder.AppendFormat("  {0}  {1}  {2}  {3}  {4}  {5}  {6}  {7}  {8}  {9}  {10}  {11}\r\n",
+                 FillWithSpace(itemInfo.SatelliteName, 12),
+                 FillWithSpace(itemInfo.SatelliteNO, 6),
+                 lydate,
+                 FillWithSpace(kk, 2),
+                 itemInfo.D1,
+                 itemInfo.D2,
+                 itemInfo.D3,
+                 itemInfo.D4,
+                 itemInfo.D5,
+                 itemInfo.D6,
+                 itemInfo.Sm,
+                 itemInfo.Ref
+                 );
+            }
+            //CutOptional文件
+            StringBuilder cutOptionalBuilder = new StringBuilder();
+            cutOptionalBuilder.AppendFormat("  预报数据时间间隔:{0}\r\n", string.Format("{0:F6}", cutOptionalTimeInterval));
+            cutOptionalBuilder.AppendFormat("  力模型控制:{0}\r\n", string.Empty);
+            cutOptionalBuilder.AppendFormat("  非球形引力阶数:{0}\r\n", "20");
+            cutOptionalBuilder.AppendFormat("  非球形引力:{0}\r\n", "2");
+            cutOptionalBuilder.AppendFormat("  第三体引力:{0}\r\n", rblCutOptionalGravitation.SelectedValue);
+            cutOptionalBuilder.AppendFormat("  潮汐摄动:{0}\r\n", rblCutOptionalTide.SelectedValue);
+            cutOptionalBuilder.AppendFormat("  光压摄动:{0}\r\n", rblCutOptionalLight.SelectedValue);
+            cutOptionalBuilder.AppendFormat("  大气阻尼摄动:{0}\r\n", rblCutOptionalEther.SelectedValue);
+            cutOptionalBuilder.AppendFormat("  后牛顿项:{0}\r\n", rblCutOptionalNewton.SelectedValue);
+            cutOptionalBuilder.AppendFormat("  相关力模型参数:{0}\r\n", string.Empty);
+
+
+            string cuMainFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitIntersectionReport, "CuMainFileDirectory");
+            if (!Directory.Exists(cuMainFileDirectory))
+                Directory.CreateDirectory(cuMainFileDirectory);
+            //CutMain文件服务器路径
+            string cuMainFilePath = Path.Combine(cuMainFileDirectory, Guid.NewGuid().ToString() + ".dat");
+            File.AppendAllText(cuMainFilePath, cutMainBuilder.ToString(), Encoding.Default);
+
+            string cutSubFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitIntersectionReport, "CuSubFileDirectory");
+            if (!Directory.Exists(cutSubFileDirectory))
+                Directory.CreateDirectory(cutSubFileDirectory);
+            //CutSub文件服务器路径
+            string cutSubFilePath = Path.Combine(cutSubFileDirectory, Guid.NewGuid().ToString() + ".dat");
+            File.AppendAllText(cutSubFilePath, cutSubBuilder.ToString(), Encoding.Default);
+
+            string cutOptionalDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitIntersectionReport, "CuOptionalFileDirectory");
+            if (!Directory.Exists(cutOptionalDirectory))
+                Directory.CreateDirectory(cutOptionalDirectory);
+            //CutOptional文件服务器路径
+            string cutOptionalFilePath = Path.Combine(cutOptionalDirectory, Guid.NewGuid().ToString() + ".dat");
+            File.AppendAllText(cutOptionalFilePath, cutOptionalBuilder.ToString(), Encoding.Default);
+
+            ltCutMainFilePath.Text = "系统生成文件CutMain.dat";
+            ltCutSubFilePath.Text = "系统生成文件CutSub.dat";
+            ltCutOptinalFilePath.Text = "系统生成文件CutOptinal.dat";
+
+            ltCutMainFile.Text = File.ReadAllText(cuMainFilePath, System.Text.Encoding.Default);
+            ltCutSubFile.Text = File.ReadAllText(cutSubFilePath, System.Text.Encoding.Default);
+            ltCutOptinalFile.Text = File.ReadAllText(cutOptionalFilePath, System.Text.Encoding.Default);
+
+            CalculateOrbitIntersectionReport(cuMainFilePath, cutSubFilePath, cutOptionalFilePath);
+        }
+
+        /// <summary>
+        /// 计算交会预报
+        /// </summary>
+        /// <param name="cuMainFilePath"></param>
+        /// <param name="cutSubFilePath"></param>
+        /// <param name="cutOptionalFilePath"></param>
+        /// <returns></returns>
+        private bool CalculateOrbitIntersectionReport(string cuMainFilePath, string cutSubFilePath, string cutOptionalFilePath)
+        {
+            //定义计算结果
+            bool calResult = false;
+            //定义结果文件路径
+            string resultFilePath = @"D:\ResourceCalculate\ResultFileDirectory\2f318cd1-82ba-4593-9884-263cfb2887bd.txt";
+
+            /**
+            * TODO: 在这里开始计算，将结果calResult和结果文件路径resultFilePath赋值
+            * */
+            System.Threading.Thread.Sleep(10000);
+
+            lblResultFilePath.Text = resultFilePath;
+            lblCalResult.Text = calResult ? "计算成功" : "计算失败";
+            if (!string.IsNullOrEmpty(resultFilePath) && File.Exists(resultFilePath))
+            {
+                ltResultFile.Text = File.ReadAllText(resultFilePath, System.Text.Encoding.Default);
+            }
+            divCalResult.Visible = true;
+
+            DeleteFile(cuMainFilePath);
+            DeleteFile(cutSubFilePath);
+            DeleteFile(cutOptionalFilePath);
+
+            ClientScript.RegisterClientScriptBlock(this.GetType(),
+               "open-dialog",
+               "var _autoOpen=true;",
+               true);
+
+            return calResult;
         }
         /// <summary>
         /// 绑定CutSub的主星列表信息
