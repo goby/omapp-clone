@@ -121,6 +121,58 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 CreateFileAndCalculate();
             }
         }
+         /// <summary>
+        /// 清除所有信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnResetAll_Click(object sender, EventArgs e)
+        {
+            ResetResultControls();
+            if (rblFileOption.SelectedValue == "0")
+            {
+
+            }
+            else if (rblFileOption.SelectedValue == "1")
+            {
+                //CutMain控件
+                txtCutMainReportBeginDate.Text = string.Empty;
+                dplCutMainReportBeginTimeHour.SelectedIndex = 0;
+                dplCutMainReportBeginTimeMinute.SelectedIndex = 0;
+                dplCutMainReportBeginTimeSecond.SelectedIndex = 0;
+                txtCutMainReportBeginTimeMilliSecond.Text = string.Empty;
+                txtCutMainDU.Text = string.Empty;
+                txtCutMainLYDate.Text = string.Empty;
+                dplCutMainLYTimeHour.SelectedIndex = 0;
+                dplCutMainLYTimeMinute.SelectedIndex = 0;
+                dplCutMainLYTimeSecond.SelectedIndex = 0;
+                txtCutMainLYTimeMilliSecond.Text = string.Empty;
+                dplCutMainSatellite.SelectedIndex = 0;
+                BindCutMainSatelliteProperty();
+                txtCutMainD1.Text = string.Empty;
+                txtCutMainD2.Text = string.Empty;
+                txtCutMainD3.Text = string.Empty;
+                txtCutMainD4.Text = string.Empty;
+                txtCutMainD5.Text = string.Empty;
+                txtCutMainD6.Text = string.Empty;
+                txtCutMaindR.Text = string.Empty;
+                rblCutMainKAE.SelectedIndex = 0;
+                ResetKAERelationControls();
+
+                //CutSub控件
+                ViewState["CutSubItemInfoList"] = null;
+                BindCutSubList();
+                ResetCutSubControls();
+
+                //CutOptional控件
+                txtCutOptionalTimeInterval.Text = string.Empty;
+                rblCutOptionalGravitation.SelectedIndex = 0;
+                rblCutOptionalTide.SelectedIndex = 0;
+                rblCutOptionalLight.SelectedIndex = 0;
+                rblCutOptionalEther.SelectedIndex = 0;
+                rblCutOptionalNewton.SelectedIndex = 0;
+            }
+        }
         /// <summary>
         /// 下载计算结果文件
         /// </summary>
@@ -188,20 +240,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void rblCutMainKAE_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //考虑KAE
-            if (rblCutMainKAE.SelectedValue == "1")
-            {
-                txtCutMaindA.Enabled = true;
-                txtCutMaindE.Enabled = true;
-            }
-            //不考虑KAE
-            else if (rblCutMainKAE.SelectedValue == "0")
-            {
-                txtCutMaindA.Enabled = false;
-                txtCutMaindE.Enabled = false;
-                txtCutMaindA.Text = "0";
-                txtCutMaindE.Text = "0";
-            }
+            ResetKAERelationControls();
         }
         #endregion
 
@@ -505,7 +544,28 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     break;
             }
         }
-
+        /// <summary>
+        /// 重置KAE相关控件状态
+        /// </summary>
+        private void ResetKAERelationControls()
+        {
+            //考虑KAE
+            if (rblCutMainKAE.SelectedValue == "1")
+            {
+                txtCutMaindA.Enabled = true;
+                txtCutMaindE.Enabled = true;
+                txtCutMaindA.Text = string.Empty;
+                txtCutMaindE.Text = string.Empty;
+            }
+            //不考虑KAE
+            else if (rblCutMainKAE.SelectedValue == "0")
+            {
+                txtCutMaindA.Enabled = false;
+                txtCutMaindE.Enabled = false;
+                txtCutMaindA.Text = "0";
+                txtCutMaindE.Text = "0";
+            }
+        }
         /// <summary>
         /// 绑定CutSub卫星属性及与属性相关的值
         /// </summary>
@@ -1150,7 +1210,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             rpCutSubList.DataBind();
         }
         /// <summary>
-        /// 重置CutSub的主星相关控件
+        /// 重置CutSub的相关控件
         /// </summary>
         private void ResetCutSubControls()
         {
@@ -1176,7 +1236,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             divCalResult.Visible = false;
             lblResultFilePath.Text = string.Empty;
-            lblCalResult.Text = "等待计算";
+            lblCalResult.Text = string.Empty;
             ltCutMainFilePath.Text = string.Empty;
             ltCutSubFilePath.Text = string.Empty;
             ltCutOptinalFilePath.Text = string.Empty;

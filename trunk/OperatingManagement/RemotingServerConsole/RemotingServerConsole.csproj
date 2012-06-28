@@ -51,7 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>176A909C5D1576CA862B32EABF8E63B12EC10652</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>DDE1EA3A6FEBFADFF29A8ABE2795BFDB142D0496</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>RemotingServerConsole_TemporaryKey.pfx</ManifestKeyFile>
@@ -98,6 +98,7 @@
     <None Include="Privacy.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="RemotingServerConsole_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RemotingObjectEntity\RemotingObjectEntity.csproj">
