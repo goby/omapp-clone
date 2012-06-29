@@ -59,8 +59,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     cpPager.DataSource = listDatasGDXA;
                     break;
                 case "tb_gdsh":
-                    List<GDSH> listDatasGDSH = (new GDSH()).GetListByDate(startDate, endDate);
-                    cpPager.DataSource = listDatasGDSH;
+                    //List<GDSH> listDatasGDSH = (new GDSH()).GetListByDate(startDate, endDate);
+                    //cpPager.DataSource = listDatasGDSH;
                     break;
                 case "tb_xdsc":
                     List<XDSC> listDatasXDSC = (new XDSC()).GetListByDate(startDate, endDate);

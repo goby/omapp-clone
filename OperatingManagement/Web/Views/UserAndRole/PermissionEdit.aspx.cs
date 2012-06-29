@@ -53,7 +53,13 @@ namespace OperatingManagement.Web.Views.UserAndRole
             foreach (ListItem item in cblActions.Items)
             {
                 if (item.Selected)
-                strActionIds += "," + item.Value;
+                    strActionIds += "," + item.Value;
+            }
+
+            if (strActionIds.Equals(string.Empty))
+            {
+                ShowMessage("没有为权限指定任何操作。");
+                return;
             }
 
             oModule.ActionIds = strActionIds.Substring(1);
@@ -69,6 +75,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
                     case Framework.FieldVerifyResult.Success:
                         msg = "编辑权限已成功。";
                         break;
+                    case Framework.FieldVerifyResult.NameDuplicated:
                     case Framework.FieldVerifyResult.NameDuplicated2:
                         msg = "已存在相同名称，请输入其他“名称”。";
                         break;

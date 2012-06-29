@@ -60,7 +60,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
                     strActionIds += "," + item.Value;
             }
 
-            if (strActionIds.Length == 0)
+            if (strActionIds.Equals(string.Empty))
             {
                 ShowMessage("没有为权限指定任何操作。");
                 return;

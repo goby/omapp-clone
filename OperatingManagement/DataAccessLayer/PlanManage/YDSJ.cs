@@ -46,11 +46,15 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <summary>
         /// 历元日期
         /// </summary>
-        public DateTime D { get; set; }
+        public int D { get; set; }
+        /// <summary>
+        /// 历元时刻
+        /// </summary>
+        public int T { get; set; }
         /// <summary>
         /// 历元时间
         /// </summary>
-        public string T { get; set; }
+        public DateTime Times { get; set; }
         /// <summary>
         /// 轨道半长径
         /// </summary>
@@ -128,8 +132,9 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                         CTime = DateTime.Parse(dr["CTIME"].ToString()),
                         TaskID = dr["TaskID"].ToString(),
                         SatName = dr["SatName"].ToString(),
-                        D = DateTime.Parse(dr["D"].ToString()),
-                        T = dr["T"].ToString(),
+                        D = Convert.ToInt32(dr["D"].ToString()),
+                        T = Convert.ToInt32(dr["T"].ToString()),
+                        Times = DateTime.Parse(dr["Times"].ToString()),
                         A = Convert.ToDouble(dr["A"].ToString()),
                         E = Convert.ToDouble(dr["E"].ToString()),
                         I = Convert.ToDouble(dr["I"].ToString()),
@@ -166,8 +171,9 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                         CTime = DateTime.Parse(dr["CTIME"].ToString()),
                         TaskID = dr["TaskID"].ToString(),
                         SatName = dr["SatName"].ToString(),
-                        D = DateTime.Parse(dr["D"].ToString()),
-                        T = dr["T"].ToString(),
+                        D = Convert.ToInt32(dr["D"].ToString()),
+                        T = Convert.ToInt32(dr["T"].ToString()),
+                        Times = DateTime.Parse(dr["Times"].ToString()),
                         A = Convert.ToDouble(dr["A"].ToString()),
                         E = Convert.ToDouble(dr["E"].ToString()),
                         I = Convert.ToDouble(dr["I"].ToString()),
@@ -205,11 +211,13 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 new OracleParameter("p_SatName", this.SatName),
                 new OracleParameter("p_D", this.D),
                 new OracleParameter("p_T", this.T),
+                new OracleParameter("p_Times", this.Times),
                 new OracleParameter("p_A", this.A),
                 new OracleParameter("p_E", this.E),
                 new OracleParameter("p_I", this.I),
                 new OracleParameter("p_O", this.O),
                 new OracleParameter("p_W", this.W),
+                new OracleParameter("p_M", this.M),
                 new OracleParameter("p_Reserve", this.Reserve),
                 opId,
                 p

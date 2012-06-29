@@ -125,8 +125,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
             HidControl();
 
             #region 取查询条件
-            string taskNo = ucTask1.SelectedValue;
-            string satID = ucSatellite1.SelectedValue;
+            string taskNo = (ucTask1.SelectedIndex == 0 ? "" : ucTask1.SelectedValue);
+            string satID = (ucSatellite1.SelectedIndex == 0 ? "" : ucSatellite1.SelectedValue);
             string sType = string.Empty;
             DateTime dtFrom = DateTime.MinValue;
             DateTime dtTo = DateTime.MinValue;
@@ -147,7 +147,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 }
             }
 
-            if (dtFrom > dtTo)
+            if (dtFrom!= DateTime.MinValue && dtTo!= DateTime.MinValue && dtFrom > dtTo)
             {
                 ShowMessage("结束日期必须大于开始日期");
                 return;
@@ -166,10 +166,74 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 case "1"://KJ
                     sType = "1";
                     listYCData = new YCPG().GetSYSJ(dtFrom, dtTo, sType, taskNo, satID);
+                    BindYCDataSource(listYCData);
                     break;
                 case "2"://FZ
                     List<JH> listFZData = new JH().GetJHList("TYSJ", dtFrom, dtTo);
                     BindFZDataSource(listFZData);
+                    break;
+            }
+        }
+
+        protected void btnSend_Click(object sender, EventArgs e)
+        {
+            string strYCIds = hfycids.Value;
+            string strUFIds = Hfufids.Value;
+            string strFZIds = hffzids.Value;
+
+            if (strYCIds.Equals(string.Empty) && strUFIds.Equals(string.Empty) && strFZIds.Equals(string.Empty))
+            {
+                ShowMessage("没有选择要发送的数据。");
+                return;
+            }
+        }
+
+        /// <summary>
+        /// 把数据转成文件
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="dataType"></param>
+        private void Data2File()
+        {
+            string strYCIds = hfycids.Value;
+            string strUFIds = Hfufids.Value;
+            string strFZIds = hffzids.Value;
+            string sendWay = hfSendWay.Value;
+            DateTime dt = DateTime.Now;
+            string[] ycids = new string[0];
+            if (strYCIds.Equals(string.Empty))
+                ycids = strYCIds.Split(new char[] { ',' });
+            string[] ufids = new string[0];
+            if (strUFIds.Equals(string.Empty))
+                ufids = strUFIds.Split(new char[] { ',' });
+            string[] fzids = new string[0];
+            if (strFZIds.Equals(string.Empty))
+                fzids = strFZIds.Split(new char[] { ',' });
+
+            BizFileCreator oBFCreator;
+            string taskNo = ucTask1.SelectedValue;
+
+            switch (ddlDataType.SelectedValue)
+            {
+                case "0"://TJ
+                    oBFCreator = new BizFileCreator();
+                    oBFCreator.CreateGCSJDataFile(ycids, ufids, taskNo, (CommunicationWays)Convert.ToInt32(sendWay));
+                    break;
+                case "1"://KJ
+                    oBFCreator = new BizFileCreator();
+                    oBFCreator.CreateJDSJDataFile(ycids, taskNo, (CommunicationWays)Convert.ToInt32(sendWay));
+                    break;
+                case "2"://FZ
+                    string dataType = "TYSJ";
+                    PlanFileCreator oPFCreator = new PlanFileCreator();
+                    XYXSInfo oXyxs =  new XYXSInfo().GetByAddrMark(FileExchangeConfig.GetTgtListForSending(dataType)[0]);
+                    string filename = oPFCreator.CreateSendingTYSJFile(strFZIds, oXyxs.ADDRMARK, oXyxs.ADDRName + "(" + oXyxs.EXCODE + ")");
+                    int desID = oXyxs.Id;
+                    int sourceID = new XYXSInfo().GetByAddrMark(Param.SourceCode).Id;
+                    int infoId = new InfoType().GetIDByExMark(dataType);
+
+                    FileSender oSender = new FileSender();
+                    oSender.SendFile(filename, Param.OutPutPath, Convert.ToInt32(sendWay), sourceID, desID, infoId,true);
                     break;
             }
         }

@@ -19,9 +19,9 @@ namespace OperatingManagement.Web.ucs
             if (!IsPostBack)
             {
                 TaskList.Items.Clear();
-                TaskList.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.CenterOutputPolicyTaskList);
-                TaskList.DataTextField = "key";
-                TaskList.DataValueField = "value";
+                TaskList.DataSource = new Task().Cache;
+                TaskList.DataTextField = "TaskName";
+                TaskList.DataValueField = "TaskCode";
                 TaskList.DataBind();
                 if (isAllowBlankItem)
                     TaskList.Items.Insert(0, new ListItem(blankItemText, blankItemValue));

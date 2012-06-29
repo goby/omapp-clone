@@ -112,7 +112,7 @@
             <th>&nbsp;</th>
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
-                    onclick="btnSubmit_Click" />
+                    onclick="btnSubmit_Click" />&nbsp;&nbsp;
                 <asp:Button ID="btnEmpty" runat="server" CssClass="button" Text="清空" CausesValidation="False"
                     onclick="btnEmpty_Click" />
             </td>

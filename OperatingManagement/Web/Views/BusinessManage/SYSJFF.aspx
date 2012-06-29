@@ -2,6 +2,10 @@
 <%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
 <%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <style type="text/css">
+        .button
+        {}
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="bizmanage" />
@@ -17,17 +21,19 @@
         <tr>
             <td valign="middle"  width="10%">任务<uc1:ucTask ID="ucTask1" runat="server" /></td>
             <td valign="middle" width="10%">卫星<uc2:ucSatellite ID="ucSatellite1" runat="server" /></td>
-            <td valign="middle" width="20%">数据类型<asp:DropDownList ID="ddlDataType" runat="server">
+            <td valign="middle" width="20%">数据类型<asp:DropDownList ID="ddlDataType" runat="server" ClientIDMode="Static">
                 <asp:ListItem Value="0">天基目标观测试验数据</asp:ListItem>
                 <asp:ListItem Value="1">空间机动试验数据</asp:ListItem>
                 <asp:ListItem Value="2">仿真推演试验数据</asp:ListItem>
                 </asp:DropDownList></td>
-            <td valign="middle" width="25%">开始日期<asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" 
+            <td valign="middle" width="20%">开始日期<asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" 
                     runat="server"></asp:TextBox></td>
-            <td valign="middle"width="25%">结束日期<asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" 
+            <td valign="middle"width="20%">结束日期<asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" 
                     runat="server"></asp:TextBox></td>
             <td valign="middle" width="10%"><asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
-                        Text="查询" /></td>
+                        Text="查询" />&nbsp;&nbsp;<asp:Button CssClass="button" ID="btnSend" 
+                    runat="server" Text="发送数据" OnClientClick="return sendFiles();" 
+                    Height="21px" onclick="btnSend_Click" /></td>
         </tr>
     </table>
     <div runat="server" id="vYCData">
@@ -169,6 +175,11 @@
         <tr id="trMessage" runat="server" visible="false">
             <td><asp:Label ID="lblMessage" runat="server" CssClass="error" Text=""></asp:Label></td>
         </tr>
+        <tr><td>
+                <asp:HiddenField ID="hfycids" runat="server" ClientIDMode="Static"/>
+                <asp:HiddenField ID="Hfufids" runat="server" ClientIDMode="Static"/>
+                <asp:HiddenField ID="hffzids" runat="server" ClientIDMode="Static"/>
+                <asp:HiddenField ID="hfSendWay" runat="server" ClientIDMode="Static"/></td></tr>
     </table>
     <div id="dialog-form" style="display:none" title="提示信息">
 	    <p class="content"></p>

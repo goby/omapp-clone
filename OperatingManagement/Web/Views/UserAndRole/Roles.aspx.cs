@@ -16,6 +16,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
 
             if (!IsPostBack)
                 BindRolers();
+            cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
         }
         void BindRolers()
         {
@@ -42,6 +43,11 @@ namespace OperatingManagement.Web.Views.UserAndRole
             this.ShortTitle = "角色列表";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/usernrole/roles.aspx.js");
+        }
+
+        protected void cpPager_PostBackPage(object sender, EventArgs e)
+        {
+            BindRolers();
         }
     }
 }

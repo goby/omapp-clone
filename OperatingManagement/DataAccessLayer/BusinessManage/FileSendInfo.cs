@@ -22,7 +22,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         private const string s_up_fsendinfo_search = "up_fsendinfo_search";
         private const string s_up_fsendinfo_selectbyid = "up_fsendinfo_selectbyid";
         private const string s_up_fsendinfo_selectbystatus = "up_fsendinfo_selectbystatus";
-        private const string s_up_fsendinfo_selectbyname = "up_fsendinfo_selectbyname";
+        private const string s_up_fsendinfo_selectbyfileinfo = "up_fsendinfo_selectbyfileinfo";
         private const string s_up_fsendinfo_insert = "up_fsendinfo_insert";
         private const string s_up_fsendinfo_update = "up_fsendinfo_update";
         private string strFileFullName = "";
@@ -313,31 +313,36 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// get the SendInfo by status.
         /// </summary>
         /// <returns></returns>
-        public FileSendInfo SelectByStatus(int retryTimes)
+        public List<FileSendInfo> SelectByStatus(int onlyFailed, int retryTimes)
         {
             OracleParameter p = PrepareRefCursor();
             DataSet ds = _database.SpExecuteDataSet(s_up_fsendinfo_selectbystatus, new OracleParameter[]{
+                new OracleParameter("p_onlyfailed", onlyFailed),
                 new OracleParameter("p_retrytimes", retryTimes),
                 p
             });
-            FileSendInfo sinfo = null;
+            List<FileSendInfo> sinfos = new List<FileSendInfo>();
             if (ds != null && ds.Tables.Count == 1)
             {
-                if (ds.Tables[0].Rows.Count == 1)
-                    sinfo = new FileSendInfo(ds.Tables[0].Rows[0]);
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    sinfos.Add(new FileSendInfo(dr));
+                }
             }
-            return sinfo;
+            return sinfos;
         }
 
         /// <summary>
         /// 按文件名获取
         /// </summary>
         /// <returns></returns>
-        public FileSendInfo SelectByFilename()
+        public FileSendInfo SelectByFileInfo()
         {
             OracleParameter p = PrepareRefCursor();
-            DataSet ds = _database.SpExecuteDataSet(s_up_fsendinfo_selectbyname, new OracleParameter[]{
+            DataSet ds = _database.SpExecuteDataSet(s_up_fsendinfo_selectbyfileinfo, new OracleParameter[]{
                 new OracleParameter("p_FileName", this.FileName),
+                new OracleParameter("p_FileCode", this.FileCode),
+                new OracleParameter("p_ReceiverId", this.ReceiverID),
                 p
             });
             FileSendInfo sinfo = null;
@@ -460,7 +465,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <returns></returns>
         public bool HasSameFileName()
         {
-            if (SelectByFilename() == null)
+            if (SelectByFileInfo() == null)
                 return false;
             else
                 return true;

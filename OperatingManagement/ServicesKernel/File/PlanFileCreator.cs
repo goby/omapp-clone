@@ -31,7 +31,7 @@ namespace ServicesKernel.File
         {
             get
             {
-                return System.Configuration.ConfigurationManager.AppSettings["ZXBMName"];
+                return Param.SourceName;
             }
             set{}
         }
@@ -98,12 +98,7 @@ namespace ServicesKernel.File
             get
             {
                 if (string.IsNullOrEmpty(strSavePath))
-                    strSavePath =System.Configuration.ConfigurationManager.AppSettings["savepath"];
-
-                if (strSavePath[strSavePath.Length - 1] != '\\')
-                {
-                    strSavePath += "\\";
-                }
+                    strSavePath = Param.SavePath;
                 return strSavePath;
             }
         }
@@ -115,11 +110,7 @@ namespace ServicesKernel.File
             get
             {
                 if (string.IsNullOrEmpty(strOutputPath))
-                    strOutputPath = System.Configuration.ConfigurationManager.AppSettings["outputpath"];
-                if (strOutputPath[strOutputPath.Length - 1] != '\\')
-                {
-                    strOutputPath += "\\";
-                }
+                    strOutputPath = Param.OutPutPath;
                 return strOutputPath;
             }
         }

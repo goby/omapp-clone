@@ -58,7 +58,7 @@ function deletePermissions() {
                     success: function (resp) {
                         var json = eval('(' + resp + ')');
                         if (json.suc) {
-                            window.location.href = window.location.href;
+                            //window.location.href = window.location.href;
                         } else {
                             indicator.attr('class', 'error').html('数据提交过程中发生了异常。');
                         }

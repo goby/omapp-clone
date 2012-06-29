@@ -11,6 +11,10 @@ namespace OperatingManagement.Framework
     public enum SendStatuss : int
     {
         /// <summary>
+        /// 生成失败
+        /// </summary>
+        GenerateFailed = -1,
+        /// <summary>
         /// 已提交发送
         /// </summary>
         Submitted = 0,

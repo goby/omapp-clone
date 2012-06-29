@@ -225,6 +225,23 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
+        /// 根据inCode获得信源信宿的Id
+        /// </summary>
+        /// <param name="addrMark">编号</param>
+        /// <returns>信源信宿的地址</returns>
+        public int GetIdByInCode(string inCode)
+        {
+            int xid = 0;
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => a.INCODE == inCode);
+                if (query != null && query.Count() > 0)
+                    xid = query.FirstOrDefault().Id;
+            }
+            return xid;
+        }
+
+        /// <summary>
         /// 根据ADDRMark获得信源信宿的Id
         /// </summary>
         /// <param name="addrMark">编号</param>
@@ -320,9 +337,12 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 获取信源信宿的IP地址和端口
+        /// 获取信源信宿的IP地址和端口（tcp/udp）
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="ip"></param>
+        /// <param name="tcpport"></param>
+        /// <param name="udpport"></param>
+        /// <returns></returns>
         public bool GetIPandPort(out string ip, out int tcpport, out int udpport)
         {
             ip = "";

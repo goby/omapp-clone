@@ -106,9 +106,17 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public InfoType SelectByID()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
+            InfoType info = null;
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => a.Id == Id);
+                if (query != null && query.Count() > 0)
+                    info = query.FirstOrDefault();
+                return info;
+            }
+
             DataSet ds = _dataBase.SpExecuteDataSet("UP_InfoTYPE_SelectByID", new OracleParameter[] { new OracleParameter("p_RID", Id), o_Cursor });
 
-            InfoType info = null;
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 info = new InfoType()
@@ -155,6 +163,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             }
             return infoList;
         }
+
         /// <summary>
         /// 根据rid获得信息类型的DATANAME
         /// </summary>
@@ -170,6 +179,57 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     dataName = query.FirstOrDefault().DATANAME;
             }
             return dataName;
+        }
+
+
+
+        /// <summary>
+        /// 根据信息外部标识获取信息类型
+        /// </summary>
+        /// <param name="exCode"></param>
+        /// <returns></returns>
+        public InfoType GetByExMark(string exMark)
+        {
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => a.EXMARK == exMark);
+                if (query != null && query.Count() > 0)
+                    return (InfoType)query.FirstOrDefault();
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 根据ID获取信息类型
+        /// </summary>
+        /// <param name="exCode"></param>
+        /// <returns></returns>
+        public InfoType GetByID(int id)
+        {
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => a.Id == id);
+                if (query != null && query.Count() > 0)
+                    return (InfoType)query.FirstOrDefault();
+            }
+            return null;
+        }
+        
+        /// <summary>
+        /// 根据信息外部编码获取信息内部编码
+        /// </summary>
+        /// <param name="exCode"></param>
+        /// <returns></returns>
+        public int GetIDByInCode(string inCode)
+        {
+            int iID = 0;
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => a.INCODE == inCode);
+                if (query != null && query.Count() > 0)
+                    iID = query.FirstOrDefault().Id;
+            }
+            return iID;
         }
 
         /// <summary>
@@ -204,6 +264,23 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     strExCode = query.FirstOrDefault().EXCODE;
             }
             return strExCode;
+        }
+
+        /// <summary>
+        /// Get ExMark by Id
+        /// </summary>
+        /// <param name="exCode"></param>
+        /// <returns></returns>
+        public string GetExMarkById()
+        {
+            string strExMark = string.Empty;
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => a.Id == this.Id);
+                if (query != null && query.Count() > 0)
+                    strExMark = query.FirstOrDefault().EXMARK;
+            }
+            return strExMark;
         }
 
         /// <summary>

@@ -44,7 +44,7 @@ namespace OperatingManagement.WebKernel.HttpHandlers
             var retValue = r.DeleteByIds(ids);
             if (retValue == FieldVerifyResult.Error)
             {
-                msg = "删除关联数据失败。";
+                msg = "删除角色关联数据失败。";
                 return true;
             }
             msg = string.Empty;
@@ -56,7 +56,7 @@ namespace OperatingManagement.WebKernel.HttpHandlers
             var retValue = u.DeleteByIds(ids); 
             if (retValue == FieldVerifyResult.Error)
             {
-                msg = "删除关联数据失败。";
+                msg = "删除用户关联数据失败。";
                 return true;
             }
             msg = string.Empty;
@@ -68,7 +68,7 @@ namespace OperatingManagement.WebKernel.HttpHandlers
             var retValue = m.DeleteByIds(ids);
             if (retValue == FieldVerifyResult.Error)
             {
-                msg = "删除关联数据失败。";
+                msg = "删除权限关联数据失败。";
                 return true;
             }
             msg = string.Empty;

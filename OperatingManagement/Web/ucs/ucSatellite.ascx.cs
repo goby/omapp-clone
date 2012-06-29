@@ -33,7 +33,7 @@ namespace OperatingManagement.Web.ucs
             SatelliteList.Items.Clear();
             SatelliteList.DataSource = objSatellite.Cache;
             SatelliteList.DataTextField = "WXMC";
-            SatelliteList.DataValueField = "Id";//WXBM，该字段统一为基类中的ID
+            SatelliteList.DataValueField = "WXBM";
             SatelliteList.DataBind();
             if (isAllowBlankItem)
                 SatelliteList.Items.Insert(0, new ListItem(blankItemText, blankItemValue));

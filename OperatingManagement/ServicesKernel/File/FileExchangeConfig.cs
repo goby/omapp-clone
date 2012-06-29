@@ -17,6 +17,13 @@ namespace ServicesKernel.File
         private static Dictionary<string, string> nameList = null;
         private static List<string> recvSuffixList = null;
 
+        /// <summary>
+        /// 获取要发送数据类型后缀名
+        /// </summary>
+        /// <param name="infoCode">信息类型，Infotype表里的Exmark</param>
+        /// <param name="fromMark">信源，XyxsInfo表里的AddrMark</param>
+        /// <param name="toMark">信宿，XyxsInfo表里的AddrMark</param>
+        /// <returns></returns>
         public static string GetSuffixForSending(string infoCode, string fromMark, string toMark)
         {
             if (sendList == null)
@@ -31,6 +38,11 @@ namespace ServicesKernel.File
                 return null;
         }
 
+        /// <summary>
+        /// 获取要发送的数据类型的信宿列表，XyxsInfo表里的AddrMark
+        /// </summary>
+        /// <param name="infoCode">信息类型，Infotype表里的Exmark</param>
+        /// <returns></returns>
         public static List<string> GetTgtListForSending(string infoCode)
         {
             if (tgtList == null)
@@ -44,6 +56,11 @@ namespace ServicesKernel.File
             { return null; }
         }
 
+        /// <summary>
+        /// 获取要发送的目标系统的名称
+        /// </summary>
+        /// <param name="infoCode"></param>
+        /// <returns></returns>
         public static string GetNameForType(string infoCode)
         {
             if (nameList == null)

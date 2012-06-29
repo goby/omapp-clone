@@ -36,21 +36,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             DataAccessLayer.PlanManage.YDSJ y = new DataAccessLayer.PlanManage.YDSJ { Id = id };
             DataAccessLayer.PlanManage.YDSJ obj = y.SelectById();
-
-            /*
-            lblVersion.Text = obj.Version;
-            lblFlag.Text = obj.Flag;
-            lblMainType.Text = obj.MainType;
-            lblDataType.Text = obj.DataType;
-            lblSource.Text = obj.SourceAddress;
-            lblDestination.Text = obj.DestinationAddress;
-            lblMissionCode.Text = obj.MissionCode;
-            lblSatelliteCode.Text = obj.SatelliteCode;
-            lblDataDate.Text = obj.DataDate.ToShortDateString();
-            lblDataTime.Text = obj.DataTime;
-            */
-            lblD.Text = obj.D.ToShortDateString();
-            lblT.Text = obj.T;
+            lblD.Text = obj.Times.ToString("yyyyMMdd HH:mm:ss.fff");
+            lblT.Text = obj.T.ToString();
             lblA.Text = obj.A.ToString();
             lblE.Text = obj.E.ToString();
             lblI.Text = obj.I.ToString();
