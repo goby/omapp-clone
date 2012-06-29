@@ -68,7 +68,7 @@ namespace OperatingManagement.WebKernel.Controls
 		#region Data Related
 		
 		protected PagedDataSource _PagedDataSet;
-		protected int _MaxPages = 10;
+		protected int _MaxPages = int.MaxValue / 10;
 		protected int _CurrentPage = 1;
 		protected string _RenderedHtml = "";
 		
@@ -76,7 +76,7 @@ namespace OperatingManagement.WebKernel.Controls
 
 		#region Behavior Related
 		
-		protected PagingModeType _PagingMode = PagingModeType.QueryString;
+		protected PagingModeType _PagingMode = PagingModeType.PostBack;
 		protected string _QueryStringKey	= "Page";
 		protected bool _IgnoreQueryString = false;
 
@@ -94,9 +94,9 @@ namespace OperatingManagement.WebKernel.Controls
 
 		#region Results Info
 		
-		protected string _ResultsStyle = "PADDING-BOTTOM:4px;PADDING-TOP:4px;FONT-WEIGHT: bold;";
-		protected string _ResultsFormat = "Displaying results {0}-{1} (of {2})";
-		protected ResultsLocationType _ResultsLocation = ResultsLocationType.Top;
+		protected string _ResultsStyle = "FONT-WEIGHT: bold;";
+        protected string _ResultsFormat = "&nbsp;&nbsp;¹² {0}-{1} / {2} Ìõ";
+		protected ResultsLocationType _ResultsLocation = ResultsLocationType.Bottom;
 
 		#endregion
 
@@ -104,7 +104,7 @@ namespace OperatingManagement.WebKernel.Controls
 		
 		protected string _LabelStyle = "FONT-WEIGHT: bold;";
 		protected bool _ShowLabel	= true;
-		protected string _LabelText = "Page:";
+        protected string _LabelText = "Ò³:&nbsp;&nbsp;";
 
 		#endregion
 
@@ -125,18 +125,18 @@ namespace OperatingManagement.WebKernel.Controls
 		protected string _BackNextStyle = "";
 		protected BackNextDisplayType _BackNextDisplay = BackNextDisplayType.HyperLinks;
 		protected BackNextLocationType _BackNextLocation = BackNextLocationType.Right;
-		protected bool _ShowFirstLast = false;
+		protected bool _ShowFirstLast = true;
 
-		protected string _BackText	= "< Back";
-		protected string _NextText	= "Next >";
-		protected string _FirstText	= "First";
-		protected string _LastText	= "Last";
+		protected string _BackText	= "<<";
+		protected string _NextText	= ">>";
+		protected string _FirstText	= "|<";
+		protected string _LastText	= ">|";
 
 		//Buttons Version
 		protected string _BackNextButtonStyle = "";
 
 		//Link version
-		protected string _BackNextLinkSeparator	= "?";
+		protected string _BackNextLinkSeparator	= "|";
 
 		#endregion
 
@@ -889,7 +889,7 @@ namespace OperatingManagement.WebKernel.Controls
 
 				//Data Related
 				if (allStates[1] != null)	_MaxPages = (int)allStates[1];
-				if (allStates[2] != null)	_CurrentPage = (int)allStates[2];
+				//if (allStates[2] != null)	_CurrentPage = (int)allStates[2];
 
 				//Behavior Related
 				if (allStates[3] != null)	_PagingMode = (PagingModeType)allStates[3];
@@ -1039,16 +1039,24 @@ namespace OperatingManagement.WebKernel.Controls
 			if(BackNextLocation != BackNextLocationType.None)
 			{
 				if(BackNextDisplay==BackNextDisplayType.Buttons)
-				{
-					BackNextNavBack = BuildButtonNavBack(CurrentPage);
+                {
+                    //BackNextNavBack = BuildButtonNavBack(2);
+                    //BackNextNavSeparator += "&nbsp;&nbsp;";
+					BackNextNavBack += BuildButtonNavBack(CurrentPage);
 					BackNextNavSeparator += "&nbsp;&nbsp;";
-					BackNextNavNext += BuildButtonNavNext(CurrentPage, PageCount);
+                    BackNextNavNext += BuildButtonNavNext(CurrentPage, PageCount);
+                    //BackNextNavSeparator += "&nbsp;&nbsp;";
+                    //BackNextNavNext += BuildButtonNavNext(PageCount, PageCount);
 				}
 				else
-				{
-					BackNextNavBack = BuildLinkNavBack(CurrentPage);
+                {
+                    //BackNextNavBack = BuildLinkNavBack(2);
+                    //BackNextNavSeparator += string.Format(" {0} ", BackNextLinkSeparator);
+					BackNextNavBack += BuildLinkNavBack(CurrentPage);
 					BackNextNavSeparator += string.Format(" {0} ", BackNextLinkSeparator);
-					BackNextNavNext += BuildLinkNavNext(CurrentPage, PageCount);
+                    BackNextNavNext += BuildLinkNavNext(CurrentPage, PageCount);
+                    //BackNextNavSeparator += string.Format(" {0} ", BackNextLinkSeparator);
+                    //BackNextNavNext += BuildLinkNavNext(PageCount, PageCount);
 				}
 			}
 		
@@ -1061,27 +1069,33 @@ namespace OperatingManagement.WebKernel.Controls
 			bool IsSpaceNeeded = false;
 
 			Html.Append("<div");
-			if(_ControlStyle.Length>0)
-			{
-				Html.AppendFormat(" style='{0}'", _ControlStyle);
-			}
+            if (_ControlStyle.Length > 0)
+            {
+                Html.AppendFormat(" style='{0}';\"width=90%\"", _ControlStyle);
+            }
+            else
+            {
+                Html.AppendFormat(" style=\"width=90%\"");
+            }
 			if(_ControlCssClass.Length>0)
 			{
 				Html.AppendFormat(" class='{0}'", _ControlCssClass);
 			}
 
-			Html.Append(">");
+            Html.Append(">");
 
-			// TOP Results
-			if(ResultsLocation == ResultsLocationType.Top)
-			{
-				Html.Append(BuildTop(Results));
-			}
+            // TOP Results
+            if (ResultsLocation == ResultsLocationType.Top)
+            {
+                Html.Append(BuildTop(Results));
+            }
+
+            //-------------------------------
 
 			//-------------------------------
 			// MIDDLE
 			//-------------------------------
-			Html.Append("<div>");
+			//Html.Append("<div>");
 
 			// If Back/Next == Left or Split
 			if(BackNextLocation == BackNextLocationType.Left || BackNextLocation == BackNextLocationType.Split)
@@ -1158,7 +1172,7 @@ namespace OperatingManagement.WebKernel.Controls
 			{
 				if(IsSpaceNeeded)
 				{
-					Html.AppendFormat("<span style='padding-left:{0}'></span>", SectionPadding);
+                    Html.AppendFormat("&nbsp;&nbsp;<span style='padding-left:{0}'></span>", SectionPadding);
 				}
 
 				if(_BackNextStyle.Length>0)
@@ -1181,9 +1195,7 @@ namespace OperatingManagement.WebKernel.Controls
 				Html.Append("</span>");
 			}
 
-			Html.Append("</div>");
-
-			//-------------------------------
+            //Html.Append("</div>");
 
 			// BOTTOM
 			if(ResultsLocation == ResultsLocationType.Bottom)
@@ -1207,16 +1219,25 @@ namespace OperatingManagement.WebKernel.Controls
 		{
 			StringBuilder sb = new StringBuilder();
 
-			if(_ResultsStyle.Length>0)
-			{
-				sb.AppendFormat("<div style='{0}'>", _ResultsStyle);
-			}
-			else
-			{
-				sb.Append("<div>");
-			}
+            //if(_ResultsStyle.Length>0)
+            //{
+            //    sb.AppendFormat("<div style='{0}'>", _ResultsStyle);
+            //}
+            //else
+            //{
+            //    sb.Append("<div>");
+            //}
+            if (_ResultsStyle.Length > 0)
+            {
+                sb.AppendFormat("<span style='{0}'>", _ResultsStyle);
+            }
+            else
+            {
+                sb.Append("<span>");
+            }
 			sb.Append(resultsHTML);
-			sb.Append("</div>");
+            //sb.Append("</div>");
+			sb.Append("</span>");
 
 			return sb.ToString();
 		}
@@ -1240,16 +1261,25 @@ namespace OperatingManagement.WebKernel.Controls
 		{
 			StringBuilder sb = new StringBuilder();
 
-			if(_ResultsStyle.Length>0)
-			{
-				sb.AppendFormat("<div style='{0}'>", _ResultsStyle); 
-			}
-			else
-			{
-				sb.Append("<div>");
-			}
+            //if(_ResultsStyle.Length>0)
+            //{
+            //    sb.AppendFormat("<div style='{0}'>", _ResultsStyle); 
+            //}
+            //else
+            //{
+            //    sb.Append("<div>");
+            //}
+            if (_ResultsStyle.Length > 0)
+            {
+                sb.AppendFormat("<span style='{0}'>", _ResultsStyle);
+            }
+            else
+            {
+                sb.Append("<span>");
+            }
 			sb.Append(resultsHTML);
-			sb.Append("</div>");
+            sb.Append("</span>");
+            //sb.Append("</div>");
 
 			return sb.ToString();
 		}
@@ -1808,10 +1838,15 @@ namespace OperatingManagement.WebKernel.Controls
 		{
 			if(IsNumeric(eventArgument))
 			{
+                if (this.PostBackPage != null)
+                    PostBackPage(this, EventArgs.Empty);
+
 				ChangePage(int.Parse(eventArgument));
 			}
 			OnClick(new EventArgs());
 		}
+
+        public event EventHandler PostBackPage;
 		#endregion
 
     }

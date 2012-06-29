@@ -17,7 +17,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
     public class GD : BaseEntity<int, GD>
     {
         private static readonly string GET_OribitalQuantityList_ByDate = "up_gd_getlist";
-        //private static readonly string Insert = "up_gd_insert";
+        private static readonly string Insert = "up_gd_insert";
         private static readonly string SelectByID = "up_gd_selectByID";
 
         /// <summary>
@@ -31,84 +31,81 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         #region -Properties-
         private OracleDatabase _database = null;
 
-        public int GDID { get; set; }
         public DateTime CTime { get; set; }
-
-        public string Satid { get; set; }
-        public string IType { get; set; }
+        public string TaskID { get; set; }
+        public string SatID { get; set; }
+        public int IType { get; set; }
         public string ICode { get; set; }
         /// <summary>
         /// 占2个字节，用无符号二进制整数表示，
         /// 量化单位为1天，北京时2000年1月1日计为第1天
         /// </summary>
-        public string D { get; set; }
+        public int D { get; set; }
         /// <summary>
         /// 占4个字节，用无符号二进制整数表示，
         /// 量化单位为0.1ms
         /// </summary>
-        public string T { get; set; }
-        public string Times { get; set; }
+        public int T { get; set; }
+        public DateTime Times { get; set; }
         /// <summary>
         /// 4个字节，用无符号二进制整数表示，
         /// 量化单位为0.1m
         /// </summary>
-        public string A { get; set; }
+        public double A { get; set; }
         /// <summary>
         /// 占4个字节，用无符号二进制整数表示，量化单位 为2E-31
         /// </summary>
-        public string E { get; set; }
+        public double E { get; set; }
         /// <summary>
         /// 占4个字节，用无符号二进制整数表示，量化单位为2E-24度
         /// </summary>
-        public string I { get; set; }
+        public double I { get; set; }
         /// <summary>
         /// 占4个字节，用无符号二进制整数表示，量化单位为2E-22度
         /// </summary>
-        public string Q { get; set; }
+        public double Q { get; set; }
         /// <summary>
         /// 占4个字节，用无符号二进制整数表示，量化单位为2E-22度
         /// </summary>
-        public string W{ get; set; }
+        public double W { get; set; }
         /// <summary>
         /// 占4个字节，用无符号二进制整数表示，量化单位为2E-22度
         /// </summary>
-        public string M { get; set; }
+        public double M { get; set; }
         /// <summary>
         /// 占4个字节，用二进制整数补码表示，量化单位为2E-20分钟
         /// </summary>
-        public string P { get; set; }
+        public double P { get; set; }
         /// <summary>
         /// 占4个字节，用二进制整数补码表示，量化单位为2E-20秒/天
         /// </summary>
-        public string PP { get; set; }
-        /// <summary>
-        /// 占4个字节，用二进制整数补码表示，量化单位为2E-20秒/天
-        /// </summary>
-        public string DELTP { get; set; }
+        public double PP { get; set; }
         /// <summary>
         /// 4个字节，用无符号二进制整数表示，量化单位为0.1m
         /// </summary>
-        public string Ra { get; set; }
+        public double Ra { get; set; }
         /// <summary>
         /// 4个字节，用无符号二进制整数表示，量化单位为0.1m
         /// </summary>
-        public string Rp { get; set; }
+        public double Rp { get; set; }
         /// <summary>
         /// 占3个字节，无符号二进制整数表示，量化单位为2E-16米2/千克
         /// </summary>
-        public string CDSM { get; set; }
+        public double CDSM { get; set; }
         /// <summary>
         /// 占3个字节，无符号二进制整数表示，量化单位为2E-16米2/千克
         /// </summary>
-        public string KSM { get; set; }
+        public double KSM { get; set; }
         /// <summary>
         /// 各占4个字节，备用；700任务不用，固定填“0”
         /// </summary>
-        public string KZ1 { get; set; }
+        public double KZ1 { get; set; }
         /// <summary>
         /// 各占4个字节，备用；700任务不用，固定填“0”
         /// </summary>
-        public string KZ2 { get; set; }
+        public double KZ2 { get; set; }
+        public string Reserve { get; set; }
+        public int DFInfoID { get; set; }
         #endregion 
 
         #region -Methods-
@@ -155,27 +152,29 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         {
                             Id = Convert.ToInt32(dr["ID"].ToString()),
                             CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
-                            Satid = dr["Satid"].ToString(),
-                            IType = dr["itype"].ToString(),
+                            TaskID = dr["TaskID"].ToString(),
+                            SatID = dr["Satid"].ToString(),
+                            IType = Convert.ToInt32(dr["itype"].ToString()),
                             ICode = dr["icode"].ToString(),
-                            D = dr["D"].ToString(),
-                            T = dr["T"].ToString(),
-                            Times = dr["Times"].ToString(),
-                            A = dr["A"].ToString(),
-                            E = dr["E"].ToString(),
-                            I = dr["I"].ToString(),
-                            Q = dr["Q"].ToString(),
-                            W = dr["W"].ToString(),
-                            M = dr["M"].ToString(),
-                            DELTP = dr["DeltP"].ToString(),
-                            P = dr["P"].ToString(),
-                            PP = dr["PP"].ToString(),
-                            Ra = dr["Ra"].ToString(),
-                            Rp = dr["Rp"].ToString(),
-                            CDSM = dr["CDSM"].ToString(),
-                            KSM = dr["KSM"].ToString(),
-                            KZ1 = dr["KZ1"].ToString(),
-                            KZ2 = dr["KZ2"].ToString()
+                            D = Convert.ToInt32(dr["D"].ToString()),
+                            T = Convert.ToInt32(dr["T"].ToString()),
+                            Times = Convert.ToDateTime(dr["Times"].ToString()),
+                            A = Convert.ToDouble(dr["A"].ToString()),
+                            E = Convert.ToDouble(dr["E"].ToString()),
+                            I = Convert.ToDouble(dr["I"].ToString()),
+                            Q = Convert.ToDouble(dr["Q"].ToString()),
+                            W = Convert.ToDouble(dr["W"].ToString()),
+                            M = Convert.ToDouble(dr["M"].ToString()),
+                            P = Convert.ToDouble(dr["P"].ToString()),
+                            PP = Convert.ToDouble(dr["PP"].ToString()),
+                            Ra = Convert.ToDouble(dr["Ra"].ToString()),
+                            Rp = Convert.ToDouble(dr["Rp"].ToString()),
+                            CDSM = Convert.ToDouble(dr["CDSM"].ToString()),
+                            KSM = Convert.ToDouble(dr["KSM"].ToString()),
+                            KZ1 = Convert.ToDouble(dr["KZ1"].ToString()),
+                            KZ2 = Convert.ToDouble(dr["KZ2"].ToString()),
+                            Reserve = dr["Reserve"].ToString(),
+                            DFInfoID = Convert.ToInt32(dr["DFInfoID"].ToString())
                         });
                     }
                 }
@@ -203,37 +202,37 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 {
                     return new GD()
                     {
-                        Id = Convert.ToInt32(dr["Id"].ToString()),
+                        Id = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
-                        Satid = dr["Satid"].ToString(),
-                        IType = dr["itype"].ToString(),
+                        TaskID = dr["TaskID"].ToString(),
+                        SatID = dr["Satid"].ToString(),
+                        IType = Convert.ToInt32(dr["itype"].ToString()),
                         ICode = dr["icode"].ToString(),
-                        D = dr["D"].ToString(),
-                        T = dr["T"].ToString(),
-                        Times = dr["Times"].ToString(),
-                        A = dr["A"].ToString(),
-                        E = dr["E"].ToString(),
-                        I = dr["I"].ToString(),
-                        Q = dr["Q"].ToString(),
-                        W = dr["W"].ToString(),
-                        M = dr["M"].ToString(),
-                        DELTP = dr["DeltP"].ToString(),
-                        P = dr["P"].ToString(),
-                        PP = dr["PP"].ToString(),
-                        Ra = dr["Ra"].ToString(),
-                        Rp = dr["Rp"].ToString(),
-                        CDSM = dr["CDSM"].ToString(),
-                        KSM = dr["KSM"].ToString(),
-                        KZ1 = dr["KZ1"].ToString(),
-                        KZ2 = dr["KZ2"].ToString()
+                        D = Convert.ToInt32(dr["D"].ToString()),
+                        T = Convert.ToInt32(dr["T"].ToString()),
+                        Times = Convert.ToDateTime(dr["Times"].ToString()),
+                        A = Convert.ToDouble(dr["A"].ToString()),
+                        E = Convert.ToDouble(dr["E"].ToString()),
+                        I = Convert.ToDouble(dr["I"].ToString()),
+                        Q = Convert.ToDouble(dr["Q"].ToString()),
+                        W = Convert.ToDouble(dr["W"].ToString()),
+                        M = Convert.ToDouble(dr["M"].ToString()),
+                        P = Convert.ToDouble(dr["P"].ToString()),
+                        PP = Convert.ToDouble(dr["PP"].ToString()),
+                        Ra = Convert.ToDouble(dr["Ra"].ToString()),
+                        Rp = Convert.ToDouble(dr["Rp"].ToString()),
+                        CDSM = Convert.ToDouble(dr["CDSM"].ToString()),
+                        KSM = Convert.ToDouble(dr["KSM"].ToString()),
+                        KZ1 = Convert.ToDouble(dr["KZ1"].ToString()),
+                        KZ2 = Convert.ToDouble(dr["KZ2"].ToString()),
+                        Reserve = dr["Reserve"].ToString(),
+                        DFInfoID = Convert.ToInt32(dr["DFInfoID"].ToString())
                     };
                 }
             }
             return null;
         }
 
-        #region  bakup
-        /*
         /// <summary>
         /// Inserts a new record into database.
         /// </summary>
@@ -253,28 +252,30 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 OracleDbType = OracleDbType.Double
             };
             _database.SpExecuteNonQuery(Insert, new OracleParameter[]{
-                new OracleParameter("p_Satid",this.Satid),
+                new OracleParameter("p_CTime",DateTime.Now),
+                new OracleParameter("p_Taskid",this.TaskID),
+                new OracleParameter("p_Satid",this.SatID),
                 new OracleParameter("p_IType",this.IType),
                 new OracleParameter("p_ICode",this.ICode),
-                new OracleParameter("p_Data_T",this.T),
+                new OracleParameter("p_D",this.D),
+                new OracleParameter("p_T",this.T),
                 new OracleParameter("p_Times",this.Times),
-                new OracleParameter("p_Data_D",this.D),
-                new OracleParameter("p_Data_T",this.T),
-                new OracleParameter("p_Times",this.Times),
-                new OracleParameter("p_Data_A",this.A),
-                new OracleParameter("p_Data_E",this.E),
-                new OracleParameter("p_Data_I",this.I),
-                new OracleParameter("p_Data_Ohm",this.Q),
-                new OracleParameter("p_Data_Omega",this.W),
-                new OracleParameter("p_Data_M",this.M),
-                new OracleParameter("p_Data_P",this.P),
-                new OracleParameter("p_Data_PI",this.DELTP),
-                new OracleParameter("p_Data_RA",this.Ra),
-                new OracleParameter("p_Data_RP",this.Rp),
-                new OracleParameter("p_Data_CDSM",this.CDSM),
-                new OracleParameter("p_Data_KSM",this.KSM),
-                new OracleParameter("p_Data_KZ1",this.KZ1),
-                new OracleParameter("p_Data_KZ2",this.KZ2),
+                new OracleParameter("p_A",this.A),
+                new OracleParameter("p_E",this.E),
+                new OracleParameter("p_I",this.I),
+                new OracleParameter("p_Q",this.Q),
+                new OracleParameter("p_W",this.W),
+                new OracleParameter("p_M",this.M),
+                new OracleParameter("p_P",this.P),
+                new OracleParameter("p_PP",this.PP),
+                new OracleParameter("p_RA",this.Ra),
+                new OracleParameter("p_RP",this.Rp),
+                new OracleParameter("p_CDSM",this.CDSM),
+                new OracleParameter("p_KSM",this.KSM),
+                new OracleParameter("p_KZ1",this.KZ1),
+                new OracleParameter("p_KZ2",this.KZ2),
+                new OracleParameter("p_Reserve",this.Reserve),
+                new OracleParameter("p_DFInfid",this.DFInfoID),
                 opId,
                 p
             });
@@ -282,8 +283,6 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 this.Id = Convert.ToInt32(opId.Value);
             return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
-        */
-        #endregion
 
         #endregion
 

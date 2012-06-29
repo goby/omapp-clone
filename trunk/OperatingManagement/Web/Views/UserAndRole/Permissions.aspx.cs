@@ -15,6 +15,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
         {
             if (!IsPostBack)
                 InitialPageData();
+            cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
         }
 
         private void InitialPageData()
@@ -53,14 +54,35 @@ namespace OperatingManagement.Web.Views.UserAndRole
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
+            SaveCondition();
+            Search(true);
+        }
+
+        protected void cpPager_PostBackPage(object sender, EventArgs e)
+        {
+            Search(false);
+        }
+
+        private void Search(bool fromSearch)
+        {
             DataAccessLayer.System.Module r = new DataAccessLayer.System.Module();
             List<DataAccessLayer.System.Module> modules = null;
             try
             {
-                if (txtKeyword.Text != string.Empty)
-                    modules = r.Search(txtKeyword.Text);
+                if (fromSearch)
+                {
+                    if (txtKeyword.Text != string.Empty)
+                        modules = r.Search(txtKeyword.Text);
+                    else
+                        modules = r.SelectAll();
+                }
                 else
-                    modules = r.SelectAll();
+                {
+                    if (ViewState["_KeyWord"] == null)
+                        modules = r.SelectAll();
+                    else
+                        modules = r.Search(ViewState["_KeyWord"].ToString());
+                }
                 BindDataSource(modules);
             }
             catch (Exception ex)
@@ -68,6 +90,11 @@ namespace OperatingManagement.Web.Views.UserAndRole
                 throw (new AspNetException("权限搜索过程中出现异常，异常原因", ex));
             }
             finally { }
+        }
+
+        private void SaveCondition()
+        {
+            ViewState["_KeyWord"] = txtKeyword.Text.Trim();
         }
     }
 }

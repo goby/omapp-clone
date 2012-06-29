@@ -22,6 +22,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         private const string s_up_frcvinfo_selectmaxfilecode = "up_frcvinfo_selectmaxfilecode";
         private const string s_up_frcvinfo_insert = "up_frcvinfo_insert";
         private const string s_up_frcvinfo_update = "up_frcvinfo_update";
+        private const string s_up_frcvinfo_selectbystatus = "up_frcvinfo_selectbystatus";
         private string strFileFullName = "";
         private string strFilePath = "";
 
@@ -335,6 +336,28 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public List<FileReceiveInfo> Search(DateTime beginTime, DateTime endTime)
         {
             return SelectRcvInfoByXXTypeTimeandDataType(this.InfoTypeID, beginTime, endTime);
+        }
+
+        /// <summary>
+        /// 根据状态获取接收记录
+        /// </summary>
+        /// <returns></returns>
+        public List<FileReceiveInfo> SelectByStatus()
+        {
+            OracleParameter p = PrepareRefCursor();
+            DataSet ds = _database.SpExecuteDataSet(s_up_frcvinfo_selectbystatus, new OracleParameter[]{
+                    new OracleParameter("p_ReceiveStatus", (int)this.ReceiveStatus),
+                    p
+                });
+            List<FileReceiveInfo> sinfos = new List<FileReceiveInfo>();
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    sinfos.Add(new FileReceiveInfo(dr));
+                }
+            }
+            return sinfos;
         }
 
         /// <summary>

@@ -153,6 +153,7 @@
     <Content Include="Scripts\Pages\BusinessManage\CenterOutputPolicyManage.aspx.js" />
     <Content Include="Scripts\Pages\BusinessManage\OrbitDifferenceAnalysis.aspx.js" />
     <Content Include="Scripts\Pages\BusinessManage\OrbitIntersectionReport.aspx.js" />
+    <Content Include="Scripts\Pages\BusinessManage\SYSJFF.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\DMJHEdit.aspx.js" />
     <Content Include="Scripts\Pages\BusinessManage\OrbitParaCalculate.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\ExperimentPlanList.aspx.js" />

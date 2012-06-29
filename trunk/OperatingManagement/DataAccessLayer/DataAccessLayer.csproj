@@ -50,10 +50,9 @@
     <Compile Include="BusinessManage\CommunicationResource.cs" />
     <Compile Include="BusinessManage\CutSubItemInfo.cs" />
     <Compile Include="BusinessManage\DFInfo.cs" />
-    <Compile Include="BusinessManage\GDXA.cs" />
-    <Compile Include="BusinessManage\GDSH.cs" />
+    <Compile Include="BusinessManage\DFRecvInfo.cs" />
+    <Compile Include="BusinessManage\DFSendInfo.cs" />
     <Compile Include="BusinessManage\GroundResource.cs" />
-    <Compile Include="BusinessManage\HD.cs" />
     <Compile Include="BusinessManage\HealthStatus.cs" />
     <Compile Include="BusinessManage\FileReceiveInfo.cs" />
     <Compile Include="BusinessManage\ResourceCalculate.cs" />
@@ -62,6 +61,7 @@
     <Compile Include="BusinessManage\Satellite.cs" />
     <Compile Include="BusinessManage\FileSendInfo.cs" />
     <Compile Include="BusinessManage\SystemParameters.cs" />
+    <Compile Include="BusinessManage\Task.cs" />
     <Compile Include="BusinessManage\UserFrame.cs" />
     <Compile Include="BusinessManage\UseStatus.cs" />
     <Compile Include="BusinessManage\XDSC.cs" />
@@ -82,7 +82,6 @@
     <Compile Include="BusinessManage\JDJG.cs" />
     <Compile Include="BusinessManage\TYJG.cs" />
     <Compile Include="BusinessManage\GD.cs" />
-    <Compile Include="BusinessManage\BASICINFODATA.cs" />
     <Compile Include="PlanManage\JDSJ.cs" />
     <Compile Include="PlanManage\Sequence.cs" />
     <Compile Include="PlanManage\YJJH.cs" />

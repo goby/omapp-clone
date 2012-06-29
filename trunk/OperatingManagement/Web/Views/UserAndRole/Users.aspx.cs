@@ -15,6 +15,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
         {
             if (!IsPostBack)
                 InitialPageData();
+            cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
         }
 
         private void InitialPageData()
@@ -69,14 +70,35 @@ namespace OperatingManagement.Web.Views.UserAndRole
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
+            SaveCondition();
+            SearchUsers(true);
+        }
+
+        protected void cpPager_PostBackPage(object sender, EventArgs e)
+        {
+            SearchUsers(false);
+        }
+
+        private void SearchUsers(bool fromSearch)
+        {
             DataAccessLayer.System.User u = new DataAccessLayer.System.User();
             List<DataAccessLayer.System.User> users = null;
             try
             {
-                if (txtKeyword.Text != string.Empty)
-                    users = u.Search(txtKeyword.Text);
+                if (fromSearch)
+                {
+                    if (txtKeyword.Text.Trim() != string.Empty)
+                        users = u.Search(txtKeyword.Text.Trim());
+                    else
+                        users = u.SelectAll();
+                }
                 else
-                    users = u.SelectAll();
+                {
+                    if (ViewState["_KeyWord"] == null)
+                        users = u.SelectAll();
+                    else
+                        users = u.Search(ViewState["_KeyWord"].ToString());
+                }
                 BindUsers(users);
             }
             catch (Exception ex)
@@ -84,6 +106,11 @@ namespace OperatingManagement.Web.Views.UserAndRole
                 throw (new AspNetException("用户列表页面搜索出现异常，异常原因", ex));
             }
             finally { }
+        }
+
+        private void SaveCondition()
+        {
+            ViewState["_KeyWord"] = txtKeyword.Text.Trim();
         }
     }
 }

@@ -15,7 +15,7 @@
         <tr>
             <td class="listTitle-c1" valign="middle"><div>关键字&nbsp;&nbsp;&nbsp;<asp:TextBox ID="txtKeyword" runat="server"></asp:TextBox>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
-                        Text="查询" Width="69px" /></div>
+                        Text="查询" /></div>
             </td>
             <td class="listTitle-c2">
                 <div class="load" id="submitIndicator" style="display:none">提交中，请稍候。。。</div>
@@ -53,12 +53,12 @@
     </asp:Repeater>
     <table class="listTitle">
         <tr>
-            <td class="listTitle-c1">
+            <td class="listTitle-c1" width="10%">
                 <button class="button" onclick="return selectAll();">全选</button>&nbsp;&nbsp;
                 <button class="button" onclick="return deleteUsers();">删除</button>          
             </td>
-            <td class="listTitle-c2">
-                <om:CollectionPager ID="cpPager" runat="server" ></om:CollectionPager>
+            <td class="listTitle-c2" width="90%" align="left">
+                <om:CollectionPager ID="cpPager" runat="server"></om:CollectionPager>
             </td>
         </tr>
     </table>

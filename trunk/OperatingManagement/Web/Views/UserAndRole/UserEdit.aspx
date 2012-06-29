@@ -102,8 +102,8 @@
             <th>&nbsp;</th>
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" OnClientClick="return ComparePassword();"
-                    onclick="btnSubmit_Click" /><asp:Button ID="btnReset" runat="server" 
-                    CssClass="button" Text="重置"  CausesValidation="False" onclick="btnReset_Click" />
+                    onclick="btnSubmit_Click" />&nbsp;&nbsp;<asp:Button ID="btnReset" runat="server" 
+                    CssClass="button" Text="重置"  CausesValidation="False" onclick="btnReset_Click" />&nbsp;&nbsp;
                 <asp:Button ID="btnReturn" class="button" runat="server" 
                     Text="返回" onclick="btnReturn_Click" CausesValidation="False" />
             </td>

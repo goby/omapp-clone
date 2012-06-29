@@ -120,10 +120,13 @@ namespace OperatingManagement.DataAccessLayer.System
                 List<Permission> permissions = new List<Permission>();
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    permissions.Add(new Permission()
+                    if (dr["PermissionId"] != DBNull.Value)
                     {
-                        Id = Convert.ToDouble(dr["PermissionId"].ToString())
-                    });
+                        permissions.Add(new Permission()
+                        {
+                            Id = Convert.ToDouble(dr["PermissionId"].ToString())
+                        });
+                    }
                 }
                 role.Permissions = permissions;
             }

@@ -22,11 +22,11 @@ namespace ServicesKernel.File
         public static string GenarateFileNameTypeOne(string infotype,string dateType)
         {
             //版本号用2个字符表示，本版本命名方法固定为“01”，程序中配置为“01”；
-            string ver = System.Configuration.ConfigurationManager.AppSettings["Version"];
+            string ver = Param.Version;
             //对象标识用4个字符表示，采用可读性ASCII码字符，本任务固定为“7000”，程序中配置为“7000”；
             string flag = System.Configuration.ConfigurationManager.AppSettings["ObjectCode"];
             //模式标识用2个字符表示，用来标识文件内信息所对应的运行模式。“OP”代表实战，“TS”代表联试；
-            string mode = System.Configuration.ConfigurationManager.AppSettings["RunningMode"];
+            string mode = Param.RunnningMode;
 
             if (ver == null || flag == null ||  mode == null)
                 return null;
@@ -59,7 +59,7 @@ namespace ServicesKernel.File
             , int nameWay, string version, string objectCode, string runningMode)
         {
             //中心编码
-            string fromMark = System.Configuration.ConfigurationManager.AppSettings["ZXBM"];
+            string fromMark = Param.SourceCode;
             //扩展名
             string sSuffix = FileExchangeConfig.GetSuffixForSending(infoCode, fromMark, toMark);
             if (sSuffix == null)

@@ -21,7 +21,7 @@
         <tr>
             <th style="width:100px;">名称(<span class="red">*</span>)</th>
             <td>
-                <asp:TextBox ID="txtName" runat="server" Width="300px" CssClass="text" MaxLength="10"></asp:TextBox>
+                <asp:TextBox ID="txtName" runat="server" Width="300px" CssClass="text" MaxLength="25"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfv1" runat="server" Display="Dynamic" ForeColor="Red"
                      ControlToValidate="txtName" ErrorMessage="必须填写“名称”。"></asp:RequiredFieldValidator>
             </td>
@@ -79,12 +79,11 @@
         <tr>
             <th>&nbsp;</th>
             <td>
-                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
-                    onclick="btnSubmit_Click" />
-                <asp:Button ID="btnReset" runat="server" CssClass="button" Text="重置" 
-                    onclick="btnReset_Click" />
-                <asp:Button ID="btnReturn" runat="server" CssClass="button" Text="返回" 
-                    onclick="btnReturn_Click" />
+                <asp:Button ID="Button1" runat="server" CssClass="button" Text="提交" 
+                    onclick="btnSubmit_Click" />&nbsp;&nbsp;
+                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" onclick="btnSubmit_Click" />&nbsp;&nbsp;
+                <asp:Button ID="btnReset" runat="server" CssClass="button" Text="重置"  onclick="btnReset_Click" />&nbsp;&nbsp;
+                <asp:Button ID="btnReturn" runat="server" CssClass="button" Text="返回" onclick="btnReturn_Click" />
             </td>
         </tr>
     </table>

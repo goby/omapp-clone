@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace OperatingManagement.ServicesKernel.File
+namespace ServicesKernel.File
 {
     public class DataFileHandle
     {
@@ -104,11 +104,30 @@ namespace OperatingManagement.ServicesKernel.File
 
 
         /// <summary>
+        /// 创建文件格式一的文件
+        /// </summary>
+        /// <param name="oFileInfo"></param>
+        /// <param name="xmlData"></param>
+        /// <returns></returns>
+        public FileCreateResult CreateFormat1File(FileBaseInfo oFileInfo, string xmlData)
+        {
+            if (oFileInfo == null || oFileInfo.FullName == string.Empty)
+                return FileCreateResult.LackFileInfo;
+
+            if (System.IO.File.Exists(oFileInfo.FullName))
+                return FileCreateResult.FileExisted;
+
+            StreamWriter oSW = new StreamWriter(oFileInfo.FullName);
+            oSW.Write(xmlData);
+            oSW.Close();
+            return FileCreateResult.CreateSuccess;
+        }
+        /// <summary>
         /// 创建文件格式三的文件
         /// </summary>
         /// <param name="oFileInfo"></param>
         /// <param name="fields"></param>
-        /// <param name="datas"></param>
+        /// <param name="datas">数组中的每个表示每行数据</param>
         /// <returns></returns>
         public FileCreateResult CreateFormat3File(FileBaseInfo oFileInfo, string[] fields, string[] datas)
         {
@@ -179,6 +198,119 @@ namespace OperatingManagement.ServicesKernel.File
             sr.Close();
         }
 
+        /// <summary>
+        /// 归档文件，将文件移动至归档目录
+        /// </summary>
+        /// <param name="srcFile">返回空是成功</param>
+        /// <param name="targetPath"></param>
+        public static string MoveFile(FileInfo srcFile, string targetPath)
+        {
+            string strTgtFile = targetPath + @"\" + srcFile.Name;
+            string strLog = "归档";
+            if (!srcFile.Exists)
+            {
+                strLog = strLog + string.Format("失败，源文件不存在{0}", srcFile.FullName);
+                return strLog;
+            }
+            try
+            {
+                //归档路径不存在，创建
+                if (!Directory.Exists(targetPath))
+                    Directory.CreateDirectory(targetPath);
+
+                //归档文件不存在，移动，若存在应该怎么办？
+                if (!Directory.Exists(strTgtFile))
+                {
+                    srcFile.MoveTo(strTgtFile);
+                    strLog = "";
+                }
+                else
+                    strLog = strLog + "失败，目标文件已存在";
+            }
+            catch (Exception ex)
+            {
+                strLog = strLog + "异常：" + "SourceObject--" + ex.Source + ";Error--" + ex.Message;
+            }
+            finally
+            {
+            }
+            return strLog;
+        }
+
+        /// <summary>
+        /// 从源路径复制到目标路径
+        /// </summary>
+        /// <param name="srcPath"></param>
+        /// <param name="targetPath"></param>
+        /// <returns></returns>
+        public static string CopyFile(string fileFullName, string targetPath)
+        {
+            string strLog = "复制";
+            FileInfo oFile = new FileInfo(fileFullName);
+            if (!oFile.Exists)
+            {
+                strLog = strLog + string.Format("失败，源文件不存在{0}", fileFullName);
+                return strLog;
+            }
+            string strTgtFile = targetPath + @"\" + oFile.Name;
+            try
+            {
+                //复制路径不存在，创建
+                if (!Directory.Exists(targetPath))
+                    Directory.CreateDirectory(targetPath);
+
+                //制文件不存在，移动，若存在应该怎么办？
+                if (!Directory.Exists(strTgtFile))
+                {
+                    oFile.CopyTo(strTgtFile);
+                    strLog = "";
+                }
+                else
+                    strLog = strLog + "失败，目标文件已存在";
+            }
+            catch (Exception ex)
+            {
+                strLog = strLog + "异常：" + "SourceObject--" + ex.Source + ";Error--" + ex.Message;
+            }
+            finally
+            {
+            }
+            return strLog;
+        }
+
+        /// <summary>
+        /// 移动文件
+        /// </summary>
+        /// <param name="srcPath"></param>
+        /// <param name="targetPath"></param>
+        /// <returns></returns>
+        public static string MoveFile(string srcPath, string targetPath)
+        {
+            FileInfo oFile = new FileInfo(srcPath);
+            if (oFile != null)
+                return MoveFile(oFile, targetPath);
+            else
+                return "源路径不存在";
+        }
+
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="fileFullName"></param>
+        /// <returns></returns>
+        public static string DeleteFile(string fileFullName)
+        {
+            string strLog = "删除";
+            FileInfo oFile = new FileInfo(fileFullName);
+            if (!oFile.Exists)
+                strLog = strLog + string.Format("失败，源文件不存在{0}", fileFullName);
+            else
+            {
+                oFile.Delete();
+                strLog = "";
+            }
+            return strLog;
+        }
         #endregion
 
         #region -Private Methods-
@@ -255,7 +387,8 @@ namespace OperatingManagement.ServicesKernel.File
     {
         CreateSuccess = 0,
         FileExisted = 1,
-        LackFileInfo = 2
+        LackFileInfo = 2,
+        SomethingError = 3
     }
 
     public class FileBaseInfo

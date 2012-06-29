@@ -15,7 +15,7 @@
         <tr>
             <td class="listTitle-c1" valign="middle"><div>关键字&nbsp;&nbsp;&nbsp;<asp:TextBox ID="txtKeyword" runat="server"></asp:TextBox>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
-                        Text="查询" Width="69px" /></div>
+                        Text="查询" /></div>
             </td>
             <td class="listTitle-c2"></td>
         </tr>

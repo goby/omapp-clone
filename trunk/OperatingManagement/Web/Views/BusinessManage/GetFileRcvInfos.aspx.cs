@@ -47,7 +47,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 }
             }
 
-            if (dtFrom > dtTo)
+            if (dtFrom != DateTime.MinValue && dtTo != DateTime.MinValue && dtFrom > dtTo)
             {
                 ShowMessage("结束日期必须大于开始日期");
                 return;

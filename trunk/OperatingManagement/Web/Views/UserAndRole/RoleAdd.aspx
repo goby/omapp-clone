@@ -15,7 +15,7 @@
         <tr>
             <th style="width:100px;">名称(<span class="red">*</span>)</th>
             <td>
-                <asp:TextBox ID="txtName" runat="server" Width="300px" CssClass="text" MaxLength="10"></asp:TextBox>
+                <asp:TextBox ID="txtName" runat="server" Width="300px" CssClass="text" MaxLength="25"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfv1" runat="server" Display="Dynamic" ForeColor="Red"
                      ControlToValidate="txtName" ErrorMessage="必须填写“名称”。"></asp:RequiredFieldValidator>
             </td>
@@ -74,7 +74,7 @@
             <th>&nbsp;</th>
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
-                    onclick="btnSubmit_Click" />
+                    onclick="btnSubmit_Click" />&nbsp;&nbsp;
                 <asp:Button ID="btnEmpty" runat="server" CssClass="button" Text="清空" CausesValidation=false
                     onclick="btnEmpty_Click" />
             </td>

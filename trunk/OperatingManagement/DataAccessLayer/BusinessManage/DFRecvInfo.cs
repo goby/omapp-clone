@@ -2,26 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
+using System.Xml;
+
 using OperatingManagement.Framework.Basic;
 using OperatingManagement.Framework;
+using OperatingManagement.Framework.Core;
 using Oracle.DataAccess.Client;
-using System.Data;
 
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
     [Serializable]
-    public class DFInfo : BaseEntity<int, DFInfo>
+    public class DFRecvInfo : BaseEntity<int, DFRecvInfo>
     {
-        public DFInfo()
+        public DFRecvInfo()
         {
             _database = OracleDatabase.FromConfiguringNode("ApplicationServices");
         }
 
         #region -Properties-
         private OracleDatabase _database = null;
-        private string s_up_dfinfo_insert = "up_dfinfo_insert";
-        private string s_up_dfinfo_update = "up_dfinfo_update";
-        private string s_up_dfinfo_select = "up_dfinfo_select";
+        private string s_up_dfrecvinfo_insert = "up_dfrecvinfo_insert";
+        private string s_up_dfrecvinfo_update = "up_dfrecvinfo_update";
+        private string s_up_dfrecvinfo_select = "up_dfrecvinfo_select";
 
         /// <summary>
         /// 创建时间
@@ -36,13 +39,21 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         public string SatID { get; set; }
         /// <summary>
-        /// 数据主类别
+        /// 接收开始时间
         /// </summary>
-        public string MainType { get; set; }
+        public DateTime BTime { get; set; }
         /// <summary>
-        /// 数据次类别
+        /// 接收结束时间
         /// </summary>
-        public string SecondType { get; set; }
+        public DateTime ETime { get; set; }
+        /// <summary>
+        /// 总包数
+        /// </summary>
+        public int TotalPack { get; set; }
+        /// <summary>
+        /// 错包数
+        /// </summary>
+        public int ErrorPack { get; set; }
         /// <summary>
         /// 信息类别
         /// </summary>
@@ -56,29 +67,19 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         public int Destination { get; set; }
         /// <summary>
-        /// 数据时间
+        /// 文件名
         /// </summary>
-        public DateTime DataTime { get; set; }
+        public string FileName { get; set; }
         /// <summary>
-        /// 数据报顺序号
+        /// 文件大小
         /// </summary>
-        public int SequenceNO { get; set; }
+        public int FileSize { get; set; }
+        /*
         /// <summary>
-        /// 数据
+        /// 文件原始内容
         /// </summary>
-        public byte[] DBlob { get; set; }
-        /// <summary>
-        /// 数据长度
-        /// </summary>
-        public int DataLength { get; set; }
-        /// <summary>
-        /// 数据帧方向，发送还是接收：0-发送，1-接收
-        /// </summary>
-        public int Direction { get; set; }
-        /// <summary>
-        /// 状态，0-初始状态；1-发送成功；2-接收已归档
-        /// </summary>
-        public int Status { get; set; }
+        public byte[] FBlob { get; set; }
+         */
         /// <summary>
         /// 备注
         /// </summary>
@@ -89,14 +90,14 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         #region -Methods-
 
         /// <summary>
-        /// Selects the specific DFInfo by identification.
+        /// Selects the specific DFRecvInfo by identification.
         /// </summary>
         /// <returns>YDSJ</returns>
-        public DFInfo SelectById()
-        {
+        public DFRecvInfo SelectById()
+        {/*
             OracleParameter p = PrepareRefCursor();
 
-            DataSet ds = _database.SpExecuteDataSet(s_up_dfinfo_select, new OracleParameter[]{
+            DataSet ds = _database.SpExecuteDataSet(s_up_dfrecvinfo_select, new OracleParameter[]{
                 new OracleParameter("p_Id", this.Id), 
                 p
             });
@@ -105,27 +106,27 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             {
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    return new DFInfo()
+                    return new DFRecvInfo()
                     {
                         Id = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = DateTime.Parse(dr["CTIME"].ToString()),
                         TaskID = dr["TaskID"].ToString(),
-                        SatID = dr["SatID"].ToString(),
+                        SatID = dr["SatName"].ToString(),
                         MainType = dr["MainType"].ToString(),
                         SecondType = dr["SecondType"].ToString(),
                         InfoTypeID = Convert.ToInt32(dr["InfoTypeID"].ToString()),
                         Source = Convert.ToInt32(dr["Source"].ToString()),
                         Destination = Convert.ToInt32(dr["Destination"].ToString()),
                         DataTime = Convert.ToDateTime(dr["DataTime"].ToString()),
-                        SequenceNO = Convert.ToInt32(dr["SequenceNO"].ToString()),
-                        DBlob = (byte[])dr["DBlob"],
+                        SequeceNO = Convert.ToInt32(dr["SequeceNO"].ToString()),
+                        DBlob = Utility.StringToByte(dr["DBlob"].ToString()),
                         DataLength = Convert.ToInt32(dr["DataLength"].ToString()),
                         Direction = Convert.ToInt32(dr["Direction"].ToString()),
                         Status = Convert.ToInt32(dr["Status"].ToString()),
-                        Remark = dr["Remark"].ToString()
+                        Remark = dr["RESERVE"].ToString()
                     };
                 }
-            }
+            }*/
             return null;
         }
 
@@ -147,21 +148,20 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 Direction = ParameterDirection.Output,
                 OracleDbType = OracleDbType.Double
             };
-            _database.SpExecuteNonQuery(s_up_dfinfo_insert, new OracleParameter[]{
+            _database.SpExecuteNonQuery(s_up_dfrecvinfo_insert, new OracleParameter[]{
                 new OracleParameter("p_CTime", DateTime.Now),
                 new OracleParameter("p_TaskID", this.TaskID),
                 new OracleParameter("p_SatID", this.SatID),
-                new OracleParameter("p_MainType", this.MainType),
-                new OracleParameter("p_SecondType", this.SecondType),
+                new OracleParameter("p_BTime", this.BTime),
+                new OracleParameter("p_ETime", this.ETime),
+                new OracleParameter("p_TotalPack", this.TotalPack),
+                new OracleParameter("p_ErrorPack", this.ErrorPack),
                 new OracleParameter("p_InfoTypeID", this.InfoTypeID),
                 new OracleParameter("p_Source", this.Source),
                 new OracleParameter("p_Destination", this.Destination),
-                new OracleParameter("p_DataTime", this.DataTime),
-                new OracleParameter("p_SequeceNO", this.SequenceNO),
-                new OracleParameter("p_DBlob", this.DBlob),
-                new OracleParameter("p_DataLength", this.DataLength),
-                new OracleParameter("p_Direction", this.Direction),
-                new OracleParameter("p_Status", this.Status),
+                new OracleParameter("p_FileName", this.FileName),
+                new OracleParameter("p_FileSize", this.FileSize),
+                //new OracleParameter("p_FBlob", this.FBlob),
                 new OracleParameter("p_Remark", this.Remark),
                 opId,
                 p
@@ -180,9 +180,15 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 OracleDbType = OracleDbType.Double
             };
 
-            _database.SpExecuteNonQuery(s_up_dfinfo_update, new OracleParameter[]{
+            _database.SpExecuteNonQuery(s_up_dfrecvinfo_update, new OracleParameter[]{
                     new OracleParameter("p_RID", this.Id),
-                    new OracleParameter("p_Status", this.Status),
+                    new OracleParameter("p_ETime", this.ETime),
+                    new OracleParameter("p_TotalPack", this.TotalPack),
+                    new OracleParameter("p_ErrorPack", this.ErrorPack),
+                    new OracleParameter("p_FileSize", this.FileSize),
+                    new OracleParameter("p_FileSize", this.FileName),
+                    //new OracleParameter("p_FBlob", this.FBlob),
+                    new OracleParameter("p_Remark", this.Remark),
                     p
                 });
             return (FieldVerifyResult)Convert.ToInt32(p.Value);

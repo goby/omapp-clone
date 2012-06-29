@@ -56,7 +56,9 @@
             <th>&nbsp;</th>
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
-                    OnClientClick="return verifyRole();" onclick="btnSubmit_Click" />
+                    OnClientClick="return verifyRole();" onclick="btnSubmit_Click" />&nbsp;&nbsp;
+                <asp:Button ID="btnReturn" class="button" runat="server" 
+                    Text="返回" onclick="btnReturn_Click" CausesValidation="False" />
             </td>
         </tr>
     </table>

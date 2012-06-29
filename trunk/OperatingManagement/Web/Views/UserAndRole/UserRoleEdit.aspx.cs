@@ -126,5 +126,10 @@ namespace OperatingManagement.Web.Views.UserAndRole
             this.AddJavaScriptInclude("scripts/pages/usernrole/userroleedit.aspx.js");
         }
 
+        protected void btnReturn_Click(object sender, EventArgs e)
+        {
+            Page.Response.Redirect("users.aspx");
+        }
+
     }
 }

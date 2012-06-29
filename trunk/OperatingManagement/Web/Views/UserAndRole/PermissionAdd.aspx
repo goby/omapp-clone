@@ -50,7 +50,7 @@
             <th>&nbsp;</th>
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
-                    onclick="btnSubmit_Click" />
+                    onclick="btnSubmit_Click" />&nbsp;&nbsp;
             </td>
         </tr>
     </table>

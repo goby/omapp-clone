@@ -38,9 +38,13 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         public string WXMC { get; set; }
         ///// <summary>
-        ///// 卫星代码、卫星唯一标识
+        ///// 卫星编号
         ///// </summary>
         public string WXBM { get; set; }
+        ///// <summary>
+        ///// 卫星标识
+        ///// </summary>
+        public string WXBS { get; set; }
         /// <summary>
         /// 状态，T为可用，F为不可用
         /// </summary>
@@ -114,7 +118,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             {
                 info = new Satellite()
                 {
-                    Id = ds.Tables[0].Rows[0]["WXBM"].ToString(),
+                    WXBM = ds.Tables[0].Rows[0]["WXBM"].ToString(),
+                    WXBS = ds.Tables[0].Rows[0]["WXBS"].ToString(),
                     WXMC = ds.Tables[0].Rows[0]["WXMC"].ToString(),
                     State = ds.Tables[0].Rows[0]["State"].ToString(),
                     MZB = Convert.ToInt32(ds.Tables[0].Rows[0]["MZB"]),
@@ -142,7 +147,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 {
                     Satellite info = new Satellite()
                     {
-                        Id = dr["WXBM"].ToString(),
+                        WXBM = dr["WXBM"].ToString(),
+                        WXBS = dr["WXBS"].ToString(),
                         WXMC = dr["WXMC"].ToString(),
                         State = dr["State"].ToString(),
                         MZB = Convert.ToInt32(dr["MZB"]),
@@ -172,6 +178,23 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     wxmc = query.FirstOrDefault().WXMC;
             }
             return wxmc;
+        }
+
+        /// <summary>
+        /// 根据WXBM获得卫星标识
+        /// </summary>
+        /// <param name="wxbm">卫星编码</param>
+        /// <returns>卫星标识</returns>
+        public string GetWXBS(string wxbm)
+        {
+            string wxbs = string.Empty;
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => a.Id == wxbm);
+                if (query != null && query.Count() > 0)
+                    wxbs = query.FirstOrDefault().WXBS;
+            }
+            return wxbs;
         }
         #endregion
 
