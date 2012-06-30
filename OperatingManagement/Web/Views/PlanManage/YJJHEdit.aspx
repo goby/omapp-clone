@@ -70,10 +70,9 @@
         <tr>
             <th class="style1">试验开始时间</th>
             <td>
-                <asp:TextBox ID="txtStartTime" runat="server" Width="90px" CssClass="text" 
-                    MaxLength="14" ClientIDMode="Static"></asp:TextBox>
-            &nbsp;<uc3:ucTimer ID="ucStartTimer" runat="server" Seperator="empty" 
-                    ShowSecond="True" />
+                <asp:TextBox ID="txtStartTime" runat="server" Width="300px" CssClass="text" 
+                    MaxLength="14" ClientIDMode="Static"   onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+            &nbsp;
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartTime"
                         ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
                 </td>
@@ -81,17 +80,16 @@
         <tr>
             <th class="style1">试验结束时间</th>
             <td>
-                <asp:TextBox ID="txtEndTime" runat="server" Width="90px" CssClass="text" 
-                    MaxLength="14" ClientIDMode="Static"></asp:TextBox>
-            &nbsp;<span style="color:#3399FF;"><uc3:ucTimer ID="ucEndTimer" runat="server" 
-                    Seperator="empty" ShowSecond="True" />
+                <asp:TextBox ID="txtEndTime" runat="server" Width="300px" CssClass="text" 
+                    MaxLength="14" ClientIDMode="Static"   onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+            &nbsp;<span style="color:#3399FF;">
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndTime"
                         ErrorMessage="结束时间不能为空" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                 </span><span style="color:#3399FF;">
                 <asp:CompareValidator ID="CompareValidator1" runat="server" 
                     ControlToCompare="txtStartTime" ControlToValidate="txtEndTime" 
                     Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
-                    Operator="GreaterThan" Type="Date"></asp:CompareValidator>
+                    Operator="GreaterThan" Type="Integer"></asp:CompareValidator>
                 </span></td>
         </tr>
         <tr>

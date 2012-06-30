@@ -1,22 +1,22 @@
 ﻿
-$(function () {
-    $("#txtPlanStartTime").datepicker();
-    $("#txtPlanEndTime").datepicker();
+//$(function () {
+//    $("#txtPlanStartTime").datepicker();
+//    $("#txtPlanEndTime").datepicker();
 
-    $("#txtMBTimeSection1").datepicker({
-            dateFormat: 'yymmdd'
-		});
-    $("#txtMBTimeSection2").datepicker({
-            dateFormat: 'yymmdd'
-		});
+//    $("#txtMBTimeSection1").datepicker({
+//            dateFormat: 'yymmdd'
+//		});
+//    $("#txtMBTimeSection2").datepicker({
+//            dateFormat: 'yymmdd'
+//		});
 
-    $("#txtHJTimeSection1").datepicker({
-            dateFormat: 'yymmdd'
-		});
-    $("#txtHJTimeSection2").datepicker({
-            dateFormat: 'yymmdd'
-		});
-});
+//    $("#txtHJTimeSection1").datepicker({
+//            dateFormat: 'yymmdd'
+//		});
+//    $("#txtHJTimeSection2").datepicker({
+//            dateFormat: 'yymmdd'
+//		});
+//});
 
     function showMsg(msg) {
         var _dialog;

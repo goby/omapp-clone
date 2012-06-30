@@ -51,45 +51,60 @@ namespace OperatingManagement.Web.Views.PlanManage
         }
         private void BindJhTable(string sID)
         {
-            List<JH> jh = (new JH()).SelectByIDS(sID);
-            HfFileIndex.Value = jh[0].FileIndex;
-            hfTaskID.Value = jh[0].TaskID.ToString();
-            ucTask1.SelectedValue = jh[0].TaskID.ToString();
-            txtJXH.Text = jh[0].PlanID.ToString("0000");
-            string[] strTemp = jh[0].FileIndex.Split('_');
-            if (strTemp.Length >= 2)
+            try
             {
-                hfSatID.Value = strTemp[strTemp.Length - 2];
-                ucSatellite1.SelectedValue = strTemp[strTemp.Length - 2];
+                List<JH> jh = (new JH()).SelectByIDS(sID);
+                HfFileIndex.Value = jh[0].FileIndex;
+                hfTaskID.Value = jh[0].TaskID.ToString();
+                ucTask1.SelectedValue = jh[0].TaskID.ToString();
+                txtJXH.Text = jh[0].PlanID.ToString("0000");
+                string[] strTemp = jh[0].FileIndex.Split('_');
+                if (strTemp.Length >= 2)
+                {
+                    hfSatID.Value = strTemp[strTemp.Length - 2];
+                    ucSatellite1.SelectedValue = strTemp[strTemp.Length - 2];
+                }
+                txtNote.Text = jh[0].Reserve.ToString();
+                if (DateTime.Now > jh[0].StartTime)
+                {
+                    btnSubmit.Visible = false;
+                    //hfOverDate.Value = "true";
+                }
             }
-            txtNote.Text = jh[0].Reserve.ToString();
-            if (DateTime.Now > jh[0].StartTime)
+            catch (Exception ex)
             {
-                btnSubmit.Visible = false;
-                //hfOverDate.Value = "true";
+                throw (new AspNetException("绑定计划基本信息出现异常，异常原因", ex));
             }
+            finally { }
         }
         private void BindXML()
         {
-            CultureInfo provider = CultureInfo.InvariantCulture;
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(HfFileIndex.Value);
-            XmlNode root = xmlDoc.SelectSingleNode("仿真推演试验数据/SatName");
-            ddlSatName.SelectedValue = root.InnerText;
-            root = xmlDoc.SelectSingleNode("仿真推演试验数据/Type");
-            ddlType.SelectedValue= root.InnerText;
-            root = xmlDoc.SelectSingleNode("仿真推演试验数据/TestItem");
-            ddlTestItem.SelectedValue = root.InnerText;
-            root = xmlDoc.SelectSingleNode("仿真推演试验数据/StartTime");
-            //txtStartTime.Text = root.InnerText;
-            txtStartTime.Text = DateTime.ParseExact(root.InnerText, "yyyyMMddHHmmss", provider).ToString("yyyy-MM-dd");
-            ucStartTimer.Timer = root.InnerText.Substring(8);
-            root = xmlDoc.SelectSingleNode("仿真推演试验数据/EndTime");
-            txtEndTime.Text = DateTime.ParseExact(root.InnerText, "yyyyMMddHHmmss", provider).ToString("yyyy-MM-dd");
-            ucEndTimer.Timer = root.InnerText.Substring(8);
-            root = xmlDoc.SelectSingleNode("仿真推演试验数据/Condition");
-            txtCondition.Text = root.InnerText;
-
+            try
+            {
+                CultureInfo provider = CultureInfo.InvariantCulture;
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(HfFileIndex.Value);
+                XmlNode root = xmlDoc.SelectSingleNode("仿真推演试验数据/SatName");
+                ddlSatName.SelectedValue = root.InnerText;
+                root = xmlDoc.SelectSingleNode("仿真推演试验数据/Type");
+                ddlType.SelectedValue = root.InnerText;
+                root = xmlDoc.SelectSingleNode("仿真推演试验数据/TestItem");
+                ddlTestItem.SelectedValue = root.InnerText;
+                root = xmlDoc.SelectSingleNode("仿真推演试验数据/StartTime");
+                //txtStartTime.Text = root.InnerText;
+                txtStartTime.Text = root.InnerText;
+                //ucStartTimer.Timer = root.InnerText.Substring(8);
+                root = xmlDoc.SelectSingleNode("仿真推演试验数据/EndTime");
+                txtEndTime.Text = root.InnerText;
+                //ucEndTimer.Timer = root.InnerText.Substring(8);
+                root = xmlDoc.SelectSingleNode("仿真推演试验数据/Condition");
+                txtCondition.Text = root.InnerText;
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("绑定仿真推演试验计划信息出现异常，异常原因", ex));
+            }
+            finally { }
         }
         public override void OnPageLoaded()
         {
@@ -101,81 +116,91 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            TYSJ objTYSJ = new TYSJ();
-            objTYSJ.SatName = ddlSatName.SelectedItem.Text;
-            objTYSJ.Type = ddlType.SelectedItem.Text;
-            objTYSJ.TestItem = ddlTestItem.SelectedItem.Text;
-            objTYSJ.StartTime = Convert.ToDateTime(txtStartTime.Text).ToString("yyyyMMdd") + ucStartTimer.ToString();
-            objTYSJ.EndTime = Convert.ToDateTime(txtEndTime.Text).ToString("yyyyMMdd") + ucStartTimer.ToString();
-            objTYSJ.Condition = txtCondition.Text;
-            objTYSJ.TaskID = ucTask1.SelectedItem.Value;
-            objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
-            CultureInfo provider = CultureInfo.InvariantCulture;
+            try
+            {
+                TYSJ objTYSJ = new TYSJ();
+                objTYSJ.SatName = ddlSatName.SelectedItem.Text;
+                objTYSJ.Type = ddlType.SelectedItem.Text;
+                objTYSJ.TestItem = ddlTestItem.SelectedItem.Text;
+                objTYSJ.StartTime = txtStartTime.Text;
+                objTYSJ.EndTime = txtEndTime.Text;
+                objTYSJ.Condition = txtCondition.Text;
+                objTYSJ.TaskID = ucTask1.SelectedItem.Value;
+                objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
+                CultureInfo provider = CultureInfo.InvariantCulture;
 
-            PlanFileCreator creater = new PlanFileCreator();
-            if (hfStatus.Value == "new")
-            {
-                string filepath = creater.CreateTYSJFile(objTYSJ, 0);
-                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
-                {
-                    TaskID = objTYSJ.TaskID,
-                    PlanType = "TYSJ",
-                    PlanID = (new Sequence()).GetTYSJSequnce(),
-                    //StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddHHmmss", provider),
-                    //EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddHHmmss", provider),
-                    StartTime = DateTime.ParseExact(objTYSJ.StartTime, "yyyyMMddHHmmss", provider),
-                    EndTime = DateTime.ParseExact(objTYSJ.EndTime, "yyyyMMddHHmmss", provider),
-                    SRCType = 0,
-                    FileIndex = filepath,
-                    SatID = objTYSJ.SatID,
-                    Reserve = txtNote.Text
-                };
-                var result = jh.Add();
-                txtJXH.Text = jh.PlanID.ToString("0000");
-            }
-            else
-            {
-                //当任务和卫星更新时，需要更新文件名称
-                if (hfSatID.Value != ucSatellite1.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
+                PlanFileCreator creater = new PlanFileCreator();
+                if (hfStatus.Value == "new")
                 {
                     string filepath = creater.CreateTYSJFile(objTYSJ, 0);
-
                     DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
                     {
-                        Id = Convert.ToInt32(HfID.Value),
                         TaskID = objTYSJ.TaskID,
+                        PlanType = "TYSJ",
+                        PlanID = (new Sequence()).GetTYSJSequnce(),
+                        //StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddHHmmss", provider),
+                        //EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddHHmmss", provider),
                         StartTime = DateTime.ParseExact(objTYSJ.StartTime, "yyyyMMddHHmmss", provider),
                         EndTime = DateTime.ParseExact(objTYSJ.EndTime, "yyyyMMddHHmmss", provider),
+                        SRCType = 0,
                         FileIndex = filepath,
                         SatID = objTYSJ.SatID,
                         Reserve = txtNote.Text
                     };
-                    var result = jh.Update();
-                    //更新隐藏域的任务ID和卫星ID
-                    hfTaskID.Value = jh.TaskID;
-                    hfSatID.Value = jh.SatID;
+                    var result = jh.Add();
+                    txtJXH.Text = jh.PlanID.ToString("0000");
                 }
                 else
                 {
-                    creater.FilePath = HfFileIndex.Value;
-                    creater.CreateTYSJFile(objTYSJ, 1);
+                    //当任务和卫星更新时，需要更新文件名称
+                    if (hfSatID.Value != ucSatellite1.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
+                    {
+                        string filepath = creater.CreateTYSJFile(objTYSJ, 0);
+
+                        DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                        {
+                            Id = Convert.ToInt32(HfID.Value),
+                            TaskID = objTYSJ.TaskID,
+                            StartTime = DateTime.ParseExact(objTYSJ.StartTime, "yyyyMMddHHmmss", provider),
+                            EndTime = DateTime.ParseExact(objTYSJ.EndTime, "yyyyMMddHHmmss", provider),
+                            FileIndex = filepath,
+                            SatID = objTYSJ.SatID,
+                            Reserve = txtNote.Text
+                        };
+                        var result = jh.Update();
+                        //更新隐藏域的任务ID和卫星ID
+                        hfTaskID.Value = jh.TaskID;
+                        hfSatID.Value = jh.SatID;
+                    }
+                    else
+                    {
+                        creater.FilePath = HfFileIndex.Value;
+                        creater.CreateTYSJFile(objTYSJ, 1);
+                    }
                 }
+                ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
             }
-            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
+            catch (Exception ex)
+            {
+                throw (new AspNetException("保存计划信息出现异常，异常原因", ex));
+            }
+            finally { }
         }
 
         protected void btnSaveTo_Click(object sender, EventArgs e)
         {
-            TYSJ objTYSJ = new TYSJ();
-            objTYSJ.SatName = ddlSatName.SelectedItem.Text;
-            objTYSJ.Type = ddlType.SelectedItem.Text;
-            objTYSJ.TestItem = ddlTestItem.SelectedItem.Text;
-            objTYSJ.StartTime = Convert.ToDateTime(txtStartTime.Text).ToString("yyyyMMdd") + ucStartTimer.ToString();
-            objTYSJ.EndTime = Convert.ToDateTime(txtEndTime.Text).ToString("yyyyMMdd") + ucStartTimer.ToString();
-            objTYSJ.Condition = txtCondition.Text;
-            CultureInfo provider = CultureInfo.InvariantCulture;
+            try
+            {
+                TYSJ objTYSJ = new TYSJ();
+                objTYSJ.SatName = ddlSatName.SelectedItem.Text;
+                objTYSJ.Type = ddlType.SelectedItem.Text;
+                objTYSJ.TestItem = ddlTestItem.SelectedItem.Text;
+                objTYSJ.StartTime = txtStartTime.Text;
+                objTYSJ.EndTime = txtEndTime.Text;
+                objTYSJ.Condition = txtCondition.Text;
+                CultureInfo provider = CultureInfo.InvariantCulture;
 
-            PlanFileCreator creater = new PlanFileCreator();
+                PlanFileCreator creater = new PlanFileCreator();
 
                 objTYSJ.TaskID = ucTask1.SelectedItem.Value;
                 objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
@@ -203,7 +228,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                 var result = jh.Add();
 
                 ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
-        
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("另存计划信息出现异常，异常原因", ex));
+            }
+            finally { }
         }
 
         /// <summary>
@@ -301,18 +331,26 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         protected void btnReset_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(HfID.Value))
+            try
             {
-                Page.Response.Redirect(Request.CurrentExecutionFilePath);
+                if (string.IsNullOrEmpty(HfID.Value))
+                {
+                    Page.Response.Redirect(Request.CurrentExecutionFilePath);
+                }
+                else
+                {
+                    string sID = HfID.Value;
+                    HfID.Value = sID;
+                    hfStatus.Value = "edit";    //编辑
+                    BindJhTable(sID);
+                    BindXML();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                string sID = HfID.Value;
-                HfID.Value = sID;
-                hfStatus.Value = "edit";    //编辑
-                BindJhTable(sID);
-                BindXML();
+                throw (new AspNetException("重置页面出现异常，异常原因", ex));
             }
+            finally { }
         }
 
         protected void btnReturn_Click(object sender, EventArgs e)

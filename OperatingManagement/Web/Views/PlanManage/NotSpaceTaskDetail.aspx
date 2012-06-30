@@ -122,7 +122,7 @@
                 </th>
                 <td>
                     <asp:Label ID="lblOhm" runat="server"></asp:Label>
-                    &nbsp;2<sup>-22</sup>度
+                    &nbsp;度
                 </td>
             </tr>
             <tr>
@@ -147,14 +147,13 @@
                 </th>
                 <td>
                     <asp:Label ID="lblE" runat="server"></asp:Label>
-                    &nbsp;2<sup>-31</sup>
                 </td>
                 <th>
                     轨道倾角：
                 </th>
                 <td>
                     <asp:Label ID="lblI" runat="server"></asp:Label>
-                    &nbsp;2<sup>-24</sup>度
+                    &nbsp;度
                 </td>
             </tr>
             <tr>
@@ -163,14 +162,14 @@
                 </th>
                 <td>
                     <asp:Label ID="lblOmega" runat="server"></asp:Label>
-                    &nbsp;2<sup>-22</sup>度
+                    &nbsp;度
                 </td>
                 <th>
                     平近点角：
                 </th>
                 <td>
                     <asp:Label ID="lblM" runat="server"></asp:Label>
-                    &nbsp;2<sup>-22</sup>度
+                    &nbsp;度
                 </td>
             </tr>
             <tr>
@@ -179,14 +178,14 @@
                 </th>
                 <td>
                     <asp:Label ID="lblP" runat="server"></asp:Label>
-                    &nbsp;2<sup>-20</sup>分钟
+                    &nbsp;分钟
                 </td>
                 <th>
                     轨道周期变化率：
                 </th>
                 <td>
                     <asp:Label ID="lblPi" runat="server"></asp:Label>
-                    &nbsp;2<sup>-20</sup>秒/天
+                    &nbsp;秒/天
                 </td>
             </tr>
         </table>
