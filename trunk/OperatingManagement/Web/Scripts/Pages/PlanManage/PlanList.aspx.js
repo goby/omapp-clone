@@ -3,10 +3,10 @@ $(window).ready(function () {
     _dialog = $("#dialog-form");
 });
 
-$(function () {
-    $("#txtStartDate").datepicker();
-    $("#txtEndDate").datepicker();
-});
+//$(function () {
+//    $("#txtStartDate").datepicker();
+//    $("#txtEndDate").datepicker();
+//});
 
 
 function reset(o) {

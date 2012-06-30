@@ -58,7 +58,7 @@
                 </th>
                 <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" MaxLength="10"
-                        ClientIDMode="Static"></asp:TextBox>
+                        ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtPlanStartTime"
                         ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
                 </td>
@@ -67,7 +67,7 @@
                 </th>
                 <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" MaxLength="10" 
-                        ClientIDMode="Static"></asp:TextBox>
+                        ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtPlanEndTime"
                         ErrorMessage="结束时间不能为空" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                     <asp:CompareValidator ID="CompareValidator1" runat="server" 
@@ -186,13 +186,13 @@
                                         任务准备开始时间
                                     </th>
                                     <td>
-                                        <asp:TextBox MaxLength="14" ID="txtPreStartTime" CssClass="text" runat="server" Text='<%# Eval("PreStartTime")%>'></asp:TextBox>
+                                        <asp:TextBox MaxLength="14" ID="txtPreStartTime" CssClass="text" runat="server" Text='<%# Eval("PreStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
                                     <th style="width: 100px;">
                                         任务开始时间
                                     </th>
                                     <td>
-                                        <asp:TextBox MaxLength="14" ID="txtStartTime" CssClass="text" runat="server" Text='<%# Eval("StartTime")%>'></asp:TextBox>
+                                        <asp:TextBox MaxLength="14" ID="txtStartTime" CssClass="text" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -200,13 +200,13 @@
                                         跟踪开始时间
                                     </th>
                                     <td>
-                                        <asp:TextBox MaxLength="14" ID="txtTrackStartTime" CssClass="text" runat="server" Text='<%# Eval("TrackStartTime")%>'></asp:TextBox>
+                                        <asp:TextBox MaxLength="14" ID="txtTrackStartTime" CssClass="text" runat="server" Text='<%# Eval("TrackStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
                                     <th style="width: 100px;">
                                         开上行载波时间
                                     </th>
                                     <td>
-                                        <asp:TextBox MaxLength="14" ID="txtWaveOnStartTime" CssClass="text" runat="server" Text='<%# Eval("WaveOnStartTime")%>'></asp:TextBox>
+                                        <asp:TextBox MaxLength="14" ID="txtWaveOnStartTime" CssClass="text" runat="server" Text='<%# Eval("WaveOnStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -214,13 +214,13 @@
                                         关上行载波时间
                                     </th>
                                     <td>
-                                        <asp:TextBox MaxLength="14" ID="txtWaveOffStartTime" CssClass="text" runat="server" Text='<%# Eval("WaveOffStartTime")%>'></asp:TextBox>
+                                        <asp:TextBox MaxLength="14" ID="txtWaveOffStartTime" CssClass="text" runat="server" Text='<%# Eval("WaveOffStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
                                     <th style="width: 100px;">
                                         跟踪结束时间
                                     </th>
                                     <td>
-                                        <asp:TextBox MaxLength="14" ID="txtTrackEndTime" CssClass="text" runat="server" Text='<%# Eval("TrackEndTime")%>'></asp:TextBox>
+                                        <asp:TextBox MaxLength="14" ID="txtTrackEndTime" CssClass="text" runat="server" Text='<%# Eval("TrackEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -228,7 +228,7 @@
                                         任务结束时间
                                     </th>
                                     <td>
-                                        <asp:TextBox MaxLength="14" ID="txtEndTime" CssClass="text" runat="server" Text='<%# Eval("EndTime")%>'></asp:TextBox>
+                                        <asp:TextBox MaxLength="14" ID="txtEndTime" CssClass="text" runat="server" Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
                                     <th>
                                     </th>
@@ -275,10 +275,10 @@
                                                         <asp:TextBox ID="txtInfoFlowFlag" CssClass="text" runat="server" Text='<%# Eval("InfoFlowFlag")%>'></asp:TextBox>
                                                     </td>
                                                     <td>
-                                                        <asp:TextBox MaxLength="14" ID="txtTransStartTime" CssClass="text" runat="server" Text='<%# Eval("TransStartTime")%>'></asp:TextBox>
+                                                        <asp:TextBox MaxLength="14" ID="txtTransStartTime" CssClass="text" runat="server" Text='<%# Eval("TransStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                                     </td>
                                                     <td>
-                                                        <asp:TextBox MaxLength="14" ID="txtTransEndTime" CssClass="text" runat="server" Text='<%# Eval("TransEndTime")%>'></asp:TextBox>
+                                                        <asp:TextBox MaxLength="14" ID="txtTransEndTime" CssClass="text" runat="server" Text='<%# Eval("TransEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                                     </td>
                                                     <td>
                                                         <asp:TextBox ID="txtTransSpeedRate" CssClass="text" runat="server" Text='<%# Eval("TransSpeedRate")%>'></asp:TextBox>
@@ -338,13 +338,13 @@
                                                         <asp:TextBox ID="InfoFlowFlag" Width="120px" CssClass="text" runat="server" Text='<%# Eval("InfoFlowFlag")%>'></asp:TextBox>
                                                     </td>
                                                     <td>
-                                                        <asp:TextBox MaxLength="14" ID="DataStartTime" Width="120px" CssClass="text" runat="server" Text='<%# Eval("DataStartTime")%>'></asp:TextBox>
+                                                        <asp:TextBox MaxLength="14" ID="DataStartTime" Width="120px" CssClass="text" runat="server" Text='<%# Eval("DataStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                                     </td>
                                                     <td>
-                                                        <asp:TextBox MaxLength="14" ID="DataEndTime" Width="120px" CssClass="text" runat="server" Text='<%# Eval("DataEndTime")%>'></asp:TextBox>
+                                                        <asp:TextBox MaxLength="14" ID="DataEndTime" Width="120px" CssClass="text" runat="server" Text='<%# Eval("DataEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                                     </td>
                                                     <td>
-                                                        <asp:TextBox MaxLength="14" ID="TransStartTime" Width="120px" CssClass="text" runat="server" Text='<%# Eval("TransStartTime")%>'></asp:TextBox>
+                                                        <asp:TextBox MaxLength="14" ID="TransStartTime" Width="120px" CssClass="text" runat="server" Text='<%# Eval("TransStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                                     </td>
                                                     <td>
                                                         <asp:TextBox ID="TransSpeedRate" Width="120px" CssClass="text" runat="server" Text='<%# Eval("TransSpeedRate")%>'></asp:TextBox>

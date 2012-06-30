@@ -1,8 +1,8 @@
 ﻿
-$(function () {
-    $("#txtPlanStartTime").datepicker();
-    $("#txtPlanEndTime").datepicker();
-});
+//$(function () {
+//    $("#txtPlanStartTime").datepicker();
+//    $("#txtPlanEndTime").datepicker();
+//});
 
 function showMsg(msg) {
     var _dialog;

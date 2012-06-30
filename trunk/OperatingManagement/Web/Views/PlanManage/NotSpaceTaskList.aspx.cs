@@ -37,8 +37,15 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-
-            BindGridView();
+            try
+            {
+                BindGridView();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("非空间机动任务列表页面搜索出现异常，异常原因", ex));
+            }
+            finally { }
         }
 
         //绑定列表

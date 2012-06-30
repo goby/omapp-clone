@@ -1,7 +1,7 @@
-﻿$(function () {
-    $("#txtStartDate").datepicker();
-    $("#txtEndDate").datepicker();
-});
+﻿//$(function () {
+//    $("#txtStartDate").datepicker();
+//    $("#txtEndDate").datepicker();
+//});
 
 function reset(o) {
     $('input:text').val('');

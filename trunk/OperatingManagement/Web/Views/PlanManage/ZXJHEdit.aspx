@@ -37,7 +37,7 @@
                 </th>
                 <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" MaxLength="10"
-                        ClientIDMode="Static"></asp:TextBox>
+                        ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtPlanStartTime"
                         ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
                 </td>
@@ -46,7 +46,7 @@
                 </th>
                 <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" MaxLength="10" 
-                        ClientIDMode="Static"></asp:TextBox>
+                        ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtPlanEndTime"
                         ErrorMessage="结束时间不能为空" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                     <asp:CompareValidator ID="CompareValidator1" runat="server" 
@@ -60,7 +60,7 @@
                     日期
                 </th>
                 <td>
-                    <asp:TextBox ID="txtDate" CssClass="text" runat="server" MaxLength="10" ClientIDMode="Static"></asp:TextBox>
+                    <asp:TextBox ID="txtDate" CssClass="text" runat="server" MaxLength="10" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                 </td>
                 <th style="width: 100px;">
                     备注
@@ -104,7 +104,7 @@
                     试验开始日期及时间
                 </th>
                 <td>
-                    <asp:TextBox ID="txtSYDateTime" runat="server" CssClass="text" Text='<%# Eval("SYDateTime")%>'></asp:TextBox>
+                    <asp:TextBox ID="txtSYDateTime" runat="server" CssClass="text" Text='<%# Eval("SYDateTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH-mm-ss'})"></asp:TextBox>
                 </td>
                 <th style="width: 120px;">
                     试验运行的天数
@@ -132,10 +132,10 @@
                         </tr>
                         <tr>
                             <td>
-                                <asp:TextBox ID="txtLoadStartTime" runat="server" CssClass="text" Text='<%# Eval("SYLoadStartTime")%>'></asp:TextBox>
+                                <asp:TextBox ID="txtLoadStartTime" runat="server" CssClass="text" Text='<%# Eval("SYLoadStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                             <td>
-                                <asp:TextBox ID="txtLoadEndTime" runat="server" CssClass="text" Text='<%# Eval("SYLoadEndTime")%>'></asp:TextBox>
+                                <asp:TextBox ID="txtLoadEndTime" runat="server" CssClass="text" Text='<%# Eval("SYLoadEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                             <td>
                                 <asp:TextBox ID="txtLoadContent" runat="server" CssClass="text" Text='<%# Eval("SYLoadContent")%>'></asp:TextBox>
@@ -166,10 +166,10 @@
                                 <asp:TextBox ID="txtSCLaps" runat="server" CssClass="text" Text='<%# Eval("SY_SCLaps")%>'></asp:TextBox>
                             </td>
                             <td>
-                                <asp:TextBox ID="txtSCStartTime" runat="server" CssClass="text" Text='<%# Eval("SY_SCStartTime")%>'></asp:TextBox>
+                                <asp:TextBox ID="txtSCStartTime" runat="server" CssClass="text" Text='<%# Eval("SY_SCStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                             <td>
-                                <asp:TextBox ID="txtSCEndTime" runat="server" CssClass="text" Text='<%# Eval("SY_SCEndTime")%>'></asp:TextBox>
+                                <asp:TextBox ID="txtSCEndTime" runat="server" CssClass="text" Text='<%# Eval("SY_SCEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                         </tr>
                     </table>
@@ -197,10 +197,10 @@
                                 <asp:TextBox ID="txtCKLaps" runat="server" CssClass="text" Text='<%# Eval("SY_CKLaps")%>'></asp:TextBox>
                             </td>
                             <td>
-                                <asp:TextBox ID="txtCKStartTime" runat="server" CssClass="text" Text='<%# Eval("SY_CKStartTime")%>'></asp:TextBox>
+                                <asp:TextBox ID="txtCKStartTime" runat="server" CssClass="text" Text='<%# Eval("SY_CKStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                             <td>
-                                <asp:TextBox ID="txtCKEndTime" runat="server" CssClass="text" Text='<%# Eval("SY_CKEndTime")%>'></asp:TextBox>
+                                <asp:TextBox ID="txtCKEndTime" runat="server" CssClass="text" Text='<%# Eval("SY_CKEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                         </tr>
                     </table>
@@ -282,7 +282,7 @@
                                     <asp:TextBox ID="txtWC_SYID" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtWC_StartTime" runat="server" Text='<%# Eval("StartTime")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtWC_StartTime" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtWC_MinTime" runat="server" Text='<%# Eval("MinTime")%>'></asp:TextBox>
@@ -352,13 +352,15 @@
                                 开始时间
                             </th>
                             <td>
-                                <asp:TextBox ID="txtWork_Load_StartTime" runat="server" CssClass="text" Text='<%# Eval("Work_Load_StartTime")%>'></asp:TextBox>
+                                <asp:TextBox ID="txtWork_Load_StartTime" runat="server" CssClass="text" 
+                                Text='<%# Eval("Work_Load_StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                             <th style="width: 60px;">
                                 结束时间
                             </th>
                             <td>
-                                <asp:TextBox ID="txtWork_Load_EndTime" runat="server" CssClass="text" Text='<%# Eval("Work_Load_EndTime")%>'></asp:TextBox>
+                                <asp:TextBox ID="txtWork_Load_EndTime" runat="server" CssClass="text" 
+                                Text='<%# Eval("Work_Load_EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
                             <th style="width: 60px;">
                             </th>
@@ -487,10 +489,12 @@
                                     <asp:TextBox Width="100px" ID="txtSHContent" runat="server" Text='<%# Eval("Content")%>'></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox Width="90px" ID="txtSHStartTime" runat="server" Text='<%# Eval("StartTime")%>'></asp:TextBox>
+                                    <asp:TextBox Width="90px" ID="txtSHStartTime" runat="server" 
+                                    Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox Width="90px" ID="txtSHEndTime" runat="server" Text='<%# Eval("EndTime")%>'></asp:TextBox>
+                                    <asp:TextBox Width="90px" ID="txtSHEndTime" runat="server" 
+                                    Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 </td>
                                 <td>
                                     <asp:TextBox Width="100px" ID="txtSHAfterDH" runat="server" Text='<%# Eval("AfterWardsDataHandle")%>'></asp:TextBox>
@@ -598,10 +602,10 @@
                                     <asp:TextBox ID="txtRCSYID" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtRCStartTime" runat="server" Text='<%# Eval("StartTime")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtRCStartTime" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtRCEndTime" runat="server" Text='<%# Eval("EndTime")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtRCEndTime" runat="server" Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 </td>
                                 <td>
                                     <asp:Button ID="btn7" CausesValidation="False" CssClass="button" runat="server" CommandName="Add"
@@ -646,10 +650,10 @@
                                     <asp:TextBox ID="txtESYID" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtEStartTime" runat="server" Text='<%# Eval("StartTime")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtEStartTime" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtEEndTime" runat="server" Text='<%# Eval("EndTime")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtEEndTime" runat="server" Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 </td>
                                 <td>
                                     <asp:Button ID="btn9" CausesValidation="False" CssClass="button" runat="server" CommandName="Add"
@@ -701,10 +705,10 @@
                                         <asp:TextBox ID="txtMDes" runat="server" Text='<%# Eval("Description")%>'></asp:TextBox>
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtMStartTime" runat="server" Text='<%# Eval("StartTime")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtMStartTime" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtMEndTime" runat="server" Text='<%# Eval("EndTime")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtMEndTime" runat="server" Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                     </td>
                                     <td>
                                         <asp:Button ID="btn11" CausesValidation="False" CssClass="button" runat="server"

@@ -41,7 +41,7 @@
             </th>
             <td>
                 <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" MaxLength="10"
-                    ClientIDMode="Static"></asp:TextBox>
+                    ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
                         ControlToValidate="txtPlanStartTime" ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
             </td>
@@ -50,7 +50,7 @@
             </th>
             <td>
                 <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" MaxLength="10" 
-                    ClientIDMode="Static"></asp:TextBox>
+                    ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                 &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
                         ControlToValidate="txtPlanEndTime" ErrorMessage="结束时间不能为空" 
                     ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
@@ -87,7 +87,7 @@
                 需求制定时间
             </th>
             <td>
-                <asp:TextBox ID="txtMBTime" runat="server" CssClass="text" MaxLength="12"></asp:TextBox>
+                <asp:TextBox ID="txtMBTime" runat="server" CssClass="text" MaxLength="12" onfocus="WdatePicker({dateFmt:'yyyyMMddHHmm'})"></asp:TextBox>
                 &nbsp;<span style="color:#3399FF;">格式：YYYYMMDDHHMM</span>
             </td>
         </tr>
@@ -97,14 +97,14 @@
             </th>
             <td>
                 <asp:TextBox ID="txtMBTimeSection1" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8"></asp:TextBox>
+                    MaxLength="8" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
             </td>
             <th style="width:100px;">
                 结束时间
             </th>
             <td>
                 <asp:TextBox ID="txtMBTimeSection2" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8"></asp:TextBox>
+                    MaxLength="8" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
             </td>
         </tr>
         <tr>
@@ -160,7 +160,7 @@
                                     </asp:DropDownList>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtMBInfoTime" MaxLength="4" runat="server" Text='<%# Eval("InfoTime")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtMBInfoTime" MaxLength="4" runat="server" Text='<%# Eval("InfoTime")%>'  onfocus="WdatePicker({dateFmt:'HHmm'})"></asp:TextBox>
                                 </td>
                                 <td>
                                     <asp:Button ID="btn9" CausesValidation="False" CssClass="button" runat="server" CommandName="Add" Text="添加" />
@@ -192,7 +192,7 @@
                 需求制定时间
             </th>
             <td>
-                <asp:TextBox ID="txtHJTime" runat="server" CssClass="text" MaxLength="12"></asp:TextBox>
+                <asp:TextBox ID="txtHJTime" runat="server" CssClass="text" MaxLength="12" onfocus="WdatePicker({dateFmt:'yyyyMMddHHmm'})"></asp:TextBox>
                 &nbsp;<span style="color:#3399FF;">格式：YYYYMMDDHHMM</span>
             </td>
         </tr>
@@ -202,14 +202,14 @@
             </th>
             <td>
                 <asp:TextBox ID="txtHJTimeSection1" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8"></asp:TextBox>
+                    MaxLength="8" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
             </td>
             <th style="width:100px;">
                 结束时间
             </th>
             <td>
                 <asp:TextBox ID="txtHJTimeSection2" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8"></asp:TextBox>
+                    MaxLength="8" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
             </td>
         </tr>
         <tr>
@@ -271,7 +271,7 @@
                                     <asp:TextBox ID="txtHJInfoArea" MaxLength="64" runat="server" Text='<%# Eval("InfoArea")%>' Width="350px"></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtHJInfoTime" MaxLength="4" runat="server" Text='<%# Eval("InfoTime")%>' Width="90px"></asp:TextBox>
+                                    <asp:TextBox ID="txtHJInfoTime" MaxLength="4" runat="server" Text='<%# Eval("InfoTime")%>' Width="90px" onfocus="WdatePicker({dateFmt:'HHmm'})"></asp:TextBox>
                                 </td>
                                 <td>
                                     <asp:Button ID="btn11" CausesValidation="False" CssClass="button" runat="server" CommandName="Add" Text="添加" />

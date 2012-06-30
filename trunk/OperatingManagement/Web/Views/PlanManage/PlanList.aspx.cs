@@ -32,16 +32,24 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
-                //pnlDestination.Visible = false;
-                //pnlData.Visible = true;
+                try
+                {
+                    //pnlDestination.Visible = false;
+                    //pnlData.Visible = true;
 
-                txtStartDate.Attributes.Add("readonly", "true");
-                txtEndDate.Attributes.Add("readonly", "true");
+                    txtStartDate.Attributes.Add("readonly", "true");
+                    txtEndDate.Attributes.Add("readonly", "true");
 
-                pnlAll1.Visible = false;
-                pnlAll2.Visible = false;
+                    pnlAll1.Visible = false;
+                    pnlAll2.Visible = false;
 
-                lblMessage.Text = ""; //文件发送消息清空
+                    lblMessage.Text = ""; //文件发送消息清空
+                }
+                catch (Exception ex)
+                {
+                    throw (new AspNetException("计划列表页面初始化出现异常，异常原因", ex));
+                }
+                finally { }
             }
         }
 
@@ -52,8 +60,16 @@ namespace OperatingManagement.Web.Views.PlanManage
         /// <param name="e"></param>
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            lblMessage.Text = ""; //文件发送消息清空
-            BindGridView();
+            try
+            {
+                lblMessage.Text = ""; //文件发送消息清空
+                BindGridView();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("计划列表页面搜索出现异常，异常原因", ex));
+            }
+            finally { }
         }
 
         /// <summary>
@@ -111,68 +127,75 @@ namespace OperatingManagement.Web.Views.PlanManage
         /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            PlanFileCreator creater = new PlanFileCreator();
-            string SendingFilePaths = "";
-            lblMessage.Text = "";//清空发送信息
-            foreach (ListItem li in ckbDestination.Items)
+            try
             {
-                if (li.Selected)
+                PlanFileCreator creater = new PlanFileCreator();
+                string SendingFilePaths = "";
+                lblMessage.Text = "";//清空发送信息
+                foreach (ListItem li in ckbDestination.Items)
                 {
-
-                    switch (txtPlanType.Text)
+                    if (li.Selected)
                     {
-                        case "YJJH":
-                            SendingFilePaths = creater.CreateSendingYJJHFile(txtId.Text, li.Value, li.Text);
-                            break;
-                        case "XXXQ":
-                            SendingFilePaths = creater.CreateSendingXXXQFile(txtId.Text, li.Value, li.Text);
-                            break;
-                        case "DMJH":
-                        case "GZJH":
-                            SendingFilePaths = creater.CreateSendingGZJHFile(txtId.Text, li.Value, li.Text);
-                            break;
-                        case "TYSJ":
-                            SendingFilePaths = creater.CreateSendingTYSJFile(txtId.Text, li.Value, li.Text);
-                            break;
-                    }
 
-                    XYXSInfo objXYXSInfo = new XYXSInfo();
-                    //发送方ID （运控中心 YKZX）
-                    int senderid = objXYXSInfo.GetIdByAddrMark(System.Configuration.ConfigurationManager.AppSettings["ZXBM"]);
-                    //接收方ID 
-                    int reveiverid = objXYXSInfo.GetIdByAddrMark(li.Value);
-                    //信息类型id
-                    int infotypeid = (new InfoType()).GetIDByExMark(txtPlanType.Text);
-                    bool boolResult = true; //文件发送结果
-                    FileSender objSender = new FileSender();
-                    string[] filePaths = SendingFilePaths.Split(',');
-                    for (int i = 0; i < filePaths.Length; i++)
-                    {
-                        //if (txtPlanType.Text == "XXXQ")
-                        //{
-                        //    if (filePaths[i].Contains("MBXQ"))
-                        //    {
-                        //        infotypeid = (new InfoType()).GetIDByExMark("MBXX");
-                        //    }
-                        //    else if (filePaths[i].Contains("HJXX"))
-                        //    {
-                        //        infotypeid = (new InfoType()).GetIDByExMark("HJXX");
-                        //    }
-                        //}
-                        boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), filePaths[i], CommunicationWays.FEPwithTCP, senderid, reveiverid, infotypeid, true);
-                        if (boolResult)
+                        switch (txtPlanType.Text)
                         {
-                            lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
+                            case "YJJH":
+                                SendingFilePaths = creater.CreateSendingYJJHFile(txtId.Text, li.Value, li.Text);
+                                break;
+                            case "XXXQ":
+                                SendingFilePaths = creater.CreateSendingXXXQFile(txtId.Text, li.Value, li.Text);
+                                break;
+                            case "DMJH":
+                            case "GZJH":
+                                SendingFilePaths = creater.CreateSendingGZJHFile(txtId.Text, li.Value, li.Text);
+                                break;
+                            case "TYSJ":
+                                SendingFilePaths = creater.CreateSendingTYSJFile(txtId.Text, li.Value, li.Text);
+                                break;
                         }
-                        else
-                        {
-                            lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
-                        }
-                    }
 
-                }//li
+                        XYXSInfo objXYXSInfo = new XYXSInfo();
+                        //发送方ID （运控中心 YKZX）
+                        int senderid = objXYXSInfo.GetIdByAddrMark(System.Configuration.ConfigurationManager.AppSettings["ZXBM"]);
+                        //接收方ID 
+                        int reveiverid = objXYXSInfo.GetIdByAddrMark(li.Value);
+                        //信息类型id
+                        int infotypeid = (new InfoType()).GetIDByExMark(txtPlanType.Text);
+                        bool boolResult = true; //文件发送结果
+                        FileSender objSender = new FileSender();
+                        string[] filePaths = SendingFilePaths.Split(',');
+                        for (int i = 0; i < filePaths.Length; i++)
+                        {
+                            //if (txtPlanType.Text == "XXXQ")
+                            //{
+                            //    if (filePaths[i].Contains("MBXQ"))
+                            //    {
+                            //        infotypeid = (new InfoType()).GetIDByExMark("MBXX");
+                            //    }
+                            //    else if (filePaths[i].Contains("HJXX"))
+                            //    {
+                            //        infotypeid = (new InfoType()).GetIDByExMark("HJXX");
+                            //    }
+                            //}
+                            boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), filePaths[i], CommunicationWays.FEPwithTCP, senderid, reveiverid, infotypeid, true);
+                            if (boolResult)
+                            {
+                                lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
+                            }
+                            else
+                            {
+                                lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
+                            }
+                        }
+
+                    }//li
+                }
             }
-            
+            catch (Exception ex)
+            {
+                throw (new AspNetException("发送计划出现异常，异常原因", ex));
+            }
+            finally { }
         }
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)
