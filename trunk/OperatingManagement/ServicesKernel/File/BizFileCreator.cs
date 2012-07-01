@@ -311,7 +311,7 @@ namespace ServicesKernel.File
         private FileCreateResult CreateUFFile(UserFrame ufInfo, out string fileName, out string dataType)
         {
             FileCreateResult oResult = FileCreateResult.CreateSuccess;
-            dataType = GetInfoTypeFromYCPG(ufInfo);
+            dataType = GetInfoTypeFromUserFrame(ufInfo);
             fileName = string.Empty;
             if (dataType.Equals(string.Empty))
             {
@@ -439,7 +439,7 @@ namespace ServicesKernel.File
                 case "1":
                     strType = "JDZT";
                     break;
-                case "":
+                case "2":
                     strType = "JDCL";
                     break;
                 default:
@@ -453,18 +453,18 @@ namespace ServicesKernel.File
         /// </summary>
         /// <param name="ufinfo"></param>
         /// <returns></returns>
-        private string GetInfoTypeFromYCPG(UserFrame ufinfo)
+        private string GetInfoTypeFromUserFrame(UserFrame ufinfo)
         {
             string strType = string.Empty;
             switch (ufinfo.Userid)
             {
-                case "0"://GEO相机图像数据
+                case "user1"://GEO相机图像数据
                     strType = "PGEO";
                     break;
-                case "1"://LEO成像相机图像数据
+                case "user2"://LEO成像相机图像数据
                     strType = "PLEO";
                     break;
-                case "2"://LEO引导相机图像数据
+                case "user3"://LEO引导相机图像数据
                     strType = "GLEO";
                     break;
                 default:

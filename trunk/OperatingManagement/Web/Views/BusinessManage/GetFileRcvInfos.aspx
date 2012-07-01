@@ -14,7 +14,8 @@
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="listTitle" width="1500px">
         <tr>
-            <td width="80%"><div>信息类型<uc2:ucInfoType ID="ddlInfoType" runat="server" />
+            <td width="80%"><div>信息类型<uc2:ucInfoType ID="ddlInfoType" runat="server" 
+                    AllowBlankItem="True" />
                 开始日期<asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" 
                     runat="server"></asp:TextBox>
                 结束日期<asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" 

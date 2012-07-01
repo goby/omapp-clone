@@ -24,44 +24,89 @@ namespace OperatingManagement.Web.Views.BusinessManage
             HideMessage();
             if (!IsPostBack)
                 InitialPageData();
+            cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
+        }
+
+        protected void cpPager_PostBackPage(object sender, EventArgs e)
+        {
+            Search(false);
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            DateTime dtFrom = DateTime.MinValue;
-            DateTime dtTo = DateTime.MinValue;
-            if (txtFrom.Text != "")
-            {
-                if (!DateTime.TryParse(txtFrom.Text.Trim(), out dtFrom))
-                {
-                    ShowMessage("开始日期格式非法");
-                    return;
-                }
-            }
-            if (txtTo.Text != "")
-            {
-                if (!DateTime.TryParse(txtTo.Text.Trim(), out dtTo))
-                {
-                    ShowMessage("结束日期格式非法");
-                    return;
-                }
-            }
-
-            if (dtFrom != DateTime.MinValue && dtTo != DateTime.MinValue && dtFrom > dtTo)
-            {
-                ShowMessage("结束日期必须大于开始日期");
-                return;
-            }
-
-            FileReceiveInfo oRecv = new FileReceiveInfo();
-            oRecv.InfoTypeID = Convert.ToInt32(ddlInfoType.SelectedItem.Value);
-            List<FileReceiveInfo> listDatas = oRecv.Search(dtFrom, dtTo);
-            if (listDatas.Count == 0)
-                ShowMessage("没有符合条件的记录");
-            else
-                BindDataSource(listDatas);
+            Search(true);
         }
 
+        private void Search(bool fromSearchBtn)
+        {
+            DateTime dtFrom = DateTime.MinValue;
+            DateTime dtTo = DateTime.MinValue;
+            FileReceiveInfo oRecv = new FileReceiveInfo();
+
+            if (fromSearchBtn)
+            {
+                #region 判断日期格式
+                if (txtFrom.Text != "")
+                {
+                    if (!DateTime.TryParse(txtFrom.Text.Trim(), out dtFrom))
+                    {
+                        ShowMessage("开始日期格式非法");
+                        return;
+                    }
+                }
+                if (txtTo.Text != "")
+                {
+                    if (!DateTime.TryParse(txtTo.Text.Trim(), out dtTo))
+                    {
+                        ShowMessage("结束日期格式非法");
+                        return;
+                    }
+                }
+
+                if (dtFrom != DateTime.MinValue && dtTo != DateTime.MinValue && dtFrom > dtTo)
+                {
+                    ShowMessage("结束日期必须大于开始日期");
+                    return;
+                }
+                #endregion
+                oRecv.InfoTypeID = Convert.ToInt32(ddlInfoType.SelectedItem.Value);
+                this.ViewState["_filter"] = dtFrom.ToLongDateString() + "," + dtTo.ToLongDateString() + "," + ddlInfoType.SelectedItem.Value;
+            }
+            else
+            {
+                string[] strFilters = new string[0];
+                if (this.ViewState["_filter"] != null)
+                    strFilters = this.ViewState["_filter"].ToString().Split(new char[] { ','});
+                if (strFilters.Length == 3)
+                {
+                    try
+                    {
+                        DateTime.TryParse(strFilters[0], out dtFrom);
+                        DateTime.TryParse(strFilters[1], out dtTo);
+                        oRecv.InfoTypeID = Convert.ToInt32(strFilters[2]);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw(new AspNetException("查询文件接收记录-解析查询条件异常", ex));
+                    }
+                    finally { }
+                }
+            }
+            List<FileReceiveInfo> listDatas;
+            try
+            {
+                listDatas = oRecv.Search(dtFrom, dtTo);
+                if (listDatas.Count == 0)
+                    ShowMessage("没有符合条件的记录");
+                else
+                    BindDataSource(listDatas);
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询文件接收记录-查询出现异常", ex));
+            }
+            finally { }
+        }
 
         /// <summary>
         /// 初始化页面数据
@@ -69,8 +114,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
         private void InitialPageData()
         {
             FileReceiveInfo oRecv = new FileReceiveInfo();
-            List<FileReceiveInfo> listDatas = oRecv.SelectAll();
-            BindDataSource(listDatas);
+            try
+            {
+                List<FileReceiveInfo> listDatas = oRecv.SelectAll();
+                BindDataSource(listDatas);
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询文件接收记录-初始化页面出现异常", ex));
+            }
+            finally { }
         }
 
         /// <summary>

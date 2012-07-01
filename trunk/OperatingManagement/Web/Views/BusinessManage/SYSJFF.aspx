@@ -92,8 +92,6 @@
                     <th style="width:3%;">延时标志</th>
                     <th style="width:7%;">数据开始时间</th>
                     <th style="width:7%;">数据结束时间</th>
-                    <th style="width:7%;">数据总帧数</th>
-                    <th style="width:7%;">数据大小</th>
                     <th style="width:10%;">目录</th>
                     <th style="width:10%;">数据文件名</th>
                     <th style="width:4%;">备注</th>
@@ -112,8 +110,6 @@
                 <td><%# Eval("DelaySI") %></td>
                 <td><%# Eval("DATATIMEB", "{0:" + this.SiteSetting.DateTimeFormat + "}")%></td>
                 <td><%# Eval("DATATIMEE", "{0:" + this.SiteSetting.DateTimeFormat + "}")%></td>
-                <td><%# Eval("FRAMECOUNT")%></td>
-                <td><%# Eval("DATASIZE")%></td>
                 <td><%# Eval("DIRECTORY")%></td>
                 <td><%# Eval("FILENAME")%></td>
                 <td><%# Eval("Reserve") %></td>

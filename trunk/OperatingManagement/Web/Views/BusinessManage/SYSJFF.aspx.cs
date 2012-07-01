@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Security;
 using System.Data;
+using System.Threading;
 
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.WebKernel.Route;
@@ -25,8 +26,25 @@ namespace OperatingManagement.Web.Views.BusinessManage
             HideMessage();
             if (!Page.IsPostBack)
                 HidControl();
+            cpFZData.PostBackPage += new EventHandler(cpFZData_PostBackPage);
+            cpUFData.PostBackPage += new EventHandler(cpUFData_PostBackPage);
+            cpYCData.PostBackPage += new EventHandler(cpYCData_PostBackPage);
         }
 
+        protected void cpFZData_PostBackPage(object sender, EventArgs e)
+        {
+            BindData(false);
+        }
+
+        protected void cpUFData_PostBackPage(object sender, EventArgs e)
+        {
+            BindData(false);
+        }
+
+        protected void cpYCData_PostBackPage(object sender, EventArgs e)
+        {
+            BindData(false);
+        }
         /// <summary>
         /// 绑定YC控件数据源
         /// </summary>
@@ -115,62 +133,114 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            BindData();
+            BindData(true);
         }
 
-        public void BindData()
+        public void BindData(bool fromSearchBtn)
         {
             List<YCPG> listYCData = null;
             List<UserFrame> listUFData = null;
             HidControl();
 
             #region 取查询条件
-            string taskNo = (ucTask1.SelectedIndex == 0 ? "" : ucTask1.SelectedValue);
-            string satID = (ucSatellite1.SelectedIndex == 0 ? "" : ucSatellite1.SelectedValue);
+            string taskNo = string.Empty;
+            string satID = string.Empty;
             string sType = string.Empty;
             DateTime dtFrom = DateTime.MinValue;
             DateTime dtTo = DateTime.MinValue;
-            if (txtFrom.Text != "")
+            if (fromSearchBtn)
             {
-                if (!DateTime.TryParse(txtFrom.Text.Trim(), out dtFrom))
+                sType = ddlDataType.SelectedValue;
+                satID = (ucSatellite1.SelectedIndex == 0 ? "" : ucSatellite1.SelectedValue);
+                taskNo = (ucTask1.SelectedIndex == 0 ? "" : ucTask1.SelectedValue);
+                if (txtFrom.Text != "")
                 {
-                    ShowMessage("开始日期格式非法");
-                    return;
+                    if (!DateTime.TryParse(txtFrom.Text.Trim(), out dtFrom))
+                    {
+                        ShowMessage("开始日期格式非法");
+                        return;
+                    }
                 }
-            }
-            if (txtTo.Text != "")
-            {
-                if (!DateTime.TryParse(txtTo.Text.Trim(), out dtTo))
+                if (txtTo.Text != "")
                 {
-                    ShowMessage("结束日期格式非法");
-                    return;
+                    if (!DateTime.TryParse(txtTo.Text.Trim(), out dtTo))
+                    {
+                        ShowMessage("结束日期格式非法");
+                        return;
+                    }
                 }
-            }
 
-            if (dtFrom!= DateTime.MinValue && dtTo!= DateTime.MinValue && dtFrom > dtTo)
+                if (dtFrom != DateTime.MinValue && dtTo != DateTime.MinValue && dtFrom > dtTo)
+                {
+                    ShowMessage("结束日期必须大于开始日期");
+                    return;
+                }
+                this.ViewState["_filter"] = dtFrom.ToLongDateString() + "," + dtTo.ToLongDateString() + "," 
+                    + sType + "," + taskNo + "," + satID;
+            }
+            else
             {
-                ShowMessage("结束日期必须大于开始日期");
-                return;
+                string[] strFilters = new string[0];
+                if (this.ViewState["_filter"] != null)
+                    strFilters = this.ViewState["_filter"].ToString().Split(new char[] { ',' });
+                if (strFilters.Length == 5)
+                {
+                    DateTime.TryParse(strFilters[0], out dtFrom);
+                    DateTime.TryParse(strFilters[1], out dtTo);
+                    sType = strFilters[2];
+                    taskNo = strFilters[3];
+                    satID = strFilters[4];
+                }
             }
             #endregion
 
-            switch (ddlDataType.SelectedValue)
+            switch (sType)
             {
                 case "0"://TJ
-                    sType = "0";
-                    listYCData = new YCPG().GetSYSJ(dtFrom, dtTo, sType, taskNo, satID);
-                    BindYCDataSource(listYCData);
-                    listUFData = new UserFrame().GetSYSJ(dtFrom, dtTo, taskNo, satID);
-                    BindUFDataSource(listUFData);
+                    try
+                    {
+                        listYCData = new YCPG().GetSYSJ(dtFrom, dtTo, sType, taskNo, satID);
+                        BindYCDataSource(listYCData);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw (new AspNetException("天基目标观测试验数据-状态数据，获取出现异常", ex));
+                    }
+                    finally { }
+                    try
+                    {
+                        listUFData = new UserFrame().GetSYSJ(dtFrom, dtTo, taskNo, satID);
+                        BindUFDataSource(listUFData);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw (new AspNetException("天基目标观测试验数据-图像数据，获取出现异常", ex));
+                    }
+                    finally { }
                     break;
                 case "1"://KJ
-                    sType = "1";
-                    listYCData = new YCPG().GetSYSJ(dtFrom, dtTo, sType, taskNo, satID);
-                    BindYCDataSource(listYCData);
+                    try
+                    {
+                        listYCData = new YCPG().GetSYSJ(dtFrom, dtTo, sType, taskNo, satID);
+                        BindYCDataSource(listYCData);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw (new AspNetException("空间机动试验数据，获取出现异常", ex));
+                    }
+                    finally { }
                     break;
                 case "2"://FZ
-                    List<JH> listFZData = new JH().GetJHList("TYSJ", dtFrom, dtTo);
-                    BindFZDataSource(listFZData);
+                    try
+                    {
+                        List<JH> listFZData = new JH().GetJHList("TYSJ", dtFrom, dtTo);
+                        BindFZDataSource(listFZData);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw (new AspNetException("仿真推演试验数据，获取出现异常", ex));
+                    }
+                    finally { }
                     break;
             }
         }
@@ -186,6 +256,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 ShowMessage("没有选择要发送的数据。");
                 return;
             }
+            Thread oThread = new Thread(new ThreadStart(Data2File));
+            oThread.Start();
+            ShowMessage("已提交后台进行处理。");
         }
 
         /// <summary>
@@ -233,7 +306,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     int infoId = new InfoType().GetIDByExMark(dataType);
 
                     FileSender oSender = new FileSender();
-                    oSender.SendFile(filename, Param.OutPutPath, Convert.ToInt32(sendWay), sourceID, desID, infoId,true);
+                    oSender.SendFile(filename, Param.OutPutPath, (CommunicationWays)Convert.ToInt32(sendWay), sourceID, desID, infoId, true);
                     break;
             }
         }

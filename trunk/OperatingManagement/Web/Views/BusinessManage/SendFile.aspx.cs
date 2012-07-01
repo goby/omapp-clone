@@ -31,6 +31,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
+            #region 验证发送条件
             if (ddlSender.SelectedItem.Value == ddlReceiver.SelectedItem.Value)
             {
                 ShowMessage("信源与信宿不能相同");
@@ -42,25 +43,49 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 ShowMessage("待发送文件不能为空。");
                 return;
             }
+            IFileSender oSender = FileSenderClientAgent.GetObject<IFileSender>();
+            if (oSender == default(IFileSender))
+            {
+                ShowMessage("无法访问文件发送服务，请查看相关配置文件。");
+                return;
+            }
+            #endregion
+
             string strResult = string.Empty;
             string fileFullName = fuToSend.FileName;
             string fileName = fileFullName.Substring(fileFullName.LastIndexOf(@"\",0)+1);
             string filePath = fileFullName.Substring(0,fileFullName.LastIndexOf(@"\",0)+1);
-            IFileSender oSender = FileSenderClientAgent.GetObject<IFileSender>();
-            strResult = oSender.SendFile(fileName, filePath, Convert.ToInt32(rblSendWay.SelectedValue), Convert.ToInt32(ddlSender.SelectedValue)
-                , Convert.ToInt32(ddlReceiver.SelectedValue), Convert.ToInt32(ddlInfoType.SelectedValue), rblAutoResend.SelectedValue == "1");
-            //FileSender oSender = new FileSender();
-            //strResult = oSender.SendFile(fileName, filePath, Convert.ToInt32(rblSendWay.SelectedValue),
-            //    Convert.ToInt32(ddlSender.SelectedItem.Value), Convert.ToInt32(ddlReceiver.SelectedItem.Value),
-            //    Convert.ToInt32(ddlInfoType.SelectedItem.Value), (rblAutoResend.SelectedValue == "1" ? true : false));
+            #region 发送
+            try
+            {
+                strResult = oSender.SendFile(fileName, filePath, Convert.ToInt32(rblSendWay.SelectedValue), Convert.ToInt32(ddlSender.SelectedValue)
+                    , Convert.ToInt32(ddlReceiver.SelectedValue), Convert.ToInt32(ddlInfoType.SelectedValue), rblAutoResend.SelectedValue == "1");
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("提交文件发送请求出现异常", ex));
+            }
+            finally { }
+            #endregion
+
             if (strResult != string.Empty)
             {
-                XElement root = XElement.Parse(strResult);
-                int iResult = Convert.ToInt32(root.Element("result").Value);
-                if (iResult == 0)
-                    ShowMessage("文件发送请求提交成功，请求ID：" + root.Element("fileid").Value + "。");
-                else
-                    ShowMessage("文件发送请求提交失败，失败原因：" + root.Element("message").Value + "。");
+                #region 解析发送结果
+                try
+                {
+                    XElement root = XElement.Parse(strResult);
+                    int iResult = Convert.ToInt32(root.Element("result").Value);
+                    if (iResult == 0)
+                        ShowMessage(string.Format("文件发送请求提交成功，请求ID：{0}。", root.Element("fileid").Value));
+                    else
+                        ShowMessage(string.Format("文件发送请求提交失败，失败原因：{0}。", root.Element("message").Value));
+                }
+                catch (Exception ex)
+                {
+                    throw (new AspNetException("解析文件发送请求提交结果出现异常", ex));
+                }
+                finally { }
+                #endregion
             }
         }
 
@@ -99,73 +124,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             lblMessage.Text = "";
             lblMessage.Visible = false;
-        }
-    }
-
-    /// <summary>
-    /// 发送文件
-    /// </summary>
-    public class FileSender
-    {
-        private static string strPath = "";
-
-        public FileSender()
-        {
-            strPath = ConfigurationManager.AppSettings["FileServerPath"].ToString();
-        }
-
-        /// <summary>
-        /// 发送文件
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="filePath"></param>
-        /// <param name="sendWay"></param>
-        /// <param name="senderID"></param>
-        /// <param name="receiverID"></param>
-        /// <param name="infoTypeID"></param>
-        /// <param name="autoResend"></param>
-        /// <returns></returns>
-        public string SendFile(string fileName, string filePath, int sendWay, int senderID, int receiverID, int infoTypeID, bool autoResend)
-        {
-            string strResult = string.Empty;
-            if (strPath != string.Empty)
-            {
-                IFileSender oFileServer = RemotingActivator.GetObjectByConfig<IFileSender>(strPath);
-                strResult = oFileServer.SendFile(fileName, filePath, sendWay, senderID, receiverID, infoTypeID, autoResend);
-            }
-            return strResult;
-        }
-
-        /// <summary>
-        /// 获取文件发送状态
-        /// </summary>
-        /// <param name="fileID"></param>
-        /// <returns></returns>
-        public string GetSendStatus(int fileID)
-        {
-            string strResult = string.Empty;
-            if (strPath != string.Empty)
-            {
-                IFileSender oFileServer = RemotingActivator.GetObjectByConfig<IFileSender>(strPath);
-                strResult = oFileServer.GetSendStatus(fileID);
-            }
-            return strResult;
-        }
-
-        /// <summary>
-        /// 重新发送文件
-        /// </summary>
-        /// <param name="fileID"></param>
-        /// <returns></returns>
-        public string ReSendFile(int fileID)
-        {
-            string strResult = string.Empty;
-            if (strPath != string.Empty)
-            {
-                IFileSender oFileServer = RemotingActivator.GetObjectByConfig<IFileSender>(strPath);
-                strResult = oFileServer.ReSendFile(fileID);
-            }
-            return strResult;
         }
     }
 }

@@ -12,7 +12,10 @@ namespace ServicesKernel.File
         {
             Type type = typeof(T);
             string strSenderURL = ConfigurationManager.AppSettings["FileServerPath"];
-            return (T)Activator.GetObject(type, strSenderURL);
+            if (!strSenderURL.Equals(string.Empty))
+                return (T)Activator.GetObject(type, strSenderURL);
+            else
+                return default(T);
         }
     }
 }
