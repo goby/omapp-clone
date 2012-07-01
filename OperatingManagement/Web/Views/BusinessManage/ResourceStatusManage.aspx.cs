@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.WebKernel.Basic;
 
@@ -88,14 +89,21 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            try
             {
-                BindDataSource();
-                //从资源管理页面跳转过来需要绑定健康、占用状态
-                if (!string.IsNullOrEmpty(ResourceCode))
+                if (!IsPostBack)
                 {
-                    BindResourceStatusList();
+                    BindDataSource();
+                    //从资源管理页面跳转过来需要绑定健康、占用状态
+                    if (!string.IsNullOrEmpty(ResourceCode))
+                    {
+                        BindResourceStatusList();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源状态页面初始化出现异常，异常原因", ex));
             }
         }
         /// <summary>
@@ -109,8 +117,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 BindResourceStatusList();
             }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源状态页面btnSearch_Click方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 查看资源状态图形
@@ -125,8 +135,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 url = string.Format(url, Server.UrlEncode(dplResourceType.SelectedValue), Server.UrlEncode(txtResourceCode.Text.Trim()), Server.UrlEncode(txtBeginTime.Text), Server.UrlEncode(txtEndTime.Text));
                 Response.Redirect(url);
             }
-            catch
-            { }
+            catch (System.Threading.ThreadAbortException ex1)
+            { 
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源状态页面btnViewChart_Click方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 添加资源状态
@@ -140,8 +155,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 string url = @"~/Views/BusinessManage/ResourceStatusAdd.aspx";
                 Response.Redirect(url);
             }
-            catch
-            { }
+            catch (System.Threading.ThreadAbortException ex1)
+            {
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源状态页面btnAdd_Click方法出现异常，异常原因", ex));
+            }
         }
 
         public override void OnPageLoaded()

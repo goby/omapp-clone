@@ -17,6 +17,7 @@ using System.Web.UI.WebControls;
 using System.IO;
 using System.Text;
 
+using OperatingManagement.Framework.Core;
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 
@@ -64,10 +65,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindCutSubSatelliteProperty();
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 trMessage.Visible = true;
                 lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 交会预报页面初始化出现异常，异常原因", ex));
             }
         }
         /// <summary>
@@ -77,18 +79,27 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void rblFileOption_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ResetResultControls();
-            //文件上传
-            if (rblFileOption.SelectedValue == "0")
+            try
             {
-                divFileUpload.Visible = true;
-                divFillIn.Visible = false;
+                ResetResultControls();
+                //文件上传
+                if (rblFileOption.SelectedValue == "0")
+                {
+                    divFileUpload.Visible = true;
+                    divFillIn.Visible = false;
+                }
+                //手工录入
+                else if (rblFileOption.SelectedValue == "1")
+                {
+                    divFileUpload.Visible = false;
+                    divFillIn.Visible = true;
+                }
             }
-            //手工录入
-            else if (rblFileOption.SelectedValue == "1")
+            catch (Exception ex)
             {
-                divFileUpload.Visible = false;
-                divFillIn.Visible = true;
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 交会预报页面rblFileOption_SelectedIndexChanged方法出现异常，异常原因", ex));
             }
         }
         /// <summary>
@@ -98,7 +109,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void menuCut_MenuItemClick(object sender, MenuEventArgs e)
         {
-            mvCut.ActiveViewIndex = Convert.ToInt32(menuCut.SelectedValue);
+            try
+            {
+                mvCut.ActiveViewIndex = Convert.ToInt32(menuCut.SelectedValue);
+            }
+            catch (Exception ex)
+            {
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 交会预报页面menuCut_MenuItemClick方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 开始计算交会预报
@@ -107,18 +127,27 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void btnCalculate_Click(object sender, EventArgs e)
         {
-            //if (!ValidateCutMainProperty())
-            //{
-            //    mvCut.ActiveViewIndex = 0;
-            //}
-            ResetResultControls();
-            if (rblFileOption.SelectedValue == "0")
+            try
             {
-                UploadFileAndCalculate();
+                //if (!ValidateCutMainProperty())
+                //{
+                //    mvCut.ActiveViewIndex = 0;
+                //}
+                ResetResultControls();
+                if (rblFileOption.SelectedValue == "0")
+                {
+                    UploadFileAndCalculate();
+                }
+                else if (rblFileOption.SelectedValue == "1")
+                {
+                    CreateFileAndCalculate();
+                }
             }
-            else if (rblFileOption.SelectedValue == "1")
+            catch (Exception ex)
             {
-                CreateFileAndCalculate();
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 交会预报页面btnCalculate_Click方法出现异常，异常原因", ex));
             }
         }
          /// <summary>
@@ -128,49 +157,58 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void btnResetAll_Click(object sender, EventArgs e)
         {
-            ResetResultControls();
-            if (rblFileOption.SelectedValue == "0")
+            try
             {
+                ResetResultControls();
+                if (rblFileOption.SelectedValue == "0")
+                {
 
+                }
+                else if (rblFileOption.SelectedValue == "1")
+                {
+                    //CutMain控件
+                    txtCutMainReportBeginDate.Text = string.Empty;
+                    dplCutMainReportBeginTimeHour.SelectedIndex = 0;
+                    dplCutMainReportBeginTimeMinute.SelectedIndex = 0;
+                    dplCutMainReportBeginTimeSecond.SelectedIndex = 0;
+                    txtCutMainReportBeginTimeMilliSecond.Text = string.Empty;
+                    txtCutMainDU.Text = string.Empty;
+                    txtCutMainLYDate.Text = string.Empty;
+                    dplCutMainLYTimeHour.SelectedIndex = 0;
+                    dplCutMainLYTimeMinute.SelectedIndex = 0;
+                    dplCutMainLYTimeSecond.SelectedIndex = 0;
+                    txtCutMainLYTimeMilliSecond.Text = string.Empty;
+                    dplCutMainSatellite.SelectedIndex = 0;
+                    BindCutMainSatelliteProperty();
+                    txtCutMainD1.Text = string.Empty;
+                    txtCutMainD2.Text = string.Empty;
+                    txtCutMainD3.Text = string.Empty;
+                    txtCutMainD4.Text = string.Empty;
+                    txtCutMainD5.Text = string.Empty;
+                    txtCutMainD6.Text = string.Empty;
+                    txtCutMaindR.Text = string.Empty;
+                    rblCutMainKAE.SelectedIndex = 0;
+                    ResetKAERelationControls();
+
+                    //CutSub控件
+                    ViewState["CutSubItemInfoList"] = null;
+                    BindCutSubList();
+                    ResetCutSubControls();
+
+                    //CutOptional控件
+                    txtCutOptionalTimeInterval.Text = string.Empty;
+                    rblCutOptionalGravitation.SelectedIndex = 0;
+                    rblCutOptionalTide.SelectedIndex = 0;
+                    rblCutOptionalLight.SelectedIndex = 0;
+                    rblCutOptionalEther.SelectedIndex = 0;
+                    rblCutOptionalNewton.SelectedIndex = 0;
+                }
             }
-            else if (rblFileOption.SelectedValue == "1")
+            catch (Exception ex)
             {
-                //CutMain控件
-                txtCutMainReportBeginDate.Text = string.Empty;
-                dplCutMainReportBeginTimeHour.SelectedIndex = 0;
-                dplCutMainReportBeginTimeMinute.SelectedIndex = 0;
-                dplCutMainReportBeginTimeSecond.SelectedIndex = 0;
-                txtCutMainReportBeginTimeMilliSecond.Text = string.Empty;
-                txtCutMainDU.Text = string.Empty;
-                txtCutMainLYDate.Text = string.Empty;
-                dplCutMainLYTimeHour.SelectedIndex = 0;
-                dplCutMainLYTimeMinute.SelectedIndex = 0;
-                dplCutMainLYTimeSecond.SelectedIndex = 0;
-                txtCutMainLYTimeMilliSecond.Text = string.Empty;
-                dplCutMainSatellite.SelectedIndex = 0;
-                BindCutMainSatelliteProperty();
-                txtCutMainD1.Text = string.Empty;
-                txtCutMainD2.Text = string.Empty;
-                txtCutMainD3.Text = string.Empty;
-                txtCutMainD4.Text = string.Empty;
-                txtCutMainD5.Text = string.Empty;
-                txtCutMainD6.Text = string.Empty;
-                txtCutMaindR.Text = string.Empty;
-                rblCutMainKAE.SelectedIndex = 0;
-                ResetKAERelationControls();
-
-                //CutSub控件
-                ViewState["CutSubItemInfoList"] = null;
-                BindCutSubList();
-                ResetCutSubControls();
-
-                //CutOptional控件
-                txtCutOptionalTimeInterval.Text = string.Empty;
-                rblCutOptionalGravitation.SelectedIndex = 0;
-                rblCutOptionalTide.SelectedIndex = 0;
-                rblCutOptionalLight.SelectedIndex = 0;
-                rblCutOptionalEther.SelectedIndex = 0;
-                rblCutOptionalNewton.SelectedIndex = 0;
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 交会预报页面btnResetAll_Click方法出现异常，异常原因", ex));
             }
         }
         /// <summary>
@@ -207,11 +245,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
+            catch(Exception ex)
             {
                 //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"下载计算结果文件失败。\")", true);
                 trMessage.Visible = true;
-                lblMessage.Text = "下载计算结果文件失败。";
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 交会预报页面lbtnResultFileDownload_Click方法出现异常，异常原因", ex));
             }
         }
 
@@ -231,7 +270,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void dplCutMainSatellite_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BindCutMainSatelliteProperty();
+            try
+            {
+                BindCutMainSatelliteProperty();
+            }
+            catch (Exception ex)
+            {
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 交会预报页面dplCutMainSatellite_SelectedIndexChanged方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 是否考虑KAE
@@ -240,7 +288,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void rblCutMainKAE_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ResetKAERelationControls();
+            try
+            {
+                ResetKAERelationControls();
+            }
+            catch (Exception ex)
+            {
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 交会预报页面rblCutMainKAE_SelectedIndexChanged方法出现异常，异常原因", ex));
+            }
         }
         #endregion
 
@@ -252,7 +309,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void dplCutSubSatellite_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BindCutSubSatelliteProperty();
+            try
+            {
+                BindCutSubSatelliteProperty();
+            }
+            catch (Exception ex)
+            {
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 交会预报页面dplCutSubSatellite_SelectedIndexChanged方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 添加CutSub记录
@@ -408,8 +474,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch(Exception ex)
+            {
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 交会预报页面btnAddCutSubItem_Click方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 重置CutSub控件
@@ -418,9 +488,18 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void btnResetCutSubItem_Click(object sender, EventArgs e)
         {
-            //ViewState["CutSubItemInfoList"] = null;
-            //BindCutSubList();
-            ResetCutSubControls();
+            try
+            {
+                //ViewState["CutSubItemInfoList"] = null;
+                //BindCutSubList();
+                ResetCutSubControls();
+            }
+            catch (Exception ex)
+            {
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 交会预报页面btnResetCutSubItem_Click方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 删除CutSub记录
@@ -447,8 +526,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 交会预报页面lbtnDeleteCutSub_Click方法出现异常，异常原因", ex));
+            }
         }
         #endregion
 

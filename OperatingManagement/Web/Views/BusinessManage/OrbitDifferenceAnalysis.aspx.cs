@@ -15,6 +15,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.IO;
+
+using OperatingManagement.Framework.Core;
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 
@@ -24,10 +26,18 @@ namespace OperatingManagement.Web.Views.BusinessManage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            trMessage.Visible = false;
-            lblMessage.Text = string.Empty;
+            try
+            {
+                trMessage.Visible = false;
+                lblMessage.Text = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 差值分析页面初始化出现异常，异常原因", ex));
+            }
         }
-
         /// <summary>
         /// 开始计算差值
         /// </summary>
@@ -183,10 +193,29 @@ namespace OperatingManagement.Web.Views.BusinessManage
                    "var _autoOpen=true;",
                    true);
             }
-            catch
+            catch(Exception ex)
             {
                 trMessage.Visible = true;
                 lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 差值分析页面btnCalculate_Click方法出现异常，异常原因", ex));
+            }
+        }
+        /// <summary>
+        /// 清除所有信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnResetAll_Click(object sender, EventArgs e)
+        {
+            try 
+            {
+                ResetResultControls();
+            }
+            catch (Exception ex)
+            {
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("轨道分析 - 差值分析页面btnResetAll_Click方法出现异常，异常原因", ex));
             }
         }
 
@@ -224,11 +253,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
+            catch(Exception ex)
             {
                 //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"下载计算结果文件失败。\")", true);
                 trMessage.Visible = true;
                 lblMessage.Text = "下载计算结果文件失败。";
+                throw (new AspNetException("轨道分析 - 差值分析页面lbtnResultFileDownload_Click方法出现异常，异常原因", ex));
             }
         }
 
@@ -241,6 +271,21 @@ namespace OperatingManagement.Web.Views.BusinessManage
         }
 
         #region Method
+        /// <summary>
+        /// 重置计算结果相关控件
+        /// </summary>
+        private void ResetResultControls()
+        {
+            divCalResult.Visible = false;
+            lblResultFilePath.Text = string.Empty;
+            lblCalResult.Text = string.Empty;
+
+            ltXLDataFilePath.Text = string.Empty;
+            ltDifCalTimeFilePath.Text = string.Empty;
+            ltXLDataFile.Text = string.Empty;
+            ltDifCalTimeFile.Text = string.Empty;
+            ltResultFile.Text = string.Empty;
+        }
         /// <summary>
         /// 删除文件
         /// </summary>
