@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.WebKernel.Basic;
 
@@ -52,10 +53,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindControls();
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 trMessage.Visible = true;
                 lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("编辑中心资源页面初始化出现异常，异常原因", ex));
             }
         }
         /// <summary>
@@ -138,10 +140,31 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 trMessage.Visible = true;
                 lblMessage.Text = msg;
             }
-            catch
+            catch (Exception ex)
             {
                 trMessage.Visible = true;
                 lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("编辑中心资源页面btnSubmit_Click方法出现异常，异常原因", ex));
+            }
+        }
+        /// <summary>
+        /// 重置当前控件的值
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                BindControls();
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("编辑中心资源页面btnReset_Click方法出现异常，异常原因", ex));
             }
         }
 
@@ -154,8 +177,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("编辑中心资源页面btnReturn_Click方法出现异常，异常原因", ex));
+            }
         }
 
         public override void OnPageLoaded()

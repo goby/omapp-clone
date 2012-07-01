@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.WebKernel.Basic;
 
@@ -32,9 +33,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindResourceCalculateList();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                throw (new AspNetException("查询资源调度计算页面初始化出现异常，异常原因", ex));
             }
         }
         /// <summary>
@@ -79,8 +80,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
                 BindResourceCalculateList();
             }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源调度计算页面btnSearch_Click方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 添加资源调度计算
@@ -96,8 +99,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源调度计算页面btnAdd_Click方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 查看资源调度计算结果
@@ -119,8 +124,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源调度计算页面lbtnCalculateResultView_Click方法出现异常，异常原因", ex));
+            }
         }
 
         /// <summary>
@@ -167,9 +174,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
+            catch(Exception ex)
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"下载资源需求文件失败。\")", true);
+                throw (new AspNetException("查询资源调度计算页面lbtnRequirementFileDownload_Click方法出现异常，异常原因", ex));
             }
         }
 
@@ -217,9 +225,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
+            catch(Exception ex)
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"下载计算结果文件失败。\")", true);
+                throw (new AspNetException("查询资源调度计算页面lbtnResultFileDownload_Click方法出现异常，异常原因", ex));
             }
         }
 
@@ -230,78 +239,87 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void btnUpload_Click(object sender, EventArgs e)
         {
-            if (!fileUploadResultFile.HasFile)
+            try
             {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"请选择要上传的计算结果文件。\")", true);
-                return;
-            }
-            if(fileUploadResultFile.PostedFile.ContentLength == 0)
-            {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"上传计算结果文件不能为空。\")", true);
-                return;
-            }
-            int fileSize = fileUploadResultFile.PostedFile.ContentLength;
-            string fileName = fileUploadResultFile.PostedFile.FileName.Substring(fileUploadResultFile.PostedFile.FileName.LastIndexOf('\\') + 1);
-            string fileExtension = fileName.Substring(fileName.LastIndexOf('.') + 1);
-            int resultFileMaxSize = int.Parse(SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResultFileMaxSize"));
-            string resultFileExtension = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResultFileExtension").Trim(new char[] { ',', '，', ';', '；' });
-            string[] extensionArray = resultFileExtension.Split(new char[] { ',', '，', ';', '；' }, StringSplitOptions.RemoveEmptyEntries);
-            bool allowExtension = false;
-            if (extensionArray != null && extensionArray.Length > 0)
-            {
-                foreach (string extension in extensionArray)
+                if (!fileUploadResultFile.HasFile)
                 {
-                    if (extension.ToLower() == fileExtension.ToLower())
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"请选择要上传的计算结果文件。\")", true);
+                    return;
+                }
+                if (fileUploadResultFile.PostedFile.ContentLength == 0)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"上传计算结果文件不能为空。\")", true);
+                    return;
+                }
+                int fileSize = fileUploadResultFile.PostedFile.ContentLength;
+                string fileName = fileUploadResultFile.PostedFile.FileName.Substring(fileUploadResultFile.PostedFile.FileName.LastIndexOf('\\') + 1);
+                string fileExtension = fileName.Substring(fileName.LastIndexOf('.') + 1);
+                int resultFileMaxSize = int.Parse(SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResultFileMaxSize"));
+                string resultFileExtension = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResultFileExtension").Trim(new char[] { ',', '，', ';', '；' });
+                string[] extensionArray = resultFileExtension.Split(new char[] { ',', '，', ';', '；' }, StringSplitOptions.RemoveEmptyEntries);
+                bool allowExtension = false;
+                if (extensionArray != null && extensionArray.Length > 0)
+                {
+                    foreach (string extension in extensionArray)
                     {
-                        allowExtension = true;
-                        break;
+                        if (extension.ToLower() == fileExtension.ToLower())
+                        {
+                            allowExtension = true;
+                            break;
+                        }
                     }
                 }
-            }
-            if (!allowExtension)
-            {
-                string message = string.Format("上传计算结果文件格式不正确，应为：{0}。", resultFileExtension);
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"" + message + "\")", true);
-                return;
-            }
-            if (fileSize > resultFileMaxSize)
-            {
-                string message = string.Format("上传计算结果文件不能超过{0}字节", resultFileMaxSize.ToString());
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"" + message + "\")", true);
-                return;
-            }
-            string resultFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResultFileDirectory").TrimEnd(new char[] { '\\' }) + "\\";
-            string resultFileName = Guid.NewGuid().ToString() + "." + fileExtension;
-            fileUploadResultFile.PostedFile.SaveAs(resultFileDirectory + resultFileName);
+                if (!allowExtension)
+                {
+                    string message = string.Format("上传计算结果文件格式不正确，应为：{0}。", resultFileExtension);
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"" + message + "\")", true);
+                    return;
+                }
+                if (fileSize > resultFileMaxSize)
+                {
+                    string message = string.Format("上传计算结果文件不能超过{0}字节", resultFileMaxSize.ToString());
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"" + message + "\")", true);
+                    return;
+                }
+                string resultFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResultFileDirectory").TrimEnd(new char[] { '\\' }) + "\\";
+                string resultFileName = Guid.NewGuid().ToString() + "." + fileExtension;
+                fileUploadResultFile.PostedFile.SaveAs(resultFileDirectory + resultFileName);
 
-            DateTime createdTime = DateTime.Now;
-            ResourceCalculate resourceCalculate = new ResourceCalculate();
-            //resourceCalculate.RequirementFileDirectory = requirementFileDirectory;
-            //resourceCalculate.RequirementFileName = requirementFileName;
-            //resourceCalculate.RequirementFileDisplayName = requirementFileDisplayName;
-            resourceCalculate.ResultFileDirectory = resultFileDirectory;
-            resourceCalculate.ResultFileName = resultFileName;
-            resourceCalculate.ResultFileDisplayName = fileName;
-            resourceCalculate.ResultFileSource = 2;
-            //resourceCalculate.CalculateResult = 1;
-            resourceCalculate.Status = 2;
-            resourceCalculate.CreatedTime = createdTime;
-            resourceCalculate.UpdatedTime = createdTime;
-            Framework.FieldVerifyResult result = resourceCalculate.Add();
+                DateTime createdTime = DateTime.Now;
+                ResourceCalculate resourceCalculate = new ResourceCalculate();
+                //resourceCalculate.RequirementFileDirectory = requirementFileDirectory;
+                //resourceCalculate.RequirementFileName = requirementFileName;
+                //resourceCalculate.RequirementFileDisplayName = requirementFileDisplayName;
+                resourceCalculate.ResultFileDirectory = resultFileDirectory;
+                resourceCalculate.ResultFileName = resultFileName;
+                resourceCalculate.ResultFileDisplayName = fileName;
+                resourceCalculate.ResultFileSource = 2;
+                //resourceCalculate.CalculateResult = 1;
+                resourceCalculate.Status = 2;
+                resourceCalculate.CreatedTime = createdTime;
+                resourceCalculate.UpdatedTime = createdTime;
+                Framework.FieldVerifyResult result = resourceCalculate.Add();
 
-            switch (result)
+                switch (result)
+                {
+                    case Framework.FieldVerifyResult.Error:
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生了数据错误，无法完成请求的操作。\")", true);
+                        break;
+                    case Framework.FieldVerifyResult.Success:
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"上传计算结果文件成功。\")", true);
+                        BindResourceCalculateList();
+                        break;
+                    default:
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生未知错误，上传计算结果文件失败。\")", true);
+                        break;
+                }
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
             {
-                case Framework.FieldVerifyResult.Error:
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生了数据错误，无法完成请求的操作。\")", true);
-                    break;
-                case Framework.FieldVerifyResult.Success:
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"上传计算结果文件成功。\")", true);
-                    BindResourceCalculateList();
-                    break;
-                default:
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生未知错误，上传计算结果文件失败。\")", true);
-                    break;
-            }  
+                throw (new AspNetException("查询资源调度计算页面btnUpload_Click方法出现异常，异常原因", ex));
+            }
         }
 
         public override void OnPageLoaded()
@@ -318,18 +336,25 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void rpResourceCalculateList_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            try
             {
-                LinkButton lbtnRequirementFileDownload = (e.Item.FindControl("lbtnRequirementFileDownload") as LinkButton);
-                LinkButton lbtnResultFileDownload = (e.Item.FindControl("lbtnResultFileDownload") as LinkButton);
-                LinkButton lbtnCalculateResultView = (e.Item.FindControl("lbtnCalculateResultView") as LinkButton);
-                if (lbtnRequirementFileDownload != null && lbtnResultFileDownload != null && lbtnCalculateResultView != null)
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
-                    ResourceCalculate resourceCalculate = (e.Item.DataItem as ResourceCalculate);
-                    lbtnRequirementFileDownload.Enabled = (resourceCalculate.ResultFileSource == 1);
-                    lbtnResultFileDownload.Enabled = (resourceCalculate.ResultFileSource == 2 || resourceCalculate.Status == 2);
-                    lbtnCalculateResultView.Enabled = (resourceCalculate.ResultFileSource == 2 || resourceCalculate.CalculateResult == 1);
+                    LinkButton lbtnRequirementFileDownload = (e.Item.FindControl("lbtnRequirementFileDownload") as LinkButton);
+                    LinkButton lbtnResultFileDownload = (e.Item.FindControl("lbtnResultFileDownload") as LinkButton);
+                    LinkButton lbtnCalculateResultView = (e.Item.FindControl("lbtnCalculateResultView") as LinkButton);
+                    if (lbtnRequirementFileDownload != null && lbtnResultFileDownload != null && lbtnCalculateResultView != null)
+                    {
+                        ResourceCalculate resourceCalculate = (e.Item.DataItem as ResourceCalculate);
+                        lbtnRequirementFileDownload.Enabled = (resourceCalculate.ResultFileSource == 1);
+                        lbtnResultFileDownload.Enabled = (resourceCalculate.ResultFileSource == 2 || resourceCalculate.Status == 2);
+                        lbtnCalculateResultView.Enabled = (resourceCalculate.ResultFileSource == 2 || resourceCalculate.CalculateResult == 1);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源调度计算页面rpResourceCalculateList_ItemDataBound方法出现异常，异常原因", ex));
             }
         }
 

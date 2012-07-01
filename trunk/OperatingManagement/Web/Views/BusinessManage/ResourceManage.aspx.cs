@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.WebKernel.Basic;
 
@@ -52,8 +53,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindRepeater();
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                throw (new AspNetException("查询资源页面初始化出现异常，异常原因", ex));
             }
         }
         /// <summary>
@@ -67,8 +69,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 BindRepeater();
             }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源页面btnSearch_Click方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 添加资源
@@ -100,8 +104,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源页面btnAdd_Click方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 管理资源状态
@@ -126,8 +132,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源页面lbtnManageResourceStatus_Click方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 编辑资源
@@ -166,8 +174,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源页面lbtnEditResource_Click方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 删除资源
@@ -207,8 +217,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源页面lbtnDeleteResource_Click方法出现异常，异常原因", ex));
+            }
         }
 
         public override void OnPageLoaded()

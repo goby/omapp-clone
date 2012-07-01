@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.WebKernel.Basic;
 
@@ -50,9 +51,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindControls();
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生未知错误。\");window.location.href='./ResourceCalculateManage.aspx';", true);
+                throw (new AspNetException("查看资源调度计算结果页面初始化出现异常，异常原因", ex));
             }
         }
         /// <summary>
@@ -69,8 +71,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查看资源调度计算结果页面btnReturn_Click方法出现异常，异常原因", ex));
+            }
         }
 
         public override void OnPageLoaded()
@@ -87,17 +91,24 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void rpResourceCalculateResultList_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            try
             {
-                Repeater rpSatelliteGroundPhaseInfoList = (e.Item.FindControl("rpSatelliteGroundPhaseInfoList") as Repeater);
-                Requirement requirement = (e.Item.DataItem as Requirement);
-                //int itemIndex = e.Item.ItemIndex;
-
-                if (rpSatelliteGroundPhaseInfoList != null && requirement != null)
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
-                    rpSatelliteGroundPhaseInfoList.DataSource = requirement.SatelliteGroundPhaseInfoList;
-                    rpSatelliteGroundPhaseInfoList.DataBind();       
+                    Repeater rpSatelliteGroundPhaseInfoList = (e.Item.FindControl("rpSatelliteGroundPhaseInfoList") as Repeater);
+                    Requirement requirement = (e.Item.DataItem as Requirement);
+                    //int itemIndex = e.Item.ItemIndex;
+
+                    if (rpSatelliteGroundPhaseInfoList != null && requirement != null)
+                    {
+                        rpSatelliteGroundPhaseInfoList.DataSource = requirement.SatelliteGroundPhaseInfoList;
+                        rpSatelliteGroundPhaseInfoList.DataBind();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查看资源调度计算结果页面rpResourceCalculateResultList_ItemDataBound方法出现异常，异常原因", ex));
             }
         }
 

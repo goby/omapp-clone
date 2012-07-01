@@ -453,7 +453,7 @@
                 <td style="width: 300px;">
                     <asp:Button ID="btnCalculate" runat="server" CssClass="button" Text="计 算" OnClick="btnCalculate_Click"
                         ValidationGroup="Calculate" />
-                    <asp:Button ID="btnReset" runat="server" CssClass="button" Text="重 置" OnClick="btnReset_Click"
+                    <asp:Button ID="btnReset" runat="server" CssClass="button" Text="清 除" OnClick="btnReset_Click"
                         CausesValidation="false" />
                 </td>
             </tr>

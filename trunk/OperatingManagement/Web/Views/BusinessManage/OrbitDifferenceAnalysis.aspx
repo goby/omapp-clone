@@ -55,6 +55,7 @@
         <td>
             <asp:Button ID="btnCalculate" runat="server" Text="开始计算" CssClass="button" 
                 onclick="btnCalculate_Click" />
+            <asp:Button ID="btnResetAll" runat="server" Text="全部清除" CssClass="button" OnClick="btnResetAll_Click" CausesValidation="false" />
         </td>
     </tr>
 </table>

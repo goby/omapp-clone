@@ -39,9 +39,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             this.INCODE = dr["INCODE"].ToString();
             this.EXCODE = dr["EXCODE"].ToString();
             this.MainIP = dr["MainIP"] == DBNull.Value ? string.Empty : dr["MainIP"].ToString();
-            this.TCPPort = Convert.ToInt32(dr["TCPPort"].ToString());
+            this.TCPPort = dr["TCPPort"] == DBNull.Value ? 0 : Convert.ToInt32(dr["TCPPort"].ToString());
             this.BakIP = dr["BakIP"] == DBNull.Value ? string.Empty : dr["BakIP"].ToString();
-            this.UDPPort = Convert.ToInt32(dr["UDPPort"].ToString());
+            this.UDPPort = dr["UDPPort"] == DBNull.Value ? 0 : Convert.ToInt32(dr["UDPPort"].ToString());
 
             if (dr["FTPPath"] != null)
             {

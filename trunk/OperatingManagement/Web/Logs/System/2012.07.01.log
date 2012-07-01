@@ -1,0 +1,167 @@
+
+=================>
+2012-07-01 14:21:11,742 @ [OperatingManagement.Framework.Core.AspNetException]:
+System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> System.ArgumentException: 列“TCPPort”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo..ctor(DataRow dr) 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 42
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 187
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 121
+   在 OperatingManagement.Web.ucs.ucXYXSInfo.BindDataSource() 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucXYXSInfo.ascx.cs:行号 34
+   在 OperatingManagement.Web.ucs.ucXYXSInfo.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucXYXSInfo.ascx.cs:行号 21
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicyadd_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_centeroutputpolicyadd.aspx.8321b997.8ovi03p3.0.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+OperatingManagement.Framework.Core.AspNetException: System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> System.ArgumentException: 列“TCPPort”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo..ctor(DataRow dr) 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 42
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 187
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 121
+   在 OperatingManagement.Web.ucs.ucXYXSInfo.BindDataSource() 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucXYXSInfo.ascx.cs:行号 34
+   在 OperatingManagement.Web.ucs.ucXYXSInfo.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucXYXSInfo.ascx.cs:行号 21
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicyadd_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_centeroutputpolicyadd.aspx.8321b997.8ovi03p3.0.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+
+=================>
+2012-07-01 15:25:55,908 @ [OperatingManagement.Framework.Core.AspNetException]:
+System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> System.ArgumentException: 列“TCPPort”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo..ctor(DataRow dr) 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 42
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 187
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 121
+   在 OperatingManagement.Web.ucs.ucXYXSInfo.BindDataSource() 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucXYXSInfo.ascx.cs:行号 34
+   在 OperatingManagement.Web.ucs.ucXYXSInfo.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucXYXSInfo.ascx.cs:行号 21
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicyadd_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_2ptogohs.1.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+OperatingManagement.Framework.Core.AspNetException: System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> System.ArgumentException: 列“TCPPort”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo..ctor(DataRow dr) 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 42
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 187
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 121
+   在 OperatingManagement.Web.ucs.ucXYXSInfo.BindDataSource() 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucXYXSInfo.ascx.cs:行号 34
+   在 OperatingManagement.Web.ucs.ucXYXSInfo.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucXYXSInfo.ascx.cs:行号 21
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicyadd_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_2ptogohs.1.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+
+=================>
+2012-07-01 15:28:20,907 @ [OperatingManagement.Framework.Core.AspNetException]:
+System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> System.FormatException: 输入字符串的格式不正确。
+   在 System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   在 System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   在 System.Convert.ToInt32(String value)
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo..ctor(DataRow dr) 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 42
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 187
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 121
+   在 OperatingManagement.Web.ucs.ucXYXSInfo.BindDataSource() 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucXYXSInfo.ascx.cs:行号 34
+   在 OperatingManagement.Web.ucs.ucXYXSInfo.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucXYXSInfo.ascx.cs:行号 21
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicyadd_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_2ptogohs.1.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+OperatingManagement.Framework.Core.AspNetException: System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> System.FormatException: 输入字符串的格式不正确。
+   在 System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   在 System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   在 System.Convert.ToInt32(String value)
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo..ctor(DataRow dr) 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 42
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 187
+   在 OperatingManagement.DataAccessLayer.BusinessManage.XYXSInfo.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\XYXSInfo.cs:行号 121
+   在 OperatingManagement.Web.ucs.ucXYXSInfo.BindDataSource() 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucXYXSInfo.ascx.cs:行号 34
+   在 OperatingManagement.Web.ucs.ucXYXSInfo.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucXYXSInfo.ascx.cs:行号 21
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicyadd_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_2ptogohs.1.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
