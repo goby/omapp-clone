@@ -21,6 +21,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
         }
 
         void BindUser() {
+            hfUserID.Value = Request.QueryString["Id"];
             DataAccessLayer.System.User u = new DataAccessLayer.System.User()
             {
                 Id = Convert.ToDouble(Request.QueryString["Id"])
@@ -128,7 +129,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
 
         protected void btnReturn_Click(object sender, EventArgs e)
         {
-            Page.Response.Redirect("users.aspx");
+            Page.Response.Redirect("UserEdit.aspx?Id="+hfUserID.Value);
         }
 
     }
