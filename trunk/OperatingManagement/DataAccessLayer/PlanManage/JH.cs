@@ -39,9 +39,45 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string TaskID { get; set; }
         /// <summary>
+        /// 任务名称
+        /// </summary>
+        public string TaskName { get; set; }
+        /// <summary>
         /// 计划类型
         /// </summary>
         public string PlanType { get; set; }
+        public string PlanTypeName
+        {
+            get 
+            {
+                string returnValue = "";
+                switch (PlanType)
+                { 
+                    case "YJJH":
+                        returnValue = "应用研究工作计划";
+                        break;
+                    case "XXXQ":
+                        returnValue = "空间信息需求";
+                        break;
+                    case "DMJH":
+                        returnValue = "地面站工作计划";
+                        break;
+                    case "ZXJH":
+                        returnValue = "中心运行计划";
+                        break;
+                    case "TYSJ":
+                        returnValue = "仿真推演试验数据";
+                        break;
+                    case "SBJH":
+                        returnValue = "设备工作计划";
+                        break;
+                    case "GZJH":
+                        returnValue = "地面站工作计划";
+                        break;
+                }
+                return returnValue;
+            }
+        }
         /// <summary>
         /// 计划ID
         /// </summary>
@@ -182,6 +218,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                             ID = Convert.ToInt32(dr["ID"].ToString()),
                             CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
                             TaskID = dr["taskid"].ToString(),
+                            TaskName= dr["taskname"].ToString(),
                             PlanType = dr["plantype"].ToString(),
                             PlanID = Convert.ToInt32(dr["PlanID"].ToString()),
                             StartTime = Convert.ToDateTime(dr["StartTime"].ToString()),
@@ -218,6 +255,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                         ID = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
                         TaskID = dr["taskid"].ToString(),
+                        TaskName = dr["taskname"].ToString(),
                         PlanType = dr["plantype"].ToString(),
                         PlanID = Convert.ToInt32(dr["PlanID"].ToString()),
                         StartTime = Convert.ToDateTime(dr["StartTime"].ToString()),
