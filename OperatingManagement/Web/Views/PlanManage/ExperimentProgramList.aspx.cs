@@ -23,14 +23,20 @@ namespace OperatingManagement.Web.Views.PlanManage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                txtStartDate.Attributes.Add("readonly", "true");
+                txtEndDate.Attributes.Add("readonly", "true");
+            }
+            cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             try
             {
-                BindGridView();
+                SaveCondition();
+                BindGridView(true);
             }
             catch (Exception ex)
             {
@@ -39,18 +45,45 @@ namespace OperatingManagement.Web.Views.PlanManage
             finally { }
         }
 
+        private void SaveCondition()
+        {
+            if (string.IsNullOrEmpty(txtStartDate.Text))
+            { ViewState["_StartDate"] = null; }
+            else
+            { ViewState["_StartDate"] = txtStartDate.Text.Trim(); }
+            if (string.IsNullOrEmpty(txtEndDate.Text))
+            { ViewState["_EndDate"] = null; }
+            else
+            { ViewState["_EndDate"] = txtEndDate.Text.Trim(); }
+        }
+
         //绑定列表
-        void BindGridView()
+        void BindGridView(bool fromSearch)
         {
             DateTime startDate = new DateTime();
             DateTime endDate = new DateTime();
-            if (!string.IsNullOrEmpty(txtStartDate.Text))
+
+            if (fromSearch)
             {
-                startDate = Convert.ToDateTime(txtStartDate.Text);
+                if (!string.IsNullOrEmpty(txtStartDate.Text))
+                {
+                    startDate = Convert.ToDateTime(txtStartDate.Text);
+                }
+                if (!string.IsNullOrEmpty(txtEndDate.Text))
+                {
+                    endDate = Convert.ToDateTime(txtEndDate.Text);
+                }
             }
-            if (!string.IsNullOrEmpty(txtEndDate.Text))
+            else
             {
-                endDate = Convert.ToDateTime(txtEndDate);
+                if (ViewState["_StartDate"] != null)
+                {
+                    startDate = Convert.ToDateTime(ViewState["_StartDate"].ToString());
+                }
+                if (ViewState["_EndDate"] != null)
+                {
+                    endDate = Convert.ToDateTime(ViewState["_EndDate"].ToString());
+                }
             }
 
             List<SYCX> listDatas = (new SYCX()).GetListByDate(startDate, endDate);
@@ -59,6 +92,11 @@ namespace OperatingManagement.Web.Views.PlanManage
             cpPager.BindToControl = rpDatas;
             rpDatas.DataSource = cpPager.DataSourcePaged;
             rpDatas.DataBind();
+        }
+
+        protected void cpPager_PostBackPage(object sender, EventArgs e)
+        {
+            BindGridView(false);
         }
 
         /// <summary>

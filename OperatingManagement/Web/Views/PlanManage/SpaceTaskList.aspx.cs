@@ -22,6 +22,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
+                txtStartDate.Attributes.Add("readonly", "true");
+                txtEndDate.Attributes.Add("readonly", "true");
                 //btnSend.Attributes.Add("onclick", "javascript:return confirm('确定要发送所选数据吗?');");
                 pnlAll1.Visible = false;
                 pnlAll2.Visible = false;
@@ -29,33 +31,77 @@ namespace OperatingManagement.Web.Views.PlanManage
                 pnlDestination.Visible = false;
                 pnlData.Visible = true;
             }
+            cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            BindGridView();
+            try
+            {
+                SaveCondition();
+                BindGridView(true);
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("列表页面搜索出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
+        private void SaveCondition()
+        {
+            if (string.IsNullOrEmpty(txtStartDate.Text))
+            { ViewState["_StartDate"] = null; }
+            else
+            { ViewState["_StartDate"] = txtStartDate.Text.Trim(); }
+            if (string.IsNullOrEmpty(txtEndDate.Text))
+            { ViewState["_EndDate"] = null; }
+            else
+            { ViewState["_EndDate"] = txtEndDate.Text.Trim(); }
         }
 
         //绑定列表
-        void BindGridView()
+        void BindGridView(bool fromSearch)
         {
             DateTime startDate = new DateTime();
             DateTime endDate = new DateTime();
-            if (!string.IsNullOrEmpty(txtStartDate.Text))
+            if (fromSearch)
             {
-                startDate = Convert.ToDateTime(txtStartDate.Text.Trim());
+                if (!string.IsNullOrEmpty(txtStartDate.Text))
+                {
+                    startDate = Convert.ToDateTime(txtStartDate.Text.Trim());
+                }
+                else
+                {
+                    startDate = DateTime.Now.AddDays(-14);
+                }
+                if (!string.IsNullOrEmpty(txtEndDate.Text))
+                {
+                    endDate = Convert.ToDateTime(txtEndDate.Text.Trim());
+                }
+                else
+                {
+                    endDate = DateTime.Now;
+                }
             }
             else
             {
-                startDate = DateTime.Now.AddDays(-14);
-            }
-            if (!string.IsNullOrEmpty(txtEndDate.Text))
-            {
-                endDate = Convert.ToDateTime(txtEndDate.Text.Trim());
-            }
-            else
-            {
-                endDate = DateTime.Now;
+                if (ViewState["_StartDate"] == null)
+                {
+                    startDate = DateTime.Now.AddDays(-14);
+                }
+                else
+                {
+                    startDate = Convert.ToDateTime(ViewState["_StartDate"].ToString());
+                }
+                if (ViewState["_EndDate"] == null)
+                {
+                    endDate = DateTime.Now;
+                }
+                else
+                {
+                    endDate = Convert.ToDateTime(ViewState["_EndDate"].ToString());
+                }
             }
 
             List<YDSJ> listDatas = (new YDSJ()).GetListByDate(startDate, endDate);
@@ -75,6 +121,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                 pnlAll1.Visible = false;
                 pnlAll2.Visible = false;
             }
+        }
+
+        protected void cpPager_PostBackPage(object sender, EventArgs e)
+        {
+            BindGridView(false);
         }
 
         void BindRadDestination()
