@@ -26,6 +26,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             HideMessage();
             if (!IsPostBack)
                 InitialPageData();
+            cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
         }
 
         protected void btnHidRSendFile_Click(object sender, EventArgs e)
@@ -66,39 +67,88 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 return true;
         }
 
+
+        protected void cpPager_PostBackPage(object sender, EventArgs e)
+        {
+            Search(false);
+        }
+
         protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            Search(true);
+        }
+
+        private void Search(bool fromSearchBtn)
         {
             DateTime dtFrom = DateTime.MinValue;
             DateTime dtTo = DateTime.MinValue;
-            if (txtFrom.Text != "")
-            {
-                if (!DateTime.TryParse(txtFrom.Text.Trim(), out dtFrom))
-                {
-                    ShowMessage("开始日期格式非法");
-                    return;
-                }
-            }
-            if (txtTo.Text != "")
-            {
-                if (!DateTime.TryParse(txtTo.Text.Trim(), out dtTo))
-                {
-                    ShowMessage("结束日期格式非法");
-                    return;
-                }
-            }
-
-            if (dtFrom != DateTime.MinValue && dtTo != DateTime.MinValue && dtFrom > dtTo)
-            {
-                ShowMessage("结束日期必须大于开始日期");
-                return;
-            }
-
             FileSendInfo oSend = new FileSendInfo();
-            oSend.InfoTypeID = Convert.ToInt32(ddlInfoType.SelectedItem.Value);
-            List<FileSendInfo> listDatas = oSend.Search(dtFrom, dtTo);
-            BindDataSource(listDatas);
-            if (listDatas.Count == 0)
-                ShowMessage("没有符合条件的记录");
+
+            if (fromSearchBtn)
+            {
+                #region 判断日期格式
+                if (txtFrom.Text != "")
+                {
+                    if (!DateTime.TryParse(txtFrom.Text.Trim(), out dtFrom))
+                    {
+                        ShowMessage("开始日期格式非法");
+                        return;
+                    }
+                }
+                if (txtTo.Text != "")
+                {
+                    if (!DateTime.TryParse(txtTo.Text.Trim(), out dtTo))
+                    {
+                        ShowMessage("结束日期格式非法");
+                        return;
+                    }
+                }
+
+                if (dtFrom != DateTime.MinValue && dtTo != DateTime.MinValue && dtFrom > dtTo)
+                {
+                    ShowMessage("结束日期必须大于开始日期");
+                    return;
+                }
+                #endregion
+                oSend.InfoTypeID = Convert.ToInt32(ddlInfoType.SelectedItem.Value);
+                this.ViewState["_filter"] = dtFrom.ToLongDateString() + "," + dtTo.ToLongDateString() + "," + ddlInfoType.SelectedItem.Value;
+            }
+            else
+            {
+                #region 载入存取的查询条件
+                string[] strFilters = new string[0];
+                if (this.ViewState["_filter"] != null)
+                    strFilters = this.ViewState["_filter"].ToString().Split(new char[] { ',' });
+                if (strFilters.Length == 3)
+                {
+                    try
+                    {
+                        DateTime.TryParse(strFilters[0], out dtFrom);
+                        DateTime.TryParse(strFilters[1], out dtTo);
+                        oSend.InfoTypeID = Convert.ToInt32(strFilters[2]);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw (new AspNetException("查询文件发送记录-解析查询条件异常", ex));
+                    }
+                    finally { }
+                }
+                #endregion
+            }
+            List<FileSendInfo> listDatas;
+            try
+            {
+                listDatas = oSend.Search(dtFrom, dtTo);
+                if (listDatas.Count == 0)
+                    ShowMessage("没有符合条件的记录");
+                else
+                    BindDataSource(listDatas);
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询文件发送记录-查询出现异常", ex));
+            }
+            finally { }
         }
 
         /// <summary>
@@ -108,8 +158,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             ddlInfoType.AllowBlankItem = true;
             FileSendInfo oSend = new FileSendInfo();
-            List<FileSendInfo> listDatas = oSend.SelectAll();
-            BindDataSource(listDatas);
+            try
+            {
+                List<FileSendInfo> listDatas = oSend.SelectAll();
+                BindDataSource(listDatas);
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询文件发送记录-初始化页面出现异常", ex));
+            }
+            finally { }
         }
 
         /// <summary>
@@ -136,15 +194,28 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             string strResult = string.Empty;
             IFileSender oSender = FileSenderClientAgent.GetObject<IFileSender>();
+            if (oSender == default(IFileSender))
+            {
+                ShowMessage("无法访问文件发送服务，请查看相关配置文件。");
+                return;
+            }
             strResult = oSender.ReSendFile(sendInfoID);
             if (strResult != string.Empty)
             {
-                XElement root = XElement.Parse(strResult);
-                int iResult = Convert.ToInt32(root.Element("result").Value);
-                if (iResult == 0)
-                    ShowMessage("文件重发请求提交成功，请求ID：" + root.Element("fileid").Value + "。");
-                else
-                    ShowMessage("文件重发请求提交失败，失败原因：" + root.Element("message").Value + "。");
+                try
+                {
+                    XElement root = XElement.Parse(strResult);
+                    int iResult = Convert.ToInt32(root.Element("result").Value);
+                    if (iResult == 0)
+                        ShowMessage(string.Format("文件发送请求提交成功，请求ID：{0}。", root.Element("fileid").Value));
+                    else
+                        ShowMessage(string.Format("文件发送请求提交失败，失败原因：{0}。", root.Element("message").Value));
+                }
+                catch (Exception ex)
+                {
+                    throw (new AspNetException("解析文件发送请求提交结果出现异常", ex));
+                }
+                finally { }
             }
         }
 

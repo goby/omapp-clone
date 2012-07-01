@@ -33,8 +33,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 this.RECEIVEB = DateTime.Parse(dr["RECEIVEB"].ToString());
             if (dr["RECEIVEE"] != DBNull.Value)
                 this.RECEIVEE = DateTime.Parse(dr["RECEIVEE"].ToString());
-            this.Userid = dr["SType"] == DBNull.Value ? string.Empty : dr["Userid"].ToString();
-            this.DelaySI = dr["SType"] == DBNull.Value ? string.Empty : dr["DelaySI"].ToString();
+            this.Userid = dr["Userid"] == DBNull.Value ? string.Empty : dr["Userid"].ToString();
+            this.DelaySI = dr["DelaySI"] == DBNull.Value ? string.Empty : dr["DelaySI"].ToString();
             if (dr["DATATIMEB"] != DBNull.Value)
                 this.DATATIMEB = DateTime.Parse(dr["DATATIMEB"].ToString());
             if (dr["DATATIMEE"] != DBNull.Value)

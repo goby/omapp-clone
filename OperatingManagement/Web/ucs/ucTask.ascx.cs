@@ -21,7 +21,7 @@ namespace OperatingManagement.Web.ucs
                 TaskList.Items.Clear();
                 TaskList.DataSource = new Task().Cache;
                 TaskList.DataTextField = "TaskName";
-                TaskList.DataValueField = "TaskCode";
+                TaskList.DataValueField = "TaskNo";
                 TaskList.DataBind();
                 if (isAllowBlankItem)
                     TaskList.Items.Insert(0, new ListItem(blankItemText, blankItemValue));

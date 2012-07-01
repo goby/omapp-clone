@@ -39,5 +39,31 @@ namespace ServicesKernel.File
             else
                 return true;
         }
+
+        /// <summary>
+        /// 获取文件发送状态
+        /// </summary>
+        /// <param name="fileID"></param>
+        /// <returns></returns>
+        public string GetSendStatus(int fileID)
+        {
+            string strResult = string.Empty;
+            IFileSender fileSender = FileSenderClientAgent.GetObject<IFileSender>();
+            strResult = fileSender.GetSendStatus(fileID);
+            return strResult;
+        }
+
+        /// <summary>
+        /// 重新发送文件
+        /// </summary>
+        /// <param name="fileID"></param>
+        /// <returns></returns>
+        public string ReSendFile(int fileID)
+        {
+            string strResult = string.Empty;
+            IFileSender fileSender = FileSenderClientAgent.GetObject<IFileSender>();
+            strResult = fileSender.ReSendFile(fileID);
+            return strResult;
+        }
     }
 }
