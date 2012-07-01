@@ -36,6 +36,10 @@
                     Width="69px" />
 &nbsp;<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
                     onclick="btnReset_Click" />
+                   &nbsp;<asp:CompareValidator ID="CompareValidator1" runat="server" 
+                       ControlToCompare="txtStartDate" ControlToValidate="txtEndDate" 
+                       Display="Dynamic" ErrorMessage="结束时间应大于起始时间" ForeColor="Red" 
+                       Operator="GreaterThan" Type="Date"></asp:CompareValidator>
                    </td>
             </tr>
         </table>

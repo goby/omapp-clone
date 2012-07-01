@@ -51,6 +51,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 finally { }
             }
+            cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
         }
 
         /// <summary>
@@ -63,7 +64,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             try
             {
                 lblMessage.Text = ""; //文件发送消息清空
-                BindGridView();
+                SaveCondition();
+                BindGridView(true);
             }
             catch (Exception ex)
             {
@@ -72,34 +74,74 @@ namespace OperatingManagement.Web.Views.PlanManage
             finally { }
         }
 
+        private void SaveCondition()
+        {
+            if (string.IsNullOrEmpty(txtStartDate.Text))
+            { ViewState["_StartDate"] = null; }
+            else
+            { ViewState["_StartDate"] = txtStartDate.Text.Trim(); }
+            if (string.IsNullOrEmpty(txtEndDate.Text))
+            { ViewState["_EndDate"] = null; }
+            else
+            { ViewState["_EndDate"] = txtEndDate.Text.Trim(); }
+            ViewState["_PlanType"] = ddlType.SelectedItem.Value;
+        }
         /// <summary>
         /// 绑定列表
         /// </summary>
-        void BindGridView()
+        void BindGridView(bool fromSearch)
         {
             DateTime startDate = new DateTime();
             DateTime endDate = new DateTime();
-            if (!string.IsNullOrEmpty(txtStartDate.Text))
-            {
-                startDate = Convert.ToDateTime(txtStartDate.Text);
-            }
-            else
-            {
-                startDate = DateTime.Now.AddDays(-14);  //默认查询14天的数据
-            }
-            if (!string.IsNullOrEmpty(txtEndDate.Text))
-            {
-                endDate = Convert.ToDateTime(txtEndDate.Text);
-            }
-            else
-            {
-                endDate = DateTime.Now.AddDays(1);
-            }
             string planType = null;
-            if (ddlType.SelectedItem.Value != "0")
-            { 
-                planType = ddlType.SelectedItem.Value;
+            if (fromSearch)
+            {
+                if (!string.IsNullOrEmpty(txtStartDate.Text))
+                {
+                    startDate = Convert.ToDateTime(txtStartDate.Text);
+                }
+                else
+                {
+                    startDate = DateTime.Now.AddDays(-14);  //默认查询14天的数据
+                }
+                if (!string.IsNullOrEmpty(txtEndDate.Text))
+                {
+                    endDate = Convert.ToDateTime(txtEndDate.Text);
+                }
+                else
+                {
+                    endDate = DateTime.Now.AddDays(1);
+                }
+
+                if (ddlType.SelectedItem.Value != "0")
+                {
+                    planType = ddlType.SelectedItem.Value;
+                }
             }
+            else
+            {
+                if (ViewState["_StartDate"] == null)
+                {
+                    startDate = DateTime.Now.AddDays(-14);
+                }
+                else
+                {
+                    startDate = Convert.ToDateTime(ViewState["_StartDate"].ToString());
+                }
+                if (ViewState["_EndDate"] == null)
+                {
+                    endDate = DateTime.Now.AddDays(1);
+                }
+                else
+                {
+                    endDate = Convert.ToDateTime(ViewState["_EndDate"].ToString());
+                }
+                if (ViewState["_PlanType"].ToString() != "0")
+                {
+                    planType = ViewState["_PlanType"].ToString();
+                }
+            }
+            
 
             List<JH> listDatas = (new JH()).GetJHList(planType, startDate, endDate);
             cpPager.DataSource = listDatas;
@@ -118,6 +160,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                 pnlAll1.Visible = false;
                 pnlAll2.Visible = false;
             }
+        }
+
+        protected void cpPager_PostBackPage(object sender, EventArgs e)
+        {
+            BindGridView(false);
         }
 
         /// <summary>

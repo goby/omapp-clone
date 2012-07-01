@@ -21,14 +21,14 @@
                   起始时间：
                </th>
                <td>
-                <asp:TextBox ID="txtStartDate" ClientIDMode="Static"  CssClass="text" runat="server" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                <asp:TextBox ID="txtStartDate" ClientIDMode="Static" Width="90px"  CssClass="text" runat="server" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                </td>
                <th>
                   结束时间：
                </th>
                <td>
                 
-                <asp:TextBox ID="txtEndDate" ClientIDMode="Static"  CssClass="text" runat="server" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                <asp:TextBox ID="txtEndDate" ClientIDMode="Static" Width="90px"  CssClass="text" runat="server" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                 
                </td>
                <th>
@@ -50,6 +50,10 @@
                     Width="69px" />
 &nbsp;<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
                     onclick="btnReset_Click" />
+                    <asp:CompareValidator ID="CompareValidator1" runat="server" 
+                       ControlToCompare="txtStartDate" ControlToValidate="txtEndDate" 
+                       Display="Dynamic" ErrorMessage="结束时间应大于起始时间" ForeColor="Red" 
+                       Operator="GreaterThan" Type="Date"></asp:CompareValidator>
                     <div style="display:none;">
                         <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
                         <asp:TextBox ID="txtPlanID" runat="server" ClientIDMode="Static"></asp:TextBox>
@@ -121,10 +125,10 @@
                                         <%# Eval("planid")%>
                                     </td>
                                     <td>
-                                        <%# Eval("taskid")%>
+                                        <%# Eval("taskname")%>
                                     </td>
                                     <td>
-                                        <%# Eval("plantype")%>
+                                        <%# Eval("PlanTypeName")%>
                                     </td>
                                     <td>
                                         <%# Eval("starttime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
@@ -161,7 +165,7 @@
                                     发送所选计划</button>
                             </td>
                             <td class="listTitle-c2">
-                                <om:CollectionPager ID="cpPager" runat="server">
+                                <om:CollectionPager ID="cpPager" runat="server" PageSize="1">
                                 </om:CollectionPager>
                             </td>
                         </tr>
