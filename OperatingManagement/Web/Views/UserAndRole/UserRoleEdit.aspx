@@ -22,6 +22,7 @@
             <th>角色</th>
             <td>
                 <asp:HiddenField ID="hfRoles" runat="server" ClientIDMode="Static" />
+                <asp:HiddenField ID="hfUserID" runat="server"  ClientIDMode="Static" />
                 <asp:Repeater ID="rpRoles" runat="server">
                     <HeaderTemplate>
                         <table class="list" id="tbRoles">
