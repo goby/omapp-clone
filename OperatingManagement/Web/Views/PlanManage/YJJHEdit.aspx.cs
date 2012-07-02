@@ -55,8 +55,6 @@ namespace OperatingManagement.Web.Views.PlanManage
             try
             {
                 List<JH> jh = (new JH()).SelectByIDS(sID);
-                txtStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
-                txtEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
                 HfFileIndex.Value = jh[0].FileIndex;
                 hfTaskID.Value = jh[0].TaskID.ToString();
                 txtJXH.Text = jh[0].PlanID.ToString("0000");

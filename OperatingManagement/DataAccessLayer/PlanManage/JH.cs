@@ -255,7 +255,6 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                         ID = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
                         TaskID = dr["taskid"].ToString(),
-                        TaskName = dr["taskname"].ToString(),
                         PlanType = dr["plantype"].ToString(),
                         PlanID = Convert.ToInt32(dr["PlanID"].ToString()),
                         StartTime = Convert.ToDateTime(dr["StartTime"].ToString()),

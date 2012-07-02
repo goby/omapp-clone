@@ -4,6 +4,12 @@
 <%@ Register Src="../../ucs/ucTask.ascx" TagName="ucTask" TagPrefix="uc1" %>
 <%@ Register Src="../../ucs/ucSatellite.ascx" TagName="ucSatellite" TagPrefix="uc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <style type="text/css">
+        .style1
+        {
+            width: 155px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
@@ -41,7 +47,7 @@
             </th>
             <td>
                 <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" MaxLength="10"
-                    ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                    ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
                         ControlToValidate="txtPlanStartTime" ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
             </td>
@@ -50,14 +56,14 @@
             </th>
             <td>
                 <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" MaxLength="10" 
-                    ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                    ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
                 &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
                         ControlToValidate="txtPlanEndTime" ErrorMessage="结束时间不能为空" 
                     ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                 <asp:CompareValidator ID="CompareValidator1" runat="server" 
                     ControlToCompare="txtPlanStartTime" ControlToValidate="txtPlanEndTime" 
                     Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
-                    Operator="GreaterThan" Type="Date"></asp:CompareValidator>
+                    Operator="GreaterThan"></asp:CompareValidator>
             </td>
         </tr>
         <tr>
@@ -97,14 +103,19 @@
             </th>
             <td>
                 <asp:TextBox ID="txtMBTimeSection1" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                    MaxLength="8" onfocus="WdatePicker({dateFmt:'yyyyMMdd'})"></asp:TextBox>
             </td>
             <th style="width:100px;">
                 结束时间
             </th>
             <td>
                 <asp:TextBox ID="txtMBTimeSection2" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                    MaxLength="8" onfocus="WdatePicker({dateFmt:'yyyyMMdd'})"></asp:TextBox>
+            &nbsp;
+                <asp:CompareValidator ID="CompareValidator2" runat="server" 
+                    ControlToCompare="txtMBTimeSection1" ControlToValidate="txtMBTimeSection2" 
+                    Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                    Operator="GreaterThan" Type="Integer"></asp:CompareValidator>
             </td>
         </tr>
         <tr>
@@ -185,7 +196,7 @@
             <th style="width:100px;">
                 用户名称
             </th>
-            <td  style="width:170px;">
+            <td class="style1">
                 <asp:TextBox ID="txtHJUser" runat="server" CssClass="text" MaxLength="32">运控评估中心</asp:TextBox>
             </td>
             <th style="width:100px;">
@@ -200,23 +211,28 @@
             <th style="width:100px;">
                 开始时间
             </th>
-            <td>
+            <td class="style1">
                 <asp:TextBox ID="txtHJTimeSection1" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                    MaxLength="8" onfocus="WdatePicker({dateFmt:'yyyyMMdd'})"></asp:TextBox>
             </td>
             <th style="width:100px;">
                 结束时间
             </th>
             <td>
                 <asp:TextBox ID="txtHJTimeSection2" runat="server" ClientIDMode="Static" CssClass="text"
-                    MaxLength="8" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                    MaxLength="8" onfocus="WdatePicker({dateFmt:'yyyyMMdd'})"></asp:TextBox>
+            &nbsp;
+                <asp:CompareValidator ID="CompareValidator3" runat="server" 
+                    ControlToCompare="txtHJTimeSection1" ControlToValidate="txtHJTimeSection2" 
+                    Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                    Operator="GreaterThan" Type="Integer"></asp:CompareValidator>
             </td>
         </tr>
         <tr>
             <th style="width:100px;">
                 环境信息标志
             </th>
-            <td>
+            <td class="style1">
                 <asp:TextBox ID="txtHJEnvironInfo" runat="server" CssClass="text" MaxLength="11"></asp:TextBox>
             </td>
             <th style="width:100px;">
