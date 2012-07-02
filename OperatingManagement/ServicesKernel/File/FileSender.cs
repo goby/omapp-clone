@@ -27,7 +27,16 @@ namespace ServicesKernel.File
             IFileSender fileSender = FileSenderClientAgent.GetObject<IFileSender>();
             string strResult = "";
             //0:ftp;1:udp;2:tcp
-            strResult = fileSender.SendFile(fileName, filePath, (int)sendway, senderID, receiverID, infotypeID, isAutoRetry);
+            try
+            {
+                strResult = fileSender.SendFile(fileName, filePath, (int)sendway, senderID, receiverID, infotypeID, isAutoRetry);
+            }
+            catch (Exception ex)
+            {
+                //should to do sth
+                return false;
+            }
+            finally { }
             if (strResult.Equals(string.Empty))
             {
                 return false;

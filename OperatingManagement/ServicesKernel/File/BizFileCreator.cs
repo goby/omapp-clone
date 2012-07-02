@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using log4net;
 using OperatingManagement.Framework;
 using OperatingManagement.DataAccessLayer.BusinessManage;
@@ -104,8 +105,8 @@ namespace ServicesKernel.File
                 foreach (KeyValuePair<string, string> kval in fileList)
                 {
                     infoID = new InfoType().GetIDByExMark(kval.Value);
-                    oSender.SendFile(kval.Key, Param.OutPutPath, sendWay, senderID, desID
-                        , infoID, true);
+                    //oSender.SendFile(kval.Key, Param.OutPutPath, sendWay, senderID, desID
+                    //    , infoID, true);
                 }
             }
             else//有创建失败的，就删除已创建文件，并在文件发送记录里写一条总记录
@@ -340,7 +341,7 @@ namespace ServicesKernel.File
             }
             else
             {
-                string stmp = DataFileHandle.CopyFile(ufInfo.Directory + ufInfo.FileName, Param.OutPutPath);
+                string stmp = DataFileHandle.CopyFile(ufInfo.Directory + ufInfo.FileName, Param.OutPutPath, fileName);
                 if (stmp != string.Empty)
                     Log(string.Format("复制图像数据失败：{0}", stmp));
             }
@@ -473,12 +474,119 @@ namespace ServicesKernel.File
             return strType;
         }
 
+        /// <summary>
+        /// 将PLEO引导成像图像数据转成输出格式
+        /// </summary>
+        /// <param name="srcDataFilePath"></param>
+        /// <param name="tgtDataFilePath"></param>
+        /// <returns></returns>
         private bool ConvertPLEOData(string srcDataFilePath, string tgtDataFilePath)
         {
+            //文件总大小：41944000b / 8 = 5243000B
+            int iFileSize = 5243000;
             bool blResult = false;
+            FileStream oFRStream = new FileStream(srcDataFilePath, FileMode.Open, FileAccess.Read);
+            FileStream oFWStream = new FileStream(tgtDataFilePath, FileMode.Truncate, FileAccess.Write);
+            try
+            {
+                byte[] btData;
+                byte[] btTmp;
+                int iLen = 0;
+                int iIdx = 0;
+                string sTmp = string.Empty;
+                string sOff = string.Empty;
+                string sBin = string.Empty;
+                oFRStream.Seek(0, SeekOrigin.Begin);
+
+                iLen = 12;//4B同步码+8B时间
+                btData = new byte[iLen];
+                iIdx += oFRStream.Read(btData, iIdx, iLen);
+                oFWStream.Write(btData, 0, btData.Length);
+
+                iLen = 5;//40b帧标识
+                btData = new byte[iLen];
+                iIdx += oFRStream.Read(btData, iIdx, iLen);
+                oFWStream.Write(btData, 0, btData.Length);
+
+                iLen = 3;//20bit帧计数，高4位补0
+                btData = new byte[iLen];
+                iIdx += oFRStream.Read(btData, iIdx, iLen);
+                sTmp = Byte2BinaryStr(btData[iLen - 1]);
+                sOff = sTmp.Substring(4).PadLeft(8, '0');
+                btData[iLen - 1] = BinaryStr2Byte(sOff);
+                btTmp = new byte[4];
+                Array.Copy(btData, 0, btTmp, 0, iLen);
+                oFWStream.Write(btTmp, 0, btTmp.Length);
+
+                sOff = sTmp.Substring(0, 4);
+                iLen = 5;//40b时间码
+                btData = new byte[iLen];
+                iIdx += oFRStream.Read(btData, iIdx, iLen);
+                Array.Copy(btData, 0, btTmp, 0, iLen - 1);
+                sBin = Bytes2BinaryStr(btTmp);
+                sTmp = Byte2BinaryStr(btData[iLen - 1]).Substring(4);
+                sBin = sOff + sBin + sTmp;
+                btTmp = BinaryStr2Bytes(sBin);
+                oFWStream.Write(btData, 0, btData.Length);
+
+                sOff = sTmp.Substring(0, 4);
+                iLen = 25;//200b遥测参数
+                btData = new byte[iLen];
+                iIdx += oFRStream.Read(btData, iIdx, iLen);
+                Array.Copy(btData, 0, btTmp, 0, iLen - 1);
+                sBin = Bytes2BinaryStr(btTmp);
+                sTmp = Byte2BinaryStr(btData[iLen - 1]).Substring(4);
+                sBin = sOff + sBin + sTmp;
+                btTmp = BinaryStr2Bytes(sBin);
+                oFWStream.Write(btData, 0, btData.Length);
+
+                sOff = sTmp.Substring(0, 4);
+                iLen = 82;//660b保留
+                btData = new byte[iLen];
+                iIdx += oFRStream.Read(btData, iIdx, iLen);
+                //Array.Copy(btData, 0, btTmp, 0, iLen - 1);
+                sBin = Bytes2BinaryStr(btData);
+                //sTmp = Byte2BinaryStr(btData[iLen - 1]).Substring(4);
+                sBin = sOff + sBin;// +sTmp;
+                sBin = sBin.Substring(0, sBin.Length - 4) + "0000" + sBin.Substring(sBin.Length - 5);
+                btTmp = BinaryStr2Bytes(sBin);
+                oFWStream.Write(btData, 0, btData.Length);
+
+                int iBufferSize = 1024;
+                btData = new byte[iBufferSize];
+                iLen = iBufferSize;
+                while (iLen == iBufferSize)
+                {
+                    iLen = oFRStream.Read(btData, 0, iBufferSize);
+                    oFWStream.Write(btData, 0, iLen);
+                }
+            }
+            catch (Exception ex)
+            {
+                blResult = false;
+                Log("转换LEO引导相机成像文件出现异常", ex);
+            }
+            finally 
+            {
+                if (oFRStream != null)
+                {
+                    oFRStream.Close();
+                    oFRStream.Dispose();
+                }
+                if (oFWStream != null)
+                {
+                    oFWStream.Close();
+                    oFWStream.Dispose();
+                }
+            }
             return blResult;
         }
 
+        /// <summary>
+        /// 把List的key转成字符串数组
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
         private string[] ListKey2Array(Dictionary<string, string> list)
         {
             string[] keys = new string[list.Count];
@@ -489,6 +597,58 @@ namespace ServicesKernel.File
                 iIdx++;
             }
             return keys;
+        }
+
+        /// <summary>
+        /// byte转换为二进制字符串
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private static string Byte2BinaryStr(byte data)
+        {
+            return Convert.ToString(data, 2).PadLeft(8, '0');
+        }
+
+        /// <summary>
+        /// (8位长)二进制字符串转换为1字节
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private static byte BinaryStr2Byte(string data)
+        {
+            return Convert.ToByte(data, 2);
+        }
+
+        /// <summary>
+        /// 字节数组转成二进制字符串，逗号分隔
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private string Bytes2BinaryStr(byte[] data)
+        {
+            StringBuilder oSB = new StringBuilder();
+            for (int i = 0; i < data.Length; i++)
+            {
+                oSB.Append(Byte2BinaryStr(data[i]));
+            }
+            return oSB.ToString();
+        }
+
+        /// <summary>
+        /// 逗号分隔长二进制字符串转成字节数组
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private byte[] BinaryStr2Bytes(string data)
+        {
+            byte[] btData = new byte[data.Length / 8];
+            int iIdx = 0;
+            for (int i = 0; i < btData.Length; i++)
+            {
+                btData[i] = BinaryStr2Byte(data.Substring(iIdx, 8));
+                iIdx += 8;
+            }
+            return btData;
         }
     }
 }

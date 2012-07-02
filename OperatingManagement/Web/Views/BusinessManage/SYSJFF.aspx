@@ -2,10 +2,6 @@
 <%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
 <%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <style type="text/css">
-        .button
-        {}
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="bizmanage" />
@@ -19,21 +15,28 @@
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="listTitle">
         <tr>
-            <td valign="middle"  width="10%">任务<uc1:ucTask ID="ucTask1" runat="server" /></td>
-            <td valign="middle" width="10%">卫星<uc2:ucSatellite ID="ucSatellite1" runat="server" /></td>
-            <td valign="middle" width="20%">数据类型<asp:DropDownList ID="ddlDataType" runat="server" ClientIDMode="Static">
+            <th style="text-align:left;"><span style="padding-left:5px">任务</span></th>
+            <th style="text-align:left;"><span style="padding-left:5px">卫星</span></th>
+            <th style="text-align:left;"><span style="padding-left:5px">数据类型</span></th>
+            <th style="text-align:left;"><span style="padding-left:5px">开始日期</span></th>
+            <th style="text-align:left;"><span style="padding-left:5px">结束日期</span></th>
+            <th><asp:Label ID="Label1" runat="server" CssClass="error" Text="每种试验数据子类只允许选择一个文件。"></asp:Label></th>
+        </tr>
+        <tr>
+            <td><uc1:ucTask ID="ucTask1" runat="server" /></td>
+            <td><uc2:ucSatellite ID="ucSatellite1" runat="server" /></td>
+            <td><asp:DropDownList ID="ddlDataType" runat="server" ClientIDMode="Static">
                 <asp:ListItem Value="0">天基目标观测试验数据</asp:ListItem>
                 <asp:ListItem Value="1">空间机动试验数据</asp:ListItem>
                 <asp:ListItem Value="2">仿真推演试验数据</asp:ListItem>
                 </asp:DropDownList></td>
-            <td valign="middle" width="20%">开始日期<asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" 
+            <td><asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" 
                     runat="server"></asp:TextBox></td>
-            <td valign="middle"width="20%">结束日期<asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" 
+            <td><asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" 
                     runat="server"></asp:TextBox></td>
-            <td valign="middle" width="10%"><asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
+            <td><asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
                         Text="查询" />&nbsp;&nbsp;<asp:Button CssClass="button" ID="btnSend" 
-                    runat="server" Text="发送数据" OnClientClick="return sendFiles();" 
-                    Height="21px" onclick="btnSend_Click" /></td>
+                    runat="server" Text="发送数据" OnClientClick="return SendFile();"  /></td>
         </tr>
     </table>
     <div runat="server" id="vYCData">
@@ -41,20 +44,20 @@
         <HeaderTemplate>
             <table class="list">
                 <tr>
-                    <th style="width:5%;"><input type="checkbox" /></th>
-                    <th style="width:10%;">创建时间</th>
-                    <th style="width:10%;">任务代号</th>
+                    <th style="width:3%;"><input type="checkbox" /></th>
+                    <th style="width:20%;">创建时间</th>
+                    <th style="width:12%;">任务代号</th>
                     <th style="width:10%;">卫星编号</th>
                     <th style="width:10%;">数据类型</th>
-                    <th style="width:25%;">开始星上时间</th>
-                    <th style="width:25%;">结束星上时间</th>
+                    <th style="width:20%;">开始星上时间</th>
+                    <th style="width:20%;">结束星上时间</th>
                     <th style="width:5%;">备注</th>
                 </tr>  
                 <tbody id="tbYCData">        
         </HeaderTemplate>
         <ItemTemplate>
             <tr>
-                <td><input type="checkbox" name="chkSelect" value="<%# Eval("Id") %>" /></td>
+                <td><input type="checkbox" name="chkSelect" value="<%# Eval("Id") + ";" + Eval("Stype") %>" /></td>
                 <td><%# Eval("CTime", "{0:" + this.SiteSetting.DateTimeFormat + "}") %></td>
                 <td><%# Eval("TaskID") %></td>
                 <td><%# Eval("SatID") %></td>
@@ -82,7 +85,7 @@
         <HeaderTemplate>
             <table class="list">
                 <tr>
-                    <th style="width:3%;"><input type="checkbox" onclick="checkAll(this)" /></th>
+                    <th style="width:3%;"><input type="checkbox" /></th>
                     <th style="width:7%;">创建时间</th>
                     <th style="width:5%;">任务代号</th>
                     <th style="width:5%;">卫星编号</th>
@@ -100,7 +103,7 @@
         </HeaderTemplate>
         <ItemTemplate>
             <tr>
-                <td><input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>" /></td>
+                <td><input type="checkbox" name="chkDelete" value="<%# Eval("Id") + ";" + Eval("UserID") %>" /></td>
                 <td><%# Eval("CTime", "{0:" + this.SiteSetting.DateTimeFormat + "}") %></td>
                 <td><%# Eval("TaskID") %></td>
                 <td><%# Eval("SatID") %></td>
@@ -133,7 +136,7 @@
         <HeaderTemplate>
             <table class="list">
                 <tr>
-                    <th style="width:5px;"><input type="checkbox" onclick="checkAll(this)" /></th>
+                    <th style="width:5px;"><input type="checkbox" /></th>
                     <th style="width:15%;">创建时间</th>
                     <th style="width:10%;">任务代号</th>
                     <th style="width:15%;">开始时间</th>
@@ -172,11 +175,28 @@
             <td><asp:Label ID="lblMessage" runat="server" CssClass="error" Text=""></asp:Label></td>
         </tr>
         <tr><td>
+                <div style="display:none;">
                 <asp:HiddenField ID="hfycids" runat="server" ClientIDMode="Static"/>
-                <asp:HiddenField ID="Hfufids" runat="server" ClientIDMode="Static"/>
+                <asp:HiddenField ID="hfufids" runat="server" ClientIDMode="Static"/>
                 <asp:HiddenField ID="hffzids" runat="server" ClientIDMode="Static"/>
-                <asp:HiddenField ID="hfSendWay" runat="server" ClientIDMode="Static"/></td></tr>
+                <asp:HiddenField ID="hfsendway" runat="server" ClientIDMode="Static"/>
+                    <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" 
+                                OnClick="btnSend_Click" /></div></td></tr>
     </table>
+    <div id="SendPanel" style="display:none">
+        <table id="rblProtocol">
+            <tr>
+                <td align="left"  style="text-align: left">
+                <b>请选择要使用的发送协议：</b>
+                <br />
+                <input type="radio" name="rdProtocl" value="0" checked="checked" />Fep with Tcp
+                <input type="radio" name="rdProtocl" value="1" />Fep with Udp
+                <input type="radio" name="rdProtocl" value="2" />Ftp
+                    <br />
+                </td>
+            </tr>
+        </table>
+    </div>
     <div id="dialog-form" style="display:none" title="提示信息">
 	    <p class="content"></p>
     </div>

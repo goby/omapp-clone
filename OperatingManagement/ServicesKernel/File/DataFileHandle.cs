@@ -242,8 +242,9 @@ namespace ServicesKernel.File
         /// </summary>
         /// <param name="srcPath"></param>
         /// <param name="targetPath"></param>
+        /// <param name="fileName">为空则保留源文件名，否则替换为此名</param>
         /// <returns></returns>
-        public static string CopyFile(string fileFullName, string targetPath)
+        public static string CopyFile(string fileFullName, string targetPath, string fileName)
         {
             string strLog = "复制";
             FileInfo oFile = new FileInfo(fileFullName);
@@ -252,7 +253,11 @@ namespace ServicesKernel.File
                 strLog = strLog + string.Format("失败，源文件不存在{0}", fileFullName);
                 return strLog;
             }
-            string strTgtFile = targetPath + @"\" + oFile.Name;
+            string strTgtFile;
+            if (!fileName.Equals(string.Empty))
+                strTgtFile = targetPath + fileName;
+            else
+                strTgtFile = targetPath + @"\" + oFile.Name;
             try
             {
                 //复制路径不存在，创建

@@ -1,4 +1,5 @@
-﻿function sendFiles() {
+﻿function SendFile() {
+    //return true;
     var _dialog;
     _dialog = $("#dialog-form");
 
@@ -38,23 +39,45 @@
     var ycids;
     if (chks_yc != null) {
         ycids = chks_yc.map(function () { return this.value; }).get().join(',');
-        $('#hfycids').attr("value", "");
+        $('#hfycids').val(ycids);
     }
     else
-        $('#hfycids').val = "";
+        $('#hfycids').val("");
     var ufids;
     if (chks_uf != null) {
         ufids = chks_uf.map(function () { return this.value; }).get().join(',');
-        $('#hfufids').val = ufids;
+        $('#hfufids').val(ufids);
     }
     else
-        $('#hfufids').attr("value", "");
+        $('#hfufids').val("");
     var fzids;
     if (chks_fz != null) {
         fzids = chks_fz.map(function () { return this.value; }).get().join(',');
-        $('#hffzids').attr("value", fzids);
+        $('#hffzids').val(fzids);
     }
     else
-        $('#hffzids').attr("value", "");
-    return true;
+        $('#hffzids').val("");
+
+    //return true;
+    var _Senddialog;
+    _Senddialog = $("#SendPanel");
+    _Senddialog.dialog({
+        autoOpen: false,
+        height: 180,
+        width: 350,
+        modal: true,
+        buttons: {
+            '关闭': function () {
+                var _radios = $('#rblProtocol').find('input');
+                var selVal = _radios.filter('[checked=checked]');
+                var sendway = selVal.attr('value');
+                $('#hfsendway').val(sendway);
+                $(this).dialog("close");
+                var btn = $('#btnHidden');
+                btn.click();
+            }
+        }
+    });
+    _Senddialog.dialog('open');
+    return false;
 }
