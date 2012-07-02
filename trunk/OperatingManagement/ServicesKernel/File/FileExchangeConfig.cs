@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.Collections;
+using OperatingManagement.Framework.Core;
 
 namespace ServicesKernel.File
 {
     public class FileExchangeConfig
     {
-        private static string filePath = @"../app_data/FileExchangeConfig.xml";
+        private static string filePath = @"~/app_data/FileExchangeConfig.xml";
         private static string sSeperator = "-";
         private static Dictionary<string, string> sendList = null;
         private static Dictionary<string, string> recvList = null;
@@ -76,7 +77,7 @@ namespace ServicesKernel.File
 
         private static void Load()
         {
-            XDocument doc = XDocument.Load(filePath);
+            XDocument doc = XDocument.Load(GlobalSettings.MapPath(filePath));
             XElement root = doc.Root;
             if (doc == null)
                 return;

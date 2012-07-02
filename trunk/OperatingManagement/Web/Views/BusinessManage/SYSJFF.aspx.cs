@@ -248,7 +248,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         protected void btnSend_Click(object sender, EventArgs e)
         {
             string strYCIds = hfycids.Value;
-            string strUFIds = Hfufids.Value;
+            string strUFIds = hfufids.Value;
             string strFZIds = hffzids.Value;
 
             if (strYCIds.Equals(string.Empty) && strUFIds.Equals(string.Empty) && strFZIds.Equals(string.Empty))
@@ -256,6 +256,69 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 ShowMessage("没有选择要发送的数据。");
                 return;
             }
+
+            #region 判断是否多选了，一种类型试验数据的子类只允许选一个
+            bool blValid = true;
+            string[] ycids = new string[0];
+            if (!strYCIds.Equals(string.Empty))
+                ycids = strYCIds.Split(new char[] { ',' });
+            string[] ufids = new string[0];
+            if (!strUFIds.Equals(string.Empty))
+                ufids = strUFIds.Split(new char[] { ',' });
+            string[] fzids = new string[0];
+            if (!strFZIds.Equals(string.Empty))
+                fzids = strFZIds.Split(new char[] { ',' });
+            string types = string.Empty;
+            string stmp = string.Empty;
+            switch (ddlDataType.SelectedValue)
+            {
+                case "0"://TJ
+                    if (ycids.Length > 1)
+                    {
+                        ShowMessage("只允许选择一条状态数据。");
+                        return;
+                    }
+                    for (int i = 0; i < ufids.Length; i++)
+                    {
+                        stmp = ufids[i].Substring(ufids[i].IndexOf(';') + 1);
+                        if (types.IndexOf(stmp) >= 0)
+                        {
+                            ShowMessage("一类图像数据只允许选择一条。");
+                            blValid = false;
+                            break;
+                        }
+                        else
+                            types += stmp;
+                    }
+                    break;
+                case "1"://KJ
+                    for (int i = 0; i < ycids.Length; i++)
+                    {
+                        stmp = ycids[i].Substring(ycids[i].IndexOf(';') + 1);
+                        if (types.IndexOf(stmp) >= 0)
+                        {
+                            ShowMessage("一类数据只允许选择一条。");
+                            blValid = false;
+                            break;
+                        }
+                        else
+                            types += stmp;
+                    }
+                    break;
+                case "2"://FZ
+                    if (fzids.Length > 1)
+                    {
+                        ShowMessage("只允许选择一条仿真推演试验数据。");
+                        return;
+                    }
+                    else if (fzids.Length == 1)
+                        fzids[0] = fzids[0].Substring(0, fzids[0].IndexOf(';'));
+                    break;
+            }
+            #endregion
+            if (!blValid)
+                return;
+
             Thread oThread = new Thread(new ThreadStart(Data2File));
             oThread.Start();
             ShowMessage("已提交后台进行处理。");
@@ -269,19 +332,45 @@ namespace OperatingManagement.Web.Views.BusinessManage
         private void Data2File()
         {
             string strYCIds = hfycids.Value;
-            string strUFIds = Hfufids.Value;
+            string strUFIds = hfufids.Value;
             string strFZIds = hffzids.Value;
-            string sendWay = hfSendWay.Value;
+            string sendWay = hfsendway.Value;
             DateTime dt = DateTime.Now;
             string[] ycids = new string[0];
-            if (strYCIds.Equals(string.Empty))
+            if (!strYCIds.Equals(string.Empty))
                 ycids = strYCIds.Split(new char[] { ',' });
             string[] ufids = new string[0];
-            if (strUFIds.Equals(string.Empty))
+            if (!strUFIds.Equals(string.Empty))
                 ufids = strUFIds.Split(new char[] { ',' });
             string[] fzids = new string[0];
-            if (strFZIds.Equals(string.Empty))
+            if (!strFZIds.Equals(string.Empty))
                 fzids = strFZIds.Split(new char[] { ',' });
+
+            #region 隐藏域中存的是ID+type，需重置IDs
+            string types = string.Empty;
+            string stmp = string.Empty;
+            switch (ddlDataType.SelectedValue)
+            {
+                case "0"://TJ
+                    if (ycids.Length == 1)
+                        ycids[0] = ycids[0].Substring(0, ycids[0].IndexOf(';'));
+                    for (int i = 0; i < ufids.Length; i++)
+                    {
+                        ufids[i] = ufids[i].Substring(0, ufids[i].IndexOf(';'));
+                    }
+                    break;
+                case "1"://KJ
+                    for (int i = 0; i < ycids.Length; i++)
+                    {
+                        ycids[i] = ycids[i].Substring(0, ycids[i].IndexOf(';'));
+                    }
+                    break;
+                case "2"://FZ
+                    if (fzids.Length == 1)
+                        fzids[0] = fzids[0].Substring(0, fzids[0].IndexOf(';'));
+                    break;
+            }
+            #endregion
 
             BizFileCreator oBFCreator;
             string taskNo = ucTask1.SelectedValue;
