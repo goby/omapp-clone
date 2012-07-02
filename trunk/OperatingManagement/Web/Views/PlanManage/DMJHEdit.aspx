@@ -58,7 +58,7 @@
                 </th>
                 <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" MaxLength="10"
-                        ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                        ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtPlanStartTime"
                         ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
                 </td>
@@ -67,13 +67,13 @@
                 </th>
                 <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" MaxLength="10" 
-                        ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                        ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtPlanEndTime"
                         ErrorMessage="结束时间不能为空" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                     <asp:CompareValidator ID="CompareValidator1" runat="server" 
                         ControlToCompare="txtPlanStartTime" ControlToValidate="txtPlanEndTime" 
                         Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
-                        Operator="GreaterThan" Type="Date"></asp:CompareValidator>
+                        Operator="GreaterThan"></asp:CompareValidator>
                 </td>
             </tr>
             <tr>
@@ -281,7 +281,10 @@
                                                         <asp:TextBox MaxLength="14" ID="txtTransEndTime" CssClass="text" runat="server" Text='<%# Eval("TransEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                                     </td>
                                                     <td>
-                                                        <asp:TextBox ID="txtTransSpeedRate" CssClass="text" runat="server" Text='<%# Eval("TransSpeedRate")%>'></asp:TextBox>
+                                                        <asp:TextBox ID="txtTransSpeedRate" MaxLength="4" CssClass="text" runat="server" Text='<%# Eval("TransSpeedRate")%>'
+                                                        onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46" 
+                                                        onpaste="return !clipboardData.getData('text').match(/\D/)"
+                                                        ondragenter="return false" style="ime-mode:Disabled"></asp:TextBox>
                                                     </td>
                                                     <td>
                                                         <asp:Button ID="Button2" CausesValidation="False" CssClass="button" CommandName="Add" runat="server" Text="添加" />

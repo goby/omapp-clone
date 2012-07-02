@@ -37,7 +37,7 @@
                 </th>
                 <td>
                     <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" MaxLength="10"
-                        ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                        ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtPlanStartTime"
                         ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
                 </td>
@@ -46,13 +46,13 @@
                 </th>
                 <td>
                     <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" MaxLength="10" 
-                        ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                        ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
                     &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtPlanEndTime"
                         ErrorMessage="结束时间不能为空" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                     <asp:CompareValidator ID="CompareValidator1" runat="server" 
                         ControlToCompare="txtPlanStartTime" ControlToValidate="txtPlanEndTime" 
                         Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
-                        Operator="GreaterThan" Type="Date"></asp:CompareValidator>
+                        Operator="GreaterThan"></asp:CompareValidator>
                 </td>
             </tr>
             <tr>
@@ -82,7 +82,13 @@
                     对应日期的试验个数
                 </th>
                 <td colspan="3">
-                    <asp:TextBox ID="txtSYCount" runat="server" CssClass="text" Text='<%# Eval("SYCount")%>'></asp:TextBox>
+                    <asp:TextBox ID="txtSYCount" runat="server" CssClass="text" Text='<%# Eval("SYCount")%>'
+                    onkeypress="return event.keyCode>=48&&event.keyCode<=57" 
+                    onpaste="return !clipboardData.getData('text').match(/\D/)"
+                    ondragenter="return false" style="ime-mode:Disabled"></asp:TextBox>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" 
+                        ControlToValidate="txtSYCount" ErrorMessage="只能是数字" ForeColor="Red" 
+                        ValidationExpression="\d"></asp:RegularExpressionValidator>
                 </td>
             </tr>
             <tr>
@@ -110,7 +116,13 @@
                     试验运行的天数
                 </th>
                 <td>
-                    <asp:TextBox ID="txtSYDays" runat="server" CssClass="text" Text='<%# Eval("SYDays")%>'></asp:TextBox>
+                    <asp:TextBox ID="txtSYDays" runat="server" CssClass="text" Text='<%# Eval("SYDays")%>'
+                    onkeypress="return event.keyCode>=48&&event.keyCode<=57" 
+                    onpaste="return !clipboardData.getData('text').match(/\D/)"
+                    ondragenter="return false" style="ime-mode:Disabled"></asp:TextBox>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
+                        ControlToValidate="txtSYDays" ErrorMessage="只能是数字" ForeColor="Red" 
+                        ValidationExpression="\d"></asp:RegularExpressionValidator>
                 </td>
             </tr>
             <tr>
@@ -129,6 +141,7 @@
                             <th>
                                 动作内容
                             </th>
+                            <th></th>
                         </tr>
                         <tr>
                             <td>
@@ -140,6 +153,11 @@
                             <td>
                                 <asp:TextBox ID="txtLoadContent" runat="server" CssClass="text" Text='<%# Eval("SYLoadContent")%>'></asp:TextBox>
                             </td>
+                            <td>
+                            <asp:CompareValidator ID="CompareValidator4" runat="server" 
+                        ControlToCompare="txtLoadStartTime" ControlToValidate="txtLoadEndTime" 
+                        Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                        Operator="GreaterThan" Type="Date"></asp:CompareValidator></td>
                         </tr>
                     </table>
                 </td>
@@ -160,6 +178,7 @@
                             <th>
                                 结束时间
                             </th>
+                            <th></th>
                         </tr>
                         <tr>
                             <td>
@@ -170,6 +189,12 @@
                             </td>
                             <td>
                                 <asp:TextBox ID="txtSCEndTime" runat="server" CssClass="text" Text='<%# Eval("SY_SCEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                            </td>
+                            <td>
+                    <asp:CompareValidator ID="CompareValidator2" runat="server" 
+                        ControlToCompare="txtSCStartTime" ControlToValidate="txtSCEndTime" 
+                        Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                        Operator="GreaterThan" Type="Date"></asp:CompareValidator>
                             </td>
                         </tr>
                     </table>
@@ -191,6 +216,7 @@
                             <th>
                                 结束时间
                             </th>
+                            <th></th>
                         </tr>
                         <tr>
                             <td>
@@ -202,6 +228,10 @@
                             <td>
                                 <asp:TextBox ID="txtCKEndTime" runat="server" CssClass="text" Text='<%# Eval("SY_CKEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
+                            <td><asp:CompareValidator ID="CompareValidator3" runat="server" 
+                        ControlToCompare="txtCKStartTime" ControlToValidate="txtCKEndTime" 
+                        Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                        Operator="GreaterThan" Type="Date"></asp:CompareValidator></td>
                         </tr>
                     </table>
                 </td>
@@ -362,9 +392,11 @@
                                 <asp:TextBox ID="txtWork_Load_EndTime" runat="server" CssClass="text" 
                                 Text='<%# Eval("Work_Load_EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
-                            <th style="width: 60px;">
-                            </th>
-                            <td>
+                            <td colspan="2">
+                            <asp:CompareValidator ID="CompareValidator5" runat="server" 
+                        ControlToCompare="txtWork_Load_StartTime" ControlToValidate="txtWork_Load_EndTime" 
+                        Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                        Operator="GreaterThan" Type="Date"></asp:CompareValidator>
                             </td>
                         </tr>
                     </table>
@@ -612,6 +644,10 @@
                                         Text="添加" />
                                     <asp:Button ID="btn8" CausesValidation="False" CssClass="button" runat="server" CommandName="Del"
                                         Text="删除" />
+                                        <asp:CompareValidator ID="CompareValidator11" runat="server" 
+                        ControlToCompare="txtRCStartTime" ControlToValidate="txtRCEndTime" 
+                        Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                        Operator="GreaterThan" Type="Date"></asp:CompareValidator>
                                 </td>
                             </tr>
                         </ItemTemplate>
@@ -660,6 +696,10 @@
                                         Text="添加" />
                                     <asp:Button ID="btn10" CausesValidation="False" CssClass="button" runat="server"
                                         CommandName="Del" Text="删除" />
+                                        <asp:CompareValidator ID="CompareValidator12" runat="server" 
+                        ControlToCompare="txtEStartTime" ControlToValidate="txtEEndTime" 
+                        Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                        Operator="GreaterThan" Type="Date"></asp:CompareValidator>
                                 </td>
                             </tr>
                         </ItemTemplate>
@@ -715,6 +755,10 @@
                                             CommandName="Add" Text="添加" />
                                         <asp:Button ID="btn12" CausesValidation="False" CssClass="button" runat="server"
                                             CommandName="Del" Text="删除" />
+                                            <asp:CompareValidator ID="CompareValidator13" runat="server" 
+                        ControlToCompare="txtMStartTime" ControlToValidate="txtMEndTime" 
+                        Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                        Operator="GreaterThan" Type="Date"></asp:CompareValidator>
                                     </td>
                                 </tr>
                         </ItemTemplate>

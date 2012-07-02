@@ -88,8 +88,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             try
             {
                 List<JH> jh = (new JH()).SelectByIDS(sID);
-                txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm");
-                txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm");
+                txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm:ss");
+                txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
                 HfFileIndex.Value = jh[0].FileIndex;
                 hfTaskID.Value = jh[0].TaskID.ToString();
                 ucTask1.SelectedValue = jh[0].TaskID.ToString();
