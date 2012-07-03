@@ -15,8 +15,8 @@
     <table class="listTitle" width="1500px">
         <tr>
             <td width="80%"><div>信息类型<uc2:ucInfoType ID="ddlInfoType" runat="server"  />
-                开始日期<asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" runat="server"></asp:TextBox>
-                结束日期<asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" runat="server"></asp:TextBox>
+                开始日期<asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" runat="server"></asp:TextBox>
+                结束日期<asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" runat="server"></asp:TextBox>
                 </div>
             </td>
             <td width="20%"><asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"

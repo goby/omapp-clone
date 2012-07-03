@@ -1,10 +1,4 @@
-﻿$(function () {
-    $("#txtFrom").datepicker();
-    $("#txtTo").datepicker();
-});
-
-
-function showMsg(msg) {
+﻿function showMsg(msg) {
     $.fn.modal({
         title: '提示信息',
         content: function (o, e) {

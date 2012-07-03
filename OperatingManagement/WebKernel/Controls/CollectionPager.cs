@@ -188,7 +188,11 @@ namespace OperatingManagement.WebKernel.Controls
 				{
 					return MaxPages;
 				}
-				else
+                else if (_CurrentPage > PageCount)
+                {
+                    return 1;
+                }
+                else
 				{
 					return _CurrentPage;
 				}
@@ -889,7 +893,7 @@ namespace OperatingManagement.WebKernel.Controls
 
 				//Data Related
 				if (allStates[1] != null)	_MaxPages = (int)allStates[1];
-				//if (allStates[2] != null)	_CurrentPage = (int)allStates[2];
+				if (allStates[2] != null)	_CurrentPage = (int)allStates[2];
 
 				//Behavior Related
 				if (allStates[3] != null)	_PagingMode = (PagingModeType)allStates[3];
@@ -956,7 +960,7 @@ namespace OperatingManagement.WebKernel.Controls
 				BindToQueryString();
 			}			
 			
-			_PagedDataSet.CurrentPageIndex = _CurrentPage - 1;
+			_PagedDataSet.CurrentPageIndex = CurrentPage - 1;
 
 			//If only 1 page, then hide and exit.
 			if(PageCount<=1 && Context!=null && HideOnSinglePage)

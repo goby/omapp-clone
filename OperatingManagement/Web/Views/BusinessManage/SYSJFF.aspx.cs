@@ -25,7 +25,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             HideMessage();
             if (!Page.IsPostBack)
+            {
+                txtFrom.Attributes.Add("readonly", "true");
+                txtTo.Attributes.Add("readonly", "true");
                 HidControl();
+            }
             cpFZData.PostBackPage += new EventHandler(cpFZData_PostBackPage);
             cpUFData.PostBackPage += new EventHandler(cpUFData_PostBackPage);
             cpYCData.PostBackPage += new EventHandler(cpYCData_PostBackPage);
@@ -247,6 +251,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
+            BindData(false);
+
             string strYCIds = hfycids.Value;
             string strUFIds = hfufids.Value;
             string strFZIds = hffzids.Value;
@@ -256,6 +262,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 ShowMessage("没有选择要发送的数据。");
                 return;
             }
+            return;
 
             #region 判断是否多选了，一种类型试验数据的子类只允许选一个
             bool blValid = true;

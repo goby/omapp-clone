@@ -16,9 +16,9 @@
         <tr>
             <td width="80%"><div>信息类型<uc2:ucInfoType ID="ddlInfoType" runat="server" 
                     AllowBlankItem="True" />
-                开始日期<asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" 
+                开始日期<asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"  
                     runat="server"></asp:TextBox>
-                结束日期<asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" 
+                结束日期<asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" 
                     runat="server"></asp:TextBox>
                 </div>
             </td>

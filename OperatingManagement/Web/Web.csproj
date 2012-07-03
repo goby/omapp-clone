@@ -204,6 +204,8 @@
     <Content Include="Views\BusinessManage\CenterResourceEdit.aspx" />
     <Content Include="Views\BusinessManage\CommunicationResourceAdd.aspx" />
     <Content Include="Views\BusinessManage\CommunicationResourceEdit.aspx" />
+    <Content Include="Views\BusinessManage\GDJHFX.aspx" />
+    <Content Include="Views\BusinessManage\GDYB.aspx" />
     <Content Include="Views\BusinessManage\GetFileRcvInfos.aspx" />
     <Content Include="Views\BusinessManage\GetFileSInfos.aspx" />
     <Content Include="Views\BusinessManage\GroundResourceAdd.aspx" />
@@ -392,6 +394,20 @@
     </Compile>
     <Compile Include="Views\BusinessManage\CommunicationResourceEdit.aspx.designer.cs">
       <DependentUpon>CommunicationResourceEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GDJHFX.aspx.cs">
+      <DependentUpon>GDJHFX.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GDJHFX.aspx.designer.cs">
+      <DependentUpon>GDJHFX.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GDYB.aspx.cs">
+      <DependentUpon>GDYB.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GDYB.aspx.designer.cs">
+      <DependentUpon>GDYB.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\GetFileRcvInfos.aspx.cs">
       <DependentUpon>GetFileRcvInfos.aspx</DependentUpon>

@@ -20,7 +20,7 @@
             <th style="text-align:left;"><span style="padding-left:5px">数据类型</span></th>
             <th style="text-align:left;"><span style="padding-left:5px">开始日期</span></th>
             <th style="text-align:left;"><span style="padding-left:5px">结束日期</span></th>
-            <th><asp:Label ID="Label1" runat="server" CssClass="error" Text="每种试验数据子类只允许选择一个文件。"></asp:Label></th>
+            <th><asp:Label ID="Label1" runat="server" CssClass="error" Text="每类试验数据只能选择一个文件。"></asp:Label></th>
         </tr>
         <tr>
             <td><uc1:ucTask ID="ucTask1" runat="server" /></td>
@@ -30,9 +30,9 @@
                 <asp:ListItem Value="1">空间机动试验数据</asp:ListItem>
                 <asp:ListItem Value="2">仿真推演试验数据</asp:ListItem>
                 </asp:DropDownList></td>
-            <td><asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" 
+            <td><asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" 
                     runat="server"></asp:TextBox></td>
-            <td><asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" 
+            <td><asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                     runat="server"></asp:TextBox></td>
             <td><asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
                         Text="查询" />&nbsp;&nbsp;<asp:Button CssClass="button" ID="btnSend" 

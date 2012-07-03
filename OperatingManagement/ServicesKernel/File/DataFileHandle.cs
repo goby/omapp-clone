@@ -316,6 +316,19 @@ namespace ServicesKernel.File
             }
             return strLog;
         }
+
+        /// <summary>
+        /// 检查文件是否存在
+        /// </summary>
+        /// <param name="fileFullName"></param>
+        /// <returns></returns>
+        public static bool Exists(string fileFullName)
+        {
+            if (System.IO.File.Exists(fileFullName))
+                return true;
+            else
+                return false;
+        }
         #endregion
 
         #region -Private Methods-
