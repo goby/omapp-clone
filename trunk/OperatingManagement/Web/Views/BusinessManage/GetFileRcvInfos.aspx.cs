@@ -23,7 +23,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             HideMessage();
             if (!IsPostBack)
+            {
+                txtFrom.Attributes.Add("readonly", "true");
+                txtTo.Attributes.Add("readonly", "true");
                 InitialPageData();
+            }
             cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
         }
 

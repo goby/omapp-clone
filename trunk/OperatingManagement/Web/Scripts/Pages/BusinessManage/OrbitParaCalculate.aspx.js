@@ -17,9 +17,9 @@ $(window).ready(function () {
         }
     });
 
-    if (!!_autoOpen) {
-        _dialog.dialog('open');
-    }
+    //if (!autoOpen) {
+//        _dialog.dialog('open');
+    //}
 });
 function swapRadioStatus() {
     var selVal = _radios.filter('[checked=checked]');

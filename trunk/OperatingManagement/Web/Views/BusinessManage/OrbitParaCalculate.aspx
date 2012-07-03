@@ -15,7 +15,8 @@
     <tr>
         <th style="width:100px;">角度单位(<span class="red">*</span>)</th>
         <td>
-            <asp:RadioButtonList ID="rblAngle" runat="server" RepeatDirection="Horizontal">
+            <asp:RadioButtonList ID="rblAngle" runat="server" RepeatDirection="Horizontal" 
+                BorderColor="White" BorderStyle="Double" BorderWidth="2px">
                 <asp:ListItem Selected="true" Text="度" Value="True"></asp:ListItem>
                 <asp:ListItem Text="弧度" Value="False"></asp:ListItem>
             </asp:RadioButtonList>
@@ -24,7 +25,9 @@
     <tr>
         <th style="width:100px;">长度单位(<span class="red">*</span>)</th>
         <td>
-            <asp:RadioButtonList ID="rblDistance" runat="server" RepeatDirection="Horizontal">
+            <asp:RadioButtonList ID="rblDistance" runat="server" 
+                RepeatDirection="Horizontal" BorderColor="White" BorderStyle="Double" 
+                BorderWidth="2px">
                 <asp:ListItem Selected="true" Text="米" Value="True"></asp:ListItem>
                 <asp:ListItem Text="千米" Value="False"></asp:ListItem>
             </asp:RadioButtonList>
@@ -33,7 +36,9 @@
     <tr>
         <th style="width:100px;">转换类型(<span class="red">*</span>)</th>
         <td>
-            <asp:RadioButtonList ID="rblOrbitParameters" ClientIDMode="Static" runat="server" RepeatColumns="2">
+            <asp:RadioButtonList ID="rblOrbitParameters" ClientIDMode="Static" 
+                runat="server" RepeatColumns="2" BorderColor="White" BorderStyle="Double" 
+                BorderWidth="2px">
             
             </asp:RadioButtonList>
         </td>
