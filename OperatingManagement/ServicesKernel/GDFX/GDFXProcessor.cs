@@ -10,8 +10,14 @@ namespace ServicesKernel.GDFX
     /// </summary>
     public class GDFXProcessor
     {
-
-        public static string CutAnalyze(string subFileFullName, string tgtFileFullName)
+        /// <summary>
+        /// 交会分析
+        /// </summary>
+        /// <param name="subFileFullName"></param>
+        /// <param name="tgtFileFullName"></param>
+        /// <param name="resultFileName">结果文件名（未加_STW.dat和_UNW.dat）</param>
+        /// <returns></returns>
+        public string CutAnalyze(string subFileFullName, string tgtFileFullName, out string resultFileName)
         {
             /*
              * 1、检查依赖的文件是否都存在
@@ -19,7 +25,7 @@ namespace ServicesKernel.GDFX
              * 3、开始计算
              */
 
-            bool blResult = true;
+            resultFileName = string.Empty;
             string strResult = string.Empty;
             #region 检查数据文件存在及合法性
             strResult = CutAnalyzer.Instance.IsAllFileExist();
@@ -46,14 +52,18 @@ namespace ServicesKernel.GDFX
                 return strResult;
             }
             #endregion
+
+            //检查时间是否有交集
             if (subMinDate > tgtMaxDate || tgtMinDate > subMaxDate)
             {
                 strResult = "两个数据文件时间没有交集";
                 return strResult;
             }
 
+            #region 比较间隔、开始时间、结束时间
             DateTime beginDate;
             DateTime endDate;
+            int maxInterval;
             int minInterval;
             bool IsSubInterval = false;
             bool IsSubBeginDate = false;
@@ -62,10 +72,14 @@ namespace ServicesKernel.GDFX
             if (subInterval >= tgtInterval)
             {
                 IsSubInterval = true;
+                maxInterval = subInterval;
                 minInterval = tgtInterval;
             }
             else
+            {
+                maxInterval = tgtInterval;
                 minInterval = subInterval;
+            }
 
             if (subMinDate >= tgtMinDate)
             {
@@ -82,8 +96,9 @@ namespace ServicesKernel.GDFX
                 IsSubEndDate = true;
                 endDate = subMaxDate;
             }
-            string resultFileName = string.Empty;
-            strResult = CutAnalyzer.Instance.DoCaculate(subFileFullName, tgtFileFullName, beginDate, endDate, minInterval
+            #endregion
+
+            strResult = CutAnalyzer.Instance.DoCaculate(subFileFullName, tgtFileFullName, beginDate, endDate, maxInterval, minInterval
                 , IsSubInterval, IsSubBeginDate, IsSubEndDate, out resultFileName);
             return strResult;
         }

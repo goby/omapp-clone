@@ -68,7 +68,7 @@ namespace OperatingManagement.WebKernel.Controls
 		#region Data Related
 		
 		protected PagedDataSource _PagedDataSet;
-		protected int _MaxPages = int.MaxValue / 10;
+		protected int _MaxPages = short.MaxValue;
 		protected int _CurrentPage = 1;
 		protected string _RenderedHtml = "";
 		

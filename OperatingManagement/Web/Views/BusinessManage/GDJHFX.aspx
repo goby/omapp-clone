@@ -13,9 +13,15 @@
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
 <table class="edit" style="width:800px;">
     <tr>
-        <th style="width:100px;">交会分析数据文件(<span class="red">*</span>)</th>
+        <th style="width:100px;">交会分析主星数据文件(<span class="red">*</span>)</th>
         <td>
-            <asp:FileUpload ID="fuParaFile" ClientIDMode="Static" runat="server" />
+            <asp:FileUpload ID="fuSubFile" ClientIDMode="Static" runat="server" />
+        </td>
+    </tr>
+    <tr>
+        <th style="width:100px;">交会分析目标星数据文件(<span class="red">*</span>)</th>
+        <td>
+            <asp:FileUpload ID="fuTgtFile" ClientIDMode="Static" runat="server" />
         </td>
     </tr>
     <tr>
