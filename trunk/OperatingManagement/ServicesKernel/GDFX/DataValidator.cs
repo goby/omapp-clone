@@ -19,7 +19,7 @@ namespace ServicesKernel.GDFX
         /// <returns></returns>
         public static bool ValidateDate(string data, out DateTime date)
         {
-            return DateTime.TryParseExact(data, "yyyy-MM-dd HH:mm:ss.f", CultureInfo.InvariantCulture, DateTimeStyles.None, out date);
+            return DateTime.TryParseExact(data, "yyyyMMdd HHmmss.fff", CultureInfo.InvariantCulture, DateTimeStyles.None, out date);
         }
 
         /// <summary>

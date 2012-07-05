@@ -92,7 +92,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         }
         public override void OnPageLoaded()
         {
-            this.PagePermission = "OrbitParaCal.Edit";
+            this.PagePermission = "OMB_CSZH.Caculate";
             this.ShortTitle = "参数转换";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/businessmanage/orbitparacalculate.aspx.js");
