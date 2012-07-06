@@ -197,6 +197,10 @@ namespace OperatingManagement.WebKernel.Controls
 					return _CurrentPage;
 				}
 			}
+            set
+            {
+                _CurrentPage = value;                
+            }
 		}
 
 		public int RecordStart
@@ -893,7 +897,7 @@ namespace OperatingManagement.WebKernel.Controls
 
 				//Data Related
 				if (allStates[1] != null)	_MaxPages = (int)allStates[1];
-				if (allStates[2] != null)	_CurrentPage = (int)allStates[2];
+                if (allStates[2] != null)	_CurrentPage = (int)allStates[2];
 
 				//Behavior Related
 				if (allStates[3] != null)	_PagingMode = (PagingModeType)allStates[3];

@@ -36,6 +36,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             try
             {
                 SaveCondition();
+                cpPager.CurrentPage = 1;
                 BindGridView(true);
             }
             catch (Exception ex)

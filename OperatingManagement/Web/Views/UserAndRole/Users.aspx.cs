@@ -91,6 +91,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
                         users = u.Search(txtKeyword.Text.Trim());
                     else
                         users = u.SelectAll();
+                    cpPager.CurrentPage = 1;
                 }
                 else
                 {
