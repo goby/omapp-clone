@@ -157,6 +157,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 sType = ddlDataType.SelectedValue;
                 satID = (ucSatellite1.SelectedIndex == 0 ? "" : ucSatellite1.SelectedValue);
                 taskNo = (ucTask1.SelectedIndex == 0 ? "" : ucTask1.SelectedValue);
+                cpFZData.CurrentPage = 1;
+                cpUFData.CurrentPage = 1;
+                cpYCData.CurrentPage = 1;
                 if (txtFrom.Text != "")
                 {
                     if (!DateTime.TryParse(txtFrom.Text.Trim(), out dtFrom))

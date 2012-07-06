@@ -115,6 +115,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 }
                 #endregion
                 oSend.InfoTypeID = Convert.ToInt32(ddlInfoType.SelectedItem.Value);
+                cpPager.CurrentPage = 1;
                 this.ViewState["_filter"] = dtFrom.ToLongDateString() + "," + dtTo.ToLongDateString() + "," + ddlInfoType.SelectedItem.Value;
             }
             else

@@ -75,6 +75,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
                         modules = r.Search(txtKeyword.Text);
                     else
                         modules = r.SelectAll();
+                    cpPager.CurrentPage = 1;
                 }
                 else
                 {

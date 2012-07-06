@@ -76,6 +76,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 lblMessage.Text = ""; //文件发送消息清空
                 SaveCondition();
+                cpPager.CurrentPage = 1;
                 BindGridView(true);
             }
             catch (Exception ex)
