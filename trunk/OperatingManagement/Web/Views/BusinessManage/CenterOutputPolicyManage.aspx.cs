@@ -23,6 +23,40 @@ namespace OperatingManagement.Web.Views.BusinessManage
 {
     public partial class CenterOutputPolicyManage : AspNetPage
     {
+        #region 属性
+        /// <summary>
+        /// 查询条件，任务ID
+        /// </summary>
+        protected string TaskID
+        {
+            get 
+            {
+                string taskID = string.Empty;
+                if (ViewState["TaskID"] != null)
+                {
+                    taskID = ViewState["TaskID"].ToString();
+                }
+                return taskID;
+            }
+            set { ViewState["TaskID"] = value; }
+        }
+        /// <summary>
+        /// 查询条件，卫星编码
+        /// </summary>
+        protected string SatName
+        {
+            get
+            {
+                string satName = string.Empty;
+                if (ViewState["SatName"] != null)
+                {
+                    satName = ViewState["SatName"].ToString();
+                }
+                return satName;
+            }
+            set { ViewState["SatName"] = value; }
+        }
+        #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -33,10 +67,23 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindSatelliteDataSource();
                     BindCOPList();
                 }
+
+                cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
             }
             catch(Exception ex)
             {
                 throw (new AspNetException("查询中心输出策略页面初始化出现异常，异常原因", ex));
+            }
+        }
+        protected void cpPager_PostBackPage(object sender, EventArgs e)
+        {
+            try
+            {
+                BindCOPList();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询中心输出策略页面cpPager_PostBackPage方法出现异常，异常原因", ex));
             }
         }
         /// <summary>
@@ -48,6 +95,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
+                TaskID = dplTask.SelectedValue;
+                SatName = dplSatellite.SelectedValue;
                 BindCOPList();
             }
             catch (Exception ex)
@@ -192,8 +241,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
         private void BindCOPList()
         {
             CenterOutputPolicy centerOutputPolicy = new CenterOutputPolicy();
-            centerOutputPolicy.TaskID = dplTask.SelectedValue;
-            centerOutputPolicy.SatName = dplSatellite.SelectedValue;
+            centerOutputPolicy.TaskID = TaskID;
+            centerOutputPolicy.SatName = SatName;
             cpPager.DataSource = centerOutputPolicy.SelectByParameters();
             cpPager.PageSize = this.SiteSetting.PageSize;
             cpPager.BindToControl = rpCOPList;

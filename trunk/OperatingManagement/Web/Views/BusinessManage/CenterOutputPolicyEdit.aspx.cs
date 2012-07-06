@@ -283,7 +283,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 txtDefectTime.Text = centerOutputPolicy.DefectTime.ToString("yyyy-MM-dd");
                 txtNote.Text = centerOutputPolicy.Note;
                 lblCreatedTime.Text = centerOutputPolicy.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss");
-                lblUpdatedTime.Text = centerOutputPolicy.UpdatedTime.ToString("yyyy-MM-dd HH:mm:ss");
+                lblUpdatedTime.Text = centerOutputPolicy.UpdatedTime == DateTime.MinValue ? centerOutputPolicy.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss") : centerOutputPolicy.UpdatedTime.ToString("yyyy-MM-dd HH:mm:ss");
             }
         }
         #endregion
