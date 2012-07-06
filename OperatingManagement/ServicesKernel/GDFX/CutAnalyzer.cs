@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Globalization;
 using ServicesKernel.File;
 using OperatingManagement.Framework.Core;
@@ -15,7 +16,7 @@ namespace ServicesKernel.GDFX
     public class CutAnalyzer
     {
         private string[] fileNames = new string[] { "JPLEPH", "TESTRECL", "WGS84.GEO", "eopc04_IAU2000.dat" };
-        private const string dllPath = @"~\GDDLL\CutAna\";
+        private const string dllPath = @"\GDDLL\CutAna\";
         private const string outputPath = @"output\";
         private string strDllPath;
         //
@@ -57,7 +58,7 @@ namespace ServicesKernel.GDFX
             get
             {
                 if (strDllPath.Equals(string.Empty))
-                    strDllPath = GlobalSettings.MapPath(dllPath);
+                    strDllPath = GlobalSettings.MapPath("~" + dllPath);
                 return strDllPath;
             }
         }
@@ -83,7 +84,7 @@ namespace ServicesKernel.GDFX
 
             bool blResult = true;
             int iLine = 0;
-            string msg = "Row:{0}为空";
+            string msg = "交会分析文件数据行{0}格式不合法。";
             string strLine = string.Empty;
             DateTime date;
 
@@ -98,14 +99,14 @@ namespace ServicesKernel.GDFX
                 if (!blResult)
                 {
                     oSReader.Close();
-                    return string.Format("文件数据行{0}格式不合法", iLine);
+                    return string.Format(msg, iLine);
                 }
                 minDate = date;
             }
             else
             {
                 oSReader.Close();
-                return string.Format(msg, iLine);//第一行为空返回false
+                return string.Format("交会分析数据行{0}为空。", iLine);//第一行为空返回false
             }
 
             //获取第二行，获取时间间隔
@@ -117,7 +118,7 @@ namespace ServicesKernel.GDFX
                 if (!blResult)
                 {
                     oSReader.Close();
-                    return string.Format("文件数据行{0}格式不合法", iLine);
+                    return string.Format(msg, iLine);
                 }
                 interval = (int)(date - minDate).TotalMilliseconds;
             }
@@ -131,16 +132,13 @@ namespace ServicesKernel.GDFX
             strLine = oSReader.ReadLine();
             while (strLine != null)
             {
-                iLine++;
-                if (strLine.Trim().Equals(string.Empty))
-                    break;
-
                 blResult = CheckRowData(strLine.Trim(), out date);
                 if (!blResult)
                 {
                     oSReader.Close();
-                    return string.Format("文件数据行{0}格式不合法", iLine);
+                    return string.Format(msg, iLine);
                 }
+                iLine++; 
                 strLine = oSReader.ReadLine();
             }
             oSReader.Close();
@@ -156,6 +154,10 @@ namespace ServicesKernel.GDFX
         private bool CheckRowData(string rowData, out DateTime date)
         {
             date = DateTime.MinValue;
+            if (rowData == null || rowData.Trim().Equals(string.Empty))
+                return false;
+
+            rowData = rowData.Trim();
             bool blResult = true;
             string[] datas = new string[0];
             string sTmp = string.Empty;
@@ -163,7 +165,7 @@ namespace ServicesKernel.GDFX
             //格式: 2空格，I4，空格，2（I2，空格），2（I2，‘：’），F4.1，2空格，6(F16.6,2空格)
             try
             {
-                datas = SplitRowDatas(rowData);
+                datas = DataValidator.SplitRowDatas(rowData);
                 if (datas.Length != 12)
                     return false;
 
@@ -214,7 +216,7 @@ namespace ServicesKernel.GDFX
             //格式: 2空格，I4，空格，2（I2，空格），2（I2，‘：’），F4.1，2空格，6(F16.6,2空格)
             try
             {
-                datas = SplitRowDatas(rowData);
+                datas = DataValidator.SplitRowDatas(rowData);
                 ym = new int[5];
                 for (int i = 0; i < 5; i++)
                 {
@@ -257,7 +259,7 @@ namespace ServicesKernel.GDFX
             //格式: 2空格，I4，空格，2（I2，空格），2（I2，‘：’），F4.1，2空格，6(F16.6,2空格)
             try
             {
-                datas = SplitRowDatas(rowData);
+                datas = DataValidator.SplitRowDatas(rowData);
                 datas[5] = datas[5].Substring(0, datas[5].IndexOf('.') + 4);
                 if (datas[5].Length != 6)
                     datas[5] = "0" + datas[5];
@@ -721,27 +723,6 @@ namespace ServicesKernel.GDFX
             oSTWResult.WriteLine(sb.ToString());
             oSTWResult.WriteLine();
             return blResult;
-        }
-
-        /// <summary>
-        /// 从行数据获取分割后的结果
-        /// </summary>
-        /// <param name="rowData"></param>
-        /// <returns></returns>
-        private string[] SplitRowDatas(string rowData)
-        {
-            string[] datas;
-            int iIdx = 0;
-            rowData = rowData.Trim();
-            iIdx = rowData.IndexOf("  ");
-            while (iIdx >= 0)
-            {
-                //提供的样本数据空格数不一致，干脆把多余的空格换成一个
-                rowData = rowData.Replace("  ", " ");
-                iIdx = rowData.IndexOf("  ");
-            }
-            datas = rowData.Split(new char[] { ' ' });
-            return datas;
         }
     }
 }

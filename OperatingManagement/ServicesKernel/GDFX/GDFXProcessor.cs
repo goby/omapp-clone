@@ -15,7 +15,7 @@ namespace ServicesKernel.GDFX
         /// </summary>
         /// <param name="subFileFullName"></param>
         /// <param name="tgtFileFullName"></param>
-        /// <param name="resultFileName">结果文件名（未加_STW.dat和_UNW.dat）</param>
+        /// <param name="resultFileName">结果文件名的一部分（未加_STW.dat和_UNW.dat）</param>
         /// <returns></returns>
         public string CutAnalyze(string subFileFullName, string tgtFileFullName, out string resultFileName)
         {
@@ -100,6 +100,103 @@ namespace ServicesKernel.GDFX
 
             strResult = CutAnalyzer.Instance.DoCaculate(subFileFullName, tgtFileFullName, beginDate, endDate, maxInterval, minInterval
                 , IsSubInterval, IsSubBeginDate, IsSubEndDate, out resultFileName);
+            return strResult;
+        }
+
+        /// <summary>
+        /// 参数转换
+        /// </summary>
+        /// <param name="angle"></param>
+        /// <param name="length"></param>
+        /// <param name="convertType"></param>
+        /// <param name="convertFilePath">路径+文件名</param>
+        /// <param name="emitFilePath">路径+文件名</param>
+        /// <returns></returns>
+        public string ParamConvert(bool deg, bool km, string convertType, string convertFileFullName, string emitFileFullName
+            , out string resultFileName)
+        {
+            /*
+             * 1、校验发射系文件，时间合法
+             * 2、校验待转换文件，时间合法，数据合法
+             * 3、进行转换
+             */
+            resultFileName = string.Empty;
+            string strResult = string.Empty;
+            strResult = ParamConvertor.Instance.CheckEmitFileData(emitFileFullName);
+            if (!strResult.Equals(string.Empty))
+                return strResult;
+
+            strResult = ParamConvertor.Instance.CheckConvertFileData(convertFileFullName);
+            if (!strResult.Equals(string.Empty))
+                return strResult;
+
+            strResult = ParamConvertor.Instance.DoConvert(deg, km, convertType, convertFileFullName, emitFileFullName, out resultFileName);
+            return strResult;
+        }
+
+        /// <summary>
+        /// 差值分析，俩文件必须在同一路径中
+        /// </summary>
+        /// <param name="ephemerisFileFullName">路径+文件名</param>
+        /// <param name="timeSeriesFileFullName">路径+文件名</param>
+        /// <param name="resultFileFullName">路径+文件名</param>
+        /// <returns></returns>
+        public string Intepolate(string ephemerisFileFullName, string timeSeriesFileFullName, out string resultFileFullName)
+        {
+            /*
+             * 1、校验差值分析时间文件，时间合法，数据合法
+             * 2、校验星历文件，时间合法
+             * 3、进行差值分析
+             */
+            resultFileFullName = string.Empty;
+            string strResult = string.Empty;
+            DateTime beginDate;
+            DateTime endDate;
+            strResult = Intepolater.Instance.CheckTimeSeriesFileData(timeSeriesFileFullName, out beginDate, out endDate);
+            if (!strResult.Equals(string.Empty))
+                return strResult;
+
+            strResult = Intepolater.Instance.CheckEphemerisFileData(timeSeriesFileFullName, beginDate, endDate);
+            if (!strResult.Equals(string.Empty))
+                return strResult;
+
+            strResult = Intepolater.Instance.DoCaculate(ephemerisFileFullName, timeSeriesFileFullName, out resultFileFullName);
+            return strResult;
+        }
+
+        /// <summary>
+        /// 交会预报
+        /// </summary>
+        /// <param name="filesPath">交会预报的文件路径</param>
+        /// <returns></returns>
+        public string CutPre(string filesPath, out string resultFileFullName)
+        {
+            /*
+             * 1、检查需要的文件是否都有
+             * 2、校验主文件数据合法性
+             * 3、校验Sub文件数据合法性
+             * 4、校验Optional文件数据合法性
+             * 5、进行交会预报计算
+             */
+            resultFileFullName = string.Empty;
+            string strResult = string.Empty;
+            strResult = CutPrer.Instance.IsAllFileExist();
+            if (!strResult.Equals(string.Empty))
+                return strResult;
+
+            strResult = CutPrer.Instance.CheckMainFileData(filesPath + "CutMain.dat");
+            if (!strResult.Equals(string.Empty))
+                return strResult;
+
+            strResult = CutPrer.Instance.CheckSubFileData(filesPath + "CutSub.dat");
+            if (!strResult.Equals(string.Empty))
+                return strResult;
+
+            strResult = CutPrer.Instance.CheckOptionalFileData(filesPath + "CutOptional.dat");
+            if (!strResult.Equals(string.Empty))
+                return strResult;
+
+            strResult = CutPrer.Instance.DoCaculate(filesPath);
             return strResult;
         }
     }

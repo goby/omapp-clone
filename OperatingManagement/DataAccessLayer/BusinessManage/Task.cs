@@ -117,14 +117,31 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <returns></returns>
         public string GetObjectFlagByTaskNo(string taskNo)
         {
-            string strObjectCode = string.Empty;
+            string strResult = string.Empty;
             if (Cache != null)
             {
                 var query = Cache.Where(a => a.TaskNo == taskNo);
                 if (query != null && query.Count() > 0)
-                    strObjectCode = query.FirstOrDefault().ObjectFlag;
+                    strResult = query.FirstOrDefault().ObjectFlag;
             }
-            return strObjectCode;
+            return strResult;
+        }
+
+        /// <summary>
+        /// 通过对象标识获取任务代号
+        /// </summary>
+        /// <param name="taskNo"></param>
+        /// <returns></returns>
+        public string GetTaskNoByObjectFlag(string objectFlag)
+        {
+            string strResult = string.Empty;
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => a.ObjectFlag == objectFlag);
+                if (query != null && query.Count() > 0)
+                    strResult = query.FirstOrDefault().TaskNo;
+            }
+            return strResult;
         }
 
         /// <summary>
@@ -134,14 +151,14 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <returns></returns>
         public string GetSatIDByTaskNo(string taskNo)
         {
-            string strSatIDs = string.Empty;
+            string strResult = string.Empty;
             if (Cache != null)
             {
                 var query = Cache.Where(a => a.TaskNo == taskNo);
                 if (query != null && query.Count() > 0)
-                    strSatIDs = query.FirstOrDefault().SatID;
+                    strResult = query.FirstOrDefault().SatID;
             }
-            return strSatIDs;
+            return strResult;
         }
         #endregion
 
