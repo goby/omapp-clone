@@ -179,14 +179,28 @@
         </asp:Panel>
         <div id="tartgetPanel" style="display:none">
         <table style = " text-align:center;">
+        <tr>
+        <td>
+        <b>请选择要使用的发送协议：</b>
+                <br />
+                <asp:RadioButtonList ID="rbtProtocl" runat="server" 
+                RepeatDirection="Horizontal">
+                        <asp:ListItem Value="1" Selected>Fep with Tcp</asp:ListItem>
+                        <asp:ListItem Value="2">Fep with Udp</asp:ListItem>
+                        <asp:ListItem Value="0">Ftp</asp:ListItem>
+                    </asp:RadioButtonList>
+           </td>
+        </tr>
             <tr>
                 <td align="center"  style="text-align: center">
+                <br />
                 <b>请选择计划待发送的目标系统，可以多选</b>
                 <br />
                     <%--<asp:RadioButtonList ID="rbtDestination" runat="server">
                     </asp:RadioButtonList>--%>
                     <asp:CheckBoxList ID="ckbDestination" runat="server">
                     </asp:CheckBoxList>
+                    
                     <br />
                 </td>
             </tr>

@@ -39,7 +39,7 @@ function sendPlan() {
             _dialog.dialog({
             autoOpen: false,
             height: 150,
-            width: 350,
+            width: 400,
             modal: true,
             buttons: {
                 '关闭': function () {
@@ -58,7 +58,7 @@ function sendPlan() {
     return false;
 }
 
-function showEdit(planid,plantype) {
+function showEdit(planid, plantype) {
     //window.location.href = "/Views/PlanManage/PlanEdit.aspx?id=" + id;
     var feature1 = 'width=820px;height=600px,toolbar=no, menubar=no,scrollbars=yes,resizable=yes,location=no,status=yes,';
     var feature2 = 'width=500px;toolbar=no, menubar=no,scrollbars=no,resizable=yes,location=no,status=yes,';
@@ -66,31 +66,25 @@ function showEdit(planid,plantype) {
         {
             case "YJJH":
             //window.open("/Views/PlanManage/YJJHEdit.aspx?id=" + planid ,"",feature2);
-            window.location.href = "/Views/PlanManage/YJJHEdit.aspx?id=" + planid;
+                window.location.href = "/Views/PlanManage/YJJHEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;
             case "XXXQ":
-            //window.open("/Views/PlanManage/XXXQEdit.aspx?id=" + planid ,"",feature1);
-            window.location.href = "/Views/PlanManage/XXXQEdit.aspx?id=" + planid;
+                window.location.href = "/Views/PlanManage/XXXQEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;
             case "MBXQ":
-            //window.open("/Views/PlanManage/MBXQEdit.aspx?id=" + planid ,"",feature1);
-            window.location.href = "/Views/PlanManage/MBXQEdit.aspx?id=" + planid;
+                window.location.href = "/Views/PlanManage/MBXQEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;
             case "HJXQ":
-            //window.open("/Views/PlanManage/HJXQEdit.aspx?id=" + planid ,"",feature1);
-            window.location.href = "/Views/PlanManage/HJXQEdit.aspx?id=" + planid;
+                window.location.href = "/Views/PlanManage/HJXQEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;
             case "DMJH":
-            //window.open("/Views/PlanManage/DMJHEdit.aspx?id=" + planid ,"",feature1);
-            window.location.href = "/Views/PlanManage/DMJHEdit.aspx?id=" + planid;
+                window.location.href = "/Views/PlanManage/DMJHEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;
             case "ZXJH":
-            //window.open("/Views/PlanManage/ZXJHEdit.aspx?id=" + planid ,"",feature1);
-            window.location.href = "/Views/PlanManage/ZXJHEdit.aspx?id=" + planid;
+                window.location.href = "/Views/PlanManage/ZXJHEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;
             case "TYSJ":
-            //window.open("/Views/PlanManage/TYSJEdit.aspx?id=" + planid ,"",feature2);
-            window.location.href = "/Views/PlanManage/TYSJEdit.aspx?id=" + planid;
+                window.location.href = "/Views/PlanManage/TYSJEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;
         }
   // window.open("/Views/PlanManage/PlanEdit.aspx?planid=" + planid + "&infotype="+plantype,"",feature1);

@@ -133,6 +133,7 @@
                     <asp:HiddenField ID="hfTaskID" runat="server" />
                 <asp:HiddenField ID="hfSatID" runat="server" />
                 <asp:HiddenField ID="hfStatus" runat="server" />
+                <asp:HiddenField ID="hfURL" runat="server" />
             </td>
         </tr>
     </table>
