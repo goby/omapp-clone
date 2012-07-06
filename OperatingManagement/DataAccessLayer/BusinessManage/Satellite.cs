@@ -118,9 +118,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             {
                 info = new Satellite()
                 {
+                    Id = ds.Tables[0].Rows[0]["WXBM"].ToString(),
                     WXBM = ds.Tables[0].Rows[0]["WXBM"].ToString(),
-                    WXBS = ds.Tables[0].Rows[0]["WXBS"].ToString(),
                     WXMC = ds.Tables[0].Rows[0]["WXMC"].ToString(),
+                    WXBS = ds.Tables[0].Rows[0]["WXBS"].ToString(),
                     State = ds.Tables[0].Rows[0]["State"].ToString(),
                     MZB = Convert.ToInt32(ds.Tables[0].Rows[0]["MZB"]),
                     BMFSXS = Convert.ToInt32(ds.Tables[0].Rows[0]["BMFSXS"]),
@@ -147,9 +148,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 {
                     Satellite info = new Satellite()
                     {
-                        WXBM = dr["WXBM"].ToString(),
-                        WXBS = dr["WXBS"].ToString(),
+                        Id = dr["WXBM"].ToString(),
+                        WXBM = dr["WXBM"].ToString(),     
                         WXMC = dr["WXMC"].ToString(),
+                        WXBS = dr["WXBS"].ToString(),
                         State = dr["State"].ToString(),
                         MZB = Convert.ToInt32(dr["MZB"]),
                         BMFSXS = Convert.ToInt32(dr["BMFSXS"]),
@@ -173,7 +175,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             string wxmc = string.Empty;
             if (Cache != null)
             {
-                var query = Cache.Where(a => a.Id == wxbm);
+                var query = Cache.Where(a => a.WXBM == wxbm);
                 if (query != null && query.Count() > 0)
                     wxmc = query.FirstOrDefault().WXMC;
             }
@@ -190,7 +192,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             string wxbs = string.Empty;
             if (Cache != null)
             {
-                var query = Cache.Where(a => a.Id == wxbm);
+                var query = Cache.Where(a => a.WXBM == wxbm);
                 if (query != null && query.Count() > 0)
                     wxbs = query.FirstOrDefault().WXBS;
             }
