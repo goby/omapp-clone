@@ -44,7 +44,7 @@
                     </HeaderTemplate>
                     <ItemTemplate>
                         <tr>
-                            <th style="width:80px; vertical-align:middle"><%# Eval("ModuleNote") %></th>
+                            <th style="width:200px; vertical-align:middle"><%# Eval("ModuleNote") %></th>
                             <td>
                                 <asp:Repeater ID="rpTasks" runat="server">
                                     <HeaderTemplate>
@@ -79,11 +79,11 @@
         <tr>
             <th>&nbsp;</th>
             <td>
-                <asp:Button ID="Button1" runat="server" CssClass="button" Text="提交" 
-                    onclick="btnSubmit_Click" />&nbsp;&nbsp;
+                <%--<asp:Button ID="Button1" runat="server" CssClass="button" Text="提交" 
+                    onclick="btnSubmit_Click" />&nbsp;&nbsp;--%>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" onclick="btnSubmit_Click" />&nbsp;&nbsp;
-                <asp:Button ID="btnReset" runat="server" CssClass="button" Text="重置"  onclick="btnReset_Click" />&nbsp;&nbsp;
-                <asp:Button ID="btnReturn" runat="server" CssClass="button" Text="返回" onclick="btnReturn_Click" />
+                <asp:Button ID="btnReset" runat="server" CssClass="button" Text="重置"  onclick="btnReset_Click" CausesValidation="false" />&nbsp;&nbsp;
+                <asp:Button ID="btnReturn" runat="server" CssClass="button" Text="返回" onclick="btnReturn_Click" CausesValidation="false" />
             </td>
         </tr>
     </table>

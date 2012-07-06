@@ -33,7 +33,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     hfStatus.Value = "edit";    //编辑
                     BindJhTable(sID);
                     BindXML();
-
+                    hfURL.Value = "?type=YJJH&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"];
                     if ("detail" == Request.QueryString["op"])
                     {
                         ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");
@@ -268,7 +268,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         protected void btnReturn_Click(object sender, EventArgs e)
         {
-            Response.Redirect("PlanList.aspx");
+            Response.Redirect("PlanList.aspx"+hfURL.Value);
         }
 
     }

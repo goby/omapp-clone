@@ -44,6 +44,17 @@ namespace OperatingManagement.Web.Views.PlanManage
                     pnlAll2.Visible = false;
 
                     lblMessage.Text = ""; //文件发送消息清空
+
+                    //由计划页面返回时，重新载入之前的查询结果
+                    if (Request.QueryString["startDate"] != null || Request.QueryString["endDate"] != null || Request.QueryString["type"] != null)
+                    {
+                        if (Request.QueryString["startDate"] != null)
+                        { txtStartDate.Text = Request.QueryString["startDate"]; }
+                        if (Request.QueryString["endDate"] != null)
+                        { txtEndDate.Text = Request.QueryString["endDate"]; }
+                        ddlType.SelectedValue = Request.QueryString["type"];
+                        btnSearch_Click(new object(), new EventArgs());
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -202,6 +213,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                         }
 
                         XYXSInfo objXYXSInfo = new XYXSInfo();
+                        //发送协议
+                        CommunicationWays protocl = (CommunicationWays)Convert.ToInt32(rbtProtocl.SelectedValue);
                         //发送方ID （运控中心 YKZX）
                         int senderid = objXYXSInfo.GetIdByAddrMark(System.Configuration.ConfigurationManager.AppSettings["ZXBM"]);
                         //接收方ID 
@@ -224,7 +237,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                             //        infotypeid = (new InfoType()).GetIDByExMark("HJXX");
                             //    }
                             //}
-                            boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), filePaths[i], CommunicationWays.FEPwithTCP, senderid, reveiverid, infotypeid, true);
+                            boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), filePaths[i], protocl, senderid, reveiverid, infotypeid, true);
                             if (boolResult)
                             {
                                 lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
