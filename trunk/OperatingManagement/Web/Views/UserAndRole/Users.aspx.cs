@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.Framework.Core;
+using OperatingManagement.Security;
 
 namespace OperatingManagement.Web.Views.UserAndRole
 {
@@ -44,20 +45,45 @@ namespace OperatingManagement.Web.Views.UserAndRole
             rpUsers.DataBind();
         }
 
+        /// <summary>
+        /// 检查是否当前用户或者用户列表用户是否为管理员，又增加检查是否有删除权限
+        /// </summary>
+        /// <param name="loginName"></param>
+        /// <param name="userType"></param>
+        /// <returns></returns>
         protected bool IsAdminOrCurrent(object loginName, object userType)
         {
             bool isMyself = loginName.ToString().Equals(Profile.UserName, StringComparison.InvariantCultureIgnoreCase);
             
             bool isAdmin = userType.ToString().Equals(Framework.UserType.Admin.ToString(), StringComparison.InvariantCultureIgnoreCase);
             if (isMyself)
-            {
-                if (isAdmin) return false;
-                else return true;
-            }
-            else
-            {
+                return isMyself;
+
+            if (HasDeletePermission())
                 return isAdmin;
-            }
+            else
+                return true;
+        }
+
+        /// <summary>
+        /// 判断列表中的用户是否为管理员
+        /// </summary>
+        /// <param name="loginName"></param>
+        /// <param name="userType"></param>
+        /// <returns></returns>
+        protected bool IsAdmin(object loginName, object userType)
+        {
+            bool isUserAdmin = userType.ToString().Equals(Framework.UserType.Admin.ToString(), StringComparison.InvariantCultureIgnoreCase);
+            return isUserAdmin;
+        }
+
+        protected bool HasDeletePermission()
+        {
+            AspNetPrincipal principal = (AspNetPrincipal)HttpContext.Current.User;
+            if (Profile.Account.UserType == Framework.UserType.Admin)//当前用户是管理员
+                return true;
+            bool blResult = principal.Permissions.Any(o => o.Module.ModuleName == "OMUserManage" && o.Task.TaskName == "Delete");
+            return blResult;
         }
 
         public override void OnPageLoaded()
@@ -88,7 +114,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
                 if (fromSearch)
                 {
                     if (txtKeyword.Text.Trim() != string.Empty)
-                        users = u.Search(txtKeyword.Text.Trim());
+                        users = u.Search(txtKeyword.Text.Trim().ToLower());
                     else
                         users = u.SelectAll();
                     cpPager.CurrentPage = 1;
@@ -111,7 +137,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
 
         private void SaveCondition()
         {
-            ViewState["_KeyWord"] = txtKeyword.Text.Trim();
+            ViewState["_KeyWord"] = txtKeyword.Text.Trim().ToLower();
         }
     }
 }

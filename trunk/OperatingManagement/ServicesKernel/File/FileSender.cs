@@ -43,7 +43,7 @@ namespace ServicesKernel.File
             }
             XElement root = XElement.Parse(strResult);
             //1，提交失败，0，提交成功
-            if (root.Element("Code").Value == "1")
+            if (root.Element("code").Value == "1")
                 return false;
             else
                 return true;

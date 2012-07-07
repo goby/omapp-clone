@@ -165,7 +165,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "OMRermissionManage.Edit";
+            this.PagePermission = "OMPermissionManage.Edit";
             this.ShortTitle = "编辑权限";
             this.SetTitle();
         }

@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.Framework.Core;
+using OperatingManagement.Security;
 
 namespace OperatingManagement.Web.Views.UserAndRole
 {
@@ -43,6 +44,16 @@ namespace OperatingManagement.Web.Views.UserAndRole
             this.ShortTitle = "角色列表";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/usernrole/roles.aspx.js");
+        }
+
+        protected bool HasDeletePermission()
+        {
+            AspNetPrincipal principal = (AspNetPrincipal)HttpContext.Current.User;
+            if (Profile.Account.UserType == Framework.UserType.Admin)//当前用户是管理员
+                return true;
+            string[] ps = "OMRoleManage.Delete".Split(new char[] { '.' });
+            bool blResult = principal.Permissions.Any(o => o.Module.ModuleName == ps[0] && o.Task.TaskName == ps[1]);
+            return !blResult;
         }
 
         protected void cpPager_PostBackPage(object sender, EventArgs e)

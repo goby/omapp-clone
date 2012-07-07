@@ -50,10 +50,7 @@
             <th>&nbsp;</th>
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
-                    onclick="btnSubmit_Click" />&nbsp;&nbsp;
-                    <asp:Button ID="Button1" runat="server" CssClass="button" Text="返回" 
-                    onclick="Button1_Click" />&nbsp;&nbsp;
-                    <%--<button class="button" onclick="window.location.href = 'permissions.aspx';">返回</button> --%>
+                    onclick="btnSubmit_Click" />&nbsp;&nbsp;<button class="button" onclick="window.location.href = 'permissions.aspx';return false;">返回</button> 
             </td>
         </tr>
     </table>
