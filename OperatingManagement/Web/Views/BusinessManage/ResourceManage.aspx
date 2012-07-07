@@ -54,16 +54,16 @@
                         <th style="width: 10%;">
                             设备编号
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 7%;">
                             管理单位
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 13%;">
                             站址坐标
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 12%;">
                             功能类型
                         </th>
-                        <th style="width: 9%;">
+                        <th style="width: 7%;">
                             资源状态
                         </th>
                         <th style="width: 7%;">
@@ -96,7 +96,7 @@
                         <%# SystemParameters.GetSystemParameterText(SystemParametersType.GroundResourceOwner, Eval("Owner").ToString())%>
                     </td>
                     <td>
-                        <%# SystemParameters.GetSystemParameterText(SystemParametersType.GroundResourceCoordinate, Eval("Coordinate").ToString())%>
+                        <%#Eval("Coordinate").ToString()%>
                     </td>
                     <td>
                         <%# GetGroundResourceFunctionType(Eval("FunctionType").ToString())%>

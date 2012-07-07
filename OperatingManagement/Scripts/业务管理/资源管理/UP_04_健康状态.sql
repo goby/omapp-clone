@@ -116,9 +116,11 @@ begin
             Select A.*,B.GRNAME as ResourceName,B.GRCODE as ResourceCode
             From TB_HEALTHSTATUS A
             Inner join TB_GROUNDRESOURCE B on (A.RESOURCETYPE=1 And A.Resourceid=B.GRID)
-            Where ( p_BeginTime>= A.Begintime And p_BeginTime<=A.EndTime)
+            Where (
+                  ( p_BeginTime>= A.Begintime And p_BeginTime<=A.EndTime)
                Or ( p_EndTime>= A.Begintime And p_EndTime<=A.EndTime)
                Or ( p_BeginTime<=A.Begintime And p_EndTime>=A.EndTime)
+                  )
               And (A.Resourceid=p_ResourceID Or p_ResourceID Is Null)
             Order BY A.CreatedTime DESC;
      Elsif p_ResourceType=2 Then
@@ -126,9 +128,11 @@ begin
             Select A.*,B.ROUTENAME as ResourceName,B.ROUTECODE as ResourceCode
             From TB_HEALTHSTATUS A
             Inner join TB_COMMUNICATIONRESOURCE B on (A.RESOURCETYPE=2 And A.Resourceid=B.CRID)
-            Where ( p_BeginTime>= A.Begintime And p_BeginTime<=A.EndTime)
+            Where (
+                  ( p_BeginTime>= A.Begintime And p_BeginTime<=A.EndTime)
                Or ( p_EndTime>= A.Begintime And p_EndTime<=A.EndTime)
                Or ( p_BeginTime<=A.Begintime And p_EndTime>=A.EndTime)
+                  )
               And (A.Resourceid=p_ResourceID Or p_ResourceID Is Null)
             Order BY A.CreatedTime DESC;
       Elsif p_ResourceType=3 Then
@@ -136,9 +140,11 @@ begin
             Select A.*,B.EQUIPMENTTYPE as ResourceName,B.EQUIPMENTCODE as ResourceCode
             From TB_HEALTHSTATUS A
             Inner join TB_CENTERRESOURCE B on (A.RESOURCETYPE=3 And A.Resourceid=B.CRID)
-            Where ( p_BeginTime>= A.Begintime And p_BeginTime<=A.EndTime)
+            Where (
+                  ( p_BeginTime>= A.Begintime And p_BeginTime<=A.EndTime)
                Or ( p_EndTime>= A.Begintime And p_EndTime<=A.EndTime)
                Or ( p_BeginTime<=A.Begintime And p_EndTime>=A.EndTime)
+                  )
               And (A.Resourceid=p_ResourceID Or p_ResourceID Is Null)
             Order BY A.CreatedTime DESC;
       END IF;

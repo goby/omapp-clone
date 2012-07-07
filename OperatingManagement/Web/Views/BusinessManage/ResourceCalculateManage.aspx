@@ -60,12 +60,12 @@
     业务管理 &gt; 查询资源调度计算
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-<script type="text/javascript">
+<%--<script type="text/javascript">
     $(function () {
         $("#txtBeginTime").datepicker();
         $("#txtEndTime").datepicker();
     });
-    </script>
+    </script>--%>
     <div class="index_content_search">
         <table cellspacing="0" cellpadding="0" class="searchTable">
             <tr>
@@ -91,7 +91,7 @@
                     起始时间：
                 </th>
                 <td width="25%">
-                <asp:TextBox ID="txtBeginTime" runat="server" CssClass="norText" ClientIDMode="Static"></asp:TextBox>
+                <asp:TextBox ID="txtBeginTime" runat="server" CssClass="norText" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                   <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtBeginTime" ErrorMessage="（必填）" ValidationGroup="SearchResourceCalculate"></asp:RequiredFieldValidator>
                 </td>
@@ -99,7 +99,7 @@
                     结束时间：
                 </th>
                 <td width="25%">
-                <asp:TextBox ID="txtEndTime" runat="server" CssClass="norText" ClientIDMode="Static"></asp:TextBox>
+                <asp:TextBox ID="txtEndTime" runat="server" CssClass="norText" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                  <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtEndTime" ErrorMessage="（必填）" ValidationGroup="SearchResourceCalculate"></asp:RequiredFieldValidator>
                 </td>

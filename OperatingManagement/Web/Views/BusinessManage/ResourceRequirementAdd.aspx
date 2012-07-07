@@ -61,13 +61,13 @@
     业务管理 &gt; 新增资源调度计算
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-    <script type="text/javascript">
+   <%-- <script type="text/javascript">
         $(function () {
             $("#txtTimeBenchmark").datepicker();
             $("#txtBeginTime").datepicker();
             $("#txtEndTime").datepicker();
         });
-    </script>
+    </script>--%>
     <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
     <table class="edit" style="width: 800px;">
@@ -289,7 +289,7 @@
                             开始时间(<span class="red">*</span>)
                         </th>
                         <td>
-                            <asp:TextBox ID="txtBeginTime" runat="server" ClientIDMode="Static" CssClass="norText"
+                            <asp:TextBox ID="txtBeginTime" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" CssClass="norText"
                                 Width="80px"></asp:TextBox>
                             <asp:DropDownList ID="dplBeginTimeHour" runat="server" CssClass="norDpl" Width="60px">
                             </asp:DropDownList>
@@ -306,7 +306,7 @@
                             结束时间(<span class="red">*</span>)
                         </th>
                         <td>
-                            <asp:TextBox ID="txtEndTime" runat="server" ClientIDMode="Static" CssClass="norText"
+                            <asp:TextBox ID="txtEndTime" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" CssClass="norText"
                                 Width="80px"></asp:TextBox>
                             <asp:DropDownList ID="dplEndTimeHour" runat="server" CssClass="norDpl" Width="60px">
                             </asp:DropDownList>
@@ -438,7 +438,7 @@
                     时间基准(<span class="red">*</span>)
                 </th>
                 <td style="width: 350px;">
-                    <asp:TextBox ID="txtTimeBenchmark" runat="server" ClientIDMode="Static" CssClass="norText"
+                    <asp:TextBox ID="txtTimeBenchmark" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" CssClass="norText"
                         Width="80px" ValidationGroup="Calculate"></asp:TextBox>
                     <asp:DropDownList ID="dplTimeBenchmarkHour" runat="server" CssClass="norDpl" Width="60px">
                     </asp:DropDownList>

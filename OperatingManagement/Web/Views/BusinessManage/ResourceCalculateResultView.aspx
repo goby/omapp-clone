@@ -85,7 +85,7 @@
                 <td width="25%">
                     <asp:Label ID="lblTotalScore" runat="server" Text="Label"></asp:Label>
                 </td>
-                <th width="15%">
+                <th width="15%"> 
                     优先级原则得分：
                 </th>
                 <td width="25%">
