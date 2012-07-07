@@ -34,7 +34,7 @@
         </HeaderTemplate>
         <ItemTemplate>
             <tr>
-                <td><input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>" /></td>
+                <td><input type="checkbox" <%# HasDeletePermission()?"disabled=\"true\"":"" %> name="chkDelete" value="<%# Eval("Id") %>" /></td>
                 <td><%# Eval("ModuleName") %></td>
                 <td><%# Eval("ModuleNote") %></td>
                 <td><%# Eval("CTime","{0:"+this.SiteSetting.DateTimeFormat+"}") %></td>

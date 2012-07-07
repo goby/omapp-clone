@@ -179,83 +179,65 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         protected void chartOneResourceStatus_PreRender(object sender, EventArgs e)
         {
-            try
-            {
-                string healthStatusStr = @"资源类型：{0}，资源名称：{1}，资源编码：{2}，{3}健康状态：{4}，开始时间：{5}，结束时间：{6}";
-                for (int i = 0; i < chartOneResourceStatus.Series["seriesHealthStatus"].Points.Count; i++)
-                {
-                    string resourceType = SystemParameters.GetSystemParameterText(SystemParametersType.ResourceType, HealthStatusList[i].ResourceType.ToString());
-                    string resourceName = HealthStatusList[i].ResourceName;
-                    string resourceCode = HealthStatusList[i].ResourceCode;
-                    string functionType = HealthStatusList[i].ResourceType.ToString() == "1" ? ("功能类型：" + SystemParameters.GetSystemParameterText(SystemParametersType.HealthStatusFunctionType, HealthStatusList[i].FunctionType) + "，") : "";
-                    string healthStatus = SystemParameters.GetSystemParameterText(SystemParametersType.HealthStatus, HealthStatusList[i].Status.ToString());
-                    string beginTime = HealthStatusList[i].BeginTime.ToString("yyyy-MM-dd HH:mm:ss");
-                    string endTime = HealthStatusList[i].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
-                    chartOneResourceStatus.Series["seriesHealthStatus"].Points[i].Label = HealthStatusList[i].ResourceName;
-                    chartOneResourceStatus.Series["seriesHealthStatus"].Points[i].ToolTip = string.Format(healthStatusStr, resourceType, resourceName, resourceCode, functionType, healthStatus, beginTime, endTime);
-                }
-
-                string useStatusStr = @"资源类型：{0}，资源名称：{1}，资源编码：{2}，占用类型：{3}，开始时间：{4}，结束时间：{5}{6}{7}{8}{9}";
-                for (int i = 0; i < chartOneResourceStatus.Series["seriesUseStatus"].Points.Count; i++)
-                {
-                    string resourceType = SystemParameters.GetSystemParameterText(SystemParametersType.ResourceType, UseStatusList[i].ResourceType.ToString());
-                    string resourceName = UseStatusList[i].ResourceName;
-                    string resourceCode = UseStatusList[i].ResourceCode;
-                    string usedType = SystemParameters.GetSystemParameterText(SystemParametersType.UseStatusUsedType, UseStatusList[i].UsedType.ToString());
-                    string beginTime = UseStatusList[i].BeginTime.ToString("yyyy-MM-dd HH:mm:ss");
-                    string endTime = UseStatusList[i].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
-                    string usedBy = UseStatusList[i].UsedType == 1 ? "，服务对象：" + UseStatusList[i].UsedBy : "";
-                    string usedCategory = UseStatusList[i].UsedType == 1 ? "，服务种类：" + UseStatusList[i].UsedCategory : "";
-                    string usedFor = UseStatusList[i].UsedType == 3 ? "，占用原因：" + UseStatusList[i].UsedFor : "";
-                    string canBeUsed = UseStatusList[i].UsedType == 3 ? "，是否可执行任务：" + SystemParameters.GetSystemParameterText(SystemParametersType.UseStatusCanBeUsed, UseStatusList[i].CanBeUsed.ToString()) : "";
-                    chartOneResourceStatus.Series["seriesUseStatus"].Points[i].Label = UseStatusList[i].ResourceName;
-                    chartOneResourceStatus.Series["seriesUseStatus"].Points[i].ToolTip = string.Format(useStatusStr, resourceType, resourceName, resourceCode, usedType, beginTime, endTime, usedBy, usedCategory, usedFor, canBeUsed);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw (new AspNetException("查询资源状态分布图页面chartOneResourceStatus_PreRender方法出现异常，异常原因", ex));
-            }
+            ChartPreRender(chartOneResourceStatus);
         }
 
         protected void chartAllResourceStatus_PreRender(object sender, EventArgs e)
         {
+            ChartPreRender(chartAllResourceStatus);
+        }
+
+        private void ChartPreRender(System.Web.UI.DataVisualization.Charting.Chart ctrl)
+        {
             try
             {
+                string resourceType = string.Empty;
+                string resourceName = string.Empty;
+                string resourceCode = string.Empty;
+                string functionType = string.Empty;
+                string healthStatus = string.Empty;
+                string beginTime = string.Empty;
+                string endTime = string.Empty;
+                string usedBy = string.Empty;
+                string usedCategory = string.Empty;
+                string usedFor = string.Empty;
+                string canBeUsed = string.Empty;
+                string usedType = string.Empty;
+
                 string healthStatusStr = @"资源类型：{0}，资源名称：{1}，资源编码：{2}，{3}健康状态：{4}，开始时间：{5}，结束时间：{6}";
-                for (int i = 0; i < chartAllResourceStatus.Series["seriesHealthStatus"].Points.Count; i++)
+                for (int i = 0; i < ctrl.Series["seriesHealthStatus"].Points.Count; i++)
                 {
-                    string resourceType = SystemParameters.GetSystemParameterText(SystemParametersType.ResourceType, HealthStatusList[i].ResourceType.ToString());
-                    string resourceName = HealthStatusList[i].ResourceName;
-                    string resourceCode = HealthStatusList[i].ResourceCode;
-                    string functionType = HealthStatusList[i].ResourceType.ToString() == "1" ? ("功能类型：" + SystemParameters.GetSystemParameterText(SystemParametersType.HealthStatusFunctionType, HealthStatusList[i].FunctionType) + "，") : "";
-                    string healthStatus = SystemParameters.GetSystemParameterText(SystemParametersType.HealthStatus, HealthStatusList[i].Status.ToString());
-                    string beginTime = HealthStatusList[i].BeginTime.ToString("yyyy-MM-dd HH:mm:ss");
-                    string endTime = HealthStatusList[i].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
-                    chartAllResourceStatus.Series["seriesHealthStatus"].Points[i].Label = HealthStatusList[i].ResourceName;
-                    chartAllResourceStatus.Series["seriesHealthStatus"].Points[i].ToolTip = string.Format(healthStatusStr, resourceType, resourceName, resourceCode, functionType, healthStatus, beginTime, endTime);
+                    resourceType = SystemParameters.GetSystemParameterText(SystemParametersType.ResourceType, HealthStatusList[i].ResourceType.ToString());
+                    resourceName = HealthStatusList[i].ResourceName;
+                    resourceCode = HealthStatusList[i].ResourceCode;
+                    functionType = HealthStatusList[i].ResourceType.ToString() == "1" ? ("功能类型：" + SystemParameters.GetSystemParameterText(SystemParametersType.HealthStatusFunctionType, HealthStatusList[i].FunctionType) + "，") : "";
+                    healthStatus = SystemParameters.GetSystemParameterText(SystemParametersType.HealthStatus, HealthStatusList[i].Status.ToString());
+                    beginTime = HealthStatusList[i].BeginTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    endTime = HealthStatusList[i].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    ctrl.Series["seriesHealthStatus"].Points[i].Label = HealthStatusList[i].ResourceName;
+                    ctrl.Series["seriesHealthStatus"].Points[i].ToolTip = string.Format(healthStatusStr, resourceType, resourceName, resourceCode, functionType, healthStatus, beginTime, endTime);
                 }
 
                 string useStatusStr = @"资源类型：{0}，资源名称：{1}，资源编码：{2}，占用类型：{3}，开始时间：{4}，结束时间：{5}{6}{7}{8}{9}";
-                for (int i = 0; i < chartAllResourceStatus.Series["seriesUseStatus"].Points.Count; i++)
+                for (int i = 0; i < ctrl.Series["seriesUseStatus"].Points.Count; i++)
                 {
-                    string resourceType = SystemParameters.GetSystemParameterText(SystemParametersType.ResourceType, UseStatusList[i].ResourceType.ToString());
-                    string resourceName = UseStatusList[i].ResourceName;
-                    string resourceCode = UseStatusList[i].ResourceCode;
-                    string usedType = SystemParameters.GetSystemParameterText(SystemParametersType.UseStatusUsedType, UseStatusList[i].UsedType.ToString());
-                    string beginTime = UseStatusList[i].BeginTime.ToString("yyyy-MM-dd HH:mm:ss");
-                    string endTime = UseStatusList[i].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
-                    string usedBy = UseStatusList[i].UsedType == 1 ? "，服务对象：" + UseStatusList[i].UsedBy : "";
-                    string usedCategory = UseStatusList[i].UsedType == 1 ? "，服务种类：" + UseStatusList[i].UsedCategory : "";
-                    string usedFor = UseStatusList[i].UsedType == 3 ? "，占用原因：" + UseStatusList[i].UsedFor : "";
-                    string canBeUsed = UseStatusList[i].UsedType == 3 ? "，是否可执行任务：" + SystemParameters.GetSystemParameterText(SystemParametersType.UseStatusCanBeUsed, UseStatusList[i].CanBeUsed.ToString()) : "";
-                    chartAllResourceStatus.Series["seriesUseStatus"].Points[i].Label = UseStatusList[i].ResourceName;
-                    chartAllResourceStatus.Series["seriesUseStatus"].Points[i].ToolTip = string.Format(useStatusStr, resourceType, resourceName, resourceCode, usedType, beginTime, endTime, usedBy, usedCategory, usedFor, canBeUsed);
+                    resourceType = SystemParameters.GetSystemParameterText(SystemParametersType.ResourceType, UseStatusList[i].ResourceType.ToString());
+                    resourceName = UseStatusList[i].ResourceName;
+                    resourceCode = UseStatusList[i].ResourceCode;
+                    usedType = SystemParameters.GetSystemParameterText(SystemParametersType.UseStatusUsedType, UseStatusList[i].UsedType.ToString());
+                    beginTime = UseStatusList[i].BeginTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    endTime = UseStatusList[i].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    usedBy = UseStatusList[i].UsedType == 1 ? "，服务对象：" + UseStatusList[i].UsedBy : "";
+                    usedCategory = UseStatusList[i].UsedType == 1 ? "，服务种类：" + UseStatusList[i].UsedCategory : "";
+                    usedFor = UseStatusList[i].UsedType == 3 ? "，占用原因：" + UseStatusList[i].UsedFor : "";
+                    canBeUsed = UseStatusList[i].UsedType == 3 ? "，是否可执行任务：" + SystemParameters.GetSystemParameterText(SystemParametersType.UseStatusCanBeUsed, UseStatusList[i].CanBeUsed.ToString()) : "";
+                    ctrl.Series["seriesUseStatus"].Points[i].Label = UseStatusList[i].ResourceName;
+                    ctrl.Series["seriesUseStatus"].Points[i].ToolTip = string.Format(useStatusStr, resourceType, resourceName, resourceCode, usedType, beginTime, endTime, usedBy, usedCategory, usedFor, canBeUsed);
                 }
             }
             catch (Exception ex)
             {
-                throw (new AspNetException("查询资源状态分布图页面chartAllResourceStatus_PreRender方法出现异常，异常原因", ex));
+                throw (new AspNetException(string.Format("查询资源状态分布图页面{0}_PreRender方法出现异常", ctrl.ID), ex));
             }
         }
 

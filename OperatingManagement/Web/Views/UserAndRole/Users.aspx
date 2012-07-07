@@ -42,7 +42,7 @@
                 <td><%# Eval("CreatedTime","{0:"+this.SiteSetting.DateTimeFormat+"}") %></td>
                 <td>
                     <button class="button" onclick="return editUser('<%# Eval("Id") %>')"
-                    <%# IsAdminOrCurrent(Eval("LoginName"),Eval("UserType"))?"disabled=\"true\"":"" %> %>编辑</button>
+                    <%# IsAdmin(Eval("LoginName"),Eval("UserType"))?"disabled=\"true\"":"" %> %>编辑</button>
                 </td>
             </tr>            
         </ItemTemplate>

@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Web;
 using System.Web.UI;
+using System.Xml.Linq;
+using System.Configuration;
+using System.Web.Security;
+using System.Data;
 using System.Web.UI.WebControls;
 
 using OperatingManagement.WebKernel.Basic;
@@ -13,10 +18,6 @@ using OperatingManagement.Framework;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.RemotingObjectInterface;
 using OperatingManagement.RemotingClient;
-using System.Xml.Linq;
-using System.Configuration;
-using System.Web.Security;
-using System.Data;
 using ServicesKernel.File;
 
 namespace OperatingManagement.Web.Views.BusinessManage
@@ -54,15 +55,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string strResult = string.Empty;
             string fileFullName = fuToSend.FileName;
             string fileName = fileFullName.Substring(fileFullName.LastIndexOf(@"\",0)+1);
-            string filePath = fileFullName.Substring(0,fileFullName.LastIndexOf(@"\",0)+1);
+            fuToSend.SaveAs(Path.Combine(Param.OutPutPath, fileName));
             #region 发送
             try
             {
-                strResult = oSender.SendFile(fileName, filePath, Convert.ToInt32(rblSendWay.SelectedValue), Convert.ToInt32(ddlSender.SelectedValue)
+                strResult = oSender.SendFile(fileName, Param.OutPutPath, Convert.ToInt32(rblSendWay.SelectedValue), Convert.ToInt32(ddlSender.SelectedValue)
                     , Convert.ToInt32(ddlReceiver.SelectedValue), Convert.ToInt32(ddlInfoType.SelectedValue), rblAutoResend.SelectedValue == "1");
             }
             catch (Exception ex)
             {
+                File.Delete(Path.Combine(Param.OutPutPath, fileName));
                 throw (new AspNetException("提交文件发送请求出现异常", ex));
             }
             finally { }
@@ -74,11 +76,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 try
                 {
                     XElement root = XElement.Parse(strResult);
-                    int iResult = Convert.ToInt32(root.Element("result").Value);
+                    int iResult = Convert.ToInt32(root.Element("code").Value);
                     if (iResult == 0)
                         ShowMessage(string.Format("文件发送请求提交成功，请求ID：{0}。", root.Element("fileid").Value));
                     else
-                        ShowMessage(string.Format("文件发送请求提交失败，失败原因：{0}。", root.Element("message").Value));
+                        ShowMessage(string.Format("文件发送请求提交失败，文件服务器提示：{0}。", root.Element("msg").Value));
                 }
                 catch (Exception ex)
                 {

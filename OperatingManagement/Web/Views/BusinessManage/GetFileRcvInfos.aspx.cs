@@ -72,6 +72,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     ShowMessage("结束日期必须大于开始日期");
                     return;
                 }
+                if (dtFrom == dtTo && dtFrom != DateTime.MinValue)
+                    dtTo = dtTo.AddDays(1).AddSeconds(-1);
                 #endregion
                 oRecv.InfoTypeID = Convert.ToInt32(ddlInfoType.SelectedItem.Value);
                 cpPager.CurrentPage = 1;

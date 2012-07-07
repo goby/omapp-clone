@@ -113,7 +113,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "OMRermissionManage.Add";
+            this.PagePermission = "OMPermissionManage.Add";
             this.ShortTitle = "新增权限";
             this.SetTitle();
         }

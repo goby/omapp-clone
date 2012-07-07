@@ -18,9 +18,9 @@
         <th style="width:120px;" align="right">发送方式(<span class="red">*</span>)</th>
         <td>
             <asp:RadioButtonList ID="rblSendWay" runat="server" RepeatDirection="Horizontal">
-                <asp:ListItem Selected="true" Text="FTP" Value="0"></asp:ListItem>
-                <asp:ListItem Text="FEP UDP" Value="1"></asp:ListItem>
+                <asp:ListItem Selected="true" Text="FEP UDP" Value="1"></asp:ListItem>
                 <asp:ListItem Text="FEP TCP" Value="2"></asp:ListItem>
+                <asp:ListItem Text="FTP" Value="0"></asp:ListItem>
             </asp:RadioButtonList>
         </td>
     </tr>
