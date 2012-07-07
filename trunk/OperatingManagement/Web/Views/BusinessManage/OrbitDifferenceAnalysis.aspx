@@ -71,5 +71,5 @@
 	<p class="content">
         <b>结果文件内容：</b><asp:Literal ID="ltResultFile" runat="server"></asp:Literal><br />
     </p>
-</div>
+</div> 
 </asp:Content>

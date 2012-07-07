@@ -14,13 +14,13 @@
     业务管理 &gt; 轨道分析 - 交会预报
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-    <script type="text/javascript">
+    <%--<script type="text/javascript">
         $(function () {
             $("#txtCutMainReportBeginDate").datepicker();
             $("#txtCutMainLYDate").datepicker();
             $("#txtCutSubLYDate").datepicker();
         });
-    </script>
+    </script>--%>
     <table class="edit" style="width: 800px; margin: 10px 0px;">
         <tr>
             <th style="width: 140px;">
@@ -85,7 +85,7 @@
                             预报起始历元日期(<span class="red">*</span>)
                         </th>
                         <td style="width: 260px;">
-                            <asp:TextBox ID="txtCutMainReportBeginDate" runat="server" ClientIDMode="Static"
+                            <asp:TextBox ID="txtCutMainReportBeginDate" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                                 CssClass="norText"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvCutMainReportBeginDate" runat="server" Display="Dynamic"
                                 ForeColor="Red" ControlToValidate="txtCutMainReportBeginDate" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
@@ -131,7 +131,7 @@
                             历元日期(<span class="red">*</span>)
                         </th>
                         <td>
-                            <asp:TextBox ID="txtCutMainLYDate" runat="server" ClientIDMode="Static" CssClass="norText"></asp:TextBox>
+                            <asp:TextBox ID="txtCutMainLYDate" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" CssClass="norText"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvCutMainLYDate" runat="server" Display="Dynamic"
                                 ForeColor="Red" ControlToValidate="txtCutMainLYDate" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
                         </td>
@@ -441,7 +441,7 @@
                             历元日期(<span class="red">*</span>)
                         </th>
                         <td style="width: 260px;">
-                            <asp:TextBox ID="txtCutSubLYDate" runat="server" ClientIDMode="Static" CssClass="norText"></asp:TextBox>
+                            <asp:TextBox ID="txtCutSubLYDate" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" CssClass="norText"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvCutSubLYDate" runat="server" Display="Dynamic"
                                 ValidationGroup="AddCutSubItem" ForeColor="Red" ControlToValidate="txtCutSubLYDate"
                                 ErrorMessage="（必填）"></asp:RequiredFieldValidator>

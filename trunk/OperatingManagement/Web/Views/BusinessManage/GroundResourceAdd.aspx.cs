@@ -93,6 +93,40 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
+                if (string.IsNullOrEmpty(txtLongitude.Text.Trim()))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "经度坐标值不能为空";
+                    return;
+                }
+                double longitudeValue = 0.0;
+                if (!double.TryParse(txtLongitude.Text.Trim(), out longitudeValue))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "经度坐标值格式错误";
+                    return;
+                }
+                if (string.IsNullOrEmpty(txtLatitude.Text.Trim()))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "纬度坐标值不能为空";
+                    return;
+                }
+                double latitudeValue = 0.0;
+                if (!double.TryParse(txtLatitude.Text.Trim(), out latitudeValue))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "纬度坐标值格式错误";
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(txtGaoCheng.Text.Trim()))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "高程坐标值不能为空";
+                    return;
+                }
+
                 if (cblFunctionType.SelectedItem == null)
                 {
                     trMessage.Visible = true;
@@ -115,7 +149,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 groundResource.EquipmentName = txtEquipmentName.Text.Trim();
                 groundResource.EquipmentCode = txtEquipmentCode.Text.Trim();
                 groundResource.Owner = dplOwner.SelectedValue;
-                groundResource.Coordinate = dplCoordinate.SelectedValue;
+                groundResource.Coordinate = dplCoordinate.SelectedValue + "：" + longitudeValue.ToString() + "，" + latitudeValue.ToString() + "，" + txtGaoCheng.Text.Trim();
                 groundResource.FunctionType = functionType;
                 groundResource.Status = 1;//正常
                 groundResource.CreatedTime = DateTime.Now;

@@ -13,12 +13,12 @@
     业务管理 &gt; 新增资源状态
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-    <script type="text/javascript">
+   <%-- <script type="text/javascript">
         $(function () {
             $("#txtBeginTime").datepicker();
             $("#txtEndTime").datepicker();
         });
-    </script>
+    </script>--%>
     <table class="edit" style="width: 800px;">
         <tr>
             <th style="width: 150px;">
@@ -89,7 +89,7 @@
                 起始时间(<span class="red">*</span>)
             </th>
             <td>
-                <asp:TextBox ID="txtBeginTime" runat="server" ClientIDMode="Static" CssClass="norText"
+                <asp:TextBox ID="txtBeginTime" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" CssClass="norText"
                     Width="80px"></asp:TextBox>
                 <asp:DropDownList ID="dplBeginTimeHour" runat="server" CssClass="norDpl" Width="60px">
                 </asp:DropDownList>
@@ -104,7 +104,7 @@
                 结束时间(<span class="red">*</span>)
             </th>
             <td>
-                <asp:TextBox ID="txtEndTime" runat="server" ClientIDMode="Static" CssClass="norText" Width="80px"></asp:TextBox>
+                <asp:TextBox ID="txtEndTime" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" CssClass="norText" Width="80px"></asp:TextBox>
                 <asp:DropDownList ID="dplEndTimeHour" runat="server" CssClass="norDpl" Width="60px">
                 </asp:DropDownList>
                 <asp:DropDownList ID="dplEndTimeMinute" runat="server" CssClass="norDpl" Width="60px">

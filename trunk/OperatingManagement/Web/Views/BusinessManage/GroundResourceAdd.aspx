@@ -78,6 +78,38 @@
         </tr>
         <tr>
             <th>
+                经度坐标值(<span class="red">*</span>)
+            </th>
+            <td>
+                 <asp:TextBox ID="txtLongitude" runat="server" CssClass="norText"></asp:TextBox>（东经正值西经负值）
+                 <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtLongitude" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                 <asp:RangeValidator ID="RangeValidator3" runat="server" Display="Dynamic" MinimumValue="-180" MaximumValue="180" ControlToValidate="txtLongitude" Type="Double" ForeColor="Red" ErrorMessage="（-180至180）"></asp:RangeValidator>
+            </td>
+        </tr>
+         <tr>
+            <th>
+                纬度坐标值(<span class="red">*</span>)
+            </th>
+            <td>
+                 <asp:TextBox ID="txtLatitude" runat="server" CssClass="norText"></asp:TextBox>（北纬正值南纬负值）
+                 <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtLatitude" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                 <asp:RangeValidator ID="RangeValidator1" runat="server" Display="Dynamic"  MinimumValue="-90" MaximumValue="90" ControlToValidate="txtLatitude" Type="Double" ForeColor="Red" ErrorMessage="（-90至90）"></asp:RangeValidator>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                高程坐标值(<span class="red">*</span>)
+            </th>
+            <td>
+                 <asp:TextBox ID="txtGaoCheng" runat="server" CssClass="norText"></asp:TextBox>
+                 <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtGaoCheng" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+            </td>
+        </tr>
+        <tr>
+            <th>
                 功能类型(<span class="red">*</span>)
             </th>
             <td>
