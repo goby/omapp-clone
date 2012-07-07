@@ -50,11 +50,29 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 {
                     BindControls();
                 }
+
+                cpResourceCalculateResultPager.PostBackPage += new EventHandler(cpResourceCalculateResultPager_PostBackPage);
             }
             catch (Exception ex)
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"发生未知错误。\");window.location.href='./ResourceCalculateManage.aspx';", true);
                 throw (new AspNetException("查看资源调度计算结果页面初始化出现异常，异常原因", ex));
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void cpResourceCalculateResultPager_PostBackPage(object sender, EventArgs e)
+        {
+            try
+            {
+                BindControls();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查看资源调度计算结果页面cpResourceCalculateResultPager_PostBackPage方法出现异常，异常原因", ex));
             }
         }
         /// <summary>
@@ -149,12 +167,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
             lblGroundStationProportionScore.Text = resourceCalculateResult.GroundStationProportionScore.ToString();
             lblSatelliteProportionScore.Text = resourceCalculateResult.SatelliteProportionScore.ToString();
 
+            if (resourceCalculateResult.RequirementList.Count > this.SiteSetting.PageSize)
+                cpResourceCalculateResultPager.Visible = true;
             cpResourceCalculateResultPager.DataSource = resourceCalculateResult.RequirementList;
             cpResourceCalculateResultPager.PageSize = this.SiteSetting.PageSize;
             cpResourceCalculateResultPager.BindToControl = rpResourceCalculateResultList;
             rpResourceCalculateResultList.DataSource = cpResourceCalculateResultPager.DataSourcePaged;
             rpResourceCalculateResultList.DataBind();
         }
+
+  
 
         #endregion
     }

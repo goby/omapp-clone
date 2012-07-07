@@ -23,7 +23,7 @@
                     </asp:DropDownList>
                 </td>
                 <th width="15%">
-                    资源状态：
+                    资源健康\占用状态：
                 </th>
                 <td width="25%">
                     <asp:DropDownList ID="dplResourceStatus" runat="server" CssClass="norDpl">
@@ -67,7 +67,7 @@
                             资源状态
                         </th>
                         <th style="width: 7%;">
-                            资源状态
+                            管理状态
                         </th>
                         <th style="width: 7%;">
                             编辑

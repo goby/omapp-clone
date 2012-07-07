@@ -31,12 +31,12 @@
                 <th width="15%">
                     资源编号：
                 </th>
-                <td width="20%">
+                <td width="25%">
                     <asp:TextBox ID="txtResourceCode" runat="server" CssClass="norText"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtResourceCode" ErrorMessage="（必填）" ValidationGroup="SearchStatus"></asp:RequiredFieldValidator>
                 </td>
-                <td width="30%">
+                <td width="25%">
                 </td>
             </tr>
             <tr>

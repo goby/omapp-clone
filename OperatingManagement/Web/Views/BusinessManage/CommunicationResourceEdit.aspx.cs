@@ -224,7 +224,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 dplDirection.SelectedValue = communicationResource.Direction;
                 txtBandWidth.Text = communicationResource.BandWidth;
                 lblCreatedTime.Text = communicationResource.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss");
-                lblUpdatedTime.Text = communicationResource.UpdatedTime.ToString("yyyy-MM-dd HH:mm:ss");
+                lblUpdatedTime.Text = communicationResource.UpdatedTime == DateTime.MinValue ? communicationResource.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss") : communicationResource.UpdatedTime.ToString("yyyy-MM-dd HH:mm:ss");
             }
         }
 

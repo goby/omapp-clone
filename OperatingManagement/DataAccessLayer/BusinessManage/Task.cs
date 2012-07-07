@@ -160,6 +160,22 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             }
             return strResult;
         }
+        /// <summary>
+        /// 通过任务代号获取任务名称
+        /// </summary>
+        /// <param name="taskNO"></param>
+        /// <returns></returns>
+        public string GetTaskName(string taskNO)
+        {
+            string taskName = string.Empty;
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => a.TaskNo == taskNO);
+                if (query != null && query.Count() > 0)
+                    taskName = query.FirstOrDefault().TaskName;
+            }
+            return taskName;
+        }
         #endregion
 
         #region -Override BaseEntity-

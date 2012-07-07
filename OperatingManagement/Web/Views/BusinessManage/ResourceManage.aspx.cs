@@ -25,21 +25,35 @@ namespace OperatingManagement.Web.Views.BusinessManage
     {
         #region 属性
         /// <summary>
-        /// 资源类型
+        /// 查询条件，资源类型
         /// 地面站资源=1、通信资源=2、中心资源=3
         /// </summary>
         protected string ResourceType
         {
             get
             {
-                //默认为地面站资源
-                string resourceType = "1";
-                if (Request.QueryString["resourcetype"] != null)
+                if (ViewState["ResourceType"] == null)
                 {
-                    resourceType = Request.QueryString["resourcetype"];
+                    ViewState["ResourceType"] = Request.QueryString["resourcetype"] != null ? Request.QueryString["resourcetype"] : "1";//默认为地面站资源
                 }
-                return resourceType;
+                return ViewState["ResourceType"].ToString();
             }
+            set { ViewState["ResourceType"] = value; }
+        }
+        /// <summary>
+        /// 查询条件，资源状态
+        /// </summary>
+        protected string ResourceStatus
+        {
+            get
+            {
+                if (ViewState["ResourceStatus"] == null)
+                {
+                    ViewState["ResourceStatus"] = dplResourceStatus.SelectedValue;
+                }
+                return ViewState["ResourceStatus"].ToString();
+            }
+            set { ViewState["ResourceStatus"] = value; }
         }
         #endregion
 
@@ -52,6 +66,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindDataSource();
                     BindRepeater();
                 }
+
+                cpGroundResourcePager.PostBackPage += new EventHandler(cpGroundResourcePager_PostBackPage);
+                cpCommunicationResourcePager.PostBackPage += new EventHandler(cpCommunicationResourcePager_PostBackPage);
+                cpCenterResourcePager.PostBackPage += new EventHandler(cpCenterResourcePager_PostBackPage);
             }
             catch (Exception ex)
             {
@@ -67,11 +85,49 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
+                ResourceType = dplResourceType.SelectedValue;
+                ResourceStatus = dplResourceStatus.SelectedValue;
+                cpGroundResourcePager.CurrentPage = 1;
+                cpCommunicationResourcePager.CurrentPage = 1;
+                cpCenterResourcePager.CurrentPage = 1;
                 BindRepeater();
             }
             catch (Exception ex)
             {
                 throw (new AspNetException("查询资源页面btnSearch_Click方法出现异常，异常原因", ex));
+            }
+        }
+        protected void cpGroundResourcePager_PostBackPage(object sender, EventArgs e)
+        {
+            try
+            {
+                BindRepeater();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源页面cpGroundResourcePager_PostBackPage方法出现异常，异常原因", ex));
+            }
+        }
+        protected void cpCommunicationResourcePager_PostBackPage(object sender, EventArgs e)
+        {
+            try
+            {
+                BindRepeater();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源页面cpCommunicationResourcePager_PostBackPage方法出现异常，异常原因", ex));
+            }
+        }
+        protected void cpCenterResourcePager_PostBackPage(object sender, EventArgs e)
+        {
+            try
+            {
+                BindRepeater();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源页面cpCenterResourcePager_PostBackPage方法出现异常，异常原因", ex));
             }
         }
         /// <summary>
@@ -84,7 +140,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             try
             {
                 string url = @"~/Views/BusinessManage/ResourceManage.aspx";
-                string resourceType = dplResourceType.SelectedValue;
+                string resourceType = ResourceType;
                 switch (resourceType)
                 {
                     //地面站资源
@@ -327,7 +383,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void BindRepeater()
         {
-            string resourceType = dplResourceType.SelectedValue;
+            string resourceType = ResourceType;
             switch (resourceType)
             {
                 //地面站资源
@@ -363,10 +419,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void BindGroundResourceList()
         {
-            string resourceStatus = dplResourceStatus.SelectedValue;
+            string resourceStatus = ResourceStatus;
 
             GroundResource groundResource = new GroundResource();
-            cpGroundResourcePager.DataSource = groundResource.Search(resourceStatus, DateTime.Now);
+            List<GroundResource> groundResourceList = groundResource.Search(resourceStatus, DateTime.Now);
+            if (groundResourceList.Count > this.SiteSetting.PageSize)
+                cpGroundResourcePager.Visible = true;
+            cpGroundResourcePager.DataSource = groundResourceList;
             cpGroundResourcePager.PageSize = this.SiteSetting.PageSize;
             cpGroundResourcePager.BindToControl = rpGroundResourceList;
             rpGroundResourceList.DataSource = cpGroundResourcePager.DataSourcePaged;
@@ -377,9 +436,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void BindCommunicationResource()
         {
-            string resourceStatus = dplResourceStatus.SelectedValue;
+            string resourceStatus = ResourceStatus;
 
             CommunicationResource communicationResource = new CommunicationResource();
+            List<CommunicationResource> communicationResourceList = communicationResource.Search(resourceStatus, DateTime.Now);
+            if (communicationResourceList.Count > this.SiteSetting.PageSize)
+                cpCommunicationResourcePager.Visible = true;
             cpCommunicationResourcePager.DataSource = communicationResource.Search(resourceStatus, DateTime.Now);
             cpCommunicationResourcePager.PageSize = this.SiteSetting.PageSize;
             cpCommunicationResourcePager.BindToControl = rpCommunicationResourceList;
@@ -391,9 +453,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void BindCenterResource()
         {
-            string resourceStatus = dplResourceStatus.SelectedValue;
+            string resourceStatus = ResourceStatus;
 
             CenterResource centerResource = new CenterResource();
+            List<CenterResource> centerResourceList = centerResource.Search(resourceStatus, DateTime.Now);
+            if (centerResourceList.Count > this.SiteSetting.PageSize)
+                cpCenterResourcePager.Visible = true;
             cpCenterResourcePager.DataSource = centerResource.Search(resourceStatus, DateTime.Now);
             cpCenterResourcePager.PageSize = this.SiteSetting.PageSize;
             cpCenterResourcePager.BindToControl = rpGroundResourceList;
