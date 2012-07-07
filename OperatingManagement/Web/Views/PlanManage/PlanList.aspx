@@ -35,7 +35,7 @@
                     计划类型：
                 </th>
                 <td>
-                        <asp:DropDownList ID="ddlType" runat="server" Width="150px" Height="20px">
+                        <asp:DropDownList ID="ddlType" ClientIDMode="Static" runat="server" Width="150px" Height="20px">
                         <%--<asp:ListItem Value="0">==全部==</asp:ListItem>--%>
                         <asp:ListItem Value="YJJH">应用研究工作计划</asp:ListItem>
                         <asp:ListItem Value="XXXQ">空间信息需求</asp:ListItem>
@@ -137,7 +137,7 @@
                                         <%# Eval("endtime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
                                     </td>
                                     <td>
-                                        <button class="button" onclick="return showEdit('<%# Eval("ID") %>','<%# Eval("PLANTYPE") %>')">
+                                        <button class="button"  name="htmbtnEdit"  onclick="return showEdit('<%# Eval("ID") %>','<%# Eval("PLANTYPE") %>')">
                                             编辑</button>
                                     </td>
                                     <%--                                <td>

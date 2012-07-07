@@ -34,6 +34,23 @@ function checkAll(o) {
 
 function sendPlan() {
     //var chks = $('#tbPlans').find('input:checkbox:not([disabled])').filter('[checked=true]');
+    var ddlType = $('#ddlType');
+    if (ddlType.val() == "SBJH") {
+        _dialog.dialog({
+            autoOpen: false,
+            height: 150,
+            width: 400,
+            modal: true,
+            buttons: {
+                '关闭': function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        _dialog.find('p.content').eq(0).html('不能发送设备工作计划。');
+        _dialog.dialog('open');
+        return false;
+    }
     var chks = $('#tbPlans').find('input:checkbox:[checked]');
     if (chks.length == 0) {
             _dialog.dialog({
