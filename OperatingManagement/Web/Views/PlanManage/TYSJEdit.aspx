@@ -95,7 +95,7 @@
                 <asp:CompareValidator ID="CompareValidator1" runat="server" 
                     ControlToCompare="txtStartTime" ControlToValidate="txtEndTime" 
                     Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
-                    Operator="GreaterThan" Type="Integer"></asp:CompareValidator>
+                    Operator="GreaterThan" Type="Double"></asp:CompareValidator>
                 </span>
                 </span></td>
         </tr>

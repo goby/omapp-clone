@@ -1092,18 +1092,26 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         protected void btnReset_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(HfID.Value))
+            try
             {
-                Page.Response.Redirect(Request.CurrentExecutionFilePath);
+                if (string.IsNullOrEmpty(HfID.Value))
+                {
+                    Page.Response.Redirect(Request.CurrentExecutionFilePath,false);
+                }
+                else
+                {
+                    string sID = HfID.Value;
+                    HfID.Value = sID;
+                    hfStatus.Value = "edit";    //编辑
+                    BindJhTable(sID);
+                    BindXML();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                string sID = HfID.Value;
-                HfID.Value = sID;
-                hfStatus.Value = "edit";    //编辑
-                BindJhTable(sID);
-                BindXML();
+                throw (new AspNetException("重置页面出现异常，异常原因", ex));
             }
+            finally { }
         }
 
         protected void btnReturn_Click(object sender, EventArgs e)

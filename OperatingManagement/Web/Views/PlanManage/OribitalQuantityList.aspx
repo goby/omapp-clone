@@ -39,7 +39,7 @@
                     &nbsp;<asp:CompareValidator ID="CompareValidator1" runat="server" 
                        ControlToCompare="txtStartDate" ControlToValidate="txtEndDate" 
                        Display="Dynamic" ErrorMessage="结束时间应大于起始时间" ForeColor="Red" 
-                       Operator="GreaterThan" Type="Date"></asp:CompareValidator>
+                       Operator="GreaterThanEqual" Type="Date"></asp:CompareValidator>
                     <div style="display:none;">
                     <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
                     <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden"  OnClick="btnHidden_Click" />
@@ -98,13 +98,13 @@
                                     <input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>" />
                                 </td>
                                 <td>
-                                    <%# Eval("ITYPE")%>
+                                    <%# Eval("ITYPEName")%>
                                 </td>
                                 <td>
                                     <%# Eval("ICODE")%>
                                 </td>
                                 <td>
-                                    <%# Eval("SATID")%>
+                                    <%# Eval("SatellteName")%>
                                 </td>
                                 <td>
                                     <%# Eval("CTIME","{0:"+this.SiteSetting.DateTimeFormat+"}") %>
@@ -142,8 +142,22 @@
    <asp:Panel ID="pnlDestination" runat="server">
 <%--    <div id="tartgetPanel" style="display: ">--%>
         <table>
+        <tr>
+        <td>
+        <b>请选择要使用的发送协议：</b>
+                <br />
+                <asp:RadioButtonList ID="rbtProtocl" runat="server" 
+                RepeatDirection="Horizontal">
+                        <asp:ListItem Value="1" Selected>Fep with Tcp</asp:ListItem>
+                        <asp:ListItem Value="2">Fep with Udp</asp:ListItem>
+                        <asp:ListItem Value="0">Ftp</asp:ListItem>
+                    </asp:RadioButtonList>
+           </td>
+        </tr>
             <tr>
                 <td align="center">
+                <b>请选择计划待发送的目标系统，可以多选</b>
+                <br />
                     <asp:CheckBoxList ID="ckbDestination" runat="server">
                         <asp:ListItem Value="0">天基目标观测应用研究分系统</asp:ListItem>
                         <asp:ListItem Value="1">空间遥操作应用研究分系统</asp:ListItem>

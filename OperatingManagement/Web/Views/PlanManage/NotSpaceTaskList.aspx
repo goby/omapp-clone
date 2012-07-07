@@ -37,7 +37,7 @@
                     &nbsp;<asp:CompareValidator ID="CompareValidator1" runat="server" 
                        ControlToCompare="txtStartDate" ControlToValidate="txtEndDate" 
                        Display="Dynamic" ErrorMessage="结束时间应大于起始时间" ForeColor="Red" 
-                       Operator="GreaterThan" Type="Date"></asp:CompareValidator>
+                       Operator="GreaterThanEqual" Type="Date"></asp:CompareValidator>
                     <div style="display:none;">
                     <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
                     <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden"  OnClick="btnHidden_Click" />
@@ -96,13 +96,13 @@
                                     <input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>" />
                                 </td>
                                 <td>
-                                    <%# Eval("ITYPE")%>
+                                    <%# Eval("ITYPEName")%>
                                 </td>
                                 <td>
                                     <%# Eval("ICODE")%>
                                 </td>
                                 <td>
-                                    <%# Eval("SATID")%>
+                                    <%# Eval("SatellteName")%>
                                 </td>
                                 <td>
                                     <%# Eval("CTIME","{0:"+this.SiteSetting.DateTimeFormat+"}") %>

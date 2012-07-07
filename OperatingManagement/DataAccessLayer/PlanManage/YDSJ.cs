@@ -40,6 +40,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string TaskID { get; set; }
         /// <summary>
+        /// 任务名称
+        /// </summary>
+        public string TaskName { get; set; }
+        /// <summary>
         /// 卫星名称
         /// </summary>
         public string SatName { get; set; }
@@ -131,6 +135,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                         Id = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = DateTime.Parse(dr["CTIME"].ToString()),
                         TaskID = dr["TaskID"].ToString(),
+                        TaskName = dr["TaskName"].ToString(),
                         SatName = dr["SatName"].ToString(),
                         D = Convert.ToInt32(dr["D"].ToString()),
                         T = Convert.ToInt32(dr["T"].ToString()),

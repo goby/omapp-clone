@@ -1,7 +1,7 @@
-﻿$(function () {
-    $("#txtStartDate").datepicker();
-    $("#txtEndDate").datepicker();
-});
+﻿//$(function () {
+//    $("#txtStartDate").datepicker();
+//    $("#txtEndDate").datepicker();
+//});
 
 function reset(o) {
     $('input:text').val('');
@@ -15,7 +15,7 @@ function setdayte(o) {
 }
 
 function showDetail(id) {
-    var feature2 = 'height=200px,width=700px;toolbar=no, menubar=no,scrollbars=no,resizable=yes,location=no,status=yes,';
+    var feature2 = 'height=100px,width=400px;toolbar=no, menubar=no,scrollbars=no,resizable=yes,location=no,status=yes,';
     //window.location.href = "/Views/PlanManage/YDSJDetail.aspx?id=" + id;
     window.open("/Views/PlanManage/YDSJDetail.aspx?id=" + id, "", feature2);
     return false;
