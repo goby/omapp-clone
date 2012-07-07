@@ -219,7 +219,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 txtSupportTask.Text = centerResource.SupportTask;
                 txtDataProcess.Text = centerResource.DataProcess;
                 lblCreatedTime.Text = centerResource.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss");
-                lblUpdatedTime.Text = centerResource.UpdatedTime.ToString("yyyy-MM-dd HH:mm:ss");
+                lblUpdatedTime.Text = centerResource.UpdatedTime == DateTime.MinValue ? centerResource.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss") : centerResource.UpdatedTime.ToString("yyyy-MM-dd HH:mm:ss");
             }
         }
 

@@ -74,6 +74,6 @@
                 <asp:Button ID="btnReturn" runat="server" CssClass="button" Text="返 回" OnClick="btnReturn_Click"
                     CausesValidation="false" />
             </td>
-        </tr>
+        </tr> 
     </table>
 </asp:Content>

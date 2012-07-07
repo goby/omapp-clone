@@ -63,7 +63,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindDataSource();
                     BindCutMainSatelliteProperty();
                     BindCutSubSatelliteProperty();
+                    BindCutSubList();
                 }
+                cpCuSubPager.PostBackPage += new EventHandler(cpCuSubPager_PostBackPage);
             }
             catch(Exception ex)
             {
@@ -319,6 +321,15 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 lblMessage.Text = "发生未知错误，操作失败。";
                 throw (new AspNetException("轨道分析 - 交会预报页面dplCutSubSatellite_SelectedIndexChanged方法出现异常，异常原因", ex));
             }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void cpCuSubPager_PostBackPage(object sender, EventArgs e)
+        {
+            BindCutSubList();
         }
         /// <summary>
         /// 添加CutSub记录
@@ -1255,12 +1266,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             //定义计算结果
             bool calResult = false;
             //定义结果文件路径
-            string resultFilePath = @"D:\ResourceCalculate\ResultFileDirectory\2f318cd1-82ba-4593-9884-263cfb2887bd.txt";
+            string resultFilePath = string.Empty;//@"D:\ResourceCalculate\ResultFileDirectory\2f318cd1-82ba-4593-9884-263cfb2887bd.txt";
 
             /**
             * TODO: 在这里开始计算，将结果calResult和结果文件路径resultFilePath赋值
             * */
-            System.Threading.Thread.Sleep(10000);
+            //System.Threading.Thread.Sleep(10000);
 
             lblResultFilePath.Text = resultFilePath;
             lblCalResult.Text = calResult ? "计算成功" : "计算失败";
@@ -1286,6 +1297,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void BindCutSubList()
         {
+            if (CutSubItemInfoList.Count > this.SiteSetting.PageSize)
+                cpCuSubPager.Visible = true;
             cpCuSubPager.DataSource = CutSubItemInfoList;
             cpCuSubPager.PageSize = this.SiteSetting.PageSize;
             cpCuSubPager.BindToControl = rpCutSubList;

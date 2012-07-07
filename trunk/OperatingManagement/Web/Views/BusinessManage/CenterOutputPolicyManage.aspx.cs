@@ -31,12 +31,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             get 
             {
-                string taskID = string.Empty;
-                if (ViewState["TaskID"] != null)
+                if (ViewState["TaskID"] == null)
                 {
-                    taskID = ViewState["TaskID"].ToString();
+                    ViewState["TaskID"] = dplTask.SelectedValue;
                 }
-                return taskID;
+                return ViewState["TaskID"].ToString();
             }
             set { ViewState["TaskID"] = value; }
         }
@@ -47,12 +46,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             get
             {
-                string satName = string.Empty;
-                if (ViewState["SatName"] != null)
+                if (ViewState["SatName"] == null)
                 {
-                    satName = ViewState["SatName"].ToString();
+                    ViewState["SatName"] = dplSatellite.SelectedValue;
                 }
-                return satName;
+                return ViewState["SatName"].ToString();
             }
             set { ViewState["SatName"] = value; }
         }
@@ -97,6 +95,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 TaskID = dplTask.SelectedValue;
                 SatName = dplSatellite.SelectedValue;
+                cpPager.CurrentPage = 1;
                 BindCOPList();
             }
             catch (Exception ex)
@@ -243,7 +242,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             CenterOutputPolicy centerOutputPolicy = new CenterOutputPolicy();
             centerOutputPolicy.TaskID = TaskID;
             centerOutputPolicy.SatName = SatName;
-            cpPager.DataSource = centerOutputPolicy.SelectByParameters();
+            List<CenterOutputPolicy> centerOutputPolicyList = centerOutputPolicy.SelectByParameters();
+            if (centerOutputPolicyList.Count > this.SiteSetting.PageSize)
+                cpPager.Visible = true;
+            cpPager.DataSource = centerOutputPolicyList;
             cpPager.PageSize = this.SiteSetting.PageSize;
             cpPager.BindToControl = rpCOPList;
             rpCOPList.DataSource = cpPager.DataSourcePaged;
@@ -281,6 +283,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             Satellite satellite = new Satellite();
             return satellite.GetName(wxbm);
+        }
+        /// <summary>
+        /// 通过任务代号获取任务名称
+        /// </summary>
+        /// <param name="taskNO">任务代号</param>
+        /// <returns>任务名称</returns>
+        protected string GetTaskName(string taskNO)
+        {
+            Task task = new Task();
+            return task.GetTaskName(taskNO);
         }
         #endregion
     }

@@ -19,7 +19,7 @@
         <table cellspacing="0" cellpadding="0" class="searchTable">
             <tr>
                 <th width="15%">
-                    任务代号：
+                    任务名称：
                 </th>
                 <td width="25%">
                     <uc1:ucTask ID="dplTask" runat="server" />
@@ -43,7 +43,7 @@
                 <table class="list">
                     <tr>
                         <th style="width: 15%;">
-                            任务代号
+                            任务名称
                         </th>
                         <th style="width: 10%;">
                             卫星名称
@@ -75,7 +75,7 @@
             <ItemTemplate>
                 <tr>
                     <td>
-                        <%# Eval("TaskID")%>
+                        <%#GetTaskName(Eval("TaskID").ToString())%>
                     </td>
                     <td>
                         <%#GetSatelliteWXMC(Eval("SatName").ToString())%>
@@ -116,6 +116,6 @@
                     </om:CollectionPager>
                 </td>
             </tr>
-        </table>
+        </table> 
     </div>
 </asp:Content>

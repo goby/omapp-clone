@@ -23,6 +23,78 @@ namespace OperatingManagement.Web.Views.BusinessManage
 {
     public partial class ResourceCalculateManage : AspNetPage
     {
+        #region 属性
+        /// <summary>
+        /// 查询条件，计算状态
+        /// </summary>
+        protected int Status
+        {
+            get
+            {       
+                if (ViewState["Status"] == null)
+                {
+                    ViewState["Status"] = dplStatus.SelectedValue;
+                }
+                int status = 0;
+                int.TryParse(ViewState["Status"].ToString(), out status);
+                return status;
+            }
+            set { ViewState["Status"] = value; }
+        }
+        /// <summary>
+        /// 查询条件，计算结果文件来源
+        /// </summary>
+        protected int ResultFileSource
+        {
+            get
+            {              
+                if (ViewState["ResultFileSource"] == null)
+                {
+                    ViewState["ResultFileSource"] = dplResultFileSource.SelectedValue;
+                }
+                int resultFileSource = 0;
+                int.TryParse(ViewState["ResultFileSource"].ToString(), out resultFileSource);
+                return resultFileSource;
+            }
+            set { ViewState["ResultFileSource"] = value; }
+        }
+        /// <summary>
+        /// 查询条件，起始时间
+        /// </summary>
+        protected DateTime BeginTime
+        {
+            get
+            {
+                if (ViewState["BeginTime"] == null)
+                {
+                    ViewState["BeginTime"] = txtBeginTime.Text.Trim();
+                }
+                DateTime beginTime = DateTime.MinValue;
+                DateTime.TryParse(ViewState["BeginTime"].ToString(), out beginTime);
+                return beginTime;
+            }
+            set { ViewState["BeginTime"] = value; }
+        }
+        /// <summary>
+        /// 查询条件，结束时间
+        /// </summary>
+        protected DateTime EndTime
+        {
+            get
+            {
+                if (ViewState["EndTime"] == null)
+                {
+                    ViewState["EndTime"] = txtEndTime.Text.Trim();    
+                }
+                DateTime endTime = DateTime.MinValue;
+                DateTime.TryParse(ViewState["EndTime"].ToString(), out endTime);
+                return endTime.AddSeconds(86399.9);//23:59:59
+            }
+            set { ViewState["EndTime"] = value; }
+        }
+     
+        #endregion
+
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -32,6 +104,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     BindDataSource();
                     BindResourceCalculateList();
                 }
+
+                cpResourceCalculatePager.PostBackPage += new EventHandler(cpResourceCalculatePager_PostBackPage);
             }
             catch (Exception ex)
             {
@@ -77,13 +151,26 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"起始时间应小于结束时间。\")", true);
                     return;
                 }
-
+                Status = Convert.ToInt32(dplStatus.SelectedValue);
+                ResultFileSource = Convert.ToInt32(dplResultFileSource.SelectedValue);
+                BeginTime = beginTime;
+                EndTime = endTime;
+                cpResourceCalculatePager.CurrentPage = 1;
                 BindResourceCalculateList();
             }
             catch (Exception ex)
             {
                 throw (new AspNetException("查询资源调度计算页面btnSearch_Click方法出现异常，异常原因", ex));
             }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void cpResourceCalculatePager_PostBackPage(object sender, EventArgs e)
+        {
+            BindResourceCalculateList();
         }
         /// <summary>
         /// 添加资源调度计算
@@ -390,12 +477,15 @@ namespace OperatingManagement.Web.Views.BusinessManage
         private void BindResourceCalculateList()
         {
             ResourceCalculate resourceCalculate = new ResourceCalculate();
-            int resultFileSource = Convert.ToInt32(dplResultFileSource.SelectedValue);
-            int status = Convert.ToInt32(dplStatus.SelectedValue);
-            DateTime beginTime = Convert.ToDateTime(txtBeginTime.Text.Trim());
-            DateTime endTime = Convert.ToDateTime(txtEndTime.Text.Trim()).AddSeconds(86399.9);//23:59:59
+            int status = Status;
+            int resultFileSource = ResultFileSource;
+            DateTime beginTime = BeginTime;
+            DateTime endTime = EndTime;
 
-            cpResourceCalculatePager.DataSource = resourceCalculate.Search(resultFileSource, status, beginTime, endTime);
+            List<ResourceCalculate> resourceCalculateList = resourceCalculate.Search(resultFileSource, status, beginTime, endTime);
+            if (resourceCalculateList.Count > this.SiteSetting.PageSize)
+                cpResourceCalculatePager.Visible = true;
+            cpResourceCalculatePager.DataSource = resourceCalculateList;
             cpResourceCalculatePager.PageSize = this.SiteSetting.PageSize;
             cpResourceCalculatePager.BindToControl = rpResourceCalculateList;
             rpResourceCalculateList.DataSource = cpResourceCalculatePager.DataSourcePaged;

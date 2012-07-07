@@ -61,7 +61,7 @@
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <div class="index_content_search">
-        <table cellspacing="0" cellpadding="0" class="searchTable">
+        <table cellspacing="0" cellpadding="0" class="edit">
             <tr>
                 <th width="15%">
                     总需求数：

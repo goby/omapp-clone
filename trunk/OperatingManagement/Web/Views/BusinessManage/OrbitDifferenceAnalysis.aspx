@@ -66,7 +66,7 @@
         <b>星历数据文件内容：</b><asp:Literal ID="ltXLDataFile" runat="server"></asp:Literal><br />
         <b>差值计算时间文件内容：</b><asp:Literal ID="ltDifCalTimeFile" runat="server"></asp:Literal><br />
     </p>
-</div>
+</div> 
 <div id="result-form" style="display:none" title="结果文件内容">
 	<p class="content">
         <b>结果文件内容：</b><asp:Literal ID="ltResultFile" runat="server"></asp:Literal><br />

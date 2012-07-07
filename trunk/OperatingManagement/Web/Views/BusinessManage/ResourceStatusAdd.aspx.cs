@@ -23,6 +23,40 @@ namespace OperatingManagement.Web.Views.BusinessManage
 {
     public partial class ResourceStatusAdd : AspNetPage
     {
+        #region 属性
+        /// <summary>
+        /// 资源类型
+        /// 地面站资源=1、通信资源=2、中心资源=3
+        /// </summary>
+        protected string ResourceType
+        {
+            get
+            {
+                string resourceType = "1";
+                if (Request.QueryString["resourcetype"] != null)
+                {
+                    resourceType = Request.QueryString["resourcetype"];
+                }
+                return resourceType;
+            }
+        }
+        /// <summary>
+        ///资源编号
+        /// </summary>
+        protected string ResourceCode
+        {
+            get
+            {
+                string resourceCode = string.Empty;
+                if (Request.QueryString["resourcecode"] != null)
+                {
+                    resourceCode = Request.QueryString["resourcecode"];
+                }
+                return resourceCode;
+            }
+        }
+        #endregion
+
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -253,7 +287,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                string url = @"~/Views/BusinessManage/ResourceStatusManage.aspx";
+                string url = @"~/Views/BusinessManage/ResourceStatusManage.aspx?resourcetype={0}&resourcecode={1}";
+                url = string.Format(url, Server.UrlEncode(dplResourceType.SelectedValue), Server.UrlEncode(txtResourceCode.Text.Trim()));
                 Response.Redirect(url);
             }
             catch (System.Threading.ThreadAbortException ex1)
@@ -342,6 +377,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplResourceType.DataValueField = "value";
             dplResourceType.DataBind();
 
+            dplResourceType.SelectedValue = ResourceType;
+
             //健康状态功能类型列表：数传数据接收、遥测数据接收、遥控操作
             dplFunctionType.Items.Clear();
             dplFunctionType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.HealthStatusFunctionType);
@@ -389,7 +426,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 dplBeginTimeMinute.Items.Add(new ListItem(i.ToString() + "分", i.ToString()));
                 dplEndTimeMinute.Items.Add(new ListItem(i.ToString() + "分", i.ToString()));
-            }       
+            }
+
+            txtResourceCode.Text = ResourceCode;
         }
         /// <summary>
         /// 设置控件是否可见
@@ -453,7 +492,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void ResetControls()
         {
-            txtResourceCode.Text = string.Empty;
+            //txtResourceCode.Text = string.Empty;
             dplFunctionType.SelectedIndex = 0;
             dplHealthStatus.SelectedValue = "2";
             dplUsedType.SelectedIndex = 0;

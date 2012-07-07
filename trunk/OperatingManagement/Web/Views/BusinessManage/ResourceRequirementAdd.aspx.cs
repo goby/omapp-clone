@@ -17,6 +17,7 @@ using System.Web.UI.WebControls;
 using System.IO;
 using System.Xml;
 
+using OperatingManagement.Framework.Core;
 using OperatingManagement.WebKernel.Route;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.WebKernel.Basic;
@@ -113,14 +114,18 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     hidWXBMIndex.Value = GetWXBMIndex().ToString();
                     lblRequirementName.Text = GetRequirementName();
                 }
+
+                cpUnusedEquipmentPager.PostBackPage += new EventHandler(cpUnusedEquipmentPager_PostBackPage);
+                cpPeriodOfTimePager.PostBackPage += new EventHandler(cpPeriodOfTimePager_PostBackPage);
+                cpResourceRequirementPager.PostBackPage += new EventHandler(cpResourceRequirementPager_PostBackPage);
             }
-            catch
+            catch (Exception ex)
             {
                 trMessage.Visible = true;
                 lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("新增资源调度计算页面初始化出现异常，异常原因", ex));
             }
         }
-
         /// <summary>
         /// 提交保存资源需求记录
         /// </summary>
@@ -252,10 +257,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 //    HttpContext.Current.Cache[CacheID.ToString()] = resourceRequirementList;
                 //}
             }
-            catch
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
             {
                 trMessage.Visible = true;
                 lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("新增资源调度计算页面btnSave_Click方法出现异常，异常原因", ex));
             }
         }
 
@@ -266,13 +274,24 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void btnReset_Click(object sender, EventArgs e)
         {
-            ViewState["ResourceRequirement"] = null;
-            BindResourceRequirementList();
-            txtTimeBenchmark.Text = string.Empty;
-            dplTimeBenchmarkHour.SelectedIndex = 0;
-            dplTimeBenchmarkMinute.SelectedIndex = 0;
-            dplTimeBenchmarkSecond.SelectedIndex = 0;
-            ResetControls();
+            try
+            {
+                ViewState["ResourceRequirement"] = null;
+                BindResourceRequirementList();
+                txtTimeBenchmark.Text = string.Empty;
+                dplTimeBenchmarkHour.SelectedIndex = 0;
+                dplTimeBenchmarkMinute.SelectedIndex = 0;
+                dplTimeBenchmarkSecond.SelectedIndex = 0;
+                ResetControls();
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("新增资源调度计算页面btnReset_Click方法出现异常，异常原因", ex));
+            }
         }
 
         /// <summary>
@@ -357,9 +376,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
+            catch(Exception ex)
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"系统异常，提交计算失败。\")", true);
+                throw (new AspNetException("新增资源调度计算页面btnCalculate_Click方法出现异常，异常原因", ex));
             }
         }
         /// <summary>
@@ -398,8 +418,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增资源调度计算页面lbtnEditResourceRequirement_Click方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 删除资源需求(功能暂时隐藏)
@@ -428,8 +450,26 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增资源调度计算页面lbtnDeleteResourceRequirement_Click方法出现异常，异常原因", ex));
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void cpResourceRequirementPager_PostBackPage(object sender, EventArgs e)
+        {
+            try
+            {
+                BindResourceRequirementList();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增资源调度计算页面cpResourceRequirementPager_PostBackPage方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 添加不可用设备
@@ -462,8 +502,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增资源调度计算页面btnAddUnusedEquipment_Click方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 删除不可用设备
@@ -488,8 +530,26 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增资源调度计算页面lbtnDeleteUnusedEquipment_Click方法出现异常，异常原因", ex));
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void cpUnusedEquipmentPager_PostBackPage(object sender, EventArgs e)
+        {
+            try
+            {
+                BindUnusedEquipmentList();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增资源调度计算页面cpUnusedEquipmentPager_PostBackPage方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 添加支持时段
@@ -550,8 +610,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增资源调度计算页面btnAddPeriodOfTime_Click方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 删除支持时段
@@ -580,8 +642,26 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增资源调度计算页面lbtnDeletePeriodOfTime_Click方法出现异常，异常原因", ex));
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void cpPeriodOfTimePager_PostBackPage(object sender, EventArgs e)
+        {
+            try
+            {
+                BindPeriodOfTimeList();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增资源调度计算页面cpPeriodOfTimePager_PostBackPage方法出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 当卫星编码发生变化时
@@ -590,33 +670,51 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void dplSatName_SelectedIndexChanged(object sender, EventArgs e)
         {
-            hidWXBMIndex.Value = GetWXBMIndex().ToString();
-            lblRequirementName.Text = GetRequirementName();
+            try
+            {
+                hidWXBMIndex.Value = GetWXBMIndex().ToString();
+                lblRequirementName.Text = GetRequirementName();
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增资源调度计算页面dplSatName_SelectedIndexChanged方法出现异常，异常原因", ex));
+            }
         }
 
         protected void rpResourceRequirementList_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            try
             {
-                Label lblUnusedEquipment = (e.Item.FindControl("lblUnusedEquipment") as Label);
-                Label lblPeriodOfTime = (e.Item.FindControl("lblPeriodOfTime") as Label);
-                ResourceRequirement resourceRequirement = (e.Item.DataItem as ResourceRequirement);
-                if (lblUnusedEquipment != null && lblPeriodOfTime != null && resourceRequirement != null)
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
-                    string unusedEquipmentStr = "{0}.地面站编码：{1},地面站设备编码：{2};";
-                    for (int i = 0; i < resourceRequirement.UnusedEquipmentList.Count; i++)
+                    Label lblUnusedEquipment = (e.Item.FindControl("lblUnusedEquipment") as Label);
+                    Label lblPeriodOfTime = (e.Item.FindControl("lblPeriodOfTime") as Label);
+                    ResourceRequirement resourceRequirement = (e.Item.DataItem as ResourceRequirement);
+                    if (lblUnusedEquipment != null && lblPeriodOfTime != null && resourceRequirement != null)
                     {
-                        lblUnusedEquipment.ToolTip += string.Format(unusedEquipmentStr, i + 1, resourceRequirement.UnusedEquipmentList[i].GRCode, resourceRequirement.UnusedEquipmentList[i].EquipmentCode);
-                    }
-                    lblUnusedEquipment.Text = "共" + resourceRequirement.UnusedEquipmentList.Count.ToString() + "条记录";
+                        string unusedEquipmentStr = "{0}.地面站编码：{1},地面站设备编码：{2};";
+                        for (int i = 0; i < resourceRequirement.UnusedEquipmentList.Count; i++)
+                        {
+                            lblUnusedEquipment.ToolTip += string.Format(unusedEquipmentStr, i + 1, resourceRequirement.UnusedEquipmentList[i].GRCode, resourceRequirement.UnusedEquipmentList[i].EquipmentCode);
+                        }
+                        lblUnusedEquipment.Text = "共" + resourceRequirement.UnusedEquipmentList.Count.ToString() + "条记录";
 
-                    string periodOfTimeStr = "{0}.开始时间：{1},结束时间：{2};";
-                    for (int i = 0; i < resourceRequirement.PeriodOfTimeList.Count; i++)
-                    {
-                        lblPeriodOfTime.ToolTip += string.Format(periodOfTimeStr, i + 1, resourceRequirement.PeriodOfTimeList[i].BeginTime.ToString("yyyy-MM-dd"), resourceRequirement.PeriodOfTimeList[i].EndTime.ToString("yyyy-MM-dd"));
+                        string periodOfTimeStr = "{0}.开始时间：{1},结束时间：{2};";
+                        for (int i = 0; i < resourceRequirement.PeriodOfTimeList.Count; i++)
+                        {
+                            lblPeriodOfTime.ToolTip += string.Format(periodOfTimeStr, i + 1, resourceRequirement.PeriodOfTimeList[i].BeginTime.ToString("yyyy-MM-dd"), resourceRequirement.PeriodOfTimeList[i].EndTime.ToString("yyyy-MM-dd"));
+                        }
+                        lblPeriodOfTime.Text = "共" + resourceRequirement.PeriodOfTimeList.Count.ToString() + "条记录";
                     }
-                    lblPeriodOfTime.Text = "共" + resourceRequirement.PeriodOfTimeList.Count.ToString() + "条记录";
                 }
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增资源调度计算页面rpResourceRequirementList_ItemDataBound方法出现异常，异常原因", ex));
             }
         }
 
@@ -746,6 +844,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void BindUnusedEquipmentList()
         {
+            if (UnusedEquipmentList.Count > this.SiteSetting.PageSize)
+                cpUnusedEquipmentPager.Visible = true;
             cpUnusedEquipmentPager.DataSource = UnusedEquipmentList;
             cpUnusedEquipmentPager.PageSize = this.SiteSetting.PageSize;
             cpUnusedEquipmentPager.BindToControl = rpUnusedEquipmentList;
@@ -767,6 +867,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void BindPeriodOfTimeList()
         {
+            if (PeriodOfTimeList.Count > this.SiteSetting.PageSize)
+                cpPeriodOfTimePager.Visible = true;
             cpPeriodOfTimePager.DataSource = PeriodOfTimeList;
             cpPeriodOfTimePager.PageSize = this.SiteSetting.PageSize;
             cpPeriodOfTimePager.BindToControl = rpPeriodOfTimeList;
@@ -794,6 +896,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void BindResourceRequirementList()
         {
+            if (ResourceRequirementList.Count > this.SiteSetting.PageSize)
+                cpResourceRequirementPager.Visible = true;
             cpResourceRequirementPager.DataSource = ResourceRequirementList;
             cpResourceRequirementPager.PageSize = this.SiteSetting.PageSize;
             cpResourceRequirementPager.BindToControl = rpResourceRequirementList;

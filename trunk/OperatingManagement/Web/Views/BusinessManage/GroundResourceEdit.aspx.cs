@@ -271,7 +271,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 dplOwner.SelectedValue = groundResource.Owner;
                 dplCoordinate.SelectedValue = groundResource.Coordinate;
                 lblCreatedTime.Text = groundResource.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss");
-                lblUpdatedTime.Text = groundResource.UpdatedTime.ToString("yyyy-MM-dd HH:mm:ss");
+                lblUpdatedTime.Text = groundResource.CreatedTime == DateTime.MinValue ? groundResource.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss") : groundResource.UpdatedTime.ToString("yyyy-MM-dd HH:mm:ss");
 
                 string[] functionTypeArray = groundResource.FunctionType.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (ListItem item in cblFunctionType.Items)
