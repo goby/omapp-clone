@@ -169,5 +169,10 @@ namespace OperatingManagement.Web.Views.UserAndRole
             this.ShortTitle = "编辑权限";
             this.SetTitle();
         }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            Page.Response.Redirect("Permissions.aspx");
+        }
     }
 }
