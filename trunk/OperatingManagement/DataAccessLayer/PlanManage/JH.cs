@@ -74,6 +74,9 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                     case "GZJH":
                         returnValue = "地面站工作计划";
                         break;
+                    case "SYJH":
+                        returnValue = "实验计划";
+                        break;
                 }
                 return returnValue;
             }

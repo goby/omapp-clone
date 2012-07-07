@@ -78,7 +78,7 @@
                                         <%# Eval("planid")%>
                             </td>
                             <td>
-                                        <%# Eval("taskid")%>
+                                        <%# Eval("taskname")%>
                             </td>
                             <td>
                                         <%# Eval("plantype")%>
