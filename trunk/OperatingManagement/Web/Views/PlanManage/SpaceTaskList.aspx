@@ -19,14 +19,14 @@
                   起始时间：
                </th>
                <td>
-                <asp:TextBox ID="txtStartDate" ClientIDMode="Static"  CssClass="text" runat="server"></asp:TextBox>
+                <asp:TextBox ID="txtStartDate" ClientIDMode="Static"  CssClass="text" runat="server"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                </td>
                <th>
                   结束时间：
                </th>
                <td>
                 
-                <asp:TextBox ID="txtEndDate" ClientIDMode="Static"  CssClass="text" runat="server"></asp:TextBox>
+                <asp:TextBox ID="txtEndDate" ClientIDMode="Static"  CssClass="text" runat="server"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                 
                </td>
                <td>
@@ -37,7 +37,7 @@
                     &nbsp;<asp:CompareValidator ID="CompareValidator1" runat="server" 
                        ControlToCompare="txtStartDate" ControlToValidate="txtEndDate" 
                        Display="Dynamic" ErrorMessage="结束时间应大于起始时间" ForeColor="Red" 
-                       Operator="GreaterThan" Type="Date"></asp:CompareValidator>
+                       Operator="GreaterThanEqual" Type="Date"></asp:CompareValidator>
                     <div style="display:none;">
                     <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
                     <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden"  OnClick="btnHidden_Click" />
@@ -97,7 +97,7 @@
                                     <input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>" />
                                 </td>
                                 <td>
-                                    <%# Eval("TaskID")%>
+                                    <%# Eval("TaskName")%>
                                 </td>
                                 <td>
                                     <%# Eval("SatName")%>

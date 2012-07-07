@@ -115,7 +115,7 @@
                 </th>
                 <td>
                     <asp:Label ID="lblA" runat="server"></asp:Label>
-                    &nbsp;0.1m
+                    &nbsp;米
                 </td>
                 <th>
                     升交点赤经：
@@ -131,14 +131,14 @@
                 </th>
                 <td>
                     <asp:Label ID="lblRa" runat="server"></asp:Label>
-                    &nbsp;0.1m
+                    &nbsp;米
                 </td>
                 <th>
                     近地点地心距：
                 </th>
                 <td>
                     <asp:Label ID="lblRp" runat="server"></asp:Label>
-                    &nbsp;0.1m
+                    &nbsp;米
                 </td>
             </tr>
             <tr>

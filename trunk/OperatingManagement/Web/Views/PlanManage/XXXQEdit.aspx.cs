@@ -650,7 +650,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 if (string.IsNullOrEmpty(HfID.Value))
                 {
-                    Page.Response.Redirect(Request.CurrentExecutionFilePath);
+                    Page.Response.Redirect(Request.CurrentExecutionFilePath,false);
                 }
                 else
                 {

@@ -148,13 +148,13 @@
                                     <th style="width: 100px;">
                                         任务标志
                                     </th>
-                                    <td>
+                                    <td style="width: 350px;">
                                         <asp:TextBox ID="txtTaskFlag" CssClass="text" runat="server" Text='<%# Eval("TaskFlag")%>'></asp:TextBox>
                                     </td>
                                     <th style="width: 100px;">
                                         工作方式
                                     </th>
-                                    <td>
+                                    <td style="width: 350px;">
                                         <asp:DropDownList ID="ddlFS" runat="server" DataTextField="Text" DataValueField="Value"
                                             Width="154px">
                                         </asp:DropDownList>
@@ -189,10 +189,8 @@
                                         <asp:TextBox MaxLength="14" ID="txtPreStartTime" CssClass="text" runat="server" Text='<%# Eval("PreStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
                                     <th style="width: 100px;">
-                                        任务开始时间
                                     </th>
                                     <td>
-                                        <asp:TextBox MaxLength="14" ID="txtStartTime" CssClass="text" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -202,37 +200,53 @@
                                     <td>
                                         <asp:TextBox MaxLength="14" ID="txtTrackStartTime" CssClass="text" runat="server" Text='<%# Eval("TrackStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
-                                    <th style="width: 100px;">
+                                     <th style="width: 100px;">
+                                        跟踪结束时间
+                                    </th>
+                                    <td>
+                                        <asp:TextBox MaxLength="14" ID="txtTrackEndTime" CssClass="text" runat="server" Text='<%# Eval("TrackEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                                        <asp:CompareValidator ID="CompareValidator11" runat="server" 
+                    ControlToCompare="txtTrackStartTime" ControlToValidate="txtTrackEndTime" 
+                    Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                    Operator="GreaterThan" Type="Double"></asp:CompareValidator>
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                <th style="width: 100px;">
                                         开上行载波时间
                                     </th>
                                     <td>
                                         <asp:TextBox MaxLength="14" ID="txtWaveOnStartTime" CssClass="text" runat="server" Text='<%# Eval("WaveOnStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
-                                </tr>
-                                <tr>
                                     <th style="width: 100px;">
                                         关上行载波时间
                                     </th>
                                     <td>
                                         <asp:TextBox MaxLength="14" ID="txtWaveOffStartTime" CssClass="text" runat="server" Text='<%# Eval("WaveOffStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                                    <asp:CompareValidator ID="CompareValidator12" runat="server" 
+                    ControlToCompare="txtWaveOnStartTime" ControlToValidate="txtWaveOffStartTime" 
+                    Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                    Operator="GreaterThan" Type="Double"></asp:CompareValidator>
                                     </td>
-                                    <th style="width: 100px;">
-                                        跟踪结束时间
-                                    </th>
-                                    <td>
-                                        <asp:TextBox MaxLength="14" ID="txtTrackEndTime" CssClass="text" runat="server" Text='<%# Eval("TrackEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
-                                    </td>
+                                   
                                 </tr>
                                 <tr>
+                                <th style="width: 100px;">
+                                        任务开始时间
+                                    </th>
+                                    <td>
+                                        <asp:TextBox MaxLength="14" ID="txtStartTime" CssClass="text" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                                    </td>
                                     <th>
                                         任务结束时间
                                     </th>
                                     <td>
                                         <asp:TextBox MaxLength="14" ID="txtEndTime" CssClass="text" runat="server" Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
-                                    </td>
-                                    <th>
-                                    </th>
-                                    <td>
+                                    <asp:CompareValidator ID="CompareValidator13" runat="server" 
+                    ControlToCompare="txtStartTime" ControlToValidate="txtEndTime" 
+                    Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                    Operator="GreaterThan" Type="Double"></asp:CompareValidator>
                                     </td>
                                 </tr>
                                 <tr>
@@ -279,6 +293,10 @@
                                                     </td>
                                                     <td>
                                                         <asp:TextBox MaxLength="14" ID="txtTransEndTime" CssClass="text" runat="server" Text='<%# Eval("TransEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                                                        <asp:CompareValidator ID="CompareValidator14" runat="server" 
+                                                        ControlToCompare="txtTransStartTime" ControlToValidate="txtTransEndTime" 
+                                                        Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                                                        Operator="GreaterThan" Type="Double"></asp:CompareValidator>
                                                     </td>
                                                     <td>
                                                         <asp:TextBox ID="txtTransSpeedRate" MaxLength="4" CssClass="text" runat="server" Text='<%# Eval("TransSpeedRate")%>'
@@ -345,6 +363,10 @@
                                                     </td>
                                                     <td>
                                                         <asp:TextBox MaxLength="14" ID="DataEndTime" Width="120px" CssClass="text" runat="server" Text='<%# Eval("DataEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                                                   <asp:CompareValidator ID="CompareValidator15" runat="server" 
+                                                        ControlToCompare="DataStartTime" ControlToValidate="DataEndTime" 
+                                                        Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                                                        Operator="GreaterThan" Type="Double"></asp:CompareValidator>
                                                     </td>
                                                     <td>
                                                         <asp:TextBox MaxLength="14" ID="TransStartTime" Width="120px" CssClass="text" runat="server" Text='<%# Eval("TransStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>

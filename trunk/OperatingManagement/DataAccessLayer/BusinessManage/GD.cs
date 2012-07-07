@@ -32,9 +32,46 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         private OracleDatabase _database = null;
 
         public DateTime CTime { get; set; }
+        /// <summary>
+        /// 任务代号
+        /// </summary>
         public string TaskID { get; set; }
+        public string TaskName { get; set; }
+        /// <summary>
+        /// 卫星ID
+        /// </summary>
         public string SatID { get; set; }
+        /// <summary>
+        /// 卫星名称
+        /// </summary>
+        public string SatellteName { get; set; }
+        /// <summary>
+        /// 信息标识
+        /// </summary>
         public int IType { get; set; }
+        public string ITypeName 
+        {
+            get
+            {
+                string returnValue = "";
+                switch (IType)
+                { 
+                    case 0:
+                        returnValue = "卫星初始轨道根数";
+                        break;
+                    case 1:
+                        returnValue = "卫星瞬时精轨根数";
+                        break;
+                    case 2:
+                        returnValue = "卫星事后精轨根数";
+                        break;
+                    case 3:
+                        returnValue = "空间目标信息国内双行根数";
+                        break;
+                }
+                return returnValue;
+            }
+        }
         public string ICode { get; set; }
         /// <summary>
         /// 占2个字节，用无符号二进制整数表示，
@@ -153,7 +190,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                             Id = Convert.ToInt32(dr["ID"].ToString()),
                             CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
                             TaskID = dr["TaskID"].ToString(),
+                            TaskName = dr["TaskName"].ToString(),
                             SatID = dr["Satid"].ToString(),
+                            SatellteName = dr["WXMC"].ToString(),
                             IType = Convert.ToInt32(dr["itype"].ToString()),
                             ICode = dr["icode"].ToString(),
                             D = Convert.ToInt32(dr["D"].ToString()),
@@ -205,7 +244,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         Id = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
                         TaskID = dr["TaskID"].ToString(),
+                       TaskName = dr["TaskName"].ToString(),
                         SatID = dr["Satid"].ToString(),
+                       SatellteName = dr["WXMC"].ToString(),
                         IType = Convert.ToInt32(dr["itype"].ToString()),
                         ICode = dr["icode"].ToString(),
                         D = Convert.ToInt32(dr["D"].ToString()),
