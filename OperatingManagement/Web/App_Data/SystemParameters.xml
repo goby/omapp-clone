@@ -36,8 +36,8 @@
     <item text="总装" value="总装"></item>
   </GroundResourceOwner>
   <GroundResourceCoordinate description="地面站资源站址坐标列表">
-    <item text="地心系XYZ" value="XYZ"></item>
-    <item text="地心系BLH" value="BLH"></item>
+    <item text="地心系XYZ" value="地心系XYZ"></item>
+    <item text="地心系BLH" value="地心系BLH"></item>
   </GroundResourceCoordinate>
   <GroundResourceFunctionType description="地面站资源功能类型列表">
     <item text="遥测接收" value="遥测接收"></item>
@@ -78,8 +78,8 @@
     <item text="否" value="2"></item>
   </UseStatusCanBeUsed>
   <ResourceCalculate description="资源计算相关参数">
-    <item text="RequirementFileDirectory" value="D:\ResourceCalculate\RequirementFileDirectory\"></item>
-    <item text="ResultFileDirectory" value="D:\ResourceCalculate\ResultFileDirectory\"></item>
+    <item text="RequirementFileDirectory" value="D:\files\ReqFiles\"></item>
+    <item text="ResultFileDirectory" value="D:\files\ReqResultFiles\"></item>
     <item text="ResultFileExtension" value="xml,txt"></item>
     <item text="ResultFileMaxSize" value="4194304"></item>
   </ResourceCalculate>
