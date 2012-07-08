@@ -222,7 +222,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     useStatus.EndTime = endTime;
                     useStatus.UsedBy = trUseStatusUsedBy.Visible ? txtUsedBy.Text : string.Empty;
                     useStatus.UsedCategory = trUseStatusUsedCategory.Visible ? txtUsedCategory.Text : string.Empty;
-                    useStatus.UsedFor = trUseStatusUsedFor.Visible ? txtUsedCategory.Text : string.Empty;
+                    useStatus.UsedFor = trUseStatusUsedFor.Visible ? txtUsedFor.Text : string.Empty;
                     useStatus.CanBeUsed = trUseStatusCanBeUsed.Visible ? Convert.ToInt32(dplCanBeUsed.SelectedValue) : 0;
                     useStatus.CreatedTime = DateTime.Now;
                     useStatus.CreatedUserID = LoginUserInfo.Id;

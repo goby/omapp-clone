@@ -157,7 +157,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                string resourceType = ResourceType;
+                string resourceType = dplResourceType.SelectedValue;
                 if (string.IsNullOrEmpty(txtResourceCode.Text.Trim()))
                 {
                     //资源编号不能为空
