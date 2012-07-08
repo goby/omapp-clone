@@ -50,7 +50,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
         {
             AspNetPrincipal principal = (AspNetPrincipal)HttpContext.Current.User;
             if (Profile.Account.UserType == Framework.UserType.Admin)//当前用户是管理员
-                return true;
+                return false;
             string[] ps = "OMRoleManage.Delete".Split(new char[] { '.' });
             bool blResult = principal.Permissions.Any(o => o.Module.ModuleName == ps[0] && o.Task.TaskName == ps[1]);
             return !blResult;
