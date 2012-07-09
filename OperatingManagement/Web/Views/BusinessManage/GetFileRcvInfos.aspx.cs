@@ -105,8 +105,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 listDatas = oRecv.Search(dtFrom, dtTo);
                 if (listDatas.Count == 0)
                     ShowMessage("没有符合条件的记录");
-                else
-                    BindDataSource(listDatas);
+                BindDataSource(listDatas);
             }
             catch (Exception ex)
             {

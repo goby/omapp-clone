@@ -51,7 +51,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             Button btnResend = (Button)sender;
             if (btnResend == null)
                 return;
-            if (int.TryParse(btnResend.CommandArgument, out iRID))
+            if (!int.TryParse(btnResend.CommandArgument, out iRID))
                 return;
             FileSendInfo oSInfo = new FileSendInfo();
             oSInfo.Id = iRID;
@@ -60,8 +60,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 ReSendFile(iRID);
             }
+            Search(false);
         }
-
+        
         protected bool CanReSend(object status)
         {
             string strStatus = status.ToString();
@@ -148,8 +149,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 listDatas = oSend.Search(dtFrom, dtTo);
                 if (listDatas.Count == 0)
                     ShowMessage("没有符合条件的记录");
-                else
-                    BindDataSource(listDatas);
+                BindDataSource(listDatas);
             }
             catch (Exception ex)
             {
@@ -212,11 +212,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 try
                 {
                     XElement root = XElement.Parse(strResult);
-                    int iResult = Convert.ToInt32(root.Element("result").Value);
+                    int iResult = Convert.ToInt32(root.Element("code").Value);
                     if (iResult == 0)
                         ShowMessage(string.Format("文件发送请求提交成功，请求ID：{0}。", root.Element("fileid").Value));
                     else
-                        ShowMessage(string.Format("文件发送请求提交失败，失败原因：{0}。", root.Element("message").Value));
+                        ShowMessage(string.Format("文件发送请求提交失败，文件服务器提示：{0}。", root.Element("msg").Value));
                 }
                 catch (Exception ex)
                 {
@@ -259,9 +259,26 @@ namespace OperatingManagement.Web.Views.BusinessManage
         protected void rpDatas_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             FileSendInfo oFSInfo = null;
+            string strStatus = string.Empty;
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem) 
             {
                 oFSInfo = (FileSendInfo)e.Item.DataItem;
+                //switch (oFSInfo.SendStatus)
+                //{
+                //    case SendStatuss.Submitted:
+                //        strStatus = "已提交";
+                //        break;
+                //    case SendStatuss.Sending:
+                //        strStatus = "发送中";
+                //        break;
+                //    case SendStatuss.Failed:
+                //        strStatus = "发送失败";
+                //        break;
+                //    case SendStatuss.Success:
+                //        strStatus = "发送成功";
+                //        break;
+                //}
+                //((Label)e.Item.FindControl("lbStatus")).Text = strStatus;
                 if (oFSInfo.SendStatus != SendStatuss.Failed)
                 {
                     ((Button)e.Item.FindControl("btnResend")).Enabled = false;

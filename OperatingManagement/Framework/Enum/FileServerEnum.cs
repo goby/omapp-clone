@@ -38,6 +38,10 @@ namespace OperatingManagement.Framework
     public enum CommunicationWays : int
     {
         /// <summary>
+        /// 未知，适用于解析接收到的文件出错的情况
+        /// </summary>
+        Unknow = -1,
+        /// <summary>
         /// FTP协议
         /// </summary>
         FTP = 0,

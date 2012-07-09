@@ -14,13 +14,13 @@
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="listTitle" width="1500px">
         <tr>
-            <td width="80%"><div>信息类型<uc2:ucInfoType ID="ddlInfoType" runat="server"  />
+            <td width="80%" id="tdFilter"><div>信息类型<uc2:ucInfoType ID="ddlInfoType" runat="server"  />
                 开始日期<asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" runat="server"></asp:TextBox>
                 结束日期<asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" runat="server"></asp:TextBox>
                 </div>
             </td>
             <td width="20%"><asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
-                        Text="查询" Width="69px" /></td>
+                        Text="查询" />&nbsp;&nbsp;<button class="button" onclick="return clearField();">清空</button>&nbsp;&nbsp;<button class="button" onclick="return sendFile();">发送文件</button></td>
         </tr>        
         <tr>
             <td class="listTitle-c1">
@@ -63,7 +63,7 @@
                 <td><%# Eval("SenderName") %></td>
                 <td><%# Eval("InfoTypeName")%></td>
                 <td><%# Eval("ReceiverName")%></td>
-                <td><%# Eval("SendStatus")%></td>
+                <td><asp:Label ID="lbStatus" class="list" runat="server" Text='<%# Eval("SendStatus")%>'></asp:Label></td>
                 <td><%# Eval("RetryTimes")%></td>
                 <td><%# Eval("Remark")%></td>
                 <td><%# Eval("SubmitTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%></td>
@@ -86,7 +86,7 @@
         </tr>
         <tr id="trMessage" runat="server" visible="false">
             <td><asp:Label ID="lblMessage" runat="server" CssClass="error" Text=""></asp:Label></td>
-            <td class="listTitle-c1"><button class="button" onclick="return sendFile();">发送文件</button></td>
+            <td class="listTitle-c1"></td>
         </tr>
     </table>
 </asp:Content>

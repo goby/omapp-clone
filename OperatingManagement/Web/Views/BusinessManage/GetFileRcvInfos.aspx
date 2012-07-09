@@ -14,7 +14,7 @@
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="listTitle" width="1500px">
         <tr>
-            <td width="80%"><div>信息类型<uc2:ucInfoType ID="ddlInfoType" runat="server" 
+            <td width="80%" id="tdFilter"><div>信息类型<uc2:ucInfoType ID="ddlInfoType" runat="server" 
                     AllowBlankItem="True" />
                 开始日期<asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"  
                     runat="server"></asp:TextBox>
@@ -23,7 +23,7 @@
                 </div>
             </td>
             <td width="20%"><asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
-                        Text="查询" Width="69px" /></td>
+                        Text="查询" />&nbsp;&nbsp;<button class="button" onclick="return clearField();">清空</button></td>
         </tr>
     </table>
     <asp:Repeater ID="rpDatas" runat="server">
