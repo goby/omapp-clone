@@ -6,7 +6,22 @@ create or replace procedure up_user_selectbyloginname
 is
 begin
        open o_cursor for
-            select * from tb_user where LoginName=p_LoginName;
+            select * from tb_user where upper(LoginName)=upper(p_LoginName);
+end;
+/
+create or replace procedure up_user_search
+(
+       p_keyword nvarchar2,
+       o_cursor out sys_refcursor
+)
+is
+begin
+       open o_cursor for
+            select * from tb_user
+            where upper(loginname) like('%' || upper(p_keyword) || '%')
+            or upper(displayname) like('%' || upper(p_keyword) || '%')
+            or upper(note) like('%' || upper(p_keyword) || '%')
+            order by userid;
 end;
 /
 create or replace procedure up_user_selectbyid
@@ -48,6 +63,19 @@ is
 begin
        open o_cursor for
             select * from tb_module;
+end;
+/
+create or replace procedure up_module_search
+(
+       p_keyword nvarchar2,
+       o_cursor out sys_refcursor
+)
+is
+begin
+       open o_cursor for
+            select * from tb_module
+            where upper(modulename) like('%' || upper(p_keyword) || '%')
+            or upper(note) like('%' || upper(p_keyword) || '%');
 end;
 /
 create or replace procedure up_action_selectall
