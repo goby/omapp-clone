@@ -26,7 +26,7 @@
             width: 350,
             modal: true,
             buttons: {
-                '关闭': function () {
+                '确定': function () {
                     $(this).dialog("close");
                 }
             }
@@ -67,7 +67,7 @@
         width: 350,
         modal: true,
         buttons: {
-            '关闭': function () {
+            '确定': function () {
                 var _radios = $('#rblProtocol').find('input');
                 var selVal = _radios.filter('[checked=checked]');
                 var sendway = selVal.attr('value');
@@ -75,7 +75,10 @@
                 $(this).dialog("close");
                 var btn = $('#btnHidden');
                 btn.click();
-            }
+            },
+                '取消': function () {
+                    $(this).dialog("close");
+                }
         }
     });
     _Senddialog.dialog('open');

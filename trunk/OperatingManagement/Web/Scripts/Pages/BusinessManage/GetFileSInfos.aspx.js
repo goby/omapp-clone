@@ -7,6 +7,13 @@
         cancelText: '关闭'
     });
 }
+function clearField() {
+    $('#txtFrom').val("");
+    $('#txtTo').val("");
+    var sel = $('#tdFilter').find("select");
+    sel.val("0");
+    return false;
+}
 
 function sendFile() {
     window.location.href = "/views/businessManage/sendfile.aspx";

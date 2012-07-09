@@ -31,7 +31,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
             DataAccessLayer.System.User u = new DataAccessLayer.System.User()
             {
                 DisplayName = txtDisplayName.Text.Trim(),
-                LoginName = txtLoginName.Text.Trim().ToLower(),
+                LoginName = txtLoginName.Text.Trim(),
                 Mobile = txtMobile.Text.Trim(),
                 Note = txtNote.Text.Trim(),
                 Password = txtPassword.Text.Trim(),
