@@ -50,9 +50,10 @@
                 最大数据处理量(<span class="red">*</span>)
             </th>
             <td>
-                <asp:TextBox ID="txtDataProcess" runat="server" CssClass="norText"></asp:TextBox>
+                <asp:TextBox ID="txtDataProcess" runat="server" CssClass="norText"></asp:TextBox>兆bps
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtDataProcess" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <asp:RangeValidator ID="RangeValidator1" runat="server" Type="Double" ControlToValidate="txtDataProcess" MaximumValue="99999999" MinimumValue="-99999999" ErrorMessage="（数值型）"></asp:RangeValidator>
             </td>
         </tr>
         <tr>

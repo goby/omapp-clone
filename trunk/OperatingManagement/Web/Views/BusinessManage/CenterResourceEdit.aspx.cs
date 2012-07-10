@@ -98,6 +98,14 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
+                double dataProcess = 0.0;
+                if (!double.TryParse(txtDataProcess.Text.Trim(), out dataProcess))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "最大数据处理量格式错误";
+                    return;
+                }
+
                 Framework.FieldVerifyResult result;
                 CenterResource centerResource = new CenterResource();
                 centerResource.Id = CRID;
@@ -111,7 +119,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 centerResource.EquipmentCode = txtEquipmentCode.Text.Trim();
                 centerResource.EquipmentType = dplEquipmentType.SelectedValue;
                 centerResource.SupportTask = txtSupportTask.Text.Trim();
-                centerResource.DataProcess = txtDataProcess.Text.Trim();
+                centerResource.DataProcess = dataProcess.ToString();
                 //centerResource.Status = 1;//正常，状态不更新
                 //centerResource.CreatedTime = DateTime.Now;
                 centerResource.UpdatedTime = DateTime.Now;

@@ -150,7 +150,7 @@
                     CausesValidation="false" />
                 <asp:Button ID="btnReturn" runat="server" CssClass="button" Text="返 回" OnClick="btnReturn_Click"
                     CausesValidation="false" />
-            </td>
+            </td> 
         </tr>
     </table>
 </asp:Content>

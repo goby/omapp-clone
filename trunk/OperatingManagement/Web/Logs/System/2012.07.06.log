@@ -1,0 +1,85 @@
+
+=================>
+2012-07-06 23:35:25,918 @ [OperatingManagement.Framework.Core.AspNetException]:
+System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> OperatingManagement.Framework.Core.AspNetException: 查询中心输出策略页面初始化出现异常，异常原因 ---> System.ArgumentException: 列“WXBS”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Satellite.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Satellite.cs:行号 148
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Satellite.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Satellite.cs:行号 76
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Satellite.GetName(String wxbm) 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Satellite.cs:行号 174
+   在 OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyManage.GetSatelliteWXMC(String wxbm) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\CenterOutputPolicyManage.aspx.cs:行号 234
+   在 ASP.views_businessmanage_centeroutputpolicymanage_aspx.__DataBind__control4(Object sender, EventArgs e) 位置 d:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\CenterOutputPolicyManage.aspx:行号 81
+   在 System.Web.UI.Control.OnDataBinding(EventArgs e)
+   在 System.Web.UI.Control.DataBind(Boolean raiseOnDataBinding)
+   在 System.Web.UI.Control.DataBind()
+   在 System.Web.UI.Control.DataBindChildren()
+   在 System.Web.UI.Control.DataBind(Boolean raiseOnDataBinding)
+   在 System.Web.UI.Control.DataBind()
+   在 System.Web.UI.WebControls.Repeater.CreateItem(Int32 itemIndex, ListItemType itemType, Boolean dataBind, Object dataItem)
+   在 System.Web.UI.WebControls.Repeater.CreateControlHierarchy(Boolean useDataSource)
+   在 System.Web.UI.WebControls.Repeater.OnDataBinding(EventArgs e)
+   在 System.Web.UI.WebControls.Repeater.DataBind()
+   在 OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyManage.BindCOPList() 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\CenterOutputPolicyManage.aspx.cs:行号 201
+   在 OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyManage.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\CenterOutputPolicyManage.aspx.cs:行号 34
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyManage.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\CenterOutputPolicyManage.aspx.cs:行号 39
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)   在 OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyManage.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\CenterOutputPolicyManage.aspx.cs:行号 39
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicymanage_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_centeroutputpolicymanage.aspx.8321b997.utazv3tt.0.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+OperatingManagement.Framework.Core.AspNetException: System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> OperatingManagement.Framework.Core.AspNetException: 查询中心输出策略页面初始化出现异常，异常原因 ---> System.ArgumentException: 列“WXBS”不属于表 Table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Satellite.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Satellite.cs:行号 148
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Satellite.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Satellite.cs:行号 76
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Satellite.GetName(String wxbm) 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Satellite.cs:行号 174
+   在 OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyManage.GetSatelliteWXMC(String wxbm) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\CenterOutputPolicyManage.aspx.cs:行号 234
+   在 ASP.views_businessmanage_centeroutputpolicymanage_aspx.__DataBind__control4(Object sender, EventArgs e) 位置 d:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\CenterOutputPolicyManage.aspx:行号 81
+   在 System.Web.UI.Control.OnDataBinding(EventArgs e)
+   在 System.Web.UI.Control.DataBind(Boolean raiseOnDataBinding)
+   在 System.Web.UI.Control.DataBind()
+   在 System.Web.UI.Control.DataBindChildren()
+   在 System.Web.UI.Control.DataBind(Boolean raiseOnDataBinding)
+   在 System.Web.UI.Control.DataBind()
+   在 System.Web.UI.WebControls.Repeater.CreateItem(Int32 itemIndex, ListItemType itemType, Boolean dataBind, Object dataItem)
+   在 System.Web.UI.WebControls.Repeater.CreateControlHierarchy(Boolean useDataSource)
+   在 System.Web.UI.WebControls.Repeater.OnDataBinding(EventArgs e)
+   在 System.Web.UI.WebControls.Repeater.DataBind()
+   在 OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyManage.BindCOPList() 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\CenterOutputPolicyManage.aspx.cs:行号 201
+   在 OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyManage.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\CenterOutputPolicyManage.aspx.cs:行号 34
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyManage.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\CenterOutputPolicyManage.aspx.cs:行号 39
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)   在 OperatingManagement.Web.Views.BusinessManage.CenterOutputPolicyManage.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\CenterOutputPolicyManage.aspx.cs:行号 39
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicymanage_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_centeroutputpolicymanage.aspx.8321b997.utazv3tt.0.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)

@@ -48,6 +48,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 lblMessage.Text = string.Empty;
                 if (!IsPostBack)
                 {
+                    txtEffectTime.Attributes.Add("readonly", "true");
+                    txtDefectTime.Attributes.Add("readonly", "true");
                     InitialPageData();
                     BindControls();
                 }

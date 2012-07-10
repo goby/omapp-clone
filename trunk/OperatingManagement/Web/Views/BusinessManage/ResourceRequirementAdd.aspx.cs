@@ -106,6 +106,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 lblMessage.Text = string.Empty;
                 if (!IsPostBack)
                 {
+                    txtTimeBenchmark.Attributes.Add("readonly", "true");
+                    txtBeginTime.Attributes.Add("readonly", "true");
+                    txtEndTime.Attributes.Add("readonly", "true");
                     BindSatNameDataSource();
                     BindDataSource();
                     BindUnusedEquipmentList();

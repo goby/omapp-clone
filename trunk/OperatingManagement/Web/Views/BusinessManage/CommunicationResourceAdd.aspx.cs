@@ -79,12 +79,20 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
+                double bandWidth = 0.0;
+                if (!double.TryParse(txtBandWidth.Text.Trim(), out bandWidth))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "带宽格式错误";
+                    return;
+                }
+
                 Framework.FieldVerifyResult result;
                 CommunicationResource communicationResource = new CommunicationResource();
                 communicationResource.RouteName = txtRouteName.Text.Trim();
                 communicationResource.RouteCode = txtRouteCode.Text.Trim();
                 communicationResource.Direction = dplDirection.SelectedValue;
-                communicationResource.BandWidth = txtBandWidth.Text.Trim();
+                communicationResource.BandWidth = bandWidth.ToString();
                 communicationResource.Status = 1;//正常
                 communicationResource.CreatedTime = DateTime.Now;
                 communicationResource.CreatedUserID = LoginUserInfo.Id;
