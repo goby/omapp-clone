@@ -114,6 +114,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 if (!IsPostBack)
                 {
+                    txtBeginTime.Attributes.Add("readonly", "true");
+                    txtEndTime.Attributes.Add("readonly", "true");
                     BindDataSource();
                     //从资源管理页面跳转过来需要绑定健康、占用状态
                     if (!string.IsNullOrEmpty(ResourceCode))

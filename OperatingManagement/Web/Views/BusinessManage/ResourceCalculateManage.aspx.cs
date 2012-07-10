@@ -101,6 +101,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 if (!IsPostBack)
                 {
+                    txtBeginTime.Attributes.Add("readonly", "true");
+                    txtEndTime.Attributes.Add("readonly", "true");
                     BindDataSource();
                     BindResourceCalculateList();
                 }

@@ -60,6 +60,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
                                                           true);
                 if (!IsPostBack)
                 {
+
+                    txtCutMainReportBeginDate.Attributes.Add("readonly", "true");
+                    txtCutMainLYDate.Attributes.Add("readonly", "true");
+                    txtCutSubLYDate.Attributes.Add("readonly", "true");
                     BindDataSource();
                     BindCutMainSatelliteProperty();
                     BindCutSubSatelliteProperty();

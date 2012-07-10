@@ -1,0 +1,325 @@
+
+=================>
+2012-07-07 00:21:04,716 @ [OperatingManagement.Framework.Core.AspNetException]:
+System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> Oracle.DataAccess.Client.OracleException ORA-06550: 第 1 行, 第 7 列: 
+PLS-00201: 必须声明标识符 'UP_TASK_SELECTALL'
+ORA-06550: 第 1 行, 第 7 列: 
+PL/SQL: Statement ignored    在 Oracle.DataAccess.Client.OracleException.HandleErrorHelper(Int32 errCode, OracleConnection conn, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src, String procedure)
+   在 Oracle.DataAccess.Client.OracleException.HandleError(Int32 errCode, OracleConnection conn, String procedure, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src)
+   在 Oracle.DataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.DataAccess.Client.OracleDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   在 System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   在 OperatingManagement.Framework.OracleDatabase.SpExecuteDataSet(String spName, OracleParameter[] parameters) 位置 D:\Project\HTC\trunk\OperatingManagement\Framework\Oracle\OracleDatabase.cs:行号 120
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 91
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 51
+   在 OperatingManagement.Web.ucs.ucTask.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucTask.ascx.cs:行号 22
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicymanage_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_centeroutputpolicymanage.aspx.8321b997.utazv3tt.0.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+OperatingManagement.Framework.Core.AspNetException: System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> Oracle.DataAccess.Client.OracleException ORA-06550: 第 1 行, 第 7 列: 
+PLS-00201: 必须声明标识符 'UP_TASK_SELECTALL'
+ORA-06550: 第 1 行, 第 7 列: 
+PL/SQL: Statement ignored    在 Oracle.DataAccess.Client.OracleException.HandleErrorHelper(Int32 errCode, OracleConnection conn, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src, String procedure)
+   在 Oracle.DataAccess.Client.OracleException.HandleError(Int32 errCode, OracleConnection conn, String procedure, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src)
+   在 Oracle.DataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.DataAccess.Client.OracleDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   在 System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   在 OperatingManagement.Framework.OracleDatabase.SpExecuteDataSet(String spName, OracleParameter[] parameters) 位置 D:\Project\HTC\trunk\OperatingManagement\Framework\Oracle\OracleDatabase.cs:行号 120
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 91
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 51
+   在 OperatingManagement.Web.ucs.ucTask.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucTask.ascx.cs:行号 22
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicymanage_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_centeroutputpolicymanage.aspx.8321b997.utazv3tt.0.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+
+=================>
+2012-07-07 00:45:02,794 @ [OperatingManagement.Framework.Core.AspNetException]:
+System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> Oracle.DataAccess.Client.OracleException ORA-06550: 第 1 行, 第 7 列: 
+PLS-00201: 必须声明标识符 'UP_TASK_SELECTALL'
+ORA-06550: 第 1 行, 第 7 列: 
+PL/SQL: Statement ignored    在 Oracle.DataAccess.Client.OracleException.HandleErrorHelper(Int32 errCode, OracleConnection conn, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src, String procedure)
+   在 Oracle.DataAccess.Client.OracleException.HandleError(Int32 errCode, OracleConnection conn, String procedure, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src)
+   在 Oracle.DataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.DataAccess.Client.OracleDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   在 System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   在 OperatingManagement.Framework.OracleDatabase.SpExecuteDataSet(String spName, OracleParameter[] parameters) 位置 D:\Project\HTC\trunk\OperatingManagement\Framework\Oracle\OracleDatabase.cs:行号 120
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 91
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 51
+   在 OperatingManagement.Web.ucs.ucTask.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucTask.ascx.cs:行号 22
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicymanage_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_centeroutputpolicymanage.aspx.8321b997.utazv3tt.0.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+OperatingManagement.Framework.Core.AspNetException: System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> Oracle.DataAccess.Client.OracleException ORA-06550: 第 1 行, 第 7 列: 
+PLS-00201: 必须声明标识符 'UP_TASK_SELECTALL'
+ORA-06550: 第 1 行, 第 7 列: 
+PL/SQL: Statement ignored    在 Oracle.DataAccess.Client.OracleException.HandleErrorHelper(Int32 errCode, OracleConnection conn, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src, String procedure)
+   在 Oracle.DataAccess.Client.OracleException.HandleError(Int32 errCode, OracleConnection conn, String procedure, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src)
+   在 Oracle.DataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.DataAccess.Client.OracleDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   在 System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   在 OperatingManagement.Framework.OracleDatabase.SpExecuteDataSet(String spName, OracleParameter[] parameters) 位置 D:\Project\HTC\trunk\OperatingManagement\Framework\Oracle\OracleDatabase.cs:行号 120
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 91
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 51
+   在 OperatingManagement.Web.ucs.ucTask.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucTask.ascx.cs:行号 22
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicymanage_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_centeroutputpolicymanage.aspx.8321b997.utazv3tt.0.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+
+=================>
+2012-07-07 00:45:05,788 @ [OperatingManagement.Framework.Core.AspNetException]:
+System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> Oracle.DataAccess.Client.OracleException ORA-06550: 第 1 行, 第 7 列: 
+PLS-00201: 必须声明标识符 'UP_TASK_SELECTALL'
+ORA-06550: 第 1 行, 第 7 列: 
+PL/SQL: Statement ignored    在 Oracle.DataAccess.Client.OracleException.HandleErrorHelper(Int32 errCode, OracleConnection conn, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src, String procedure)
+   在 Oracle.DataAccess.Client.OracleException.HandleError(Int32 errCode, OracleConnection conn, String procedure, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src)
+   在 Oracle.DataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.DataAccess.Client.OracleDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   在 System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   在 OperatingManagement.Framework.OracleDatabase.SpExecuteDataSet(String spName, OracleParameter[] parameters) 位置 D:\Project\HTC\trunk\OperatingManagement\Framework\Oracle\OracleDatabase.cs:行号 120
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 91
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 51
+   在 OperatingManagement.Web.ucs.ucTask.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucTask.ascx.cs:行号 22
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicymanage_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_centeroutputpolicymanage.aspx.8321b997.utazv3tt.0.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+OperatingManagement.Framework.Core.AspNetException: System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> Oracle.DataAccess.Client.OracleException ORA-06550: 第 1 行, 第 7 列: 
+PLS-00201: 必须声明标识符 'UP_TASK_SELECTALL'
+ORA-06550: 第 1 行, 第 7 列: 
+PL/SQL: Statement ignored    在 Oracle.DataAccess.Client.OracleException.HandleErrorHelper(Int32 errCode, OracleConnection conn, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src, String procedure)
+   在 Oracle.DataAccess.Client.OracleException.HandleError(Int32 errCode, OracleConnection conn, String procedure, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src)
+   在 Oracle.DataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.DataAccess.Client.OracleDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   在 System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   在 OperatingManagement.Framework.OracleDatabase.SpExecuteDataSet(String spName, OracleParameter[] parameters) 位置 D:\Project\HTC\trunk\OperatingManagement\Framework\Oracle\OracleDatabase.cs:行号 120
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 91
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 51
+   在 OperatingManagement.Web.ucs.ucTask.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucTask.ascx.cs:行号 22
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicymanage_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_centeroutputpolicymanage.aspx.8321b997.utazv3tt.0.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+
+=================>
+2012-07-07 00:47:46,409 @ [OperatingManagement.Framework.Core.AspNetException]:
+System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> Oracle.DataAccess.Client.OracleException ORA-06550: 第 1 行, 第 7 列: 
+PLS-00201: 必须声明标识符 'UP_TASK_SELECTALL'
+ORA-06550: 第 1 行, 第 7 列: 
+PL/SQL: Statement ignored    在 Oracle.DataAccess.Client.OracleException.HandleErrorHelper(Int32 errCode, OracleConnection conn, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src, String procedure)
+   在 Oracle.DataAccess.Client.OracleException.HandleError(Int32 errCode, OracleConnection conn, String procedure, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src)
+   在 Oracle.DataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.DataAccess.Client.OracleDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   在 System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   在 OperatingManagement.Framework.OracleDatabase.SpExecuteDataSet(String spName, OracleParameter[] parameters) 位置 D:\Project\HTC\trunk\OperatingManagement\Framework\Oracle\OracleDatabase.cs:行号 120
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 91
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 51
+   在 OperatingManagement.Web.ucs.ucTask.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucTask.ascx.cs:行号 22
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicymanage_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_centeroutputpolicymanage.aspx.8321b997.utazv3tt.0.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+OperatingManagement.Framework.Core.AspNetException: System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> Oracle.DataAccess.Client.OracleException ORA-06550: 第 1 行, 第 7 列: 
+PLS-00201: 必须声明标识符 'UP_TASK_SELECTALL'
+ORA-06550: 第 1 行, 第 7 列: 
+PL/SQL: Statement ignored    在 Oracle.DataAccess.Client.OracleException.HandleErrorHelper(Int32 errCode, OracleConnection conn, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src, String procedure)
+   在 Oracle.DataAccess.Client.OracleException.HandleError(Int32 errCode, OracleConnection conn, String procedure, IntPtr opsErrCtx, OpoSqlValCtx* pOpoSqlValCtx, Object src)
+   在 Oracle.DataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.DataAccess.Client.OracleDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   在 System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   在 OperatingManagement.Framework.OracleDatabase.SpExecuteDataSet(String spName, OracleParameter[] parameters) 位置 D:\Project\HTC\trunk\OperatingManagement\Framework\Oracle\OracleDatabase.cs:行号 120
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.SelectAll() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 91
+   在 OperatingManagement.DataAccessLayer.BusinessManage.Task.get_Cache() 位置 D:\Project\HTC\trunk\OperatingManagement\DataAccessLayer\BusinessManage\Task.cs:行号 51
+   在 OperatingManagement.Web.ucs.ucTask.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\ucs\ucTask.ascx.cs:行号 22
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_centeroutputpolicymanage_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_centeroutputpolicymanage.aspx.8321b997.utazv3tt.0.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+
+=================>
+2012-07-07 15:30:01,198 @ [OperatingManagement.Framework.Core.AspNetException]:
+System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> OperatingManagement.Framework.Core.AspNetException: 查看资源调度计算结果页面初始化出现异常，异常原因 ---> System.Xml.XmlException: 给定编码中的字符无效。 第 1 行，位置 1。
+   在 System.Xml.XmlTextReaderImpl.Throw(Exception e)
+   在 System.Xml.XmlTextReaderImpl.Throw(String res, String arg)
+   在 System.Xml.XmlTextReaderImpl.InvalidCharRecovery(Int32& bytesCount, Int32& charsCount)
+   在 System.Xml.XmlTextReaderImpl.GetChars(Int32 maxCharsCount)
+   在 System.Xml.XmlTextReaderImpl.ReadData()
+   在 System.Xml.XmlTextReaderImpl.SwitchEncoding(Encoding newEncoding)
+   在 System.Xml.XmlTextReaderImpl.ParseXmlDeclaration(Boolean isTextDecl)
+   在 System.Xml.XmlTextReaderImpl.Read()
+   在 System.Xml.XmlLoader.Load(XmlDocument doc, XmlReader reader, Boolean preserveWhitespace)
+   在 System.Xml.XmlDocument.Load(XmlReader reader)
+   在 System.Xml.XmlDocument.Load(String filename)
+   在 OperatingManagement.Web.Views.BusinessManage.ResourceCalculateResultView.BindControls() 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\ResourceCalculateResultView.aspx.cs:行号 133
+   在 OperatingManagement.Web.Views.BusinessManage.ResourceCalculateResultView.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\ResourceCalculateResultView.aspx.cs:行号 51
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 OperatingManagement.Web.Views.BusinessManage.ResourceCalculateResultView.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\ResourceCalculateResultView.aspx.cs:行号 57
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)   在 OperatingManagement.Web.Views.BusinessManage.ResourceCalculateResultView.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\ResourceCalculateResultView.aspx.cs:行号 57
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_resourcecalculateresultview_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_resourcecalculateresultview.aspx.8321b997.dg6oyghv.0.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+OperatingManagement.Framework.Core.AspNetException: System.Web.HttpUnhandledException (0x80004005): 引发类型为“System.Web.HttpUnhandledException”的异常。 ---> OperatingManagement.Framework.Core.AspNetException: 查看资源调度计算结果页面初始化出现异常，异常原因 ---> System.Xml.XmlException: 给定编码中的字符无效。 第 1 行，位置 1。
+   在 System.Xml.XmlTextReaderImpl.Throw(Exception e)
+   在 System.Xml.XmlTextReaderImpl.Throw(String res, String arg)
+   在 System.Xml.XmlTextReaderImpl.InvalidCharRecovery(Int32& bytesCount, Int32& charsCount)
+   在 System.Xml.XmlTextReaderImpl.GetChars(Int32 maxCharsCount)
+   在 System.Xml.XmlTextReaderImpl.ReadData()
+   在 System.Xml.XmlTextReaderImpl.SwitchEncoding(Encoding newEncoding)
+   在 System.Xml.XmlTextReaderImpl.ParseXmlDeclaration(Boolean isTextDecl)
+   在 System.Xml.XmlTextReaderImpl.Read()
+   在 System.Xml.XmlLoader.Load(XmlDocument doc, XmlReader reader, Boolean preserveWhitespace)
+   在 System.Xml.XmlDocument.Load(XmlReader reader)
+   在 System.Xml.XmlDocument.Load(String filename)
+   在 OperatingManagement.Web.Views.BusinessManage.ResourceCalculateResultView.BindControls() 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\ResourceCalculateResultView.aspx.cs:行号 133
+   在 OperatingManagement.Web.Views.BusinessManage.ResourceCalculateResultView.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\ResourceCalculateResultView.aspx.cs:行号 51
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 OperatingManagement.Web.Views.BusinessManage.ResourceCalculateResultView.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\ResourceCalculateResultView.aspx.cs:行号 57
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)   在 OperatingManagement.Web.Views.BusinessManage.ResourceCalculateResultView.Page_Load(Object sender, EventArgs e) 位置 D:\Project\HTC\trunk\OperatingManagement\Web\Views\BusinessManage\ResourceCalculateResultView.aspx.cs:行号 57
+   在 System.Web.Util.CalliHelper.EventArgFunctionCaller(IntPtr fp, Object o, Object t, EventArgs e)
+   在 System.Web.Util.CalliEventHandlerDelegateProxy.Callback(Object sender, EventArgs e)
+   在 System.Web.UI.Control.OnLoad(EventArgs e)
+   在 System.Web.UI.Control.LoadRecursive()
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.HandleError(Exception e)
+   在 System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   在 System.Web.UI.Page.ProcessRequest()
+   在 System.Web.UI.Page.ProcessRequestWithNoAssert(HttpContext context)
+   在 System.Web.UI.Page.ProcessRequest(HttpContext context)
+   在 ASP.views_businessmanage_resourcecalculateresultview_aspx.ProcessRequest(HttpContext context) 位置 c:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET Files\root\3f1d351a\50383193\App_Web_resourcecalculateresultview.aspx.8321b997.dg6oyghv.0.cs:行号 0
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
