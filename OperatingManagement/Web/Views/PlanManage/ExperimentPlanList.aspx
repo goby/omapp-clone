@@ -34,12 +34,13 @@
                <td>
                <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
                     Width="69px" />
-&nbsp;<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
-                    onclick="btnReset_Click" />
+&nbsp;<%--<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
+                    onclick="btnReset_Click" />--%>
+                    <button class="button" onclick="return clearField();" style="width:65px;">清空</button>
                    &nbsp;<asp:CompareValidator ID="CompareValidator1" runat="server" 
                        ControlToCompare="txtStartDate" ControlToValidate="txtEndDate" 
                        Display="Dynamic" ErrorMessage="结束时间应大于起始时间" ForeColor="Red" 
-                       Operator="GreaterThan" Type="Date"></asp:CompareValidator>
+                       Operator="GreaterThanEqual" Type="Date"></asp:CompareValidator>
                    </td>
             </tr>
         </table>

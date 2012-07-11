@@ -96,7 +96,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             if (string.IsNullOrEmpty(txtEndDate.Text))
             { ViewState["_EndDate"] = null; }
             else
-            { ViewState["_EndDate"] = txtEndDate.Text.Trim(); }
+            { ViewState["_EndDate"] = Convert.ToDateTime(txtEndDate.Text.Trim()).AddDays(1).AddMilliseconds(-1); }
             ViewState["_PlanType"] = ddlType.SelectedItem.Value;
         }
         /// <summary>
@@ -119,11 +119,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 if (!string.IsNullOrEmpty(txtEndDate.Text))
                 {
-                    endDate = Convert.ToDateTime(txtEndDate.Text);
+                    //endDate = Convert.ToDateTime(txtEndDate.Text);
+                    endDate = Convert.ToDateTime(txtEndDate.Text).AddDays(1).AddMilliseconds(-1); //查询时可查当天
                 }
                 else
                 {
-                    endDate = DateTime.Now.AddDays(1);
+                    endDate = DateTime.Now.AddDays(1).AddMilliseconds(-1);
                 }
 
                 if (ddlType.SelectedItem.Value != "0")
@@ -200,17 +201,17 @@ namespace OperatingManagement.Web.Views.PlanManage
                         switch (txtPlanType.Text)
                         {
                             case "YJJH":
-                                SendingFilePaths = creater.CreateSendingYJJHFile(txtId.Text, li.Value, li.Text);
+                                SendingFilePaths = creater.CreateSendingYJJHFile(txtId.Text, li.Value);
                                 break;
                             case "XXXQ":
-                                SendingFilePaths = creater.CreateSendingXXXQFile(txtId.Text, li.Value, li.Text);
+                                SendingFilePaths = creater.CreateSendingXXXQFile(txtId.Text, li.Value);
                                 break;
                             case "DMJH":
                             case "GZJH":
-                                SendingFilePaths = creater.CreateSendingGZJHFile(txtId.Text, li.Value, li.Text);
+                                SendingFilePaths = creater.CreateSendingGZJHFile(txtId.Text, li.Value);
                                 break;
                             case "TYSJ":
-                                SendingFilePaths = creater.CreateSendingTYSJFile(txtId.Text, li.Value, li.Text);
+                                SendingFilePaths = creater.CreateSendingTYSJFile(txtId.Text, li.Value);
                                 break;
                         }
 

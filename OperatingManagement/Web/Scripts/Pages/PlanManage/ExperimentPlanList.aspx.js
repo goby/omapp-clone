@@ -4,7 +4,8 @@
 //    $("#txtEndDate").datepicker();
 //});
 
-function resetAll() {
+
+function clearField() {
     $('input:text').val('');
     return false;
 }

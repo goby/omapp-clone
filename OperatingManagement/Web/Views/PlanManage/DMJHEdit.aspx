@@ -25,7 +25,7 @@
             <tr>
                 <th style="width: 100px;">
                     <asp:Button ID="btnGetPlanInfo" runat="server" CssClass="button" OnClick="txtGetPlanInfo_Click"
-                        Text="选择设备计划" CausesValidation="False" />
+                        Text="选择设备工作计划" CausesValidation="False" />
                     <asp:HiddenField ID="hfSBJHID" runat="server" ClientIDMode="Static" />
                     <div style="display: none;">
                         <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden"

@@ -3,10 +3,10 @@
 //    $("#txtEndDate").datepicker();
 //});
 
-function reset(o) {
+function clearField() {
     $('input:text').val('');
+    return false;
 }
-
 function setdayte(o) {
     $(o).datepicker({
         changeMonth: true,
@@ -68,8 +68,9 @@ function showSend(id) {
     var txtId = $('#txtId');
     txtId.val(id);
 
-    var btn = $('#btnHidden');
-    btn.click();
+//    var btn = $('#btnHidden');
+    //    btn.click();
+    showPopSendForm();
     return false;
 }
 
@@ -90,3 +91,34 @@ function hideSelectAll() {
 
     return false;
 }
+
+function showPopSendForm() {
+    var _dialog;
+    _dialog = $("#tartgetPanel");
+    _dialog.dialog({
+        autoOpen: false,
+        height: 350,
+        width: 330,
+        modal: true,
+        buttons: {
+            '确定': function () {
+                $(this).dialog("close");
+                var btn = $('#btnSubmit');
+                btn.click();
+            },
+            '取消': function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+    _dialog.dialog('open');
+    _dialog.parent().appendTo($("form:first"));
+    return false;
+}
+
+function callSend() {
+    var btn = $('#btnSubmit');
+    btn.click();
+    return false;
+}
+
