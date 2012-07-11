@@ -92,7 +92,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 communicationResource.RouteName = txtRouteName.Text.Trim();
                 communicationResource.RouteCode = txtRouteCode.Text.Trim();
                 communicationResource.Direction = dplDirection.SelectedValue;
-                communicationResource.BandWidth = bandWidth.ToString();
+                communicationResource.BandWidth = bandWidth;
                 communicationResource.Status = 1;//正常
                 communicationResource.CreatedTime = DateTime.Now;
                 communicationResource.CreatedUserID = LoginUserInfo.Id;

@@ -92,7 +92,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 centerResource.EquipmentCode = txtEquipmentCode.Text.Trim();
                 centerResource.EquipmentType = dplEquipmentType.SelectedValue;
                 centerResource.SupportTask = txtSupportTask.Text.Trim();
-                centerResource.DataProcess = dataProcess.ToString();
+                centerResource.DataProcess = dataProcess;
                 centerResource.Status = 1;//正常
                 centerResource.CreatedTime = DateTime.Now;
                 centerResource.CreatedUserID = LoginUserInfo.Id;

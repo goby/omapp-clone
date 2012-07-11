@@ -119,7 +119,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 centerResource.EquipmentCode = txtEquipmentCode.Text.Trim();
                 centerResource.EquipmentType = dplEquipmentType.SelectedValue;
                 centerResource.SupportTask = txtSupportTask.Text.Trim();
-                centerResource.DataProcess = dataProcess.ToString();
+                centerResource.DataProcess = dataProcess;
                 //centerResource.Status = 1;//正常，状态不更新
                 //centerResource.CreatedTime = DateTime.Now;
                 centerResource.UpdatedTime = DateTime.Now;
@@ -225,7 +225,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 txtEquipmentCode.Text = centerResource.EquipmentCode;
                 dplEquipmentType.SelectedValue = centerResource.EquipmentType;
                 txtSupportTask.Text = centerResource.SupportTask;
-                txtDataProcess.Text = centerResource.DataProcess;
+                txtDataProcess.Text = centerResource.DataProcess.ToString();
                 lblCreatedTime.Text = centerResource.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss");
                 lblUpdatedTime.Text = centerResource.UpdatedTime == DateTime.MinValue ? centerResource.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss") : centerResource.UpdatedTime.ToString("yyyy-MM-dd HH:mm:ss");
             }
