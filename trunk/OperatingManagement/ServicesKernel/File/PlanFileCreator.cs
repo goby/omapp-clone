@@ -6,6 +6,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 using OperatingManagement.DataAccessLayer.PlanManage;
+using OperatingManagement.DataAccessLayer.BusinessManage;
 
 namespace ServicesKernel.File
 {
@@ -121,7 +122,7 @@ namespace ServicesKernel.File
         {
             sw= new StreamWriter(FilePath);
             sw.WriteLine("<说明区>");
-            sw.WriteLine("[生成时间]：" + this.CTime.ToString("yyyy-MM-dd-HH-mm"));
+            sw.WriteLine("[生成时间]：" + this.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]："+this.Source);
                 sw.WriteLine("[信宿D]："+this.Destination);
                 sw.WriteLine("[任务代码M]："+this.TaskID);
@@ -942,8 +943,11 @@ namespace ServicesKernel.File
         /// <param name="desValue">信宿地址值</param>
         /// <param name="destinationName">信宿地址名称</param>
         /// <returns>生成的外发文件完整路径名串</returns>
-        public string CreateSendingYJJHFile(string ids,string desValue,string destinationName)
+        public string CreateSendingYJJHFile(string ids,string desValue)
         {
+            XYXSInfo info = new XYXSInfo();
+            info = info.GetByAddrMark(desValue);
+            string destinationName = info.ADDRName + info.ADDRMARK + "(" +info.EXCODE+ ")";
             string SendFileNames  ="";
             List<JH> listJH = (new JH()).SelectByIDS(ids);
             YJJH obj;
@@ -975,7 +979,7 @@ namespace ServicesKernel.File
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
-                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH-mm"));
+                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：700任务(0500)");
@@ -1007,8 +1011,14 @@ namespace ServicesKernel.File
         /// <param name="desValue">信宿地址值</param>
         /// <param name="destinationName">信宿地址名称</param>
         /// <returns>生成的外发文件完整路径名串</returns>
-        public string CreateSendingXXXQFile(string ids, string desValue, string destinationName)
-        { 
+        public string CreateSendingXXXQFile(string ids, string desValue)
+        {
+            XYXSInfo info = new XYXSInfo();
+            info = info.GetByAddrMark(desValue);
+            string destinationName = info.ADDRName + info.ADDRMARK + "(" +info.EXCODE+ ")";
+
+            OperatingManagement.DataAccessLayer.BusinessManage.InfoType itype = new OperatingManagement.DataAccessLayer.BusinessManage.InfoType();
+           
             string SendFileNames  ="";
             string filenameMBXQ = "";
             string filenameHJXQ = "";
@@ -1094,14 +1104,15 @@ namespace ServicesKernel.File
                 filename = FileNameMaker.GenarateFileNameTypeThree("MBXQ", desValue);
                 SendFileNames = SendFileNames + SendingPath + ",";
                 filenameMBXQ = filename;    //用于在XXXQ文件里的数据行记录
+                itype = itype.GetByExMark("MBXX");
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
-                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH-mm"));
+                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：700任务(0501)");
-                sw.WriteLine("[信息类别B]：空间目标信息需求(00 70 60 00)");
+                sw.WriteLine("[信息类别B]：" + itype.DATANAME+"("+itype.EXCODE+")");
                 sw.WriteLine("[数据区行数L]：" + (obj.objMBXQ.SatInfos.Count+1).ToString("0000"));
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[格式标识1]：User  Time  TargetInfo  TimeSection1  TimeSection2  Sum");
@@ -1122,14 +1133,15 @@ namespace ServicesKernel.File
                 filename = FileNameMaker.GenarateFileNameTypeThree("HJXQ", desValue);
                 SendFileNames = SendFileNames + SendingPath + ",";
                 filenameHJXQ = filename;    //用于在XXXQ文件里的数据行记录
+                itype = itype.GetByExMark("HJXX");
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
-                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH-mm"));
+                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：700任务(0501)");
-                sw.WriteLine("[信息类别B]：空间环境信息需求(00 70 61 00)");
+                sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                 sw.WriteLine("[数据区行数L]：" + (obj.objHJXQ.SatInfos.Count + 1).ToString("0000"));
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[格式标识1]：User  Time  EnvironInfo  TimeSection1  TimeSection2  Sum");
@@ -1152,7 +1164,7 @@ namespace ServicesKernel.File
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
-                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH-mm"));
+                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：700任务(0501)");
@@ -1184,8 +1196,12 @@ namespace ServicesKernel.File
         /// <param name="desValue">信宿地址值</param>
         /// <param name="destinationName">信宿地址名称</param>
         /// <returns>生成的外发文件完整路径名串</returns>
-        public string CreateSendingGZJHFile(string ids, string desValue, string destinationName)
+        public string CreateSendingGZJHFile(string ids, string desValue)
         {
+            XYXSInfo info = new XYXSInfo();
+            info = info.GetByAddrMark(desValue);
+            string destinationName = info.ADDRName + info.ADDRMARK + "(" +info.EXCODE+ ")";
+           
             string SendFileNames = "";
             List<JH> listJH = (new JH()).SelectByIDS(ids);
             DMJH obj;
@@ -1246,7 +1262,7 @@ namespace ServicesKernel.File
 
                     sw = new StreamWriter(SendingPath);
                     sw.WriteLine("<说明区>");
-                    sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH-mm"));
+                    sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                     sw.WriteLine("[信源S]：" + this.Source);
                     sw.WriteLine("[信宿D]：" + destinationName);
                     sw.WriteLine("[任务代码M]：700任务(0501)");
@@ -1285,8 +1301,12 @@ namespace ServicesKernel.File
             return SendFileNames;
         }
 
-        public string CreateSendingZXJHFile(string ids, string desValue, string destinationName)
+        public string CreateSendingZXJHFile(string ids, string desValue)
         {
+            XYXSInfo info = new XYXSInfo();
+            info = info.GetByAddrMark(desValue);
+            string destinationName = info.ADDRName + info.ADDRMARK + "(" +info.EXCODE+ ")";
+           
             //string SendFileNames = "";
             //List<JH> listJH = (new JH()).SelectByIDS(ids);
             //ZXJH obj;
@@ -1312,8 +1332,12 @@ namespace ServicesKernel.File
         /// <param name="desValue">信宿地址值</param>
         /// <param name="destinationName">信宿地址名称</param>
         /// <returns>生成的外发文件完整路径名串</returns>
-        public string CreateSendingTYSJFile(string ids, string desValue, string destinationName)
+        public string CreateSendingTYSJFile(string ids, string desValue)
         {
+            XYXSInfo info = new XYXSInfo();
+            info = info.GetByAddrMark(desValue);
+            string destinationName = info.ADDRName + info.ADDRMARK + "(" +info.EXCODE+ ")";
+           
             string SendFileNames = "";
             List<JH> listJH = (new JH()).SelectByIDS(ids);
             TYSJ obj;
@@ -1345,7 +1369,7 @@ namespace ServicesKernel.File
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
-                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH-mm"));
+                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：700任务(0501)");

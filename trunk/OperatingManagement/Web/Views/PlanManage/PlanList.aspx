@@ -47,19 +47,27 @@
                 </td>
                <td>
                <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
-                    Width="69px" />
-&nbsp;<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
-                    onclick="btnReset_Click" />
+                    Width="65px" />
+&nbsp;<%--<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
+                    onclick="btnReset_Click" />--%>
+                    <button class="button" style="width:65px" onclick="return clearField();">清空</button>
                     <asp:CompareValidator ID="CompareValidator1" runat="server" 
                        ControlToCompare="txtStartDate" ControlToValidate="txtEndDate" 
                        Display="Dynamic" ErrorMessage="结束时间应大于起始时间" ForeColor="Red" 
-                       Operator="GreaterThan" Type="Date"></asp:CompareValidator>
+                       Operator="GreaterThanEqual" Type="Date"></asp:CompareValidator>
                     <div style="display:none;">
                         <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
                         <asp:TextBox ID="txtPlanID" runat="server" ClientIDMode="Static"></asp:TextBox>
                         <asp:TextBox ID="txtPlanType" runat="server" ClientIDMode="Static"></asp:TextBox>
                         <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" 
                                 OnClick="btnHidden_Click" />
+                                <div>
+                    <asp:Button ClientIDMode="Static" ID="btnSubmit" class="button" runat="server" OnClick="btnSubmit_Click"
+                        Text="发送" />
+                    &nbsp;&nbsp;
+                    <asp:Button ID="btnCancel" class="button" runat="server" OnClick="btnCancel_Click"
+                        Text="取消" />
+                        </div>
                         </div>
                    </td>
             </tr>
@@ -179,14 +187,14 @@
         </asp:Panel>
         <div id="tartgetPanel" style="display:none">
         <table style = " text-align:center;">
-        <tr>
+            <tr>
         <td>
         <b>请选择要使用的发送协议：</b>
                 <br />
                 <asp:RadioButtonList ID="rbtProtocl" runat="server" 
                 RepeatDirection="Horizontal">
-                        <asp:ListItem Value="1" Selected>Fep with Tcp</asp:ListItem>
-                        <asp:ListItem Value="2">Fep with Udp</asp:ListItem>
+                        <asp:ListItem Value="2" Selected>Fep with Tcp</asp:ListItem>
+                        <asp:ListItem Value="1">Fep with Udp</asp:ListItem>
                         <asp:ListItem Value="0">Ftp</asp:ListItem>
                     </asp:RadioButtonList>
            </td>
@@ -202,18 +210,6 @@
                     </asp:CheckBoxList>
                     
                     <br />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: center">
-                <%--<button class="button"  onclick="callSend();">发送</button>--%>
-                <div>
-                    <asp:Button ClientIDMode="Static" ID="btnSubmit" class="button" runat="server" OnClick="btnSubmit_Click"
-                        Text="发送" />
-                    &nbsp;&nbsp;
-                    <asp:Button ID="btnCancel" class="button" runat="server" OnClick="btnCancel_Click"
-                        Text="取消" />
-                        </div>
                 </td>
             </tr>
         </table>

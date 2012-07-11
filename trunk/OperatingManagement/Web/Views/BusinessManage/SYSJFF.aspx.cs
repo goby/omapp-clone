@@ -401,7 +401,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     string dataType = "TYSJ";
                     PlanFileCreator oPFCreator = new PlanFileCreator();
                     XYXSInfo oXyxs =  new XYXSInfo().GetByAddrMark(FileExchangeConfig.GetTgtListForSending(dataType)[0]);
-                    string filename = oPFCreator.CreateSendingTYSJFile(strFZIds, oXyxs.ADDRMARK, oXyxs.ADDRName + "(" + oXyxs.EXCODE + ")");
+                    //string filename = oPFCreator.CreateSendingTYSJFile(strFZIds, oXyxs.ADDRMARK, oXyxs.ADDRName + "(" + oXyxs.EXCODE + ")");
+                    string filename = oPFCreator.CreateSendingTYSJFile(strFZIds, oXyxs.ADDRMARK);
                     int desID = oXyxs.Id;
                     int sourceID = new XYXSInfo().GetByAddrMark(Param.SourceCode).Id;
                     int infoId = new InfoType().GetIDByExMark(dataType);

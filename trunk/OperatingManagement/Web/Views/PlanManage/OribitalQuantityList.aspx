@@ -34,8 +34,9 @@
                <td>
                <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
                     Width="69px" />
-&nbsp;<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
-                    onclick="btnReset_Click" />
+&nbsp;<%--<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
+                    onclick="btnReset_Click" />--%>
+                    <button class="button" onclick="return clearField();" style="width:65px;">清空</button>
                     &nbsp;<asp:CompareValidator ID="CompareValidator1" runat="server" 
                        ControlToCompare="txtStartDate" ControlToValidate="txtEndDate" 
                        Display="Dynamic" ErrorMessage="结束时间应大于起始时间" ForeColor="Red" 
@@ -43,6 +44,9 @@
                     <div style="display:none;">
                     <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
                     <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden"  OnClick="btnHidden_Click" />
+                    <asp:Button  class="button" ID="btnSubmit" runat="server" ClientIDMode="Static" OnClick="btnSubmit_Click" Text="发送" />
+                    &nbsp;&nbsp;
+                    <asp:Button  class="button" ID="btnCancel" runat="server" ClientIDMode="Static" OnClick="btnCancel_Click" Text="取消" />
                     </div>
                    </td>
             </tr>
@@ -140,16 +144,17 @@
    </div>
    </asp:Panel>
    <asp:Panel ID="pnlDestination" runat="server">
-<%--    <div id="tartgetPanel" style="display: ">--%>
-        <table>
-        <tr>
+   </asp:Panel>
+    <div id="tartgetPanel" style="display:none; ">
+        <table style = " text-align:center;">
+            <tr>
         <td>
         <b>请选择要使用的发送协议：</b>
                 <br />
                 <asp:RadioButtonList ID="rbtProtocl" runat="server" 
                 RepeatDirection="Horizontal">
-                        <asp:ListItem Value="1" Selected>Fep with Tcp</asp:ListItem>
-                        <asp:ListItem Value="2">Fep with Udp</asp:ListItem>
+                        <asp:ListItem Value="2" Selected>Fep with Tcp</asp:ListItem>
+                        <asp:ListItem Value="1">Fep with Udp</asp:ListItem>
                         <asp:ListItem Value="0">Ftp</asp:ListItem>
                     </asp:RadioButtonList>
            </td>
@@ -167,16 +172,9 @@
                     </asp:CheckBoxList>
                 </td>
             </tr>
-            <tr>
-                <td style="text-align: center">
-                    <asp:Button  class="button" ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="发送" />
-                    &nbsp;&nbsp;
-                    <asp:Button  class="button" ID="btnCancel" runat="server" OnClick="btnCancel_Click" Text="取消" />
-                </td>
-            </tr>
         </table>
-<%--    </div>--%>
-        </asp:Panel>
+    </div>
+        
    <div id="dialog-form" style="display:none" title="提示信息">
 	    <p class="content"></p>
     </div>

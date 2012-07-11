@@ -9,8 +9,12 @@ $(window).ready(function () {
 //});
 
 
-function reset(o) {
-    $('input:text').val('');
+function clearField() {
+    //$('input:text').val('');
+    $('#txtStartDate').val("");
+    $('#txtEndDate').val("");
+    var sal = $('#ddlType');
+    sal.val("YJJH");
     return false;
 }
 
@@ -64,7 +68,7 @@ function sendPlan() {
                 }
             }
         });
-        _dialog.find('p.content').eq(0).html('请选择您要发送的轨道数据。');
+        _dialog.find('p.content').eq(0).html('请选择您要发送的计划。');
         _dialog.dialog('open');
         return false;
     }
@@ -134,11 +138,16 @@ function showPopSendForm() {
         width: 330,
         modal: true,
         buttons: {
-            '关闭': function () {
+            '确定': function () {
+                $(this).dialog("close");
+                var btn = $('#btnSubmit');
+                btn.click();
+            },
+            '取消': function () {
                 $(this).dialog("close");
             }
-        }
-    });
+    }
+});
     _dialog.dialog('open');
     _dialog.parent().appendTo($("form:first"));
     return false;

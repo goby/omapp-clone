@@ -55,7 +55,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             if (string.IsNullOrEmpty(txtEndDate.Text))
             { ViewState["_EndDate"] = null; }
             else
-            { ViewState["_EndDate"] = txtEndDate.Text.Trim(); }
+            { ViewState["_EndDate"] = Convert.ToDateTime(txtEndDate.Text.Trim()).AddDays(1).AddMilliseconds(-1); }
         }
 
         //绑定列表
@@ -72,7 +72,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 if (!string.IsNullOrEmpty(txtEndDate.Text))
                 {
-                    endDate = Convert.ToDateTime(txtEndDate.Text);
+                    endDate = Convert.ToDateTime(txtEndDate.Text).AddDays(1).AddMilliseconds(-1); //查询时可查当天
+
                 }
             }
             else
