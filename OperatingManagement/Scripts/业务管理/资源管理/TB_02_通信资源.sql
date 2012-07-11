@@ -5,7 +5,7 @@ create table TB_COMMUNICATIONRESOURCE
   routename     NVARCHAR2(50) not null,
   routecode     NVARCHAR2(50) not null,
   direction     NVARCHAR2(20) not null,
-  bandwidth     NVARCHAR2(20) not null,
+  bandwidth     NUMBER(12,2) not null,
   status        NUMBER(2) not null,
   extproperties NVARCHAR2(2000),
   createdtime   DATE not null,
@@ -19,7 +19,7 @@ tablespace TSHTC
   maxtrans 255
   storage
   (
-    initial 64
+    initial 16K
     minextents 1
     maxextents unlimited
   );

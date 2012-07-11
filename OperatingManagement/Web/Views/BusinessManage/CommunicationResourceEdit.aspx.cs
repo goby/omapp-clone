@@ -120,7 +120,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 communicationResource.RouteName = txtRouteName.Text.Trim();
                 communicationResource.RouteCode = txtRouteCode.Text.Trim();
                 communicationResource.Direction = dplDirection.SelectedValue;
-                communicationResource.BandWidth = bandWidth.ToString();
+                communicationResource.BandWidth = bandWidth;
                 //communicationResource.Status = 1;//正常，状态不更新
                 //communicationResource.CreatedTime = DateTime.Now;//创建时间不更新
                 communicationResource.UpdatedTime = DateTime.Now;
@@ -230,7 +230,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 txtRouteName.Text = communicationResource.RouteName;
                 txtRouteCode.Text = communicationResource.RouteCode;
                 dplDirection.SelectedValue = communicationResource.Direction;
-                txtBandWidth.Text = communicationResource.BandWidth;
+                txtBandWidth.Text = communicationResource.BandWidth.ToString();
                 lblCreatedTime.Text = communicationResource.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss");
                 lblUpdatedTime.Text = communicationResource.UpdatedTime == DateTime.MinValue ? communicationResource.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss") : communicationResource.UpdatedTime.ToString("yyyy-MM-dd HH:mm:ss");
             }

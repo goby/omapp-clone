@@ -47,7 +47,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 最大数据处理量
         /// </summary>
-        public string DataProcess { get; set; }
+        public double DataProcess { get; set; }
         /// <summary>
         /// 状态
         /// </summary>
@@ -107,7 +107,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     EquipmentCode = ds.Tables[0].Rows[0]["EquipmentCode"].ToString(),
                     EquipmentType = ds.Tables[0].Rows[0]["EquipmentType"].ToString(),
                     SupportTask = ds.Tables[0].Rows[0]["SupportTask"].ToString(),
-                    DataProcess = ds.Tables[0].Rows[0]["DataProcess"].ToString(),
+                    DataProcess = Convert.ToDouble(ds.Tables[0].Rows[0]["DataProcess"]),
                     Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
                     ExtProperties = ds.Tables[0].Rows[0]["ExtProperties"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ExtProperties"].ToString(),
                     CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
@@ -139,7 +139,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         EquipmentCode = dr["EquipmentCode"].ToString(),
                         EquipmentType = dr["EquipmentType"].ToString(),
                         SupportTask = dr["SupportTask"].ToString(),
-                        DataProcess = dr["DataProcess"].ToString(),
+                        DataProcess = Convert.ToDouble(dr["DataProcess"]),
                         Status = Convert.ToInt32(dr["Status"]),
                         ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
                         CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
@@ -202,7 +202,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         EquipmentCode = dr["EquipmentCode"].ToString(),
                         EquipmentType = dr["EquipmentType"].ToString(),
                         SupportTask = dr["SupportTask"].ToString(),
-                        DataProcess = dr["DataProcess"].ToString(),
+                        DataProcess = Convert.ToDouble(dr["DataProcess"]),
                         Status = Convert.ToInt32(dr["Status"]),
                         ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
                         CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
@@ -281,7 +281,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             this.AddValidRules("EquipmentCode", "设备编号不能为空。", string.IsNullOrEmpty(EquipmentCode));
             this.AddValidRules("EquipmentType", "设备类型不能为空。", string.IsNullOrEmpty(EquipmentType));
             this.AddValidRules("SupportTask", "支持的任务不能为空。", string.IsNullOrEmpty(SupportTask));
-            this.AddValidRules("DataProcess", "最大数据处理量不能为空。", string.IsNullOrEmpty(DataProcess));
+            //this.AddValidRules("DataProcess", "最大数据处理量不能为空。", string.IsNullOrEmpty(DataProcess));
         }
         #endregion
     }

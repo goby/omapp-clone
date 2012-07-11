@@ -70,10 +70,10 @@
                             管理状态
                         </th>
                         <th style="width: 7%;">
-                            编辑
+                            编辑资源
                         </th>
                          <th style="width: 7%;">
-                            删除
+                            删除资源
                         </th>
                     </tr>
                     <tbody id="tbGroundResourceList">
@@ -105,13 +105,13 @@
                        <%# Eval("Status").ToString() == "2" ? "删除" : "正常"%>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="1"  CommandArgument='<%# Eval("GRCode")%>'>管理</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="1"  CommandArgument='<%# Eval("GRCode")%>'>管理状态</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnEditResource" runat="server" OnClick="lbtnEditResource_Click" CommandName="1" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnEditResource" runat="server" OnClick="lbtnEditResource_Click" CommandName="1" CommandArgument='<%# Eval("Id")%>'>编辑资源</asp:LinkButton>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnDeleteResource" runat="server" OnClick="lbtnDeleteResource_Click" OnClientClick="javascript:return confirm('是否删除该资源？')" CommandName="1" CommandArgument='<%# Eval("Id")%>'>删除</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnDeleteResource" runat="server" OnClick="lbtnDeleteResource_Click" OnClientClick="javascript:return confirm('是否删除该资源？')" CommandName="1" CommandArgument='<%# Eval("Id")%>'>删除资源</asp:LinkButton>
                     </td>
                 </tr>
             </ItemTemplate>

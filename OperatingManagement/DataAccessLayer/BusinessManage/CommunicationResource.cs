@@ -47,7 +47,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 带宽
         /// </summary>
-        public string BandWidth { get; set; }
+        public double BandWidth { get; set; }
         /// <summary>
         /// 状态
         /// </summary>
@@ -108,7 +108,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     RouteName = ds.Tables[0].Rows[0]["RouteName"].ToString(),
                     RouteCode = ds.Tables[0].Rows[0]["RouteCode"].ToString(),
                     Direction = ds.Tables[0].Rows[0]["Direction"].ToString(),
-                    BandWidth = ds.Tables[0].Rows[0]["BandWidth"].ToString(),
+                    BandWidth = Convert.ToDouble(ds.Tables[0].Rows[0]["BandWidth"]),
                     Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
                     ExtProperties = ds.Tables[0].Rows[0]["ExtProperties"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ExtProperties"].ToString(),
                     CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
@@ -140,7 +140,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         RouteName = dr["RouteName"].ToString(),
                         RouteCode = dr["RouteCode"].ToString(),
                         Direction = dr["Direction"].ToString(),
-                        BandWidth = dr["BandWidth"].ToString(),
+                        BandWidth = Convert.ToDouble(dr["BandWidth"]),
                         Status = Convert.ToInt32(dr["Status"]),
                         ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
                         CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
@@ -203,7 +203,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         RouteName = dr["RouteName"].ToString(),
                         RouteCode = dr["RouteCode"].ToString(),
                         Direction = dr["Direction"].ToString(),
-                        BandWidth = dr["BandWidth"].ToString(),
+                        BandWidth = Convert.ToDouble(dr["BandWidth"]),
                         Status = Convert.ToInt32(dr["Status"]),
                         ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
                         CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
@@ -282,7 +282,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             this.AddValidRules("RouteName", "线路名称不能为空。", string.IsNullOrEmpty(RouteName));
             this.AddValidRules("RouteCode", "线路编号不能为空。", string.IsNullOrEmpty(RouteCode));
             this.AddValidRules("Direction", "方向不能为空。", string.IsNullOrEmpty(Direction));
-            this.AddValidRules("BandWidth", "带宽不能为空。", string.IsNullOrEmpty(BandWidth));
+            //this.AddValidRules("BandWidth", "带宽不能为空。", string.IsNullOrEmpty(BandWidth));
         }
         #endregion
     }
