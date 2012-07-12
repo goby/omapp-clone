@@ -541,7 +541,8 @@ namespace ServicesKernel.GDFX
             isCaculating = true;
 
             int[] iPath = DataValidator.GetIntPath(mainFilePath);
-            CutPre(ref iPath[0], iPath.Length);
+            int iResult = 0;
+            CutPre(ref iPath[0], iPath.Length, iResult);
             isCaculating = false;
             return strResult;
         }
@@ -555,6 +556,6 @@ namespace ServicesKernel.GDFX
         [DllImport(dllPath + @"CutPreDLL.dll",
             SetLastError = true, CharSet = CharSet.Ansi,
             CallingConvention = CallingConvention.StdCall)]
-        public static extern void CutPre(ref int dirIn, int Ndir);
+        public static extern void CutPre(ref int dirIn, int Ndir, int Kjg);
     }
 }

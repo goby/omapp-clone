@@ -10,10 +10,12 @@
       <item id="2-3" title="发送文件" roles="OMB_FSendFile.Do" href="Views/BusinessManage/SendFile.aspx" />
       <item id="2-4" title="试验数据分发" roles="OMB_SYSJFF.View" href="Views/BusinessManage/SYSJFF.aspx" />
     </menu>
+  <!--
     <menu title="数据包收发">
       <item id="3-1" title="查看数据包发送记录" roles="OMB_DSendInfo.View" href="#" />
       <item id="3-2" title="查看数据包接收记录" roles="OMB_DRcvInfo.View" href="#" />
     </menu>
+      !-->
     <menu title="资源管理">
       <item id="4-1" title="资源信息管理" roles="OMB_ResMan.View" href="Views/BusinessManage/ResourceManage.aspx" />
       <item id="4-2" title="新增地面站资源" roles="OMB_GRes.Add" href="Views/BusinessManage/GroundResourceAdd.aspx" />
@@ -31,10 +33,10 @@
       <item id="5-4" title="轨道交会分析" roles="OMB_JHFX.Caculate" href="Views/BusinessManage/GDJHFX.aspx" />
       <item id="5-5" title="轨道预报" roles="OMB_GDYB.Caculate" href="Views/BusinessManage/GDYB.aspx" />
     </menu>
+  <!--
     <menu title="中心已接收数据">
       <item id="6-1" title="查看西安卫星测控中心数据" roles="OMB_XiAnData.View" href="Views/BusinessManage/XiAnCeKongDataList.aspx" />
       <item id="6-2" title="查看测角测速测距数据" roles="OMB_MeasureData.View" href="Views/BusinessManage/MeasureDataList.aspx" />
-      <!--
       <item id="6-3" title="查看空间遥操作状态数据" roles="OMB_KJYCZData.View" href="#" />
       <item id="6-4" title="查看空间目标信息" roles="OMB_KJMBData.View" href="#" />
       <item id="6-5" title="查看空间环境信息" roles="OMB_KJHJData.View" href="#" />
@@ -45,6 +47,6 @@
       <item id="6-10" title="查看空间机动试验数据处理结果" roles="OMB_KJJDTData.View" href="#" />
       <item id="6-11" title="查看遥操作试验数据处理结果" roles="OMB_YCZTData.View" href="#" />
       <item id="6-12" title="查看仿真推演试验数据处理结果" roles="OMB_FZTYTData.View" href="#" /> 
-      !-->
     </menu>
+      !-->
 </menus>

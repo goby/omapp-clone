@@ -17,7 +17,9 @@
     <tr>
         <th style="width:120px;" align="right">发送方式(<span class="red">*</span>)</th>
         <td>
-            <asp:RadioButtonList ID="rblSendWay" runat="server" RepeatDirection="Horizontal">
+            <asp:RadioButtonList ID="rblSendWay" runat="server" 
+                RepeatDirection="Horizontal" BorderColor="White" BorderStyle="Double" 
+                BorderWidth="2px">
                 <asp:ListItem Selected="true" Text="FEP UDP" Value="1"></asp:ListItem>
                 <asp:ListItem Text="FEP TCP" Value="2"></asp:ListItem>
                 <asp:ListItem Text="FTP" Value="0"></asp:ListItem>
@@ -27,7 +29,9 @@
     <tr>
         <th style="width:120px;" align="right">自动重发(<span class="red">*</span>)</th>
         <td>
-            <asp:RadioButtonList ID="rblAutoResend" runat="server" RepeatDirection="Horizontal">
+            <asp:RadioButtonList ID="rblAutoResend" runat="server" 
+                RepeatDirection="Horizontal" BorderColor="White" BorderStyle="Double" 
+                BorderWidth="2px">
                 <asp:ListItem Selected="true" Text="是" Value="1"></asp:ListItem>
                 <asp:ListItem Text="否" Value="0"></asp:ListItem>
             </asp:RadioButtonList>

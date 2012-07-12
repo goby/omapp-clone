@@ -43,7 +43,7 @@
             <td>
                 <asp:RadioButtonList ID="radBtnXXFL" runat="server" 
                     RepeatDirection="Horizontal" ClientIDMode="Static">
-                    <asp:ListItem Value="ZJ" Selected>周计划</asp:ListItem>
+                    <asp:ListItem Value="ZJ" Selected="True">周计划</asp:ListItem>
                     <asp:ListItem Value="RJ">日计划</asp:ListItem> 
                 </asp:RadioButtonList>
             </td>

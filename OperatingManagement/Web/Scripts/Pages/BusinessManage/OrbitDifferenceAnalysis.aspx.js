@@ -14,9 +14,9 @@ $(window).ready(function () {
         }
     });
 
-    if (!!_autoOpen) {
+    //if (!!_autoOpen) {
         _dialog.dialog('open');
-    }
+    //}
 });
 
 var _resultDialog;

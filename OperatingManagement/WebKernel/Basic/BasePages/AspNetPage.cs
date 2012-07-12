@@ -481,7 +481,7 @@ namespace OperatingManagement.WebKernel.Basic
                 bool hasPermission = false;
                 foreach (string p in ps)
                 {
-                    hasPermission =  IsInPermission(this.PagePermission);
+                    hasPermission =  IsInPermission(p);//this.PagePermission);
                     if (hasPermission) return true;
                 }
                 return hasPermission;
