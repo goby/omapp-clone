@@ -145,6 +145,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "高程坐标值不能为空";
                     return;
                 }
+                double gaoCheng = 0.0;
+                if (!double.TryParse(txtGaoCheng.Text.Trim(), out gaoCheng))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "高程坐标值格式错误";
+                    return;
+                }
 
                 if (cblFunctionType.SelectedItem == null)
                 {
@@ -176,7 +183,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 groundResource.EquipmentName = txtEquipmentName.Text.Trim();
                 groundResource.EquipmentCode = txtEquipmentCode.Text.Trim();
                 groundResource.Owner = dplOwner.SelectedValue;
-                groundResource.Coordinate = dplCoordinate.SelectedValue + "：" + longitudeValue.ToString() + "，" + latitudeValue.ToString() + "，" + txtGaoCheng.Text.Trim();
+                groundResource.Coordinate = longitudeValue.ToString() + "," + latitudeValue.ToString() + "," + gaoCheng.ToString();
                 groundResource.FunctionType = functionType;
                 //groundResource.Status = 1;
                 //groundResource.CreatedTime = DateTime.Now;
@@ -308,12 +315,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 lblUpdatedTime.Text = groundResource.UpdatedTime == DateTime.MinValue ? groundResource.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss") : groundResource.UpdatedTime.ToString("yyyy-MM-dd HH:mm:ss");
 
                 string[] coordinateInfo = groundResource.Coordinate.Split(new char[] { ',', '，', ':','：' }, StringSplitOptions.RemoveEmptyEntries);
-                if (coordinateInfo != null && coordinateInfo.Length == 4)
+                if (coordinateInfo != null && coordinateInfo.Length == 3)
                 {
-                    dplCoordinate.SelectedValue = coordinateInfo[0];
-                    txtLongitude.Text = coordinateInfo[1];
-                    txtLatitude.Text = coordinateInfo[2];
-                    txtGaoCheng.Text = coordinateInfo[3];
+                    //dplCoordinate.SelectedValue = coordinateInfo[0];
+                    txtLongitude.Text = coordinateInfo[0];
+                    txtLatitude.Text = coordinateInfo[1];
+                    txtGaoCheng.Text = coordinateInfo[2];
                 }
 
                 string[] functionTypeArray = groundResource.FunctionType.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);

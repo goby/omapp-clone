@@ -54,7 +54,7 @@
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtDataProcess" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
                  <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ValidationExpression="^\d+(\.\d{1,2})?$" Display="Dynamic"
-                    ForeColor="Red" ControlToValidate="txtDataProcess" ErrorMessage="（最多含有两位小数的数字）"></asp:RegularExpressionValidator>
+                    ForeColor="Red" ControlToValidate="txtDataProcess" ErrorMessage="（>=0且最多含有两位小数的数字）"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr id="trMessage" runat="server" visible="false">

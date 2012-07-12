@@ -126,6 +126,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "高程坐标值不能为空";
                     return;
                 }
+                double gaoCheng = 0.0;
+                if (!double.TryParse(txtGaoCheng.Text.Trim(), out gaoCheng))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "高程坐标值格式错误";
+                    return;
+                }
 
                 if (cblFunctionType.SelectedItem == null)
                 {
@@ -149,7 +156,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 groundResource.EquipmentName = txtEquipmentName.Text.Trim();
                 groundResource.EquipmentCode = txtEquipmentCode.Text.Trim();
                 groundResource.Owner = dplOwner.SelectedValue;
-                groundResource.Coordinate = dplCoordinate.SelectedValue + "：" + longitudeValue.ToString() + "，" + latitudeValue.ToString() + "，" + txtGaoCheng.Text.Trim();
+                groundResource.Coordinate = longitudeValue.ToString() + "," + latitudeValue.ToString() + "," + gaoCheng.ToString();
                 groundResource.FunctionType = functionType;
                 groundResource.Status = 1;//正常
                 groundResource.CreatedTime = DateTime.Now;
