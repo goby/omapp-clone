@@ -7,7 +7,7 @@ create table TB_GROUNDRESOURCE
   equipmentname NVARCHAR2(50) not null,
   equipmentcode NVARCHAR2(50) not null,
   owner         NVARCHAR2(20) not null,
-  coordinate    NVARCHAR2(20) not null,
+  coordinate    NVARCHAR2(200) not null,
   functiontype  NVARCHAR2(50) not null,
   status        NUMBER(2) not null,
   extproperties NVARCHAR2(2000),

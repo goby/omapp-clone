@@ -65,7 +65,7 @@
                     ForeColor="Red" ControlToValidate="dplOwner" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
-        <tr>
+        <tr id="trCoordinate" runat="server" visible="false">
             <th>
                 站址坐标(<span class="red">*</span>)
             </th>
@@ -81,10 +81,13 @@
                 经度坐标值(<span class="red">*</span>)
             </th>
             <td>
-                 <asp:TextBox ID="txtLongitude" runat="server" CssClass="norText"></asp:TextBox>（东经正值西经负值）
+                 <asp:TextBox ID="txtLongitude" runat="server" CssClass="norText"></asp:TextBox>度（地心系BLH，东经正值西经负值）
                  <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtLongitude" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
-                 <asp:RangeValidator ID="RangeValidator3" runat="server" Display="Dynamic" MinimumValue="-180" MaximumValue="180" ControlToValidate="txtLongitude" Type="Double" ForeColor="Red" ErrorMessage="（-180至180）"></asp:RangeValidator>
+                 <asp:RangeValidator ID="RangeValidator3" runat="server" Display="Dynamic" MinimumValue="-180" MaximumValue="180" 
+                 ControlToValidate="txtLongitude" Type="Double" ForeColor="Red" ErrorMessage="（-180至180）"></asp:RangeValidator>
+                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ValidationExpression="^(-?\d+)(\.\d{1,6})?$" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtLongitude" ErrorMessage="（最多含有六位小数的数字）"></asp:RegularExpressionValidator>
             </td>
         </tr>
          <tr>
@@ -92,10 +95,13 @@
                 纬度坐标值(<span class="red">*</span>)
             </th>
             <td>
-                 <asp:TextBox ID="txtLatitude" runat="server" CssClass="norText"></asp:TextBox>（北纬正值南纬负值）
+                 <asp:TextBox ID="txtLatitude" runat="server" CssClass="norText"></asp:TextBox>度（地心系BLH，北纬正值南纬负值）
                  <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtLatitude" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
-                 <asp:RangeValidator ID="RangeValidator1" runat="server" Display="Dynamic"  MinimumValue="-90" MaximumValue="90" ControlToValidate="txtLatitude" Type="Double" ForeColor="Red" ErrorMessage="（-90至90）"></asp:RangeValidator>
+                 <asp:RangeValidator ID="RangeValidator1" runat="server" Display="Dynamic"  MinimumValue="-90" MaximumValue="90" 
+                 ControlToValidate="txtLatitude" Type="Double" ForeColor="Red" ErrorMessage="（-90至90）"></asp:RangeValidator>
+                 <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ValidationExpression="^(-?\d+)(\.\d{1,6})?$" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtLatitude" ErrorMessage="（最多含有六位小数的数字）"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
@@ -103,9 +109,11 @@
                 高程坐标值(<span class="red">*</span>)
             </th>
             <td>
-                 <asp:TextBox ID="txtGaoCheng" runat="server" CssClass="norText"></asp:TextBox>
+                 <asp:TextBox ID="txtGaoCheng" runat="server" CssClass="norText" MaxLength="12"></asp:TextBox>米（地心系BLH）
                  <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtGaoCheng" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                 <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ValidationExpression="^\d+(\.\d{1,1})?$" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtGaoCheng" ErrorMessage="（>=0且最多含有一位小数的数字）"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
