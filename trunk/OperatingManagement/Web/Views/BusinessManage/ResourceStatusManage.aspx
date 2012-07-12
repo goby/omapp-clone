@@ -18,8 +18,8 @@
         $("#txtEndTime").datepicker();
     });
     </script>--%>
- <div class="index_content_search">
-        <table cellspacing="0" cellpadding="0" class="searchTable">
+ <div>
+        <table cellspacing="0" cellpadding="0" class="listTitle">
             <tr>
                 <th width="15%">
                     资源类型：

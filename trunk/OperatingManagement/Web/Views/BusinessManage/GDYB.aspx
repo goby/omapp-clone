@@ -70,7 +70,7 @@
                     runat="server"></asp:TextBox>
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" Display="Dynamic" ForeColor="Red"
                      ControlToValidate="txtQC" ErrorMessage="必须为有效整数。"
-                     ValidationExpression="((\d{3}))"></asp:RegularExpressionValidator></td>
+                     ValidationExpression="((\d{1,3}))"></asp:RegularExpressionValidator></td>
     </tr>
     <tr>
         <th>&nbsp;</th>

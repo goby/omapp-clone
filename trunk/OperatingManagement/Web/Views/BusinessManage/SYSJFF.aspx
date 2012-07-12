@@ -23,9 +23,9 @@
             <th><asp:Label ID="Label1" runat="server" CssClass="error" Text="每类试验数据只能选择一个文件。"></asp:Label></th>
         </tr>
         <tr>
-            <td><uc1:ucTask ID="ucTask1" runat="server" /></td>
-            <td><uc2:ucSatellite ID="ucSatellite1" runat="server" /></td>
-            <td><asp:DropDownList ID="ddlDataType" runat="server" ClientIDMode="Static">
+            <td id="tdTask"><uc1:ucTask ID="ucTask1" runat="server" /></td>
+            <td id="tdSat"><uc2:ucSatellite ID="ucSatellite1" runat="server" /></td>
+            <td id="tdData"><asp:DropDownList ID="ddlDataType" runat="server" ClientIDMode="Static">
                 <asp:ListItem Value="0">天基目标观测试验数据</asp:ListItem>
                 <asp:ListItem Value="1">空间机动试验数据</asp:ListItem>
                 <asp:ListItem Value="2">仿真推演试验数据</asp:ListItem>
@@ -35,7 +35,7 @@
             <td><asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                     runat="server"></asp:TextBox></td>
             <td><asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
-                        Text="查询" />&nbsp;&nbsp;<asp:Button CssClass="button" ID="btnSend" 
+                        Text="查询" />&nbsp;&nbsp;<button class="button" onclick="return clearField();">清空</button>&nbsp;&nbsp;<asp:Button CssClass="button" ID="btnSend" 
                     runat="server" Text="发送数据" OnClientClick="return SendFile();"  /></td>
         </tr>
     </table>

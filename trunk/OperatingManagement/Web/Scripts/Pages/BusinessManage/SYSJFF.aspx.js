@@ -84,3 +84,15 @@
     _Senddialog.dialog('open');
     return false;
 }
+
+function clearField() {
+    $('#txtFrom').val("");
+    $('#txtTo').val("");
+    var sel = $('#tdTask').find("select");
+    sel.val("0");
+    sel = $('#tdSat').find("select");
+    sel.val("0");
+    sel = $('#tdData').find("select");
+    sel.val("0");
+    return false;
+}
