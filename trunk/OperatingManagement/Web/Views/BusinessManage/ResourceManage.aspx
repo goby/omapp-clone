@@ -12,21 +12,60 @@
  业务管理 &gt; 查询资源
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
+ <%-- <script type="text/javascript">
+        $(function () {
+            $("#txtBeginTime").datepicker();
+            $("#txtEndTime").datepicker();
+        });
+    </script>--%>
  <div class="index_content_search">
-        <table cellspacing="0" cellpadding="0"  class="listTitle">
-            <tr>
-                <td width="85%" id="tdFilter" class="listTitle-c1"><div>资源类型<asp:DropDownList ID="dplResourceType" runat="server" CssClass="norDpl">
-                    </asp:DropDownList>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    资源健康\占用状态<asp:DropDownList ID="dplResourceStatus" runat="server" CssClass="norDpl">
-                    </asp:DropDownList>
-                </div>
-                </td>
-                <td width="15%">
-                    <asp:Button ID="btnSearch" runat="server" OnClick="btnSearch_Click" CssClass="button" Text="查询" />
-                    <asp:Button ID="btnAdd" runat="server" OnClick="btnAdd_Click" CssClass="button" Text="添加"/>
-                </td>
-            </tr>
-        </table>
+     <table cellspacing="0" cellpadding="0" class="listTitle">
+         <tr>
+             <th width="15%">
+                 资源类型：
+             </th>
+             <td width="25%">
+                 <asp:DropDownList ID="dplResourceType" runat="server" CssClass="norDpl">
+                 </asp:DropDownList>
+             </td>
+             <th width="15%">
+                 资源健康\占用状态
+             </th>
+             <td width="25%">
+                 <asp:DropDownList ID="dplResourceStatus" runat="server" CssClass="norDpl">
+                 </asp:DropDownList>
+             </td>
+             <td width="20%">
+             </td>
+         </tr>
+         <tr>
+             <th>
+                 起始时间：
+             </th>
+             <td>
+                 <asp:TextBox ID="txtBeginTime" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                     CssClass="norText"></asp:TextBox>
+                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic"
+                     ForeColor="Red" ControlToValidate="txtBeginTime" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+             </td>
+             <th>
+                 结束时间：
+             </th>
+             <td>
+                 <asp:TextBox ID="txtEndTime" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                     CssClass="norText"></asp:TextBox>
+                 <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" Display="Dynamic"
+                     ForeColor="Red" ControlToValidate="txtEndTime" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                 <asp:CompareValidator ID="CompareValidator1" runat="server" Display="Dynamic" ForeColor="Red"
+                     ControlToValidate="txtEndTime" ControlToCompare="txtBeginTime" Type="Date" Operator="GreaterThanEqual"
+                     ErrorMessage="起始时间应大于结束时间"></asp:CompareValidator>
+             </td>
+             <td>
+                 <asp:Button ID="btnSearch" runat="server" OnClick="btnSearch_Click" CssClass="button" Text="查 询" />
+                 <asp:Button ID="btnAdd" runat="server" OnClick="btnAdd_Click" CssClass="button" Text="添 加" />
+             </td>
+         </tr>
+     </table>
     </div>
     <div id="divGroundResource" runat="server" class="index_content_view">
         <asp:Repeater ID="rpGroundResourceList" runat="server" 
