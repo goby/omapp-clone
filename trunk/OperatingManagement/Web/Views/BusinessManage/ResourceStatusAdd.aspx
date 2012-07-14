@@ -89,11 +89,10 @@
                 起始时间(<span class="red">*</span>)
             </th>
             <td>
-                <asp:TextBox ID="txtBeginTime" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" CssClass="norText"
-                    Width="80px"></asp:TextBox>
-                <asp:DropDownList ID="dplBeginTimeHour" runat="server" CssClass="norDpl" Width="60px">
+                <asp:TextBox ID="txtBeginTime" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})" CssClass="norText"></asp:TextBox>
+                <asp:DropDownList ID="dplBeginTimeHour" runat="server" CssClass="norDpl" Width="60px" Visible="false">
                 </asp:DropDownList>
-                <asp:DropDownList ID="dplBeginTimeMinute" runat="server" CssClass="norDpl" Width="60px">
+                <asp:DropDownList ID="dplBeginTimeMinute" runat="server" CssClass="norDpl" Width="60px" Visible="false">
                 </asp:DropDownList>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtBeginTime" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
@@ -104,16 +103,16 @@
                 结束时间(<span class="red">*</span>)
             </th>
             <td>
-                <asp:TextBox ID="txtEndTime" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" CssClass="norText" Width="80px"></asp:TextBox>
-                <asp:DropDownList ID="dplEndTimeHour" runat="server" CssClass="norDpl" Width="60px">
+                <asp:TextBox ID="txtEndTime" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})" CssClass="norText"></asp:TextBox>
+                <asp:DropDownList ID="dplEndTimeHour" runat="server" CssClass="norDpl" Width="60px" Visible="false">
                 </asp:DropDownList>
-                <asp:DropDownList ID="dplEndTimeMinute" runat="server" CssClass="norDpl" Width="60px">
+                <asp:DropDownList ID="dplEndTimeMinute" runat="server" CssClass="norDpl" Width="60px" Visible="false">
                 </asp:DropDownList>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtEndTime" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
-                <asp:CompareValidator ID="CompareValidator1" runat="server" Display="Dynamic" ForeColor="Red"
+                <%--<asp:CompareValidator ID="CompareValidator1" runat="server" Display="Dynamic" ForeColor="Red"
                     ControlToValidate="txtEndTime" ControlToCompare="txtBeginTime" Type="Date" Operator="GreaterThanEqual"
-                    ErrorMessage="起始时间应大于结束时间"></asp:CompareValidator>
+                    ErrorMessage="起始时间应大于结束时间"></asp:CompareValidator>--%>
             </td>
         </tr>
         <tr id="trUseStatusUsedBy" runat="server">

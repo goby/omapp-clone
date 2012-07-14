@@ -150,3 +150,64 @@ begin
        End IF;
 end;
 
+
+create or replace procedure UP_ComRes_SearchByPhase
+(
+       p_Status varchar2,
+       p_BeginTime date,
+       p_EndTime date,
+       o_Cursor out sys_refcursor
+)
+is
+begin
+       IF p_Status='' Or p_Status Is Null Then--全部
+         open o_Cursor for
+             Select * From TB_CommunicationResource
+             Order By CreatedTime Desc;
+       Elsif p_Status='4' Then---删除
+          open o_Cursor for
+             Select * From TB_CommunicationResource
+             Where Status=2
+             Order By CreatedTime Desc;
+       Elsif p_Status='1' Then --正常
+         open o_Cursor for
+             Select * From TB_CommunicationResource
+             Where Status=1
+               And CRID not in (Select ResourceID From TB_HEALTHSTATUS
+                                 Where ResourceType=2
+                                   And Status=2
+                                   And (    ( p_BeginTime>= Begintime And p_BeginTime<=EndTime)
+                                         Or ( p_EndTime>= Begintime And p_EndTime<=EndTime)
+                                         Or ( p_BeginTime<=Begintime And p_EndTime>=EndTime)
+                                        )
+                                )
+             Order By CreatedTime Desc;
+       Elsif p_Status='2' Then --异常
+          open o_Cursor for
+             Select * From TB_CommunicationResource
+                 Where Status=1
+                   And CRID in (Select ResourceID From TB_HEALTHSTATUS
+                                 Where ResourceType=2
+                                   And Status=2
+                                   And (    ( p_BeginTime>= Begintime And p_BeginTime<=EndTime)
+                                         Or ( p_EndTime>= Begintime And p_EndTime<=EndTime)
+                                         Or ( p_BeginTime<=Begintime And p_EndTime>=EndTime)
+                                        )
+                                )
+                 Order By CreatedTime Desc;
+       Elsif p_Status='3' Then --占用中
+          open o_Cursor for
+             Select * From TB_CommunicationResource
+                 Where Status=1
+                   And CRID in (Select ResourceID From TB_USESTATUS
+                                 Where ResourceType=2
+                                   And (    ( p_BeginTime>= Begintime And p_BeginTime<=EndTime)
+                                         Or ( p_EndTime>= Begintime And p_EndTime<=EndTime)
+                                         Or ( p_BeginTime<=Begintime And p_EndTime>=EndTime)
+                                        )
+                                )
+                 Order By CreatedTime Desc;
+
+       End IF;
+end;
+

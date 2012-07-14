@@ -442,15 +442,15 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
                 DateTime cutSubLYDate = DateTime.Now;
-                if (!DateTime.TryParse(txtCutSubLYDate.Text.Trim(), out cutSubLYDate))
+                if (!DateTime.TryParse(FormatDateTimeString(txtCutSubLYDate.Text.Trim()), out cutSubLYDate))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "历元日期格式错误";
                     return;
                 }
-                cutSubLYDate = cutSubLYDate.AddHours(Convert.ToDouble(dplCutSubLYTimeHour.SelectedValue));
-                cutSubLYDate = cutSubLYDate.AddMinutes(Convert.ToDouble(dplCutSubLYTimeMinute.SelectedValue));
-                cutSubLYDate = cutSubLYDate.AddSeconds(Convert.ToDouble(dplCutSubLYTimeSecond.SelectedValue));
+                //cutSubLYDate = cutSubLYDate.AddHours(Convert.ToDouble(dplCutSubLYTimeHour.SelectedValue));
+                //cutSubLYDate = cutSubLYDate.AddMinutes(Convert.ToDouble(dplCutSubLYTimeMinute.SelectedValue));
+                //cutSubLYDate = cutSubLYDate.AddSeconds(Convert.ToDouble(dplCutSubLYTimeSecond.SelectedValue));
 
                 string lysk = cutSubLYDate.ToString("yyyy MM dd HH:mm:ss");
                 lysk = lysk + "." + FillWithSpace(string.Format("{0:F0}", cutSubLYTimeMilliSecond * 1000.0), 6);
@@ -893,6 +893,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         private void CreateFileAndCalculate()
         {
             int activeViewIndex = 0;
+            //预报起始历元日期
             if (string.IsNullOrEmpty(txtCutMainReportBeginDate.Text.Trim()))
             {
                 rfvCutMainReportBeginDate.IsValid = false;
@@ -900,6 +901,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 mvCut.ActiveViewIndex = activeViewIndex;
                 return;
             }
+            //预报起始历元时刻-毫秒
             if (string.IsNullOrEmpty(txtCutMainReportBeginTimeMilliSecond.Text.Trim()))
             {
                 rfvCutMainReportBeginTimeMilliSecond.IsValid = false;
@@ -915,6 +917,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 mvCut.ActiveViewIndex = activeViewIndex;
                 return;
             }
+            //预报时长
             if (string.IsNullOrEmpty(txtCutMainDU.Text.Trim()))
             {
                 rfvCutMainDU.IsValid = false;
@@ -930,6 +933,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 mvCut.ActiveViewIndex = activeViewIndex;
                 return;
             }
+            //历元日期
             if (string.IsNullOrEmpty(txtCutMainLYDate.Text.Trim()))
             {
                 rfvCutMainLYDate.IsValid = false;
@@ -937,6 +941,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 mvCut.ActiveViewIndex = activeViewIndex;
                 return;
             }
+            //历元时刻-毫秒
             if (string.IsNullOrEmpty(txtCutMainLYTimeMilliSecond.Text.Trim()))
             {
                 rfvCutMainLYTimeMilliSecond.IsValid = false;
@@ -952,6 +957,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 mvCut.ActiveViewIndex = activeViewIndex;
                 return;
             }
+            //CutMain D1
             if (string.IsNullOrEmpty(txtCutMainD1.Text.Trim()))
             {
                 rfvCutMainD1.IsValid = false;
@@ -1087,9 +1093,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 mvCut.ActiveViewIndex = activeViewIndex;
                 return;
             }
-
+            //预报起始历元日期
             DateTime cutMainReportBeginDate = DateTime.Now;
-            if (!DateTime.TryParse(txtCutMainReportBeginDate.Text.Trim(), out cutMainReportBeginDate))
+            if (!DateTime.TryParse(FormatDateTimeString(txtCutMainReportBeginDate.Text.Trim()), out cutMainReportBeginDate))
             {
                 trMessage.Visible = true;
                 lblMessage.Text = "预报起始历元日期格式错误。";
@@ -1097,15 +1103,15 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 mvCut.ActiveViewIndex = activeViewIndex;
                 return;
             }
-            cutMainReportBeginDate = cutMainReportBeginDate.AddDays(Convert.ToDouble(dplCutMainReportBeginTimeHour.SelectedValue));
-            cutMainReportBeginDate = cutMainReportBeginDate.AddHours(Convert.ToDouble(dplCutMainReportBeginTimeMinute.SelectedValue));
-            cutMainReportBeginDate = cutMainReportBeginDate.AddMinutes(Convert.ToDouble(dplCutMainReportBeginTimeSecond.SelectedValue));
+            //cutMainReportBeginDate = cutMainReportBeginDate.AddDays(Convert.ToDouble(dplCutMainReportBeginTimeHour.SelectedValue));
+            //cutMainReportBeginDate = cutMainReportBeginDate.AddHours(Convert.ToDouble(dplCutMainReportBeginTimeMinute.SelectedValue));
+            //cutMainReportBeginDate = cutMainReportBeginDate.AddMinutes(Convert.ToDouble(dplCutMainReportBeginTimeSecond.SelectedValue));
 
             string reportBeginDate = cutMainReportBeginDate.ToString("yyyy MM dd HH:mm:ss");
             reportBeginDate = reportBeginDate + "." + FillWithSpace(string.Format("{0:F0}", cutMainReportBeginTimeMilliSecond * 1000.0), 6);
 
             DateTime cutMainLYDate = DateTime.Now;
-            if (!DateTime.TryParse(txtCutMainLYDate.Text.Trim(), out cutMainLYDate))
+            if (!DateTime.TryParse(FormatDateTimeString(txtCutMainLYDate.Text.Trim()), out cutMainLYDate))
             {
                 trMessage.Visible = true;
                 lblMessage.Text = "历元日期格式错误。";
@@ -1113,9 +1119,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 mvCut.ActiveViewIndex = activeViewIndex;
                 return;
             }
-            cutMainLYDate = cutMainLYDate.AddDays(Convert.ToDouble(dplCutMainLYTimeHour.SelectedValue));
-            cutMainLYDate = cutMainLYDate.AddHours(Convert.ToDouble(dplCutMainLYTimeMinute.SelectedValue));
-            cutMainLYDate = cutMainLYDate.AddMinutes(Convert.ToDouble(dplCutMainLYTimeSecond.SelectedValue));
+            //cutMainLYDate = cutMainLYDate.AddDays(Convert.ToDouble(dplCutMainLYTimeHour.SelectedValue));
+            //cutMainLYDate = cutMainLYDate.AddHours(Convert.ToDouble(dplCutMainLYTimeMinute.SelectedValue));
+            //cutMainLYDate = cutMainLYDate.AddMinutes(Convert.ToDouble(dplCutMainLYTimeSecond.SelectedValue));
 
             string lydate = cutMainLYDate.ToString("yyyy MM dd HH:mm:ss");
             lydate = lydate + "." + FillWithSpace(string.Format("{0:F0}", cutMainLYTimeMilliSecond * 1000.0), 6);
@@ -1380,6 +1386,25 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 objStr = " " + objStr;
             }
             return objStr;
+        }
+        /// <summary>
+        /// 将yyyyMMddHHmmss格式字符串转换成yyyy-MM-dd HH:mm:ss
+        /// </summary>
+        /// <param name="dateTimeString"></param>
+        /// <returns></returns>
+        protected string FormatDateTimeString(string dateTimeString)
+        {
+            string result = string.Empty;
+            if (!string.IsNullOrEmpty(dateTimeString) && dateTimeString.Length == 14)
+            {
+                result += dateTimeString.Substring(0, 4) + "-";
+                result += dateTimeString.Substring(4, 2) + "-";
+                result += dateTimeString.Substring(6, 2) + " ";
+                result += dateTimeString.Substring(8, 2) + ":";
+                result += dateTimeString.Substring(10, 2) + ":";
+                result += dateTimeString.Substring(12, 2);
+            }
+            return result;
         }
         #endregion
     }

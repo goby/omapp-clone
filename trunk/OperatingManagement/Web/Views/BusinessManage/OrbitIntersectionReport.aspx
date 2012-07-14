@@ -85,7 +85,7 @@
                             预报起始历元日期(<span class="red">*</span>)
                         </th>
                         <td style="width: 260px;">
-                            <asp:TextBox ID="txtCutMainReportBeginDate" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                            <asp:TextBox ID="txtCutMainReportBeginDate" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"
                                 CssClass="norText"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvCutMainReportBeginDate" runat="server" Display="Dynamic"
                                 ForeColor="Red" ControlToValidate="txtCutMainReportBeginDate" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
@@ -95,15 +95,15 @@
                         </th>
                         <td style="width: 280px;">
                             <asp:DropDownList ID="dplCutMainReportBeginTimeHour" runat="server" CssClass="norDpl"
-                                Width="60px">
+                                Width="60px" Visible="false">
                             </asp:DropDownList>
                             <asp:DropDownList ID="dplCutMainReportBeginTimeMinute" runat="server" CssClass="norDpl"
-                                Width="60px">
+                                Width="60px" Visible="false">
                             </asp:DropDownList>
                             <asp:DropDownList ID="dplCutMainReportBeginTimeSecond" runat="server" CssClass="norDpl"
-                                Width="60px">
+                                Width="60px" Visible="false">
                             </asp:DropDownList>
-                            <asp:TextBox ID="txtCutMainReportBeginTimeMilliSecond" runat="server" Width="40px"
+                            <asp:TextBox ID="txtCutMainReportBeginTimeMilliSecond" runat="server"
                                 MaxLength="7" CssClass="norText"></asp:TextBox>毫秒
                             <asp:RequiredFieldValidator ID="rfvCutMainReportBeginTimeMilliSecond" runat="server"
                                 Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMainReportBeginTimeMilliSecond"
@@ -111,6 +111,8 @@
                             <asp:RangeValidator ID="rvCutMainReportBeginTimeMilliSecond" runat="server" Type="Double"
                                 MaximumValue="999.999" MinimumValue="0.0" Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMainReportBeginTimeMilliSecond"
                                 ErrorMessage="（范围F6.3）"></asp:RangeValidator>
+                            <asp:RegularExpressionValidator ID="revCutMainReportBeginTimeMilliSecond" runat="server" ValidationExpression="^\d+(\.\d{1,3})?$" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtCutMainReportBeginTimeMilliSecond" ErrorMessage="（最多三位小数）"></asp:RegularExpressionValidator>
                         </td>
                     </tr>
                     <tr>
@@ -124,6 +126,8 @@
                              <asp:RangeValidator ID="rvCutMainDU" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMainDU"
                                 ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                           <asp:RegularExpressionValidator ID="revCutMainDU" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutMainDU" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                     </tr>
                     <tr>
@@ -131,7 +135,7 @@
                             历元日期(<span class="red">*</span>)
                         </th>
                         <td>
-                            <asp:TextBox ID="txtCutMainLYDate" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" CssClass="norText"></asp:TextBox>
+                            <asp:TextBox ID="txtCutMainLYDate" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})" CssClass="norText"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvCutMainLYDate" runat="server" Display="Dynamic"
                                 ForeColor="Red" ControlToValidate="txtCutMainLYDate" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
                         </td>
@@ -139,19 +143,20 @@
                             历元时刻(<span class="red">*</span>)
                         </th>
                         <td>
-                            <asp:DropDownList ID="dplCutMainLYTimeHour" runat="server" CssClass="norDpl" Width="60px">
+                            <asp:DropDownList ID="dplCutMainLYTimeHour" runat="server" CssClass="norDpl" Width="60px" Visible="false">
                             </asp:DropDownList>
-                            <asp:DropDownList ID="dplCutMainLYTimeMinute" runat="server" CssClass="norDpl" Width="60px">
+                            <asp:DropDownList ID="dplCutMainLYTimeMinute" runat="server" CssClass="norDpl" Width="60px" Visible="false">
                             </asp:DropDownList>
-                            <asp:DropDownList ID="dplCutMainLYTimeSecond" runat="server" CssClass="norDpl" Width="60px">
+                            <asp:DropDownList ID="dplCutMainLYTimeSecond" runat="server" CssClass="norDpl" Width="60px" Visible="false">
                             </asp:DropDownList>
-                            <asp:TextBox ID="txtCutMainLYTimeMilliSecond" runat="server" Width="40px" MaxLength="7"
-                                CssClass="norText"></asp:TextBox>毫秒
+                            <asp:TextBox ID="txtCutMainLYTimeMilliSecond" runat="server" MaxLength="7" CssClass="norText"></asp:TextBox>毫秒
                             <asp:RequiredFieldValidator ID="rfvCutMainLYTimeMilliSecond" runat="server" Display="Dynamic"
                                 ForeColor="Red" ControlToValidate="txtCutMainLYTimeMilliSecond" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
                             <asp:RangeValidator ID="rvCutMainLYTimeMilliSecond" runat="server" Type="Double"
                                 MaximumValue="999.999" MinimumValue="0.0" Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMainLYTimeMilliSecond"
                                 ErrorMessage="（范围F6.3）"></asp:RangeValidator>
+                            <asp:RegularExpressionValidator ID="revCutMainLYTimeMilliSecond" runat="server" ValidationExpression="^\d+(\.\d{1,3})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutMainLYTimeMilliSecond" ErrorMessage="（最多三位小数）"></asp:RegularExpressionValidator>
                         </td>
                     </tr>
                     <tr>
@@ -204,6 +209,8 @@
                             <asp:RangeValidator ID="rvCutMainD1" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMainD1"
                                 ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                             <asp:RegularExpressionValidator ID="revCutMainD1" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutMainD1" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                         <th>
                             D2(<span class="red">*</span>)
@@ -216,6 +223,8 @@
                             <asp:RangeValidator ID="rvCutMainD2" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMainD2"
                                 ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                           <asp:RegularExpressionValidator ID="revCutMainD2" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutMainD2" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                     </tr>
                     <tr>
@@ -230,6 +239,8 @@
                             <asp:RangeValidator ID="rvCutMainD3" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMainD3"
                                 ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                            <asp:RegularExpressionValidator ID="revCutMainD3" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutMainD3" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                         <th>
                             D4(<span class="red">*</span>)
@@ -242,6 +253,8 @@
                             <asp:RangeValidator ID="rvCutMainD4" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMainD4"
                                 ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                            <asp:RegularExpressionValidator ID="revCutMainD4" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutMainD4" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                     </tr>
                     <tr>
@@ -256,6 +269,8 @@
                             <asp:RangeValidator ID="rvCutMainD5" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMainD5"
                                 ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                            <asp:RegularExpressionValidator ID="revCutMainD5" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutMainD5" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                         <th>
                             D6(<span class="red">*</span>)
@@ -268,6 +283,8 @@
                             <asp:RangeValidator ID="rvCutMainD6" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMainD6"
                                 ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                            <asp:RegularExpressionValidator ID="revCutMainD6" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutMainD6" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                     </tr>
                     <tr>
@@ -282,6 +299,8 @@
                             <asp:RangeValidator ID="rvCutMaindR" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMaindR"
                                 ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                            <asp:RegularExpressionValidator ID="revCutMaindR" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutMaindR" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                         <th>
                             KAE(<span class="red">*</span>)
@@ -306,6 +325,8 @@
                             <asp:RangeValidator ID="rvCutMaindA" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMaindA"
                                 ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                            <asp:RegularExpressionValidator ID="revCutMaindA" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutMaindA" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                         <th>
                             dE(<span class="red">*</span>)
@@ -318,6 +339,8 @@
                             <asp:RangeValidator ID="rvCutMaindE" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ForeColor="Red" ControlToValidate="txtCutMaindE"
                                 ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                            <asp:RegularExpressionValidator ID="revCutMaindE" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutMaindE" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                     </tr>
                 </table>
@@ -441,7 +464,7 @@
                             历元日期(<span class="red">*</span>)
                         </th>
                         <td style="width: 260px;">
-                            <asp:TextBox ID="txtCutSubLYDate" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" CssClass="norText"></asp:TextBox>
+                            <asp:TextBox ID="txtCutSubLYDate" runat="server" ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})" CssClass="norText"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvCutSubLYDate" runat="server" Display="Dynamic"
                                 ValidationGroup="AddCutSubItem" ForeColor="Red" ControlToValidate="txtCutSubLYDate"
                                 ErrorMessage="（必填）"></asp:RequiredFieldValidator>
@@ -450,14 +473,13 @@
                             历元时刻(<span class="red">*</span>)
                         </th>
                         <td style="width: 280px;">
-                            <asp:DropDownList ID="dplCutSubLYTimeHour" runat="server" CssClass="norDpl" Width="60px">
+                            <asp:DropDownList ID="dplCutSubLYTimeHour" runat="server" CssClass="norDpl" Width="60px" Visible="false">
                             </asp:DropDownList>
-                            <asp:DropDownList ID="dplCutSubLYTimeMinute" runat="server" CssClass="norDpl" Width="60px">
+                            <asp:DropDownList ID="dplCutSubLYTimeMinute" runat="server" CssClass="norDpl" Width="60px" Visible="false">
                             </asp:DropDownList>
-                            <asp:DropDownList ID="dplCutSubLYTimeSecond" runat="server" CssClass="norDpl" Width="60px">
+                            <asp:DropDownList ID="dplCutSubLYTimeSecond" runat="server" CssClass="norDpl" Width="60px" Visible="false">
                             </asp:DropDownList>
-                            <asp:TextBox ID="txtCutSubLYTimeMilliSecond" runat="server" Width="40px" MaxLength="7"
-                                CssClass="norText"></asp:TextBox>毫秒
+                            <asp:TextBox ID="txtCutSubLYTimeMilliSecond" runat="server" MaxLength="7" CssClass="norText"></asp:TextBox>毫秒
                             <asp:RequiredFieldValidator ID="rfvCutSubLYTimeMilliSecond" runat="server" Display="Dynamic"
                                 ValidationGroup="AddCutSubItem" ForeColor="Red" ControlToValidate="txtCutSubLYTimeMilliSecond"
                                 ErrorMessage="（必填）"></asp:RequiredFieldValidator>
@@ -516,6 +538,8 @@
                             <asp:RangeValidator ID="rvCutSubD1" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ValidationGroup="AddCutSubItem" ForeColor="Red"
                                 ControlToValidate="txtCutSubD1" ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                            <asp:RegularExpressionValidator ID="revCutSubD1" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutSubD1" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                         <th>
                             D2(<span class="red">*</span>)
@@ -528,6 +552,8 @@
                             <asp:RangeValidator ID="rvCutSubD2" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ValidationGroup="AddCutSubItem" ForeColor="Red"
                                 ControlToValidate="txtCutSubD2" ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                            <asp:RegularExpressionValidator ID="revCutSubD2" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutSubD2" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                     </tr>
                     <tr>
@@ -542,6 +568,8 @@
                             <asp:RangeValidator ID="rvCutSubD3" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ValidationGroup="AddCutSubItem" ForeColor="Red"
                                 ControlToValidate="txtCutSubD3" ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                            <asp:RegularExpressionValidator ID="revCutSubD3" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutSubD3" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                         <th>
                             D4(<span class="red">*</span>)
@@ -554,6 +582,8 @@
                             <asp:RangeValidator ID="rvCutSubD4" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ValidationGroup="AddCutSubItem" ForeColor="Red"
                                 ControlToValidate="txtCutSubD4" ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                             <asp:RegularExpressionValidator ID="revCutSubD4" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutSubD4" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                     </tr>
                     <tr>
@@ -568,6 +598,8 @@
                             <asp:RangeValidator ID="rvCutSubD5" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ValidationGroup="AddCutSubItem" ForeColor="Red"
                                 ControlToValidate="txtCutSubD5" ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                            <asp:RegularExpressionValidator ID="revCutSubD5" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutSubD5" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                         <th>
                             D6(<span class="red">*</span>)
@@ -580,6 +612,8 @@
                             <asp:RangeValidator ID="rvCutSubD6" runat="server" Type="Double" MaximumValue="9999999999.999999"
                                 MinimumValue="0.0" Display="Dynamic" ValidationGroup="AddCutSubItem" ForeColor="Red"
                                 ControlToValidate="txtCutSubD6" ErrorMessage="（范围F16.6）"></asp:RangeValidator>
+                            <asp:RegularExpressionValidator ID="revCutSubD6" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutSubD6" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                     </tr>
                     <tr>
@@ -604,8 +638,10 @@
                                 CssClass="norText" Width="60px"></asp:TextBox>秒
                             <asp:RequiredFieldValidator ID="rfvCutOptionalTimeInterval" runat="server" Display="Dynamic"
                                 ForeColor="Red" ControlToValidate="txtCutOptionalTimeInterval" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
-                            <asp:RangeValidator ID="rvCutOptionalTimeInterval" runat="server" ControlToValidate="txtCutOptionalTimeInterval"
-                                ForeColor="Red" Type="Double" MinimumValue="1.0" MaximumValue="30.0" ErrorMessage="（1-30秒）"></asp:RangeValidator>
+                            <asp:RangeValidator ID="rvCutOptionalTimeInterval" runat="server" ControlToValidate="txtCutOptionalTimeInterval" Display="Dynamic"
+                                ForeColor="Red" Type="Double" MinimumValue="1.0" MaximumValue="30.0" ErrorMessage="（范围1-30秒）"></asp:RangeValidator>
+                             <asp:RegularExpressionValidator ID="revCutOptionalTimeInterval" runat="server" ValidationExpression="^\d+(\.\d{1,6})?$" Display="Dynamic"
+                                ForeColor="Red" ControlToValidate="txtCutOptionalTimeInterval" ErrorMessage="（最多六位小数）"></asp:RegularExpressionValidator>
                         </td>
                         <th style="width: 120px;">
                             第三体引力(<span class="red">*</span>)

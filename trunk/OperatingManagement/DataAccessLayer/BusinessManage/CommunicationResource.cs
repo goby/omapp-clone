@@ -182,7 +182,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 根据通信资源在某个时间点状态做查询
         /// </summary>
         /// <param name="status">全部:"";正常:01;异常:02;占用中:03;已删除:04</param>
-        /// <param name="timePoint">中心资源在某个时间点</param>
+        /// <param name="timePoint">中心资源在某个时间点的状态</param>
         /// <returns>通信资源实体列表</returns>
         public List<CommunicationResource> Search(string status, DateTime timePoint)
         {
@@ -190,6 +190,48 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             DataSet ds = _dataBase.SpExecuteDataSet("UP_ComRes_Search", new OracleParameter[] {  
                 new OracleParameter("p_Status", status),
                 new OracleParameter("p_TimePoint", timePoint),
+                o_Cursor });
+
+            List<CommunicationResource> infoList = new List<CommunicationResource>();
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    CommunicationResource info = new CommunicationResource()
+                    {
+                        Id = Convert.ToInt32(dr["CRID"]),
+                        RouteName = dr["RouteName"].ToString(),
+                        RouteCode = dr["RouteCode"].ToString(),
+                        Direction = dr["Direction"].ToString(),
+                        BandWidth = Convert.ToDouble(dr["BandWidth"]),
+                        Status = Convert.ToInt32(dr["Status"]),
+                        ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
+                        CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
+                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["CreatedUserID"]),
+                        UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
+                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"])
+                    };
+
+                    infoList.Add(info);
+                }
+            }
+            return infoList;
+        }
+
+        /// <summary>
+        /// 根据通信资源在某个时间段状态做查询
+        /// </summary>
+        /// <param name="status">全部:"";正常:01;异常:02;占用中:03;已删除:04</param>
+        /// <param name="beginTime">通信资源状态开始时间</param>
+        /// <param name="endTime">通信资源状态结束时间</param>
+        /// <returns>通信资源实体列表</returns>
+        public List<CommunicationResource> Search(string status, DateTime beginTime, DateTime endTime)
+        {
+            OracleParameter o_Cursor = PrepareRefCursor();
+            DataSet ds = _dataBase.SpExecuteDataSet("UP_ComRes_SearchByPhase", new OracleParameter[] {  
+                new OracleParameter("p_Status", status),
+                new OracleParameter("p_BeginTime", beginTime),
+                new OracleParameter("p_EndTime", endTime),
                 o_Cursor });
 
             List<CommunicationResource> infoList = new List<CommunicationResource>();

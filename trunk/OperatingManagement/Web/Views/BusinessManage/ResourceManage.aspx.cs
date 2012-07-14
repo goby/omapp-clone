@@ -55,6 +55,40 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             set { ViewState["ResourceStatus"] = value; }
         }
+        /// <summary>
+        /// 查询条件，开始时间
+        /// </summary>
+        protected DateTime BeginTime
+        {
+            get
+            {
+                DateTime beginTime = DateTime.Now;
+                if (ViewState["BeginTime"] == null)
+                {
+                    ViewState["BeginTime"] = Request.QueryString["begintime"] != null ? Request.QueryString["begintime"] : beginTime.ToString();
+                }
+                DateTime.TryParse(ViewState["BeginTime"].ToString(), out beginTime);
+                return beginTime;
+            }
+            set { ViewState["BeginTime"] = value; }
+        }
+        /// <summary>
+        /// 结束时间
+        /// </summary>
+        protected DateTime EndTime
+        {
+            get
+            {
+                DateTime endTime = DateTime.Now.AddDays(7);
+                if (ViewState["EndTime"] == null)
+                {
+                    ViewState["EndTime"] = Request.QueryString["endtime"] != null ? Request.QueryString["endtime"] : endTime.ToString();
+                }
+                DateTime.TryParse(ViewState["EndTime"].ToString(), out endTime);
+                return endTime;
+            }
+            set { ViewState["EndTime"] = value; }
+        }
         #endregion
 
         protected void Page_Load(object sender, EventArgs e)
@@ -63,6 +97,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 if (!IsPostBack)
                 {
+                    txtBeginTime.Attributes.Add("readonly", "true");
+                    txtEndTime.Attributes.Add("readonly", "true");
                     BindDataSource();
                     BindRepeater();
                 }
@@ -85,8 +121,40 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
+                if (string.IsNullOrEmpty(txtBeginTime.Text.Trim()))
+                {
+                    //起始时间不能为空
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"起始时间不能为空。\")", true);
+                    return;
+                }
+                if (string.IsNullOrEmpty(txtEndTime.Text.Trim()))
+                {
+                    //结束时间不能为空
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"结束时间不能为空。\")", true);
+                    return;
+                }
+                DateTime beginTime = DateTime.Now;
+                DateTime endTime = DateTime.Now.AddDays(7);
+                if (!DateTime.TryParse(txtBeginTime.Text, out beginTime))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"起始时间格式错误，请正确输入时间（yyyy-MM-dd）。\")", true);
+                    return;
+                }
+                if (!DateTime.TryParse(txtEndTime.Text, out endTime))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"结束时间格式错误，请正确输入时间（yyyy-MM-dd）。\")", true);
+                    return;
+                }
+                endTime = endTime.AddSeconds(86399.9);//23:59:59
+                if (beginTime > endTime)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"结束时间应大于起始时间。\")", true);
+                    return;
+                }
                 ResourceType = dplResourceType.SelectedValue;
                 ResourceStatus = dplResourceStatus.SelectedValue;
+                BeginTime = beginTime;
+                EndTime = endTime;
                 cpGroundResourcePager.CurrentPage = 1;
                 cpCommunicationResourcePager.CurrentPage = 1;
                 cpCenterResourcePager.CurrentPage = 1;
@@ -377,6 +445,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplResourceStatus.DataValueField = "value";
             dplResourceStatus.DataBind();
             dplResourceStatus.Items.Insert(0, new ListItem("请选择", ""));
+            dplResourceStatus.SelectedValue = ResourceStatus;
+
+            //开始时间
+            txtBeginTime.Text = BeginTime.ToString("yyyy-MM-dd");
+            //结束时间
+            txtEndTime.Text = EndTime.ToString("yyyy-MM-dd");
         }
         /// <summary>
         /// 绑定数据源
@@ -422,7 +496,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string resourceStatus = ResourceStatus;
 
             GroundResource groundResource = new GroundResource();
-            List<GroundResource> groundResourceList = groundResource.Search(resourceStatus, DateTime.Now);
+            List<GroundResource> groundResourceList = groundResource.Search(resourceStatus, BeginTime, EndTime);
             if (groundResourceList.Count > this.SiteSetting.PageSize)
                 cpGroundResourcePager.Visible = true;
             cpGroundResourcePager.DataSource = groundResourceList;
@@ -439,10 +513,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string resourceStatus = ResourceStatus;
 
             CommunicationResource communicationResource = new CommunicationResource();
-            List<CommunicationResource> communicationResourceList = communicationResource.Search(resourceStatus, DateTime.Now);
+            List<CommunicationResource> communicationResourceList = communicationResource.Search(resourceStatus, BeginTime, EndTime);
             if (communicationResourceList.Count > this.SiteSetting.PageSize)
                 cpCommunicationResourcePager.Visible = true;
-            cpCommunicationResourcePager.DataSource = communicationResource.Search(resourceStatus, DateTime.Now);
+            cpCommunicationResourcePager.DataSource = communicationResourceList;
             cpCommunicationResourcePager.PageSize = this.SiteSetting.PageSize;
             cpCommunicationResourcePager.BindToControl = rpCommunicationResourceList;
             rpCommunicationResourceList.DataSource = cpCommunicationResourcePager.DataSourcePaged;
@@ -456,10 +530,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string resourceStatus = ResourceStatus;
 
             CenterResource centerResource = new CenterResource();
-            List<CenterResource> centerResourceList = centerResource.Search(resourceStatus, DateTime.Now);
+            List<CenterResource> centerResourceList = centerResource.Search(resourceStatus, BeginTime, EndTime);
             if (centerResourceList.Count > this.SiteSetting.PageSize)
                 cpCenterResourcePager.Visible = true;
-            cpCenterResourcePager.DataSource = centerResource.Search(resourceStatus, DateTime.Now);
+            cpCenterResourcePager.DataSource = centerResourceList;
             cpCenterResourcePager.PageSize = this.SiteSetting.PageSize;
             cpCenterResourcePager.BindToControl = rpGroundResourceList;
             rpCenterResourceList.DataSource = cpCenterResourcePager.DataSourcePaged;
