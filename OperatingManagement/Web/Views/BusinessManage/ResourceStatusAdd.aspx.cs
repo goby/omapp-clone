@@ -130,25 +130,22 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
                 DateTime beginTime = DateTime.Now;
                 DateTime endTime = DateTime.Now;
-
-                if (!DateTime.TryParse(txtBeginTime.Text.Trim(), out beginTime))
+                if (!DateTime.TryParse(FormatDateTimeString(txtBeginTime.Text.Trim()), out beginTime))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "起始时间格式错误";
                     return;
                 }
-                beginTime = beginTime.AddHours(Convert.ToDouble(dplBeginTimeHour.SelectedValue));
-                beginTime = beginTime.AddMinutes(Convert.ToDouble(dplBeginTimeMinute.SelectedValue));
-
-                if (!DateTime.TryParse(txtEndTime.Text.Trim(), out endTime))
+                //beginTime = beginTime.AddHours(Convert.ToDouble(dplBeginTimeHour.SelectedValue));
+                //beginTime = beginTime.AddMinutes(Convert.ToDouble(dplBeginTimeMinute.SelectedValue));
+                if (!DateTime.TryParse(FormatDateTimeString(txtEndTime.Text.Trim()), out endTime))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "结束时间格式错误";
                     return;
                 }
-                endTime = endTime.AddHours(Convert.ToDouble(dplEndTimeHour.SelectedValue));
-                endTime = endTime.AddMinutes(Convert.ToDouble(dplEndTimeMinute.SelectedValue));
-
+                //endTime = endTime.AddHours(Convert.ToDouble(dplEndTimeHour.SelectedValue));
+                //endTime = endTime.AddMinutes(Convert.ToDouble(dplEndTimeMinute.SelectedValue));
                 if (beginTime > endTime)
                 {
                     trMessage.Visible = true;
@@ -548,6 +545,25 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     break;
             }
             return resourceID;
+        }
+        /// <summary>
+        /// 将yyyyMMddHHmmss格式字符串转换成yyyy-MM-dd HH:mm:ss
+        /// </summary>
+        /// <param name="dateTimeString"></param>
+        /// <returns></returns>
+        protected string FormatDateTimeString(string dateTimeString)
+        {
+            string result = string.Empty;
+            if (!string.IsNullOrEmpty(dateTimeString) && dateTimeString.Length == 14)
+            {
+                result += dateTimeString.Substring(0, 4) + "-";
+                result += dateTimeString.Substring(4, 2) + "-";
+                result += dateTimeString.Substring(6, 2) + " ";
+                result += dateTimeString.Substring(8, 2) + ":";
+                result += dateTimeString.Substring(10, 2) + ":";
+                result += dateTimeString.Substring(12, 2);
+            }
+            return result;
         }
         #endregion
 

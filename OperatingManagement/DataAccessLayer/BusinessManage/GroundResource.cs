@@ -199,7 +199,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 根据地面站资源在某个时间点状态做查询
         /// </summary>
         /// <param name="status">全部:"";正常:1;异常:2;占用中:3;已删除:4</param>
-        /// <param name="timePoint">地面站资源在某个时间点</param>
+        /// <param name="timePoint">地面站资源在某个时间点的状态</param>
         /// <returns>地面站资源实体列表</returns>
         public List<GroundResource> Search(string status, DateTime timePoint)
         {
@@ -207,6 +207,51 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             DataSet ds = _dataBase.SpExecuteDataSet("UP_GroundRes_Search", new OracleParameter[] { 
                 new OracleParameter("p_Status", status),
                 new OracleParameter("p_TimePoint", timePoint),
+                o_Cursor });
+
+            List<GroundResource> infoList = new List<GroundResource>();
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    GroundResource info = new GroundResource()
+                    {
+                        Id = Convert.ToInt32(dr["GRID"]),
+                        GRName = dr["GRName"].ToString(),
+                        GRCode = dr["GRCode"].ToString(),
+                        EquipmentName = dr["EquipmentName"].ToString(),
+                        EquipmentCode = dr["EquipmentCode"].ToString(),
+                        Owner = dr["Owner"].ToString(),
+                        Coordinate = dr["Coordinate"].ToString(),
+                        FunctionType = dr["FunctionType"].ToString(),
+                        Status = Convert.ToInt32(dr["Status"]),
+                        ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
+                        CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
+                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["CreatedUserID"]),
+                        UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
+                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"])
+                    };
+
+                    infoList.Add(info);
+                }
+            }
+            return infoList;
+        }
+
+        /// <summary>
+        /// 根据地面站资源在某个时间段状态做查询
+        /// </summary>
+        /// <param name="status">全部:"";正常:1;异常:2;占用中:3;已删除:4</param>
+        /// <param name="beginTime">地面站资源状态开始时间</param>
+        /// <param name="endTime">地面站资源状态结束时间</param>
+        /// <returns>地面站资源实体列表</returns>
+        public List<GroundResource> Search(string status, DateTime beginTime, DateTime endTime)
+        {
+            OracleParameter o_Cursor = PrepareRefCursor();
+            DataSet ds = _dataBase.SpExecuteDataSet("UP_GroundRes_SearchByPhase", new OracleParameter[] { 
+                new OracleParameter("p_Status", status),
+                new OracleParameter("p_BeginTime", beginTime),
+                 new OracleParameter("p_EndTime", endTime),
                 o_Cursor });
 
             List<GroundResource> infoList = new List<GroundResource>();

@@ -211,6 +211,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.RangeValidator rvCutMainReportBeginTimeMilliSecond;
         
         /// <summary>
+        /// revCutMainReportBeginTimeMilliSecond 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutMainReportBeginTimeMilliSecond;
+        
+        /// <summary>
         /// txtCutMainDU 控件。
         /// </summary>
         /// <remarks>
@@ -236,6 +245,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rvCutMainDU;
+        
+        /// <summary>
+        /// revCutMainDU 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutMainDU;
         
         /// <summary>
         /// txtCutMainLYDate 控件。
@@ -308,6 +326,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rvCutMainLYTimeMilliSecond;
+        
+        /// <summary>
+        /// revCutMainLYTimeMilliSecond 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutMainLYTimeMilliSecond;
         
         /// <summary>
         /// dplCutMainSatellite 控件。
@@ -391,6 +418,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.RangeValidator rvCutMainD1;
         
         /// <summary>
+        /// revCutMainD1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutMainD1;
+        
+        /// <summary>
         /// txtCutMainD2 控件。
         /// </summary>
         /// <remarks>
@@ -425,6 +461,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rvCutMainD2;
+        
+        /// <summary>
+        /// revCutMainD2 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutMainD2;
         
         /// <summary>
         /// txtCutMainD3 控件。
@@ -463,6 +508,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.RangeValidator rvCutMainD3;
         
         /// <summary>
+        /// revCutMainD3 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutMainD3;
+        
+        /// <summary>
         /// txtCutMainD4 控件。
         /// </summary>
         /// <remarks>
@@ -497,6 +551,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rvCutMainD4;
+        
+        /// <summary>
+        /// revCutMainD4 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutMainD4;
         
         /// <summary>
         /// txtCutMainD5 控件。
@@ -535,6 +598,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.RangeValidator rvCutMainD5;
         
         /// <summary>
+        /// revCutMainD5 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutMainD5;
+        
+        /// <summary>
         /// txtCutMainD6 控件。
         /// </summary>
         /// <remarks>
@@ -571,6 +643,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.RangeValidator rvCutMainD6;
         
         /// <summary>
+        /// revCutMainD6 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutMainD6;
+        
+        /// <summary>
         /// txtCutMaindR 控件。
         /// </summary>
         /// <remarks>
@@ -605,6 +686,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rvCutMaindR;
+        
+        /// <summary>
+        /// revCutMaindR 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutMaindR;
         
         /// <summary>
         /// rblCutMainKAE 控件。
@@ -652,6 +742,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.RangeValidator rvCutMaindA;
         
         /// <summary>
+        /// revCutMaindA 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutMaindA;
+        
+        /// <summary>
         /// txtCutMaindE 控件。
         /// </summary>
         /// <remarks>
@@ -686,6 +785,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rvCutMaindE;
+        
+        /// <summary>
+        /// revCutMaindE 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutMaindE;
         
         /// <summary>
         /// cutSub 控件。
@@ -868,6 +976,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.RangeValidator rvCutSubD1;
         
         /// <summary>
+        /// revCutSubD1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutSubD1;
+        
+        /// <summary>
         /// txtCutSubD2 控件。
         /// </summary>
         /// <remarks>
@@ -902,6 +1019,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rvCutSubD2;
+        
+        /// <summary>
+        /// revCutSubD2 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutSubD2;
         
         /// <summary>
         /// txtCutSubD3 控件。
@@ -940,6 +1066,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.RangeValidator rvCutSubD3;
         
         /// <summary>
+        /// revCutSubD3 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutSubD3;
+        
+        /// <summary>
         /// txtCutSubD4 控件。
         /// </summary>
         /// <remarks>
@@ -974,6 +1109,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rvCutSubD4;
+        
+        /// <summary>
+        /// revCutSubD4 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutSubD4;
         
         /// <summary>
         /// txtCutSubD5 控件。
@@ -1012,6 +1156,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.RangeValidator rvCutSubD5;
         
         /// <summary>
+        /// revCutSubD5 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutSubD5;
+        
+        /// <summary>
         /// txtCutSubD6 控件。
         /// </summary>
         /// <remarks>
@@ -1046,6 +1199,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rvCutSubD6;
+        
+        /// <summary>
+        /// revCutSubD6 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutSubD6;
         
         /// <summary>
         /// btnAddCutSubItem 控件。
@@ -1100,6 +1262,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rvCutOptionalTimeInterval;
+        
+        /// <summary>
+        /// revCutOptionalTimeInterval 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCutOptionalTimeInterval;
         
         /// <summary>
         /// rblCutOptionalGravitation 控件。

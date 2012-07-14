@@ -106,9 +106,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 lblMessage.Text = string.Empty;
                 if (!IsPostBack)
                 {
-                    txtTimeBenchmark.Attributes.Add("readonly", "true");
                     txtBeginTime.Attributes.Add("readonly", "true");
                     txtEndTime.Attributes.Add("readonly", "true");
+                    txtTimeBenchmark.Attributes.Add("readonly", "true");
                     BindSatNameDataSource();
                     BindDataSource();
                     BindUnusedEquipmentList();
@@ -319,14 +319,14 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
                 DateTime timeBenchmark = DateTime.Now;
-                if (!DateTime.TryParse(txtTimeBenchmark.Text.Trim(), out timeBenchmark))
+                if (!DateTime.TryParse(FormatDateTimeString(txtTimeBenchmark.Text.Trim()), out timeBenchmark))
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"时间基准格式错误，计算失败。\")", true);
                     return;
                 }
-                timeBenchmark = timeBenchmark.AddHours(Convert.ToDouble(dplTimeBenchmarkHour.SelectedValue));
-                timeBenchmark = timeBenchmark.AddMinutes(Convert.ToDouble(dplTimeBenchmarkMinute.SelectedValue));
-                timeBenchmark = timeBenchmark.AddSeconds(Convert.ToDouble(dplTimeBenchmarkSecond.SelectedValue));
+                //timeBenchmark = timeBenchmark.AddHours(Convert.ToDouble(dplTimeBenchmarkHour.SelectedValue));
+                //timeBenchmark = timeBenchmark.AddMinutes(Convert.ToDouble(dplTimeBenchmarkMinute.SelectedValue));
+                //timeBenchmark = timeBenchmark.AddSeconds(Convert.ToDouble(dplTimeBenchmarkSecond.SelectedValue));
 
                 string xmlStr = ResourceRequirement.GenerateResourceCalculateXML(timeBenchmark, ResourceRequirementList);
                 if (string.IsNullOrEmpty(xmlStr))
@@ -340,7 +340,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 string requirementFileDisplayName = "资源需求文件" + createdTime.ToString("yyyyMMddHHmmss") + ".xml";
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.LoadXml(xmlStr);
-                xmlDocument.Save(requirementFileDirectory + requirementFileName);
+                if (!Directory.Exists(requirementFileDirectory))
+                    Directory.CreateDirectory(requirementFileDirectory);
+                xmlDocument.Save(Path.Combine(requirementFileDirectory, requirementFileName));
 
                 //string resultFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResultFileDirectory").TrimEnd(new char[] { '\\' }) + "\\";
                 //string resultFileName = Guid.NewGuid().ToString() + ".xml";
@@ -578,24 +580,24 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
                 DateTime beginTime = DateTime.Now;
                 DateTime endTime = DateTime.Now;
-                if (!DateTime.TryParse(txtBeginTime.Text.Trim(), out beginTime))
+                if (!DateTime.TryParse(FormatDateTimeString(txtBeginTime.Text.Trim()), out beginTime))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "开始时间格式错误";
                     return;
                 }
-                beginTime = beginTime.AddHours(Convert.ToDouble(dplBeginTimeHour.SelectedValue));
-                beginTime = beginTime.AddMinutes(Convert.ToDouble(dplBeginTimeMinute.SelectedValue));
-                beginTime = beginTime.AddSeconds(Convert.ToDouble(dplBeginTimeSecond.SelectedValue));
-                if (!DateTime.TryParse(txtEndTime.Text.Trim(), out endTime))
+                //beginTime = beginTime.AddHours(Convert.ToDouble(dplBeginTimeHour.SelectedValue));
+                //beginTime = beginTime.AddMinutes(Convert.ToDouble(dplBeginTimeMinute.SelectedValue));
+                //beginTime = beginTime.AddSeconds(Convert.ToDouble(dplBeginTimeSecond.SelectedValue));
+                if (!DateTime.TryParse(FormatDateTimeString(txtEndTime.Text.Trim()), out endTime))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "结束时间格式错误";
                     return;
                 }
-                endTime = endTime.AddHours(Convert.ToDouble(dplEndTimeHour.SelectedValue));
-                endTime = endTime.AddMinutes(Convert.ToDouble(dplEndTimeMinute.SelectedValue));
-                endTime = endTime.AddSeconds(Convert.ToDouble(dplEndTimeSecond.SelectedValue));
+                //endTime = endTime.AddHours(Convert.ToDouble(dplEndTimeHour.SelectedValue));
+                //endTime = endTime.AddMinutes(Convert.ToDouble(dplEndTimeMinute.SelectedValue));
+                //endTime = endTime.AddSeconds(Convert.ToDouble(dplEndTimeSecond.SelectedValue));
                 if (beginTime > endTime)
                 {
                     trMessage.Visible = true;
@@ -707,7 +709,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                         string periodOfTimeStr = "{0}.开始时间：{1},结束时间：{2};";
                         for (int i = 0; i < resourceRequirement.PeriodOfTimeList.Count; i++)
                         {
-                            lblPeriodOfTime.ToolTip += string.Format(periodOfTimeStr, i + 1, resourceRequirement.PeriodOfTimeList[i].BeginTime.ToString("yyyy-MM-dd"), resourceRequirement.PeriodOfTimeList[i].EndTime.ToString("yyyy-MM-dd"));
+                            lblPeriodOfTime.ToolTip += string.Format(periodOfTimeStr, i + 1, resourceRequirement.PeriodOfTimeList[i].BeginTime.ToString("yyyyMMddHHmmss"), resourceRequirement.PeriodOfTimeList[i].EndTime.ToString("yyyyMMddHHmmss"));
                         }
                         lblPeriodOfTime.Text = "共" + resourceRequirement.PeriodOfTimeList.Count.ToString() + "条记录";
                     }
@@ -935,6 +937,25 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplEndTimeSecond.SelectedIndex = 0;
             ViewState["PeriodOfTime"] = null;
             BindPeriodOfTimeList();
+        }
+        /// <summary>
+        /// 将yyyyMMddHHmmss格式字符串转换成yyyy-MM-dd HH:mm:ss
+        /// </summary>
+        /// <param name="dateTimeString"></param>
+        /// <returns></returns>
+        protected string FormatDateTimeString(string dateTimeString)
+        {
+            string result = string.Empty;
+            if (!string.IsNullOrEmpty(dateTimeString) && dateTimeString.Length == 14)
+            {
+                result += dateTimeString.Substring(0, 4) + "-";
+                result += dateTimeString.Substring(4, 2) + "-";
+                result += dateTimeString.Substring(6, 2) + " ";
+                result += dateTimeString.Substring(8, 2) + ":";
+                result += dateTimeString.Substring(10, 2) + ":";
+                result += dateTimeString.Substring(12, 2);
+            }
+            return result;
         }
         #endregion
     }
