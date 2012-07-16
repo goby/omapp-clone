@@ -35,6 +35,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="OM.FS.Base">
+      <HintPath>..\Libs\OM.FS.Base.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -46,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataFrame\DataFrameBuilder.cs" />
+    <Compile Include="DataFrame\DFSender.cs" />
+    <Compile Include="DataFrame\DFSenderClientAgent.cs" />
     <Compile Include="File\BizFileCreator.cs" />
     <Compile Include="File\FileExchangeConfig.cs" />
     <Compile Include="File\FileSender.cs" />
@@ -62,6 +67,7 @@
     <Compile Include="GDFX\Intepolater.cs" />
     <Compile Include="GDFX\ObsPrer.cs" />
     <Compile Include="GDFX\ParamConvertor.cs" />
+    <Compile Include="GDFX\ResultLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
