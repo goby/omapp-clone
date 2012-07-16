@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{E06714A0-7
 		Libs\Microsoft.Practices.EnterpriseLibrary.Common.dll = Libs\Microsoft.Practices.EnterpriseLibrary.Common.dll
 		Libs\Microsoft.Practices.ObjectBuilder2.dll = Libs\Microsoft.Practices.ObjectBuilder2.dll
 		Libs\Newtonsoft.Json.dll = Libs\Newtonsoft.Json.dll
+		Libs\OM.FS.Base.dll = Libs\OM.FS.Base.dll
 		Libs\Oracle.DataAccess.dll = Libs\Oracle.DataAccess.dll
 		Libs\OraOps10.dll = Libs\OraOps10.dll
 	EndProjectSection
