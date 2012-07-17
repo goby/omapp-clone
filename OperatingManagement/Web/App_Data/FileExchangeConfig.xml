@@ -448,5 +448,9 @@
             <Type>JYZ2</Type>
             <Name>863-YZ4702遥科学综合站（JYZ2）</Name>
         </Info>
+        <Info>
+            <Type>YKZX</Type>
+            <Name>运控中心（YKZX）</Name>
+        </Info>
     </target>
 </FileList>

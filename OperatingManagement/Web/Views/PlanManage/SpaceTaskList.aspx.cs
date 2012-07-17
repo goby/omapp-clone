@@ -11,8 +11,11 @@ using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.Framework;
 using OperatingManagement.DataAccessLayer.PlanManage;
+using OperatingManagement.DataAccessLayer.BusinessManage;
 using System.Web.Security;
 using System.Data;
+using ServicesKernel.File;
+using ServicesKernel.DataFrame;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
@@ -31,6 +34,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 pnlDestination.Visible = false;
                 pnlData.Visible = true;
 
+                BindCheckBoxDestination();
                 DefaultSearch();
             }
             cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
@@ -140,18 +144,67 @@ namespace OperatingManagement.Web.Views.PlanManage
             BindGridView(false);
         }
 
-        void BindRadDestination()
+        /// <summary>
+        /// 绑定发送目标
+        /// </summary>
+        void BindCheckBoxDestination()
         {
-
+            List<string> targetList;
+            ckbDestination.Items.Clear();
+            targetList = FileExchangeConfig.GetTgtListForSending("YDSJ");
+            foreach (string tgt in targetList)
+            {
+                ckbDestination.Items.Add(new ListItem(FileExchangeConfig.GetNameForType(tgt), tgt));
+            }
         }
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
-            BindRadDestination();
+            BindCheckBoxDestination();
         }
         //最终发送
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            try
+            {
+                DataFrameBuilder dfBuilder = new DataFrameBuilder();
+                lblMessage.Text = "";//清空发送信息
+                foreach (ListItem li in ckbDestination.Items)
+                {
+                    if (li.Selected)
+                    {
+                        XYXSInfo objXYXSInfo = new XYXSInfo();
+                        //发送方ID （运控中心 YKZX）
+                        int senderid = objXYXSInfo.GetIdByAddrMark(System.Configuration.ConfigurationManager.AppSettings["ZXBM"]);
+                        //接收方ID 
+                        int reveiverid = objXYXSInfo.GetIdByAddrMark(li.Value);
+                        //信息类型id
+                        int infotypeid = (new InfoType()).GetIDByExMark("YDSJ");
+                        string boolResult = ""; //文件发送结果
+                        DFSender objSender = new DFSender();
+                        List<YDSJ> list = (new YDSJ()).SelectByIDS(txtId.Text);
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            boolResult = objSender.SendDF( dfBuilder.BuildYDSJDF( list[i],DateTime.Now ),list[i].TaskID,list[i].SatName,infotypeid, senderid, reveiverid, DateTime.Now);
+                            switch (boolResult)
+                            {
+                                case "0" :
+                                    lblMessage.Text +=  " 数据发送请求提交成功。" + "<br />";
+                                    break;
+                                case "1" :
+                                     lblMessage.Text += " 数据发送请求提交失败。" + "<br />";
+                                    break;
+                            }
+                        }
+
+                    }//li
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("发送计划出现异常，异常原因", ex));
+            }
+            finally { }
 
         }
         //取消

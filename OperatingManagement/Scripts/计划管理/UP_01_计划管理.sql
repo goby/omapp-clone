@@ -1,9 +1,9 @@
 ---------------------------------------------
 -- Export file for user HTCUSER            --
--- Created by taiji on 2012/7/11, 22:15:08 --
+-- Created by taiji on 2012/7/17, 21:41:19 --
 ---------------------------------------------
 
-spool UP_01_计划管理20120711.log
+spool UP_01_计划管理20120717.log
 
 prompt
 prompt Creating procedure UP_GD_GETLIST
@@ -103,6 +103,33 @@ begin
        case when s.WXMC  is null then t.satid else s.WXMC end WXMC 
        FROM TB_GD t,TB_TASK k,tb_satellite s 
         where t.taskid=k.taskno(+) and t.satid=s.WXBM(+) and t.id=p_Id;
+end;
+/
+
+prompt
+prompt Creating procedure UP_GD_SELECTINIDS
+prompt ====================================
+prompt
+create or replace procedure htcuser.up_gd_selectinids
+(
+       p_ids varchar2,
+       o_cursor out sys_refcursor
+) is
+v_sql varchar2(4000);
+begin
+v_sql:='SELECT * FROM TB_GD t '||
+          ' where 1=1 ';
+
+   if (p_ids is not null)
+   then
+      v_sql:=v_sql||' and t.id in ('|| p_ids ||')';
+   end if;
+
+   --dbms_output.put_line(v_sql);
+
+   OPEN o_cursor For v_sql;
+
+
 end;
 /
 
@@ -437,6 +464,33 @@ is
 begin
        open o_cursor for
             select * from tb_YDSJ where id=p_Id;
+end;
+/
+
+prompt
+prompt Creating procedure UP_YDSJ_SELECTINIDS
+prompt ======================================
+prompt
+create or replace procedure htcuser.up_ydsj_selectinids
+(
+       p_ids varchar2,
+       o_cursor out sys_refcursor
+) is
+v_sql varchar2(4000);
+begin
+v_sql:='SELECT * FROM TB_YDSJ t '||
+          ' where 1=1 ';
+
+   if (p_ids is not null)
+   then
+      v_sql:=v_sql||' and t.id in ('|| p_ids ||')';
+   end if;
+
+   --dbms_output.put_line(v_sql);
+
+   OPEN o_cursor For v_sql;
+
+
 end;
 /
 

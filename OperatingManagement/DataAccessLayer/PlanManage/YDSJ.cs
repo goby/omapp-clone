@@ -193,6 +193,44 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         }
 
         /// <summary>
+        /// 单个或多个ID，如("1,2,3")
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public List<YDSJ> SelectByIDS(string ids)
+        {
+            OracleParameter p = PrepareRefCursor();
+            DataSet ds = _database.SpExecuteDataSet("up_ydsj_selectinids", new OracleParameter[]{
+                new OracleParameter("p_ids",ids),
+                p
+            });
+            List<YDSJ> jhs = new List<YDSJ>();
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    jhs.Add(new YDSJ()
+                    {
+                        Id = Convert.ToInt32(dr["ID"].ToString()),
+                        CTime = DateTime.Parse(dr["CTIME"].ToString()),
+                        TaskID = dr["TaskID"].ToString(),
+                        SatName = dr["SatName"].ToString(),
+                        D = Convert.ToInt32(dr["D"].ToString()),
+                        T = Convert.ToInt32(dr["T"].ToString()),
+                        Times = DateTime.Parse(dr["Times"].ToString()),
+                        A = Convert.ToDouble(dr["A"].ToString()),
+                        E = Convert.ToDouble(dr["E"].ToString()),
+                        I = Convert.ToDouble(dr["I"].ToString()),
+                        O = Convert.ToDouble(dr["O"].ToString()),
+                        W = Convert.ToDouble(dr["W"].ToString()),
+                        M = Convert.ToDouble(dr["M"].ToString()),
+                        Reserve = dr["RESERVE"].ToString()
+                    });
+                }
+            }
+            return jhs;
+        }
+        /// <summary>
         /// Inserts a new record into database.
         /// </summary>
         /// <returns></returns>
