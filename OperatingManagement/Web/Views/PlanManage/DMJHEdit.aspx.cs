@@ -871,7 +871,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                         creater.CreateDMJHFile(obj, 1);
                     }
                 }
-                ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
+
+                ltMessage.Text = "计划保存成功";
+                //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
                 //
             }
             catch (Exception ex)
@@ -1004,7 +1006,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 };
                 var result = jh.Add();
 
-                ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
+                ltMessage.Text = "计划保存成功";
+                //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
                 //
             }
             catch (Exception ex)

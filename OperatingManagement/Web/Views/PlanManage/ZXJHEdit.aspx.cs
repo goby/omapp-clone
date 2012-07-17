@@ -903,7 +903,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     creater.CreateZXJHFile(obj, 1);
                 }
             }
-            ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
+            ltMessage.Text = "计划保存成功";
+            //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
         }
 
         protected void btnSaveTo_Click(object sender, EventArgs e)
@@ -916,12 +917,18 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.SYName = txtSYName.Text;
             obj.SYDateTime = txtSYDateTime.Text;
             obj.SYDays = txtSYDays.Text;
+            obj.SYLoadName = txtLoadName.Text;
             obj.SYLoadStartTime = txtLoadStartTime.Text;
             obj.SYLoadEndTime = txtLoadEndTime.Text;
             obj.SYLoadContent = txtLoadContent.Text;
+            obj.SY_SCStationNO = txtSCStationNO.Text;
+            obj.SY_SCEquipmentNO = txtSCEquipmentNO.Text;
+            obj.SY_SCFrequencyBand = txtSCFrequencyBand.Text;
             obj.SY_SCLaps = txtSCLaps.Text;
             obj.SY_SCStartTime = txtSCStartTime.Text;
             obj.SY_SCEndTime = txtSCEndTime.Text;
+            obj.SY_CKStationNO = txtCKStationNO.Text;
+            obj.SY_CKEquipmentNO = txtCKEquipmentNO.Text;
             obj.SY_CKLaps = txtCKLaps.Text;
             obj.SY_CKStartTime = txtCKStartTime.Text;
             obj.SY_CKEndTime = txtCKEndTime.Text;
@@ -931,6 +938,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.Work_Load_SYID = txtWork_Load_SYID.Text;
             obj.Work_Load_SatID = txtWork_Load_SatID.Text;
             obj.Work_Load_Process = txtWork_Load_Process.Text;
+            obj.Work_Load_Name = txtWork_Load_Name.Text;
             obj.Work_Load_Event = txtWork_Load_Event.Text;
             obj.Work_Load_Action = txtWork_Load_Action.Text;
             obj.Work_Load_StartTime = txtWork_Load_StartTime.Text;
@@ -938,7 +946,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.Work_Command_SYID = txtWork_Command_SYID.Text;
             obj.Work_Command_SYItem = txtWork_Command_SYItem.Text;
             obj.Work_Command_SatID = txtWork_Command_SatID.Text;
-            obj.Work_Command_Content = txtWork_Command_Content.Text;
+            obj.Work_Command_Content = txtWork_Command_Content.Text;//作业
             obj.Work_Command_UpRequire = txtWork_Command_UpRequire.Text;
             obj.Work_Command_Direction = txtWork_Command_Direction.Text;
             obj.Work_Command_SpecialRequire = txtWork_Command_SpecialRequire.Text;
@@ -983,7 +991,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                 TextBox txtSHSatID = (TextBox)it.FindControl("txtSHSatID");
                 TextBox txtSHLaps = (TextBox)it.FindControl("txtSHLaps");
                 TextBox txtSHMaintStation = (TextBox)it.FindControl("txtSHMaintStation");
+                TextBox txtSHMainStationEquipment = (TextBox)it.FindControl("txtSHMainStationEquipment");
                 TextBox txtSHBakStation = (TextBox)it.FindControl("txtSHBakStation");
+                TextBox txtSHBakStationEquipment = (TextBox)it.FindControl("txtSHBakStationEquipment");
                 TextBox txtSHContent = (TextBox)it.FindControl("txtSHContent");
                 TextBox txtSHStartTime = (TextBox)it.FindControl("txtSHStartTime");
                 TextBox txtSHEndTime = (TextBox)it.FindControl("txtSHEndTime");
@@ -993,7 +1003,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                 dh.SatID = txtSHSatID.Text;
                 dh.Laps = txtSHLaps.Text;
                 dh.MainStationName = txtSHMaintStation.Text;
+                dh.MainStationEquipment = txtSHMainStationEquipment.Text;
                 dh.BakStationName = txtSHBakStation.Text;
+                dh.BakStationEquipment = txtSHBakStationEquipment.Text;
                 dh.Content = txtSHContent.Text;
                 dh.StartTime = txtSHStartTime.Text;
                 dh.EndTime = txtSHEndTime.Text;
@@ -1086,7 +1098,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 };
                 var result = jh.Add();
 
-                ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
+                ltMessage.Text = "计划保存成功";
+                //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
        
         }
 

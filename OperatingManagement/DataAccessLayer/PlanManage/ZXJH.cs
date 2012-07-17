@@ -59,6 +59,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string SYDays{ get; set; }
         /// <summary>
+        /// 载荷-载荷名称
+        /// </summary>
+        public string SYLoadName { get; set; }
+        /// <summary>
         /// 载荷-开始时间
         /// </summary>
         public string SYLoadStartTime{ get; set; }
@@ -73,6 +77,18 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
 
         //数传
         /// <summary>
+        /// 数传-站编号
+        /// </summary>
+        public string SY_SCStationNO { get; set; }
+        /// <summary>
+        /// 数传-设备编号
+        /// </summary>
+        public string SY_SCEquipmentNO { get; set; }
+        /// <summary>
+        /// 数传-频段
+        /// </summary>
+        public string SY_SCFrequencyBand { get; set; }
+        /// <summary>
         /// 数传-圈次
         /// </summary>
         public string SY_SCLaps { get; set; }
@@ -86,6 +102,14 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         public string SY_SCEndTime { get; set; }
 
         //测控
+        /// <summary>
+        /// 测控-站编号
+        /// </summary>
+        public string SY_CKStationNO { get; set; }
+        /// <summary>
+        /// 测控-设备编号
+        /// </summary>
+        public string SY_CKEquipmentNO { get; set; }
         /// <summary>
         /// 测控-圈次
         /// </summary>
@@ -114,7 +138,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         public string SY_ZSContent { get; set; }
 
         //工作计划
-        //工作内容
+        //任务管理-工作内容
         public List<ZXJH_WorkContent> WorkContents { get; set; }
         //载荷管理
         /// <summary>
@@ -126,6 +150,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string Work_Load_SatID { get; set; }
         /// <summary>
+        /// 载荷管理-载荷名称
+        /// </summary>
+        public string Work_Load_Name { get; set; }
+        /// <summary>
         /// 载荷管理-进程
         /// </summary>
         public string Work_Load_Process { get; set; }
@@ -134,7 +162,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string Work_Load_Event { get; set; }
         /// <summary>
-        /// 载荷管理-动作内容
+        /// 载荷管理-动作
         /// </summary>
         public string Work_Load_Action { get; set; }
         /// <summary>
@@ -160,7 +188,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string Work_Command_SatID { get; set; }
         /// <summary>
-        /// 指令制作-指令内容
+        /// 指令制作-作业
         /// </summary>
         public string Work_Command_Content { get; set; }
         /// <summary>
@@ -242,9 +270,17 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string MainStationName { get; set; }
         /// <summary>
+        /// 主站设备
+        /// </summary>
+        public string MainStationEquipment { get; set; }
+        /// <summary>
         /// 备站名称
         /// </summary>
         public string BakStationName { get; set; }
+        /// <summary>
+        /// 备站设备
+        /// </summary>
+        public string BakStationEquipment { get; set; }
         /// <summary>
         /// 工作内容
         /// </summary>

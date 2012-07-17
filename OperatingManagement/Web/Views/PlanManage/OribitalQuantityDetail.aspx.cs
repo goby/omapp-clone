@@ -48,7 +48,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             lblDataDate.Text = obj.DataDate.ToShortDateString();
             lblDataTime.Text = obj.DataTime;
             */
-            lblD.Text = obj.Times.ToString("yyyyMMdd HH:mm:ss.fff");
+            //lblD.Text = obj.Times.ToString("yyyyMMdd HH:mm:ss.fff");
+            lblD.Text = obj.D.ToString();
             lblT.Text = obj.T.ToString();
             lblA.Text = obj.A.ToString();
             lblRa.Text = obj.Ra.ToString();
@@ -60,6 +61,10 @@ namespace OperatingManagement.Web.Views.PlanManage
             lblM.Text = obj.M.ToString();
             lblP.Text = obj.P.ToString();
             lblPi.Text = obj.PP.ToString();
+            lblCDSM.Text = obj.CDSM.ToString();
+            lblKSM.Text = obj.KSM.ToString();
+            lblKZ1.Text = obj.KZ1.ToString();
+            lblKZ2.Text = obj.KZ2.ToString();
         }
 
         public override void OnPageLoaded()

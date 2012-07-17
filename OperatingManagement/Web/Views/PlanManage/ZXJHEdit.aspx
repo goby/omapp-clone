@@ -71,7 +71,8 @@
                 </td>
             </tr>
         </table>
-        <table class="edit1" style="width: 950px;">
+           <div  id="detailtable">
+        <table  class="edit1" style="width: 950px;">
             <tr>
                 <th colspan="4" style="color: Black; text-align: left;">
                     <b>试验内容</b>
@@ -88,14 +89,14 @@
                     ondragenter="return false" style="ime-mode:Disabled"></asp:TextBox>
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" 
                         ControlToValidate="txtSYCount" ErrorMessage="只能是数字" ForeColor="Red" 
-                        ValidationExpression="\d"></asp:RegularExpressionValidator>
+                        ValidationExpression="^[0-9]*$"></asp:RegularExpressionValidator>
                 </td>
             </tr>
             <tr>
                 <th style="width: 120px;">
                     在当日计划中的ID
                 </th>
-                <td>
+                <td  style="width: 332px;">
                     <asp:TextBox ID="txtSYID" runat="server" CssClass="text" Text='<%# Eval("SYID")%>'></asp:TextBox>
                 </td>
                 <th style="width: 120px;">
@@ -122,205 +123,189 @@
                     ondragenter="return false" style="ime-mode:Disabled"></asp:TextBox>
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
                         ControlToValidate="txtSYDays" ErrorMessage="只能是数字" ForeColor="Red" 
-                        ValidationExpression="\d"></asp:RegularExpressionValidator>
+                        ValidationExpression="^[0-9]*$"></asp:RegularExpressionValidator>
                 </td>
             </tr>
             <tr>
-                <th>
-                    载荷
-                </th>
-                <td colspan="3">
-                    <table>
-                        <tr>
-                            <th>
-                                开始时间
+                <th style="width: 120px;">
+                    载荷-开始时间
                             </th>
-                            <th>
-                                结束时间
-                            </th>
-                            <th>
-                                动作内容
-                            </th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <td>
+                <td>
                                 <asp:TextBox ID="txtLoadStartTime" runat="server" CssClass="text" Text='<%# Eval("SYLoadStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
-                            </td>
-                            <td>
+                </td>
+                <th style="width: 120px;">
+                    载荷-结束时间</th>
+                <td>
                                 <asp:TextBox ID="txtLoadEndTime" runat="server" CssClass="text" Text='<%# Eval("SYLoadEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
-                            </td>
-                            <td>
-                                <asp:TextBox ID="txtLoadContent" runat="server" CssClass="text" Text='<%# Eval("SYLoadContent")%>'></asp:TextBox>
-                            </td>
-                            <td>
                             <asp:CompareValidator ID="CompareValidator4" runat="server" 
                         ControlToCompare="txtLoadStartTime" ControlToValidate="txtLoadEndTime" 
                         Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
-                        Operator="GreaterThan" Type="Date"></asp:CompareValidator></td>
-                        </tr>
-                    </table>
+                        Operator="GreaterThan" Type="Date"></asp:CompareValidator>
                 </td>
             </tr>
             <tr>
-                <th>
-                    数传
-                </th>
-                <td colspan="3">
-                    <table>
-                        <tr>
-                            <th>
-                                圈次
-                            </th>
-                            <th>
-                                开始时间
-                            </th>
-                            <th>
-                                结束时间
-                            </th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <td>
+                <th style="width: 120px;">
+                    载荷-载荷名称</th>
+                <td>
+                                <asp:TextBox ID="txtLoadName" runat="server" CssClass="text" 
+                        Text='<%# Eval("SYLoadName")%>' ></asp:TextBox>
+                </td>
+                <th style="width: 120px;">
+                    载荷-动作内容</th>
+                <td>
+                                <asp:TextBox ID="txtLoadContent" runat="server" CssClass="text" Text='<%# Eval("SYLoadContent")%>'></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 120px;">
+                    数传-站编号</th>
+                <td>
+                                <asp:TextBox ID="txtSCStationNO" runat="server" CssClass="text" 
+                        Text='<%# Eval("SY_SCStationNO")%>'></asp:TextBox>
+                </td>
+                <th style="width: 120px;">
+                    数传-设备编号</th>
+                <td>
+                                <asp:TextBox ID="txtSCEquipmentNO" runat="server" CssClass="text" 
+                        Text='<%# Eval("SY_SCEquipmentNO")%>'></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 120px;">
+                    数传-频段</th>
+                <td>
+                                <asp:TextBox ID="txtSCFrequencyBand" runat="server" CssClass="text" 
+                        Text='<%# Eval("SY_SCFrequencyBand")%>'></asp:TextBox>
+                </td>
+                <th style="width: 120px;">
+                    数传-圈次</th>
+                <td>
                                 <asp:TextBox ID="txtSCLaps" runat="server" CssClass="text" Text='<%# Eval("SY_SCLaps")%>'></asp:TextBox>
-                            </td>
-                            <td>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 120px;">
+                    数传-开始时间</th>
+                <td>
                                 <asp:TextBox ID="txtSCStartTime" runat="server" CssClass="text" Text='<%# Eval("SY_SCStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
-                            </td>
-                            <td>
+                </td>
+                <th style="width: 120px;">
+                    数传-结束时间</th>
+                <td>
                                 <asp:TextBox ID="txtSCEndTime" runat="server" CssClass="text" Text='<%# Eval("SY_SCEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
-                            </td>
-                            <td>
                     <asp:CompareValidator ID="CompareValidator2" runat="server" 
                         ControlToCompare="txtSCStartTime" ControlToValidate="txtSCEndTime" 
                         Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
                         Operator="GreaterThan" Type="Date"></asp:CompareValidator>
-                            </td>
-                        </tr>
-                    </table>
                 </td>
             </tr>
             <tr>
-                <th>
-                    测控
-                </th>
-                <td colspan="3">
-                    <table>
-                        <tr>
-                            <th>
-                                圈次
-                            </th>
-                            <th>
-                                开始时间
-                            </th>
-                            <th>
-                                结束时间
-                            </th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <td>
-                                <asp:TextBox ID="txtCKLaps" runat="server" CssClass="text" Text='<%# Eval("SY_CKLaps")%>'></asp:TextBox>
+                <th style="width: 120px;">
+                    测控-站编号</th>
+                <td>
+                                <asp:TextBox ID="txtCKStationNO" runat="server" CssClass="text" 
+                        Text='<%# Eval("SY_CKStationNO")%>'></asp:TextBox>
                             </td>
-                            <td>
+                <th style="width: 120px;">
+                    测控-设备编号</th>
+                <td>
+                                <asp:TextBox ID="txtCKEquipmentNO" runat="server" CssClass="text" 
+                        Text='<%# Eval("SY_CKEquipmentNO")%>'></asp:TextBox>
+                            </td>
+            </tr>
+            <tr>
+                <th style="width: 120px;">
+                    测控-开始时间</th>
+                <td>
                                 <asp:TextBox ID="txtCKStartTime" runat="server" CssClass="text" Text='<%# Eval("SY_CKStartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
-                            <td>
+                <th style="width: 120px;">
+                    测控-结束时间</th>
+                <td>
                                 <asp:TextBox ID="txtCKEndTime" runat="server" CssClass="text" Text='<%# Eval("SY_CKEndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
-                            </td>
-                            <td><asp:CompareValidator ID="CompareValidator3" runat="server" 
+                            <asp:CompareValidator ID="CompareValidator3" runat="server" 
                         ControlToCompare="txtCKStartTime" ControlToValidate="txtCKEndTime" 
                         Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
                         Operator="GreaterThan" Type="Date"></asp:CompareValidator></td>
-                        </tr>
-                    </table>
-                </td>
             </tr>
             <tr>
-                <th>
-                    注数
-                </th>
-                <td colspan="3">
-                    <table>
-                        <tr>
-                            <th>
-                                最早时间要求
-                            </th>
-                            <th>
-                                最晚时间要求
-                            </th>
-                            <th>
-                                主要内容
-                            </th>
-                        </tr>
-                        <tr>
-                            <td>
-                                <asp:TextBox ID="txtZSFirst" runat="server" CssClass="text" Text='<%# Eval("SY_ZSFirst")%>'></asp:TextBox>
+                <th style="width: 120px;">
+                    测控-圈次</th>
+                <td>
+                                <asp:TextBox ID="txtCKLaps" runat="server" CssClass="text" Text='<%# Eval("SY_CKLaps")%>'></asp:TextBox>
                             </td>
-                            <td>
-                                <asp:TextBox ID="txtZSLast" runat="server" CssClass="text" Text='<%# Eval("SY_ZSLast")%>'></asp:TextBox>
-                            </td>
-                            <td>
+                <th style="width: 120px;">
+                    注数-主要内容</th>
+                <td>
                                 <asp:TextBox ID="txtZSContent" runat="server" CssClass="text" Text='<%# Eval("SY_ZSContent")%>'></asp:TextBox>
                             </td>
-                        </tr>
-                    </table>
-                </td>
             </tr>
-        </table>
-        <table class="edit1" style="width: 1200px">
+            <tr>
+                <th style="width: 120px;">
+                    注数-最早时间要求</th>
+                <td>
+                                <asp:TextBox ID="txtZSFirst" runat="server" CssClass="text" Text='<%# Eval("SY_ZSFirst")%>'></asp:TextBox>
+                            </td>
+                <th style="width: 120px;">
+                    注数-最晚时间要求</th>
+                <td>
+                                <asp:TextBox ID="txtZSLast" runat="server" CssClass="text" Text='<%# Eval("SY_ZSLast")%>'></asp:TextBox>
+                            </td>
+            </tr>
+            </table>
+        <table class="edit1" style="width: 950px">
             <tr>
                 <th colspan="2" style="color: Black; text-align: left;">
                     <b>工作计划</b>
                 </th>
             </tr>
             <tr>
-                <th>
-                    工作内容
+                <th  style="width: 120px;">
+                    任务管理
                 </th>
                 <td>
                     <asp:Repeater ID="rpWork" runat="server" OnItemCommand="rpWork_ItemCommand">
                         <HeaderTemplate>
-                            <table class="list">
-                                <tr>
-                                    <th style="width: 150px;">
-                                        工作
-                                    </th>
-                                    <th style="width: 150px;">
-                                        对应试验ID
-                                    </th>
-                                    <th style="width: 150px;">
-                                        开始时间
-                                    </th>
-                                    <th style="width: 150px;">
-                                        最短持续时间
-                                    </th>
-                                    <th style="width: 150px;">
-                                        最长持续时间
-                                    </th>
-                                    <th>
-                                    </th>
-                                </tr>
+                            <table class="edit1">
                                 <tbody>
                         </HeaderTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td>
-                                    <asp:TextBox ID="txtWC_Work" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
+                                <th style="width: 120px;">
+                                        工作
+                                </th>
+                                <td  style="width: 270px;">
+                                    <asp:TextBox ID="txtWC_Work" CssClass="text" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
                                 </td>
-                                <td>
-                                    <asp:TextBox ID="txtWC_SYID" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
+                                 <th style="width: 120px;">
+                                        对应试验ID
+                                 </th>
+                                <td  style="width: 270px;">
+                                    <asp:TextBox ID="txtWC_SYID" CssClass="text" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
                                 </td>
+                                </tr>
+                                <tr>
+                                <th style="width: 120px;">
+                                        开始时间
+                                    </th>
                                 <td>
-                                    <asp:TextBox ID="txtWC_StartTime" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                                    <asp:TextBox ID="txtWC_StartTime" CssClass="text" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 </td>
+                                <th style="width: 120px;">
+                                        最短持续时间
+                                    </th>
                                 <td>
-                                    <asp:TextBox ID="txtWC_MinTime" runat="server" Text='<%# Eval("MinTime")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtWC_MinTime" CssClass="text" runat="server" Text='<%# Eval("MinTime")%>'></asp:TextBox>
                                 </td>
+                                </tr>
+                                <tr>
+                                <th style="width: 120px;">
+                                        最长持续时间
+                                    </th>
                                 <td>
-                                    <asp:TextBox ID="txtWC_MaxTime" runat="server" Text='<%# Eval("MaxTime")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtWC_MaxTime" CssClass="text" runat="server" Text='<%# Eval("MaxTime")%>'></asp:TextBox>
                                 </td>
-                                <td>
+                                <td colspan="2">
                                     <asp:Button ID="btn1" CausesValidation="False" CssClass="button" runat="server" CommandName="Add"
                                         Text="添加" />
                                     <asp:Button ID="btn2" CausesValidation="False" CssClass="button" runat="server" CommandName="Del"
@@ -341,58 +326,62 @@
                 <td>
                     <table class="edit1">
                         <tr>
-                            <th colspan="8" style="text-align: center">
+                            <th colspan="4" style="text-align: center">
                                 载荷管理
                             </th>
                         </tr>
                         <tr>
-                            <th style="width: 60px;">
+                            <th style="width: 120px;">
                                 对应试验ID
                             </th>
-                            <td>
+                            <td style="width: 270px;">
                                 <asp:TextBox ID="txtWork_Load_SYID" runat="server" CssClass="text" Text='<%# Eval("Work_Load_SYID")%>'></asp:TextBox>
                             </td>
-                            <th style="width: 80px;">
+                            <th style="width: 120px;">
                                 卫星代号
                             </th>
-                            <td>
+                            <td style="width: 270px;">
                                 <asp:TextBox ID="txtWork_Load_SatID" runat="server" CssClass="text" Text='<%# Eval("Work_Load_SatID")%>'></asp:TextBox>
                             </td>
-                            <th style="width: 60px;">
-                                进程
-                            </th>
+                            </tr>
+                            <tr>
+                            <th>
+                                载荷名称</th>
+                            <td>
+                                <asp:TextBox ID="txtWork_Load_Name" runat="server" CssClass="text" 
+                                    Text='<%# Eval("Work_Load_Name")%>'></asp:TextBox>
+                            </td>
+                            <th>
+                                进程</th>
                             <td>
                                 <asp:TextBox ID="txtWork_Load_Process" runat="server" CssClass="text" Text='<%# Eval("Work_Load_Process")%>'></asp:TextBox>
                             </td>
-                            <th style="width: 60px;">
-                                事件
-                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                事件</th>
                             <td>
                                 <asp:TextBox ID="txtWork_Load_Event" runat="server" CssClass="text" Text='<%# Eval("Work_Load_Event")%>'></asp:TextBox>
                             </td>
-                        </tr>
-                        <tr>
-                            <th style="width: 60px;">
-                                动作内容
-                            </th>
+                            <th>
+                                动作</th>
                             <td>
                                 <asp:TextBox ID="txtWork_Load_Action" runat="server" CssClass="text" Text='<%# Eval("Work_Load_Action")%>'></asp:TextBox>
                             </td>
-                            <th style="width: 80px;">
-                                开始时间
-                            </th>
+                            </tr>
+                            <tr>
+                            <th>
+                                开始时间</th>
                             <td>
                                 <asp:TextBox ID="txtWork_Load_StartTime" runat="server" CssClass="text" 
                                 Text='<%# Eval("Work_Load_StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                             </td>
-                            <th style="width: 60px;">
-                                结束时间
-                            </th>
-                            <td>
+                            <th>
+                            
+                                结束时间</th>
+                            <td colspan="2">
                                 <asp:TextBox ID="txtWork_Load_EndTime" runat="server" CssClass="text" 
                                 Text='<%# Eval("Work_Load_EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
-                            </td>
-                            <td colspan="2">
                             <asp:CompareValidator ID="CompareValidator5" runat="server" 
                         ControlToCompare="txtWork_Load_StartTime" ControlToValidate="txtWork_Load_EndTime" 
                         Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
@@ -402,30 +391,31 @@
                     </table>
                     <table>
                         <tr>
-                            <th colspan="8" style="text-align: center">
-                                指令管理
-                            </th>
+                            <th colspan="4" style="text-align: center">
+                                指令管理</th>
                         </tr>
                         <tr>
-                            <th style="width: 60px;">
+                            <th style="width: 120px;">
                                 对应试验ID
                             </th>
-                            <td>
+                            <td style="width: 270px;">
                                 <asp:TextBox ID="txtWork_Command_SYID" runat="server" CssClass="text" Text='<%# Eval("Work_Command_SYID")%>'></asp:TextBox>
                             </td>
-                            <th style="width: 80px;">
+                            <th style="width: 120px;">
                                 试验项目
                             </th>
-                            <td>
+                            <td style="width: 270px;">
                                 <asp:TextBox ID="txtWork_Command_SYItem" runat="server" CssClass="text" Text='<%# Eval("Work_Command_SYItem")%>'></asp:TextBox>
                             </td>
-                            <th style="width: 60px;">
+                            </tr>
+                            <tr>
+                            <th>
                                 卫星代号
                             </th>
                             <td>
                                 <asp:TextBox ID="txtWork_Command_SatID" runat="server" CssClass="text" Text='<%# Eval("Work_Command_SatID")%>'></asp:TextBox>
                             </td>
-                            <th style="width: 60px;">
+                            <th>
                                 指令内容
                             </th>
                             <td>
@@ -433,25 +423,27 @@
                             </td>
                         </tr>
                         <tr>
-                            <th style="width: 60px;">
+                            <th>
                                 上注要求
                             </th>
                             <td>
                                 <asp:TextBox ID="txtWork_Command_UpRequire" runat="server" CssClass="text" Text='<%# Eval("Work_Command_UpRequire")%>'></asp:TextBox>
                             </td>
-                            <th style="width: 80px;">
+                            <th>
                                 指令发送方向
                             </th>
                             <td>
                                 <asp:TextBox ID="txtWork_Command_Direction" runat="server" CssClass="text" Text='<%# Eval("Work_Command_Direction")%>'></asp:TextBox>
                             </td>
-                            <th style="width: 60px;">
+                            </tr>
+                        <tr>
+                            <th>
                                 特殊需求
                             </th>
                             <td>
                                 <asp:TextBox ID="txtWork_Command_SpecialRequire" runat="server" CssClass="text" Text='<%# Eval("Work_Command_SpecialRequire")%>'></asp:TextBox>
                             </td>
-                            <th style="width: 60px;">
+                            <th>
                             </th>
                             <td>
                             </td>
@@ -466,72 +458,85 @@
                 <td>
                     <asp:Repeater ID="rpSYDataHandle" runat="server" OnItemCommand="rpSYDataHandle_ItemCommand">
                         <HeaderTemplate>
-                            <table class="list">
-                                <tr>
-                                    <th style="width: 60px;">
-                                        对应试验ID
-                                    </th>
-                                    <th style="width: 110px;">
-                                        卫星代号
-                                    </th>
-                                    <th style="width: 50px;">
-                                        圈次
-                                    </th>
-                                    <th style="width: 110px;">
-                                        主站名称
-                                    </th>
-                                    <th style="width: 110px;">
-                                        备站名称
-                                    </th>
-                                    <th style="width: 110px;">
-                                        工作内容
-                                    </th>
-                                    <th style="width: 100px;">
-                                        实时开始处理时间
-                                    </th>
-                                    <th style="width: 100px;">
-                                        实时结束处理时间
-                                    </th>
-                                    <th style="width: 110px;">
-                                        事后数据处理
-                                    </th>
-                                    <th>
-                                    </th>
-                                </tr>
+                            <table class="edit1">
                                 <tbody>
                         </HeaderTemplate>
                         <ItemTemplate>
                             <tr>
-                                <td>
-                                    <asp:TextBox Width="50px" ID="txtSHSYID" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
+                                <th style="width: 120px;">
+                                        对应试验ID
+                                </th>
+                                <td style="width: 270px;">
+                                    <asp:TextBox ID="txtSHSYID" CssClass="text" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
                                 </td>
-                                <td>
-                                    <asp:TextBox Width="100px" ID="txtSHSatID" runat="server" Text='<%# Eval("SatID")%>'></asp:TextBox>
+                                <th style="width: 120px;">
+                                        卫星代号
+                                    </th>
+                                <td style="width: 270px;">
+                                    <asp:TextBox  ID="txtSHSatID" CssClass="text" runat="server" Text='<%# Eval("SatID")%>'></asp:TextBox>
                                 </td>
+                                </tr><tr>
+                                <th>
+                                        圈次
+                                </th>
                                 <td>
-                                    <asp:TextBox Width="40px" ID="txtSHLaps" runat="server" Text='<%# Eval("Laps")%>'></asp:TextBox>
+                                    <asp:TextBox  ID="txtSHLaps" CssClass="text" runat="server" Text='<%# Eval("Laps")%>'></asp:TextBox>
                                 </td>
+                                <th>
+                                        工作内容
+                                </th>
                                 <td>
-                                    <asp:TextBox Width="100px" ID="txtSHMaintStation" runat="server" Text='<%# Eval("MainStationName")%>'></asp:TextBox>
+                                    <asp:TextBox  ID="txtSHContent" CssClass="text" runat="server" Text='<%# Eval("Content")%>'></asp:TextBox>
                                 </td>
+                                </tr><tr>
+                                <th>
+                                        主站名称
+                                </th>
                                 <td>
-                                    <asp:TextBox Width="100px" ID="txtSHBakStation" runat="server" Text='<%# Eval("BakStationName")%>'></asp:TextBox>
+                                    <asp:TextBox  ID="txtSHMaintStation" CssClass="text" runat="server" Text='<%# Eval("MainStationName")%>'></asp:TextBox>
                                 </td>
+                                <th>
+                                        主站设备
+                                </th>
                                 <td>
-                                    <asp:TextBox Width="100px" ID="txtSHContent" runat="server" Text='<%# Eval("Content")%>'></asp:TextBox>
+                                    <asp:TextBox  ID="txtSHMainStationEquipment" CssClass="text" runat="server" Text='<%# Eval("MainStationEquipment")%>'></asp:TextBox>
                                 </td>
+                                </tr><tr>
+                                <th>
+                                        备站名称
+                                    </th>
                                 <td>
-                                    <asp:TextBox Width="90px" ID="txtSHStartTime" runat="server" 
+                                    <asp:TextBox  ID="txtSHBakStation" CssClass="text" runat="server" Text='<%# Eval("BakStationName")%>'></asp:TextBox>
+                                </td>
+                                <th>
+                                        备站设备
+                                </th>
+                                <td>
+                                    <asp:TextBox  ID="txtSHBakStationEquipment" CssClass="text" runat="server" Text='<%# Eval("BakStationEquipment")%>'></asp:TextBox>
+                                </td>
+                                </tr><tr>
+                                <th>
+                                        实时开始处理时间
+                                    </th>
+                                <td>
+                                    <asp:TextBox ID="txtSHStartTime" runat="server"  CssClass="text"
                                     Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 </td>
+                                <th>
+                                        实时结束处理时间
+                                    </th>
                                 <td>
-                                    <asp:TextBox Width="90px" ID="txtSHEndTime" runat="server" 
+                                    <asp:TextBox  ID="txtSHEndTime" runat="server"  CssClass="text"
                                     Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 </td>
+                                </tr><tr>
+                                <th>
+                                        事后数据处理
+                                    </th>
                                 <td>
-                                    <asp:TextBox Width="100px" ID="txtSHAfterDH" runat="server" Text='<%# Eval("AfterWardsDataHandle")%>'></asp:TextBox>
+                                    <asp:TextBox  ID="txtSHAfterDH" CssClass="text" runat="server" Text='<%# Eval("AfterWardsDataHandle")%>'></asp:TextBox>
                                 </td>
-                                <td>
+                                <td colspan="2">
                                     <asp:Button ID="btn3" CausesValidation="False" CssClass="button" runat="server" CommandName="Add"
                                         Text="添加" />
                                     <asp:Button ID="btn4" CausesValidation="False" CssClass="button" runat="server" CommandName="Del"
@@ -574,16 +579,16 @@
                         <ItemTemplate>
                             <tr>
                                 <td>
-                                    <asp:TextBox ID="txtDMSYID" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtDMSYID" CssClass="text" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtDMDateSection" runat="server" Text='<%# Eval("DateSection")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtDMDateSection" CssClass="text" runat="server" Text='<%# Eval("DateSection")%>'></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtDMTask" runat="server" Text='<%# Eval("Task")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtDMTask" CssClass="text" runat="server" Text='<%# Eval("Task")%>'></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtDMRTTask" runat="server" Text='<%# Eval("RealTimeShowTask")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtDMRTTask" CssClass="text" runat="server" Text='<%# Eval("RealTimeShowTask")%>'></asp:TextBox>
                                 </td>
                                 <td>
                                     <asp:Button ID="btn5" CausesValidation="False" CssClass="button" runat="server" CommandName="Add"
@@ -628,16 +633,16 @@
                         <ItemTemplate>
                             <tr>
                                 <td>
-                                    <asp:TextBox ID="txtRCWork" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtRCWork" CssClass="text" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtRCSYID" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtRCSYID" CssClass="text" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtRCStartTime" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                                    <asp:TextBox ID="txtRCStartTime" CssClass="text" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtRCEndTime" runat="server" Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                                    <asp:TextBox ID="txtRCEndTime" CssClass="text" runat="server" Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 </td>
                                 <td>
                                     <asp:Button ID="btn7" CausesValidation="False" CssClass="button" runat="server" CommandName="Add"
@@ -683,13 +688,13 @@
                         <ItemTemplate>
                             <tr>
                                 <td>
-                                    <asp:TextBox ID="txtESYID" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
+                                    <asp:TextBox ID="txtESYID" CssClass="text" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtEStartTime" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                                    <asp:TextBox ID="txtEStartTime" CssClass="text" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtEEndTime" runat="server" Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                                    <asp:TextBox ID="txtEEndTime" CssClass="text" runat="server" Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                 </td>
                                 <td>
                                     <asp:Button ID="btn9" CausesValidation="False" CssClass="button" runat="server" CommandName="Add"
@@ -716,7 +721,7 @@
                 <td>
                     <asp:Repeater ID="rpDataManage" runat="server" OnItemCommand="rpDataManage_ItemCommand">
                         <HeaderTemplate>
-                            <table class="list">
+                            <table class="edit1">
                                 <tr>
                                     <th style="width: 150px;">
                                         工作
@@ -736,19 +741,18 @@
                                 <tbody>
                         </HeaderTemplate>
                         <ItemTemplate>
-                            <table>
                                 <tr>
                                     <td>
-                                        <asp:TextBox ID="txtMWork" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtMWork" CssClass="text" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtMDes" runat="server" Text='<%# Eval("Description")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtMDes" CssClass="text" runat="server" Text='<%# Eval("Description")%>'></asp:TextBox>
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtMStartTime" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                                        <asp:TextBox ID="txtMStartTime" CssClass="text" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtMEndTime" runat="server" Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                                        <asp:TextBox ID="txtMEndTime" CssClass="text" runat="server" Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                                     </td>
                                     <td>
                                         <asp:Button ID="btn11" CausesValidation="False" CssClass="button" runat="server"
@@ -769,12 +773,16 @@
                 </td>
             </tr>
         </table>
+        </div>
         <br />
         <br />
+     <div style="width: 750px; text-align: center;">
+    <asp:Label ID="ltMessage" runat="server" CssClass="error" Text="实验内容与工作计划，所有字段都必须填写。"></asp:Label>
+   </div>
         <div style="width: 750px; text-align: center">
-            <asp:Button ID="btnSubmit" CssClass="button" runat="server" Text="保存计划" OnClick="btnSubmit_Click" />
+            <asp:Button ID="btnSubmit" CssClass="button" OnClientClick="return CheckClientValidate();" runat="server" Text="保存计划" OnClick="btnSubmit_Click" />
             &nbsp;&nbsp;&nbsp;
-            <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" OnClick="btnSaveTo_Click" />
+            <asp:Button ID="btnSaveTo" runat="server" OnClientClick="return CheckClientValidate();" CssClass="button" Text="另存计划" OnClick="btnSaveTo_Click" />
         &nbsp;&nbsp;
             <asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
                     onclick="btnReset_Click" CausesValidation="False" />

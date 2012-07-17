@@ -1,8 +1,24 @@
-﻿//$(function () {
-//    $("#txtPlanStartTime").datepicker();
-//    $("#txtPlanEndTime").datepicker();
-//    $("#txtDate").datepicker();
-//});
+﻿function CheckClientValidate() {
+    Page_ClientValidate();
+    if (Page_IsValid) {
+        var isvalid = true;
+        var txtlist = $('#detailtable').find('input:text:not([disabled])');
+        txtlist.each(function () {
+            if ($(this).val() == '') {
+                $(this).css({ "background-color": "#ffcccc" });
+                isvalid = false;
+            }
+            else {
+                $(this).css({ "background-color": "#f5f5f5" });
+            }
+        });
+        if (!isvalid) {
+            showMsg('您填写的计划信息不完整,请检查并填写完善后重新提交!'); 
+        }
+
+        return isvalid;
+    }
+}
 
 function showMsg(msg) {
     var _dialog;

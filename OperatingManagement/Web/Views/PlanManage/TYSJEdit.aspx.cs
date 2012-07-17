@@ -178,7 +178,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                         creater.CreateTYSJFile(objTYSJ, 1);
                     }
                 }
-                ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
+
+                trMessage.Visible = true;
+                ltMessage.Text = "计划保存成功";
+                //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
             }
             catch (Exception ex)
             {
@@ -227,7 +230,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                 };
                 var result = jh.Add();
 
-                ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
+                trMessage.Visible = true;
+                ltMessage.Text = "计划保存成功";
+                //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
             }
             catch (Exception ex)
             {

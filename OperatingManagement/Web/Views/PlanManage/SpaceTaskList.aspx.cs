@@ -30,10 +30,21 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 pnlDestination.Visible = false;
                 pnlData.Visible = true;
+
+                DefaultSearch();
             }
             cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
         }
 
+        /// <summary>
+        /// 默认查询两周内的数据
+        /// </summary>
+        private void DefaultSearch()
+        {
+            txtStartDate.Text = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
+            txtEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            btnSearch_Click(new Object(), new EventArgs());
+        }
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             try
@@ -72,24 +83,24 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     startDate = Convert.ToDateTime(txtStartDate.Text.Trim());
                 }
-                else
-                {
-                    startDate = DateTime.Now.AddDays(-14);
-                }
+                //else
+                //{
+                //    startDate = DateTime.Now.AddDays(-14);
+                //}
                 if (!string.IsNullOrEmpty(txtEndDate.Text))
                 {
                     endDate = Convert.ToDateTime(txtEndDate.Text).AddDays(1).AddMilliseconds(-1);   //查询时可查当天
                 }
-                else
-                {
-                    endDate = DateTime.Now.AddDays(1).AddMilliseconds(-1);   //查询时可查当天
-                }
+                //else
+                //{
+                //    endDate = DateTime.Now.AddDays(1).AddMilliseconds(-1);   //查询时可查当天
+                //}
             }
             else
             {
                 if (ViewState["_StartDate"] == null)
                 {
-                    startDate = DateTime.Now.AddDays(-14);
+                    //startDate = DateTime.Now.AddDays(-14);
                 }
                 else
                 {
@@ -97,7 +108,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 if (ViewState["_EndDate"] == null)
                 {
-                    endDate = DateTime.Now;
+                    //endDate = DateTime.Now;
                 }
                 else
                 {
