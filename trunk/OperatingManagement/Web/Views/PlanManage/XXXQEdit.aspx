@@ -4,12 +4,6 @@
 <%@ Register Src="../../ucs/ucTask.ascx" TagName="ucTask" TagPrefix="uc1" %>
 <%@ Register Src="../../ucs/ucSatellite.ascx" TagName="ucSatellite" TagPrefix="uc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <style type="text/css">
-        .style1
-        {
-            width: 155px;
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
@@ -76,6 +70,7 @@
             </td>
         </tr>
     </table>
+    <div  id="detailtable">
     <table class="edit1" style="width: 1000px;">
         <tr>
             <td colspan="4">
@@ -92,7 +87,7 @@
             <th style="width:100px;">
                 需求制定时间
             </th>
-            <td>
+            <td   style="width:440px;">
                 <asp:TextBox ID="txtMBTime" runat="server" CssClass="text" MaxLength="12" onfocus="WdatePicker({dateFmt:'yyyyMMddHHmm'})"></asp:TextBox>
                 &nbsp;<span style="color:#3399FF;">格式：YYYYMMDDHHMM</span>
             </td>
@@ -147,7 +142,7 @@
                                     <th style="width: 80px;">
                                         卫星名称 
                                     </th>
-                                    <th style="width: 150px;">
+                                    <th style="width: 170px;">
                                         产品名称
                                     </th>
                                     <th style="width: 150px;">
@@ -167,7 +162,7 @@
                                 <td>
                                     <%--<asp:TextBox ID="txtMBInfoName" runat="server" Text='<%# Eval("InfoName")%>'></asp:TextBox>--%>
                                     <asp:DropDownList ID="ddlMBInfoName" runat="server" DataTextField="Text" DataValueField="Value"
-                                            Width="154px">
+                                            Width="164px">
                                     </asp:DropDownList>
                                 </td>
                                 <td>
@@ -196,13 +191,13 @@
             <th style="width:100px;">
                 用户名称
             </th>
-            <td class="style1">
+            <td  style="width:312px;">
                 <asp:TextBox ID="txtHJUser" runat="server" CssClass="text" MaxLength="32">运控评估中心</asp:TextBox>
             </td>
             <th style="width:100px;">
                 需求制定时间
             </th>
-            <td>
+            <td  style="width:440px;">
                 <asp:TextBox ID="txtHJTime" runat="server" CssClass="text" MaxLength="12" onfocus="WdatePicker({dateFmt:'yyyyMMddHHmm'})"></asp:TextBox>
                 &nbsp;<span style="color:#3399FF;">格式：YYYYMMDDHHMM</span>
             </td>
@@ -211,7 +206,7 @@
             <th style="width:100px;">
                 开始时间
             </th>
-            <td class="style1">
+            <td>
                 <asp:TextBox ID="txtHJTimeSection1" runat="server" ClientIDMode="Static" CssClass="text"
                     MaxLength="8" onfocus="WdatePicker({dateFmt:'yyyyMMdd'})"></asp:TextBox>
             </td>
@@ -232,7 +227,7 @@
             <th style="width:100px;">
                 环境信息标志
             </th>
-            <td class="style1">
+            <td>
                 <asp:TextBox ID="txtHJEnvironInfo" runat="server" CssClass="text" MaxLength="11"></asp:TextBox>
             </td>
             <th style="width:100px;">
@@ -260,11 +255,11 @@
                                     <th style="width: 170px;">
                                         产品名称
                                     </th>
-                                    <th style="width: 360px;">
+                                    <th style="width: 390px;">
                                         区域范围
                                     </th>
-                                    <th style="width: 100px;">
-                                        提供时间(HHMM)
+                                    <th style="width: 60px;">
+                                        提供时间
                                     </th>
                                     <th>
                                      </th>
@@ -280,14 +275,14 @@
                                 <td>
                                     <%--<asp:TextBox ID="txtHJInfoName" runat="server" Text='<%# Eval("InfoName")%>'></asp:TextBox>--%>
                                     <asp:DropDownList ID="ddlHJInfoName" runat="server" DataTextField="Text" DataValueField="Value"
-                                            Width="174px">
+                                            Width="164px">
                                         </asp:DropDownList>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtHJInfoArea" MaxLength="64" runat="server" Text='<%# Eval("InfoArea")%>' Width="350px"></asp:TextBox>
+                                    <asp:TextBox ID="txtHJInfoArea" MaxLength="64" runat="server" Text='<%# Eval("InfoArea")%>' Width="390px"></asp:TextBox>
                                 </td>
                                 <td>
-                                    <asp:TextBox ID="txtHJInfoTime" MaxLength="4" runat="server" Text='<%# Eval("InfoTime")%>' Width="90px" onfocus="WdatePicker({dateFmt:'HHmm'})"></asp:TextBox>
+                                    <asp:TextBox ID="txtHJInfoTime" MaxLength="4" runat="server" Text='<%# Eval("InfoTime")%>' Width="50px"  onfocus="WdatePicker({dateFmt:'HHmm'})"></asp:TextBox>
                                 </td>
                                 <td>
                                     <asp:Button ID="btn11" CausesValidation="False" CssClass="button" runat="server" CommandName="Add" Text="添加" />
@@ -302,11 +297,15 @@
             </td>
         </tr>
     </table>
+    </div>
     <br />
+       <div style="width: 950px; text-align: center;">
+    <asp:Label ID="ltMessage" runat="server" CssClass="error" Text="空间目标信息及空间环境信息所有字段都必须填写。"></asp:Label>
+   </div>
     <div style="width: 950px; text-align: center">
-        <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" OnClick="btnSubmit_Click" />
+        <asp:Button ID="btnSubmit" runat="server" OnClientClick="return CheckClientValidate();" CssClass="button" Text="保存计划" OnClick="btnSubmit_Click" />
         &nbsp;&nbsp;&nbsp;
-        <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" OnClick="btnSaveTo_Click" />
+        <asp:Button ID="btnSaveTo" runat="server" OnClientClick="return CheckClientValidate();" CssClass="button" Text="另存计划" OnClick="btnSaveTo_Click" />
     &nbsp;&nbsp;
         <asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
                     onclick="btnReset_Click" CausesValidation="False" />

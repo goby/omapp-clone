@@ -275,6 +275,57 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
+        /// 单个或多个ID，如("1,2,3")
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public List<GD> SelectByIDS(string ids)
+        {
+            OracleParameter p = PrepareRefCursor();
+            DataSet ds = _database.SpExecuteDataSet("up_gd_selectinids", new OracleParameter[]{
+                new OracleParameter("p_ids",ids),
+                p
+            });
+            List<GD> jhs = new List<GD>();
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    jhs.Add(new GD()
+                    {
+                        Id = Convert.ToInt32(dr["ID"].ToString()),
+                        CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        TaskID = dr["TaskID"].ToString(),
+                        //TaskName = dr["TaskName"].ToString(),
+                        SatID = dr["Satid"].ToString(),
+                        //SatellteName = dr["WXMC"].ToString(),
+                        IType = Convert.ToInt32(dr["itype"].ToString()),
+                        ICode = dr["icode"].ToString(),
+                        D = Convert.ToInt32(dr["D"].ToString()),
+                        T = Convert.ToInt32(dr["T"].ToString()),
+                        Times = Convert.ToDateTime(dr["Times"].ToString()),
+                        A = Convert.ToDouble(dr["A"].ToString()),
+                        E = Convert.ToDouble(dr["E"].ToString()),
+                        I = Convert.ToDouble(dr["I"].ToString()),
+                        Q = Convert.ToDouble(dr["Q"].ToString()),
+                        W = Convert.ToDouble(dr["W"].ToString()),
+                        M = Convert.ToDouble(dr["M"].ToString()),
+                        P = Convert.ToDouble(dr["P"].ToString()),
+                        PP = Convert.ToDouble(dr["PP"].ToString()),
+                        Ra = Convert.ToDouble(dr["Ra"].ToString()),
+                        Rp = Convert.ToDouble(dr["Rp"].ToString()),
+                        CDSM = Convert.ToDouble(dr["CDSM"].ToString()),
+                        KSM = Convert.ToDouble(dr["KSM"].ToString()),
+                        KZ1 = Convert.ToDouble(dr["KZ1"].ToString()),
+                        KZ2 = Convert.ToDouble(dr["KZ2"].ToString()),
+                        Reserve = dr["Reserve"].ToString(),
+                        DFInfoID = Convert.ToInt32(dr["DFInfoID"].ToString())
+                    });
+                }
+            }
+            return jhs;
+        }
+        /// <summary>
         /// Inserts a new record into database.
         /// </summary>
         /// <returns></returns>

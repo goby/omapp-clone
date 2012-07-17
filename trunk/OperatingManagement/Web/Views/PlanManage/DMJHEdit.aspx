@@ -127,7 +127,7 @@
                 </td>
             </tr>
         </table>
-        <table cellpadding="0" cellspacing="0" style="width: 950px; border-width: 0px;">
+        <table id="detailtable" cellpadding="0" cellspacing="0" style="width: 950px; border-width: 0px;">
             <tr>
                 <td style="padding: 0px 0px;">
                     <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="Repeater1_ItemDataBound"
@@ -136,7 +136,8 @@
                             <table class="edit1" style="width: 950px;">
                                 <tr>
                                     <td colspan="4">
-                                        <strong><span style="color:#FF0000;">时间格式均为：YYYYMMDDHHmmss。例如2000年1月2日下午3点4分5秒表示为字符串“20000102150405”</span></strong>
+                                    <asp:Label ID="ltTip" runat="server" CssClass="error" Text="以下信息必须填写. 不能为空"></asp:Label>
+                                      <%--  <strong><span style="color:#3399FF;">时间格式均为：YYYYMMDDHHmmss。例如2000年1月2日下午3点4分5秒表示为字符串“20000102150405”</span></strong>--%>
                                     </td>
                                 </tr>
                                  <tr>
@@ -275,7 +276,7 @@
                                                         <th style="width: 150px;">
                                                             数据传输速率(BPS)
                                                         </th>
-                                                        <th>
+                                                        <th style="width: 100px;">
                                                         </th>
                                                     </tr>
                                                     <tbody>
@@ -345,7 +346,7 @@
                                                         <th style="width: 125px;">
                                                             数据传输速率
                                                         </th>
-                                                        <th>
+                                                        <th style="width: 100px;">
                                                         </th>
                                                     </tr>
                                                     <tbody>
@@ -401,10 +402,13 @@
         </table>
     </div>
     <br />
+   <div style="width: 750px; text-align: center;">
+    <asp:Label ID="ltMessage" runat="server" CssClass="error" Text="任务基本信息字段都必须填写。"></asp:Label>
+   </div>
     <div style="width: 750px; text-align: center;">
-        <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" OnClick="btnSubmit_Click" />
+        <asp:Button ID="btnSubmit" runat="server" OnClientClick="return CheckClientValidate();" CssClass="button" Text="保存计划" OnClick="btnSubmit_Click" />
         &nbsp;&nbsp;&nbsp;
-        <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" OnClick="btnSaveTo_Click" />
+        <asp:Button ID="btnSaveTo" runat="server" OnClientClick="return CheckClientValidate();" CssClass="button" Text="另存计划" OnClick="btnSaveTo_Click" />
     &nbsp;&nbsp;
         <asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
                     onclick="btnReset_Click" CausesValidation="False" />

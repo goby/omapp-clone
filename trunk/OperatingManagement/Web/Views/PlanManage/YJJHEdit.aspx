@@ -106,6 +106,12 @@
                     Width="390px" Height="75px" TextMode="MultiLine"></asp:TextBox>
             </td>
         </tr>
+        <tr id="trMessage" runat="server" visible="false">
+            <th></th>
+            <td>
+                <asp:Label ID="ltMessage" runat="server" CssClass="error" Text=""></asp:Label>
+            </td>
+        </tr>
         <tr>
             <th class="style1">&nbsp;</th>
             <td>

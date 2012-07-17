@@ -128,5 +128,41 @@ namespace OperatingManagement.Web.Views.PlanManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPi;
+        
+        /// <summary>
+        /// lblCDSM 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCDSM;
+        
+        /// <summary>
+        /// lblKSM 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblKSM;
+        
+        /// <summary>
+        /// lblKZ1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblKZ1;
+        
+        /// <summary>
+        /// lblKZ2 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblKZ2;
     }
 }

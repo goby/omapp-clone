@@ -31,7 +31,8 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 pnlAll1.Visible = false;
                 pnlAll2.Visible = false;
-
+                BindCheckBoxDestination();
+                DefaultSearch();
                 //ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>hideSelectAll();</script>");
             }
             cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
@@ -51,7 +52,15 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             finally { }
         }
-
+        /// <summary>
+        /// 默认查询两周内的数据
+        /// </summary>
+        private void DefaultSearch()
+        {
+            txtStartDate.Text = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
+            txtEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            btnSearch_Click(new Object(), new EventArgs());
+        }
         private void SaveCondition()
         {
             if (string.IsNullOrEmpty(txtStartDate.Text))
@@ -116,18 +125,71 @@ namespace OperatingManagement.Web.Views.PlanManage
             BindGridView(false);
         }
 
-        void BindRadDestination()
+        /// <summary>
+        /// 绑定发送目标
+        /// </summary>
+        void BindCheckBoxDestination()
         {
+            List<string> targetList;
+            ckbDestination.Items.Clear();
+            targetList = FileExchangeConfig.GetTgtListForSending("GDGS");
+            foreach (string tgt in targetList)
+            {
+                ckbDestination.Items.Add(new ListItem(FileExchangeConfig.GetNameForType(tgt), tgt));
+            }
         }
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
-            BindRadDestination();
+            BindCheckBoxDestination();
         }
         //最终发送
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            try
+            {
+                PlanFileCreator creater = new PlanFileCreator();
+                string SendingFilePaths = "";
+                lblMessage.Text = "";//清空发送信息
+                foreach (ListItem li in ckbDestination.Items)
+                {
+                    if (li.Selected)
+                    {
+                        SendingFilePaths = creater.CreateSendingGDGSFile(txtId.Text, li.Value);
 
+                        XYXSInfo objXYXSInfo = new XYXSInfo();
+                        //发送协议
+                        CommunicationWays protocl = (CommunicationWays)Convert.ToInt32(rbtProtocl.SelectedValue);
+                        //发送方ID （运控中心 YKZX）
+                        int senderid = objXYXSInfo.GetIdByAddrMark(System.Configuration.ConfigurationManager.AppSettings["ZXBM"]);
+                        //接收方ID 
+                        int reveiverid = objXYXSInfo.GetIdByAddrMark(li.Value);
+                        //信息类型id
+                        int infotypeid = (new InfoType()).GetIDByExMark("GDGS");
+                        bool boolResult = true; //文件发送结果
+                        FileSender objSender = new FileSender();
+                        string[] filePaths = SendingFilePaths.Split(',');
+                        for (int i = 0; i < filePaths.Length; i++)
+                        {
+                            boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), filePaths[i], protocl, senderid, reveiverid, infotypeid, true);
+                            if (boolResult)
+                            {
+                                lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
+                            }
+                            else
+                            {
+                                lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
+                            }
+                        }
+
+                    }//li
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("发送计划出现异常，异常原因", ex));
+            }
+            finally { }
         }
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)
@@ -159,6 +221,14 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             Page.Response.Redirect(Request.CurrentExecutionFilePath);
         }
-
+        /// <summary>
+        /// 获取文件完整路径下的文件名
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        private string GetFileNameByFilePath(string filepath)
+        {
+            return filepath.Substring(filepath.LastIndexOf("\\") + 1);
+        }
     }
 }

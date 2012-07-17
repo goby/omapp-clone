@@ -193,6 +193,24 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.TextBox txtLoadEndTime;
         
         /// <summary>
+        /// CompareValidator4 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator4;
+        
+        /// <summary>
+        /// txtLoadName 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtLoadName;
+        
+        /// <summary>
         /// txtLoadContent 控件。
         /// </summary>
         /// <remarks>
@@ -202,13 +220,31 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.TextBox txtLoadContent;
         
         /// <summary>
-        /// CompareValidator4 控件。
+        /// txtSCStationNO 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator4;
+        protected global::System.Web.UI.WebControls.TextBox txtSCStationNO;
+        
+        /// <summary>
+        /// txtSCEquipmentNO 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSCEquipmentNO;
+        
+        /// <summary>
+        /// txtSCFrequencyBand 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSCFrequencyBand;
         
         /// <summary>
         /// txtSCLaps 控件。
@@ -247,13 +283,22 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.CompareValidator CompareValidator2;
         
         /// <summary>
-        /// txtCKLaps 控件。
+        /// txtCKStationNO 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCKLaps;
+        protected global::System.Web.UI.WebControls.TextBox txtCKStationNO;
+        
+        /// <summary>
+        /// txtCKEquipmentNO 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCKEquipmentNO;
         
         /// <summary>
         /// txtCKStartTime 控件。
@@ -283,6 +328,24 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.CompareValidator CompareValidator3;
         
         /// <summary>
+        /// txtCKLaps 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCKLaps;
+        
+        /// <summary>
+        /// txtZSContent 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtZSContent;
+        
+        /// <summary>
         /// txtZSFirst 控件。
         /// </summary>
         /// <remarks>
@@ -299,15 +362,6 @@ namespace OperatingManagement.Web.Views.PlanManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtZSLast;
-        
-        /// <summary>
-        /// txtZSContent 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtZSContent;
         
         /// <summary>
         /// rpWork 控件。
@@ -335,6 +389,15 @@ namespace OperatingManagement.Web.Views.PlanManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtWork_Load_SatID;
+        
+        /// <summary>
+        /// txtWork_Load_Name 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtWork_Load_Name;
         
         /// <summary>
         /// txtWork_Load_Process 控件。
@@ -497,6 +560,15 @@ namespace OperatingManagement.Web.Views.PlanManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpDataManage;
+        
+        /// <summary>
+        /// ltMessage 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ltMessage;
         
         /// <summary>
         /// btnSubmit 控件。

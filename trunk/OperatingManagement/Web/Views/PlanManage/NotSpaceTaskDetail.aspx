@@ -10,103 +10,20 @@
     <form id="form1" runat="server">
     <div>
         <table cellpadding="0" class="edit">
-<%--            <tr>
-                <td>
-                    版本：
-                </td>
-                <td>
-                    <asp:Label ID="lblVersion" runat="server"></asp:Label>
-                </td>
-                <td>
-                    标志：
-                </td>
-                <td>
-                    <asp:Label ID="lblFlag" runat="server"></asp:Label>
-                </td>
-            </tr>
             <tr>
-                <td>
-                    数据主类别：
-                </td>
-                <td>
-                    <asp:Label ID="lblMainType" runat="server"></asp:Label>
-                </td>
-                <td>
-                    数据次类别：
-                </td>
-                <td>
-                    <asp:Label ID="lblDataType" runat="server"></asp:Label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    信源地址：
-                </td>
-                <td>
-                    <asp:Label ID="lblSource" runat="server"></asp:Label>
-                </td>
-                <td>
-                    信宿地址：
-                </td>
-                <td>
-                    <asp:Label ID="lblDestination" runat="server"></asp:Label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    任务代号：
-                </td>
-                <td>
-                    <asp:Label ID="lblMissionCode" runat="server"></asp:Label>
-                </td>
-                <td>
-                    卫星编号：
-                </td>
-                <td>
-                    <asp:Label ID="lblSatelliteCode" runat="server"></asp:Label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    数据日期：
-                </td>
-                <td>
-                    <asp:Label ID="lblDataDate" runat="server"></asp:Label>
-                </td>
-                <td>
-                    数据时间：
-                </td>
-                <td>
-                    <asp:Label ID="lblDataTime" runat="server"></asp:Label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-            </tr>--%>
-
-            <tr>
-                <th>
+                <th style="width:130px;">
                     历元日期：
                 </th>
-                <td>
+                <td style="width:140px;">
                     <asp:Label ID="lblD" runat="server"></asp:Label>
+                    &nbsp;天
                 </td>
-                <th>
+                <th style="width:130px;">
                     历元时刻：
                 </th>
-                <td>
+                <td style="width:140px;">
                     <asp:Label ID="lblT" runat="server"></asp:Label>
+                    &nbsp;毫秒
                 </td>
             </tr>
             <tr>
@@ -115,7 +32,7 @@
                 </th>
                 <td>
                     <asp:Label ID="lblA" runat="server"></asp:Label>
-                    &nbsp;0.1m
+                    &nbsp;米
                 </td>
                 <th>
                     升交点赤经：
@@ -131,14 +48,14 @@
                 </th>
                 <td>
                     <asp:Label ID="lblRa" runat="server"></asp:Label>
-                    &nbsp;0.1m
+                    &nbsp;米
                 </td>
                 <th>
                     近地点地心距：
                 </th>
                 <td>
                     <asp:Label ID="lblRp" runat="server"></asp:Label>
-                    &nbsp;0.1m
+                    &nbsp;米
                 </td>
             </tr>
             <tr>
@@ -147,7 +64,7 @@
                 </th>
                 <td>
                     <asp:Label ID="lblE" runat="server"></asp:Label>
-                </td>
+                    &nbsp;</td>
                 <th>
                     轨道倾角：
                 </th>
@@ -186,6 +103,30 @@
                 <td>
                     <asp:Label ID="lblPi" runat="server"></asp:Label>
                     &nbsp;秒/天
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    大气阻力摄动系数：</th>
+                <td>
+                    <asp:Label ID="lblCDSM" runat="server"></asp:Label>
+                    &nbsp;米<sup>2</sup>/千克</td>
+                <th>
+                    光压摄动系数：</th>
+                <td>
+                    <asp:Label ID="lblKSM" runat="server"></asp:Label>
+                    &nbsp;米<sup>2</sup>/千克</td>
+            </tr>
+            <tr>
+                <th>
+                    扩展字1：</th>
+                <td>
+                    <asp:Label ID="lblKZ1" runat="server"></asp:Label>
+                </td>
+                <th>
+                    扩展字2：</th>
+                <td>
+                    <asp:Label ID="lblKZ2" runat="server"></asp:Label>
                 </td>
             </tr>
         </table>
