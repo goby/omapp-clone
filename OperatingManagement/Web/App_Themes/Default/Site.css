@@ -98,8 +98,13 @@ legend{ font-size:14px;font-weight:600;padding:2px 4px 8px 4px}
 .body .left{width:200px;height:auto;position:absolute;z-index:1;left:10px;top:54px;}
 .body .left .title{width:100%;height:30px;background:url(images/left-menu-title.png) no-repeat 0 0;}
 .body .left .content{background:#f2f2f2;border-left:solid 1px #2f559b;}
+.body .left .content ul ul{display:none;}
 .body .left .content ul,.body .left .content ul li{list-style:none;margin:0;padding:0;}
-.body .left .content ul li span{display:block;padding-left:30px;height:30px;line-height:30px;background:url(images/arrow-right.gif) no-repeat 10px center;font-weight:bold}
+.body .left .content ul li{border-bottom:solid 1px #ccc;}
+.body .left .content ul li li{border:0}
+.body .left .content ul li span{cursor:pointer;display:block;padding-left:30px;height:30px;line-height:30px;background:url(images/arrow-right.gif) no-repeat 10px center;font-weight:bold}
+.body .left .content ul li:hover span{background:url(images/arrow-down.gif) no-repeat 10px 5px;}
+.body .left .content ul li:hover ul{display:block;}
 .body .left .content ul li ul li a{display:block;height:30px;line-height:30px;padding-left:30px;text-decoration:none;cursor:pointer;color:#000;background:url(images/left-menu-layer.png) no-repeat center -30px}
 .body .left .content ul li ul li a:hover{background-position:right -60px;color:#ff0000;}
 .body .left .content ul li ul li a.selected,.body .left .content ul li ul li a:hover.selected{background-position:right 0;color:#fff;}
