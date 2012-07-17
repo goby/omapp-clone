@@ -164,6 +164,9 @@
         </table>
     </div>
         </asp:Panel>
+    <div id="divMessage"  title="消息">
+            <asp:Label ID="lblMessage" runat="server" ForeColor="Red"></asp:Label>
+        </div>
         <div id="dialog-form" style="display:none" title="提示信息">
 	    <p class="content"></p>
     </div>
