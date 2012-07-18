@@ -74,6 +74,7 @@
     <Content Include="App_Data\FileExchangeConfig.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="App_Data\GDJSJGFormat.xml" />
     <Content Include="App_Data\menuIndex.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -206,6 +207,7 @@
     <Content Include="Views\BusinessManage\CommunicationResourceAdd.aspx" />
     <Content Include="Views\BusinessManage\CommunicationResourceEdit.aspx" />
     <Content Include="Views\BusinessManage\GDJHFX.aspx" />
+    <Content Include="Views\BusinessManage\GDJSCurves.aspx" />
     <Content Include="Views\BusinessManage\GDYB.aspx" />
     <Content Include="Views\BusinessManage\GetFileRcvInfos.aspx" />
     <Content Include="Views\BusinessManage\GetFileSInfos.aspx" />
@@ -402,6 +404,13 @@
     </Compile>
     <Compile Include="Views\BusinessManage\GDJHFX.aspx.designer.cs">
       <DependentUpon>GDJHFX.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GDJSCurves.aspx.cs">
+      <DependentUpon>GDJSCurves.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GDJSCurves.aspx.designer.cs">
+      <DependentUpon>GDJSCurves.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\GDYB.aspx.cs">
       <DependentUpon>GDYB.aspx</DependentUpon>

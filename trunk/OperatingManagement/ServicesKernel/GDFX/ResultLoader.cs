@@ -20,52 +20,128 @@ namespace ServicesKernel.GDFX
             }
         }
 
-        private string LoadCutPreResult(string filePath, ResultType resultType, ResultDataType dataType
-            , int postion, bool parseDate, out List<DateTime> dates, out List<double> datas)
+        /// <summary>
+        /// 载入轨道计算结果文件指定数据
+        /// </summary>
+        /// <param name="filePath">结果文件路径</param>
+        /// <param name="resultType">结果类型</param>
+        /// <param name="dataType">数据列名</param>
+        /// <param name="parseDate">是否解析日期</param>
+        /// <param name="dates">日期</param>
+        /// <param name="dblDatas">double型数据列</param>
+        /// <param name="intDatas">int型数据列</param>
+        /// <returns></returns>
+        public string LoadResultFile(string filePath, string resultType, string dataType
+            , bool parseDate, out List<DateTime> dates, out List<double> dblDatas, out List<int> intDatas
+            , out double maxValue, out double minValue, out int totalCount)
         {
             dates = new List<DateTime>();
-            datas = new List<double>();
+            dblDatas = new List<double>();
+            intDatas = new List<int>();
+            maxValue = double.MinValue;
+            minValue = double.MaxValue;
+            totalCount = 0;
 
             string strResult = string.Empty;
             bool blResult;
             string strLine = string.Empty;
-            string strTmp = string.Empty;
             int iLine = 1;
+            int iTick = 1;
+            double dbTmp = 0;
+            //int iTmp = 0;
             string[] strDatas;
             DateTime date;
-            string strFileName = FileNames[System.Enum.GetName(typeof(ResultType), resultType)];
-            string strFileFullName = Path.Combine(filePath, strFileName);
+            ResultType oRType = FormatXMLConfig.GetTypeByName(resultType);
 
-            strResult = string.Format("读取文件【{0}】出错，", strFileName);
+            #region Load Config Info
+            if (oRType == null)
+            {
+                strResult = string.Format("读取轨道计算配置信息{0}失败", resultType);
+                return strResult;
+            }
+
+            ResultType oCSType;
+            if (resultType.ToLower() == "cutpre_unw" || resultType.ToLower() == "cutana_stw" || resultType.ToLower() == "cutana_unw")
+            {
+                oCSType = FormatXMLConfig.GetTypeByName("CutPre_STW");
+                if (oCSType != null)
+                    oRType.Results = oCSType.Results;
+                else
+                {
+                    strResult = "读取轨道计算配置信息CutPre_STW失败";
+                    return strResult;
+                }
+            }
+
+            ResultData oRData = oRType.GetDataByName(dataType);
+            if (oRData == null)
+            {
+                strResult = "读取轨道计算配置信息Data失败";
+                return strResult;
+            }
+            #endregion
+
+            string strFileName = oRType.FileName;
+            string strFileFullName = Path.Combine(filePath, strFileName);
+            string[] files = Directory.GetFiles(filePath, oRType.FileName, SearchOption.TopDirectoryOnly);
+            if (files.Length == 0)
+            {
+                strResult = string.Format("在文件目录中找不到结果文件",oRType.FileName);
+                return strResult;
+            }
+            strFileFullName = files[0];
+            strResult = string.Format("读取{0}文件【{1}】出错，", resultType, strFileName);
             StreamReader oReader = new StreamReader(strFileFullName);
             oReader.BaseStream.Seek(0, SeekOrigin.Begin);
+            strLine = oReader.ReadLine();
             strLine = oReader.ReadLine();
 
             while (strLine != null && !strLine.Equals(string.Empty))
             {
-                strDatas = DataValidator.SplitRowDatas(strLine);
-                if (parseDate)
+                if ((oRType.IsBigFile && iTick == 1) || !oRType.IsBigFile)
                 {
-                    blResult = DataValidator.ValidateDateColon(strDatas, 0, out date);
+                    strDatas = DataValidator.SplitRowDatas(strLine);
+                    if (parseDate)
+                    {
+                        blResult = DataValidator.ValidateDateColon(strDatas, 0, out date);
+                        if (!blResult)
+                        {
+                            strResult += string.Format("行{0}日期格式错误", iLine);
+                            oReader.Close();
+                            return strResult;
+                        }
+                        dates.Add(date);
+                    }
+
+                    //if (oRData.Type == DataType.doubletype)
+                        blResult = DataValidator.ValidateFloat(strDatas[oRData.Position], oRData.IntLen + oRData.DecLen, oRData.DecLen, out dbTmp);
+                    //else
+                    //    blResult = DataValidator.ValidateInt(strDatas[oRData.Position], oRData.IntLen, out iTmp);
                     if (!blResult)
                     {
-                        strResult += string.Format("行{0}日期格式错误", iLine);
+                        strResult += string.Format("行{0}数据格式错误", iLine);
                         oReader.Close();
                         return strResult;
                     }
-                    dates.Add(date);
+
+                    //if (oRData.Type == DataType.doubletype)
+                        dblDatas.Add(dbTmp);
+                    //else
+                    //    intDatas.Add(iTmp);
+                    if (dbTmp < minValue)
+                        minValue = dbTmp;
+                    if (dbTmp > maxValue)
+                        maxValue = dbTmp;
                 }
-                //blResult = DataValidator.ValidateFloat(
                 strLine = oReader.ReadLine();
                 iLine++;
+                iTick++;
+                if (oRType.IsBigFile && iTick == 301)//对于大文件，每n分钟显示一个点
+                    iTick = 1;
             }
+            oReader.Close();
+            totalCount = iLine;
             return strResult;
-        }
-
-        private void LoadCutPreResult(string filePath, ResultType resultType, ResultDataType dataType, int postion, out List<DateTime> dates, out List<int> datas)
-        {
-            dates = new List<DateTime>();
-            datas = new List<int>();
         }
 
         /// <summary>
@@ -109,51 +185,6 @@ namespace ServicesKernel.GDFX
             }
         }
     }
-
-    public enum ResultType
-    {
-        /// <summary>
-        /// 交会预报，STW结果
-        /// </summary>
-        CutPre_STW = 0,
-        /// <summary>
-        /// 交会预报，UNW结果
-        /// </summary>
-        CutPre_UNW = 1,
-        /// <summary>
-        /// 交会分析，STW结果
-        /// </summary>
-        CutAna_STW = 2,
-        /// <summary>
-        /// 交会分析，UNW结果
-        /// </summary>
-        CutAna_UNW = 3,
-        /// <summary>
-        /// 轨道预报，空间位置预报，J2000系
-        /// </summary>
-        GDYB_MapJ = 4,
-        /// <summary>
-        /// 轨道预报，空间位置预报，WGS-84坐标系
-        /// </summary>
-        GDYB_MapW = 5,
-        /// <summary>
-        /// 轨道预报，星下点预报
-        /// </summary>
-        GDYB_SubSatPoint = 6,
-        /// <summary>
-        /// 轨道预报，测站观测量
-        /// </summary>
-        GDYB_StaObsPre = 7,
-        /// <summary>
-        /// 轨道预报，观测引导文件
-        /// </summary>
-        GDYB_ObsGuiding = 8,
-        /// <summary>
-        /// 轨道预报，太阳角度
-        /// </summary>
-        GDYB_SunAH = 9,
-    }
-
     public enum ResultDataType
     {
         /// <summary>

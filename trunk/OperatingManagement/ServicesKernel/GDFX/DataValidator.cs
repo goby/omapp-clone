@@ -203,22 +203,22 @@ namespace ServicesKernel.GDFX
         public static string GetArrayTimeString(string[] datas, int iIdx)
         {
             int iTmp = 0;
-            iTmp = datas[iIdx].IndexOf('.');
-            iIdx += 5;
+            int iLast = iIdx + 5;
+            iTmp = datas[iLast].IndexOf('.');
             //目地是把秒变成xx.xxx格式，时间解析只认这个
             string sLeft;
             string sRight;
             if (iTmp >= 0)
             {
-                sLeft = int.Parse(datas[iIdx].Substring(0, iTmp)).ToString("00");
-                sRight = int.Parse(datas[iIdx].Substring(iTmp + 1)).ToString("000");
-                datas[iIdx] = sLeft + "." + sRight;
+                sLeft = int.Parse(datas[iLast].Substring(0, iTmp)).ToString("00");
+                sRight = int.Parse(datas[iLast].Substring(iTmp + 1)).ToString("000");
+                datas[iLast] = sLeft + "." + sRight;
             }
             else
-                datas[iIdx] = int.Parse(datas[iIdx]).ToString("00") + ".000";
+                datas[iLast] = int.Parse(datas[iLast]).ToString("00") + ".000";
 
             return string.Format("{0}{1}{2} {3}{4}{5}", datas[iIdx], datas[iIdx + 1].PadLeft(2, '0'), datas[iIdx + 2].PadLeft(2, '0')
-                    , datas[iIdx + 3].PadLeft(2, '0'), datas[iIdx + 4].PadLeft(2, '0'), datas[iIdx]);
+                    , datas[iIdx + 3].PadLeft(2, '0'), datas[iIdx + 4].PadLeft(2, '0'), datas[iLast]);
         }
 
         /// <summary>
@@ -230,22 +230,22 @@ namespace ServicesKernel.GDFX
         public static string GetColonArrayTimeString(string[] datas, int iIdx)
         {
             int iTmp = 0;
-            iTmp = datas[iIdx].IndexOf('.');
-            iIdx += 3;
+            int iLast = iIdx + 3;
+            iTmp = datas[iLast].IndexOf('.');
             //目地是把秒变成xx.xxx格式，时间解析只认这个
             string sLeft;
             string sRight;
             if (iTmp >= 0)
             {
-                sLeft = datas[iIdx].Substring(0, iTmp);
-                sRight = datas[iIdx].Substring(iTmp + 1).TrimEnd(new char[]{'0'}).PadRight(3, '0');
-                datas[iIdx] = sLeft + "." + sRight;
+                sLeft = datas[iLast].Substring(0, iTmp);
+                sRight = datas[iLast].Substring(iTmp + 1).TrimEnd(new char[] { '0' }).PadRight(3, '0');
+                datas[iLast] = sLeft + "." + sRight;
             }
             else
-                datas[iIdx] = int.Parse(datas[iIdx]).ToString("00") + ".000";
+                datas[iLast] = datas[iLast] + ".000";
 
             return string.Format("{0}{1}{2} {3}", datas[iIdx], datas[iIdx + 1].PadLeft(2, '0'), datas[iIdx + 2].PadLeft(2, '0')
-                    , datas[iIdx + 3]);
+                    , datas[iLast]);
         }
     }
 }
