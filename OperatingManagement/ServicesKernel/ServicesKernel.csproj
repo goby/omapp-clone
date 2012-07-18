@@ -63,6 +63,7 @@
     <Compile Include="GDFX\CutAnalyzer.cs" />
     <Compile Include="GDFX\CutPrer.cs" />
     <Compile Include="GDFX\DataValidator.cs" />
+    <Compile Include="GDFX\FormatXMLConfig.cs" />
     <Compile Include="GDFX\GDFXProcessor.cs" />
     <Compile Include="GDFX\Intepolater.cs" />
     <Compile Include="GDFX\ObsPrer.cs" />

@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <result>
   <type>
+    <!-- 交会预报，STW结果-->
     <name>CutPre_STW</name>
-    <filename>CutSTW.dat</filename>
+    <displayname>交会预报STW结果</displayname>
+    <filename>CutSTW*.txt</filename>
+    <isBigFile>false</isBigFile>
     <data>
       <name>dR</name>
       <position>4</position>
@@ -54,20 +57,179 @@
     </data>
   </type>
   <type>
+    <!-- 交会预报，UNW结果，同STW结果Data-->
     <name>CutPre_UNW</name>
-    <filename>CutUNW.dat</filename>
+    <displayname>交会预报UNW结果</displayname>
+    <filename>CutUNW*.txt</filename>
+    <isBigFile>false</isBigFile>
+    <data>
+      <name>dR</name>
+      <position>4</position>
+      <datatype>double</datatype>
+      <intlen>8</intlen>
+      <declen>2</declen>
+    </data>
+    <data>
+      <name>A</name>
+      <position>5</position>
+      <datatype>double</datatype>
+      <intlen>4</intlen>
+      <declen>3</declen>
+    </data>
+    <data>
+      <name>E</name>
+      <position>6</position>
+      <datatype>double</datatype>
+      <intlen>4</intlen>
+      <declen>3</declen>
+    </data>
+    <data>
+      <name>ddR</name>
+      <position>7</position>
+      <datatype>double</datatype>
+      <intlen>6</intlen>
+      <declen>4</declen>
+    </data>
+    <data>
+      <name>dA</name>
+      <position>8</position>
+      <datatype>double</datatype>
+      <intlen>6</intlen>
+      <declen>4</declen>
+    </data>
+    <data>
+      <name>dE</name>
+      <position>9</position>
+      <datatype>double</datatype>
+      <intlen>6</intlen>
+      <declen>5</declen>
+    </data>
+    <data>
+      <name>ANG</name>
+      <position>10</position>
+      <datatype>double</datatype>
+      <intlen>4</intlen>
+      <declen>3</declen>
+    </data>
   </type>
   <type>
+    <!-- 交会分析，STW结果，同CutPre_STW结果Data-->
+    <name>CutAna_STW</name>
+    <displayname>交会分析STW结果</displayname>
+    <filename>CutAnalyze_STW*.txt</filename>
+    <isBigFile>false</isBigFile>
+    <data>
+      <name>dR</name>
+      <position>4</position>
+      <datatype>double</datatype>
+      <intlen>8</intlen>
+      <declen>2</declen>
+    </data>
+    <data>
+      <name>A</name>
+      <position>5</position>
+      <datatype>double</datatype>
+      <intlen>4</intlen>
+      <declen>3</declen>
+    </data>
+    <data>
+      <name>E</name>
+      <position>6</position>
+      <datatype>double</datatype>
+      <intlen>4</intlen>
+      <declen>3</declen>
+    </data>
+    <data>
+      <name>ddR</name>
+      <position>7</position>
+      <datatype>double</datatype>
+      <intlen>6</intlen>
+      <declen>4</declen>
+    </data>
+    <data>
+      <name>dA</name>
+      <position>8</position>
+      <datatype>double</datatype>
+      <intlen>6</intlen>
+      <declen>4</declen>
+    </data>
+    <data>
+      <name>dE</name>
+      <position>9</position>
+      <datatype>double</datatype>
+      <intlen>6</intlen>
+      <declen>5</declen>
+    </data>
+    <data>
+      <name>ANG</name>
+      <position>10</position>
+      <datatype>double</datatype>
+      <intlen>4</intlen>
+      <declen>3</declen>
+    </data>
+  </type>
+  <type>
+    <!-- 交会分析，UNW结果，同CutPre_STW结果Data-->
     <name>CutAna_UNW</name>
-    <filename>CutAnalyze_STW.dat</filename>
+    <displayname>交会分析UNW结果</displayname>
+    <filename>CutAnalyze_UNW*.txt</filename>
+    <isBigFile>false</isBigFile>
+    <data>
+      <name>dR</name>
+      <position>4</position>
+      <datatype>double</datatype>
+      <intlen>8</intlen>
+      <declen>2</declen>
+    </data>
+    <data>
+      <name>A</name>
+      <position>5</position>
+      <datatype>double</datatype>
+      <intlen>4</intlen>
+      <declen>3</declen>
+    </data>
+    <data>
+      <name>E</name>
+      <position>6</position>
+      <datatype>double</datatype>
+      <intlen>4</intlen>
+      <declen>3</declen>
+    </data>
+    <data>
+      <name>ddR</name>
+      <position>7</position>
+      <datatype>double</datatype>
+      <intlen>6</intlen>
+      <declen>4</declen>
+    </data>
+    <data>
+      <name>dA</name>
+      <position>8</position>
+      <datatype>double</datatype>
+      <intlen>6</intlen>
+      <declen>4</declen>
+    </data>
+    <data>
+      <name>dE</name>
+      <position>9</position>
+      <datatype>double</datatype>
+      <intlen>6</intlen>
+      <declen>5</declen>
+    </data>
+    <data>
+      <name>ANG</name>
+      <position>10</position>
+      <datatype>double</datatype>
+      <intlen>4</intlen>
+      <declen>3</declen>
+    </data>
   </type>
   <type>
-    <name>CutAna_UNW</name>
-    <filename>CutAnalyze_UNW.dat</filename>
-  </type>
-  <type>
+    <!-- 轨道预报，空间位置预报，J2000系-->
     <name>GDYB_MapJ</name>
-    <filename>MapJ.dat</filename>
+    <displayname>轨道预报J2000系空间位置预报</displayname>
+    <filename>MapJ*.txt</filename>
+    <isBigFile>true</isBigFile>
     <data>
       <name>X</name>
       <position>4</position>
@@ -112,12 +274,60 @@
     </data>
   </type>
   <type>
+    <!-- 轨道预报，空间位置预报，WGS-84坐标系，同J2000系结果Data-->
     <name>GDYB_MapW</name>
-    <filename>MapW.dat</filename>
+    <displayname>轨道预报WGS-84坐标系空间位置预报</displayname>
+    <filename>MapW*.txt</filename>
+    <isBigFile>true</isBigFile>
+    <data>
+      <name>X</name>
+      <position>4</position>
+      <datatype>double</datatype>
+      <intlen>10</intlen>
+      <declen>6</declen>
+    </data>
+    <data>
+      <name>Y</name>
+      <position>5</position>
+      <datatype>double</datatype>
+      <intlen>10</intlen>
+      <declen>6</declen>
+    </data>
+    <data>
+      <name>Z</name>
+      <position>6</position>
+      <datatype>double</datatype>
+      <intlen>10</intlen>
+      <declen>6</declen>
+    </data>
+    <data>
+      <name>vX</name>
+      <position>7</position>
+      <datatype>double</datatype>
+      <intlen>10</intlen>
+      <declen>6</declen>
+    </data>
+    <data>
+      <name>vY</name>
+      <position>8</position>
+      <datatype>double</datatype>
+      <intlen>10</intlen>
+      <declen>6</declen>
+    </data>
+    <data>
+      <name>vZ</name>
+      <position>9</position>
+      <datatype>double</datatype>
+      <intlen>10</intlen>
+      <declen>6</declen>
+    </data>
   </type>
   <type>
+    <!-- 轨道预报，星下点预报-->
     <name>GDYB_SubSatPoint</name>
-    <filename>SubSatPoint.dat</filename>
+    <displayname>轨道预报星下点预报</displayname>
+    <filename>SubSatPoint*.txt</filename>
+    <isBigFile>true</isBigFile>
     <data>
       <name>L</name>
       <position>4</position>
@@ -141,8 +351,11 @@
     </data>
   </type>
   <type>
+    <!-- 轨道预报，测站观测量-->
     <name>GDYB_StaObsPre</name>
-    <filename>StaObsPre.dat</filename>
+    <displayname>轨道预报测站观测量</displayname>
+    <filename>StaObsPre*.txt</filename>
+    <isBigFile>true</isBigFile>
     <data>
       <name>R</name>
       <position>4</position>
@@ -215,8 +428,11 @@
     </data>
   </type>
   <type>
+    <!-- 轨道预报，观测引导文件-->
     <name>GDYB_ObsGuiding</name>
-    <filename>ObsGuiding.dat</filename>
+    <displayname>轨道预报观测引导文件</displayname>
+    <filename>ObsGuiding*.txt</filename>
+    <isBigFile>false</isBigFile>
     <data>
       <name>A</name>
       <position>4</position>
@@ -247,8 +463,11 @@
     </data>
   </type>
   <type>
+    <!-- 轨道预报，太阳角度文件-->
     <name>GDYB_SunAH</name>
-    <filename>SunAH.dat</filename>
+    <displayname>轨道预报太阳角度文件</displayname>
+    <filename>SunAH*.txt</filename>
+    <isBigFile>true</isBigFile>
     <data>
       <name>A</name>
       <position>4</position>
@@ -265,23 +484,38 @@
     </data>
   </type>
   <type>
+    <!-- 轨道预报，测站可见性统计文件-->
     <name>GDYB_VisibleStatistics</name>
-    <filename>VisibleStatistics.dat</filename>
+    <displayname>轨道预报测站可见性统计文件</displayname>
+    <filename>VisibleStatistics*.txt</filename>
+    <isBigFile>false</isBigFile>
   </type>
   <type>
+    <!-- 轨道预报，进出站及航捷数据统计文件-->
     <name>GDYB_StationInOut</name>
-    <filename>StationInOut.dat</filename>
+    <displayname>轨道预报进出站及航捷数据统计</displayname>
+    <filename>StationInOut*.txt</filename>
+    <isBigFile>false</isBigFile>
   </type>
   <type>
+    <!-- 轨道预报，日凌历元文件-->
     <name>GDYB_SunTransit</name>
-    <filename>SunTransit.dat</filename>
+    <displayname>轨道预报日凌历元文件</displayname>
+    <filename>SunTransit*.txt</filename>
+    <isBigFile>false</isBigFile>
   </type>
   <type>
+    <!-- 轨道预报，月凌历元文件-->
     <name>GDYB_MoonTransit</name>
-    <filename>MoonTransit.dat</filename>
+    <displayname>轨道预报月凌历元文件</displayname>
+    <filename>MoonTransit*.txt</filename>
+    <isBigFile>false</isBigFile>
   </type>
   <type>
+    <!-- 轨道预报，地影历元文件-->
     <name>GDYB_EarthShadow</name>
-    <filename>EarthShadow.dat</filename>
+    <displayname>轨道预报地影历元文件</displayname>
+    <filename>EarthShadow*.txt</filename>
+    <isBigFile>false</isBigFile>
   </type>
 </result>

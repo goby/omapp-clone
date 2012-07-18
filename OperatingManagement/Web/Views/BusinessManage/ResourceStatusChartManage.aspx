@@ -85,7 +85,7 @@
             <asp:Legend Name="图例" Title="资源状态图例"></asp:Legend>
         </Legends>
         <Series>
-            <asp:Series Name="seriesHealthStatus" ChartType="RangeBar" YValueType="Date" Legend="图例" LegendText="健康状态">
+            <asp:Series Name="seriesHealthStatus" ChartType="RangeBar" YValueType="Date" Legend="图例" LegendText="异常状态">
             </asp:Series>
             <asp:Series Name="seriesUseStatus" ChartType="RangeBar" YValueType="Date" Legend="图例" LegendText="占用状态">
             </asp:Series>
