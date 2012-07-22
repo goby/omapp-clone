@@ -102,9 +102,16 @@ function showPopSendForm() {
         modal: true,
         buttons: {
             '确定': function () {
-                $(this).dialog("close");
-                var btn = $('#btnSubmit');
-                btn.click();
+                var list = $('#tartgetPanel').find('input:checkbox:[checked]');
+                if (list.length == 0) {
+                    $('#lblTargetMessage').show();
+                }
+                else {
+                    $('#lblTargetMessage').hide();
+                    $(this).dialog("close");
+                    var btn = $('#btnSubmit');
+                    btn.click();
+                }
             },
             '取消': function () {
                 $(this).dialog("close");
@@ -113,12 +120,6 @@ function showPopSendForm() {
     });
     _dialog.dialog('open');
     _dialog.parent().appendTo($("form:first"));
-    return false;
-}
-
-function callSend() {
-    var btn = $('#btnSubmit');
-    btn.click();
     return false;
 }
 

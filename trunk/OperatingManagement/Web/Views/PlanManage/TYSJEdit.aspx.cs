@@ -207,11 +207,12 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 objTYSJ.TaskID = ucTask1.SelectedItem.Value;
                 objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
+                int planid = (new Sequence()).GetTYSJSequnce();
 
                 //检查文件是否已经存在
                 if (creater.TestTYSJFileName(objTYSJ))
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('操作过快，请稍后重试');</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('存在同名文件，请一分钟后重试');</script>");
                     return;
                 }
                 string filepath = creater.CreateTYSJFile(objTYSJ, 0);
@@ -220,7 +221,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     TaskID = objTYSJ.TaskID,
                     PlanType = "TYSJ",
-                    PlanID = (new Sequence()).GetTYSJSequnce(),
+                    PlanID = planid,
                     StartTime = DateTime.ParseExact(objTYSJ.StartTime, "yyyyMMddHHmmss", provider),
                     EndTime = DateTime.ParseExact(objTYSJ.EndTime, "yyyyMMddHHmmss", provider),
                     SRCType = 0,
@@ -230,6 +231,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 };
                 var result = jh.Add();
 
+                txtJXH.Text = planid.ToString();
                 trMessage.Visible = true;
                 ltMessage.Text = "计划保存成功";
                 //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");

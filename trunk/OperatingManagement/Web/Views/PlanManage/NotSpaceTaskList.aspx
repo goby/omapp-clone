@@ -163,12 +163,14 @@
                 <b>请选择计划待发送的目标系统，可以多选</b>
                 <br />
                     <asp:CheckBoxList ID="ckbDestination" runat="server">
-                        <asp:ListItem Value="0">天基目标观测应用研究分系统</asp:ListItem>
+                        <%--<asp:ListItem Value="0">天基目标观测应用研究分系统</asp:ListItem>
                         <asp:ListItem Value="1">空间遥操作应用研究分系统</asp:ListItem>
                         <asp:ListItem Value="2">空间机动应用研究分系统</asp:ListItem>
                         <asp:ListItem Value="3">仿真推演分系统</asp:ListItem>
-                        <asp:ListItem Value="4">空间信息综合应用中心</asp:ListItem>
+                        <asp:ListItem Value="4">空间信息综合应用中心</asp:ListItem>--%>
                     </asp:CheckBoxList>
+                    <br />
+                    <asp:Label ClientIDMode="Static" CssClass="error" ID="lblTargetMessage" runat="server" ForeColor="Red" style="display:none;">请选择要发送的目标系统</asp:Label>
                 </td>
             </tr>
         </table>

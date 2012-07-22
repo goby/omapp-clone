@@ -62,7 +62,7 @@
                         <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" 
                                 OnClick="btnHidden_Click" />
                                 <div>
-                    <asp:Button ClientIDMode="Static" ID="btnSubmit" class="button" runat="server" OnClick="btnSubmit_Click"
+                    <asp:Button ClientIDMode="Static"  ID="btnSubmit" class="button" runat="server" OnClick="btnSubmit_Click"
                         Text="发送" />
                     &nbsp;&nbsp;
                     <asp:Button ID="btnCancel" class="button" runat="server" OnClick="btnCancel_Click"
@@ -85,6 +85,7 @@
                                     发送所选计划</button>
                             </td>
                             <td class="listTitle-c2">
+                             <asp:Label ID="Label1" runat="server" Text="Label"  CssClass="error">发送计划时如选择多个计划，生成的外发文件后面的计划会覆盖前面的计划</asp:Label>
                                 <div class="load" id="submitIndicator" style="display: none">
                                     提交中，请稍候。。。</div>
                             </td>
@@ -193,7 +194,7 @@
                 <br />
                 <asp:RadioButtonList ID="rbtProtocl" runat="server" 
                 RepeatDirection="Horizontal">
-                        <asp:ListItem Value="2" Selected>Fep with Tcp</asp:ListItem>
+                        <asp:ListItem Value="2" Selected="True">Fep with Tcp</asp:ListItem>
                         <asp:ListItem Value="1">Fep with Udp</asp:ListItem>
                         <asp:ListItem Value="0">Ftp</asp:ListItem>
                     </asp:RadioButtonList>
@@ -210,12 +211,13 @@
                     </asp:CheckBoxList>
                     
                     <br />
+                   <asp:Label ClientIDMode="Static" CssClass="error" ID="lblTargetMessage" runat="server" ForeColor="Red" style="display:none;">请选择要发送的目标系统</asp:Label>
                 </td>
             </tr>
         </table>
     </div>
         <div id="divMessage"  title="消息">
-            <asp:Label ID="lblMessage" runat="server" ForeColor="Red"></asp:Label>
+            <asp:Label ID="lblMessage" CssClass="error" runat="server" ForeColor="Red"></asp:Label>
         </div>
         <div id="dialog-form" style="display:none" title="提示信息">
 	    <p class="content"></p>

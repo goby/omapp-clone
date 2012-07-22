@@ -27,6 +27,7 @@ namespace OperatingManagement.Framework.Storage
         /// DMJHMS:地面计划设备工作模式;
         /// DMJHBID:地面计划信息类别标志;
         /// TYSJSatName:仿真推演试验数据卫星名称;
+        /// YDSJTargetList:引导数据发送目标列表;
         /// </param>
         /// <returns></returns>
         public static List<PlanParameter> ReadParameters(string elementname)

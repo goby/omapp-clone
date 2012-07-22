@@ -45,7 +45,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     pnlAll2.Visible = false;
 
                     lblMessage.Text = ""; //文件发送消息清空
-
+                    lblMessage.Visible = false;
+                    DefaultSearch();
                     //由计划页面返回时，重新载入之前的查询结果
                     if (Request.QueryString["startDate"] != null || Request.QueryString["endDate"] != null || Request.QueryString["type"] != null)
                     {
@@ -76,6 +77,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             try
             {
                 lblMessage.Text = ""; //文件发送消息清空
+                lblMessage.Visible = false;
                 SaveCondition();
                 cpPager.CurrentPage = 1;
                 BindGridView(true);
@@ -100,6 +102,15 @@ namespace OperatingManagement.Web.Views.PlanManage
             ViewState["_PlanType"] = ddlType.SelectedItem.Value;
         }
         /// <summary>
+        /// 默认查询两周内的数据
+        /// </summary>
+        private void DefaultSearch()
+        {
+            txtStartDate.Text = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
+            txtEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            //btnSearch_Click(new Object(), new EventArgs());
+        }
+        /// <summary>
         /// 绑定列表
         /// </summary>
         void BindGridView(bool fromSearch)
@@ -115,7 +126,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 else
                 {
-                    startDate = DateTime.Now.AddDays(-14);  //默认查询14天的数据
+                   // startDate = DateTime.Now.AddDays(-14);  //默认查询14天的数据
                 }
                 if (!string.IsNullOrEmpty(txtEndDate.Text))
                 {
@@ -193,6 +204,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 PlanFileCreator creater = new PlanFileCreator();
                 string SendingFilePaths = "";
                 lblMessage.Text = "";//清空发送信息
+                lblMessage.Visible = false;
                 foreach (ListItem li in ckbDestination.Items)
                 {
                     if (li.Selected)
@@ -240,7 +252,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                             //        infotypeid = (new InfoType()).GetIDByExMark("HJXX");
                             //    }
                             //}
-                            boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), filePaths[i], protocl, senderid, reveiverid, infotypeid, true);
+                            boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), GetFilePathByFilePath(filePaths[i]), protocl, senderid, reveiverid, infotypeid, true);
+                            lblMessage.Visible = true;
                             if (boolResult)
                             {
                                 lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
@@ -249,6 +262,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                             {
                                 lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
                             }
+                            
                         }
 
                     }//li
@@ -347,6 +361,16 @@ namespace OperatingManagement.Web.Views.PlanManage
         private string GetFileNameByFilePath(string filepath)
         {
             return filepath.Substring(filepath.LastIndexOf("\\")+1);
+        }
+
+        /// <summary>
+        /// 获取文件完整路径下的文件路径
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        private string GetFilePathByFilePath(string filepath)
+        {
+            return filepath.Substring(0, filepath.LastIndexOf("\\") + 1);
         }
     }
 }
