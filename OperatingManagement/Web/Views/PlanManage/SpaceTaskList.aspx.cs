@@ -16,6 +16,8 @@ using System.Web.Security;
 using System.Data;
 using ServicesKernel.File;
 using ServicesKernel.DataFrame;
+using OperatingManagement.Framework.Storage;
+using OperatingManagement.Framework.Components;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
@@ -149,12 +151,13 @@ namespace OperatingManagement.Web.Views.PlanManage
         /// </summary>
         void BindCheckBoxDestination()
         {
-            List<string> targetList;
+            List<PlanParameter> targetList;
             ckbDestination.Items.Clear();
-            targetList = FileExchangeConfig.GetTgtListForSending("YDSJ");
-            foreach (string tgt in targetList)
+            targetList = PlanParameters.ReadParameters("YDSJTargetList");
+            //targetList = FileExchangeConfig.GetTgtListForSending("YDSJ");
+            foreach (PlanParameter tgt in targetList)
             {
-                ckbDestination.Items.Add(new ListItem(FileExchangeConfig.GetNameForType(tgt), tgt));
+                ckbDestination.Items.Add(new ListItem(tgt.Text, tgt.Value));
             }
         }
 

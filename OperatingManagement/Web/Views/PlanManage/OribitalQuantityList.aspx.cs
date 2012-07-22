@@ -165,13 +165,13 @@ namespace OperatingManagement.Web.Views.PlanManage
                         //接收方ID 
                         int reveiverid = objXYXSInfo.GetIdByAddrMark(li.Value);
                         //信息类型id
-                        int infotypeid = (new InfoType()).GetIDByExMark("GDGS");
+                        int infotypeid = (new InfoType()).GetIDByExMark("GD");
                         bool boolResult = true; //文件发送结果
                         FileSender objSender = new FileSender();
                         string[] filePaths = SendingFilePaths.Split(',');
                         for (int i = 0; i < filePaths.Length; i++)
                         {
-                            boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), filePaths[i], protocl, senderid, reveiverid, infotypeid, true);
+                            boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), GetFilePathByFilePath(filePaths[i]), protocl, senderid, reveiverid, infotypeid, true);
                             if (boolResult)
                             {
                                 lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
@@ -229,6 +229,16 @@ namespace OperatingManagement.Web.Views.PlanManage
         private string GetFileNameByFilePath(string filepath)
         {
             return filepath.Substring(filepath.LastIndexOf("\\") + 1);
+        }
+
+        /// <summary>
+        /// 获取文件完整路径下的文件路径
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        private string GetFilePathByFilePath(string filepath)
+        {
+            return filepath.Substring(0, filepath.LastIndexOf("\\") + 1);
         }
     }
 }

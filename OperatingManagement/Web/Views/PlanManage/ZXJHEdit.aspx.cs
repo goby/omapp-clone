@@ -1079,7 +1079,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 //检查文件是否已经存在
                 if (creater.TestZXJHFileName(obj))
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('操作过快，请稍后重试');</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('存在同名文件，请一分钟后重试');</script>");
                     return;
                 }
                 string filepath = creater.CreateZXJHFile(obj, 0);

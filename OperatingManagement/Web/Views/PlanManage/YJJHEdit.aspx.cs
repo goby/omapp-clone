@@ -215,7 +215,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 if (creater.TestYJJHFileName(obj))
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('操作过快，请稍后重试');</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('存在同名文件，请一分钟后重试');</script>");
                     return;
                 }
 
@@ -235,7 +235,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 };
                 var result = jh.Add();
 
-                //txtJXH.Text = obj.JXH;  //另存后显示新的序号
+                txtJXH.Text = obj.JXH;  //另存后显示新的序号
                 trMessage.Visible = true;
                 ltMessage.Text = "计划保存成功";
                // ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");

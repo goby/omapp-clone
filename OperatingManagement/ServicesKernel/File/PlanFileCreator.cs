@@ -984,6 +984,8 @@ namespace ServicesKernel.File
             XYXSInfo info = new XYXSInfo();
             info = info.GetByAddrMark(desValue);
             string destinationName = info.ADDRName + info.ADDRMARK + "(" +info.EXCODE+ ")";
+            OperatingManagement.DataAccessLayer.BusinessManage.InfoType itype = new OperatingManagement.DataAccessLayer.BusinessManage.InfoType();
+
             string SendFileNames  ="";
             List<JH> listJH = (new JH()).SelectByIDS(ids);
             YJJH obj;
@@ -1012,6 +1014,7 @@ namespace ServicesKernel.File
                 #region 写入文件
                 filename = FileNameMaker.GenarateFileNameTypeThree("YJJH", desValue);
                 SendFileNames = SendFileNames+SendingPath+",";
+                itype = itype.GetByExMark("YJJH");
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
@@ -1019,7 +1022,7 @@ namespace ServicesKernel.File
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：" + (new Task()).GetTaskName(obj.TaskID));
-                sw.WriteLine("[信息类别B]：应用研究计划(00 70 06 00)");
+                sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                 sw.WriteLine("[数据区行数L]：0001");
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[格式标识1]：XXFL  JXH  SysName  StartTime  EndTime  Task");
@@ -1197,6 +1200,7 @@ namespace ServicesKernel.File
                 #region XXXQ
                 filename = FileNameMaker.GenarateFileNameTypeThree("XXXQ", desValue);
                 SendFileNames = SendFileNames + SendingPath + ",";
+                itype = itype.GetByExMark("XXXQ");
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
@@ -1204,7 +1208,7 @@ namespace ServicesKernel.File
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：" + (new Task()).GetTaskName(obj.TaskID));
-                sw.WriteLine("[信息类别B]：空间信息需求");
+                sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                 sw.WriteLine("[数据区行数L]：0002");
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[数据区]：");
@@ -1373,7 +1377,8 @@ namespace ServicesKernel.File
             XYXSInfo info = new XYXSInfo();
             info = info.GetByAddrMark(desValue);
             string destinationName = info.ADDRName + info.ADDRMARK + "(" +info.EXCODE+ ")";
-           
+            OperatingManagement.DataAccessLayer.BusinessManage.InfoType itype = new OperatingManagement.DataAccessLayer.BusinessManage.InfoType();
+
             string SendFileNames = "";
             List<JH> listJH = (new JH()).SelectByIDS(ids);
             TYSJ obj;
@@ -1402,6 +1407,7 @@ namespace ServicesKernel.File
                 #region 写入文件
                 filename = FileNameMaker.GenarateFileNameTypeThree("TYSJ", desValue);
                 SendFileNames = SendFileNames + SendingPath + ",";
+                itype = itype.GetByExMark("TYSJ");
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
@@ -1409,7 +1415,7 @@ namespace ServicesKernel.File
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：" + (new Task()).GetTaskName(obj.TaskID));
-                sw.WriteLine("[信息类别B]：仿真推演数据(00 70 32 00)");
+                sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                 sw.WriteLine("[数据区行数L]：0001");
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[格式标识1]：SatName  Type  TestItem  StartTime  EndTime  Condition");
@@ -1436,6 +1442,7 @@ namespace ServicesKernel.File
             XYXSInfo info = new XYXSInfo();
             info = info.GetByAddrMark(desValue);
             string destinationName = info.ADDRName + info.ADDRMARK + "(" + info.EXCODE + ")";
+            OperatingManagement.DataAccessLayer.BusinessManage.InfoType itype = new OperatingManagement.DataAccessLayer.BusinessManage.InfoType();
 
             string SendFileNames = "";
             List<GD> listJH = (new GD()).SelectByIDS(ids);
@@ -1446,13 +1453,14 @@ namespace ServicesKernel.File
             foreach (GD obj in listJH)
             {
                 #region 写入文件
+                itype = itype.GetByExMark("GD");
 
                 sw.WriteLine("<说明区>");
                 sw.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：" + (new Task()).GetTaskName(obj.TaskID));
-                sw.WriteLine("[信息类别B]：卫星轨道根数(00 70 08 00)");
+                sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                 sw.WriteLine("[数据区行数L]：0001");
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[格式标识1]：T01  T02  a  e  i  Ω  w  M");
