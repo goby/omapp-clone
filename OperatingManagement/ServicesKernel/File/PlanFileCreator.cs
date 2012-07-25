@@ -708,6 +708,14 @@ namespace ServicesKernel.File
                 xmlWriter.WriteString(obj.Work_Command_Direction);
                 xmlWriter.WriteEndElement();
 
+                xmlWriter.WriteStartElement("开始时间");
+                xmlWriter.WriteString(obj.Work_Command_StartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("结束时间");
+                xmlWriter.WriteString(obj.Work_Command_EndTime);
+                xmlWriter.WriteEndElement();
+
                 xmlWriter.WriteStartElement("特殊需求");
                 xmlWriter.WriteString(obj.Work_Command_SpecialRequire);
                 xmlWriter.WriteEndElement();
@@ -845,6 +853,10 @@ namespace ServicesKernel.File
             for (int i = 1; i <= obj.DataManages.Count; i++)
             {
                 xmlWriter.WriteStartElement("工作内容"+i.ToString());
+
+                    xmlWriter.WriteStartElement("对应试验ID");
+                    xmlWriter.WriteString(obj.DataManages[i - 1].SYID);
+                    xmlWriter.WriteEndElement();
 
                     xmlWriter.WriteStartElement("工作");
                     xmlWriter.WriteString(obj.DataManages[i - 1].Work);

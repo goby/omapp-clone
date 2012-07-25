@@ -392,7 +392,7 @@
                     <table>
                         <tr>
                             <th colspan="4" style="text-align: center">
-                                指令管理</th>
+                                指令制作</th>
                         </tr>
                         <tr>
                             <th style="width: 120px;">
@@ -434,6 +434,26 @@
                             </th>
                             <td>
                                 <asp:TextBox ID="txtWork_Command_Direction" runat="server" CssClass="text" Text='<%# Eval("Work_Command_Direction")%>'></asp:TextBox>
+                            </td>
+                            </tr>
+                        <tr>
+                            <th>
+                                开始时间</th>
+                            <td>
+                                <asp:TextBox ID="txtWork_Command_StartTime" runat="server" CssClass="text" 
+                                Text='<%# Eval("Work_Command_StartTime")%>' 
+                                    onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                            </td>
+                            <th>
+                                结束时间</th>
+                            <td>
+                                <asp:TextBox ID="txtWork_Command_EndTime" runat="server" CssClass="text" 
+                                Text='<%# Eval("Work_Command_EndTime")%>' 
+                                    onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                            <asp:CompareValidator ID="CompareValidator14" runat="server" 
+                        ControlToCompare="txtWork_Command_StartTime" ControlToValidate="txtWork_Command_EndTime" 
+                        Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                        Operator="GreaterThan" Type="Date"></asp:CompareValidator>
                             </td>
                             </tr>
                         <tr>
@@ -543,6 +563,68 @@
                                         Text="删除" />
                                 </td>
                             </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            </tbody> </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    数据管理
+                </th>
+                <td>
+                    <asp:Repeater ID="rpDataManage" runat="server" OnItemCommand="rpDataManage_ItemCommand">
+                        <HeaderTemplate>
+                            <table class="edit1">
+                                <tbody>
+                        </HeaderTemplate>
+                        <ItemTemplate>
+                                <tr>
+                                    <th style="width: 120px;">
+                                        对应试验ID
+                                    </th>
+                                    <td style="width: 270px;">
+                                        <asp:TextBox ID="txtMSYID" CssClass="text" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
+                                    </td>
+                                    <th style="width: 120px;">
+                                        工作
+                                    </th>
+                                    <td style="width: 270px;">
+                                        <asp:TextBox ID="txtMWork" CssClass="text" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
+                                    </td>
+                                    </tr><tr>
+                                    <th>
+                                        开始时间
+                                    </th>
+                                    <td>
+                                        <asp:TextBox ID="txtMStartTime" CssClass="text" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                                    </td>
+                                    <th>
+                                        结束时间
+                                    </th>
+                                    <td>
+                                        <asp:TextBox ID="txtMEndTime" CssClass="text" runat="server" Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                                    </td>
+                                    </tr><tr>
+                                    <th>
+                                        对应数据描述
+                                    </th>
+                                    <td>
+                                        <asp:TextBox ID="txtMDes" CssClass="text" runat="server" Text='<%# Eval("Description")%>'></asp:TextBox>
+                                    </td>
+                                    <td colspan="2">
+                                        <asp:Button ID="btn11" CausesValidation="False" CssClass="button" runat="server"
+                                            CommandName="Add" Text="添加" />
+                                        <asp:Button ID="btn12" CausesValidation="False" CssClass="button" runat="server"
+                                            CommandName="Del" Text="删除" />
+                                            <asp:CompareValidator ID="CompareValidator13" runat="server" 
+                        ControlToCompare="txtMStartTime" ControlToValidate="txtMEndTime" 
+                        Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                        Operator="GreaterThan" Type="Date"></asp:CompareValidator>
+                                    </td>
+                                </tr>
                         </ItemTemplate>
                         <FooterTemplate>
                             </tbody> </table>
@@ -714,64 +796,7 @@
                     </asp:Repeater>
                 </td>
             </tr>
-            <tr>
-                <th>
-                    数据管理
-                </th>
-                <td>
-                    <asp:Repeater ID="rpDataManage" runat="server" OnItemCommand="rpDataManage_ItemCommand">
-                        <HeaderTemplate>
-                            <table class="edit1">
-                                <tr>
-                                    <th style="width: 150px;">
-                                        工作
-                                    </th>
-                                    <th style="width: 150px;">
-                                        对应数据描述
-                                    </th>
-                                    <th style="width: 150px;">
-                                        开始时间
-                                    </th>
-                                    <th style="width: 150px;">
-                                        结束时间
-                                    </th>
-                                    <th>
-                                    </th>
-                                </tr>
-                                <tbody>
-                        </HeaderTemplate>
-                        <ItemTemplate>
-                                <tr>
-                                    <td>
-                                        <asp:TextBox ID="txtMWork" CssClass="text" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="txtMDes" CssClass="text" runat="server" Text='<%# Eval("Description")%>'></asp:TextBox>
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="txtMStartTime" CssClass="text" runat="server" Text='<%# Eval("StartTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="txtMEndTime" CssClass="text" runat="server" Text='<%# Eval("EndTime")%>' onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
-                                    </td>
-                                    <td>
-                                        <asp:Button ID="btn11" CausesValidation="False" CssClass="button" runat="server"
-                                            CommandName="Add" Text="添加" />
-                                        <asp:Button ID="btn12" CausesValidation="False" CssClass="button" runat="server"
-                                            CommandName="Del" Text="删除" />
-                                            <asp:CompareValidator ID="CompareValidator13" runat="server" 
-                        ControlToCompare="txtMStartTime" ControlToValidate="txtMEndTime" 
-                        Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
-                        Operator="GreaterThan" Type="Date"></asp:CompareValidator>
-                                    </td>
-                                </tr>
-                        </ItemTemplate>
-                        <FooterTemplate>
-                            </tbody> </table>
-                        </FooterTemplate>
-                    </asp:Repeater>
-                </td>
-            </tr>
+            
         </table>
         </div>
         <br />

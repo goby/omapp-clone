@@ -200,6 +200,14 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string Work_Command_Direction { get; set; }
         /// <summary>
+        /// 指令制作-上注要求
+        /// </summary>
+        public string Work_Command_StartTime { get; set; }
+        /// <summary>
+        /// 指令制作-指令发送方向
+        /// </summary>
+        public string Work_Command_EndTime { get; set; }
+        /// <summary>
         /// 指令制作-特殊需求
         /// </summary>
         public string Work_Command_SpecialRequire { get; set; }
@@ -381,6 +389,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
     public class ZXJH_DataManage
     {
         #region -Properties-
+        /// <summary>
+        /// 对应试验ID
+        /// </summary>
+        public string SYID { get; set; }
         /// <summary>
         /// 工作
         /// </summary>

@@ -117,12 +117,12 @@ namespace OperatingManagement.Web.Views.PlanManage
 
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(HfFileIndex.Value);
-            #region 实验内容
+            #region 试验计划
             XmlNode root = xmlDoc.SelectSingleNode("中心运行计划/日期");
             txtDate.Text = root.InnerText;
-            root = xmlDoc.SelectSingleNode("中心运行计划/试验内容/对应日期的试验个数");
+            root = xmlDoc.SelectSingleNode("中心运行计划/试验计划/对应日期的试验个数");
             txtSYCount.Text = root.InnerText;
-            root = xmlDoc.SelectSingleNode("中心运行计划/试验内容/试验项");
+            root = xmlDoc.SelectSingleNode("中心运行计划/试验计划/试验内容");
             foreach (XmlNode n in root.ChildNodes)
             {
                 switch (n.Name)
@@ -140,16 +140,22 @@ namespace OperatingManagement.Web.Views.PlanManage
                         txtSYDays.Text = n.InnerText;
                         break;
                     case "载荷":
+                        txtLoadName.Text = n["载荷名称"].InnerText;
                         txtLoadStartTime.Text = n["开始时间"].InnerText;
                         txtLoadEndTime.Text = n["结束时间"].InnerText;
                         txtLoadContent.Text = n["动作内容"].InnerText;
                         break;
                     case "数传":
+                        txtSCStationNO.Text = n["站编号"].InnerText;
+                        txtSCEquipmentNO.Text = n["设备编号"].InnerText;
+                        txtSCFrequencyBand.Text = n["频段"].InnerText;
                         txtSCLaps.Text = n["圈次"].InnerText;
                         txtSCStartTime.Text = n["开始时间"].InnerText;
                         txtSCEndTime.Text = n["结束时间"].InnerText;
                         break;
                     case "测控":
+                        txtCKStationNO.Text = n["站编号"].InnerText;
+                        txtCKEquipmentNO.Text = n["设备编号"].InnerText;
                         txtCKLaps.Text = n["圈次"].InnerText;
                         txtCKStartTime.Text = n["开始时间"].InnerText;
                         txtCKEndTime.Text = n["结束时间"].InnerText;
@@ -172,26 +178,29 @@ namespace OperatingManagement.Web.Views.PlanManage
                     case "载荷管理":
                         txtWork_Load_SYID.Text = n["对应试验ID"].InnerText;
                         txtWork_Load_SatID.Text = n["卫星代号"].InnerText;
+                        txtWork_Load_Name.Text = n["载荷名称"].InnerText;
                         txtWork_Load_Process.Text = n["进程"].InnerText;
                         txtWork_Load_Event.Text = n["事件"].InnerText;
-                        txtWork_Load_Action.Text = n["动作内容"].InnerText;
+                        txtWork_Load_Action.Text = n["动作"].InnerText;
                         txtWork_Load_StartTime.Text = n["开始时间"].InnerText;
                         txtWork_Load_EndTime.Text = n["结束时间"].InnerText;
                         break;
-                    case "指令管理":
+                    case "指令制作":
                         txtWork_Command_SYID.Text = n["对应试验ID"].InnerText;
                         txtWork_Command_SYItem.Text = n["试验项目"].InnerText;
                         txtWork_Command_SatID.Text = n["卫星代号"].InnerText;
-                        txtWork_Command_Content.Text = n["指令内容"].InnerText;
+                        txtWork_Command_Content.Text = n["作业"].InnerText;
                         txtWork_Command_UpRequire.Text = n["上注要求"].InnerText;
                         txtWork_Command_Direction.Text = n["指令发送方向"].InnerText;
+                        txtWork_Command_StartTime.Text = n["开始时间"].InnerText;
+                        txtWork_Command_EndTime.Text = n["结束时间"].InnerText;
                         txtWork_Command_SpecialRequire.Text = n["特殊需求"].InnerText;
                         break;
                 }
             }
             #endregion
             #region Repeater
-            root = xmlDoc.SelectSingleNode("中心运行计划/工作计划/工作内容");
+            root = xmlDoc.SelectSingleNode("中心运行计划/工作计划/任务管理");
             foreach (XmlNode n in root.ChildNodes)
             {
                 wc = new ZXJH_WorkContent();
@@ -213,7 +222,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                 dh.SatID = n["卫星代号"].InnerText;
                 dh.Laps = n["圈次"].InnerText;
                 dh.MainStationName = n["主站名称"].InnerText;
+                dh.MainStationEquipment = n["主站设备"].InnerText;
                 dh.BakStationName = n["备站名称"].InnerText;
+                dh.BakStationEquipment = n["备站设备"].InnerText;
                 dh.Content = n["工作内容"].InnerText;
                 dh.StartTime = n["实时开始处理时间"].InnerText;
                 dh.EndTime = n["实时结束处理时间"].InnerText;
@@ -644,11 +655,13 @@ namespace OperatingManagement.Web.Views.PlanManage
                 foreach (RepeaterItem it in rp.Items)
                 {
                     dm = new ZXJH_DataManage();
+                    TextBox txtMSYID = (TextBox)it.FindControl("txtMSYID");
                     TextBox txtMWork = (TextBox)it.FindControl("txtMWork");
                     TextBox txtMDes = (TextBox)it.FindControl("txtMDes");
                     TextBox txtMStartTime = (TextBox)it.FindControl("txtMStartTime");
                     TextBox txtMEndTime = (TextBox)it.FindControl("txtMEndTime");
 
+                    dm.SYID = txtMSYID.Text;
                     dm.Work = txtMWork.Text;
                     dm.Description = txtMDes.Text;
                     dm.StartTime = txtMStartTime.Text;
@@ -709,12 +722,18 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.SYName = txtSYName.Text;
             obj.SYDateTime = txtSYDateTime.Text;
             obj.SYDays = txtSYDays.Text;
+            obj.SYLoadName = txtLoadName.Text;
             obj.SYLoadStartTime = txtLoadStartTime.Text;
             obj.SYLoadEndTime = txtLoadEndTime.Text;
             obj.SYLoadContent = txtLoadContent.Text;
+            obj.SY_CKStationNO = txtSCStationNO.Text;
+            obj.SY_SCEquipmentNO = txtSCEquipmentNO.Text;
+            obj.SY_SCFrequencyBand = txtSCFrequencyBand.Text;
             obj.SY_SCLaps = txtSCLaps.Text;
             obj.SY_SCStartTime = txtSCStartTime.Text;
             obj.SY_SCEndTime = txtSCEndTime.Text;
+            obj.SY_CKStationNO = txtCKStationNO.Text;
+            obj.SY_CKEquipmentNO = txtCKEquipmentNO.Text;
             obj.SY_CKLaps = txtCKLaps.Text;
             obj.SY_CKStartTime = txtCKStartTime.Text;
             obj.SY_CKEndTime = txtCKEndTime.Text;
@@ -723,6 +742,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.SY_ZSContent = txtZSContent.Text;
             obj.Work_Load_SYID = txtWork_Load_SYID.Text;
             obj.Work_Load_SatID = txtWork_Load_SatID.Text;
+            obj.Work_Load_Name = txtWork_Load_Name.Text;
             obj.Work_Load_Process = txtWork_Load_Process.Text;
             obj.Work_Load_Event = txtWork_Load_Event.Text;
             obj.Work_Load_Action = txtWork_Load_Action.Text;
@@ -731,9 +751,11 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.Work_Command_SYID = txtWork_Command_SYID.Text;
             obj.Work_Command_SYItem = txtWork_Command_SYItem.Text;
             obj.Work_Command_SatID = txtWork_Command_SatID.Text;
-            obj.Work_Command_Content = txtWork_Command_Content.Text;
+            obj.Work_Command_Content = txtWork_Command_Content.Text;//作业
             obj.Work_Command_UpRequire = txtWork_Command_UpRequire.Text;
             obj.Work_Command_Direction = txtWork_Command_Direction.Text;
+            obj.Work_Command_StartTime = txtWork_Command_StartTime.Text;
+            obj.Work_Command_EndTime = txtWork_Command_EndTime.Text;
             obj.Work_Command_SpecialRequire = txtWork_Command_SpecialRequire.Text;
 
             obj.WorkContents = new List<ZXJH_WorkContent>();
@@ -776,7 +798,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                 TextBox txtSHSatID = (TextBox)it.FindControl("txtSHSatID");
                 TextBox txtSHLaps = (TextBox)it.FindControl("txtSHLaps");
                 TextBox txtSHMaintStation = (TextBox)it.FindControl("txtSHMaintStation");
+                TextBox txtSHMainStationEquipment = (TextBox)it.FindControl("txtSHMainStationEquipment");
                 TextBox txtSHBakStation = (TextBox)it.FindControl("txtSHBakStation");
+                TextBox txtSHBakStationEquipment = (TextBox)it.FindControl("txtSHBakStationEquipment");
                 TextBox txtSHContent = (TextBox)it.FindControl("txtSHContent");
                 TextBox txtSHStartTime = (TextBox)it.FindControl("txtSHStartTime");
                 TextBox txtSHEndTime = (TextBox)it.FindControl("txtSHEndTime");
@@ -786,7 +810,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                 dh.SatID = txtSHSatID.Text;
                 dh.Laps = txtSHLaps.Text;
                 dh.MainStationName = txtSHMaintStation.Text;
+                dh.MainStationEquipment = txtSHMainStationEquipment.Text;
                 dh.BakStationName = txtSHBakStation.Text;
+                dh.BakStationEquipment = txtSHBakStationEquipment.Text;
                 dh.Content = txtSHContent.Text;
                 dh.StartTime = txtSHStartTime.Text;
                 dh.EndTime = txtSHEndTime.Text;
@@ -810,6 +836,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.DirectAndMonitors.Add(dam);
             }
             #endregion
+            #region RealTimeControl
             foreach (RepeaterItem it in rpRealTimeControl.Items)
             {
                 rc = new ZXJH_RealTimeControl();
@@ -824,6 +851,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 rc.EndTime = txtRCEndTime.Text;
                 obj.RealTimeControls.Add(rc);
             }
+            #endregion
             #region SYEstimate
             foreach (RepeaterItem it in rpSYEstimate.Items)
             {
@@ -838,20 +866,24 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.SYEstimates.Add(sye);
             }
             #endregion
+            #region DataManage
             foreach (RepeaterItem it in rpDataManage.Items)
             {
                 dm = new ZXJH_DataManage();
+                TextBox txtMSYID = (TextBox)it.FindControl("txtMSYID");
                 TextBox txtMWork = (TextBox)it.FindControl("txtMWork");
                 TextBox txtMDes = (TextBox)it.FindControl("txtMDes");
                 TextBox txtMStartTime = (TextBox)it.FindControl("txtMStartTime");
                 TextBox txtMEndTime = (TextBox)it.FindControl("txtMEndTime");
 
+                dm.SYID = txtMSYID.Text;
                 dm.Work = txtMWork.Text;
                 dm.Description = txtMDes.Text;
                 dm.StartTime = txtMStartTime.Text;
                 dm.EndTime = txtMEndTime.Text;
                 obj.DataManages.Add(dm);
             }
+            #endregion
 
             obj.TaskID = ucTask1.SelectedItem.Value;
             obj.SatID = ucSatellite1.SelectedItem.Value;
@@ -949,6 +981,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             obj.Work_Command_Content = txtWork_Command_Content.Text;//作业
             obj.Work_Command_UpRequire = txtWork_Command_UpRequire.Text;
             obj.Work_Command_Direction = txtWork_Command_Direction.Text;
+            obj.Work_Command_StartTime = txtWork_Command_StartTime.Text;
+            obj.Work_Command_EndTime = txtWork_Command_EndTime.Text;
             obj.Work_Command_SpecialRequire = txtWork_Command_SpecialRequire.Text;
 
             obj.WorkContents = new List<ZXJH_WorkContent>();
@@ -1029,6 +1063,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.DirectAndMonitors.Add(dam);
             }
             #endregion
+            #region REalTimeControl
             foreach (RepeaterItem it in rpRealTimeControl.Items)
             {
                 rc = new ZXJH_RealTimeControl();
@@ -1043,6 +1078,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 rc.EndTime = txtRCEndTime.Text;
                 obj.RealTimeControls.Add(rc);
             }
+            #endregion
             #region SYEstimate
             foreach (RepeaterItem it in rpSYEstimate.Items)
             {
@@ -1057,20 +1093,24 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.SYEstimates.Add(sye);
             }
             #endregion
+            #region DataManage
             foreach (RepeaterItem it in rpDataManage.Items)
             {
                 dm = new ZXJH_DataManage();
+                TextBox txtMSYID = (TextBox)it.FindControl("txtMSYID");
                 TextBox txtMWork = (TextBox)it.FindControl("txtMWork");
                 TextBox txtMDes = (TextBox)it.FindControl("txtMDes");
                 TextBox txtMStartTime = (TextBox)it.FindControl("txtMStartTime");
                 TextBox txtMEndTime = (TextBox)it.FindControl("txtMEndTime");
 
+                dm.SYID = txtMSYID.Text;
                 dm.Work = txtMWork.Text;
                 dm.Description = txtMDes.Text;
                 dm.StartTime = txtMStartTime.Text;
                 dm.EndTime = txtMEndTime.Text;
                 obj.DataManages.Add(dm);
             }
+            #endregion
 
             PlanFileCreator creater = new PlanFileCreator();
 
