@@ -1458,27 +1458,46 @@ namespace ServicesKernel.File
 
             string SendFileNames = "";
             List<GD> listJH = (new GD()).SelectByIDS(ids);
-
-            filename = FileNameMaker.GenarateFileNameTypeThree("GDGS", desValue);
-            SendFileNames = SendFileNames + SendingPath + ",";
-            sw = new StreamWriter(SendingPath);
+            Dictionary<string, int> dicTaskID = new Dictionary<string, int>();
             foreach (GD obj in listJH)
             {
+                if (dicTaskID.ContainsKey(obj.TaskID))
+                {
+                    dicTaskID[obj.TaskID] = dicTaskID[obj.TaskID] + 1;
+                }
+                else
+                {
+                    dicTaskID.Add(obj.TaskID, 1);
+                    
+                }
+            }
+            //相同任务的轨道数据写进一个文件里
+            foreach (string key in dicTaskID.Keys)
+            {
                 #region 写入文件
+                filename = FileNameMaker.GenarateFileNameTypeThree("GDGS", desValue);
+                SendFileNames = SendFileNames + SendingPath + ",";
                 itype = itype.GetByExMark("GD");
+                sw = new StreamWriter(SendingPath);
 
                 sw.WriteLine("<说明区>");
                 sw.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
-                sw.WriteLine("[任务代码M]：" + (new Task()).GetTaskName(obj.TaskID));
+                sw.WriteLine("[任务代码M]：" + (new Task()).GetTaskName(key));
                 sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
-                sw.WriteLine("[数据区行数L]：0001");
+                sw.WriteLine("[数据区行数L]："+dicTaskID[key].ToString("0000") );
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[格式标识1]：T01  T02  a  e  i  Ω  w  M");
                 sw.WriteLine("[数据区]：");
-                sw.WriteLine(obj.Times.ToString("yyyyMMdd") + "  " + obj.Times.ToString("HHmmssffff") + "  "
-                    + obj.A + "  " + obj.E + "  " + obj.I + "  " + obj.Q + "  " + obj.W + "  " + obj.M);
+                foreach (GD obj in listJH)
+                {
+                    if (obj.TaskID == key)
+                    {
+                        sw.WriteLine(obj.Times.ToString("yyyyMMdd") + "  " + obj.Times.ToString("HHmmssffff") + "  "
+                            + obj.A + "  " + obj.E + "  " + obj.I + "  " + obj.Q + "  " + obj.W + "  " + obj.M);
+                    }
+                }
                 sw.WriteLine("<辅助区>");
                 sw.WriteLine("[备注]：");
                 sw.WriteLine("[结束]：END");
