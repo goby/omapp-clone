@@ -9,10 +9,12 @@ prompt
 prompt Creating procedure UP_GD_GETLIST
 prompt ================================
 prompt
-create or replace procedure htcuser.up_GD_Getlist
+create or replace procedure up_GD_Getlist
 (
        p_startTime in TB_GD.Ctime%type,
        p_endTime in TB_GD.Ctime%type,
+       p_taskID in TB_GD.Taskid%type,
+       p_iType in TB_GD.Itype%type,
        o_cursor out sys_refcursor
 ) is
 v_sql varchar2(4000);
@@ -30,6 +32,14 @@ v_sql:='SELECT t.*, case when k.taskname  is null then t.taskid else k.taskname 
    if (p_endTime is not null)
    then
       v_sql:=v_sql||' and t.ctime <= '''|| p_endTime ||'''';
+   end if;
+   if (p_taskID !='-1')
+   then
+      v_sql:=v_sql||' and t.Taskid = '''|| p_taskID ||'''';
+   end if;
+   if (p_iType !='-1')
+   then
+      v_sql:=v_sql||' and t.Itype = '''|| p_iType ||'''';
    end if;
 
    OPEN o_cursor For v_sql;

@@ -151,34 +151,33 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
+        /// <param name="taskid"></param>
+        /// <param name="itype"></param>
         /// <returns></returns>
-        public List<GD> GetListByDate(DateTime startDate, DateTime endDate)
+        public List<GD> GetList(DateTime startDate, DateTime endDate,string taskid,int itype)
         {
-            DataSet ds = null;
 
-                ds = new DataSet();
-                ds.Tables.Add();
-                OracleCommand command = _database.GetStoreProcCommand(GET_OribitalQuantityList_ByDate);
-                if (startDate == DateTime.MinValue)
-                {
-                    _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
-                }
-                else
-                {
-                    _database.AddInParameter(command, "p_startDate", OracleDbType.Date, startDate);
-                }
-                if (endDate == DateTime.MinValue)
-                {
-                    _database.AddInParameter(command, "p_endDate", OracleDbType.Date, DBNull.Value);
-                }
-                else
-                {
-                    _database.AddInParameter(command, "p_endDate", OracleDbType.Date, endDate);
-                }
-                using (IDataReader reader = _database.ExecuteReader(command))
-                {
-                    ds.Tables[0].Load(reader);
-                }
+            object oBeginTime = null;
+            object oEndTime = null;
+            if (startDate == DateTime.MinValue)
+                oBeginTime = DBNull.Value;
+            else
+                oBeginTime = startDate;
+            if (endDate == DateTime.MinValue)
+                oEndTime = DBNull.Value;
+            else
+                oEndTime = endDate;
+
+            DataSet ds = null;
+            OracleParameter p = PrepareRefCursor();
+
+            ds = _database.SpExecuteDataSet("up_GD_Getlist", new OracleParameter[]{
+                new OracleParameter("p_startDate", oBeginTime),
+                new OracleParameter("p_endDate", oEndTime),
+                new OracleParameter("p_taskID", taskid), 
+                new OracleParameter("p_iType", itype), 
+                p
+            });
 
                 List<GD> objDatas = new List<GD>();
                 if (ds != null && ds.Tables.Count == 1)
@@ -221,7 +220,81 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
                 return objDatas;
         }
+        /// <summary>
+        /// 根据时间获取轨道根数列表
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public List<GD> GetListByDate(DateTime startDate, DateTime endDate)
+        {
+            DataSet ds = null;
 
+            ds = new DataSet();
+            ds.Tables.Add();
+            OracleCommand command = _database.GetStoreProcCommand(GET_OribitalQuantityList_ByDate);
+            if (startDate == DateTime.MinValue)
+            {
+                _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
+            }
+            else
+            {
+                _database.AddInParameter(command, "p_startDate", OracleDbType.Date, startDate);
+            }
+            if (endDate == DateTime.MinValue)
+            {
+                _database.AddInParameter(command, "p_endDate", OracleDbType.Date, DBNull.Value);
+            }
+            else
+            {
+                _database.AddInParameter(command, "p_endDate", OracleDbType.Date, endDate);
+            }
+            using (IDataReader reader = _database.ExecuteReader(command))
+            {
+                ds.Tables[0].Load(reader);
+            }
+
+            List<GD> objDatas = new List<GD>();
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    objDatas.Add(new GD()
+                    {
+                        Id = Convert.ToInt32(dr["ID"].ToString()),
+                        CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        TaskID = dr["TaskID"].ToString(),
+                        TaskName = dr["TaskName"].ToString(),
+                        SatID = dr["Satid"].ToString(),
+                        SatellteName = dr["WXMC"].ToString(),
+                        IType = Convert.ToInt32(dr["itype"].ToString()),
+                        ICode = dr["icode"].ToString(),
+                        D = Convert.ToInt32(dr["D"].ToString()),
+                        T = Convert.ToInt32(dr["T"].ToString()),
+                        Times = Convert.ToDateTime(dr["Times"].ToString()),
+                        A = Convert.ToDouble(dr["A"].ToString()),
+                        E = Convert.ToDouble(dr["E"].ToString()),
+                        I = Convert.ToDouble(dr["I"].ToString()),
+                        Q = Convert.ToDouble(dr["Q"].ToString()),
+                        W = Convert.ToDouble(dr["W"].ToString()),
+                        M = Convert.ToDouble(dr["M"].ToString()),
+                        P = Convert.ToDouble(dr["P"].ToString()),
+                        PP = Convert.ToDouble(dr["PP"].ToString()),
+                        Ra = Convert.ToDouble(dr["Ra"].ToString()),
+                        Rp = Convert.ToDouble(dr["Rp"].ToString()),
+                        CDSM = Convert.ToDouble(dr["CDSM"].ToString()),
+                        KSM = Convert.ToDouble(dr["KSM"].ToString()),
+                        KZ1 = Convert.ToDouble(dr["KZ1"].ToString()),
+                        KZ2 = Convert.ToDouble(dr["KZ2"].ToString()),
+                        Reserve = dr["Reserve"].ToString(),
+                        DFInfoID = Convert.ToInt32(dr["DFInfoID"].ToString())
+                    });
+                }
+            }
+
+
+            return objDatas;
+        }
         /// <summary>
         /// Selects the specific GD by identification.
         /// </summary>
