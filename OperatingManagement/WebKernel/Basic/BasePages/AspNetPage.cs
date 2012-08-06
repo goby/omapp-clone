@@ -458,7 +458,8 @@ namespace OperatingManagement.WebKernel.Basic
         {
             if (!HasPermission())
             {
-                throw new AspNetException("Accessor deny, you have no permissions!");
+                //throw new AspNetException("Accessor deny, you have no permissions!");
+                throw new AspNetException("访问被拒绝，您没有访问权限!");
             }
         }
         /// <summary>

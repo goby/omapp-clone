@@ -18,13 +18,13 @@
         <table cellspacing="0" cellpadding="0" class="searchTable">
             <tr>
                <th>
-                  起始时间：
+                  计划起始时间：
                </th>
                <td>
                 <asp:TextBox ID="txtStartDate" ClientIDMode="Static" Width="90px"  CssClass="text" runat="server" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                </td>
                <th>
-                  结束时间：
+                  计划结束时间：
                </th>
                <td>
                 
