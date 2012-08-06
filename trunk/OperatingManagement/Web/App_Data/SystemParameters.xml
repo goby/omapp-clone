@@ -32,28 +32,28 @@
     <!--<item text="删除" value="4"></item>-->
   </ResourceStatus>
   <GroundResourceOwner description="地面站资源管理单位列表">
-    <item text="总参" value="总参"></item>
-    <item text="总装" value="总装"></item>
+    <item text="总参" value="01"></item>
+    <item text="总装" value="02"></item>
   </GroundResourceOwner>
   <GroundResourceCoordinate description="地面站资源站址坐标列表">
-    <item text="地心系XYZ" value="地心系XYZ"></item>
-    <item text="地心系BLH" value="地心系BLH"></item>
+    <item text="地心系XYZ" value="01"></item>
+    <item text="地心系BLH" value="02"></item>
   </GroundResourceCoordinate>
   <GroundResourceFunctionType description="地面站资源功能类型列表">
-    <item text="遥测接收" value="遥测接收"></item>
-    <item text="上行遥控" value="上行遥控"></item>
-    <item text="轨道测量" value="轨道测量"></item>
-    <item text="数传接收" value="数传接收"></item>
+    <item text="遥测接收" value="YCJS"></item>
+    <item text="上行遥控" value="SXYK"></item>
+    <item text="轨道测量" value="GDCL"></item>
+    <item text="数传接收" value="SCJS"></item>
   </GroundResourceFunctionType>
   <CommunicationResourceDirection description="通信资源方向列表">
-    <item text="西安卫星测控中心与运控评估中心" value="西安卫星测控中心与运控评估中心"></item>
-    <item text="运控评估中心与数据接收站" value="运控评估中心与数据接收站"></item>
+    <item text="西安卫星测控中心与运控评估中心" value="XA-YK"></item>
+    <item text="运控评估中心与数据接收站" value="YK-SSZ"></item>
   </CommunicationResourceDirection>
   <CenterResourceEquipmentType description="中心资源设备类型列表">
-    <item text="数据收发设备" value="数据收发设备"></item>
-    <item text="加解密平台" value="加解密平台"></item>
-    <item text="遥测信息处理设备" value="遥测信息处理设备"></item>
-    <item text="数传信息处理设备" value="数传信息处理设备"></item>
+    <item text="数据收发设备" value="SFSB"></item>
+    <item text="加解密平台" value="JJMSB"></item>
+    <item text="遥测信息处理设备" value="YCSB"></item>
+    <item text="数传信息处理设备" value="SCSB"></item>
   </CenterResourceEquipmentType>
   <StatusType description="状态类型列表">
     <item text="健康状态" value="1"></item>
@@ -64,9 +64,9 @@
     <item text="异常" value="2"></item>
   </HealthStatus>
   <HealthStatusFunctionType description="健康状态功能类型列表">
-    <item text="数传数据接收" value="数传数据接收"></item>
-    <item text="遥测数据接收" value="遥测数据接收"></item>
-    <item text="遥控操作" value="遥控操作"></item>
+    <item text="数传数据接收" value="SCJS"></item>
+    <item text="遥测数据接收" value="YCJS"></item>
+    <item text="遥控操作" value="YKCZ"></item>
   </HealthStatusFunctionType>
   <UseStatusUsedType description="占用状态占用类型列表">
     <item text="任务占用" value="1"></item>

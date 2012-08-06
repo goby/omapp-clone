@@ -20,6 +20,7 @@
                 <div class="b-r2c3">
                      <div class="eb-c">
                         <div class="eb-c-r1"><b>系统异常信息</b></div>
+                        <div class="eb-c-r1"><a onclick="window.history.back(-1)';">返回</a></div>
                         <hr />
                         <div class="eb-c-r2"><asp:Literal ID="ltError" runat="server" ></asp:Literal></div>
                      </div>

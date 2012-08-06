@@ -44,7 +44,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         protected void btnCalculate_Click(object sender, EventArgs e)
         {
+            ShowMessage("已提交计算");
+        }
 
+        private void ShowMessage(string msg)
+        {
+            ltMessage.Text = msg;
+            ltMessage.Visible = true;
         }
     }
 }
