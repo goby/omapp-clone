@@ -95,8 +95,8 @@
     <Compile Include="PlanManage\MBXQ.cs" />
     <Compile Include="PlanManage\HJXQ.cs" />
     <Compile Include="PlanManage\ZXJH.cs" />
-    <Compile Include="PlanManage\DMJH.cs" />
-    <Compile Include="PlanManage\SBJH.cs" />
+    <Compile Include="PlanManage\DJZYSQ.cs" />
+    <Compile Include="PlanManage\DJZYJH.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System\Permission.cs" />
     <Compile Include="System\Module.cs" />

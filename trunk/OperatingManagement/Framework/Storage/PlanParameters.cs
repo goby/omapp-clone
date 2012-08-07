@@ -156,5 +156,45 @@ namespace OperatingManagement.Framework.Storage
             }
         }
 
+        /// <summary>
+        /// 测控资源使用申请-任务类别
+        /// </summary>
+        /// <returns></returns>
+        public static string ReadDJZYSQMLB()
+        {
+            string fullFileName = GlobalSettings.MapPath(_FullFileName);
+            XElement xe = XElement.Load(fullFileName);
+            string item;
+            try
+            {
+                item = xe.Element("DJZYSQMLB").Value;
+                return item;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 测控资源使用申请-圈标
+        /// </summary>
+        /// <returns></returns>
+        public static string ReadDJZYSQQB()
+        {
+            string fullFileName = GlobalSettings.MapPath(_FullFileName);
+            XElement xe = XElement.Load(fullFileName);
+            string item;
+            try
+            {
+                item = xe.Element("DJZYSQQB").Value;
+                return item;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
     }
 }

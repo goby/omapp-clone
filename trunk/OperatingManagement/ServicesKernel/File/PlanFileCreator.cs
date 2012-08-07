@@ -323,16 +323,16 @@ namespace ServicesKernel.File
         }
 
         /// <summary>
-        /// 内部存储地面站工作计划
+        /// 内部存储测控资源使用申请
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="type">0:新增; 1:修改</param>
         /// <returns></returns>
-        public string CreateDMJHFile(DMJH obj,int type)
+        public string CreateDMJHFile(DJZYSQ obj,int type)
         {
             if (type == 0)
             {
-                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("DMJH", obj.TaskID, obj.SatID);
+                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("DJZYSQ", obj.TaskID, obj.SatID);
                 FilePath = SavePath + filename;
             }
 
@@ -340,72 +340,118 @@ namespace ServicesKernel.File
             xmlWriter.Formatting = Formatting.Indented;
             xmlWriter.WriteStartDocument();
 
-            xmlWriter.WriteStartElement("地面站工作计划");
+            xmlWriter.WriteStartElement("测控资源使用申请");
             #region basicinfo
-            xmlWriter.WriteStartElement("编号");
-            xmlWriter.WriteString(obj.Sequence);
-            xmlWriter.WriteEndElement();
-
             xmlWriter.WriteStartElement("时间");
-            xmlWriter.WriteString(obj.DateTime);
+            xmlWriter.WriteString(obj.SJ);
             xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("工作单位");
-            xmlWriter.WriteString(obj.StationName);
+            xmlWriter.WriteStartElement("申请序列号");
+            xmlWriter.WriteString(obj.SNO);
             xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("设备代号");
-            xmlWriter.WriteString(obj.EquipmentID);
+            xmlWriter.WriteStartElement("航天器标识");
+            xmlWriter.WriteString(obj.SCID);
             xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("任务个数");
-            xmlWriter.WriteString(obj.TaskCount);
+            xmlWriter.WriteStartElement("申请数量");
+            xmlWriter.WriteString(obj.SNUM);
             xmlWriter.WriteEndElement();
             #endregion
 
-            #region 任务
+            #region 申请
+            xmlWriter.WriteStartElement("申请");
             for (int i = 0; i < obj.DMJHTasks.Count; i++)
             {
-                xmlWriter.WriteStartElement("任务");
+                xmlWriter.WriteStartElement("申请内容");
                 #region BasicInfo
-                xmlWriter.WriteStartElement("任务标志");
-                xmlWriter.WriteString(obj.DMJHTasks[i].TaskFlag);
+                xmlWriter.WriteStartElement("申请序号");
+                xmlWriter.WriteString(obj.DMJHTasks[i].SXH);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("申请性质");
+                xmlWriter.WriteString(obj.DMJHTasks[i].SXZ);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("任务类别");
+                xmlWriter.WriteString(obj.DMJHTasks[i].MLB);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("工作方式");
-                xmlWriter.WriteString(obj.DMJHTasks[i].WorkWay);
+                xmlWriter.WriteString(obj.DMJHTasks[i].FS);
                 xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("计划性质");
-                xmlWriter.WriteString(obj.DMJHTasks[i].PlanPropertiy);
+                xmlWriter.WriteStartElement("工作单元");
+                xmlWriter.WriteString(obj.DMJHTasks[i].GZDY);
                 xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("工作模式");
-                xmlWriter.WriteString(obj.DMJHTasks[i].WorkMode);
+                xmlWriter.WriteStartElement("设备代号");
+                xmlWriter.WriteString(obj.DMJHTasks[i].SBDH);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("圈次");
+                xmlWriter.WriteString(obj.DMJHTasks[i].QC);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("圈标");
+                xmlWriter.WriteString(obj.DMJHTasks[i].QB);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("测控事件类型");
+                xmlWriter.WriteString(obj.DMJHTasks[i].SHJ);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("工作点频数量");
+                xmlWriter.WriteString(obj.DMJHTasks[i].FNUM);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("工作点频");
+                #region 工作点频内容
+                for (int j = 0; j < obj.DMJHTasks[i].GZDPs.Count; j++)
+                {
+                    xmlWriter.WriteStartElement("工作点频内容");
+                    xmlWriter.WriteStartElement("点频序号");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].GZDPs[j].FXH);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("频段选择");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].GZDPs[j].PDXZ);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("点频选择");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].GZDPs[j].DPXZ);
+                    xmlWriter.WriteEndElement();
+                    xmlWriter.WriteEndElement();
+                }
+                #endregion
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("同时支持目标数");
+                xmlWriter.WriteString(obj.DMJHTasks[i].TNUM);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("任务准备开始时间");
-                xmlWriter.WriteString(obj.DMJHTasks[i].PreStartTime);
+                xmlWriter.WriteString(obj.DMJHTasks[i].ZHB);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("任务开始时间");
-                xmlWriter.WriteString(obj.DMJHTasks[i].StartTime);
+                xmlWriter.WriteString(obj.DMJHTasks[i].RK);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("跟踪开始时间");
-                xmlWriter.WriteString(obj.DMJHTasks[i].TrackStartTime);
+                xmlWriter.WriteString(obj.DMJHTasks[i].GZK);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("开上行载波时间");
-                xmlWriter.WriteString(obj.DMJHTasks[i].WaveOnStartTime);
+                xmlWriter.WriteString(obj.DMJHTasks[i].KSHX);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("关上行载波时间");
-                xmlWriter.WriteString(obj.DMJHTasks[i].WaveOffStartTime);
+                xmlWriter.WriteString(obj.DMJHTasks[i].GSHX);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("跟踪结束时间");
-                xmlWriter.WriteString(obj.DMJHTasks[i].TrackEndTime);
+                xmlWriter.WriteString(obj.DMJHTasks[i].GZJ);
                 xmlWriter.WriteEndElement();
                 #endregion
 
@@ -415,23 +461,23 @@ namespace ServicesKernel.File
                     xmlWriter.WriteStartElement("实时传输");
 
                     xmlWriter.WriteStartElement("格式标志");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].FormatFlag);
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].GBZ);
                     xmlWriter.WriteEndElement();
 
                     xmlWriter.WriteStartElement("信息流标志");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].InfoFlowFlag);
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].XBZ);
                     xmlWriter.WriteEndElement();
 
                     xmlWriter.WriteStartElement("数据传输开始时间");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].TransStartTime);
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].RTs);
                     xmlWriter.WriteEndElement();
 
                     xmlWriter.WriteStartElement("数据传输结束时间");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].TransEndTime);
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].RTe);
                     xmlWriter.WriteEndElement();
 
                     xmlWriter.WriteStartElement("数据传输速率");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].TransSpeedRate);
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].SL);
                     xmlWriter.WriteEndElement();
                     xmlWriter.WriteEndElement();
                 }
@@ -443,38 +489,39 @@ namespace ServicesKernel.File
                     xmlWriter.WriteStartElement("事后回放");
 
                     xmlWriter.WriteStartElement("格式标志");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].FormatFlag);
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].GBZ);
                     xmlWriter.WriteEndElement();
 
                     xmlWriter.WriteStartElement("信息流标志");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].InfoFlowFlag);
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].XBZ);
                     xmlWriter.WriteEndElement();
 
                     xmlWriter.WriteStartElement("数据起始时间");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].DataStartTime);
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].Ts);
                     xmlWriter.WriteEndElement();
 
                     xmlWriter.WriteStartElement("数据结束时间");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].DataEndTime);
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].Te);
                     xmlWriter.WriteEndElement();
 
                     xmlWriter.WriteStartElement("数据传输开始时间");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].TransStartTime);
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].RTs);
                     xmlWriter.WriteEndElement();
 
                     xmlWriter.WriteStartElement("数据传输速率");
-                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].TransSpeedRate);
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].SL);
                     xmlWriter.WriteEndElement();
 
                     xmlWriter.WriteEndElement();
                 }
                 #endregion
                 xmlWriter.WriteStartElement("任务结束时间");
-                xmlWriter.WriteString(obj.DMJHTasks[i].EndTime);
+                xmlWriter.WriteString(obj.DMJHTasks[i].JS);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteEndElement();
             }
+            xmlWriter.WriteEndElement();
             #endregion
             xmlWriter.WriteEndElement();
             xmlWriter.Close();
@@ -505,111 +552,115 @@ namespace ServicesKernel.File
             xmlWriter.WriteString(obj.SYCount);
             xmlWriter.WriteEndElement();
             #region 试验内容
-            xmlWriter.WriteStartElement("试验内容");
-            xmlWriter.WriteStartElement("在当日计划中的ID");
-            xmlWriter.WriteString(obj.SYID);
-            xmlWriter.WriteEndElement();
+            for (int i = 1; i <= obj.SYContents.Count; i++)
+            {
 
-            xmlWriter.WriteStartElement("试验项目名称");
-            xmlWriter.WriteString(obj.SYName);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("试验内容");
 
-            xmlWriter.WriteStartElement("试验开始日期及时间");
-            xmlWriter.WriteString(obj.SYDateTime);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("卫星代号");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SatID);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("试验运行的天数");
-            xmlWriter.WriteString(obj.SYDays);
-            xmlWriter.WriteEndElement();
-            #region 载荷
-            xmlWriter.WriteStartElement("载荷");
-                xmlWriter.WriteStartElement("载荷名称");
-                xmlWriter.WriteString(obj.SYLoadName);
+                #region 试验
+                xmlWriter.WriteStartElement("试验");
+                xmlWriter.WriteStartElement("在当日计划中的ID");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SYID);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("试验项目名称");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SYName);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("试验开始时间");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SYStartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("试验结束时间");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SYStartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("试验运行的天数");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SYDays);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("说明");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SYNote);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteEndElement();
+                #endregion
+                #region 数传
+                xmlWriter.WriteStartElement("数传");
+                xmlWriter.WriteStartElement("站编号");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SY_SCStationNO);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("设备编号");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SY_SCEquipmentNO);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("频段");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SY_SCFrequencyBand);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("圈次");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SY_SCLaps);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("开始时间");
-                xmlWriter.WriteString(obj.SYLoadStartTime);
+                xmlWriter.WriteString(obj.SYContents[i - 1].SY_SCStartTime);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("结束时间");
-                xmlWriter.WriteString(obj.SYLoadEndTime);
+                xmlWriter.WriteString(obj.SYContents[i - 1].SY_SCEndTime);
                 xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("动作内容");
-                xmlWriter.WriteString(obj.SYLoadContent);
                 xmlWriter.WriteEndElement();
-            xmlWriter.WriteEndElement();
+                #endregion
+                #region 测控
+                xmlWriter.WriteStartElement("测控");
+                xmlWriter.WriteStartElement("站编号");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SY_CKStationNO);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("设备编号");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SY_CKEquipmentNO);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("圈次");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SY_CKLaps);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("开始时间");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SY_CKStartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("结束时间");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SY_CKEndTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteEndElement();
+                #endregion
+                #region 注数
+                xmlWriter.WriteStartElement("注数");
+                xmlWriter.WriteStartElement("最早时间要求");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SY_ZSFirst);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("最晚时间要求");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SY_ZSLast);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("主要内容");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SY_ZSContent);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteEndElement();
+                #endregion
+                xmlWriter.WriteEndElement();
+            }
             #endregion
-            #region 数传
-            xmlWriter.WriteStartElement("数传");
-            xmlWriter.WriteStartElement("站编号");
-            xmlWriter.WriteString(obj.SY_SCStationNO);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("设备编号");
-            xmlWriter.WriteString(obj.SY_SCEquipmentNO);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("频段");
-            xmlWriter.WriteString(obj.SY_SCFrequencyBand);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("圈次");
-            xmlWriter.WriteString(obj.SY_SCLaps);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("开始时间");
-            xmlWriter.WriteString(obj.SY_SCStartTime);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("结束时间");
-            xmlWriter.WriteString(obj.SY_SCEndTime);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteEndElement();
-            #endregion
-            #region 测控
-            xmlWriter.WriteStartElement("测控");
-            xmlWriter.WriteStartElement("站编号");
-            xmlWriter.WriteString(obj.SY_CKStationNO);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("设备编号");
-            xmlWriter.WriteString(obj.SY_CKEquipmentNO);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("圈次");
-            xmlWriter.WriteString(obj.SY_CKLaps);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("开始时间");
-            xmlWriter.WriteString(obj.SY_CKStartTime);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("结束时间");
-            xmlWriter.WriteString(obj.SY_CKEndTime);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteEndElement();
-            #endregion
-            #region 注数
-            xmlWriter.WriteStartElement("注数");
-            xmlWriter.WriteStartElement("最早时间要求");
-            xmlWriter.WriteString(obj.SY_ZSFirst);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("最晚时间要求");
-            xmlWriter.WriteString(obj.SY_ZSLast);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("主要内容");
-            xmlWriter.WriteString(obj.SY_ZSContent);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteEndElement();
-            #endregion
-            xmlWriter.WriteEndElement();
-            #endregion
+                
             xmlWriter.WriteEndElement();
             #endregion
 
@@ -644,88 +695,45 @@ namespace ServicesKernel.File
             }
             xmlWriter.WriteEndElement();
             #endregion
-            #region 载荷管理
-            xmlWriter.WriteStartElement("载荷管理");
-                  #region 载荷管理
-            xmlWriter.WriteStartElement("载荷管理");
-                xmlWriter.WriteStartElement("对应试验ID");
-                xmlWriter.WriteString(obj.Work_Load_SYID);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("卫星代号");
-                xmlWriter.WriteString(obj.Work_Load_SatID);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("载荷名称");
-                xmlWriter.WriteString(obj.Work_Load_Name);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("进程");
-                xmlWriter.WriteString(obj.Work_Load_Process);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("事件");
-                xmlWriter.WriteString(obj.Work_Load_Event);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("动作");
-                xmlWriter.WriteString(obj.Work_Load_Action);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("开始时间");
-                xmlWriter.WriteString(obj.Work_Load_StartTime);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("结束时间");
-                xmlWriter.WriteString(obj.Work_Load_EndTime);
-                xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteEndElement();
-            #endregion
-                  #region 指令制作
+            #region 指令制作
             xmlWriter.WriteStartElement("指令制作");
-                xmlWriter.WriteStartElement("对应试验ID");
-                xmlWriter.WriteString(obj.Work_Command_SYID);
-                xmlWriter.WriteEndElement();
-
-                xmlWriter.WriteStartElement("试验项目");
-                xmlWriter.WriteString(obj.Work_Command_SYItem);
-                xmlWriter.WriteEndElement();
+            for (int i = 1; i <= obj.CommandMakes.Count; i++)
+            {
+                xmlWriter.WriteStartElement("工作内容" + i.ToString());
 
                 xmlWriter.WriteStartElement("卫星代号");
-                xmlWriter.WriteString(obj.Work_Command_SatID);
+                xmlWriter.WriteString(obj.CommandMakes[i - 1].Work_Command_SatID);
                 xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("作业");
-                xmlWriter.WriteString(obj.Work_Command_Content);
+                xmlWriter.WriteStartElement("对应试验ID");
+                xmlWriter.WriteString(obj.CommandMakes[i - 1].Work_Command_SYID);
                 xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("上注要求");
-                xmlWriter.WriteString(obj.Work_Command_UpRequire);
+                xmlWriter.WriteStartElement("对应控制程序");
+                xmlWriter.WriteString(obj.CommandMakes[i - 1].Work_Command_Programe);
                 xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("指令发送方向");
-                xmlWriter.WriteString(obj.Work_Command_Direction);
+                xmlWriter.WriteStartElement("完成时间");
+                xmlWriter.WriteString(obj.CommandMakes[i - 1].Work_Command_FinishTime);
                 xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("开始时间");
-                xmlWriter.WriteString(obj.Work_Command_StartTime);
+                xmlWriter.WriteStartElement("上注方式");
+                xmlWriter.WriteString(obj.CommandMakes[i - 1].Work_Command_UpWay);
                 xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("结束时间");
-                xmlWriter.WriteString(obj.Work_Command_EndTime);
+                xmlWriter.WriteStartElement("上注时间");
+                xmlWriter.WriteString(obj.CommandMakes[i - 1].Work_Command_UpTime);
                 xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("特殊需求");
-                xmlWriter.WriteString(obj.Work_Command_SpecialRequire);
+                xmlWriter.WriteStartElement("说明");
+                xmlWriter.WriteString(obj.CommandMakes[i - 1].Work_Command_Note);
                 xmlWriter.WriteEndElement();
-
+                xmlWriter.WriteEndElement();
+            }
             xmlWriter.WriteEndElement();
             #endregion
-            xmlWriter.WriteEndElement();
-            #endregion
-            #region 试验数据处理
-            xmlWriter.WriteStartElement("试验数据处理");
+            #region 实时试验数据处理
+            xmlWriter.WriteStartElement("实时试验数据处理");
                             for (int i = 1; i <= obj.SYDataHandles.Count; i++)
                             {
                                 xmlWriter.WriteStartElement("工作内容"+i.ToString());
@@ -742,16 +750,8 @@ namespace ServicesKernel.File
                                     xmlWriter.WriteString(obj.SYDataHandles[i - 1].Laps);
                                     xmlWriter.WriteEndElement();
 
-                                    xmlWriter.WriteStartElement("主站名称");
-                                    xmlWriter.WriteString(obj.SYDataHandles[i - 1].MainStationName);
-                                    xmlWriter.WriteEndElement();
-
                                     xmlWriter.WriteStartElement("主站设备");
                                     xmlWriter.WriteString(obj.SYDataHandles[i - 1].MainStationEquipment);
-                                    xmlWriter.WriteEndElement();
-
-                                    xmlWriter.WriteStartElement("备站名称");
-                                    xmlWriter.WriteString(obj.SYDataHandles[i - 1].BakStationName);
                                     xmlWriter.WriteEndElement();
 
                                     xmlWriter.WriteStartElement("备站设备");
@@ -770,9 +770,6 @@ namespace ServicesKernel.File
                                     xmlWriter.WriteString(obj.SYDataHandles[i - 1].EndTime);
                                     xmlWriter.WriteEndElement();
 
-                                    xmlWriter.WriteStartElement("事后数据处理");
-                                    xmlWriter.WriteString(obj.SYDataHandles[i - 1].AfterWardsDataHandle);
-                                    xmlWriter.WriteEndElement();
                                 xmlWriter.WriteEndElement();
                             }
             xmlWriter.WriteEndElement();
@@ -787,16 +784,16 @@ namespace ServicesKernel.File
                     xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].SYID);
                     xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("时间段");
-                    xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].DateSection);
+                    xmlWriter.WriteStartElement("开始时间");
+                    xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].StartTime);
                     xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("指挥与监视任务");
-                    xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].Task);
+                    xmlWriter.WriteStartElement("结束时间");
+                    xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].EndTime);
                     xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("实时显示任务");
-                    xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].RealTimeShowTask);
+                    xmlWriter.WriteStartElement("实时演示任务");
+                    xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].RealTimeDemoTask);
                     xmlWriter.WriteEndElement();
                 xmlWriter.WriteEndElement();
             }
@@ -827,8 +824,8 @@ namespace ServicesKernel.File
             }
             xmlWriter.WriteEndElement();
             #endregion
-            #region 试验评估
-            xmlWriter.WriteStartElement("试验评估");
+            #region 处理评估
+            xmlWriter.WriteStartElement("处理评估");
             for (int i = 1; i <= obj.SYEstimates.Count; i++)
             {
                 xmlWriter.WriteStartElement("工作内容"+i.ToString());
@@ -848,35 +845,7 @@ namespace ServicesKernel.File
             }
             xmlWriter.WriteEndElement();
             #endregion
-            #region 数据管理
-            xmlWriter.WriteStartElement("数据管理");
-            for (int i = 1; i <= obj.DataManages.Count; i++)
-            {
-                xmlWriter.WriteStartElement("工作内容"+i.ToString());
 
-                    xmlWriter.WriteStartElement("对应试验ID");
-                    xmlWriter.WriteString(obj.DataManages[i - 1].SYID);
-                    xmlWriter.WriteEndElement();
-
-                    xmlWriter.WriteStartElement("工作");
-                    xmlWriter.WriteString(obj.DataManages[i - 1].Work);
-                    xmlWriter.WriteEndElement();
-
-                    xmlWriter.WriteStartElement("对应数据描述");
-                    xmlWriter.WriteString(obj.DataManages[i - 1].Description);
-                    xmlWriter.WriteEndElement();
-
-                    xmlWriter.WriteStartElement("开始时间");
-                    xmlWriter.WriteString(obj.DataManages[i - 1].StartTime);
-                    xmlWriter.WriteEndElement();
-
-                    xmlWriter.WriteStartElement("结束时间");
-                    xmlWriter.WriteString(obj.DataManages[i - 1].EndTime);
-                    xmlWriter.WriteEndElement();
-                xmlWriter.WriteEndElement();
-            }
-            xmlWriter.WriteEndElement();
-            #endregion
             xmlWriter.WriteEndElement();
             #endregion
             xmlWriter.WriteEndElement();
@@ -956,7 +925,7 @@ namespace ServicesKernel.File
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public bool TestDMJHFileName(DMJH obj)
+        public bool TestDMJHFileName(DJZYSQ obj)
         { 
             filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("DMJH", obj.TaskID, obj.SatID);
              return TestFileName();
@@ -1256,7 +1225,7 @@ namespace ServicesKernel.File
            
             string SendFileNames = "";
             List<JH> listJH = (new JH()).SelectByIDS(ids);
-            DMJH obj;
+            DJZYSQ obj;
             foreach (JH jh in listJH)
             {
                 //if (desValue == "XSCC")

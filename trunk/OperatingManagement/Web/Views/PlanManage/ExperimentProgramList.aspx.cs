@@ -152,15 +152,15 @@ namespace OperatingManagement.Web.Views.PlanManage
                 #endregion
 
                 #region  地面站工作计划
-                DMJH objGZJH = new DMJH();
+                DJZYSQ objGZJH = new DJZYSQ();
                 objGZJH.TaskID = "700任务(0501)";
                 objGZJH.SatID = "TS3";
-                objGZJH.DMJHTasks = new List<DMJH_Task> 
+                objGZJH.DMJHTasks = new List<DJZYSQ_Task> 
                         {
-                            new DMJH_Task
+                            new DJZYSQ_Task
                             {
-                                ReakTimeTransfors = new List<DMJH_Task_ReakTimeTransfor>{new DMJH_Task_ReakTimeTransfor()},
-                                AfterFeedBacks = new List<DMJH_Task_AfterFeedBack>{new DMJH_Task_AfterFeedBack()}
+                                ReakTimeTransfors = new List<DJZYSQ_Task_ReakTimeTransfor>{new DJZYSQ_Task_ReakTimeTransfor()},
+                                AfterFeedBacks = new List<DJZYSQ_Task_AfterFeedBack>{new DJZYSQ_Task_AfterFeedBack()}
                             }
                         };
                 objJH.FileIndex = (new PlanFileCreator()).CreateDMJHFile(objGZJH, 0);
@@ -179,7 +179,6 @@ namespace OperatingManagement.Web.Views.PlanManage
                 objZXJH.DirectAndMonitors = new List<ZXJH_DirectAndMonitor> { new ZXJH_DirectAndMonitor() };
                 objZXJH.RealTimeControls = new List<ZXJH_RealTimeControl> { new ZXJH_RealTimeControl() };
                 objZXJH.SYEstimates = new List<ZXJH_SYEstimate> { new ZXJH_SYEstimate() };
-                objZXJH.DataManages = new List<ZXJH_DataManage> { new ZXJH_DataManage() };
                 objJH.FileIndex = (new PlanFileCreator()).CreateZXJHFile(objZXJH, 0);
                 objJH.TaskID = objZXJH.TaskID;
                 objJH.PlanType = "ZXJH";
