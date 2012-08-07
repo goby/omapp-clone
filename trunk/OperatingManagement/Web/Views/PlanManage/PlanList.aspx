@@ -43,7 +43,7 @@
                         <asp:ListItem Value="GZJH">ZC地面站工作计划</asp:ListItem>
                         <asp:ListItem Value="ZXJH">中心运行计划</asp:ListItem>
                         <asp:ListItem Value="TYSJ">仿真推演试验数据</asp:ListItem>
-                        <asp:ListItem Value="SBJH">设备工作计划</asp:ListItem>
+                        <asp:ListItem Value="DJZYJH">测控资源使用计划</asp:ListItem>
                         </asp:DropDownList>
                 </td>
                <td>
