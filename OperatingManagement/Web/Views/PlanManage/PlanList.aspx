@@ -39,7 +39,8 @@
                         <%--<asp:ListItem Value="0">==全部==</asp:ListItem>--%>
                         <asp:ListItem Value="YJJH">应用研究工作计划</asp:ListItem>
                         <asp:ListItem Value="XXXQ">空间信息需求</asp:ListItem>
-                        <asp:ListItem Value="DMJH">地面站工作计划</asp:ListItem>
+                        <asp:ListItem Value="DJZYSQ">测控资源使用申请</asp:ListItem>
+                        <asp:ListItem Value="GZJH">ZC地面站工作计划</asp:ListItem>
                         <asp:ListItem Value="ZXJH">中心运行计划</asp:ListItem>
                         <asp:ListItem Value="TYSJ">仿真推演试验数据</asp:ListItem>
                         <asp:ListItem Value="SBJH">设备工作计划</asp:ListItem>

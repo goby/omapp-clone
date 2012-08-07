@@ -124,18 +124,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     startDate = Convert.ToDateTime(txtStartDate.Text);
                 }
-                else
-                {
-                   // startDate = DateTime.Now.AddDays(-14);  //默认查询14天的数据
-                }
+
                 if (!string.IsNullOrEmpty(txtEndDate.Text))
                 {
-                    //endDate = Convert.ToDateTime(txtEndDate.Text);
                     endDate = Convert.ToDateTime(txtEndDate.Text).AddDays(1).AddMilliseconds(-1); //查询时可查当天
-                }
-                else
-                {
-                    endDate = DateTime.Now.AddDays(1).AddMilliseconds(-1);
                 }
 
                 if (ddlType.SelectedItem.Value != "0")
@@ -145,22 +137,15 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             else
             {
-                if (ViewState["_StartDate"] == null)
-                {
-                    startDate = DateTime.Now.AddDays(-14);
-                }
-                else
+                if (ViewState["_StartDate"] != null)
                 {
                     startDate = Convert.ToDateTime(ViewState["_StartDate"].ToString());
                 }
-                if (ViewState["_EndDate"] == null)
-                {
-                    endDate = DateTime.Now.AddDays(1);
-                }
-                else
+                if (ViewState["_EndDate"] != null)
                 {
                     endDate = Convert.ToDateTime(ViewState["_EndDate"].ToString());
                 }
+
                 if (ViewState["_PlanType"].ToString() != "0")
                 {
                     planType = ViewState["_PlanType"].ToString();
