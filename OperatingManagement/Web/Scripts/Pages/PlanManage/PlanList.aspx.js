@@ -91,6 +91,9 @@ function showEdit(planid, plantype) {
             case "DJZYSQ":
                 window.location.href = "/Views/PlanManage/DJZYSQEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;
+            case "GZJH":
+                window.location.href = "/Views/PlanManage/GZJHEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
+                break;
             case "ZXJH":
                 window.location.href = "/Views/PlanManage/ZXJHEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;

@@ -11,17 +11,13 @@ using Oracle.DataAccess.Client;
 
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
-    public class GZJH : BaseEntity<int, GZJH>
+    public class GZJH
     {
-        private static readonly string GET_List_ByDate = "up_XGZJH_getlist";
-        private static readonly string Insert = "up_GZJH_insert";
-
-                /// <summary>
-        /// Create a new instance of <see cref="SYCX"/> class.
+        /// <summary>
+        /// 地面站工作计划
         /// </summary>
         public GZJH()
         {
-            _database = OracleDatabase.FromConfiguringNode("ApplicationServices");
         }
 
         #region -Properties-
@@ -29,194 +25,120 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
 
         public int ID { get; set; }
         public DateTime CTime { get; set; }
-        public string Source { get; set; }
-        public string Destination { get; set; }
         public string TaskID { get; set; }
-        public string InfoType { get; set; }
-        public int LineCount { get; set; }
-        public string Format1 { get; set; }
-        public string Format2 { get; set; }
-        public string DataSection { get; set; }
-        public string FileIndex { get; set; }
-        public string Reserve { get; set; }
-        #endregion
-
-        #region -Methods-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="startDate"></param>
-        /// <param name="endDate"></param>
-        /// <returns></returns>
-        public DataSet GetListByDate(DateTime startDate, DateTime endDate)
-        {
-            DataSet ds = null;
-            try
-            {
-                ds = new DataSet();
-                ds.Tables.Add();
-                OracleCommand command = _database.GetStoreProcCommand(GET_List_ByDate);
-                if (startDate != DateTime.MinValue)
-                {
-                    _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
-                }
-                else
-                {
-                    _database.AddInParameter(command, "p_startDate", OracleDbType.Date, startDate);
-                }
-                if (endDate != DateTime.MinValue)
-                {
-                    _database.AddInParameter(command, "p_endDate", OracleDbType.Date, DBNull.Value);
-                }
-                else
-                {
-                    _database.AddInParameter(command, "p_endDate", OracleDbType.Date, endDate);
-                }
-                using (IDataReader reader = _database.ExecuteReader(command))
-                {
-                    ds.Tables[0].Load(reader);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return ds;
-        }
+        public string SatID { get; set; }
 
         /// <summary>
-        /// Inserts a new record into database.
+        /// 计划序号
         /// </summary>
-        /// <returns></returns>
-        public FieldVerifyResult Add()
-        {
-            OracleParameter p = new OracleParameter()
-            {
-                ParameterName = "v_result",
-                Direction = ParameterDirection.Output,
-                OracleDbType = OracleDbType.Double
-            };
-            OracleParameter opId = new OracleParameter()
-            {
-                ParameterName = "v_Id",
-                Direction = ParameterDirection.Output,
-                OracleDbType = OracleDbType.Double
-            };
-            _database.SpExecuteNonQuery(Insert, new OracleParameter[]{
-                new OracleParameter("p_CTime",this.CTime),
-                new OracleParameter("p_Source",this.Source),
-                new OracleParameter("p_Destination",this.Destination),
-                new OracleParameter("p_TaskID",this.TaskID),
-                new OracleParameter("p_InfoType",this.InfoType),
-                new OracleParameter("p_LineCount",(int)this.LineCount),
-                new OracleParameter("p_Format1",this.LineCount),
-                new OracleParameter("p_Format2",this.LineCount),
-                new OracleParameter("p_DataSection",this.LineCount),
-                new OracleParameter("p_FileIndex",this.FileIndex),
-                new OracleParameter("p_Reserve",this.Reserve),
-                opId,
-                p
-            });
-            if (opId.Value != null && opId.Value != DBNull.Value)
-                this.Id = Convert.ToInt32(opId.Value);
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
-        }
-
-        public FieldVerifyResult Update()
-        {
-            OracleParameter p = new OracleParameter()
-            {
-                ParameterName = "v_result",
-                Direction = ParameterDirection.Output,
-                OracleDbType = OracleDbType.Double
-            };
-            _database.SpExecuteNonQuery("up_GZJH_update", new OracleParameter[]{
-                new OracleParameter("p_Id",this.ID),
-                //new OracleParameter("p_CTime",this.CTime),
-                new OracleParameter("p_Source",this.Source),
-                new OracleParameter("p_Destination",this.Destination),
-                new OracleParameter("p_TaskID",this.TaskID),
-                new OracleParameter("p_InfoType",this.InfoType),
-                new OracleParameter("p_LineCount",(int)this.LineCount),
-                new OracleParameter("p_Format1",this.Format1),
-                new OracleParameter("p_Format2",this.Format2),
-                new OracleParameter("p_DataSection",this.DataSection),
-               // new OracleParameter("p_FileIndex",this.FileIndex),
-                new OracleParameter("p_Reserve",this.Reserve),
-                p
-            });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
-        }
-
-        public GZJH SelectById(int id)
-        {
-            OracleParameter p = PrepareRefCursor();
-
-            DataSet ds = _database.SpExecuteDataSet("up_GZJH_selectbyid", new OracleParameter[]{
-                new OracleParameter("p_Id", id), 
-                p
-            });
-
-            if (ds != null && ds.Tables.Count == 1)
-            {
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    return new GZJH()
-                    {
-                        ID = Convert.ToInt32(dr["ID"].ToString()),
-                        CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
-                        Source = dr["Source"].ToString(),
-                        Destination = dr["Destination"].ToString(),
-                        TaskID = dr["TaskID"].ToString(),
-                        InfoType = dr["InfoType"].ToString(),
-                        LineCount = Convert.ToInt32(dr["LineCount"].ToString()),
-                        Format1 = dr["Format1"].ToString(),
-                        Format2 = dr["Format2"].ToString(),
-                        DataSection = dr["DataSection"].ToString(),
-                        FileIndex = dr["FileIndex"].ToString(),
-                        Reserve = dr["Reserve"].ToString()
-                    };
-                }
-            }
-            return null;
-        }
-
-        public FieldVerifyResult UpdateFileIndex()
-        {
-            OracleParameter p = new OracleParameter()
-            {
-                ParameterName = "v_result",
-                Direction = ParameterDirection.Output,
-                OracleDbType = OracleDbType.Double
-            };
-            _database.SpExecuteNonQuery("up_gzjh_updatefileindex", new OracleParameter[]{
-                new OracleParameter("v_Id",this.Id),
-                new OracleParameter("p_FileIndex",this.FileIndex),
-                p
-            });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
-        }
-        #endregion
-
-        #region -Private methods-
-        private OracleParameter PrepareRefCursor()
-        {
-            return new OracleParameter()
-            {
-                ParameterName = "o_cursor",
-                Direction = ParameterDirection.Output,
-                OracleDbType = OracleDbType.RefCursor
-            };
-        }
-        #endregion
-
-        #region -Override BaseEntity-
-        protected override void ValidationRules()
-        {
-            //this.AddValidRules("ID", "序号不能为空。", string.IsNullOrEmpty(ID));
-        }
+        public string JXH { get; set; }
+        /// <summary>
+        /// 信息分类，用2位字符表示，地面站工作周计划固定填“ZJ”，地面站工作日计划固定填“RJ”。
+        /// </summary>
+        public string XXFL { get; set; }
+        /// <summary>
+        /// 工作单位，用2位整型数表示
+        /// </summary>
+        public string DW { get; set; }
+        //设备代号，用2位整型数表示
+        public string SB { get; set; }
+        /// <summary>
+        /// 总圈数，用4位整型数表示
+        /// </summary>
+        public string QS { get; set; }
+        /// <summary>
+        /// 本行计划对应的卫星飞行圈次
+        /// </summary>
+        public string QH { get; set; }
+        /// <summary>
+        /// 任务代号
+        /// 具体含义为（可扩充）：0501—700任务，5701—TS-3卫星，
+        /// 5702—TS-4-A卫星，5703—TS-4-B卫星，5704—TS-5-A卫星，5705—TS-5-B。
+        /// </summary>
+        public string DH { get; set; }
+        /// <summary>
+        /// 工作方式，用2位字符串表示，其含义为：SZ—实战，LT—联调，HL—全区合练
+        /// </summary>
+        public string FS { get; set; }
+        /// <summary>
+        /// 计划性质，用2位字符串表示，其含义为：ZC—正常计划，YJ—应急计划
+        /// </summary>
+        public string JXZ { get; set; }
+        /// <summary>
+        /// 设备工作模式，用2位整型数表示，其含义为（可扩充）：01—标准TTC模式，
+        /// 02—扩频模式1，03—扩频模式2，04—S数传接收模式，05—X数传接收模式
+        /// </summary>
+        public string MS { get; set; }
+        /// <summary>
+        /// 本帧计划的圈标识，用2位字符串表示，其含义为（可扩充）：
+        /// Q1—第一圈，Q2—第二圈，RJ—入境圈，CJ—出境圈，YB—一般圈。
+        /// </summary>
+        public string QB { get; set; }
+        /// <summary>
+        /// 工作性质，用1位字符串表示，，M—主站，B—备站。
+        /// </summary>
+        public string GXZ { get; set; }
+        /// <summary>
+        /// 任务准备开始时间,用14位字符串表示，年为4个字符，月日时分秒各为2个字符
+        /// </summary>
+        public string ZHB { get; set; }
+        /// <summary>
+        /// 任务开始时间
+        /// </summary>
+        public string RK { get; set; }
+        /// <summary>
+        /// 跟踪开始时间
+        /// </summary>
+        public string GZK { get; set; }
+        /// <summary>
+        /// 开上行载波时间
+        /// </summary>
+        public string KSHX { get; set; }
+        /// <summary>
+        /// 关上行载波时间
+        /// </summary>
+        public string GSHX { get; set; }
+        /// <summary>
+        /// 跟踪结束时间
+        /// </summary>
+        public string GZJ { get; set; }
+        /// <summary>
+        /// 任务结束时间
+        /// </summary>
+        public string JS { get; set; }
+        /// <summary>
+        /// 信息类别标志，用2位整型数表示，其含义为（可扩充）：
+        /// 01—数传数据，02—遥测数据，03—测距数据，04—测速数据，05—测角数据。
+        /// </summary>
+        public string BID { get; set; }
+        /// <summary>
+        /// 实时传送数据标志
+        /// </summary>
+        public string SBZ { get; set; }
+        /// <summary>
+        /// 数据传输开始时间
+        /// </summary>
+        public string RTs { get; set; }
+        /// <summary>
+        /// 数据传输结束时间
+        /// </summary>
+        public string RTe { get; set; }
+        /// <summary>
+        /// 数据传输速率
+        /// </summary>
+        public string SL { get; set; }
+        /// <summary>
+        /// 事后回放传送数据标志
+        /// </summary>
+        public string HBZ { get; set; }
+        /// <summary>
+        /// 数据起始时间
+        /// </summary>
+        public string Ts { get; set; }
+        /// <summary>
+        /// 数据结束时间
+        /// </summary>
+        public string Te { get; set; }
         #endregion
     }
 }

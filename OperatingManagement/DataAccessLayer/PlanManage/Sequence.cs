@@ -42,9 +42,17 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 获取地面站工作计划编号
         /// </summary>
         /// <returns></returns>
-        public int GetDMJHSequnce()
+        public int GetDJZYSQSequnce()
         {
-            return GetSequence("seq_tb_dmjh");
+            return GetSequence("seq_tb_djzysq");
+        }
+        /// <summary>
+        /// 获取ZC地面站工作计划编号
+        /// </summary>
+        /// <returns></returns>
+        public int GetGZJHSequnce()
+        {
+            return GetSequence("seq_tb_gzjh");
         }
         /// <summary>
         /// 获取中心运行计划编号
@@ -62,14 +70,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         {
             return GetSequence("seq_tb_tysj");
         }
-        /// <summary>
-        /// 获取设备工作计划编号
-        /// </summary>
-        /// <returns></returns>
-        public int GetSBJHSequnce()
-        {
-            return GetSequence("seq_tb_sbjh");
-        }
+
 
         /// <summary>
         /// 生成计划编号
