@@ -3,11 +3,6 @@ $(window).ready(function () {
     _dialog = $("#dialog-form");
 });
 
-//$(function () {
-//    $("#txtStartDate").datepicker();
-//    $("#txtEndDate").datepicker();
-//});
-
 
 function clearField() {
     //$('input:text').val('');
@@ -38,37 +33,32 @@ function checkAll(o) {
 
 function sendPlan() {
     //var chks = $('#tbPlans').find('input:checkbox:not([disabled])').filter('[checked=true]');
+    _dialog.dialog({
+        autoOpen: false,
+        height: 150,
+        width: 400,
+        modal: true,
+        buttons: {
+            '关闭': function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+
     var ddlType = $('#ddlType');
     if (ddlType.val() == "SBJH") {
-        _dialog.dialog({
-            autoOpen: false,
-            height: 150,
-            width: 400,
-            modal: true,
-            buttons: {
-                '关闭': function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
         _dialog.find('p.content').eq(0).html('不能发送设备工作计划。');
         _dialog.dialog('open');
         return false;
     }
     var chks = $('#tbPlans').find('input:checkbox:[checked]');
     if (chks.length == 0) {
-            _dialog.dialog({
-            autoOpen: false,
-            height: 150,
-            width: 400,
-            modal: true,
-            buttons: {
-                '关闭': function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
         _dialog.find('p.content').eq(0).html('请选择您要发送的计划。');
+        _dialog.dialog('open');
+        return false;
+    }
+    if (chks.length > 1) {
+        _dialog.find('p.content').eq(0).html('只能选择一个计划进行发送。');
         _dialog.dialog('open');
         return false;
     }
@@ -98,8 +88,8 @@ function showEdit(planid, plantype) {
             case "HJXQ":
                 window.location.href = "/Views/PlanManage/HJXQEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;
-            case "DMJH":
-                window.location.href = "/Views/PlanManage/DMJHEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
+            case "DJZYSQ":
+                window.location.href = "/Views/PlanManage/DJZYSQEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;
             case "ZXJH":
                 window.location.href = "/Views/PlanManage/ZXJHEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
@@ -114,16 +104,9 @@ function showEdit(planid, plantype) {
 
 //function showSend(id,planid,plantype) {
 function showSend(ids) {
-//    var divData = $('#divData');
-//    divData.hide();
-//    var indicator = $('#tartgetPanel');
-//    indicator.show();
     var txtId = $('#txtId'); 
     txtId.val(ids);
-//    var txtPlanID = $('#txtPlanID'); 
-//    txtPlanID.val(planid);
-//    var txtPlanType = $('#txtPlanType'); 
-//    txtPlanType.val(plantype);
+
     var btn = $('#btnHidden');
     btn.click();
     return false;

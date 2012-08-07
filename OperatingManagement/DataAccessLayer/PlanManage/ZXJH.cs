@@ -32,16 +32,61 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
 
         public string SatID { get; set; }
         /// <summary>
-        /// 日期
+        /// 计划对应日期
         /// </summary>
         public string Date { get; set; }
 
-        //实验内容SY
+        //试验计划SY
 
         /// <summary>
         /// 对应日期的试验个数
         /// </summary>
         public string SYCount { get; set; }
+
+        /// <summary>
+        /// 试验计划-试验内容
+        /// </summary>
+        public List<ZXJH_SYContent> SYContents { get; set; }
+
+        //工作计划
+        /// <summary>
+        /// 任务管理-工作内容
+        /// </summary>
+        public List<ZXJH_WorkContent> WorkContents { get; set; }
+        /// <summary>
+        /// 指令制作
+        /// </summary>
+        public List<ZXJH_CommandMake> CommandMakes { get; set; }
+        /// <summary>
+        /// 实时试验数据处理
+        /// </summary>
+        public List<ZXJH_SYDataHandle> SYDataHandles { get; set; }
+        /// <summary>
+        /// 指挥与监视
+        /// </summary>
+        public List<ZXJH_DirectAndMonitor> DirectAndMonitors { get; set; }
+        /// <summary>
+        /// 实时控制
+        /// </summary>
+        public List<ZXJH_RealTimeControl> RealTimeControls { get; set; }
+        /// <summary>
+        /// 处理评估
+        /// </summary>
+        public List<ZXJH_SYEstimate> SYEstimates { get; set; }
+        #endregion
+    }
+
+    /// <summary>
+    /// 试验计划-试验内容
+    /// </summary>
+    [Serializable]
+    public class ZXJH_SYContent
+    {
+        /// <summary>
+        /// 卫星代号
+        /// </summary>
+        public string SatID { get; set; }
+        #region 试验
         /// <summary>
         /// 在当日计划中的ID
         /// </summary>
@@ -51,31 +96,24 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string SYName { get; set; }
         /// <summary>
-        /// 试验开始日期及时间
+        /// 试验开始时间
         /// </summary>
-        public string SYDateTime{ get; set; }
+        public string SYStartTime { get; set; }
+        /// <summary>
+        /// 试验结束时间
+        /// </summary>
+        public string SYEndTime { get; set; }
         /// <summary>
         /// 试验运行的天数
         /// </summary>
-        public string SYDays{ get; set; }
+        public string SYDays { get; set; }
         /// <summary>
-        /// 载荷-载荷名称
+        /// 试验-说明
         /// </summary>
-        public string SYLoadName { get; set; }
-        /// <summary>
-        /// 载荷-开始时间
-        /// </summary>
-        public string SYLoadStartTime{ get; set; }
-        /// <summary>
-        /// 载荷-结束时间
-        /// </summary>
-        public string SYLoadEndTime { get; set; }
-        /// <summary>
-        /// 载荷-动作内容
-        /// </summary>
-        public string SYLoadContent { get; set; }
+        public string SYNote { get; set; }
+        #endregion
 
-        //数传
+        #region 数传
         /// <summary>
         /// 数传-站编号
         /// </summary>
@@ -85,7 +123,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string SY_SCEquipmentNO { get; set; }
         /// <summary>
-        /// 数传-频段
+        /// 数传-频段; S或者X
         /// </summary>
         public string SY_SCFrequencyBand { get; set; }
         /// <summary>
@@ -100,8 +138,9 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 数传-结束时间
         /// </summary>
         public string SY_SCEndTime { get; set; }
+        #endregion
 
-        //测控
+        #region 测控
         /// <summary>
         /// 测控-站编号
         /// </summary>
@@ -122,8 +161,9 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 测控-结束时间
         /// </summary>
         public string SY_CKEndTime { get; set; }
+        #endregion
 
-        //注数
+        #region 注数-(700任务不需填写)
         /// <summary>
         /// 注数-最早时间要求
         /// </summary>
@@ -136,103 +176,18 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 注数-主要内容
         /// </summary>
         public string SY_ZSContent { get; set; }
-
-        //工作计划
-        //任务管理-工作内容
-        public List<ZXJH_WorkContent> WorkContents { get; set; }
-        //载荷管理
-        /// <summary>
-        /// 载荷管理-对应试验ID
-        /// </summary>
-        public string Work_Load_SYID { get; set; }
-        /// <summary>
-        /// 载荷管理-卫星代号
-        /// </summary>
-        public string Work_Load_SatID { get; set; }
-        /// <summary>
-        /// 载荷管理-载荷名称
-        /// </summary>
-        public string Work_Load_Name { get; set; }
-        /// <summary>
-        /// 载荷管理-进程
-        /// </summary>
-        public string Work_Load_Process { get; set; }
-        /// <summary>
-        /// 载荷管理-事件
-        /// </summary>
-        public string Work_Load_Event { get; set; }
-        /// <summary>
-        /// 载荷管理-动作
-        /// </summary>
-        public string Work_Load_Action { get; set; }
-        /// <summary>
-        /// 载荷管理-开始时间
-        /// </summary>
-        public string Work_Load_StartTime { get; set; }
-        /// <summary>
-        /// 载荷管理-结束时间
-        /// </summary>
-        public string Work_Load_EndTime { get; set; }
-
-        //指令制作
-        /// <summary>
-        /// 指令制作-对应试验ID
-        /// </summary>
-        public string Work_Command_SYID { get; set; }
-        /// <summary>
-        /// 指令制作-试验项目
-        /// </summary>
-        public string Work_Command_SYItem { get; set; }
-        /// <summary>
-        /// 指令制作-卫星代号
-        /// </summary>
-        public string Work_Command_SatID { get; set; }
-        /// <summary>
-        /// 指令制作-作业
-        /// </summary>
-        public string Work_Command_Content { get; set; }
-        /// <summary>
-        /// 指令制作-上注要求
-        /// </summary>
-        public string Work_Command_UpRequire { get; set; }
-        /// <summary>
-        /// 指令制作-指令发送方向
-        /// </summary>
-        public string Work_Command_Direction { get; set; }
-        /// <summary>
-        /// 指令制作-上注要求
-        /// </summary>
-        public string Work_Command_StartTime { get; set; }
-        /// <summary>
-        /// 指令制作-指令发送方向
-        /// </summary>
-        public string Work_Command_EndTime { get; set; }
-        /// <summary>
-        /// 指令制作-特殊需求
-        /// </summary>
-        public string Work_Command_SpecialRequire { get; set; }
-        //试验数据处理
-        public List<ZXJH_SYDataHandle> SYDataHandles { get; set; }
-        //指挥与监视
-        public List<ZXJH_DirectAndMonitor> DirectAndMonitors { get; set; }
-        //实时控制
-        public List<ZXJH_RealTimeControl> RealTimeControls { get; set; }
-        //试验评估
-        public List<ZXJH_SYEstimate> SYEstimates { get; set; }
-        //数据管理
-        public List<ZXJH_DataManage> DataManages { get; set; }
         #endregion
     }
 
     /// <summary>
-    /// 中心计划-工作内容
+    /// 工作计划-任务管理
     /// </summary>
     [Serializable]
     public class ZXJH_WorkContent 
     { 
         #region -Properties-
         /// <summary>
-        /// 工作
+        /// 工作: 试验规划、计划管理、试验数据处理
         /// </summary>
         public string Work { get; set; }
         /// <summary>
@@ -255,7 +210,43 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
     }
 
     /// <summary>
-    /// 中心计划-试验数据处理
+    /// 工作计划-指令制作
+    /// </summary>
+    [Serializable]
+    public class ZXJH_CommandMake
+    {
+        /// <summary>
+        /// 指令制作-卫星代号
+        /// </summary>
+        public string Work_Command_SatID { get; set; }
+        /// <summary>
+        /// 指令制作-对应试验ID
+        /// </summary>
+        public string Work_Command_SYID { get; set; }
+        /// <summary>
+        /// 指令制作-对应控制程序
+        /// </summary>
+        public string Work_Command_Programe { get; set; }
+        /// <summary>
+        /// 指令制作-完成时间
+        /// </summary>
+        public string Work_Command_FinishTime { get; set; }
+        /// <summary>
+        /// 指令制作-上注方式
+        /// </summary>
+        public string Work_Command_UpWay { get; set; }
+        /// <summary>
+        /// 指令制作-上注时间/圈次
+        /// </summary>
+        public string Work_Command_UpTime { get; set; }
+        /// <summary>
+        /// 指令制作-说明
+        /// </summary>
+        public string Work_Command_Note { get; set; }
+    }
+
+    /// <summary>
+    /// 工作计划-实时试验数据处理
     /// </summary>
     [Serializable]
     public class ZXJH_SYDataHandle
@@ -274,17 +265,9 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string Laps { get; set; }
         /// <summary>
-        /// 主站名称
-        /// </summary>
-        public string MainStationName { get; set; }
-        /// <summary>
         /// 主站设备
         /// </summary>
         public string MainStationEquipment { get; set; }
-        /// <summary>
-        /// 备站名称
-        /// </summary>
-        public string BakStationName { get; set; }
         /// <summary>
         /// 备站设备
         /// </summary>
@@ -301,15 +284,11 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 实时结束处理时间
         /// </summary>
         public string EndTime { get; set; }
-        /// <summary>
-        /// 事后数据处理
-        /// </summary>
-        public string AfterWardsDataHandle { get; set; }
         #endregion
     }
 
     /// <summary>
-    /// 中心计划-指挥与监视
+    /// 工作计划-指挥与监视
     /// </summary>
     [Serializable]
     public class ZXJH_DirectAndMonitor
@@ -320,22 +299,22 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string SYID { get; set; }
         /// <summary>
-        /// 时间段
+        /// 开始时间
         /// </summary>
-        public string DateSection { get; set; }
+        public string StartTime { get; set; }
         /// <summary>
-        /// 指挥与监视任务
+        /// 结束时间
         /// </summary>
-        public string Task { get; set; }
+        public string EndTime { get; set; }
         /// <summary>
-        /// 实时显示任务
+        /// 实时演示任务：有/无
         /// </summary>
-        public string RealTimeShowTask { get; set; }
+        public string RealTimeDemoTask { get; set; }
         #endregion
     }
 
     /// <summary>
-    /// 中心计划-实时控制
+    /// 工作计划-实时控制
     /// </summary>
     [Serializable]
     public class ZXJH_RealTimeControl
@@ -361,7 +340,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
     }
 
     /// <summary>
-    /// 中心计划-试验评估
+    /// 工作计划-处理评估
     /// </summary>
     [Serializable]
     public class ZXJH_SYEstimate
@@ -382,33 +361,4 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         #endregion
     }
 
-    /// <summary>
-    /// 中心计划-数据管理
-    /// </summary>
-    [Serializable]
-    public class ZXJH_DataManage
-    {
-        #region -Properties-
-        /// <summary>
-        /// 对应试验ID
-        /// </summary>
-        public string SYID { get; set; }
-        /// <summary>
-        /// 工作
-        /// </summary>
-        public string Work { get; set; }
-        /// <summary>
-        /// 对应数据描述
-        /// </summary>
-        public string Description { get; set; }
-        /// <summary>
-        /// 开始时间
-        /// </summary>
-        public string StartTime { get; set; }
-        /// <summary>
-        /// 结束时间
-        /// </summary>
-        public string EndTime { get; set; }
-        #endregion
-    }
 }

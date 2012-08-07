@@ -233,7 +233,7 @@
     <Content Include="Views\BusinessManage\XiAnCeKongDataList.aspx" />
     <Content Include="Views\Exp\Exp.aspx" />
     <Content Include="Views\Exp\PNF404.aspx" />
-    <Content Include="Views\PlanManage\DMJHEdit.aspx" />
+    <Content Include="Views\PlanManage\DJZYSQEdit.aspx" />
     <Content Include="Views\PlanManage\ExperimentPlanDetail.aspx" />
     <Content Include="Views\PlanManage\ExperimentPlanList.aspx" />
     <Content Include="Views\PlanManage\ExperimentProgramDetail.aspx" />
@@ -242,7 +242,6 @@
     <Content Include="Views\PlanManage\NotSpaceTaskList.aspx" />
     <Content Include="Views\PlanManage\OribitalQuantityDetail.aspx" />
     <Content Include="Views\PlanManage\OribitalQuantityList.aspx" />
-    <Content Include="Views\PlanManage\PlanAdd.aspx" />
     <Content Include="Views\PlanManage\PlanDetail.aspx" />
     <Content Include="Views\PlanManage\PlanEdit.aspx" />
     <Content Include="Views\PlanManage\PlanList.aspx" />
@@ -587,12 +586,12 @@
     <Compile Include="Views\Exp\PNF404.aspx.designer.cs">
       <DependentUpon>PNF404.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlanManage\DMJHEdit.aspx.cs">
-      <DependentUpon>DMJHEdit.aspx</DependentUpon>
+    <Compile Include="Views\PlanManage\DJZYSQEdit.aspx.cs">
+      <DependentUpon>DJZYSQEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\PlanManage\DMJHEdit.aspx.designer.cs">
-      <DependentUpon>DMJHEdit.aspx</DependentUpon>
+    <Compile Include="Views\PlanManage\DJZYSQEdit.aspx.designer.cs">
+      <DependentUpon>DJZYSQEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\PlanManage\ExperimentPlanDetail.aspx.cs">
       <DependentUpon>ExperimentPlanDetail.aspx</DependentUpon>
@@ -649,13 +648,6 @@
     </Compile>
     <Compile Include="Views\PlanManage\OribitalQuantityList.aspx.designer.cs">
       <DependentUpon>OribitalQuantityList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PlanManage\PlanAdd.aspx.cs">
-      <DependentUpon>PlanAdd.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\PlanManage\PlanAdd.aspx.designer.cs">
-      <DependentUpon>PlanAdd.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\PlanManage\PlanDetail.aspx.cs">
       <DependentUpon>PlanDetail.aspx</DependentUpon>

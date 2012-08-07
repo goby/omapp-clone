@@ -27,15 +27,55 @@
         <item text="地磁KP指数预报信息" value="KPPred" hex="2036H"></item>
         <item text="LEO轨道卫星轨道衰变信息" value="LEOOrbAtt" hex="2037H"></item>
     </HJXQInfoName>
-    <DMJHFS description="地面计划工作方式">
+    <DJZYSQSXZ description="测控资源使用申请性质">
+        <item text="正常申请" value="ZC"></item>
+        <item text="应急申请" value="YJ"></item>
+    </DJZYSQSXZ>
+    <DJZYSQMLB description="测控资源使用申请任务类别：太阳同步卫星">TT</DJZYSQMLB>
+    <DJZYSQFS description="测控资源使用申请工作方式">
         <item text="实战" value="SZ"></item>
         <item text="联调" value="LT"></item>
         <item text="全区合练" value="HL"></item>
-    </DMJHFS>
-    <DMJHJXZ description="地面计划计划性质">
-        <item text="正常计划" value="ZC"></item>
-        <item text="应急计划" value="YJ"></item>
-    </DMJHJXZ>
+    </DJZYSQFS>
+    <DJZYSQGZDY description="测控资源使用申请工作单元">
+        <item text="东风站" value="20-DF"></item>
+        <item text="大树里站" value="20-DSL"></item>
+        <item text="青岛站" value="26-QD"></item>
+        <item text="喀什站" value="26-KS"></item>
+        <item text="厦门站" value="26-XM"></item>
+        <item text="三亚站" value="26-SY"></item>
+        <item text="佳木斯站" value="26-JMS"></item>
+        <item text="瑞典站" value="26-RD"></item>
+        <item text="远望五号测量船" value="23-YW5"></item>
+        <item text="远望六号测量船" value="23-YW6"></item>
+    </DJZYSQGZDY>
+    <DJZYSQSBDH description="测控资源使用申请设备代号">
+        <item text="东风站" value="TS-4216"></item>
+        <item text="大树里站" value="YQ-2512"></item>
+        <item text="青岛站" value="TY-4801"></item>
+        <item text="喀什站(TS-4217)" value="TS-4217"></item>
+        <item text="喀什站(TY-4801)" value="TY-4801"></item>
+        <item text="厦门站" value="TS-4222"></item>
+        <item text="三亚站" value="TS-4205"></item>
+        <item text="佳木斯站" value="TS-4205"></item>
+        <item text="瑞典站" value="瑞典站设备"></item>
+        <item text="远望五号测量船" value="TS-4203"></item>
+        <item text="远望六号测量船" value="TS-4210"></item>
+    </DJZYSQSBDH>
+    <DJZYSQQB description="测控资源使用申请圈标">YB</DJZYSQQB>
+    <DJZYSQSHJ description="测控资源使用申请测控事件类型">
+        <item text="数据注入" value="1"></item>
+        <item text="遥控" value="2"></item>
+        <item text="测轨" value="3"></item>
+        <item text="状态监视(遥测)" value="4"></item>
+        <item text="数传" value="5"></item>
+    </DJZYSQSHJ>
+    <DJZYSQPDXZ description="测控资源使用申请测控频段选择">
+        <item text="S频段" value="SS"></item>
+        <item text="C频段" value="CC"></item>
+        <item text="Ka频段" value="KA"></item>
+        <item text="X频段" value="XX"></item>
+    </DJZYSQPDXZ>
     <DMJHMS description="地面计划设备工作模式">
         <item text="标准TTC模式" value="B"></item>
         <item text="扩频模式1" value="K1"></item>
