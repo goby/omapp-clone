@@ -83,14 +83,43 @@
         <item text="S频段数传接收模式" value="SC"></item>
         <item text="X频段数传接收模式" value="XC"></item>
     </DMJHMS>
-    <DMJHBID description="地面计划信息类别标志">
+    <GZJHXXFL description="地面站工作计划信息分类">
+        <item text="周计划" value="ZJ"></item>
+        <item text="日计划" value="RJ"></item>
+    </GZJHXXFL>
+    <GZJHDH description="地面站工作计划任务代号">
+        <item text="700任务" value="0501"></item>
+        <item text="TS-3卫星" value="5701"></item>
+        <item text="TS-4-A卫星" value="5702"></item>
+        <item text="TS-4-B卫星" value="5703"></item>
+        <item text="TS-5-A卫星" value="5704"></item>
+        <item text="TS-5-B卫星" value="5705"></item>
+    </GZJHDH>
+    <GZJHMS description="地面站工作计划设备工作模式">
+        <item text="标准TTC模式" value="01"></item>
+        <item text="扩频模式1" value="02"></item>
+        <item text="扩频模式2" value="03"></item>
+        <item text="S频段数传接收模式" value="04"></item>
+        <item text="X频段数传接收模式" value="05"></item>
+    </GZJHMS>
+    <GZJHQB description="地面站工作计划设备圈标识">
+        <item text="第一圈" value="Q1"></item>
+        <item text="第二圈" value="Q2"></item>
+        <item text="入境圈" value="RJ"></item>
+        <item text="出境圈" value="CJ"></item>
+        <item text="X一般圈" value="YB"></item>
+    </GZJHQB>
+    <GZJHGXZ  description="地面站工作计划设备工作性质">
+        <item text="主站" value="M"></item>
+        <item text="备站" value="B"></item>
+    </GZJHGXZ>
+    <GZJHBID description="地面站工作计划信息类别标志">
         <item text="数传数据" value="01"></item>
         <item text="遥测数据" value="02"></item>
         <item text="测距数据" value="03"></item>
         <item text="测速数据" value="04"></item>
         <item text="测角数据" value="05"></item>
-        <item text="远程监控数据" value="06"></item>
-    </DMJHBID>
+    </GZJHBID>
     <TYSJSatName description="仿真推演试验数据卫星名称">
         <item text="探索三号卫星" value="探索五号卫星"></item>
         <item text="探索四号卫星" value="探索五号卫星"></item>

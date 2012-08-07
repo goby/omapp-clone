@@ -36,7 +36,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     hfSBJHID.Value = "-1";
                     BindJhTable(sID);
                     BindXML();
-                    hfURL.Value = "?type=DMJH&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"];
+                    hfURL.Value = "?type=DJZYSQ&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"];
                     if ("detail" == Request.QueryString["op"])
                     {
                         ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");
@@ -1146,7 +1146,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         TaskID = obj.TaskID,
                         PlanType = "DJZYSQ",
-                        PlanID = (new Sequence()).GetDMJHSequnce(),
+                        PlanID = (new Sequence()).GetDJZYSQSequnce(),
                         StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
                         EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
                         SRCType = 0,
@@ -1348,8 +1348,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
                 {
                     TaskID = obj.TaskID,
-                    PlanType = "DMJH",
-                    PlanID = (new Sequence()).GetDMJHSequnce(),
+                    PlanType = "DJZYSQ",
+                    PlanID = (new Sequence()).GetDJZYSQSequnce(),
                     StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
                     EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
                     SRCType = 0,

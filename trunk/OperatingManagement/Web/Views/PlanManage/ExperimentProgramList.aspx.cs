@@ -165,8 +165,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                         };
                 objJH.FileIndex = (new PlanFileCreator()).CreateDMJHFile(objGZJH, 0);
                 objJH.TaskID = objGZJH.TaskID;
-                objJH.PlanType = "DMJH";
-                objJH.PlanID = (new Sequence()).GetDMJHSequnce();
+                objJH.PlanType = "DJZYSQ";
+                objJH.PlanID = (new Sequence()).GetDJZYSQSequnce();
                 objJH.Add();
                 #endregion
 

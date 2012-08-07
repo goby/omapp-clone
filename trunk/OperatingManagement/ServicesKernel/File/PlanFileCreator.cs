@@ -528,6 +528,137 @@ namespace ServicesKernel.File
             return FilePath;
         }
         /// <summary>
+        /// ZC地面站工作计划
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="type">0:Add;1:Edit</param>
+        /// <returns></returns>
+        public string CreateGZJHFile(GZJH obj, int type)
+        {
+            if (type == 0)
+            {
+                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("GZJH", obj.TaskID, obj.SatID);
+            }
+            xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
+            xmlWriter.Formatting = Formatting.Indented;
+            xmlWriter.WriteStartDocument();
+
+            xmlWriter.WriteStartElement("地面站工作计划");
+
+            xmlWriter.WriteStartElement("JXH");
+            xmlWriter.WriteString(obj.JXH);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("XXFL");
+            xmlWriter.WriteString(obj.XXFL);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("DW");
+            xmlWriter.WriteString(obj.DW);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("SB");
+            xmlWriter.WriteString(obj.SB);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("QS");
+            xmlWriter.WriteString(obj.QS);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("QH");
+            xmlWriter.WriteString(obj.QH);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("DH");
+            xmlWriter.WriteString(obj.DH);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("FS");
+            xmlWriter.WriteString(obj.FS);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("JXZ");
+            xmlWriter.WriteString(obj.JXZ);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("MS");
+            xmlWriter.WriteString(obj.MS);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("QB");
+            xmlWriter.WriteString(obj.QB);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("GXZ");
+            xmlWriter.WriteString(obj.GXZ);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("ZHB");
+            xmlWriter.WriteString(obj.ZHB);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("RK");
+            xmlWriter.WriteString(obj.RK);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("GZK");
+            xmlWriter.WriteString(obj.GZK);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("KSHX");
+            xmlWriter.WriteString(obj.KSHX);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("GSHX");
+            xmlWriter.WriteString(obj.GSHX);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("GZJ");
+            xmlWriter.WriteString(obj.GZJ);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("JS");
+            xmlWriter.WriteString(obj.JS);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("BID");
+            xmlWriter.WriteString(obj.BID);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("SBZ");
+            xmlWriter.WriteString(obj.SBZ);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("RTs");
+            xmlWriter.WriteString(obj.RTs);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("RTe");
+            xmlWriter.WriteString(obj.RTe);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("SL");
+            xmlWriter.WriteString(obj.SL);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("HBZ");
+            xmlWriter.WriteString(obj.HBZ);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("Ts");
+            xmlWriter.WriteString(obj.Ts);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("Te");
+            xmlWriter.WriteString(obj.Te);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteEndElement();
+            xmlWriter.Close();
+
+            return FilePath;
+        }
+        /// <summary>
         /// 中心计划
         /// </summary>
         public string CreateZXJHFile(ZXJH obj,int type)
@@ -929,6 +1060,16 @@ namespace ServicesKernel.File
         { 
             filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("DMJH", obj.TaskID, obj.SatID);
              return TestFileName();
+        }
+        /// <summary>
+        /// 测试要生成的文件文件名是否已存在
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool TestGZJHFileName(GZJH obj)
+        {
+            filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("GZJH", obj.TaskID, obj.SatID);
+            return TestFileName();
         }
         /// <summary>
         /// 测试要生成的文件文件名是否已存在
