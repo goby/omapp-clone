@@ -75,9 +75,13 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\GDJSJGFormat.xml" />
+    <Content Include="App_Data\menuBiz.xml" />
+    <Content Include="App_Data\menuFS.xml" />
+    <Content Include="App_Data\menuGD.xml" />
     <Content Include="App_Data\menuIndex.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="App_Data\menuRes.xml" />
     <Content Include="App_Data\menuUserNRole.xml" />
     <Content Include="App_Data\navigator.xml">
       <SubType>Designer</SubType>
@@ -180,7 +184,6 @@
     <Content Include="Scripts\Pages\PlanManage\PlanEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\TYSJEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\XXXQEdit.aspx.js" />
-    <Content Include="Scripts\Pages\PlanManage\GZJHEdit.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\permissions.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\userroleedit.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\roleadd.aspx.js" />
@@ -216,9 +219,9 @@
     <Content Include="Views\BusinessManage\GroundResourceEdit.aspx" />
     <Content Include="Views\BusinessManage\MeasureDataDetail.aspx" />
     <Content Include="Views\BusinessManage\MeasureDataList.aspx" />
-    <Content Include="Views\BusinessManage\OrbitDifferenceAnalysis.aspx" />
-    <Content Include="Views\BusinessManage\OrbitIntersectionReport.aspx" />
-    <Content Include="Views\BusinessManage\OrbitParaCalculate.aspx" />
+    <Content Include="Views\BusinessManage\GDCZFX.aspx" />
+    <Content Include="Views\BusinessManage\GDJHYB.aspx" />
+    <Content Include="Views\BusinessManage\GDCSZH.aspx" />
     <Content Include="Views\BusinessManage\ResourceAdd.aspx" />
     <Content Include="Views\BusinessManage\ResourceCalculateManage.aspx" />
     <Content Include="Views\BusinessManage\ResourceCalculateResultView.aspx" />
@@ -462,26 +465,26 @@
     <Compile Include="Views\BusinessManage\MeasureDataList.aspx.designer.cs">
       <DependentUpon>MeasureDataList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\BusinessManage\OrbitDifferenceAnalysis.aspx.cs">
-      <DependentUpon>OrbitDifferenceAnalysis.aspx</DependentUpon>
+    <Compile Include="Views\BusinessManage\GDCZFX.aspx.cs">
+      <DependentUpon>GDCZFX.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\BusinessManage\OrbitDifferenceAnalysis.aspx.designer.cs">
-      <DependentUpon>OrbitDifferenceAnalysis.aspx</DependentUpon>
+    <Compile Include="Views\BusinessManage\GDCZFX.aspx.designer.cs">
+      <DependentUpon>GDCZFX.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\BusinessManage\OrbitIntersectionReport.aspx.cs">
-      <DependentUpon>OrbitIntersectionReport.aspx</DependentUpon>
+    <Compile Include="Views\BusinessManage\GDJHYB.aspx.cs">
+      <DependentUpon>GDJHYB.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\BusinessManage\OrbitIntersectionReport.aspx.designer.cs">
-      <DependentUpon>OrbitIntersectionReport.aspx</DependentUpon>
+    <Compile Include="Views\BusinessManage\GDJHYB.aspx.designer.cs">
+      <DependentUpon>GDJHYB.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\BusinessManage\OrbitParaCalculate.aspx.cs">
-      <DependentUpon>OrbitParaCalculate.aspx</DependentUpon>
+    <Compile Include="Views\BusinessManage\GDCSZH.aspx.cs">
+      <DependentUpon>GDCSZH.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\BusinessManage\OrbitParaCalculate.aspx.designer.cs">
-      <DependentUpon>OrbitParaCalculate.aspx</DependentUpon>
+    <Compile Include="Views\BusinessManage\GDCSZH.aspx.designer.cs">
+      <DependentUpon>GDCSZH.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\ResourceAdd.aspx.cs">
       <DependentUpon>ResourceAdd.aspx</DependentUpon>
@@ -850,7 +853,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2920</DevelopmentServerPort>
+          <DevelopmentServerPort>2158</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

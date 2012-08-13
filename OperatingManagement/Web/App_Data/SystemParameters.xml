@@ -34,6 +34,7 @@
   <GroundResourceOwner description="地面站资源管理单位列表">
     <item text="总参" value="01"></item>
     <item text="总装" value="02"></item>
+    <item text="遥科学站" value="03"></item>
   </GroundResourceOwner>
   <GroundResourceCoordinate description="地面站资源站址坐标列表">
     <item text="地心系XYZ" value="01"></item>
@@ -104,15 +105,10 @@
     <item text="DifCalTimeFileMaxSize" value="4194304"></item>
   </OrbitDifferenceAnalysis>
   <OrbitIntersectionReport description="轨道分析-交会预报">
-    <item text="CuMainFileDirectory" value="D:\OrbitIntersectionReport\CuMainFileDirectory\"></item>
+    <item text="FileDirectory" value="D:\OrbitIntersectionReport\CuMainFileDirectory\"></item>
     <item text="CuMainFileExtension" value="dat,txt"></item>
-    <item text="CuMainFileMaxSize" value="4194304"></item>
-    <item text="CuSubFileDirectory" value="D:\OrbitIntersectionReport\CuSubFileDirectory\"></item>
     <item text="CuSubFileExtension" value="dat,txt"></item>
-    <item text="CuSubFileMaxSize" value="4194304"></item>
-    <item text="CuOptionalFileDirectory" value="D:\OrbitIntersectionReport\CuOptionalFileDirectory\"></item>
     <item text="CuOptionalFileExtension" value="dat,txt"></item>
-    <item text="CuOptionalFileMaxSize" value="4194304"></item>
     <item text="JPLEPHFilePath" value="D:\Include\JPLEPH"></item>
     <item text="TESTRECLFilePath" value="D:\Include\TESTRECL"></item>
     <item text="WGS84FilePath" value="D:\Include\WGS84.GEO"></item>
