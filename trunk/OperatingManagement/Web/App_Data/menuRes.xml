@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menus>
+    <menu title="资源管理">
+      <item id="1-1" title="资源信息管理" roles="OMB_ResMan.View" href="Views/BusinessManage/ResourceManage.aspx" />
+      <item id="1-2" title="新增地面站资源" roles="OMB_GRes.Add" href="Views/BusinessManage/GroundResourceAdd.aspx" />
+      <item id="1-3" title="新增通信资源" roles="OMB_ComRes.Add" href="Views/BusinessManage/CommunicationResourceAdd.aspx" />
+      <item id="1-4" title="新增中心资源" roles="OMB_CRes.Add" href="Views/BusinessManage/CenterResourceAdd.aspx" />
+    </menu>
+    <menu title="资源状态管理">
+      <item id="2-1" title="资源状态管理" roles="OMB_ResStaMan.View" href="Views/BusinessManage/ResourceStatusManage.aspx" />
+      <item id="2-2" title="新增资源状态" roles="OMB_ResStaMan.View" href="Views/BusinessManage/ResourceStatusAdd.aspx" />
+    </menu>
+    <menu title="资源计算">
+      <item id="3-1" title="资源调度计算" roles="OMB_ResCac.Caculate" href="Views/BusinessManage/ResourceRequirementAdd.aspx" />
+      <item id="3-2" title="查看资源调度计算结果" roles="OMB_ResCac.View" href="Views/BusinessManage/ResourceCalculateManage.aspx" />
+    </menu>
+</menus>

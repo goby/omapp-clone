@@ -3,10 +3,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
-<om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="bizmanage" />
+<om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="resmanage" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
-<om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
+<om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuRes" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
  业务管理 &gt; 查询资源
@@ -29,7 +29,7 @@
                  </asp:DropDownList>
              </td>
              <th width="15%">
-                 资源健康\占用状态
+                 资源健康/占用状态：
              </th>
              <td width="25%">
                  <asp:DropDownList ID="dplResourceStatus" runat="server" CssClass="norDpl">

@@ -33,16 +33,19 @@
                 <asp:TextBox ID="txtEndDate" ClientIDMode="Static"  CssClass="text" runat="server" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                 
                </td>
-               <td>
-                   <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="True" 
-                       BlankItemText="==全部==" BlankItemValue="-1" />
-                   <asp:DropDownList ID="ddlType" runat="server">
+               <th>任务：</th>
+               <td><uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="True" 
+                       BlankItemText="==全部==" BlankItemValue="-1" /></td>
+                <th>数据类型：</th>
+                <td><asp:DropDownList ID="ddlType" runat="server">
                        <asp:ListItem Value="-1">==全部==</asp:ListItem>
                        <asp:ListItem Value="0">卫星初始轨道根数</asp:ListItem>
                        <asp:ListItem Value="1">卫星瞬时精轨根数</asp:ListItem>
                        <asp:ListItem Value="2">卫星事后精轨根数</asp:ListItem>
                        <%--<asp:ListItem Value="3">空间目标信息国内双行根数</asp:ListItem>--%>
-                   </asp:DropDownList>
+                   </asp:DropDownList></td>
+               <td>
+                   
                <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
                     Width="69px" />
 &nbsp;<%--<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
