@@ -184,6 +184,7 @@
     <Content Include="Scripts\Pages\PlanManage\PlanEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\TYSJEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\XXXQEdit.aspx.js" />
+    <Content Include="Scripts\Pages\PlanManage\PlanTempList.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\permissions.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\userroleedit.aspx.js" />
     <Content Include="Scripts\Pages\UserNRole\roleadd.aspx.js" />
@@ -256,6 +257,7 @@
     <Content Include="Views\PlanManage\YJJHEdit.aspx" />
     <Content Include="Views\PlanManage\ZXJHEdit.aspx" />
     <Content Include="Views\PlanManage\GZJHEdit.aspx" />
+    <Content Include="Views\PlanManage\PlanTempList.aspx" />
     <Content Include="Views\UserAndRole\PermissionAdd.aspx" />
     <Content Include="Views\UserAndRole\Permissions.aspx" />
     <Content Include="Views\UserAndRole\RoleAdd.aspx" />
@@ -723,6 +725,13 @@
     </Compile>
     <Compile Include="Views\PlanManage\GZJHEdit.aspx.designer.cs">
       <DependentUpon>GZJHEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlanManage\PlanTempList.aspx.cs">
+      <DependentUpon>PlanTempList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\PlanManage\PlanTempList.aspx.designer.cs">
+      <DependentUpon>PlanTempList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\UserAndRole\PermissionAdd.aspx.cs">
       <DependentUpon>PermissionAdd.aspx</DependentUpon>

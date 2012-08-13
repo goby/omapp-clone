@@ -20,6 +20,8 @@ namespace OperatingManagement.Web.Views.PlanManage
 {
     public partial class TYSJEdit : AspNetPage, IRouteContext
     {
+        bool isTempJH = false;  //是否为临时计划,默认为正式计划
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -30,6 +32,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
+                    if (!string.IsNullOrEmpty(Request.QueryString["istemp"]) && Request.QueryString["istemp"] == "true")
+                    {
+                        isTempJH = true;
+                        ViewState["isTempJH"] = true;
+                    }
+
                     HfID.Value = sID;
                     hfStatus.Value = "edit";    //编辑
                     BindJhTable(sID);
@@ -53,7 +61,9 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
-                List<JH> jh = (new JH()).SelectByIDS(sID);
+                isTempJH = GetIsTempJHValue();
+
+                List<JH> jh = (new JH(isTempJH)).SelectByIDS(sID);
                 HfFileIndex.Value = jh[0].FileIndex;
                 hfTaskID.Value = jh[0].TaskID.ToString();
                 ucTask1.SelectedValue = jh[0].TaskID.ToString();
@@ -118,6 +128,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                isTempJH = GetIsTempJHValue();
+
                 TYSJ objTYSJ = new TYSJ();
                 objTYSJ.SatName = ddlSatName.SelectedItem.Text;
                 objTYSJ.Type = ddlType.SelectedItem.Text;
@@ -129,11 +141,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                 objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
                 CultureInfo provider = CultureInfo.InvariantCulture;
 
-                PlanFileCreator creater = new PlanFileCreator();
+                PlanFileCreator creater = new PlanFileCreator(isTempJH);
                 if (hfStatus.Value == "new")
                 {
                     string filepath = creater.CreateTYSJFile(objTYSJ, 0);
-                    DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                    DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
                     {
                         TaskID = objTYSJ.TaskID,
                         PlanType = "TYSJ",
@@ -157,7 +169,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         string filepath = creater.CreateTYSJFile(objTYSJ, 0);
 
-                        DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                        DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
                         {
                             Id = Convert.ToInt32(HfID.Value),
                             TaskID = objTYSJ.TaskID,
@@ -194,6 +206,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                isTempJH = GetIsTempJHValue();
+
                 TYSJ objTYSJ = new TYSJ();
                 objTYSJ.SatName = ddlSatName.SelectedItem.Text;
                 objTYSJ.Type = ddlType.SelectedItem.Text;
@@ -203,7 +217,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 objTYSJ.Condition = txtCondition.Text;
                 CultureInfo provider = CultureInfo.InvariantCulture;
 
-                PlanFileCreator creater = new PlanFileCreator();
+                PlanFileCreator creater = new PlanFileCreator(isTempJH);
 
                 objTYSJ.TaskID = ucTask1.SelectedItem.Value;
                 objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
@@ -217,7 +231,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 string filepath = creater.CreateTYSJFile(objTYSJ, 0);
 
-                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
                 {
                     TaskID = objTYSJ.TaskID,
                     PlanType = "TYSJ",
@@ -362,7 +376,25 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         protected void btnReturn_Click(object sender, EventArgs e)
         {
-            Response.Redirect("PlanList.aspx" + hfURL.Value);
+            isTempJH = GetIsTempJHValue();
+            if (isTempJH)
+            {
+                Response.Redirect("PlanTempList.aspx" + hfURL.Value);
+            }
+            else
+            {
+                Response.Redirect("PlanList.aspx" + hfURL.Value);
+            }
+        }
+
+        protected bool GetIsTempJHValue()
+        {
+            bool returnvalue = false;
+            if (null != ViewState["isTempJH"])
+            {
+                returnvalue = Convert.ToBoolean(ViewState["isTempJH"]);
+            }
+            return returnvalue;
         }
     }
 }

@@ -20,6 +20,8 @@ namespace OperatingManagement.Web.Views.PlanManage
 {
     public partial class XXXQEdit : AspNetPage, IRouteContext
     {
+        bool isTempJH = false;  //是否为临时计划,默认为正式计划
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -29,6 +31,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
+                    if (!string.IsNullOrEmpty(Request.QueryString["istemp"]) && Request.QueryString["istemp"] == "true")
+                    {
+                        isTempJH = true;
+                        ViewState["isTempJH"] = true;
+                    }
+
                     HfID.Value = sID;
                     hfStatus.Value = "edit";    //编辑
                     BindJhTable(sID);
@@ -87,7 +95,9 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
-                List<JH> jh = (new JH()).SelectByIDS(sID);
+                isTempJH = GetIsTempJHValue();
+
+                List<JH> jh = (new JH(isTempJH)).SelectByIDS(sID);
                 txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm:ss");
                 txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
                 HfFileIndex.Value = jh[0].FileIndex;
@@ -345,6 +355,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                isTempJH = GetIsTempJHValue();
+
                 #region MBXQ
                 MBXQ objMB = new MBXQ();
                 objMB.User = txtMBUser.Text;
@@ -410,12 +422,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                 objXXXQ.TaskID = ucTask1.SelectedItem.Value;
                 objXXXQ.SatID = ucSatellite1.SelectedItem.Value;
 
-                PlanFileCreator creater = new PlanFileCreator();
+                PlanFileCreator creater = new PlanFileCreator(isTempJH);
                 if (hfStatus.Value == "new")
                 {
                     string filepath = creater.CreateXXXQFile(objXXXQ, 0);
 
-                    DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                    DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
                     {
                         TaskID = objXXXQ.TaskID,
                         PlanType = "XXXQ",
@@ -436,7 +448,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         string filepath = creater.CreateXXXQFile(objXXXQ, 0);
 
-                        DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                        DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
                         {
                             Id = Convert.ToInt32(HfID.Value),
                             TaskID = objXXXQ.TaskID,
@@ -480,6 +492,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                isTempJH = GetIsTempJHValue();
+
                 #region MBXQ
                 MBXQ objMB = new MBXQ();
                 objMB.User = txtMBUser.Text;
@@ -543,7 +557,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 objXXXQ.objMBXQ = objMB;
                 objXXXQ.objHJXQ = objHJ;
 
-                PlanFileCreator creater = new PlanFileCreator();
+                PlanFileCreator creater = new PlanFileCreator(isTempJH);
 
                 objXXXQ.TaskID = ucTask1.SelectedItem.Value;
                 objXXXQ.SatID = ucSatellite1.SelectedItem.Value;
@@ -556,7 +570,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 string filepath = creater.CreateXXXQFile(objXXXQ, 0);
 
-                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
                 {
                     TaskID = objXXXQ.TaskID,
                     PlanType = "XXXQ",
@@ -671,7 +685,25 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         protected void btnReturn_Click(object sender, EventArgs e)
         {
-            Response.Redirect("PlanList.aspx" + hfURL.Value);
+            isTempJH = GetIsTempJHValue();
+            if (isTempJH)
+            {
+                Response.Redirect("PlanTempList.aspx" + hfURL.Value);
+            }
+            else
+            {
+                Response.Redirect("PlanList.aspx" + hfURL.Value);
+            }
+        }
+
+        protected bool GetIsTempJHValue()
+        {
+            bool returnvalue = false;
+            if (null != ViewState["isTempJH"])
+            {
+                returnvalue = Convert.ToBoolean(ViewState["isTempJH"]);
+            }
+            return returnvalue;
         }
     }
 }

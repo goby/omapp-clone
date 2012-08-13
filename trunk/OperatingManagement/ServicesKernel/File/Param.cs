@@ -64,7 +64,7 @@ namespace ServicesKernel.File
         }
 
         /// <summary>
-        /// 保存路径，新建计划使用
+        /// 保存路径，新建正式计划使用
         /// </summary>
         public static string SavePath
         {
@@ -82,6 +82,24 @@ namespace ServicesKernel.File
             }
         }
 
+        /// <summary>
+        /// 保存路径，新建临时计划使用
+        /// </summary>
+        public static string TempJHSavePath
+        {
+            get 
+            {
+                string path = System.Configuration.ConfigurationManager.AppSettings["tempjhsavepath"];
+                if (path != string.Empty)
+                {
+                    if (path[path.Length - 1] != '\\')
+                        path = path + @"\";
+                }
+                else
+                    path = AppDomain.CurrentDomain.BaseDirectory +  @"TempJHSavePath\";
+                return path;
+            }
+        }
         /// <summary>
         /// 输出路径，外发时使用
         /// </summary>
