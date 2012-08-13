@@ -26,9 +26,23 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             _database = OracleDatabase.FromConfiguringNode("ApplicationServices");
         }
 
+        /// <summary>
+        /// Create a new instance of <see cref="JH"/> class.
+        /// </summary>
+        /// <param name="istempjh">是否为临时计划: true-临时计划</param>
+        public JH(bool istempjh)
+        {
+            _database = OracleDatabase.FromConfiguringNode("ApplicationServices");
+            isTempJH = istempjh;
+        }
+
         #region -Properties-
         private OracleDatabase _database = null;
 
+        /// <summary>
+        /// 是否为临时计划：true-临时计划；false-正式计划
+        /// </summary>
+        public bool isTempJH { get; set; }
         public int ID { get; set; }
         /// <summary>
         /// 创建时间
@@ -131,7 +145,13 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
 
             ds = new DataSet();
             ds.Tables.Add();
+            
             OracleCommand command = _database.GetStoreProcCommand("up_jh_getsyjhlist");
+            if (isTempJH)
+            {
+                command = _database.GetStoreProcCommand("up_jhtemp_getsyjhlist");
+            }
+
             if (startDate == DateTime.MinValue)
             {
                 _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
@@ -190,6 +210,11 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 ds = new DataSet();
                 ds.Tables.Add();
                 OracleCommand command = _database.GetStoreProcCommand(GET_PlanList);
+                if (isTempJH)
+                {
+                    command = _database.GetStoreProcCommand("UP_JHTemp_GETLIST");
+                }
+
                 _database.AddInParameter(command, "p_planType", OracleDbType.Varchar2, planType);
                 if (startDate == DateTime.MinValue)
                 {
@@ -244,7 +269,13 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         public List<JH> SelectByIDS(string ids)
         {
             OracleParameter p = PrepareRefCursor();
-            DataSet ds = _database.SpExecuteDataSet("up_jh_selectinids", new OracleParameter[]{
+            string sqlcommand = "up_jh_selectinids";
+            if (isTempJH)
+            {
+                sqlcommand = "up_jhtemp_selectinids";
+            }
+
+            DataSet ds = _database.SpExecuteDataSet(sqlcommand, new OracleParameter[]{
                 new OracleParameter("p_ids",ids),
                 p
             });
@@ -278,6 +309,12 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <returns></returns>
         public FieldVerifyResult Add()
         {
+            string sqlcommand = "up_jh_insert";
+            if (isTempJH)
+            {
+                sqlcommand = "up_jhtemp_insert";
+            }
+
             OracleParameter p = new OracleParameter()
             {
                 ParameterName = "v_result",
@@ -290,7 +327,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 Direction = ParameterDirection.Output,
                 OracleDbType = OracleDbType.Double
             };
-            _database.SpExecuteNonQuery("up_jh_insert", new OracleParameter[]{
+            _database.SpExecuteNonQuery(sqlcommand, new OracleParameter[]{
                 new OracleParameter("p_TaskID",this.TaskID),
                 new OracleParameter("p_PlanType",this.PlanType),
                 new OracleParameter("p_PlanID",(int)this.PlanID),
@@ -310,13 +347,19 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
 
         public FieldVerifyResult Update()
         {
+            string sqlcommand = "up_jh_update";
+            if (isTempJH)
+            {
+                sqlcommand = "up_jhtemp_update";
+            }
+
             OracleParameter p = new OracleParameter()
             {
                 ParameterName = "v_result",
                 Direction = ParameterDirection.Output,
                 OracleDbType = OracleDbType.Double
             };
-            _database.SpExecuteNonQuery("up_jh_update", new OracleParameter[]{
+            _database.SpExecuteNonQuery(sqlcommand, new OracleParameter[]{
                 new OracleParameter("v_Id",this.Id),
                 new OracleParameter("p_TaskID",this.TaskID),
                 new OracleParameter("p_StartTime",(DateTime)this.StartTime),
@@ -327,48 +370,21 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
 
-        public JH SelectByPlanTypeAndPlanID(string plantype,int planid)
-        {
-            OracleParameter p = PrepareRefCursor();
-
-            DataSet ds = _database.SpExecuteDataSet("up_jh_selectbyplantypeandid", new OracleParameter[]{
-                new OracleParameter("p_PlanType", this.PlanType),
-                new OracleParameter("p_PlanId", this.PlanID), 
-                p
-            });
-
-            if (ds != null && ds.Tables.Count == 1)
-            {
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    return new JH()
-                    {
-                        ID = Convert.ToInt32(dr["ID"].ToString()),
-                        CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
-                        TaskID = dr["taskid"].ToString(),
-                        PlanType = dr["plantype"].ToString(),
-                        PlanID = Convert.ToInt32(dr["PlanID"].ToString()),
-                        StartTime = Convert.ToDateTime(dr["StartTime"].ToString()),
-                        EndTime = Convert.ToDateTime(dr["EndTime"].ToString()),
-                        SRCType = Convert.ToInt32(dr["SRCType"].ToString()),
-                        SRCID = Convert.ToInt32(dr["SRCID"].ToString()),
-                        FileIndex = dr["FileIndex"].ToString(),
-                        Reserve = dr["Reserve"].ToString()
-                    };
-                }
-            }
-            return null;
-        }
-
         public FieldVerifyResult UpdateFileIndex()
         {
+            string sqlcommand = "up_jh_updatefileindex";
+            if (isTempJH)
+            {
+                sqlcommand = "up_jhtemp_updatefileindex";
+            }
+
             OracleParameter p = new OracleParameter()
             {
                 ParameterName = "v_result",
                 Direction = ParameterDirection.Output,
                 OracleDbType = OracleDbType.Double
             };
-            _database.SpExecuteNonQuery("up_jh_updatefileindex", new OracleParameter[]{
+            _database.SpExecuteNonQuery(sqlcommand, new OracleParameter[]{
                 new OracleParameter("v_Id",this.Id),
                 new OracleParameter("p_FileIndex",this.FileIndex),
                 p

@@ -1,15 +1,15 @@
 ---------------------------------------------
 -- Export file for user HTCUSER            --
--- Created by taiji on 2012/7/17, 21:41:19 --
+-- Created by taiji on 2012/8/13, 22:39:56 --
 ---------------------------------------------
 
-spool UP_01_计划管理20120717.log
+spool UP_01_计划管理20120813.log
 
 prompt
 prompt Creating procedure UP_GD_GETLIST
 prompt ================================
 prompt
-create or replace procedure up_GD_Getlist
+create or replace procedure htcuser.up_GD_Getlist
 (
        p_startTime in TB_GD.Ctime%type,
        p_endTime in TB_GD.Ctime%type,
@@ -144,6 +144,180 @@ end;
 /
 
 prompt
+prompt Creating procedure UP_GEN_SEQUENCE
+prompt ==================================
+prompt
+create or replace procedure htcuser.UP_Gen_SEQUENCE
+(
+       p_seqname varchar2,
+       o_seqnum out number
+)
+as
+
+begin
+  execute immediate ' select ' || p_seqname || '.nextval from dual' into o_seqnum;
+
+if o_seqnum >= 9999 then
+  up_reset_sequence (p_seqname);
+end if;
+
+end;
+/
+
+prompt
+prompt Creating procedure UP_JHTEMP_GETLIST
+prompt ====================================
+prompt
+create or replace procedure htcuser.UP_JHTemp_GETLIST
+(
+       p_planType IN TB_JHTemp.Plantype%type Default null,
+       p_startDate IN TB_JHTemp.Ctime%type Default null,
+       p_endDate  IN TB_JHTemp.Ctime%type Default null,
+       o_cursor out sys_refcursor
+)
+is
+v_sql varchar2(4000);
+begin
+  v_sql:='SELECT t.*,k.taskname '||
+          ' FROM TB_JHTemp t,TB_TASK k '||
+          ' where t.taskid=k.taskno(+) ';
+   if (p_planType is not null)
+   then
+      v_sql:=v_sql||' and t.plantype = '''|| p_planType ||'''';
+   end if;
+   if (p_startDate is not null)
+   then
+      v_sql:=v_sql||' and t.StartTIME >= to_date(''' || to_char(p_startDate,'yyyy/MM/dd HH24:mi:ss') || ''', ''yyyy/MM/dd hh24:mi:ss'')';
+   end if;
+   if (p_endDate is not null)
+   then
+      v_sql:=v_sql||' and t.EndTIME <= to_date(''' || to_char(p_endDate,'yyyy/MM/dd HH24:mi:ss') || ''', ''yyyy/MM/dd hh24:mi:ss'')';
+   end if;
+dbms_output.put_line(v_sql);
+   OPEN o_cursor For v_sql;
+
+end;
+/
+
+prompt
+prompt Creating procedure UP_JHTEMP_INSERT
+prompt ===================================
+prompt
+create or replace procedure htcuser.up_jhtemp_insert
+      (
+      p_TaskID TB_JHTemp.taskid%type,
+      p_PlanType TB_JHTemp.plantype%type,
+      p_PlanID TB_JHTemp.planid%type,
+      p_StartTime TB_JHTemp.starttime%type,
+      p_EndTime TB_JHTemp.endtime%type,
+      p_SRCType TB_JHTemp.srctype%type,
+      p_SRCID TB_JHTemp.srcid%type,
+      p_FileIndex TB_JHTemp.fileindex%type,
+      p_Reserve TB_JHTemp.reserve%type,
+       v_Id out TB_JHTemp.Id%type,
+       v_result out number
+)
+is
+begin
+       select seq_TB_JHTemp.NEXTVAL INTO v_Id from dual;
+       insert into TB_JHTemp(id,ctime,taskid,plantype, planid,starttime,endtime,srctype,srcid,fileindex,reserve)
+       values(v_Id,sysdate(),p_TaskID,p_PlanType,p_PlanID,p_StartTime,p_EndTime,p_SRCType,p_SRCID,p_FileIndex,p_Reserve);
+       commit;
+       v_result:=5; -- Success
+
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK;
+          COMMIT;
+          v_result:=4; --Error
+end;
+/
+
+prompt
+prompt Creating procedure UP_JHTEMP_SELECTINIDS
+prompt ========================================
+prompt
+create or replace procedure htcuser.up_jhtemp_SelectInIDS
+(
+       p_ids varchar2,
+       o_cursor out sys_refcursor
+) is
+v_sql varchar2(4000);
+begin
+v_sql:='SELECT * FROM TB_JHTemp t '||
+          ' where 1=1 ';
+
+   if (p_ids is not null)
+   then
+      v_sql:=v_sql||' and t.id in ('|| p_ids ||')';
+   end if;
+
+   dbms_output.put_line(v_sql);
+
+   OPEN o_cursor For v_sql;
+
+
+end;
+/
+
+prompt
+prompt Creating procedure UP_JHTEMP_UPDATE
+prompt ===================================
+prompt
+create or replace procedure htcuser.up_jhtemp_update
+(
+       v_Id  TB_JHTemp.Id%type,
+       p_taskid TB_JHTemp.taskid%type,
+       p_starttime TB_JHTemp.starttime%type,
+       p_endtime TB_JHTemp.endtime%type,
+       p_FileIndex TB_JHTemp.fileindex%type,
+       v_result out number
+)
+is
+begin
+     update   TB_JHTemp t set
+     t.taskid = p_taskid,
+     t.starttime = p_starttime,
+     t.endtime = p_endtime,
+     t.fileindex = p_FileIndex
+      where t.Id = v_Id;
+       commit;
+       v_result:=5; -- Success
+
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK;
+          COMMIT;
+          v_result:=4; --Error
+end;
+/
+
+prompt
+prompt Creating procedure UP_JHTEMP_UPDATEFILEINDEX
+prompt ============================================
+prompt
+create or replace procedure htcuser.up_jhtemp_updatefileindex
+(
+       v_Id  TB_JHTemp.Id%type,
+       p_FileIndex TB_JHTemp.fileindex%type,
+       v_result out number
+)
+is
+begin
+     update   TB_JHTemp t set
+     t.fileindex=p_FileIndex  where t.Id = v_Id;
+       commit;
+       v_result:=5; -- Success
+
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK;
+          COMMIT;
+          v_result:=4; --Error
+end;
+/
+
+prompt
 prompt Creating procedure UP_JH_GETLIST
 prompt ================================
 prompt
@@ -166,14 +340,13 @@ begin
    end if;
    if (p_startDate is not null)
    then
-      v_sql:=v_sql||' and t.CTIME >=to_date( '''|| to_char(p_startDate,'yyyy/MM/dd HH24:mi:ss') ||''',''yyyy/MM/dd hh24:mi:ss'')';
+      v_sql:=v_sql||' and t.StartTIME >= to_date(''' || to_char(p_startDate,'yyyy/MM/dd HH24:mi:ss') || ''', ''yyyy/MM/dd hh24:mi:ss'')';
    end if;
    if (p_endDate is not null)
    then
-      v_sql:=v_sql||' and t.CTIME <=to_date( '''|| to_char(p_endDate,'yyyy/MM/dd HH24:mi:ss') ||''',''yyyy/MM/dd hh24:mi:ss'')';
-  --    v_sql:=v_sql||' and t.CTIME <= '''|| p_endDate ||'''';
+      v_sql:=v_sql||' and t.EndTIME <= to_date(''' || to_char(p_endDate,'yyyy/MM/dd HH24:mi:ss') || ''', ''yyyy/MM/dd hh24:mi:ss'')';
    end if;
---dbms_output.put_line(v_sql);
+dbms_output.put_line(v_sql);
    OPEN o_cursor For v_sql;
 
 end;

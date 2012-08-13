@@ -1,4 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="NotSpaceTaskList.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.NotSpaceTaskList" %>
+<%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -14,7 +16,7 @@
     <asp:Panel ID="pnlData" runat="server">
         <div class="index_content_search">
         <table cellspacing="0" cellpadding="0" class="searchTable">
-            <tr>
+        <tr>
                <th>
                   起始时间：
                </th>
@@ -30,6 +32,15 @@
                 
                </td>
                <td>
+                   <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="True" 
+                       BlankItemText="==全部==" BlankItemValue="-1" />
+                   <asp:DropDownList ID="ddlType" runat="server">
+                       <asp:ListItem Value="-1">==全部==</asp:ListItem>
+                       <asp:ListItem Value="0">卫星初始轨道根数</asp:ListItem>
+                       <asp:ListItem Value="1">卫星瞬时精轨根数</asp:ListItem>
+                       <asp:ListItem Value="2">卫星事后精轨根数</asp:ListItem>
+                       <%--<asp:ListItem Value="3">空间目标信息国内双行根数</asp:ListItem>--%>
+                   </asp:DropDownList>
                <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
                     Width="69px" />
 &nbsp;<%--<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
@@ -48,7 +59,7 @@
                     </div>
                    </td>
             </tr>
-        </table>
+    </table>
         </div>
         <div id="divResourceStatus" class="index_content_view">
                  <asp:Panel ID ="pnlAll1" runat="server">

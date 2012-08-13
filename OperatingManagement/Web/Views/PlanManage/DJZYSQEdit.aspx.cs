@@ -22,6 +22,8 @@ namespace OperatingManagement.Web.Views.PlanManage
 {
     public partial class DJZYSQEdit : AspNetPage, IRouteContext
     {
+        bool isTempJH = false;  //是否为临时计划,默认为正式计划
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -31,6 +33,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
+                    if (!string.IsNullOrEmpty(Request.QueryString["istemp"]) && Request.QueryString["istemp"] == "true")
+                    {
+                        isTempJH = true;
+                        ViewState["isTempJH"] = true;
+                    }
+
                     HfID.Value = sID;
                     hfStatus.Value = "edit";    //编辑
                     hfSBJHID.Value = "-1";
@@ -81,7 +89,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
-                List<JH> jh = (new JH()).SelectByIDS(sID);
+                isTempJH = GetIsTempJHValue();
+                List<JH> jh = (new JH(isTempJH)).SelectByIDS(sID);
                 txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm:ss");
                 txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
                 HfFileIndex.Value = jh[0].FileIndex;
@@ -1003,6 +1012,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                isTempJH = GetIsTempJHValue();
                 DJZYSQ obj = new DJZYSQ();
                 obj.SNO = txtSequence.Text;
                 obj.SJ = DateTime.Now.ToString("yyyyMMddHHmmss");
@@ -1137,12 +1147,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.TaskID = ucTask1.SelectedItem.Value;    //任务ID
                 obj.SatID = ucSatellite1.SelectedItem.Value;    //卫星ID
 
-                PlanFileCreator creater = new PlanFileCreator();
+                PlanFileCreator creater = new PlanFileCreator(isTempJH);
                 if (hfStatus.Value == "new")
                 {
                     string filepath = creater.CreateDMJHFile(obj, 0);
 
-                    DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                    DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
                     {
                         TaskID = obj.TaskID,
                         PlanType = "DJZYSQ",
@@ -1161,9 +1171,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     //当任务和卫星更新时，需要更新文件名称
                     if (hfSatID.Value != ucSatellite1.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
                     {
-                        string filepath = creater.CreateDMJHFile(obj, 1);
+                        string filepath = creater.CreateDMJHFile(obj, 0);
 
-                        DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                        DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
                         {
                             Id = Convert.ToInt32(HfID.Value),
                             TaskID = obj.TaskID,
@@ -1200,6 +1210,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                isTempJH = GetIsTempJHValue();
                 DJZYSQ obj = new DJZYSQ();
                 obj.SNO = txtSequence.Text;
                 obj.SJ = DateTime.Now.ToString("yyyyMMddHHmmss");
@@ -1332,7 +1343,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.SNUM = obj.DMJHTasks.Count.ToString();  //申请数量
 
 
-                PlanFileCreator creater = new PlanFileCreator();
+                PlanFileCreator creater = new PlanFileCreator(isTempJH);
 
                 obj.TaskID = ucTask1.SelectedItem.Value;    //任务ID
                 obj.SatID = ucSatellite1.SelectedItem.Value;    //卫星ID
@@ -1345,7 +1356,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 string filepath = creater.CreateDMJHFile(obj, 0);
 
-                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
                 {
                     TaskID = obj.TaskID,
                     PlanType = "DJZYSQ",
@@ -1384,7 +1395,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             DateTime endDate = new DateTime();
             startDate = new DateTime(1900, 1, 1);
             endDate = DateTime.Now.AddDays(1);
-            string planType = "SBJH";
+            string planType = "DJZYJH";
 
             List<JH> listDatas = (new JH()).GetJHList(planType, startDate, endDate);
             cpPager.DataSource = listDatas;
@@ -1552,7 +1563,25 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         protected void btnReturn_Click(object sender, EventArgs e)
         {
-            Response.Redirect("PlanList.aspx" + hfURL.Value);
+            isTempJH = GetIsTempJHValue();
+            if (isTempJH)
+            {
+                Response.Redirect("PlanTempList.aspx" + hfURL.Value);
+            }
+            else
+            {
+                Response.Redirect("PlanList.aspx" + hfURL.Value);
+            }
+        }
+
+        protected bool GetIsTempJHValue()
+        {
+            bool returnvalue = false;
+            if (null != ViewState["isTempJH"])
+            {
+                returnvalue = Convert.ToBoolean(ViewState["isTempJH"]);
+            }
+            return returnvalue;
         }
 
         //

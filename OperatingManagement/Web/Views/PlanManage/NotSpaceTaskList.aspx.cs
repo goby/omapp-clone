@@ -27,7 +27,6 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 txtStartDate.Attributes.Add("readonly", "true");
                 txtEndDate.Attributes.Add("readonly", "true");
-                //btnSend.Attributes.Add("onclick", "javascript:return confirm('确定要发送所选数据吗?');");
 
                 pnlDestination.Visible = false;
                 pnlData.Visible = true;
@@ -75,12 +74,22 @@ namespace OperatingManagement.Web.Views.PlanManage
             { ViewState["_EndDate"] = null; }
             else
             { ViewState["_EndDate"] = Convert.ToDateTime(txtEndDate.Text.Trim()).AddDays(1).AddMilliseconds(-1); }
+            if (ddlType.SelectedValue == "-1")
+            { ViewState["_IType"] = null; }
+            else
+            { ViewState["_IType"] = ddlType.SelectedValue; }
+            if (ucTask1.SelectedValue == "-1")
+            { ViewState["_Task"] = null; }
+            else
+            { ViewState["_Task"] = ucTask1.SelectedValue; }
         }
         //绑定列表
         void BindGridView(bool fromSearch)
         {
             DateTime startDate = new DateTime();
             DateTime endDate = new DateTime();
+            int iType = -1;
+            string TaskID = "-1";
 
             if (fromSearch)
             {
@@ -92,6 +101,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     endDate = Convert.ToDateTime(txtEndDate.Text).AddDays(1).AddMilliseconds(-1);   //查询时可查当天
                 }
+                TaskID = ucTask1.SelectedValue;
+                iType = Convert.ToInt32(ddlType.SelectedValue);
             }
             else
             {
@@ -103,10 +114,14 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     endDate = Convert.ToDateTime(ViewState["_EndDate"].ToString());
                 }
+                if (ViewState["_Task"] != null)
+                { TaskID = ViewState["_Task"].ToString(); }
+                if (ViewState["_IType"] != null)
+                { iType = Convert.ToInt32(ViewState["_IType"]); }
             }
-           
-            //List<YDSJ> listDatas = (new YDSJ()).GetListByDate(startDate, endDate, "2");
-            List<GD> listDatas = (new GD()).GetListByDate(startDate, endDate);
+
+            //List<GD> listDatas = (new GD()).GetListByDate(startDate, endDate);
+            List<GD> listDatas = (new GD()).GetList(startDate, endDate, TaskID, iType);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
             cpPager.BindToControl = rpDatas;
