@@ -9,6 +9,7 @@
     <item id="2-1" title="查看试验计划" roles="OMPLAN_ExPlan.View" href="Views/PlanManage/ExperimentPlanList.aspx" />
     <item id="2-2" title="查看试验程序" roles="OMPLAN_ExProgram.View" href="Views/PlanManage/ExperimentProgramList.aspx" />
     <item id="2-3" title="查询计划" roles="OMPLAN_Plan.View" href="Views/PlanManage/PlanList.aspx" />
+    <item id="2-4" title="查询临时计划" roles="OMPLAN_Plan.View" href="Views/PlanManage/PlanTempList.aspx" />
     <!--<item id="2-4" title="新建应用研究计划" roles="OMPLAN_Plan.Add" href="Views/PlanManage/YJJHEdit.aspx" />
     <item id="2-5" title="新建信息需求计划" roles="OMPLAN_Plan.Add" href="Views/PlanManage/XXXQEdit.aspx" />
     <item id="2-6" title="新建测控资源试验申请" roles="OMPLAN_Plan.Add" href="Views/PlanManage/DJZYSQEdit.aspx" />
