@@ -31,7 +31,9 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
 
         #region -Properties-
         private OracleDatabase _database = null;
-
+        /// <summary>
+        /// 编号
+        /// </summary>
         public int JHID { get; set; }
         public DateTime CTime { get; set; }
         public string Source { get; set; }

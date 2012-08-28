@@ -27,9 +27,17 @@
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
 <table class="edit1" style="width:800px;">
         <tr>
+            <th class="style1">
+                <asp:Button ID="btnImport" runat="server" Text="导入试验计划"  CssClass="button"  
+                    CausesValidation="False" onclick="btnImport_Click"  />
+            </th>
+            <td>
+            </td>
+        </tr>
+        <tr>
             <th class="style1">任务代号(<span class="red">*</span>)</th>
             <td>
-                <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" />
+                <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" ClientIDMode="Static" />
             </td>
         </tr>
         <tr>
@@ -59,11 +67,11 @@
         <tr>
             <th class="style1">系统名称</th>
             <td>
-                <asp:DropDownList ID="ddlSysName" runat="server" Height="20px" Width="305px">
-                    <asp:ListItem>天基目标观测应用研究分系统</asp:ListItem>
-                    <asp:ListItem>空间遥操作应用研究分系统</asp:ListItem>
-                    <asp:ListItem>空间机动应用研究分系统</asp:ListItem>
-                    <asp:ListItem>仿真推演分系统</asp:ListItem>
+                <asp:DropDownList ID="ddlSysName" runat="server" Height="20px" Width="305px" ClientIDMode="Static">
+                    <asp:ListItem Value="天基目标观测应用研究分系统">天基目标观测应用研究分系统</asp:ListItem>
+                    <asp:ListItem Value="空间遥操作应用研究分系统">空间遥操作应用研究分系统</asp:ListItem>
+                    <asp:ListItem Value="空间机动应用研究分系统">空间机动应用研究分系统</asp:ListItem>
+                    <asp:ListItem Value="仿真推演分系统">仿真推演分系统</asp:ListItem>
                 </asp:DropDownList>
             </td>
         </tr>
@@ -127,8 +135,11 @@
                 <asp:Button ID="btnReturn" class="button" runat="server" 
                     Text="返回" Width="65px" 
                     onclick="btnReturn_Click" CausesValidation="False" />
-                    <asp:HiddenField ID="HfID" runat="server" />
-                    <asp:HiddenField ID="HfFileIndex" runat="server" />
+                    &nbsp;&nbsp;&nbsp;
+                <asp:Button ID="btnFormal"  class="button" runat="server" onclick="btnFormal_Click" 
+                    Text="转为正式计划" />
+                <asp:HiddenField ID="HfID" runat="server" />
+                <asp:HiddenField ID="HfFileIndex" runat="server" />
                 <asp:HiddenField ID="hfTaskID" runat="server" />
                 <asp:HiddenField ID="hfSatID" runat="server" />
                 <asp:HiddenField ID="hfStatus" runat="server" />
@@ -138,6 +149,123 @@
     </table>
     <div id="dialog-form" style="display:none" title="提示信息">
 	    <p class="content"></p>
+    </div>
+    <div id="dialog-sbjh" <%--style="display: none"--%> title="选择测控资源使用计划">
+        <p class="content">
+        </p>
+        <asp:Repeater ID="rpDatas" runat="server" 
+            onitemdatabound="rpDatas_ItemDataBound">
+            <HeaderTemplate>
+                <table class="list">
+                    <tr>
+                        <th style="width: 100px;">
+                            计划编号
+                        </th>
+                        <th style="width: 150px;">
+                            任务代号
+                        </th>
+                        <th style="width: 200px;">
+                            开始时间
+                        </th>
+                        <th style="width: 200px;">
+                            结束时间
+                        </th>
+<%--                        <th style="width: 70px;">
+                            选择
+                        </th>--%>
+                    </tr>
+                    <tbody id="tbUsers">
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <td>
+                        <%# Eval("planid")%>
+                    </td>
+                    <td>
+                        <%# Eval("taskid")%>
+                    </td>
+                    <td>
+                        <%# Eval("starttime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
+                    </td>
+                    <td>
+                        <%# Eval("endtime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
+                    </td>
+<%--                    <td>
+                        <button class="button" onclick="return SelectSYJH('<%# Eval("ID") %>',escape('<%# GetFileName(Eval("FileIndex")) %>'))">
+                            选择</button>
+                    </td>--%>
+                </tr>
+                <tr>
+                <td colspan="4">
+                <asp:Repeater ID="rpSY" runat="server">
+                            <HeaderTemplate>
+                                <table class="list">
+                                    <tr>
+                                        <th style="width: 100px;">
+                                            卫星名称
+                                        </th>
+                                        <th style="width: 110px;">
+                                            开始时间
+                                        </th>
+                                        <th style="width: 110px;">
+                                            结束时间
+                                        </th>
+                                        <th style="width: 150px;">
+                                            系统名称
+                                        </th>
+                                        <th  style="width: 150px;">
+                                        系统任务
+                                        </th   style="width: 60px;">
+                                        <th></th>
+                                    </tr>
+                                    <tbody>
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <tr>
+                                    <td>
+                                        <asp:TextBox ID="txtSYSatName" Width="100px" CssClass="text" runat="server" Text='<%# Eval("SYSatName")%>'></asp:TextBox>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtSYStartTime" Width="110px" CssClass="text" runat="server" Text='<%# Eval("SYStartTime")%>'></asp:TextBox>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtSYEndTime" Width="110px" CssClass="text" runat="server" Text='<%# Eval("SYEndTime")%>'></asp:TextBox>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtSYSysName" Width="150px" CssClass="text" runat="server" Text='<%# Eval("SYSysName")%>'></asp:TextBox>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtSYSysTask" Width="150px" CssClass="text" runat="server" Text='<%# Eval("SYSysTask")%>'></asp:TextBox>
+                                    </td>
+                                    <td>
+                                    <button class="button" onclick="return SelectSYJH('<%# Eval("SYSatName") %>','<%# Eval("SYStartTime") %>',
+                                    '<%# Eval("SYEndTime") %>','<%# Eval("SYSysName") %>','<%# Eval("SYSysTask") %>' )">选择</button>
+                                    </td>
+                                </tr>
+                            </ItemTemplate>
+                            <FooterTemplate>
+                                </tbody> </table>
+                            </FooterTemplate>
+                        </asp:Repeater>
+                    
+                </td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                </tbody> </table>
+            </FooterTemplate>
+        </asp:Repeater>
+        <table class="listTitle">
+            <tr>
+                <td class="listTitle-c1">
+                </td>
+                <td class="listTitle-c2">
+                    <om:CollectionPager ID="cpPager" runat="server" PageSize="1">
+                    </om:CollectionPager>
+                </td>
+            </tr>
+        </table>
+
     </div>
 </asp:Content>
 

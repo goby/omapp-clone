@@ -5,11 +5,6 @@
 <%@ Register Src="../../ucs/ucSatellite.ascx" TagName="ucSatellite" TagPrefix="uc2" %>
 <%@ Register Src="../../ucs/ucTimer.ascx" TagName="ucTimer" TagPrefix="uc3" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <style type="text/css">
-        .text
-        {
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
@@ -345,6 +340,9 @@
                 &nbsp;&nbsp;
                 <asp:Button ID="btnReturn" runat="server" CausesValidation="False" class="button"
                     OnClick="btnReturn_Click" Text="返回" Width="65px" />
+                &nbsp;&nbsp;
+                <asp:Button ID="btnFormal"  class="button" runat="server" onclick="btnFormal_Click" 
+                    Text="转为正式计划" />
                 <asp:HiddenField ID="HfID" runat="server" />
                 <asp:HiddenField ID="HfFileIndex" runat="server" />
                 <asp:HiddenField ID="hfTaskID" runat="server" />

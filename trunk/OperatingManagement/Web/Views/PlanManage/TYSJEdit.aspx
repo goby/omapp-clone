@@ -134,6 +134,9 @@
                 <asp:Button ID="btnReturn" class="button" runat="server" 
                     Text="返回" Width="65px" 
                     onclick="btnReturn_Click" CausesValidation="False" />
+                     &nbsp;&nbsp;
+                <asp:Button ID="btnFormal"  class="button" runat="server" onclick="btnFormal_Click" 
+                    Text="转为正式计划" />
                      <asp:HiddenField ID="HfID" runat="server" />
                     <asp:HiddenField ID="HfFileIndex" runat="server" />
                     <asp:HiddenField ID="hfTaskID" runat="server" />
