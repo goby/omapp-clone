@@ -19,6 +19,26 @@
         <table cellpadding="0" class="edit1" style="width: 950px;">
             <tr>
                 <th style="width: 120px;">
+                    &nbsp;</th>
+                <td style="width: 332px;">
+                    &nbsp;</td>
+                <th style="width: 120px;">
+                    &nbsp;</th>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <th style="width: 120px;">
+                    &nbsp;</th>
+                <td style="width: 332px;">
+                    &nbsp;</td>
+                <th style="width: 120px;">
+                    &nbsp;</th>
+                <td>
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <th style="width: 120px;">
                     任务代号(<span class="red">*</span>)
                 </th>
                 <td style="width: 332px;">
@@ -719,6 +739,9 @@
             &nbsp;&nbsp;
             <asp:Button ID="btnReturn" class="button" runat="server" Text="返回" Width="65px" OnClick="btnReturn_Click"
                 CausesValidation="False" />
+        &nbsp;&nbsp;
+                <asp:Button ID="btnFormal"  class="button" runat="server" onclick="btnFormal_Click" 
+                    Text="转为正式计划" />
         </div>
         <div>
             <asp:HiddenField ID="HfID" runat="server" />

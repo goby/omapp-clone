@@ -370,6 +370,28 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
 
+
+        public FieldVerifyResult DeleteTempJH()
+        {
+            string sqlcommand = "up_jhtemp_delete";
+            //if (isTempJH)
+            //{
+            //    sqlcommand = "up_jhtemp_delete";
+            //}
+
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _database.SpExecuteNonQuery(sqlcommand, new OracleParameter[]{
+                new OracleParameter("v_Id",this.Id),
+                p
+            });
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+        }
+
         public FieldVerifyResult UpdateFileIndex()
         {
             string sqlcommand = "up_jh_updatefileindex";

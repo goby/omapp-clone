@@ -27,7 +27,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             if (!IsPostBack)
             {
                 initial();
-
+                btnFormal.Visible = false; 
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
@@ -35,6 +35,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         isTempJH = true;
                         ViewState["isTempJH"] = true;
+                        btnFormal.Visible = true;   //只有临时计划才能转为正式计划
                     }
 
                     HfID.Value = sID;
@@ -704,6 +705,125 @@ namespace OperatingManagement.Web.Views.PlanManage
                 returnvalue = Convert.ToBoolean(ViewState["isTempJH"]);
             }
             return returnvalue;
+        }
+
+        protected void btnFormal_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                #region MBXQ
+                MBXQ objMB = new MBXQ();
+                objMB.User = txtMBUser.Text;
+                objMB.Time = txtMBTime.Text;
+                objMB.TargetInfo = txtMBTargetInfo.Text;
+                objMB.TimeSection1 = txtMBTimeSection1.Text;
+                objMB.TimeSection2 = txtMBTimeSection2.Text;
+                //obj.Sum = txtMBSum.Text;
+                objMB.SatInfos = new List<MBXQSatInfo>();
+
+                MBXQSatInfo dm;
+                foreach (RepeaterItem it in rpMB.Items)
+                {
+                    dm = new MBXQSatInfo();
+                    ucs.ucSatellite txtMBSatName = (ucs.ucSatellite)it.FindControl("ucSatelliteMB");
+                    DropDownList txtMBInfoName = (DropDownList)it.FindControl("ddlMBInfoName");
+                    TextBox txtMBInfoTime = (TextBox)it.FindControl("txtMBInfoTime");
+
+                    dm.SatName = txtMBSatName.SelectedItem.Text;
+                    dm.InfoName = txtMBInfoName.SelectedItem.Text;
+                    dm.InfoTime = txtMBInfoTime.Text;
+
+                    objMB.SatInfos.Add(dm);
+                }
+                objMB.Sum = objMB.SatInfos.Count.ToString(); //信息条数，自动计算得到
+
+                #endregion
+
+                #region HJXQ
+                HJXQ objHJ = new HJXQ();
+                objHJ.User = txtHJUser.Text;
+                objHJ.Time = txtHJTime.Text;
+                objHJ.EnvironInfo = txtHJEnvironInfo.Text;
+                objHJ.TimeSection1 = txtHJTimeSection1.Text;
+                objHJ.TimeSection2 = txtHJTimeSection2.Text;
+                //obj.Sum = txtHJSum.Text;
+
+                objHJ.SatInfos = new List<HJXQSatInfo>();
+
+                HJXQSatInfo dmhj;
+                foreach (RepeaterItem it in rpHJ.Items)
+                {
+                    dmhj = new HJXQSatInfo();
+                    ucs.ucSatellite txtHJSatName = (ucs.ucSatellite)it.FindControl("ucSatelliteHJ");
+                    DropDownList txtHJInfoName = (DropDownList)it.FindControl("ddlHJInfoName");
+                    TextBox txtHJInfoArea = (TextBox)it.FindControl("txtHJInfoArea");
+                    TextBox txtHJInfoTime = (TextBox)it.FindControl("txtHJInfoTime");
+
+                    dmhj.SatName = txtHJSatName.SelectedItem.Text;
+                    dmhj.InfoName = txtHJInfoName.SelectedItem.Text;
+                    dmhj.InfoArea = txtHJInfoArea.Text;
+                    dmhj.InfoTime = txtHJInfoTime.Text;
+
+                    objHJ.SatInfos.Add(dmhj);
+                }
+                objHJ.Sum = objHJ.SatInfos.Count.ToString(); //信息条数，自动计算得到
+
+                #endregion
+
+                XXXQ objXXXQ = new XXXQ();
+                objXXXQ.objMBXQ = objMB;
+                objXXXQ.objHJXQ = objHJ;
+
+                PlanFileCreator creater = new PlanFileCreator();
+
+                objXXXQ.TaskID = ucTask1.SelectedItem.Value;
+                objXXXQ.SatID = ucSatellite1.SelectedItem.Value;
+
+                //检查文件是否已经存在
+                if (creater.TestXXXQFileName(objXXXQ))
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('存在同名文件，请一分钟后重试');</script>");
+                    return;
+                }
+                string filepath = creater.CreateXXXQFile(objXXXQ, 0);
+
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                {
+                    TaskID = objXXXQ.TaskID,
+                    PlanType = "XXXQ",
+                    PlanID = (new Sequence()).GetXXXQSequnce(),
+                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    SRCType = 0,
+                    FileIndex = filepath,
+                    SatID = objXXXQ.SatID,
+                    Reserve = txtNote.Text
+                };
+                var result = jh.Add();
+
+                //删除当前临时计划
+                DataAccessLayer.PlanManage.JH jhtemp = new DataAccessLayer.PlanManage.JH(true)
+                {
+                    Id = Convert.ToInt32(HfID.Value),
+                };
+                var resulttemp = jhtemp.DeleteTempJH();
+
+                #region 转成正式计划之后，禁用除“返回”之外的所有按钮
+                btnSubmit.Visible = false;
+                btnSaveTo.Visible = false;
+                btnReset.Visible = false;
+                btnFormal.Visible = false;
+
+                #endregion
+
+                ltMessage.Text = "计划保存成功";
+               
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("另存计划信息出现异常，异常原因", ex));
+            }
+            finally { }
         }
     }
 }

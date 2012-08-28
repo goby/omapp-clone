@@ -27,6 +27,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
+                btnFormal.Visible = false; 
                 txtStartTime.Attributes.Add("readonly", "true");
                 txtEndTime.Attributes.Add("readonly", "true");
                 inital();
@@ -37,6 +38,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         isTempJH = true;
                         ViewState["isTempJH"] = true;
+                        btnFormal.Visible = true;   //只有临时计划才能转为正式计划
                     }
 
                     HfID.Value = sID;
@@ -431,6 +433,95 @@ namespace OperatingManagement.Web.Views.PlanManage
                 returnvalue = Convert.ToBoolean(ViewState["isTempJH"]);
             }
             return returnvalue;
+        }
+
+        protected void btnFormal_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                GZJH obj = new GZJH();
+                obj.SatID = ucSatellite1.SelectedValue;
+                obj.TaskID = ucTask1.SelectedValue;
+                //obj.JXH = txtJXH.Text;
+                obj.XXFL = ddlXXFL.SelectedValue;
+                obj.DW = txtDW.Text;
+                obj.SB = txtSB.Text;
+                obj.QS = txtQS.Text;
+                obj.QH = txtQH.Text;
+                obj.DH = ddlDH.SelectedValue;
+                obj.FS = ddlFS.SelectedValue;
+                obj.JXZ = ddlJXZ.SelectedValue;
+                obj.MS = ddlMS.SelectedValue;
+                obj.QB = ddlQB.SelectedValue;
+                obj.GXZ = ddlGXZ.SelectedValue;
+                obj.ZHB = txtPreStartTime.Text;
+                obj.RK = txtStartTime.Text;
+                obj.GZK = txtTrackStartTime.Text;
+                obj.KSHX = txtWaveOnStartTime.Text;
+                obj.GSHX = txtWaveOffStartTime.Text;
+                obj.GZJ = txtTrackEndTime.Text;
+                obj.JS = txtEndTime.Text;
+                obj.BID = ddlBID.SelectedValue;
+                obj.SBZ = txtJSBZ.Text;
+                obj.RTs = txtTransStartTime.Text;
+                obj.RTe = txtTransEndTime.Text;
+                obj.SL = txtTransSpeedRate.Text;
+                obj.HBZ = txtHBZ.Text;
+                obj.Ts = DataStartTime.Text;
+                obj.Te = DataEndTime.Text;
+
+                CultureInfo provider = CultureInfo.InvariantCulture;
+
+                PlanFileCreator creater = new PlanFileCreator();
+
+                obj.JXH = (new Sequence()).GetGZJHSequnce().ToString("0000");
+
+                if (creater.TestGZJHFileName(obj))
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('存在同名文件，请一分钟后重试');</script>");
+                    return;
+                }
+
+                string filepath = creater.CreateGZJHFile(obj, 0);
+
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                {
+                    TaskID = obj.TaskID,
+                    PlanType = "GZJH",
+                    PlanID = Convert.ToInt32(obj.JXH),
+                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text),
+                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text),
+                    SRCType = 0,
+                    FileIndex = filepath,
+                    SatID = obj.SatID,
+                    Reserve = txtNote.Text
+                };
+                var result = jh.Add();
+
+                //删除当前临时计划
+                DataAccessLayer.PlanManage.JH jhtemp = new DataAccessLayer.PlanManage.JH(true)
+                {
+                    Id = Convert.ToInt32(HfID.Value),
+                };
+                var resulttemp = jhtemp.DeleteTempJH();
+
+                #region 转成正式计划之后，禁用除“返回”之外的所有按钮
+                btnSubmit.Visible = false;
+                btnSaveTo.Visible = false;
+                btnReset.Visible = false;
+                btnFormal.Visible = false;
+
+                #endregion
+
+                txtJXH.Text = obj.JXH;  //另存后显示新的序号
+                trMessage.Visible = true;
+                ltMessage.Text = "计划保存成功";
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("另存计划信息出现异常，异常原因", ex));
+            }
+            finally { }
         }
 
     }

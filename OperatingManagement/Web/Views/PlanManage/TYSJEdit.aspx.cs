@@ -26,6 +26,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
+                btnFormal.Visible = false; 
                 txtStartTime.Attributes.Add("readonly", "true");
                 txtEndTime.Attributes.Add("readonly", "true");
                 ddlSatName_SelectedIndexChanged(null, null);
@@ -36,6 +37,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         isTempJH = true;
                         ViewState["isTempJH"] = true;
+                        btnFormal.Visible = true;   //只有临时计划才能转为正式计划
                     }
 
                     HfID.Value = sID;
@@ -395,6 +397,75 @@ namespace OperatingManagement.Web.Views.PlanManage
                 returnvalue = Convert.ToBoolean(ViewState["isTempJH"]);
             }
             return returnvalue;
+        }
+
+        protected void btnFormal_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                TYSJ objTYSJ = new TYSJ();
+                objTYSJ.SatName = ddlSatName.SelectedItem.Text;
+                objTYSJ.Type = ddlType.SelectedItem.Text;
+                objTYSJ.TestItem = ddlTestItem.SelectedItem.Text;
+                objTYSJ.StartTime = txtStartTime.Text;
+                objTYSJ.EndTime = txtEndTime.Text;
+                objTYSJ.Condition = txtCondition.Text;
+                CultureInfo provider = CultureInfo.InvariantCulture;
+
+                PlanFileCreator creater = new PlanFileCreator();
+
+                objTYSJ.TaskID = ucTask1.SelectedItem.Value;
+                objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
+                int planid = (new Sequence()).GetTYSJSequnce();
+
+                //检查文件是否已经存在
+                if (creater.TestTYSJFileName(objTYSJ))
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('存在同名文件，请一分钟后重试');</script>");
+                    return;
+                }
+                string filepath = creater.CreateTYSJFile(objTYSJ, 0);
+
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                {
+                    TaskID = objTYSJ.TaskID,
+                    PlanType = "TYSJ",
+                    PlanID = planid,
+                    StartTime = DateTime.ParseExact(objTYSJ.StartTime, "yyyyMMddHHmmss", provider),
+                    EndTime = DateTime.ParseExact(objTYSJ.EndTime, "yyyyMMddHHmmss", provider),
+                    SRCType = 0,
+                    FileIndex = filepath,
+                    SatID = objTYSJ.SatID,
+                    Reserve = txtNote.Text
+                };
+                var result = jh.Add();
+
+
+                //删除当前临时计划
+                DataAccessLayer.PlanManage.JH jhtemp = new DataAccessLayer.PlanManage.JH(true)
+                {
+                    Id = Convert.ToInt32(HfID.Value),
+                };
+                var resulttemp = jhtemp.DeleteTempJH();
+
+                #region 转成正式计划之后，禁用除“返回”之外的所有按钮
+                btnSubmit.Visible = false;
+                btnSaveTo.Visible = false;
+                btnReset.Visible = false;
+                btnFormal.Visible = false;
+
+                #endregion
+
+                txtJXH.Text = planid.ToString();
+                trMessage.Visible = true;
+                ltMessage.Text = "计划保存成功";
+               
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("另存计划信息出现异常，异常原因", ex));
+            }
+            finally { }
         }
     }
 }

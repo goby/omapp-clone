@@ -28,6 +28,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
+                btnFormal.Visible = false; 
                 txtPlanStartTime.Attributes.Add("readonly", "true");
                 txtPlanEndTime.Attributes.Add("readonly", "true");
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
@@ -37,6 +38,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         isTempJH = true;
                         ViewState["isTempJH"] = true;
+                        btnFormal.Visible = true;   //只有临时计划才能转为正式计划
                     }
 
                     HfID.Value = sID;
@@ -1582,6 +1584,194 @@ namespace OperatingManagement.Web.Views.PlanManage
                 returnvalue = Convert.ToBoolean(ViewState["isTempJH"]);
             }
             return returnvalue;
+        }
+
+        protected void btnFormal_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DJZYSQ obj = new DJZYSQ();
+                obj.SNO = txtSequence.Text;
+                obj.SJ = DateTime.Now.ToString("yyyyMMddHHmmss");
+                obj.SCID = txtSCID.Text;
+                // obj.TaskCount = txtTaskCount.Text;
+                obj.DMJHTasks = new List<DJZYSQ_Task>();
+
+                DJZYSQ_Task rt;
+                DJZYSQ_Task_GZDP dp;
+                DJZYSQ_Task_ReakTimeTransfor rtt;
+                DJZYSQ_Task_AfterFeedBack afb;
+
+                foreach (RepeaterItem it in Repeater1.Items)
+                {
+                    #region task
+                    rt = new DJZYSQ_Task();
+                    TextBox txtSXH = (TextBox)it.FindControl("txtSXH");
+                    DropDownList ddlSXZ = (DropDownList)it.FindControl("ddlSXZ");
+                    TextBox txtMLB = (TextBox)it.FindControl("txtMLB");
+                    DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
+                    DropDownList ddlGZDY = (DropDownList)it.FindControl("ddlGZDY");
+                    DropDownList ddlSBDH = (DropDownList)it.FindControl("ddlSBDH");
+                    TextBox txtQC = (TextBox)it.FindControl("txtQC");
+                    TextBox txtQB = (TextBox)it.FindControl("txtQB");
+                    DropDownList ddlSHJ = (DropDownList)it.FindControl("ddlSHJ");
+                    //TextBox txtFNUM = (TextBox)it.FindControl("txtFNUM");
+                    //TextBox txtFXH = (TextBox)it.FindControl("txtFXH");
+                    //DropDownList ddlPDXZ = (DropDownList)it.FindControl("ddlPDXZ");
+                    //TextBox txtDPXZ = (TextBox)it.FindControl("txtDPXZ");
+                    TextBox txtTNUM = (TextBox)it.FindControl("txtTNUM");
+                    TextBox txtPreStartTime = (TextBox)it.FindControl("txtPreStartTime");
+                    TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                    TextBox txtTrackStartTime = (TextBox)it.FindControl("txtTrackStartTime");
+                    TextBox txtWaveOnStartTime = (TextBox)it.FindControl("txtWaveOnStartTime");
+                    TextBox txtWaveOffStartTime = (TextBox)it.FindControl("txtWaveOffStartTime");
+                    TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
+                    TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+
+                    rt.SXH = txtSXH.Text;
+                    rt.SXZ = ddlSXZ.SelectedValue;
+                    rt.MLB = txtMLB.Text;
+                    rt.FS = ddlFS.SelectedValue;
+                    rt.GZDY = ddlGZDY.SelectedValue;
+                    rt.SBDH = ddlSBDH.SelectedValue;
+                    rt.QC = txtQC.Text;
+                    rt.QB = txtQB.Text;
+                    rt.SHJ = ddlSHJ.SelectedValue;
+                    //rt.FNUM = txtFNUM.Text;
+                    //rt.FXH = txtFXH.Text;
+                    //rt.PDXZ = ddlPDXZ.SelectedValue;
+                    //rt.DPXZ = txtDPXZ.Text;
+                    rt.TNUM = txtTNUM.Text;
+                    rt.ZHB = txtPreStartTime.Text;
+                    rt.RK = txtStartTime.Text;
+                    rt.GZK = txtTrackStartTime.Text;
+                    rt.KSHX = txtWaveOnStartTime.Text;
+                    rt.GSHX = txtWaveOffStartTime.Text;
+                    rt.GZJ = txtTrackEndTime.Text;
+                    rt.JS = txtEndTime.Text;
+                    rt.ReakTimeTransfors = new List<DJZYSQ_Task_ReakTimeTransfor>();
+                    rt.AfterFeedBacks = new List<DJZYSQ_Task_AfterFeedBack>();
+                    //obj.DMJHTasks.Add(rt);
+                    #endregion
+                    #region GZDP
+                    Repeater rpg = it.FindControl("rpGZDP") as Repeater;
+                    foreach (RepeaterItem its in rpg.Items)
+                    {
+
+                        dp = new DJZYSQ_Task_GZDP();
+                        TextBox txtFXH = (TextBox)its.FindControl("txtFXH");
+                        DropDownList ddlPDXZ = (DropDownList)its.FindControl("ddlPDXZ");
+                        TextBox txtDPXZ = (TextBox)its.FindControl("txtDPXZ");
+
+                        dp.FXH = txtFXH.Text;
+                        dp.PDXZ = ddlPDXZ.SelectedValue;
+                        dp.DPXZ = txtDPXZ.Text;
+                        rt.GZDPs.Add(dp);
+
+                    }
+                    #endregion
+                    #region ReakTimeTransfor
+                    Repeater rps = it.FindControl("rpReakTimeTransfor") as Repeater;
+                    foreach (RepeaterItem its in rps.Items)
+                    {
+
+                        rtt = new DJZYSQ_Task_ReakTimeTransfor();
+                        TextBox txtFormatFlag = (TextBox)its.FindControl("txtFormatFlag");
+                        TextBox txtInfoFlowFlag = (TextBox)its.FindControl("txtInfoFlowFlag");
+                        TextBox txtTransStartTime = (TextBox)its.FindControl("txtTransStartTime");
+                        TextBox txtTransEndTime = (TextBox)its.FindControl("txtTransEndTime");
+                        TextBox txtTransSpeedRate = (TextBox)its.FindControl("txtTransSpeedRate");
+
+                        rtt.GBZ = txtFormatFlag.Text;
+                        rtt.XBZ = txtInfoFlowFlag.Text;
+                        rtt.RTs = txtTransStartTime.Text;
+                        rtt.RTe = txtTransEndTime.Text;
+                        rtt.SL = txtTransSpeedRate.Text;
+                        rt.ReakTimeTransfors.Add(rtt);
+
+                    }
+
+                    #endregion
+                    #region AfterFeedBack
+                    Repeater rpa = it.FindControl("rpAfterFeedBack") as Repeater;
+                    foreach (RepeaterItem its in rpa.Items)
+                    {
+
+                        afb = new DJZYSQ_Task_AfterFeedBack();
+                        TextBox txtFormatFlag = (TextBox)its.FindControl("FormatFlag");
+                        TextBox txtInfoFlowFlag = (TextBox)its.FindControl("InfoFlowFlag");
+                        TextBox txtDataStartTime = (TextBox)its.FindControl("DataStartTime");
+                        TextBox txtDataEndTime = (TextBox)its.FindControl("DataEndTime");
+                        TextBox txtTransStartTime = (TextBox)its.FindControl("TransStartTime");
+                        TextBox txtTransSpeedRate = (TextBox)its.FindControl("TransSpeedRate");
+
+                        afb.GBZ = txtFormatFlag.Text;
+                        afb.XBZ = txtInfoFlowFlag.Text;
+                        afb.Ts = txtDataStartTime.Text;
+                        afb.Te = txtDataEndTime.Text;
+                        afb.RTs = txtTransStartTime.Text;
+                        afb.SL = txtTransSpeedRate.Text;
+                        rt.AfterFeedBacks.Add(afb);
+
+                    }
+                    #endregion
+
+                    rt.FNUM = rt.GZDPs.Count.ToString();
+                    obj.DMJHTasks.Add(rt);
+                }
+                obj.SNUM = obj.DMJHTasks.Count.ToString();  //申请数量
+
+
+                PlanFileCreator creater = new PlanFileCreator();
+
+                obj.TaskID = ucTask1.SelectedItem.Value;    //任务ID
+                obj.SatID = ucSatellite1.SelectedItem.Value;    //卫星ID
+
+                //检查文件是否已经存在
+                if (creater.TestDMJHFileName(obj))
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('存在同名文件，请一分钟后重试');</script>");
+                    return;
+                }
+                string filepath = creater.CreateDMJHFile(obj, 0);
+
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
+                {
+                    TaskID = obj.TaskID,
+                    PlanType = "DJZYSQ",
+                    PlanID = (new Sequence()).GetDJZYSQSequnce(),
+                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    SRCType = 0,
+                    FileIndex = filepath,
+                    SatID = obj.SatID,
+                    Reserve = txtNote.Text
+                };
+                var result = jh.Add();
+
+                //删除当前临时计划
+                DataAccessLayer.PlanManage.JH jhtemp = new DataAccessLayer.PlanManage.JH(true)
+                {
+                    Id = Convert.ToInt32(HfID.Value),
+                };
+                var resulttemp = jhtemp.DeleteTempJH();
+
+                #region 转成正式计划之后，禁用除“返回”之外的所有按钮
+                btnSubmit.Visible = false;
+                btnSaveTo.Visible = false;
+                btnReset.Visible = false;
+                btnFormal.Visible = false;
+
+                #endregion
+
+                ltMessage.Text = "计划保存成功";
+                //
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("另存地面计划信息出现异常，异常原因", ex));
+            }
+            finally { }
         }
 
         //

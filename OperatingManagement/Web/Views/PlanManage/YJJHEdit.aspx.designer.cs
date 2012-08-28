@@ -31,6 +31,15 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::OperatingManagement.WebKernel.Controls.PageMenu PageMenu1;
         
         /// <summary>
+        /// btnImport 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnImport;
+        
+        /// <summary>
         /// ucTask1 控件。
         /// </summary>
         /// <remarks>
@@ -193,6 +202,15 @@ namespace OperatingManagement.Web.Views.PlanManage {
         protected global::System.Web.UI.WebControls.Button btnReturn;
         
         /// <summary>
+        /// btnFormal 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnFormal;
+        
+        /// <summary>
         /// HfID 控件。
         /// </summary>
         /// <remarks>
@@ -245,5 +263,23 @@ namespace OperatingManagement.Web.Views.PlanManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfURL;
+        
+        /// <summary>
+        /// rpDatas 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpDatas;
+        
+        /// <summary>
+        /// cpPager 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpPager;
     }
 }
