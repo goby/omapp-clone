@@ -2,12 +2,9 @@
 create table TB_GROUNDRESOURCE
 (
   grid          NUMBER(10) not null,
-  grname        NVARCHAR2(50) not null,
-  grcode        NVARCHAR2(50) not null,
+  rid           NUMBER(5) not null,
   equipmentname NVARCHAR2(50) not null,
   equipmentcode NVARCHAR2(50) not null,
-  owner         NVARCHAR2(20) not null,
-  coordinate    NVARCHAR2(200) not null,
   functiontype  NVARCHAR2(50) not null,
   status        NUMBER(2) not null,
   extproperties NVARCHAR2(2000),
@@ -29,18 +26,12 @@ tablespace TSHTC
 -- Add comments to the columns 
 comment on column TB_GROUNDRESOURCE.grid
   is '序号';
-comment on column TB_GROUNDRESOURCE.grname
-  is '地面站名称';
-comment on column TB_GROUNDRESOURCE.grcode
-  is '地面站编号';
+comment on column TB_GROUNDRESOURCE.rid
+  is '地面站序号';
 comment on column TB_GROUNDRESOURCE.equipmentname
   is '设备名称';
 comment on column TB_GROUNDRESOURCE.equipmentcode
   is '设备编号';
-comment on column TB_GROUNDRESOURCE.owner
-  is '管理单位';
-comment on column TB_GROUNDRESOURCE.coordinate
-  is '站址坐标';
 comment on column TB_GROUNDRESOURCE.functiontype
   is '功能类型';
 comment on column TB_GROUNDRESOURCE.status

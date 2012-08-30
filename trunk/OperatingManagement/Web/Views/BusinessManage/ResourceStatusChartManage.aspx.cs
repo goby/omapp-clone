@@ -401,8 +401,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 //地面站资源
                 case 1:
                     GroundResource groundResource = new GroundResource();
-                    groundResource.GRCode = resourceCode;
-                    groundResource = groundResource.SelectByCode();
+                    groundResource.EquipmentCode = resourceCode;
+                    groundResource = groundResource.SelectByEquipmentCode();
                     if (groundResource != null && groundResource.Id > 0)
                         resourceID = groundResource.Id;
                     break;

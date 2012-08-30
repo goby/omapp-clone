@@ -112,10 +112,10 @@
             <ItemTemplate>
                 <tr>
                     <td>
-                        <%# Eval("GRName")%>
+                        <%# Eval("AddrName")%>
                     </td>
                     <td>
-                        <%# Eval("GRCode")%>
+                        <%# Eval("AddrMark")%>
                     </td>
                     <td>
                         <%# Eval("EquipmentName")%>
@@ -124,7 +124,7 @@
                         <%# Eval("EquipmentCode")%>
                     </td>
                     <td>
-                        <%# SystemParameters.GetSystemParameterText(SystemParametersType.GroundResourceOwner, Eval("Owner").ToString())%>
+                        <%# SystemParameters.GetSystemParameterText(SystemParametersType.XYXSInfoOwn, Eval("Own").ToString())%>
                     </td>
                     <td>
                         <%#Eval("Coordinate").ToString()%>
@@ -136,7 +136,7 @@
                        <%# Eval("Status").ToString() == "2" ? "已删除" : "正常"%>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="1"  CommandArgument='<%# Eval("GRCode")%>'>管理</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="1"  CommandArgument='<%# Eval("EquipmentCode")%>'>管理状态</asp:LinkButton>
                     </td>
                     <td>
                         <asp:LinkButton ID="lbtnEditResource" runat="server" OnClick="lbtnEditResource_Click" CommandName="1" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
@@ -212,7 +212,7 @@
                        <%# Eval("Status").ToString() == "2" ? "已删除" : "正常"%>
                     </td>
                     <td>
-                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="2"  CommandArgument='<%# Eval("RouteCode")%>'>管理</asp:LinkButton>
+                        <asp:LinkButton ID="lbtnManageResourceStatus" runat="server" OnClick="lbtnManageResourceStatus_Click" CommandName="2"  CommandArgument='<%# Eval("RouteCode")%>'>管理状态</asp:LinkButton>
                     </td>
                     <td>
                         <asp:LinkButton ID="lbtnEditResource" runat="server" OnClick="lbtnEditResource_Click" CommandName="2" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
@@ -252,19 +252,19 @@
                         <th style="width: 20%;">
                             支持的任务
                         </th>
-                        <th style="width: 15%;">
+                        <th style="width: 20%;">
                             最大数据处理量（兆bps）
                         </th>
-                       <th style="width: 9%;">
+                       <th style="width: 8%;">
                             状态
                         </th>
                          <th style="width: 7%;">
                             健康/占用
                         </th>
-                        <th style="width: 7%;">
+                        <th style="width: 5%;">
                             编辑
                         </th>
-                         <th style="width: 7%;">
+                         <th style="width: 5%;">
                             删除
                         </th>
                     </tr>

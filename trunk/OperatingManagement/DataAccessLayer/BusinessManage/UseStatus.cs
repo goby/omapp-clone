@@ -236,20 +236,32 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             return infoList;
         }
 
+        ///// <summary>
+        ///// 校验某资源任务占用和其他占用是否存在重叠时间段
+        ///// </summary>
+        ///// <returns>true:存在</returns>
+        //public bool HaveEffectiveUseStatus()
+        //{
+        //    List<UseStatus> infoList = Search(ResourceType, ResourceID, BeginTime, EndTime);
+        //    var query = infoList.Where(a => a.Id != Id && (a.UsedType == 1 || a.UsedType == 3) && (UsedType == 1 || UsedType == 3));
+        //    if (query != null && query.Count() > 0)
+        //        return true;
+        //    else
+        //        return false;
+        //}
         /// <summary>
-        /// 校验某资源任务占用和其他占用是否存在重叠时间段
+        /// 校验某资源相同占用类型下是否存在重叠时间段的占用记录
         /// </summary>
         /// <returns>true:存在</returns>
         public bool HaveEffectiveUseStatus()
         {
             List<UseStatus> infoList = Search(ResourceType, ResourceID, BeginTime, EndTime);
-            var query = infoList.Where(a => a.Id != Id && (a.UsedType == 1 || a.UsedType == 3) && (UsedType == 1 || UsedType == 3));
+            var query = infoList.Where(a => a.Id != Id && a.UsedType == UsedType);
             if (query != null && query.Count() > 0)
                 return true;
             else
                 return false;
         }
-
         /// <summary>
         /// 添加占用状态记录
         /// </summary>

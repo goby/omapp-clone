@@ -33,13 +33,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         #region Properties
         private OracleDatabase _dataBase = null;
         /// <summary>
-        /// 地面站名称
+        /// 地面站序号
         /// </summary>
-        public string GRName { get; set; }
-        /// <summary>
-        /// 地面站编号
-        /// </summary>
-        public string GRCode { get; set; }
+        public int RID { get; set; }
         /// <summary>
         /// 设备名称
         /// </summary>
@@ -48,14 +44,6 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 设备编号
         /// </summary>
         public string EquipmentCode { get; set; }
-        /// <summary>
-        /// 管理单位
-        /// </summary>
-        public string Owner { get; set; }
-        /// <summary>
-        /// 站址坐标
-        /// </summary>
-        public string Coordinate { get; set; }
         /// <summary>
         /// 功能类型
         /// </summary>
@@ -76,6 +64,23 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 最后修改用户ID
         /// </summary>
         public double UpdatedUserID { get; set; }
+
+        /// <summary>
+        /// 地面站名称
+        /// </summary>
+        public string AddrName { get; set; }
+        /// <summary>
+        /// 地面站编号
+        /// </summary>
+        public string AddrMark { get; set; }
+        /// <summary>
+        /// 管理单位
+        /// </summary>
+        public string Own { get; set; }
+        /// <summary>
+        /// 站址坐标
+        /// </summary>
+        public string Coordinate { get; set; }
         #endregion
 
         #region -Private Methods-
@@ -116,19 +121,21 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 info = new GroundResource()
                 {
                     Id = Convert.ToInt32(ds.Tables[0].Rows[0]["GRID"]),
-                    GRName = ds.Tables[0].Rows[0]["GRName"].ToString(),
-                    GRCode = ds.Tables[0].Rows[0]["GRCode"].ToString(),
+                    RID = Convert.ToInt32(ds.Tables[0].Rows[0]["RID"]),
                     EquipmentName = ds.Tables[0].Rows[0]["EquipmentName"].ToString(),
                     EquipmentCode = ds.Tables[0].Rows[0]["EquipmentCode"].ToString(),
-                    Owner = ds.Tables[0].Rows[0]["Owner"].ToString(),
-                    Coordinate = ds.Tables[0].Rows[0]["Coordinate"].ToString(),
                     FunctionType = ds.Tables[0].Rows[0]["FunctionType"].ToString(),
                     Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
                     ExtProperties = ds.Tables[0].Rows[0]["ExtProperties"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ExtProperties"].ToString(),
                     CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
                     CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(ds.Tables[0].Rows[0]["CreatedUserID"]),
                     UpdatedTime = ds.Tables[0].Rows[0]["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["UpdatedTime"]),
-                    UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(ds.Tables[0].Rows[0]["UpdatedUserID"])
+                    UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(ds.Tables[0].Rows[0]["UpdatedUserID"]),
+
+                    AddrName = ds.Tables[0].Rows[0]["AddrName"].ToString(),
+                    AddrMark = ds.Tables[0].Rows[0]["AddrMark"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["AddrMark"].ToString(),
+                    Own = ds.Tables[0].Rows[0]["Own"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["Own"].ToString(),
+                    Coordinate = ds.Tables[0].Rows[0]["Coordinate"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["Coordinate"].ToString()
                 };
             }
             return info;
@@ -151,19 +158,21 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     GroundResource info = new GroundResource()
                     {
                         Id = Convert.ToInt32(dr["GRID"]),
-                        GRName = dr["GRName"].ToString(),
-                        GRCode = dr["GRCode"].ToString(),
+                        RID = Convert.ToInt32(dr["RID"]),
                         EquipmentName = dr["EquipmentName"].ToString(),
                         EquipmentCode = dr["EquipmentCode"].ToString(),
-                        Owner = dr["Owner"].ToString(),
-                        Coordinate = dr["Coordinate"].ToString(),
                         FunctionType = dr["FunctionType"].ToString(),
                         Status = Convert.ToInt32(dr["Status"]),
                         ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
                         CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
                         CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["CreatedUserID"]),
                         UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
-                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"])
+                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"]),
+
+                        AddrName = dr["AddrName"].ToString(),
+                        AddrMark = dr["AddrMark"] == DBNull.Value ? string.Empty : dr["AddrMark"].ToString(),
+                        Own = dr["Own"] == DBNull.Value ? string.Empty : dr["Own"].ToString(),
+                        Coordinate = dr["Coordinate"] == DBNull.Value ? string.Empty : dr["Coordinate"].ToString()
                     };
 
                     infoList.Add(info);
@@ -173,22 +182,22 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 根据Code获得地面站资源实体
+        /// 根据设备编号获得地面站资源实体
         /// </summary>
         /// <returns>地面站资源实体</returns>
-        public GroundResource SelectByCode()
+        public GroundResource SelectByEquipmentCode()
         {
-            return SelectAll().Where(a => a.Status == 1 && a.GRCode.ToLower() == GRCode.ToLower()).FirstOrDefault<GroundResource>();
+            return SelectAll().Where(a => a.Status == 1 && a.EquipmentCode.ToLower() == EquipmentCode.ToLower()).FirstOrDefault<GroundResource>();
         }
 
         /// <summary>
-        /// 校验该地面站资源编号是否已经存在
+        /// 校验该地面站资源设备编号是否已经存在
         /// </summary>
         /// <returns>true:已经存在</returns>
-        public bool HaveActiveGRCode()
+        public bool HaveActiveEquipmentCode()
         {
             List<GroundResource> infoList = SelectAll();
-            var query = infoList.Where(a => a.Id != Id && a.Status == 1 && a.GRCode.ToLower() == GRCode.ToLower());
+            var query = infoList.Where(a => a.Id != Id && a.Status == 1 && a.EquipmentCode.ToLower() == EquipmentCode.ToLower());
             if (query != null && query.Count() > 0)
                 return true;
             else
@@ -217,19 +226,21 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     GroundResource info = new GroundResource()
                     {
                         Id = Convert.ToInt32(dr["GRID"]),
-                        GRName = dr["GRName"].ToString(),
-                        GRCode = dr["GRCode"].ToString(),
+                        RID = Convert.ToInt32(dr["RID"]),
                         EquipmentName = dr["EquipmentName"].ToString(),
                         EquipmentCode = dr["EquipmentCode"].ToString(),
-                        Owner = dr["Owner"].ToString(),
-                        Coordinate = dr["Coordinate"].ToString(),
                         FunctionType = dr["FunctionType"].ToString(),
                         Status = Convert.ToInt32(dr["Status"]),
                         ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
                         CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
                         CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["CreatedUserID"]),
                         UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
-                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"])
+                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"]),
+
+                        AddrName = dr["AddrName"].ToString(),
+                        AddrMark = dr["AddrMark"] == DBNull.Value ? string.Empty : dr["AddrMark"].ToString(),
+                        Own = dr["Own"] == DBNull.Value ? string.Empty : dr["Own"].ToString(),
+                        Coordinate = dr["Coordinate"] == DBNull.Value ? string.Empty : dr["Coordinate"].ToString()
                     };
 
                     infoList.Add(info);
@@ -262,19 +273,21 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     GroundResource info = new GroundResource()
                     {
                         Id = Convert.ToInt32(dr["GRID"]),
-                        GRName = dr["GRName"].ToString(),
-                        GRCode = dr["GRCode"].ToString(),
+                        RID = Convert.ToInt32(dr["RID"]),
                         EquipmentName = dr["EquipmentName"].ToString(),
                         EquipmentCode = dr["EquipmentCode"].ToString(),
-                        Owner = dr["Owner"].ToString(),
-                        Coordinate = dr["Coordinate"].ToString(),
                         FunctionType = dr["FunctionType"].ToString(),
                         Status = Convert.ToInt32(dr["Status"]),
                         ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
                         CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
                         CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["CreatedUserID"]),
                         UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
-                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"])
+                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"]),
+
+                        AddrName = dr["AddrName"].ToString(),
+                        AddrMark = dr["AddrMark"] == DBNull.Value ? string.Empty : dr["AddrMark"].ToString(),
+                        Own = dr["Own"] == DBNull.Value ? string.Empty : dr["Own"].ToString(),
+                        Coordinate = dr["Coordinate"] == DBNull.Value ? string.Empty : dr["Coordinate"].ToString()
                     };
 
                     infoList.Add(info);
@@ -298,12 +311,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             };
 
             _dataBase.SpExecuteNonQuery("UP_GroundRes_Insert", new OracleParameter[]{
-                                        new OracleParameter("p_GRName",GRName),
-                                        new OracleParameter("p_GRCode",GRCode),
+                                        new OracleParameter("p_RID",RID),
                                         new OracleParameter("p_EquipmentName",EquipmentName),
                                         new OracleParameter("p_EquipmentCode",EquipmentCode),
-                                        new OracleParameter("p_Owner",Owner),
-                                        new OracleParameter("p_Coordinate",Coordinate),
                                         new OracleParameter("p_FunctionType",FunctionType),
                                         new OracleParameter("p_Status",Status),
                                         new OracleParameter("p_ExtProperties",string.IsNullOrEmpty(ExtProperties) ? DBNull.Value as object : ExtProperties),
@@ -328,12 +338,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
             _dataBase.SpExecuteNonQuery("UP_GroundRes_Update", new OracleParameter[]{
                                         new OracleParameter("p_GRID",Id),
-                                        new OracleParameter("p_GRName",GRName),
-                                        new OracleParameter("p_GRCode",GRCode),
+                                        new OracleParameter("p_RID",RID),
                                         new OracleParameter("p_EquipmentName",EquipmentName),
                                         new OracleParameter("p_EquipmentCode",EquipmentCode),
-                                        new OracleParameter("p_Owner",Owner),
-                                        new OracleParameter("p_Coordinate",Coordinate),
                                         new OracleParameter("p_FunctionType",FunctionType),
                                         new OracleParameter("p_Status",Status),
                                         new OracleParameter("p_ExtProperties",string.IsNullOrEmpty(ExtProperties) ? DBNull.Value as object : ExtProperties),
@@ -350,12 +357,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         #region -Override BaseEntity-
         protected override void ValidationRules()
         {
-            this.AddValidRules("GRName", "地面站名称不能为空。", string.IsNullOrEmpty(GRName));
-            this.AddValidRules("GRCode", "地面站编号不能为空。", string.IsNullOrEmpty(GRCode));
             this.AddValidRules("EquipmentName", "设备名称不能为空。", string.IsNullOrEmpty(EquipmentName));
             this.AddValidRules("EquipmentCode", "设备编号不能为空。", string.IsNullOrEmpty(EquipmentCode));
-            this.AddValidRules("Owner", "管理单位不能为空。", string.IsNullOrEmpty(Owner));
-            this.AddValidRules("Coordinate", "站址坐标不能为空。", string.IsNullOrEmpty(Coordinate));
             this.AddValidRules("FunctionType", "功能类型不能为空。", string.IsNullOrEmpty(FunctionType));
         }
         #endregion

@@ -40,6 +40,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         HealthStatusFunctionType = 14,
         UseStatusUsedType = 15,
         UseStatusCanBeUsed = 16,
+        XYXSInfoType = 17,
+        XYXSInfoOwn = 18,
+        XYXSInfoStatus = 19,
 
         ResourceCalculate = 20,
         ResourceCalculateResultFileSource = 21,
@@ -47,12 +50,28 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         ResourceCalculateStatus = 23,
 
         OrbitDifferenceAnalysis = 31,
-        OrbitIntersectionReport = 32
+        OrbitIntersectionReport = 32,
+
+        ZYSXType = 41
     }
 
     [Serializable]
     public class SystemParameters
     {
+        protected static XmlDocument xmlDoc;
+        public static XmlDocument XmlDoc
+        {
+            get 
+            {
+                if (xmlDoc == null || !xmlDoc.HasChildNodes)
+                {
+                    string filePath = GlobalSettings.MapPath(string.Format(AspNetConfig.Config["settingPattern"].ToString(), @"SystemParameters"));
+                    xmlDoc = new XmlDocument();
+                    xmlDoc.Load(filePath);
+                }
+                return xmlDoc;
+            }
+        }
         /// <summary>
         /// 根据参数类型获得参数列表
         /// </summary>
@@ -60,12 +79,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <returns>参数列表</returns>
         public static Dictionary<string, string> GetSystemParameters(SystemParametersType type)
         {
-            string filePath = GlobalSettings.MapPath(string.Format(AspNetConfig.Config["settingPattern"].ToString(), @"SystemParameters"));
-            XmlDocument doc = new XmlDocument();
-            doc.Load(filePath);
-
             string xmlPath = string.Format(@"//{0}/item", type.ToString());
-            XmlNodeList xmlNodeList = doc.SelectNodes(xmlPath);
+            XmlNodeList xmlNodeList = XmlDoc.SelectNodes(xmlPath);
 
             Dictionary<string, string> dictionary = new Dictionary<string, string>();
             if (xmlNodeList != null)
@@ -89,12 +104,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <returns>参数文本</returns>
         public static string GetSystemParameterText(SystemParametersType type, string value)
         {
-            string filePath = GlobalSettings.MapPath(string.Format(AspNetConfig.Config["settingPattern"].ToString(), @"SystemParameters"));
-            XmlDocument doc = new XmlDocument();
-            doc.Load(filePath);
-
             string xmlPath = string.Format(@"//{0}/item", type.ToString());
-            XmlNodeList xmlNodeList = doc.SelectNodes(xmlPath);
+            XmlNodeList xmlNodeList = XmlDoc.SelectNodes(xmlPath);
 
             string text = string.Empty;
             if (xmlNodeList != null)
@@ -119,12 +130,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <returns>参数值</returns>
         public static string GetSystemParameterValue(SystemParametersType type, string text)
         {
-            string filePath = GlobalSettings.MapPath(string.Format(AspNetConfig.Config["settingPattern"].ToString(), @"SystemParameters"));
-            XmlDocument doc = new XmlDocument();
-            doc.Load(filePath);
-
             string xmlPath = string.Format(@"//{0}/item", type.ToString());
-            XmlNodeList xmlNodeList = doc.SelectNodes(xmlPath);
+            XmlNodeList xmlNodeList = XmlDoc.SelectNodes(xmlPath);
 
             string value = string.Empty;
             if (xmlNodeList != null)

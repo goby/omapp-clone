@@ -259,7 +259,36 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 throw (new AspNetException("查询资源状态页面btnAdd_Click方法出现异常，异常原因", ex));
             }
         }
+        /// <summary>
+        /// 编辑资源状态
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbtnEditResourceStatus_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LinkButton lbtnEdit = (sender as LinkButton);
+                if (lbtnEdit == null)
+                {
+                    BindResourceStatusList();
+                    return;
+                }
+                //状态类型，健康状态=1、占用状态=2
+                string statusType = lbtnEdit.CommandName;
+                string statusID = lbtnEdit.CommandArgument;
 
+                string url = @"~/Views/BusinessManage/ResourceStatusEdit.aspx?statustype={0}&statusid={1}";
+                url = string.Format(url, Server.UrlEncode(statusType), Server.UrlEncode(statusID));
+                Response.Redirect(url);
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("查询资源状态页面lbtnEditResource_Click方法出现异常，异常原因", ex));
+            }
+        }
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_ResStaMan.View";
@@ -333,8 +362,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 //地面站资源
                 case "1":
                     GroundResource groundResource = new GroundResource();
-                    groundResource.GRCode = resourceCode;
-                    groundResource = groundResource.SelectByCode();
+                    groundResource.EquipmentCode = resourceCode;
+                    groundResource = groundResource.SelectByEquipmentCode();
                     if (groundResource != null && groundResource.Id > 0)
                         resourceID = groundResource.Id;
                     break;

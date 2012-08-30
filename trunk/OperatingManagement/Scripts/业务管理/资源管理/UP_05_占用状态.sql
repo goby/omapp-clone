@@ -122,7 +122,7 @@ is
 begin
     IF p_ResourceType=1 Then
        open o_Cursor for
-            Select A.*,B.GRNAME as ResourceName,B.GRCODE as ResourceCode
+            Select A.*,B.EQUIPMENTNAME as ResourceName,B.EQUIPMENTCODE as ResourceCode
             From TB_UseStatus A
             Inner join TB_GROUNDRESOURCE B on (A.RESOURCETYPE=1 And A.Resourceid=B.GRID)
             Where (
@@ -159,6 +159,7 @@ begin
       END IF;
 
 end;
+
 
 
 
