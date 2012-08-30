@@ -1,11 +1,11 @@
 ﻿#region
 //------------------------------------------------------
 //Assembly:OperatingManagement.Web
-//FileName:ResourceStatusAdd.cs
-//Remark:资源状态添加类
+//FileName:ResourceStatusEdit.cs
+//Remark:资源状态编辑类
 //------------------------------------------------------
 //VERSION       AUTHOR      DATE        CONTENT
-//1.0           liutao      20111015    Create     
+//1.0           liutao      20120829    Create     
 //------------------------------------------------------
 #endregion
 using System;
@@ -21,38 +21,40 @@ using OperatingManagement.WebKernel.Basic;
 
 namespace OperatingManagement.Web.Views.BusinessManage
 {
-    public partial class ResourceStatusAdd : AspNetPage
+    public partial class ResourceStatusEdit : AspNetPage
     {
         #region 属性
         /// <summary>
-        /// 资源类型
-        /// 地面站资源=1、通信资源=2、中心资源=3
+        ///状态类型
+        ///健康状态=1、占用状态=2
         /// </summary>
-        protected string ResourceType
+        protected string StatusType
         {
             get
             {
-                string resourceType = "1";
-                if (Request.QueryString["resourcetype"] != null)
+                string statusType = string.Empty;
+                if (Request.QueryString["statustype"] != null)
                 {
-                    resourceType = Request.QueryString["resourcetype"];
+                    statusType = Request.QueryString["statustype"];
                 }
-                return resourceType;
+                return statusType;
             }
         }
         /// <summary>
-        ///资源编号
+        /// 资源状态ID
+        /// StatusType=1,StatusID为资源健康状态ID
+        /// StatusType=2,StatusID为资源占用状态ID
         /// </summary>
-        protected string ResourceCode
+        protected int StatusID
         {
             get
             {
-                string resourceCode = string.Empty;
-                if (Request.QueryString["resourcecode"] != null)
+                int statusID = 0;
+                if (Request.QueryString["statusid"] != null)
                 {
-                    resourceCode = Request.QueryString["resourcecode"];
+                    int.TryParse(Request.QueryString["statusid"], out statusID);
                 }
-                return resourceCode;
+                return statusID;
             }
         }
         #endregion
@@ -68,14 +70,14 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     txtBeginTime.Attributes.Add("readonly", "true");
                     txtEndTime.Attributes.Add("readonly", "true");
                     BindDataSource();
-                    SetControlsVisible();
+                    BindControls();
                 }
             }
             catch (Exception ex)
             {
                 trMessage.Visible = true;
                 lblMessage.Text = "发生未知错误，操作失败。";
-                throw (new AspNetException("新增资源状态页面初始化出现异常，异常原因", ex));
+                throw (new AspNetException("编辑资源状态页面初始化出现异常，异常原因", ex));
             }
         }
         /// <summary>
@@ -90,20 +92,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 LinkButton lbtn = (sender as LinkButton);
                 string msg = string.Empty;
                 //资源管理资源类型列表：地面站资源=1、通信资源=2、中心资源=3
-                int resourceType = 0;
-                int.TryParse(dplResourceType.SelectedValue, out resourceType);
+                //int resourceType = 0;
+                //int.TryParse(dplResourceType.SelectedValue, out resourceType);
                 if (string.IsNullOrEmpty(txtResourceCode.Text.Trim()))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "资源编号不能为空";
-                    return;
-                }
-
-                int resourceID = GetResourceID(resourceType, txtResourceCode.Text.Trim());
-                if (resourceID < 1)
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "资源不存在，请确认输入的资源编号是否正确";
                     return;
                 }
 
@@ -181,18 +175,35 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
                 //状态类型列表：健康状态=1、占用状态=2
-                if (dplStatusType.SelectedValue == "1")
+                if (StatusType == "1")
                 {
                     Framework.FieldVerifyResult result;
                     HealthStatus healthStatus = new HealthStatus();
-                    healthStatus.ResourceID = resourceID;
-                    healthStatus.ResourceType = resourceType;
+                    healthStatus.Id = StatusID;
+                    healthStatus = healthStatus.SelectByID();
+                    if (healthStatus == null)
+                    {
+                        trMessage.Visible = true;
+                        lblMessage.Text = "编辑的资源健康状态不存在，操作失败。";
+                        return;
+                    }
+                    string resourceCode = GetResourceCode(healthStatus.ResourceType, healthStatus.ResourceID);
+                    if (string.IsNullOrEmpty(resourceCode))
+                    {
+                        trMessage.Visible = true;
+                        lblMessage.Text = "编辑的资源不存在，操作失败。";
+                        return;
+                    }
+                    //healthStatus.ResourceID = healthStatus.ResourceID;
+                    //healthStatus.ResourceType = healthStatus.ResourceType;
                     healthStatus.FunctionType = trHealthStatusFunctionType.Visible ? dplFunctionType.SelectedValue : string.Empty;
                     healthStatus.Status = Convert.ToInt32(dplHealthStatus.SelectedValue);
                     healthStatus.BeginTime = beginTime;
                     healthStatus.EndTime = endTime;
-                    healthStatus.CreatedTime = DateTime.Now;
-                    healthStatus.CreatedUserID = LoginUserInfo.Id;
+                    //healthStatus.CreatedTime = DateTime.Now;
+                    //healthStatus.CreatedUserID = LoginUserInfo.Id;
+                    healthStatus.UpdatedTime = DateTime.Now;
+                    healthStatus.UpdatedUserID = LoginUserInfo.Id;
 
                     if (lbtn == null && healthStatus.HaveEffectiveHealthStatus())
                     {
@@ -203,7 +214,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                         return;
                     }
 
-                    result = healthStatus.Add();
+                    result = healthStatus.Update();
 
                     switch (result)
                     {
@@ -211,8 +222,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                             msg = "发生了数据错误，无法完成请求的操作。";
                             break;
                         case Framework.FieldVerifyResult.Success:
-                            msg = "添加健康状态成功。";
-                            ResetControls();
+                            msg = "编辑健康状态成功。";
+                            BindControls();
                             break;
                         default:
                             msg = "发生未知错误，操作失败。";
@@ -224,8 +235,23 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 {
                     Framework.FieldVerifyResult result;
                     UseStatus useStatus = new UseStatus();
-                    useStatus.ResourceID = resourceID;
-                    useStatus.ResourceType = resourceType;
+                    useStatus.Id = StatusID;
+                    useStatus = useStatus.SelectByID();
+                    if (useStatus == null)
+                    {
+                        trMessage.Visible = true;
+                        lblMessage.Text = "编辑的资源占用状态不存在，操作失败。";
+                        return;
+                    }
+                    string resourceCode = GetResourceCode(useStatus.ResourceType, useStatus.ResourceID);
+                    if (string.IsNullOrEmpty(resourceCode))
+                    {
+                        trMessage.Visible = true;
+                        lblMessage.Text = "编辑的资源不存在，操作失败。";
+                        return;
+                    }
+                    //useStatus.ResourceID = useStatus.ResourceID;
+                    //useStatus.ResourceType = resourceType;
                     useStatus.UsedType = trUseStatusUsedType.Visible ? Convert.ToInt32(dplUsedType.SelectedValue) : 0;
                     useStatus.BeginTime = beginTime;
                     useStatus.EndTime = endTime;
@@ -233,8 +259,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     useStatus.UsedCategory = trUseStatusUsedCategory.Visible ? txtUsedCategory.Text : string.Empty;
                     useStatus.UsedFor = trUseStatusUsedFor.Visible ? txtUsedFor.Text : string.Empty;
                     useStatus.CanBeUsed = trUseStatusCanBeUsed.Visible ? Convert.ToInt32(dplCanBeUsed.SelectedValue) : 0;
-                    useStatus.CreatedTime = DateTime.Now;
-                    useStatus.CreatedUserID = LoginUserInfo.Id;
+                    //useStatus.CreatedTime = DateTime.Now;
+                    //useStatus.CreatedUserID = LoginUserInfo.Id;
+                    useStatus.UpdatedTime = DateTime.Now;
+                    useStatus.UpdatedUserID = LoginUserInfo.Id;
 
                     if (lbtn == null && useStatus.HaveEffectiveUseStatus())
                     {
@@ -246,7 +274,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                         return;
                     }
 
-                    result = useStatus.Add();
+                    result = useStatus.Update();
 
                     switch (result)
                     {
@@ -254,8 +282,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                             msg = "发生了数据错误，无法完成请求的操作。";
                             break;
                         case Framework.FieldVerifyResult.Success:
-                            msg = "添加占用状态成功。";
-                            ResetControls();
+                            msg = "编辑占用状态成功。";
+                            BindControls();
                             break;
                         default:
                             msg = "发生未知错误，操作失败。";
@@ -270,11 +298,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 trMessage.Visible = true;
                 lblMessage.Text = "发生未知错误，操作失败。";
-                throw (new AspNetException("新增资源状态页面btnSubmit_Click方法出现异常，异常原因", ex));
+                throw (new AspNetException("编辑资源状态页面btnSubmit_Click方法出现异常，异常原因", ex));
             }
         }
         /// <summary>
-        /// 清除当前控件的值
+        /// 重置当前控件的值
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -282,7 +310,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                ResetControls();
+                BindControls();
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
@@ -290,7 +318,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 trMessage.Visible = true;
                 lblMessage.Text = "发生未知错误，操作失败。";
-                throw (new AspNetException("新增资源状态页面btnReset_Click方法出现异常，异常原因", ex));
+                throw (new AspNetException("编辑资源状态页面btnReset_Click方法出现异常，异常原因", ex));
             }
         }
         protected void btnReturn_Click(object sender, EventArgs e)
@@ -307,48 +335,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 trMessage.Visible = true;
                 lblMessage.Text = "发生未知错误，操作失败。";
-                throw (new AspNetException("新增资源状态页面btnReturn_Click方法出现异常，异常原因", ex));
+                throw (new AspNetException("编辑资源状态页面btnReturn_Click方法出现异常，异常原因", ex));
             }
-        }
-        /// <summary>
-        /// 当状态类型发生改变时
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void dplStatusType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //状态类型列表：健康状态=1、占用状态=2
-            if (dplStatusType.SelectedValue == "1")
-            {
-                //资源管理资源类型列表：地面站资源=1、通信资源=2、中心资源=3
-                dplResourceType.Items.Clear();
-                dplResourceType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.ResourceType);
-                dplResourceType.DataTextField = "key";
-                dplResourceType.DataValueField = "value";
-                dplResourceType.DataBind();
-
-                dplFunctionType.SelectedIndex = 0;
-            }
-            else if (dplStatusType.SelectedValue == "2")
-            {
-                //通信资源没有占用状态
-                dplResourceType.Items.Remove(dplResourceType.Items.FindByValue("2"));
-                //占用状态占用类型列表：任务占用=1、维护占用=2、其他占用=3
-                dplUsedType.SelectedValue = "1";
-            }
-            SetControlsVisible();
-        }
-        /// <summary>
-        /// 当资源类型发生改变时
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void dplResourceType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            dplFunctionType.SelectedIndex = 0;
-            dplUsedType.SelectedIndex = 0;
-
-            SetControlsVisible();
         }
         /// <summary>
         /// 当占用类型发生改变时
@@ -363,10 +351,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_ResStaMan.View";
-            this.ShortTitle = "新增资源状态";
+            this.ShortTitle = "编辑资源状态";
             this.SetTitle();
         }
-
         #region Method
         /// <summary>
         /// 绑定控件数据源
@@ -380,14 +367,17 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplStatusType.DataValueField = "value";
             dplStatusType.DataBind();
 
+            dplStatusType.Enabled = false;
+
             //资源管理资源类型列表：地面站资源=1、通信资源=2、中心资源=3
             dplResourceType.Items.Clear();
             dplResourceType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.ResourceType);
             dplResourceType.DataTextField = "key";
             dplResourceType.DataValueField = "value";
             dplResourceType.DataBind();
+            dplResourceType.Enabled = false;
 
-            dplResourceType.SelectedValue = ResourceType;
+            txtResourceCode.Enabled = false;
 
             //健康状态功能类型列表：数传数据接收、遥测数据接收、遥控操作
             dplFunctionType.Items.Clear();
@@ -437,8 +427,72 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 dplBeginTimeMinute.Items.Add(new ListItem(i.ToString() + "分", i.ToString()));
                 dplEndTimeMinute.Items.Add(new ListItem(i.ToString() + "分", i.ToString()));
             }
-
-            txtResourceCode.Text = ResourceCode;
+        }
+        /// <summary>
+        /// 为控件绑定值
+        /// </summary>
+        private void BindControls()
+        {
+            dplStatusType.SelectedValue = StatusType;
+            if (StatusType == "1")
+            {
+                HealthStatus healthStatus = new HealthStatus();
+                healthStatus.Id = StatusID;
+                healthStatus = healthStatus.SelectByID();
+                if (healthStatus == null)
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "编辑的资源健康状态不存在，操作失败。";
+                    return;
+                }
+                string resourceCode = GetResourceCode(healthStatus.ResourceType, healthStatus.ResourceID);
+                if (string.IsNullOrEmpty(resourceCode))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "编辑的资源不存在，操作失败。";
+                    return;
+                }
+                dplResourceType.SelectedValue = healthStatus.ResourceType.ToString();
+                txtResourceCode.Text = resourceCode;
+                dplFunctionType.SelectedValue = healthStatus.FunctionType;
+                txtBeginTime.Text = healthStatus.BeginTime.ToString("yyyyMMddHHmmss");
+                txtEndTime.Text = healthStatus.EndTime.ToString("yyyyMMddHHmmss");
+                lblCreatedTime.Text = healthStatus.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss");
+                lblUpdatedTime.Text = healthStatus.UpdatedTime == DateTime.MinValue ? healthStatus.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss") : healthStatus.UpdatedTime.ToString("yyyy-MM-dd HH:mm:ss");
+                
+            }
+            else if (StatusType == "2")
+            {
+                UseStatus useStatus = new UseStatus();
+                useStatus.Id = StatusID;
+                useStatus = useStatus.SelectByID();
+                if (useStatus == null)
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "编辑的资源占用状态不存在，操作失败。";
+                    return;
+                }
+                string resourceCode = GetResourceCode(useStatus.ResourceType, useStatus.ResourceID);
+                if (string.IsNullOrEmpty(resourceCode))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "编辑的资源不存在，操作失败。";
+                    return;
+                }
+                dplResourceType.SelectedValue = useStatus.ResourceType.ToString();
+                txtResourceCode.Text = resourceCode;
+                dplUsedType.SelectedValue = useStatus.UsedType.ToString();
+                txtBeginTime.Text = useStatus.BeginTime.ToString("yyyyMMddHHmmss");
+                txtEndTime.Text = useStatus.EndTime.ToString("yyyyMMddHHmmss");
+                txtUsedBy.Text = useStatus.UsedBy;
+                txtUsedCategory.Text = useStatus.UsedCategory;
+                txtUsedFor.Text = useStatus.UsedFor;
+                if (dplCanBeUsed.Items.FindByValue(useStatus.CanBeUsed.ToString()) != null)
+                    dplCanBeUsed.SelectedValue = useStatus.CanBeUsed.ToString();
+                lblCreatedTime.Text = useStatus.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss");
+                lblUpdatedTime.Text = useStatus.UpdatedTime == DateTime.MinValue ? useStatus.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss") : useStatus.UpdatedTime.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            SetControlsVisible();
         }
         /// <summary>
         /// 设置控件是否可见
@@ -498,64 +552,42 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
         }
         /// <summary>
-        /// 添加完成后将控件设置为初始状态
-        /// </summary>
-        private void ResetControls()
-        {
-            //txtResourceCode.Text = string.Empty;
-            dplFunctionType.SelectedIndex = 0;
-            dplHealthStatus.SelectedValue = "2";
-            dplUsedType.SelectedIndex = 0;
-            txtBeginTime.Text = string.Empty;
-            dplBeginTimeHour.SelectedIndex = 0;
-            dplBeginTimeMinute.SelectedIndex = 0;
-            txtEndTime.Text = string.Empty;
-            dplEndTimeHour.SelectedIndex = 0;
-            dplEndTimeMinute.SelectedIndex = 0;
-            txtUsedBy.Text = string.Empty;
-            txtUsedCategory.Text = string.Empty;
-            txtUsedFor.Text = string.Empty;
-            dplCanBeUsed.SelectedIndex = 0;
-
-            SetControlsVisible();
-        }
-        /// <summary>
-        /// 获得资源ID
+        /// 获得资源编号
         /// </summary>
         /// <param name="resourceType">资源类型</param>
-        /// <param name="resourceCode">资源编号</param>
-        /// <returns>资源ID</returns>
-        private int GetResourceID(int resourceType, string resourceCode)
+        /// <param name="resourceID">资源ID</param>
+        /// <returns>资源编号</returns>
+        private string GetResourceCode(int resourceType, int resourceID)
         {
-            int resourceID = 0;
+            string resourceCode = string.Empty;
             switch (resourceType)
             {
                 //地面站资源
                 case 1:
                     GroundResource groundResource = new GroundResource();
-                    groundResource.EquipmentCode = resourceCode;
-                    groundResource = groundResource.SelectByEquipmentCode();
+                    groundResource.Id = resourceID;
+                    groundResource = groundResource.SelectByID();
                     if (groundResource != null && groundResource.Id > 0)
-                        resourceID = groundResource.Id;
+                        resourceCode = groundResource.EquipmentCode;
                     break;
                 //通信资源
                 case 2:
                     CommunicationResource communicationResource = new CommunicationResource();
-                    communicationResource.RouteCode = resourceCode;
-                    communicationResource = communicationResource.SelectByCode();
+                    communicationResource.Id = resourceID;
+                    communicationResource = communicationResource.SelectByID();
                     if (communicationResource != null && communicationResource.Id > 0)
-                        resourceID = communicationResource.Id;
+                        resourceCode = communicationResource.RouteCode;
                     break;
                 //中心资源
                 case 3:
                     CenterResource centerResource = new CenterResource();
-                    centerResource.EquipmentCode = resourceCode;
-                    centerResource = centerResource.SelectByCode();
+                    centerResource.Id = resourceID;
+                    centerResource = centerResource.SelectByID();
                     if (centerResource != null && centerResource.Id > 0)
-                        resourceID = centerResource.Id;
+                        resourceCode = centerResource.EquipmentCode;
                     break;
             }
-            return resourceID;
+            return resourceCode;
         }
         /// <summary>
         /// 将yyyyMMddHHmmss格式字符串转换成yyyy-MM-dd HH:mm:ss
@@ -577,6 +609,5 @@ namespace OperatingManagement.Web.Views.BusinessManage
             return result;
         }
         #endregion
-
     }
 }

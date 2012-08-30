@@ -82,6 +82,7 @@
     <Compile Include="BusinessManage\JDJG.cs" />
     <Compile Include="BusinessManage\TYJG.cs" />
     <Compile Include="BusinessManage\GD.cs" />
+    <Compile Include="BusinessManage\ZYSX.cs" />
     <Compile Include="PlanManage\JDSJ.cs" />
     <Compile Include="PlanManage\Sequence.cs" />
     <Compile Include="PlanManage\YJJH.cs" />

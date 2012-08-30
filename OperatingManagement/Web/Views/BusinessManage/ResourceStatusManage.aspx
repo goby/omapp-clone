@@ -72,23 +72,26 @@
                         <th style="width: 10%;">
                             资源类型
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 15%;">
                             资源名称
                         </th>
                         <th style="width: 10%;">
                             资源编号
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 15%;">
                             功能类型
                         </th>
                         <th style="width: 10%;">
                             健康状态
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 15%;">
                             起始时间
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 15%;">
                             结束时间
+                        </th>
+                        <th style="width: 10%;">
+                            编辑
                         </th>
                     </tr>
                     <tbody id="tbResourceHealthStatusList">
@@ -115,6 +118,9 @@
                     </td>
                     <td>
                         <%# Eval("EndTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
+                    </td>
+                     <td>
+                        <asp:LinkButton ID="lbtnEditResourceStatus" runat="server" OnClick="lbtnEditResourceStatus_Click" CommandName="1" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
                     </td>
                 </tr>
             </ItemTemplate>
@@ -143,29 +149,32 @@
                         <th style="width: 10%;">
                             资源名称
                         </th>
-                        <th style="width: 8%;">
+                        <th style="width:8%;">
                             资源编号
                         </th>
-                        <th style="width: 8%;">
+                        <th style="width:7%;">
                             占用类型
                         </th>
-                        <th style="width: 13%;">
+                        <th style="width:13%;">
                             起始时间
                         </th>
-                        <th style="width: 13%;">
+                        <th style="width:13%;">
                             结束时间
                         </th>
-                          <th style="width: 10%;">
+                          <th style="width:8%;">
                             服务对象
                         </th>
-                         <th style="width: 10%;">
+                         <th style="width:8%;">
                             服务种类
                         </th>
-                         <th style="width: 10%;">
+                         <th style="width:10%;">
                             占用原因
                         </th>
-                         <th style="width: 10%;">
+                         <th style="width:10%;">
                             是否可执行任务
+                        </th>
+                        <th style="width:5%;">
+                            编辑
                         </th>
                     </tr>
                     <tbody id="tbResourceHealthStatusList">
@@ -203,6 +212,9 @@
                      </td>
                       <td>
                         <%#SystemParameters.GetSystemParameterText(SystemParametersType.UseStatusCanBeUsed, Eval("CanBeUsed").ToString())%>
+                    </td>
+                     <td>
+                        <asp:LinkButton ID="lbtnEditResourceStatus" runat="server" OnClick="lbtnEditResourceStatus_Click" CommandName="2" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
                     </td>
                 </tr>
             </ItemTemplate>

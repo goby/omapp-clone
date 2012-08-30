@@ -208,7 +208,19 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             }
             return infoList;
         }
-
+        /// <summary>
+        /// 校验某资源相同功能类型下是否存在重叠时间段的健康异常记录
+        /// </summary>
+        /// <returns>true:存在</returns>
+        public bool HaveEffectiveHealthStatus()
+        {
+            List<HealthStatus> infoList = Search(ResourceType, ResourceID, BeginTime, EndTime);
+            var query = infoList.Where(a => a.Id != Id && a.FunctionType == FunctionType);
+            if (query != null && query.Count() > 0)
+                return true;
+            else
+                return false;
+        }
         /// <summary>
         /// 添加健康状态记录
         /// </summary>
@@ -251,6 +263,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
             _dataBase.SpExecuteNonQuery("UP_HealthStatus_Update", new OracleParameter[]{
                                         new OracleParameter("p_HSID",Id),
+                                        new OracleParameter("p_ResourceID",ResourceID),
                                         new OracleParameter("p_ResourceType",ResourceType),
                                         new OracleParameter("p_FunctionType",string.IsNullOrEmpty(FunctionType) ?  DBNull.Value as object : FunctionType),
                                         new OracleParameter("p_Status",Status),

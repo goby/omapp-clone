@@ -23,6 +23,25 @@ namespace OperatingManagement.Web.Views.BusinessManage
 {
     public partial class GroundResourceAdd : AspNetPage
     {
+        #region 属性
+        /// <summary>
+        /// 资源属性列表
+        /// </summary>
+        protected List<ZYSXExt> ZYSXExtList
+        {
+            get
+            {
+                if (ViewState["ZYSXExt"] == null)
+                {
+                    return new List<ZYSXExt>();
+                }
+                else
+                {
+                    return (ViewState["ZYSXExt"] as List<ZYSXExt>);
+                }
+            }
+        }
+        #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -32,7 +51,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 if (!IsPostBack)
                 {
                     BindDataSource();
+                    BindZYSXControls();
+                    BindZYSXExtList();
                 }
+                cpZYSXPager.PostBackPage += new EventHandler(cpZYSXPager_PostBackPage);
             }
             catch (Exception ex)
             {
@@ -51,17 +73,18 @@ namespace OperatingManagement.Web.Views.BusinessManage
             try
             {
                 string msg = string.Empty;
-                if (string.IsNullOrEmpty(txtGRName.Text.Trim()))
+                if (string.IsNullOrEmpty(dplGroundStation.SelectedValue))
                 {
                     trMessage.Visible = true;
-                    lblMessage.Text = "地面站名称不能为空";
+                    lblMessage.Text = "地面站不能为空";
                     return;
                 }
 
-                if (string.IsNullOrEmpty(txtGRCode.Text.Trim()))
+                int rid = 0;
+                if (!int.TryParse(dplGroundStation.SelectedValue, out rid))
                 {
                     trMessage.Visible = true;
-                    lblMessage.Text = "地面站编号不能为空";
+                    lblMessage.Text = "地面站序号格式错误";
                     return;
                 }
 
@@ -76,61 +99,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "设备编号不能为空";
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(dplOwner.SelectedValue))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "管理单位不能为空";
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(dplCoordinate.SelectedValue))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "站址坐标不能为空";
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(txtLongitude.Text.Trim()))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "经度坐标值不能为空";
-                    return;
-                }
-                double longitudeValue = 0.0;
-                if (!double.TryParse(txtLongitude.Text.Trim(), out longitudeValue))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "经度坐标值格式错误";
-                    return;
-                }
-                if (string.IsNullOrEmpty(txtLatitude.Text.Trim()))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "纬度坐标值不能为空";
-                    return;
-                }
-                double latitudeValue = 0.0;
-                if (!double.TryParse(txtLatitude.Text.Trim(), out latitudeValue))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "纬度坐标值格式错误";
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(txtGaoCheng.Text.Trim()))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "高程坐标值不能为空";
-                    return;
-                }
-                double gaoCheng = 0.0;
-                if (!double.TryParse(txtGaoCheng.Text.Trim(), out gaoCheng))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "高程坐标值格式错误";
                     return;
                 }
 
@@ -151,21 +119,30 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
                 Framework.FieldVerifyResult result;
                 GroundResource groundResource = new GroundResource();
-                groundResource.GRName = txtGRName.Text.Trim();
-                groundResource.GRCode = txtGRCode.Text.Trim();
+                groundResource.RID = rid;
                 groundResource.EquipmentName = txtEquipmentName.Text.Trim();
                 groundResource.EquipmentCode = txtEquipmentCode.Text.Trim();
-                groundResource.Owner = dplOwner.SelectedValue;
-                groundResource.Coordinate = longitudeValue.ToString() + "," + latitudeValue.ToString() + "," + gaoCheng.ToString();
                 groundResource.FunctionType = functionType;
                 groundResource.Status = 1;//正常
                 groundResource.CreatedTime = DateTime.Now;
                 groundResource.CreatedUserID = LoginUserInfo.Id;
 
-                if (groundResource.HaveActiveGRCode())
+                if (ZYSXExtList != null && ZYSXExtList.Count > 0)
+                {
+                    string extProperties = string.Empty;
+                    System.Xml.Serialization.XmlSerializer xmlSerializer = new System.Xml.Serialization.XmlSerializer(typeof(List<ZYSXExt>));
+                    using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+                    {
+                        xmlSerializer.Serialize(ms, ZYSXExtList);
+                        extProperties = System.Text.Encoding.UTF8.GetString(ms.ToArray());
+                    }
+                    groundResource.ExtProperties = extProperties;
+                }
+
+                if (groundResource.HaveActiveEquipmentCode())
                 {
                     trMessage.Visible = true;
-                    lblMessage.Text = "地面站编号已经存在";
+                    lblMessage.Text = "设备编号已经存在";
                     return;
                 }
 
@@ -234,7 +211,127 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 throw (new AspNetException("新增地面站资源页面btnReturn_Click方法出现异常，异常原因", ex));
             }
         }
+        /// <summary>
+        /// 当资源属性发生变化
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void dplZYSX_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                BindZYSXControls();
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增地面站资源页面dplZYSX_SelectedIndexChanged方法出现异常，异常原因", ex));
+            }
+        }
+        /// <summary>
+        /// 添加资源属性
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnAddZYSX_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(dplZYSX.SelectedValue))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "属性名称不能为空";
+                    return;
+                }
+                if (string.IsNullOrEmpty(txtPValue.Text.Trim()))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "属性值不能为空";
+                    return;
+                }
+                //TO DO:按照类型、范围校验属性值
 
+
+                int id = 0;
+                int.TryParse(dplZYSX.SelectedValue, out id);
+                ZYSX zysx = new ZYSX();
+                zysx.Id = id;
+                zysx = zysx.SelectByID();
+                if (zysx != null)
+                {
+                    if (!zysx.ValidateValueRegular(txtPValue.Text.Trim()))
+                    {
+                        trMessage.Visible = true;
+                        lblMessage.Text = "属性值类型不符合规范";
+                        return;
+                    }
+                    if (!zysx.ValidateValueRange(txtPValue.Text.Trim()))
+                    {
+                        trMessage.Visible = true;
+                        lblMessage.Text = "属性值范围不符合规范";
+                        return;
+                    }
+                    ZYSXExt zysxExt = new ZYSXExt(zysx);
+                    zysxExt.PValueID = Guid.NewGuid().ToString();
+                    zysxExt.PValue = txtPValue.Text.Trim();
+                    List<ZYSXExt> zysxExtList = ZYSXExtList;
+                    zysxExtList.Add(zysxExt);
+                    ViewState["ZYSXExt"] = zysxExtList;
+                    BindZYSXExtList();
+                    ResetZYSXControls();
+                }   
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增地面站资源页面btnAddZYSX_Click方法出现异常，异常原因", ex));
+            }
+        }
+        /// <summary>
+        /// 删除资源属性
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbtnDeleteZYSX_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LinkButton lbtnDeleteZYSX = (sender as LinkButton);
+                string pValueID = lbtnDeleteZYSX.CommandArgument;
+                List<ZYSXExt> zysxExtList = ZYSXExtList;
+                int index = zysxExtList.FindIndex(a => a.PValueID.ToLower() == pValueID.ToLower());
+                if (index >= 0)
+                    zysxExtList.RemoveAt(index);
+
+                ViewState["ZYSXExt"] = zysxExtList;
+                BindZYSXExtList();
+                ResetZYSXControls();
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增地面站资源页面lbtnDeleteZYSX_Click方法出现异常，异常原因", ex));
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void cpZYSXPager_PostBackPage(object sender, EventArgs e)
+        {
+            try
+            {
+                BindZYSXExtList();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增地面站资源页面cpZYSXPager_PostBackPage方法出现异常，异常原因", ex));
+            }
+        }
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_GRes.Add";
@@ -248,19 +345,19 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void BindDataSource()
         {
-            dplOwner.Items.Clear();
-            dplOwner.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.GroundResourceOwner);
-            dplOwner.DataTextField = "key";
-            dplOwner.DataValueField = "value";
-            dplOwner.DataBind();
-            //dplOwner.Items.Insert(0, new ListItem("请选择", ""));
+            dplGroundStation.Items.Clear();
+            dplGroundStation.DataSource = new XYXSInfo().GetGrountStationList();
+            dplGroundStation.DataTextField = "AddrName";
+            dplGroundStation.DataValueField = "Id";
+            dplGroundStation.DataBind();
+            //dplGrountStation.Items.Insert(0, new ListItem("请选择", ""));
 
-            dplCoordinate.Items.Clear();
-            dplCoordinate.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.GroundResourceCoordinate);
-            dplCoordinate.DataTextField = "key";
-            dplCoordinate.DataValueField = "value";
-            dplCoordinate.DataBind();
-            //dplCoordinate.Items.Insert(0, new ListItem("请选择", ""));
+            dplZYSX.Items.Clear();
+            dplZYSX.DataSource = new ZYSX().GetGroundStationZYSXList();
+            dplZYSX.DataTextField = "PName";
+            dplZYSX.DataValueField = "Id";
+            dplZYSX.DataBind();
+            //dplZYSX.Items.Insert(0, new ListItem("请选择", ""));
 
             cblFunctionType.Items.Clear();
             cblFunctionType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.GroundResourceFunctionType);
@@ -269,15 +366,52 @@ namespace OperatingManagement.Web.Views.BusinessManage
             cblFunctionType.DataBind();
         }
         /// <summary>
+        /// 绑定资源属性相关控件
+        /// </summary>
+        private void BindZYSXControls()
+        {
+            int id = 0;
+            int.TryParse(dplZYSX.SelectedValue, out id);
+            ZYSX zysx = new ZYSX();
+            zysx.Id = id;
+            zysx = zysx.SelectByID();
+            if (zysx != null)
+            {
+                lblZYSXType.Text = SystemParameters.GetSystemParameterText(SystemParametersType.ZYSXType, zysx.Type.ToString());
+                lblZYSXScope.Text = zysx.Scope;
+            }
+            txtPValue.Text = string.Empty;
+        }
+        /// <summary>
+        /// 重置资源属性控件
+        /// </summary>
+        private void ResetZYSXControls()
+        {
+            dplZYSX.SelectedIndex = 0;
+            txtPValue.Text = string.Empty;
+
+            BindZYSXControls();
+        }
+        /// <summary>
+        /// 绑定资源属性列表
+        /// </summary>
+        private void BindZYSXExtList()
+        {
+            if (ZYSXExtList.Count > this.SiteSetting.PageSize)
+                cpZYSXPager.Visible = true;
+            cpZYSXPager.DataSource = ZYSXExtList;
+            cpZYSXPager.PageSize = this.SiteSetting.PageSize;
+            cpZYSXPager.BindToControl = rpZYSXList;
+            rpZYSXList.DataSource = cpZYSXPager.DataSourcePaged;
+            rpZYSXList.DataBind();
+        }
+        /// <summary>
         /// 添加完成后将控件设置为初始状态
         /// </summary>
         private void ResetControls()
         {
-            dplOwner.SelectedIndex = 0;
-            dplCoordinate.SelectedIndex = 0;
+            dplGroundStation.SelectedIndex = 0;
 
-            txtGRName.Text = string.Empty;
-            txtGRCode.Text = string.Empty;
             txtEquipmentName.Text = string.Empty;
             txtEquipmentCode.Text = string.Empty;
 
@@ -285,6 +419,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 item.Selected = false;
             }
+
+            ViewState["ZYSXExt"] = null;
+            ResetZYSXControls();
+            BindZYSXExtList();
         }
 
         #endregion

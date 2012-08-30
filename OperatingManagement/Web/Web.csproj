@@ -218,6 +218,9 @@
     <Content Include="Views\BusinessManage\GetFileSInfos.aspx" />
     <Content Include="Views\BusinessManage\GroundResourceAdd.aspx" />
     <Content Include="Views\BusinessManage\GroundResourceEdit.aspx" />
+    <Content Include="Views\BusinessManage\GroundStationAdd.aspx" />
+    <Content Include="Views\BusinessManage\GroundStationEdit.aspx" />
+    <Content Include="Views\BusinessManage\GroundStationManage.aspx" />
     <Content Include="Views\BusinessManage\MeasureDataDetail.aspx" />
     <Content Include="Views\BusinessManage\MeasureDataList.aspx" />
     <Content Include="Views\BusinessManage\GDCZFX.aspx" />
@@ -231,6 +234,7 @@
     <Content Include="Views\BusinessManage\ResourceRequirementAdd.aspx" />
     <Content Include="Views\BusinessManage\ResourceStatusAdd.aspx" />
     <Content Include="Views\BusinessManage\ResourceStatusChartManage.aspx" />
+    <Content Include="Views\BusinessManage\ResourceStatusEdit.aspx" />
     <Content Include="Views\BusinessManage\ResourceStatusManage.aspx" />
     <Content Include="Views\BusinessManage\SendFile.aspx" />
     <Content Include="Views\BusinessManage\SYSJFF.aspx" />
@@ -453,6 +457,27 @@
     <Compile Include="Views\BusinessManage\GroundResourceEdit.aspx.designer.cs">
       <DependentUpon>GroundResourceEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\BusinessManage\GroundStationAdd.aspx.cs">
+      <DependentUpon>GroundStationAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GroundStationAdd.aspx.designer.cs">
+      <DependentUpon>GroundStationAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GroundStationEdit.aspx.cs">
+      <DependentUpon>GroundStationEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GroundStationEdit.aspx.designer.cs">
+      <DependentUpon>GroundStationEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GroundStationManage.aspx.cs">
+      <DependentUpon>GroundStationManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\GroundStationManage.aspx.designer.cs">
+      <DependentUpon>GroundStationManage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\BusinessManage\MeasureDataDetail.aspx.cs">
       <DependentUpon>MeasureDataDetail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -543,6 +568,13 @@
     </Compile>
     <Compile Include="Views\BusinessManage\ResourceStatusChartManage.aspx.designer.cs">
       <DependentUpon>ResourceStatusChartManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ResourceStatusEdit.aspx.cs">
+      <DependentUpon>ResourceStatusEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ResourceStatusEdit.aspx.designer.cs">
+      <DependentUpon>ResourceStatusEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\ResourceStatusManage.aspx.cs">
       <DependentUpon>ResourceStatusManage.aspx</DependentUpon>

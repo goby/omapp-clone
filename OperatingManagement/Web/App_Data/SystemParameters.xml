@@ -78,6 +78,20 @@
     <item text="是" value="1"></item>
     <item text="否" value="2"></item>
   </UseStatusCanBeUsed>
+  <XYXSInfoType description="信源信宿信息记录类型">
+    <item text="地面站" value="0"></item>
+    <item text="中心" value="1"></item>
+    <item text="分系统" value="2"></item>
+  </XYXSInfoType>
+  <XYXSInfoOwn description="信源信宿信息地面站归属（管理单位）">
+    <item text="总参" value="01"></item>
+    <item text="总装" value="02"></item>
+    <item text="遥科学站" value="03"></item>
+  </XYXSInfoOwn>
+  <XYXSInfoStatus description="信源信宿信息记录状态">
+    <item text="正常" value="1"></item>
+    <item text="删除" value="2"></item>
+  </XYXSInfoStatus>
   <ResourceCalculate description="资源计算相关参数">
     <item text="RequirementFileDirectory" value="D:\files\ReqFiles\"></item>
     <item text="ResultFileDirectory" value="D:\files\ReqResultFiles\"></item>
@@ -88,7 +102,7 @@
     <item text="系统计算" value="1"></item>
     <item text="用户上传" value="2"></item>
   </ResourceCalculateResultFileSource>
-  <ResourceCalculateResult description="资源计算，资源计算结果：计算成功（1）、计算失败（2）；；">
+  <ResourceCalculateResult description="资源计算，资源计算结果：计算成功（1）、计算失败（2）；">
     <item text="计算成功" value="1"></item>
     <item text="计算失败" value="2"></item>
   </ResourceCalculateResult>
@@ -114,4 +128,11 @@
     <item text="WGS84FilePath" value="D:\Include\WGS84.GEO"></item>
     <item text="eopc04_IAU2000FilePath" value="D:\Include\eopc04_IAU2000.dat"></item>
   </OrbitIntersectionReport>
+  <ZYSXType description="资源属性类型">
+    <item text="int" value="1"></item>
+    <item text="double" value="2"></item>
+    <item text="string" value="3"></item>
+    <item text="bool" value="4"></item>
+    <item text="enum" value="5"></item>
+  </ZYSXType>
 </SystemParameters>

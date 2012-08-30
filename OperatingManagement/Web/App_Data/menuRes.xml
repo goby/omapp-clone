@@ -14,4 +14,8 @@
       <item id="3-1" title="资源调度计算" roles="OMB_ResCac.Caculate" href="Views/BusinessManage/ResourceRequirementAdd.aspx" />
       <item id="3-2" title="查看资源调度计算结果" roles="OMB_ResCac.View" href="Views/BusinessManage/ResourceCalculateManage.aspx" />
     </menu>
+    <menu title="地面站管理">
+      <item id="4-1" title="地面站管理" roles="OMB_GSMan.View" href="Views/BusinessManage/GroundStationManage.aspx" />
+      <item id="4-2" title="新增地面站" roles="OMB_GSMan.Add" href="Views/BusinessManage/GroundStationAdd.aspx" />
+    </menu>
 </menus>
