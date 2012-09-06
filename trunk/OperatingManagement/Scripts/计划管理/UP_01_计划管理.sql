@@ -1,9 +1,9 @@
----------------------------------------------
--- Export file for user HTCUSER            --
--- Created by taiji on 2012/8/13, 22:39:56 --
----------------------------------------------
+--------------------------------------------
+-- Export file for user HTCUSER           --
+-- Created by taiji on 2012/9/6, 14:50:09 --
+--------------------------------------------
 
-spool UP_01_计划管理20120813.log
+spool UP_01_计划管理20120906.log
 
 prompt
 prompt Creating procedure UP_GD_GETLIST
@@ -161,6 +161,30 @@ if o_seqnum >= 9999 then
   up_reset_sequence (p_seqname);
 end if;
 
+end;
+/
+
+prompt
+prompt Creating procedure UP_JHTEMP_DELETE
+prompt ===================================
+prompt
+create or replace procedure htcuser.up_jhtemp_delete
+(
+       v_Id  TB_JHTemp.Id%type,
+       v_result out number
+)
+is
+begin
+     delete from    TB_JHTemp t
+      where t.Id = v_Id;
+       commit;
+       v_result:=5; -- Success
+
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK;
+          COMMIT;
+          v_result:=4; --Error
 end;
 /
 
