@@ -15,17 +15,73 @@
     计划管理 &gt; 中心运行计划
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
+    <asp:Panel runat = "server" ID="pnlStation">
+    <table cellpadding="0" class="edit1" style="width: 950px;">
+        <tr>
+       <td>
+        
+           &nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+        <asp:Repeater ID="rpDatas" runat="server">
+                        <HeaderTemplate>
+                            <table class="list">
+                                <tr>
+                                    <th style="width: 150px;">
+                                        文件名
+                                    </th>
+                                    <th style="width: 150px;">
+                                       
+                                    </th>
+                                    <th style="width: 70px;">
+                                        
+                                    </th>
+                                    </tr>
+                           <tbody id="tbPlans">
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <tr>
+                                    <td>
+                                        <%# Eval("ZM")%>
+                                    </td>
+                                    <td>
+                                        <button class="button" onclick="return showDetail('<%# Eval("ID") %>','<%# Eval("PLANTYPE") %>')">
+                                        选择</button>
+                                    </td>
+                                     <td>
+                                    <button class="button" onclick="return showDetail('<%# Eval("ID") %>','<%# Eval("PLANTYPE") %>')">
+                                        选择</button>
+                                    </td>
+
+                            </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            </tbody> </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
+        </td>
+    </tr>
+
+    </table>
+    </asp:Panel>
+    <asp:Panel runat = "server" ID="pnlMain">
     <div>
         <table cellpadding="0" class="edit1" style="width: 950px;">
+<%--            <tr>
+                <td colspan="4" align="left">
+                    <asp:Button ID="btnStationOutIn"  class="button"  runat="server" 
+                        Text="查看进出站及航捷数据统计文件" CausesValidation="False" onclick="btnStationOutIn_Click" />
+                </td>
+            </tr>--%>
             <tr>
-                <th style="width: 120px;">
-                    &nbsp;</th>
-                <td style="width: 332px;">
-                    &nbsp;</td>
-                <th style="width: 120px;">
-                    &nbsp;</th>
-                <td>
-                    &nbsp;</td>
+            <th  style="width: 120px;">上传进出站及航捷数据统计文件</th>
+                <td align="left" colspan="3">
+                    <asp:FileUpload ID="FileUpload1"  class="upload" runat="server" Width="455px" />
+                    <asp:Button ID="btnUpdate"  class="button" runat="server" Text="上传" 
+                        CausesValidation="False" onclick="btnUpdate_Click" Width="54px" />
+                    <asp:Label ID="lblUpload"  CssClass="error"  runat="server" Text="文件上传成功" Visible="false"></asp:Label>
+                </td>
             </tr>
             <tr>
                 <th style="width: 120px;">
@@ -756,4 +812,5 @@
         <p class="content">
         </p>
     </div>
+    </asp:Panel>
 </asp:Content>
