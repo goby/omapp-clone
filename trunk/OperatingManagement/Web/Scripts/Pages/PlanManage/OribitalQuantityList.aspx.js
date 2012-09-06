@@ -1,9 +1,4 @@
-﻿//$(function () {
-//    $("#txtStartDate").datepicker();
-//    $("#txtEndDate").datepicker();
-//});
-
-function showMsg(msg) {
+﻿function showMsg(msg) {
     var _dialog;
     _dialog = $("#dialog-form");
     _dialog.dialog({
@@ -25,13 +20,6 @@ function showMsg(msg) {
 function clearField() {
     $('input:text').val('');
     return false;
-}
-
-function setdayte(o) {
-    $(o).datepicker({
-        changeMonth: true,
-        changeYear: true
-    });
 }
 
 function showDetail(id) {
