@@ -62,6 +62,9 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         private void initial()
         {
+            pnlMain.Visible = true;
+            pnlStation.Visible = false;
+
             List<ZXJH_SYContent> listSY = new List<ZXJH_SYContent>();
             List<ZXJH_WorkContent> listWC = new List<ZXJH_WorkContent>();
             List<ZXJH_CommandMake> listCM = new List<ZXJH_CommandMake>();
@@ -1734,6 +1737,53 @@ namespace OperatingManagement.Web.Views.PlanManage
                 throw (new AspNetException("保存计划信息出现异常，异常原因", ex));
             }
             finally { }
+        }
+
+        protected void btnStationOutIn_Click(object sender, EventArgs e)
+        {
+            pnlMain.Visible = false;
+            pnlStation.Visible = true;
+        }
+
+        /// <summary>
+        /// 上传用户文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnUpdate_Click(object sender, EventArgs e)
+        {
+            string filename = FileUpload1.FileName.Substring(FileUpload1.FileName.LastIndexOf('\\') + 1);
+            string filepath = GetFullFilePath(filename);
+
+            FileUpload1.SaveAs(filepath);
+            lblUpload.Visible = true;
+
+            #region 读取文件内容
+            StationInOutFileReader reader = new StationInOutFileReader();
+            List<StationInOut> list;
+            list = reader.Read(filename);
+            #endregion
+        }
+
+        /// <summary>
+        /// 获得完整路径
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        private string GetFullFilePath(string filename)
+        {
+            string path = System.Configuration.ConfigurationManager.AppSettings["StationInOutFilePath"];
+            if (path != string.Empty)
+            {
+                if (path[path.Length - 1] != '\\')
+                    path = path + @"\";
+            }
+            else
+            {
+                path = AppDomain.CurrentDomain.BaseDirectory + @"TempJHSavePath\";
+            }
+            path += filename;
+            return path;
         }
     }
 }

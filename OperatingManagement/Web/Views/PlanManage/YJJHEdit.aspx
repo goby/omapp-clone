@@ -25,15 +25,15 @@
     计划管理 &gt; 应用研究计划
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-<table class="edit1" style="width:800px;">
-        <tr>
+    <table class="edit1" style="width:800px;">
+        <%--<tr>
             <th class="style1">
                 <asp:Button ID="btnImport" runat="server" Text="导入试验计划"  CssClass="button"  
                     CausesValidation="False" onclick="btnImport_Click"  />
             </th>
             <td>
             </td>
-        </tr>
+        </tr>--%>
         <tr>
             <th class="style1">任务代号(<span class="red">*</span>)</th>
             <td>
@@ -150,7 +150,7 @@
     <div id="dialog-form" style="display:none" title="提示信息">
 	    <p class="content"></p>
     </div>
-    <div id="dialog-sbjh" <%--style="display: none"--%> title="选择测控资源使用计划">
+    <div id="dialog-sbjh" style="display: none" title="选择测控资源使用计划">
         <p class="content">
         </p>
         <asp:Repeater ID="rpDatas" runat="server" 
