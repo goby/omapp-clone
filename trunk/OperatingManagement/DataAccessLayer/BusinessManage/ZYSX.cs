@@ -14,6 +14,9 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Xml;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Drawing;
 
 using OperatingManagement.Framework.Basic;
 using OperatingManagement.Framework;
@@ -23,7 +26,7 @@ using Oracle.DataAccess.Client;
 namespace OperatingManagement.DataAccessLayer.BusinessManage
 {
     [Serializable]
-    public class ZYSX : BaseEntity<int, GroundResource>
+    public class ZYSX : BaseEntity<int, ZYSX>
     {
         public ZYSX()
         {
@@ -52,6 +55,11 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 属于,0(卫星),1(地面站),2(卫星和地面站),3(都不属于)
         /// </summary>
         public int Own { get; set; }
+
+        /// <summary>
+        /// 资源属性值，扩展，与数据库不对应
+        /// </summary>
+        public dynamic PValue { get; set; }
         #endregion
 
         #region -Private Methods-
@@ -133,6 +141,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
         /// <summary>
         /// 获得与地面站相关的资源属性列表
+        /// 属性类型,1(int);2(double);3(string);4(bool);5(enum);
         /// </summary>
         /// <returns></returns>
         public List<ZYSX> GetGroundStationZYSXList()
@@ -141,45 +150,224 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             return infoList;
         }
         /// <summary>
-        /// 校验扩展属性值的类型
-        /// 属性类型,1(int);2(double);3(string);4(bool);5(enum);
+        /// 从控件中获得用户填写的值
         /// </summary>
-        /// <returns>true:通过</returns>
-        public bool ValidateValueRegular(object pValue)
+        /// <param name="placeHolder"></param>
+        public void GetPValueFromControl(PlaceHolder placeHolder)
         {
-            bool result = false;
+            Control ctl = null;
             switch (Type)
             {
                 case 1:
-                    int value1;
-                    result = int.TryParse(pValue.ToString(), out value1);
-                    break;
-                case 2:
-                    double value2;
-                    result = double.TryParse(pValue.ToString(), out value2);
-                    break;
+                case 2:    
                 case 3:
-                    result = !string.IsNullOrWhiteSpace(pValue.ToString());
+                    ctl = placeHolder.FindControl("txt" + PCode + "_" + Id.ToString());
+                    if ((ctl as TextBox) != null)
+                        PValue = (ctl as TextBox).Text;
                     break;
                 case 4:
-                    bool value4;
-                    result = bool.TryParse(pValue.ToString(), out value4);
-                    break;
                 case 5:
-                    result = true;
+                    ctl = placeHolder.FindControl("dpl" + PCode + "_" + Id.ToString());
+                    if ((ctl as DropDownList) != null)
+                        PValue = (ctl as DropDownList).SelectedValue;
                     break;
                 default:
-                    result = true;
                     break;
             }
-            return result;
         }
         /// <summary>
-        /// 校验扩展属性值的范围
+        /// 生成控件
+        /// </summary>
+        /// <returns></returns>
+        public List<Control> GenerateControls()
+        {
+            List<Control> controlList = new List<Control>();
+            switch (Type)
+            {
+                case 1:
+                    controlList = CreateIntegerControls();
+                    break;
+                case 2:
+                    controlList = CreateDoubleControls();
+                    break;
+                case 3:
+                    controlList = CreateStringControls();
+                    break;
+                case 4:
+                    controlList = CreateBoolControls();
+                    break;
+                case 5:
+                    controlList = CreateEnumControls();
+                    break;
+                default:
+                    break;
+            }
+            return controlList;
+        }
+        /// <summary>
+        /// 创建整型数据类型相关控件
+        /// </summary>
+        /// <returns></returns>
+        protected List<Control> CreateIntegerControls()
+        {
+            List<Control> controlsList = new List<Control>();
+            string textBoxID = "txt" + PCode + "_" + Id.ToString();
+            TextBox textBox = new TextBox();
+            textBox.ID = textBoxID;
+            textBox.Text = PValue;
+            controlsList.Add(textBox);
+
+            string requiredFieldValidatorID = "rfv" + PCode + "_" + Id.ToString();
+            RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator();
+            requiredFieldValidator.ID = requiredFieldValidatorID;
+            requiredFieldValidator.ControlToValidate = textBoxID;
+            requiredFieldValidator.Display = ValidatorDisplay.Dynamic;
+            requiredFieldValidator.ForeColor = Color.Red;
+            requiredFieldValidator.ErrorMessage = "（必填）";
+            controlsList.Add(requiredFieldValidator);
+
+            List<int> minAndMaxValue = GetIntegerMinAndMaxValue();
+            if (minAndMaxValue != null && minAndMaxValue.Count == 2)
+            {
+                string rangeValidatorID = "rv" + PCode + "_" + Id.ToString();
+                RangeValidator rangeValidator = new RangeValidator();
+                rangeValidator.ID = rangeValidatorID;
+                rangeValidator.ControlToValidate = textBoxID;
+                rangeValidator.Type = ValidationDataType.Integer;
+                rangeValidator.MinimumValue = minAndMaxValue[0].ToString();
+                rangeValidator.MaximumValue = minAndMaxValue[1].ToString();
+                rangeValidator.Display = ValidatorDisplay.Dynamic;
+                rangeValidator.ForeColor = Color.Red;
+                rangeValidator.ErrorMessage = string.Format("（请输入{0}-{1}之间整数数字）", minAndMaxValue[0], minAndMaxValue[1]);
+                controlsList.Add(rangeValidator);
+            }
+            return controlsList;
+        }
+        /// <summary>
+        /// 创建双精度数据类型相关控件
+        /// </summary>
+        /// <returns></returns>
+        protected List<Control> CreateDoubleControls()
+        {
+            List<Control> controlsList = new List<Control>();
+            string textBoxID = "txt" + PCode + "_" + Id.ToString();
+            TextBox textBox = new TextBox();
+            textBox.ID = textBoxID;
+            textBox.Text = PValue;
+            controlsList.Add(textBox);
+
+            string requiredFieldValidatorID = "rfv" + PCode + "_" + Id.ToString();
+            RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator();
+            requiredFieldValidator.ID = requiredFieldValidatorID;
+            requiredFieldValidator.ControlToValidate = textBoxID;
+            requiredFieldValidator.Display = ValidatorDisplay.Dynamic;
+            requiredFieldValidator.ForeColor = Color.Red;
+            requiredFieldValidator.ErrorMessage = "（必填）";
+            controlsList.Add(requiredFieldValidator);
+
+            List<int> mn = GetDoubleMN();
+            if (mn != null && mn.Count == 2)
+            {
+                string validationExpression = @"^(-?\d{1,m})(\.\d{1,n})?$";
+                string regularExpressionValidatorID = "rev" + PCode + "_" + Id.ToString();
+                RegularExpressionValidator regularExpressionValidator = new RegularExpressionValidator();
+                regularExpressionValidator.ID = regularExpressionValidatorID;
+                regularExpressionValidator.ControlToValidate = textBoxID;
+                regularExpressionValidator.ValidationExpression = validationExpression.Replace("m", mn[0].ToString()).Replace("n", mn[1].ToString());
+                regularExpressionValidator.Display = ValidatorDisplay.Dynamic;
+                regularExpressionValidator.ForeColor = Color.Red;
+                regularExpressionValidator.ErrorMessage = string.Format("（请输入整数位小于等于{0}位，小数位小于等于{1}位的数字）", mn[0], mn[1]);
+                controlsList.Add(regularExpressionValidator);
+            }
+            return controlsList;
+        }
+        /// <summary>
+        /// 创建字符串类型相关控件
+        /// </summary>
+        /// <returns></returns>
+        protected List<Control> CreateStringControls()
+        {
+            List<Control> controlsList = new List<Control>();
+            string textBoxID = "txt" + PCode + "_" + Id.ToString();
+            TextBox textBox = new TextBox();
+            textBox.ID = textBoxID;
+            textBox.Text = PValue;
+            textBox.MaxLength = GetStringLength();
+            controlsList.Add(textBox);
+
+            string requiredFieldValidatorID = "rfv" + PCode + "_" + Id.ToString();
+            RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator();
+            requiredFieldValidator.ID = requiredFieldValidatorID;
+            requiredFieldValidator.ControlToValidate = textBoxID;
+            requiredFieldValidator.Display = ValidatorDisplay.Dynamic;
+            requiredFieldValidator.ForeColor = Color.Red;
+            requiredFieldValidator.ErrorMessage = "（必填）";
+            controlsList.Add(requiredFieldValidator);
+
+            return controlsList;
+        }
+        /// <summary>
+        /// 创建Bool类型相关控件
+        /// </summary>
+        /// <returns></returns>
+        protected List<Control> CreateBoolControls()
+        {
+            List<Control> controlsList = new List<Control>();
+            string dropDownListID = "dpl" + PCode + "_" + Id.ToString();
+            DropDownList dropDownList = new DropDownList();
+            dropDownList.ID = dropDownListID;
+            dropDownList.DataSource = GetBoolDataSource();
+            dropDownList.DataTextField = "key";
+            dropDownList.DataValueField = "value";
+            dropDownList.DataBind();
+            dropDownList.SelectedIndex = dropDownList.Items.IndexOf(dropDownList.Items.FindByValue(PValue));
+            controlsList.Add(dropDownList);
+
+            string requiredFieldValidatorID = "rfv" + PCode + "_" + Id.ToString();
+            RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator();
+            requiredFieldValidator.ID = requiredFieldValidatorID;
+            requiredFieldValidator.ControlToValidate = dropDownListID;
+            requiredFieldValidator.Display = ValidatorDisplay.Dynamic;
+            requiredFieldValidator.ForeColor = Color.Red;
+            requiredFieldValidator.ErrorMessage = "（必填）";
+            controlsList.Add(requiredFieldValidator);
+
+            return controlsList;
+        }
+        /// <summary>
+        /// 创建枚举类型相关控件
+        /// </summary>
+        /// <returns></returns>
+        protected List<Control> CreateEnumControls()
+        {
+            List<Control> controlsList = new List<Control>();
+            string dropDownListID = "dpl" + PCode + "_" + Id.ToString();
+            DropDownList dropDownList = new DropDownList();
+            dropDownList.ID = dropDownListID;
+            dropDownList.DataSource = GetEnumDataSource();
+            dropDownList.DataTextField = "key";
+            dropDownList.DataValueField = "value";
+            dropDownList.DataBind();
+            dropDownList.SelectedIndex = dropDownList.Items.IndexOf(dropDownList.Items.FindByValue(PValue));
+            controlsList.Add(dropDownList);
+
+            string requiredFieldValidatorID = "rfv" + PCode + "_" + Id.ToString();
+            RequiredFieldValidator requiredFieldValidator = new RequiredFieldValidator();
+            requiredFieldValidator.ID = requiredFieldValidatorID;
+            requiredFieldValidator.ControlToValidate = dropDownListID;
+            requiredFieldValidator.Display = ValidatorDisplay.Dynamic;
+            requiredFieldValidator.ForeColor = Color.Red;
+            requiredFieldValidator.ErrorMessage = "（必填）";
+            controlsList.Add(requiredFieldValidator);
+
+            return controlsList;
+        }
+        /// <summary>
+        /// 校验扩展属性值是否合法
         /// 属性值区间,1(0-xxxxxx);2(m.n);3(length);5(a,b,c)';
         /// </summary>
         /// <returns>true:通过</returns>
-        public bool ValidateValueRange(object pValue)
+        public bool ValidatePValue()
         {
             bool result = false;
             try
@@ -188,53 +376,36 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 {
                     case 1:
                         int value1;
-                        if (int.TryParse(pValue.ToString(), out value1))
+                        if (int.TryParse(PValue.ToString(), out value1))
                         {
-                            string[] scopeArray = Scope.Split(new char[] { '-', '_', '—', }, StringSplitOptions.RemoveEmptyEntries);
-                            if (scopeArray != null && scopeArray.Length == 2)
+                            List<int> minAndMaxValue = GetIntegerMinAndMaxValue();
+                            if (minAndMaxValue != null && minAndMaxValue.Count == 2)
                             {
-                                int minValue1 = 0;
-                                int maxValue1 = 0;
-                                if (int.TryParse(scopeArray[0], out minValue1) && int.TryParse(scopeArray[1], out maxValue1))
-                                {
-                                    result = (value1 >= minValue1 && value1 <= maxValue1);
-                                }
+                                result = (value1 >= minAndMaxValue[0] && value1 <= minAndMaxValue[1]);
                             }
                         }
                         break;
                     case 2:
                         double value2;
-                        if (double.TryParse(pValue.ToString(), out value2))
+                        if (double.TryParse(PValue.ToString(), out value2))
                         {
-                            string[] mnArray = Scope.Split(new char[] { '.', ',', ';', '，', '；' }, StringSplitOptions.RemoveEmptyEntries);
-                            if (mnArray != null && mnArray.Length == 2)
+                            value2 = Math.Abs(value2);
+                            List<int> mn = GetDoubleMN();
+                            if (mn != null && mn.Count == 2)
                             {
-                                value2 = Math.Abs(value2);
-                                int m = 0;
-                                int n = 0;
-                                if (int.TryParse(mnArray[0], out m) && int.TryParse(mnArray[1], out n))
-                                {
-                                    result = (value2.ToString().Split('.')[0].Length <= m && value2.ToString().Split('.')[1].Length <= n);
-                                }
+                                string[] array = value2.ToString().Split('.');
+                                result = (array[0].Length <= mn[0] && (array.Length < 2 || array[1].Length <= mn[1]));
                             }
                         }
                         break;
                     case 3:
-                        int length = 0;
-                        if (int.TryParse(Scope, out length))
-                        {
-                            result = (pValue.ToString().Length <= length);
-                        }
+                        result = (PValue.ToString().Length <= GetStringLength());
                         break;
                     case 4:
-                        result = true;
+                        result = (PValue != null);
                         break;
                     case 5:
-                        string[] enumArray = Scope.Split(new char[] { '.', ',', ';', '，', '；' });
-                        if (enumArray != null && enumArray.Length > 0)
-                        {
-                            result = enumArray.Contains(pValue.ToString());
-                        }
+                        result = (PValue != null);
                         break;
                     default:
                         result = true;
@@ -244,6 +415,102 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             catch
             { }
             return result;
+        }
+        
+        /// <summary>
+        /// 获得整型数据的最小值与最大值
+        /// </summary>
+        /// <returns></returns>
+        protected List<int> GetIntegerMinAndMaxValue()
+        {
+            List<int> minAndMaxValue = new List<int>();
+            string[] scopeArray = Scope.Split(new char[] { '-', '_', '—', }, StringSplitOptions.RemoveEmptyEntries);
+            if (scopeArray != null && scopeArray.Length == 2)
+            {
+                int minValue = 0;
+                int maxValue = 0;
+                if (int.TryParse(scopeArray[0], out minValue) && int.TryParse(scopeArray[1], out maxValue))
+                {
+                    minAndMaxValue.Add(minValue);
+                    minAndMaxValue.Add(maxValue);
+                }
+            }
+            return minAndMaxValue;
+        }
+        /// <summary>
+        /// 获得双精度数据的整数位数和小数位数
+        /// </summary>
+        /// <returns></returns>
+        protected List<int> GetDoubleMN()
+        {
+            List<int> mn = new List<int>();
+            string[] mnArray = Scope.Split(new char[] { '.', ',', ';', '，', '；' }, StringSplitOptions.RemoveEmptyEntries);
+            if (mnArray != null && mnArray.Length == 2)
+            {
+                int m = 0;
+                int n = 0;
+                if (int.TryParse(mnArray[0], out m) && int.TryParse(mnArray[1], out n))
+                {
+                    mn.Add(m);
+                    mn.Add(n);
+                }
+            }
+            return mn;
+        }
+        /// <summary>
+        /// 获得字符串长度
+        /// </summary>
+        /// <returns></returns>
+        protected int GetStringLength()
+        {
+            int length = 0;
+            int.TryParse(Scope, out length);
+            return length;
+        }
+        /// <summary>
+        /// 获得bool型数据源
+        /// </summary>
+        /// <returns></returns>
+        protected Dictionary<string, string> GetBoolDataSource()
+        {
+            Dictionary<string, string> boolDataSource = new Dictionary<string, string>();
+            string[] boolArray = Scope.Split(new char[] { '.', ',', ';', '，', '；' });
+            if (boolArray != null && boolArray.Length == 2)
+            {
+                foreach (string s in boolArray)
+                {
+                    if (!boolDataSource.ContainsKey(s))
+                    {
+                        boolDataSource.Add(s, s);
+                    }
+                }
+            }
+            else
+            {
+                boolDataSource.Add("是", "1");
+                boolDataSource.Add("否", "0");
+            }
+            return boolDataSource;
+        }
+        /// <summary>
+        /// 获得枚举类型数据源
+        /// </summary>
+        /// <returns></returns>
+        protected Dictionary<string, string> GetEnumDataSource()
+        {
+            Dictionary<string, string> enumDataSource = new Dictionary<string, string>();
+            string[] enumArray = Scope.Split(new char[] { '.', ',', ';', '，', '；' });
+            if (enumArray != null && enumArray.Length > 0)
+            {
+                foreach (string s in enumArray)
+                {
+                    if (!enumDataSource.ContainsKey(s))
+                    {
+                        enumDataSource.Add(s, s);
+                    }
+                }
+            }
+            return enumDataSource;
         }
 
         #endregion

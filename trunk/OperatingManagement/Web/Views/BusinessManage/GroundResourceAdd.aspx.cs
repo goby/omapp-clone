@@ -25,19 +25,19 @@ namespace OperatingManagement.Web.Views.BusinessManage
     {
         #region 属性
         /// <summary>
-        /// 资源属性列表
+        /// 资源属性键值对列表
         /// </summary>
-        protected List<ZYSXExt> ZYSXExtList
+        protected Dictionary<int, string> ZYSXIDPValueDic
         {
             get
             {
-                if (ViewState["ZYSXExt"] == null)
+                if (ViewState["ZYSXIDPValueDic"] == null)
                 {
-                    return new List<ZYSXExt>();
+                    return new Dictionary<int, string>();
                 }
                 else
                 {
-                    return (ViewState["ZYSXExt"] as List<ZYSXExt>);
+                    return (ViewState["ZYSXIDPValueDic"] as Dictionary<int, string>);
                 }
             }
         }
@@ -51,9 +51,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 if (!IsPostBack)
                 {
                     BindDataSource();
-                    BindZYSXControls();
-                    BindZYSXExtList();
+                    BindZYSXList();
                 }
+                BindRepeaterItems();
                 cpZYSXPager.PostBackPage += new EventHandler(cpZYSXPager_PostBackPage);
             }
             catch (Exception ex)
@@ -117,6 +117,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     }
                 }
 
+                if (!LoopRepeaterItems())
+                {
+                    return;
+                }
+
                 Framework.FieldVerifyResult result;
                 GroundResource groundResource = new GroundResource();
                 groundResource.RID = rid;
@@ -127,15 +132,30 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 groundResource.CreatedTime = DateTime.Now;
                 groundResource.CreatedUserID = LoginUserInfo.Id;
 
-                if (ZYSXExtList != null && ZYSXExtList.Count > 0)
+                //Dictionary<int,string>不支持序列化，采用其他方法
+                //if (ZYSXIDPValueDic != null && ZYSXIDPValueDic.Count > 0)
+                //{
+                //    string extProperties = string.Empty;
+                //    System.Xml.Serialization.XmlSerializer xmlSerializer = new System.Xml.Serialization.XmlSerializer(typeof(Dictionary<int,string>));
+                //    using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+                //    {
+                //        xmlSerializer.Serialize(ms, ZYSXIDPValueDic);
+                //        extProperties = System.Text.Encoding.UTF8.GetString(ms.ToArray());
+                //    }
+                //    groundResource.ExtProperties = extProperties;
+                //}
+
+                if (ZYSXIDPValueDic != null && ZYSXIDPValueDic.Count > 0)
                 {
                     string extProperties = string.Empty;
-                    System.Xml.Serialization.XmlSerializer xmlSerializer = new System.Xml.Serialization.XmlSerializer(typeof(List<ZYSXExt>));
-                    using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+                    foreach (int key in ZYSXIDPValueDic.Keys)
                     {
-                        xmlSerializer.Serialize(ms, ZYSXExtList);
-                        extProperties = System.Text.Encoding.UTF8.GetString(ms.ToArray());
+                        if(!string.IsNullOrEmpty(extProperties))
+                            extProperties += "|$|";
+ 
+                        extProperties += key + "|#|" + ZYSXIDPValueDic[key];
                     }
+
                     groundResource.ExtProperties = extProperties;
                 }
 
@@ -212,111 +232,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
         }
         /// <summary>
-        /// 当资源属性发生变化
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void dplZYSX_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                BindZYSXControls();
-            }
-            catch (System.Threading.ThreadAbortException ex1)
-            { }
-            catch (Exception ex)
-            {
-                throw (new AspNetException("新增地面站资源页面dplZYSX_SelectedIndexChanged方法出现异常，异常原因", ex));
-            }
-        }
-        /// <summary>
-        /// 添加资源属性
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnAddZYSX_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(dplZYSX.SelectedValue))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "属性名称不能为空";
-                    return;
-                }
-                if (string.IsNullOrEmpty(txtPValue.Text.Trim()))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "属性值不能为空";
-                    return;
-                }
-                //TO DO:按照类型、范围校验属性值
-
-
-                int id = 0;
-                int.TryParse(dplZYSX.SelectedValue, out id);
-                ZYSX zysx = new ZYSX();
-                zysx.Id = id;
-                zysx = zysx.SelectByID();
-                if (zysx != null)
-                {
-                    if (!zysx.ValidateValueRegular(txtPValue.Text.Trim()))
-                    {
-                        trMessage.Visible = true;
-                        lblMessage.Text = "属性值类型不符合规范";
-                        return;
-                    }
-                    if (!zysx.ValidateValueRange(txtPValue.Text.Trim()))
-                    {
-                        trMessage.Visible = true;
-                        lblMessage.Text = "属性值范围不符合规范";
-                        return;
-                    }
-                    ZYSXExt zysxExt = new ZYSXExt(zysx);
-                    zysxExt.PValueID = Guid.NewGuid().ToString();
-                    zysxExt.PValue = txtPValue.Text.Trim();
-                    List<ZYSXExt> zysxExtList = ZYSXExtList;
-                    zysxExtList.Add(zysxExt);
-                    ViewState["ZYSXExt"] = zysxExtList;
-                    BindZYSXExtList();
-                    ResetZYSXControls();
-                }   
-            }
-            catch (System.Threading.ThreadAbortException ex1)
-            { }
-            catch (Exception ex)
-            {
-                throw (new AspNetException("新增地面站资源页面btnAddZYSX_Click方法出现异常，异常原因", ex));
-            }
-        }
-        /// <summary>
-        /// 删除资源属性
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lbtnDeleteZYSX_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                LinkButton lbtnDeleteZYSX = (sender as LinkButton);
-                string pValueID = lbtnDeleteZYSX.CommandArgument;
-                List<ZYSXExt> zysxExtList = ZYSXExtList;
-                int index = zysxExtList.FindIndex(a => a.PValueID.ToLower() == pValueID.ToLower());
-                if (index >= 0)
-                    zysxExtList.RemoveAt(index);
-
-                ViewState["ZYSXExt"] = zysxExtList;
-                BindZYSXExtList();
-                ResetZYSXControls();
-            }
-            catch (System.Threading.ThreadAbortException ex1)
-            { }
-            catch (Exception ex)
-            {
-                throw (new AspNetException("新增地面站资源页面lbtnDeleteZYSX_Click方法出现异常，异常原因", ex));
-            }
-        }
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
@@ -325,20 +240,20 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                BindZYSXExtList();
+                BindZYSXList();
             }
             catch (Exception ex)
             {
                 throw (new AspNetException("新增地面站资源页面cpZYSXPager_PostBackPage方法出现异常，异常原因", ex));
             }
         }
+
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_GRes.Add";
             this.ShortTitle = "新增地面站资源";
             this.SetTitle();
         }
-
         #region Method
         /// <summary>
         /// 绑定控件数据源
@@ -352,13 +267,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplGroundStation.DataBind();
             //dplGrountStation.Items.Insert(0, new ListItem("请选择", ""));
 
-            dplZYSX.Items.Clear();
-            dplZYSX.DataSource = new ZYSX().GetGroundStationZYSXList();
-            dplZYSX.DataTextField = "PName";
-            dplZYSX.DataValueField = "Id";
-            dplZYSX.DataBind();
-            //dplZYSX.Items.Insert(0, new ListItem("请选择", ""));
-
             cblFunctionType.Items.Clear();
             cblFunctionType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.GroundResourceFunctionType);
             cblFunctionType.DataTextField = "key";
@@ -366,41 +274,14 @@ namespace OperatingManagement.Web.Views.BusinessManage
             cblFunctionType.DataBind();
         }
         /// <summary>
-        /// 绑定资源属性相关控件
-        /// </summary>
-        private void BindZYSXControls()
-        {
-            int id = 0;
-            int.TryParse(dplZYSX.SelectedValue, out id);
-            ZYSX zysx = new ZYSX();
-            zysx.Id = id;
-            zysx = zysx.SelectByID();
-            if (zysx != null)
-            {
-                lblZYSXType.Text = SystemParameters.GetSystemParameterText(SystemParametersType.ZYSXType, zysx.Type.ToString());
-                lblZYSXScope.Text = zysx.Scope;
-            }
-            txtPValue.Text = string.Empty;
-        }
-        /// <summary>
-        /// 重置资源属性控件
-        /// </summary>
-        private void ResetZYSXControls()
-        {
-            dplZYSX.SelectedIndex = 0;
-            txtPValue.Text = string.Empty;
-
-            BindZYSXControls();
-        }
-        /// <summary>
         /// 绑定资源属性列表
         /// </summary>
-        private void BindZYSXExtList()
+        private void BindZYSXList()
         {
-            if (ZYSXExtList.Count > this.SiteSetting.PageSize)
-                cpZYSXPager.Visible = true;
-            cpZYSXPager.DataSource = ZYSXExtList;
-            cpZYSXPager.PageSize = this.SiteSetting.PageSize;
+            List<ZYSX> zysxList = new ZYSX().GetGroundStationZYSXList();
+            cpZYSXPager.Visible = false;
+            cpZYSXPager.DataSource = zysxList;
+            cpZYSXPager.PageSize = zysxList.Count + 1;//扩展属性不分页
             cpZYSXPager.BindToControl = rpZYSXList;
             rpZYSXList.DataSource = cpZYSXPager.DataSourcePaged;
             rpZYSXList.DataBind();
@@ -420,9 +301,86 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 item.Selected = false;
             }
 
-            ViewState["ZYSXExt"] = null;
-            ResetZYSXControls();
-            BindZYSXExtList();
+            ViewState["ZYSXIDPValueDic"] = null;
+            BindZYSXList();
+            BindRepeaterItems();
+        }
+        /// <summary>
+        /// 生成属性对应控件
+        /// </summary>
+        protected void BindRepeaterItems()
+        {
+            foreach (RepeaterItem item in rpZYSXList.Items)
+            {
+                if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem)
+                {
+                    //ZYSX zysx = (item.DataItem as ZYSX);
+                    ZYSX zysx = null;
+                    PlaceHolder phPValueControls = (item.FindControl("phPValueControls") as PlaceHolder);
+                    HiddenField hfPID = (item.FindControl("hfPID") as HiddenField);
+                    int id = 0;
+                    if (hfPID != null && int.TryParse(hfPID.Value, out id))
+                    {
+                        zysx = new ZYSX();
+                        zysx.Id = id;
+                        zysx = zysx.SelectByID();
+                    }
+                    if (zysx != null && phPValueControls != null)
+                    {
+                        List<Control> controlsList = zysx.GenerateControls();
+                        foreach (Control ctl in controlsList)
+                        {
+                            phPValueControls.Controls.Add(ctl);
+                        }
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// 获得并校验属性值
+        /// </summary>
+        private bool LoopRepeaterItems()
+        {
+            bool result = true;
+            foreach (RepeaterItem item in rpZYSXList.Items)
+            {
+                if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem)
+                {
+                    //ZYSX zysx = (item.DataItem as ZYSX);
+                    ZYSX zysx = null;
+                    PlaceHolder phPValueControls = (item.FindControl("phPValueControls") as PlaceHolder);
+                    HiddenField hfPID = (item.FindControl("hfPID") as HiddenField);
+                    int id = 0;
+                    if (hfPID != null && int.TryParse(hfPID.Value, out id))
+                    {
+                        zysx = new ZYSX();
+                        zysx.Id = id;
+                        zysx = zysx.SelectByID();
+                    }
+                    if (zysx != null && phPValueControls != null)
+                    {
+                        zysx.GetPValueFromControl(phPValueControls);
+                        if (!zysx.ValidatePValue())
+                        {
+                            result = false;
+                            trMessage.Visible = true;
+                            lblMessage.Text = string.Format("属性名称为“{0}”的属性值填写错误，请修改。", zysx.PName);
+                            break;
+                        }
+                        Dictionary<int, string> zysxIDPValueDic = ZYSXIDPValueDic;
+                        if (zysxIDPValueDic.ContainsKey(zysx.Id))
+                        {
+                            zysxIDPValueDic[zysx.Id] = zysx.PValue;
+                        }
+                        else
+                        {
+                            zysxIDPValueDic.Add(zysx.Id, zysx.PValue);
+                        }
+                        ViewState["ZYSXIDPValueDic"] = zysxIDPValueDic;
+                    }
+                }
+            }
+            return result;
         }
 
         #endregion
