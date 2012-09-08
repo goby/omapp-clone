@@ -124,6 +124,10 @@
             </th>
             <td>
                 <asp:TextBox ID="txtMainIP" runat="server" CssClass="norText" MaxLength="15"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator10" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtMainIP" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <asp:RegularExpressionValidator ID="RegularExpressionValidator7" runat="server" ValidationExpression="^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$"
+                    Display="Dynamic" ForeColor="Red" ControlToValidate="txtMainIP" ErrorMessage="（格式错误，如：127.0.0.1）"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
@@ -131,9 +135,11 @@
                 TCP端口
             </th>
             <td>
-                <asp:TextBox ID="txtTCPPort" runat="server" CssClass="norText" MaxLength="8"></asp:TextBox>
-                <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ValidationExpression="^[1-9][0-9]{0,7}$"
-                    Display="Dynamic" ForeColor="Red" ControlToValidate="txtTCPPort" ErrorMessage="（请输入8位内正整数）"></asp:RegularExpressionValidator>
+                <asp:TextBox ID="txtTCPPort" runat="server" CssClass="norText" MaxLength="5"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtTCPPort" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <asp:RangeValidator ID="RangeValidator2" runat="server" ForeColor="Red" ControlToValidate="txtTCPPort"
+                    Type="Integer" MinimumValue="1" MaximumValue="65535" Display="Dynamic" ErrorMessage="（请输入1-65535之间整数）"></asp:RangeValidator>
             </td>
         </tr>
         <tr>
@@ -142,6 +148,8 @@
             </th>
             <td>
                 <asp:TextBox ID="txtBakIP" runat="server" CssClass="norText" MaxLength="15"></asp:TextBox>
+                <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ValidationExpression="^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$"
+                    Display="Dynamic" ForeColor="Red" ControlToValidate="txtBakIP" ErrorMessage="（格式错误，如：127.0.0.1）"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
@@ -149,9 +157,9 @@
                 UDP端口
             </th>
             <td>
-                <asp:TextBox ID="txtUDPPort" runat="server" CssClass="norText" MaxLength="8"></asp:TextBox>
-                <asp:RegularExpressionValidator ID="RegularExpressionValidator5" runat="server" ValidationExpression="^[1-9][0-9]{0,7}$"
-                    Display="Dynamic" ForeColor="Red" ControlToValidate="txtUDPPort" ErrorMessage="（请输入8位内正整数）"></asp:RegularExpressionValidator>
+                <asp:TextBox ID="txtUDPPort" runat="server" CssClass="norText" MaxLength="5"></asp:TextBox>
+                <asp:RangeValidator ID="RangeValidator4" runat="server" ForeColor="Red" ControlToValidate="txtUDPPort"
+                    Type="Integer" MinimumValue="1" MaximumValue="65535" Display="Dynamic" ErrorMessage="（请输入1-65535之间整数）"></asp:RangeValidator>
             </td>
         </tr>
         <tr>

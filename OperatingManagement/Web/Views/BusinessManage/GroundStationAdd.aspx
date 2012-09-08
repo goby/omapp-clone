@@ -1,17 +1,19 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GroundStationAdd.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.GroundStationAdd" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
+    CodeBehind="GroundStationAdd.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.GroundStationAdd" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
-<om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="resmanage" />
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="resmanage" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
-<om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuRes" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuRes" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-业务管理 &gt; 新增地面站
+    业务管理 &gt; 新增地面站
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
- <table class="edit" style="width: 800px;">
+    <table class="edit" style="width: 800px;">
         <tr>
             <th style="width: 200px;">
                 地面站名称(<span class="red">*</span>)
@@ -70,7 +72,7 @@
             <td>
                 <asp:DropDownList ID="dplCoordinate" runat="server" CssClass="norDpl">
                 </asp:DropDownList>
-                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic"
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="dplCoordinate" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
@@ -79,27 +81,29 @@
                 经度坐标值(<span class="red">*</span>)
             </th>
             <td>
-                 <asp:TextBox ID="txtLongitude" runat="server" CssClass="norText"></asp:TextBox>度（地心系BLH，东经正值西经负值）
-                 <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" Display="Dynamic"
+                <asp:TextBox ID="txtLongitude" runat="server" CssClass="norText"></asp:TextBox>度（地心系BLH，东经正值西经负值）
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtLongitude" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
-                 <asp:RangeValidator ID="RangeValidator3" runat="server" Display="Dynamic" MinimumValue="-180" MaximumValue="180" 
-                 ControlToValidate="txtLongitude" Type="Double" ForeColor="Red" ErrorMessage="（-180至180）"></asp:RangeValidator>
-                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ValidationExpression="^(-?\d+)(\.\d{1,6})?$" Display="Dynamic"
-                    ForeColor="Red" ControlToValidate="txtLongitude" ErrorMessage="（最多含有六位小数的数字）"></asp:RegularExpressionValidator>
+                <asp:RangeValidator ID="RangeValidator3" runat="server" Display="Dynamic" MinimumValue="-180"
+                    MaximumValue="180" ControlToValidate="txtLongitude" Type="Double" ForeColor="Red"
+                    ErrorMessage="（-180至180）"></asp:RangeValidator>
+                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ValidationExpression="^(-?\d+)(\.\d{1,6})?$"
+                    Display="Dynamic" ForeColor="Red" ControlToValidate="txtLongitude" ErrorMessage="（最多含有六位小数的数字）"></asp:RegularExpressionValidator>
             </td>
         </tr>
-         <tr>
+        <tr>
             <th>
                 纬度坐标值(<span class="red">*</span>)
             </th>
             <td>
-                 <asp:TextBox ID="txtLatitude" runat="server" CssClass="norText"></asp:TextBox>度（地心系BLH，北纬正值南纬负值）
-                 <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" Display="Dynamic"
+                <asp:TextBox ID="txtLatitude" runat="server" CssClass="norText"></asp:TextBox>度（地心系BLH，北纬正值南纬负值）
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtLatitude" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
-                 <asp:RangeValidator ID="RangeValidator1" runat="server" Display="Dynamic"  MinimumValue="-90" MaximumValue="90" 
-                 ControlToValidate="txtLatitude" Type="Double" ForeColor="Red" ErrorMessage="（-90至90）"></asp:RangeValidator>
-                 <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ValidationExpression="^(-?\d+)(\.\d{1,6})?$" Display="Dynamic"
-                    ForeColor="Red" ControlToValidate="txtLatitude" ErrorMessage="（最多含有六位小数的数字）"></asp:RegularExpressionValidator>
+                <asp:RangeValidator ID="RangeValidator1" runat="server" Display="Dynamic" MinimumValue="-90"
+                    MaximumValue="90" ControlToValidate="txtLatitude" Type="Double" ForeColor="Red"
+                    ErrorMessage="（-90至90）"></asp:RangeValidator>
+                <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ValidationExpression="^(-?\d+)(\.\d{1,6})?$"
+                    Display="Dynamic" ForeColor="Red" ControlToValidate="txtLatitude" ErrorMessage="（最多含有六位小数的数字）"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
@@ -107,11 +111,11 @@
                 高程坐标值(<span class="red">*</span>)
             </th>
             <td>
-                 <asp:TextBox ID="txtGaoCheng" runat="server" CssClass="norText" MaxLength="12"></asp:TextBox>米（地心系BLH）
-                 <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" Display="Dynamic"
+                <asp:TextBox ID="txtGaoCheng" runat="server" CssClass="norText" MaxLength="12"></asp:TextBox>米（地心系BLH）
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtGaoCheng" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
-                 <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ValidationExpression="^\d+(\.\d{1,1})?$" Display="Dynamic"
-                    ForeColor="Red" ControlToValidate="txtGaoCheng" ErrorMessage="（>=0且最多含有一位小数的数字）"></asp:RegularExpressionValidator>
+                <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ValidationExpression="^\d+(\.\d{1,1})?$"
+                    Display="Dynamic" ForeColor="Red" ControlToValidate="txtGaoCheng" ErrorMessage="（>=0且最多含有一位小数的数字）"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
@@ -120,6 +124,10 @@
             </th>
             <td>
                 <asp:TextBox ID="txtMainIP" runat="server" CssClass="norText" MaxLength="15"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator10" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtMainIP" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <asp:RegularExpressionValidator ID="RegularExpressionValidator7" runat="server" ValidationExpression="^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$"
+                    Display="Dynamic" ForeColor="Red" ControlToValidate="txtMainIP" ErrorMessage="（格式错误，如：127.0.0.1）"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
@@ -127,9 +135,11 @@
                 TCP端口
             </th>
             <td>
-                <asp:TextBox ID="txtTCPPort" runat="server" CssClass="norText" MaxLength="8"></asp:TextBox>
-                <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ValidationExpression="^[1-9][0-9]{0,7}$" Display="Dynamic"
-                    ForeColor="Red" ControlToValidate="txtTCPPort" ErrorMessage="（请输入8位内正整数）"></asp:RegularExpressionValidator>
+                <asp:TextBox ID="txtTCPPort" runat="server" CssClass="norText" MaxLength="5"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtTCPPort" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <asp:RangeValidator ID="RangeValidator2" runat="server" ForeColor="Red" ControlToValidate="txtTCPPort"
+                    Type="Integer" MinimumValue="1" MaximumValue="65535" Display="Dynamic" ErrorMessage="（请输入1-65535之间整数）"></asp:RangeValidator>
             </td>
         </tr>
         <tr>
@@ -138,6 +148,8 @@
             </th>
             <td>
                 <asp:TextBox ID="txtBakIP" runat="server" CssClass="norText" MaxLength="15"></asp:TextBox>
+                <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ValidationExpression="^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$"
+                    Display="Dynamic" ForeColor="Red" ControlToValidate="txtBakIP" ErrorMessage="（格式错误，如：127.0.0.1）"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
@@ -145,9 +157,9 @@
                 UDP端口
             </th>
             <td>
-                <asp:TextBox ID="txtUDPPort" runat="server" CssClass="norText" MaxLength="8"></asp:TextBox>
-                <asp:RegularExpressionValidator ID="RegularExpressionValidator5" runat="server" ValidationExpression="^[1-9][0-9]{0,7}$" Display="Dynamic"
-                    ForeColor="Red" ControlToValidate="txtUDPPort" ErrorMessage="（请输入8位内正整数）"></asp:RegularExpressionValidator>
+                <asp:TextBox ID="txtUDPPort" runat="server" CssClass="norText" MaxLength="5"></asp:TextBox>
+                <asp:RangeValidator ID="RangeValidator4" runat="server" ForeColor="Red" ControlToValidate="txtUDPPort"
+                    Type="Integer" MinimumValue="1" MaximumValue="65535" Display="Dynamic" ErrorMessage="（请输入1-65535之间整数）"></asp:RangeValidator>
             </td>
         </tr>
         <tr>
@@ -156,11 +168,11 @@
             </th>
             <td>
                 <asp:TextBox ID="txtFTPPath" runat="server" CssClass="norText" MaxLength="50"></asp:TextBox>
-                <asp:RegularExpressionValidator ID="RegularExpressionValidator6" runat="server" ValidationExpression="(ftp):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?" Display="Dynamic"
-                    ForeColor="Red" ControlToValidate="txtFTPPath" ErrorMessage="（请正确输入FTP路径）"></asp:RegularExpressionValidator>
+                <asp:RegularExpressionValidator ID="RegularExpressionValidator6" runat="server" ValidationExpression="(ftp):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?"
+                    Display="Dynamic" ForeColor="Red" ControlToValidate="txtFTPPath" ErrorMessage="（请正确输入FTP路径）"></asp:RegularExpressionValidator>
             </td>
         </tr>
-           <tr>
+        <tr>
             <th>
                 FTP用户名
             </th>
@@ -168,7 +180,7 @@
                 <asp:TextBox ID="txtFTPUser" runat="server" CssClass="norText"></asp:TextBox>
             </td>
         </tr>
-           <tr>
+        <tr>
             <th>
                 FTP用户密码
             </th>
