@@ -20,7 +20,7 @@
             </th>
             <td>
                 <asp:TextBox ID="txtEquipmentName" runat="server" CssClass="norText"></asp:TextBox>
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" Display="Dynamic" ValidationGroup="GroundResource"
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtEquipmentName" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
@@ -30,7 +30,7 @@
             </th>
             <td>
                 <asp:TextBox ID="txtEquipmentCode" runat="server" CssClass="norText"></asp:TextBox>
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" Display="Dynamic" ValidationGroup="GroundResource"
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtEquipmentCode" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
@@ -41,7 +41,7 @@
             <td>
                 <asp:DropDownList ID="dplGroundStation" runat="server" CssClass="norDpl">
                 </asp:DropDownList>
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic" ValidationGroup="GroundResource"
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="dplGroundStation" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
@@ -59,120 +59,59 @@
                 扩展属性
             </th>
             <td>
-                <table width="100%">
+                <asp:Repeater ID="rpZYSXList" runat="server" ViewStateMode="Enabled">
+                    <HeaderTemplate>
+                        <table class="list">
+                            <tr>
+                                <th style="width: 15%; text-align: center;">
+                                    属性名称
+                                </th>
+                                <th style="width: 15%; text-align: center;">
+                                    属性编码
+                                </th>
+                                <th style="width: 15%; text-align: center;">
+                                    属性类型
+                                </th>
+                                <th style="width: 15%; text-align: center;">
+                                    属性范围
+                                </th>
+                                <th style="width: 40%; text-align: center;">
+                                    属性数值
+                                </th>
+                            </tr>
+                            <tbody id="tbZYSXList">
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <tr>
+                            <td style="text-align: center;">
+                                <%# Eval("PName")%>
+                            </td>
+                            <td style="text-align: center;">
+                                <%# Eval("PCode")%>
+                            </td>
+                            <td style="text-align: center;">
+                                <%# SystemParameters.GetSystemParameterText(SystemParametersType.ZYSXType, Eval("Type").ToString())%>
+                            </td>
+                            <td style="text-align: center;">
+                                <%# Eval("Scope")%>
+                            </td>
+                            <td style="text-align: left;">
+                               <asp:PlaceHolder ID="phPValueControls" runat="server"></asp:PlaceHolder>
+                               <asp:HiddenField ID="hfPID" runat="server" Value='<%#Eval("ID")%>' />
+                            </td> 
+                        </tr>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        </tbody></table>
+                    </FooterTemplate>
+                </asp:Repeater>
+                <table class="listTitle">
                     <tr>
-                        <th width="30%">
-                            已添加扩展属性
-                        </th>
-                        <td width="70%">
-                            <asp:Repeater ID="rpZYSXList" runat="server">
-                                <HeaderTemplate>
-                                    <table class="list">
-                                        <tr>
-                                            <th style="width: 10%; text-align: center;">
-                                                属性名称
-                                            </th>
-                                            <th style="width: 10%; text-align: center;">
-                                                属性编码
-                                            </th>
-                                             <th style="width: 10%; text-align: center;">
-                                                属性类型
-                                            </th>
-                                            <th style="width: 10%; text-align: center;">
-                                                属性范围
-                                            </th>
-                                            <th style="width: 10%; text-align: center;">
-                                                属性数值
-                                            </th>
-                                            <th style="width: 10%; text-align: center;">
-                                                删除属性
-                                            </th>
-                                        </tr>
-                                        <tbody id="tbZYSXList">
-                                </HeaderTemplate>
-                                <ItemTemplate>
-                                    <tr>
-                                        <td style="text-align: center;">
-                                            <%# Eval("PName")%>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <%# Eval("PCode")%>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <%# SystemParameters.GetSystemParameterText(SystemParametersType.ZYSXType, Eval("Type").ToString())%>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <%# Eval("Scope")%>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <%# Eval("PValue")%>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <asp:LinkButton ID="lbtnDeleteZYSX" runat="server" OnClick="lbtnDeleteZYSX_Click"
-                                                OnClientClick="javascript:return confirm('是否删除资源属性？')" CausesValidation="false"
-                                                CommandName="delete" CommandArgument='<%# Eval("PValueID").ToString()%>'>删除属性</asp:LinkButton>
-                                        </td>
-                                    </tr>
-                                </ItemTemplate>
-                                <FooterTemplate>
-                                    </tbody></table>
-                                </FooterTemplate>
-                            </asp:Repeater>
-                            <table class="listTitle">
-                                <tr>
-                                    <td class="listTitle-c1">
-                                    </td>
-                                    <td class="listTitle-c2">
-                                        <om:CollectionPager ID="cpZYSXPager" runat="server">
-                                        </om:CollectionPager>
-                                    </td>
-                                </tr>
-                            </table>
+                        <td class="listTitle-c1">
                         </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            属性名称(<span class="red">*</span>)
-                        </th>
-                        <td>
-                            <asp:DropDownList ID="dplZYSX" runat="server" CssClass="norDpl" AutoPostBack="true" OnSelectedIndexChanged="dplZYSX_SelectedIndexChanged">
-                            </asp:DropDownList>
-                            <asp:RequiredFieldValidator ID="rfvZYSX" runat="server" Display="Dynamic" ValidationGroup="ZYSX"
-                                ForeColor="Red" ControlToValidate="dplZYSX" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            属性类型
-                        </th>
-                        <td>
-                            <asp:Label ID="lblZYSXType" runat="server" Text=""></asp:Label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            属性值范围
-                        </th>
-                        <td>
-                            <asp:Label ID="lblZYSXScope" runat="server" Text=""></asp:Label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            属性值(<span class="red">*</span>)
-                        </th>
-                        <td>
-                            <asp:TextBox ID="txtPValue" runat="server" CssClass="norText"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic" ValidationGroup="ZYSX"
-                                ForeColor="Red" ControlToValidate="txtPValue" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                        </th>
-                        <td>
-                            <asp:Button ID="btnAddZYSX" runat="server" CssClass="button" Text="添 加"
-                                ValidationGroup="ZYSX" OnClick="btnAddZYSX_Click" />
+                        <td class="listTitle-c2">
+                            <om:CollectionPager ID="cpZYSXPager" runat="server">
+                            </om:CollectionPager>
                         </td>
                     </tr>
                 </table>
@@ -191,7 +130,7 @@
                 &nbsp;
             </th>
             <td>
-                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提 交" ValidationGroup="GroundResource" OnClick="btnSubmit_Click" />
+                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提 交" OnClick="btnSubmit_Click" />
                 <asp:Button ID="btnReset" runat="server" CssClass="button" Text="清 除" OnClick="btnReset_Click"
                     CausesValidation="false" />
                 <asp:Button ID="btnReturn" runat="server" CssClass="button" Text="返 回" OnClick="btnReturn_Click"

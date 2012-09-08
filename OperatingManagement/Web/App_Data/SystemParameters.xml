@@ -119,7 +119,9 @@
     <item text="DifCalTimeFileMaxSize" value="4194304"></item>
   </OrbitDifferenceAnalysis>
   <OrbitIntersectionReport description="轨道分析-交会预报">
-    <item text="FileDirectory" value="D:\OrbitIntersectionReport\CuMainFileDirectory\"></item>
+    <item text="CuMainFileDirectory" value="D:\OrbitIntersectionReport\CuMainFileDirectory\"></item>
+    <item text="CuSubFileDirectory" value="D:\OrbitIntersectionReport\CuSubFileDirectory\"></item>
+    <item text="CuOptionalFileDirectory" value="D:\OrbitIntersectionReport\CuOptionalFileDirectory\"></item>
     <item text="CuMainFileExtension" value="dat,txt"></item>
     <item text="CuSubFileExtension" value="dat,txt"></item>
     <item text="CuOptionalFileExtension" value="dat,txt"></item>

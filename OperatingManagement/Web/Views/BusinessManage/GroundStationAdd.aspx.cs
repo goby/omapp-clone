@@ -172,7 +172,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 xyxsInfo.FTPUser = txtFTPUser.Text.Trim();
                 xyxsInfo.FTPPwd = txtFTPPwd.Text.Trim();
                 xyxsInfo.Type = 0;
-                xyxsInfo.Status = 1;;//正常
+                xyxsInfo.Status = 1;//正常
                 xyxsInfo.CreatedTime = DateTime.Now;
                 xyxsInfo.CreatedUserID = LoginUserInfo.Id;
 

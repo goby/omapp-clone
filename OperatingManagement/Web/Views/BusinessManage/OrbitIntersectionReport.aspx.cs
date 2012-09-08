@@ -2,7 +2,7 @@
 //------------------------------------------------------
 //Assembly:OperatingManagement.Web
 //FileName:OrbitIntersectionReport.cs
-//Remark:业务管理-轨道分析-差值分析
+//Remark:业务管理-轨道分析-交汇预报
 //------------------------------------------------------
 //VERSION       AUTHOR      DATE        CONTENT
 //1.0           liutao      20120602     Create     
@@ -1220,16 +1220,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             //CutOptional文件
             StringBuilder cutOptionalBuilder = new StringBuilder();
-            cutOptionalBuilder.AppendFormat("  预报数据时间间隔:{0}\r\n", string.Format("{0:F6}", cutOptionalTimeInterval));
-            cutOptionalBuilder.AppendFormat("  力模型控制:{0}\r\n", string.Empty);
-            cutOptionalBuilder.AppendFormat("  非球形引力阶数:{0}\r\n", "20");
-            cutOptionalBuilder.AppendFormat("  非球形引力:{0}\r\n", "2");
-            cutOptionalBuilder.AppendFormat("  第三体引力:{0}\r\n", rblCutOptionalGravitation.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  潮汐摄动:{0}\r\n", rblCutOptionalTide.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  光压摄动:{0}\r\n", rblCutOptionalLight.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  大气阻尼摄动:{0}\r\n", rblCutOptionalEther.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  后牛顿项:{0}\r\n", rblCutOptionalNewton.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  相关力模型参数:{0}\r\n", string.Empty);
+            cutOptionalBuilder.AppendFormat("  预报数据时间间隔     :{0}\r\n", string.Format("{0:F6}", cutOptionalTimeInterval));
+            cutOptionalBuilder.AppendFormat("  力模型控        　　 :{0}\r\n", string.Empty);
+            cutOptionalBuilder.AppendFormat("  非球形引力阶数       :{0}\r\n", "20");
+            cutOptionalBuilder.AppendFormat("  非球形引力           :{0}\r\n", "2");
+            cutOptionalBuilder.AppendFormat("  第三体引力           :{0}\r\n", rblCutOptionalGravitation.SelectedValue);
+            cutOptionalBuilder.AppendFormat("  潮汐摄动             :{0}\r\n", rblCutOptionalTide.SelectedValue);
+            cutOptionalBuilder.AppendFormat("  光压摄动             :{0}\r\n", rblCutOptionalLight.SelectedValue);
+            cutOptionalBuilder.AppendFormat("  大气阻尼摄动         :{0}\r\n", rblCutOptionalEther.SelectedValue);
+            cutOptionalBuilder.AppendFormat("  后牛顿项             :{0}\r\n", rblCutOptionalNewton.SelectedValue);
+            cutOptionalBuilder.AppendFormat("  相关力模型参数       :{0}\r\n", string.Empty);
 
 
             string cuMainFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitIntersectionReport, "CuMainFileDirectory");
