@@ -9,6 +9,7 @@
 //------------------------------------------------------
 #endregion
 using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
         #region Properties
         private OracleDatabase _dataBase = null;
+        private const string s_up_sat_insert = "up_satellite_insert";
+        private const string s_up_sat_update = "up_satellite_update";
 
         /// <summary>
         /// 卫星名称
@@ -46,7 +49,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         ///// </summary>
         public string WXBS { get; set; }
         /// <summary>
-        /// 状态，T为可用，F为不可用
+        /// 状态，0为可用，1为不可用
         /// </summary>
         public string State { get; set; }
         /// <summary>
@@ -65,6 +68,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 按功能表顺序，如果有该功能，没有的填0，之间“,”隔开
         /// </summary>
         public string GN { get; set; }
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CTime { get; set; }
 
         public static List<Satellite> _satelliteCache = null;
         public List<Satellite> Cache
@@ -126,7 +133,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     MZB = Convert.ToInt32(ds.Tables[0].Rows[0]["MZB"]),
                     BMFSXS = Convert.ToInt32(ds.Tables[0].Rows[0]["BMFSXS"]),
                     SX = ds.Tables[0].Rows[0]["SX"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["SX"].ToString(),
-                    GN = ds.Tables[0].Rows[0]["GN"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["GN"].ToString()
+                    GN = ds.Tables[0].Rows[0]["GN"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["GN"].ToString(),
+                    CTime = DateTime.ParseExact(ds.Tables[0].Rows[0]["CTime"].ToString(), "yyyy/MM/dd hh:mm:ss", CultureInfo.InvariantCulture)
                 };
             }
             return info;
@@ -156,13 +164,64 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         MZB = Convert.ToInt32(dr["MZB"]),
                         BMFSXS = Convert.ToInt32(dr["BMFSXS"]),
                         SX = dr["SX"] == DBNull.Value ? string.Empty : dr["SX"].ToString(),
-                        GN = dr["GN"] == DBNull.Value ? string.Empty : dr["GN"].ToString()
+                        GN = dr["GN"] == DBNull.Value ? string.Empty : dr["GN"].ToString(),
+                        CTime = DateTime.ParseExact(ds.Tables[0].Rows[0]["CTime"].ToString(), "yyyy/MM/dd hh:mm:ss", CultureInfo.InvariantCulture)
                     };
 
                     infoList.Add(info);
                 }
             }
             return infoList;
+        }
+        
+        /// <summary>
+        /// Insert a Task.
+        /// </summary>
+        /// <returns></returns>
+        public FieldVerifyResult Add()
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _dataBase.SpExecuteNonQuery(s_up_sat_insert, new OracleParameter[]{
+                new OracleParameter("p_WXMC",this.WXMC),
+                new OracleParameter("p_WXBM",this.WXBM),
+                new OracleParameter("p_WXBS",this.WXBS),
+                new OracleParameter("p_State",this.State),
+                new OracleParameter("p_MZB",this.MZB),
+                new OracleParameter("p_BMFSXS",this.BMFSXS),
+                new OracleParameter("p_SX",this.SX),
+                new OracleParameter("p_GN",this.GN),
+                new OracleParameter("p_CTime",DateTime.Now),
+                p
+            });
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+        }
+
+        public FieldVerifyResult Update()
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _dataBase.SpExecuteNonQuery(s_up_sat_update, new OracleParameter[]{
+                new OracleParameter("p_WXMC",this.WXMC),
+                new OracleParameter("p_WXBM",this.WXBM),
+                new OracleParameter("p_WXBS",this.WXBS),
+                new OracleParameter("p_State",this.State),
+                new OracleParameter("p_MZB",this.MZB),
+                new OracleParameter("p_BMFSXS",this.BMFSXS),
+                new OracleParameter("p_SX",this.SX),
+                new OracleParameter("p_GN",this.GN),
+                new OracleParameter("p_CTime",DateTime.Now),
+                p
+            });
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
 
         /// <summary>

@@ -7,6 +7,6 @@
     <item id="fileserver" title="文件服务器" href="Views/BusinessManage/GetFileSInfos.aspx" />
     <item id="resmanage" title="资源管理" href="Views/BusinessManage/ResourceManage.aspx" />
     <item id="gdfx" title="轨道分析" href="Views/BusinessManage/GDCSZH.aspx" />
-    <item id="bizmanage" title="业务管理" href="#" />
+    <item id="bizmanage" title="业务管理" href="Views/BusinessManage/BDManage/TaskManage.aspx" />
   </items>
 </navigator>

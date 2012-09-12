@@ -1,52 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <menus>
-    <menu title="中心输出策略管理">   
-      <item id="1-1" title="查看中心输出策略" roles="OMB_COPloicy.View" href="Views/BusinessManage/CenterOutputPolicyManage.aspx" />
-      <item id="1-2" title="新增中心输出策略" roles="OMB_COPloicy.Add" href="Views/BusinessManage/CenterOutputPolicyAdd.aspx" />
+    <menu title="任务管理">   
+      <item id="1-1" title="查看任务" roles="OMB_COPloicy.View" href="Views/BusinessManage/BDManage/TaskManage.aspx" />
+      <item id="1-2" title="新增任务" roles="OMB_COPloicy.Add" href="Views/BusinessManage/BDManage/TaskAdd.aspx" />
     </menu>
-    <menu title="文件服务器">
-      <item id="2-1" title="查看文件发送记录" roles="OMB_FSendInfo.View" href="Views/BusinessManage/GetFileSInfos.aspx" />
-      <item id="2-2" title="查看文件接收记录" roles="OMB_FRcvInfo.View" href="Views/BusinessManage/GetFileRcvInfos.aspx" />
-      <item id="2-3" title="发送文件" roles="OMB_FSendFile.Do" href="Views/BusinessManage/SendFile.aspx" />
-      <item id="2-4" title="试验数据分发" roles="OMB_SYSJFF.View" href="Views/BusinessManage/SYSJFF.aspx" />
+    <menu title="卫星管理">
+      <item id="2-1" title="查看卫星" roles="OMB_FSendInfo.View" href="Views/BusinessManage/GetFileSInfos.aspx" />
+      <item id="2-2" title="新增卫星" roles="OMB_FRcvInfo.View" href="Views/BusinessManage/GetFileRcvInfos.aspx" />
     </menu>
-  <!--
-    <menu title="数据包收发">
-      <item id="3-1" title="查看数据包发送记录" roles="OMB_DSendInfo.View" href="#" />
-      <item id="3-2" title="查看数据包接收记录" roles="OMB_DRcvInfo.View" href="#" />
+    <menu title="资源属性管理">
+      <item id="3-1" title="查看资源属性" roles="OMB_DSendInfo.View" href="#" />
+      <item id="3-2" title="新增资源属性" roles="OMB_DRcvInfo.View" href="#" />
     </menu>
-      !-->
-    <menu title="资源管理">
-      <item id="4-1" title="资源信息管理" roles="OMB_ResMan.View" href="Views/BusinessManage/ResourceManage.aspx" />
-      <item id="4-2" title="新增地面站资源" roles="OMB_GRes.Add" href="Views/BusinessManage/GroundResourceAdd.aspx" />
-      <item id="4-3" title="新增通信资源" roles="OMB_ComRes.Add" href="Views/BusinessManage/CommunicationResourceAdd.aspx" />
-      <item id="4-4" title="新增中心资源" roles="OMB_CRes.Add" href="Views/BusinessManage/CenterResourceAdd.aspx" />
-      <item id="4-5" title="资源状态管理" roles="OMB_ResStaMan.View" href="Views/BusinessManage/ResourceStatusManage.aspx" />
-      <item id="4-6" title="新增资源状态" roles="OMB_ResStaMan.View" href="Views/BusinessManage/ResourceStatusAdd.aspx" />
-      <item id="4-7" title="资源调度计算" roles="OMB_ResCac.Caculate" href="Views/BusinessManage/ResourceRequirementAdd.aspx" />
-      <item id="4-8" title="查看资源调度计算结果" roles="OMB_ResCac.View" href="Views/BusinessManage/ResourceCalculateManage.aspx" />
+    <menu title="资源功能管理">
+      <item id="4-1" title="查看资源功能" roles="OMB_ResMan.View" href="Views/BusinessManage/ResourceManage.aspx" />
+      <item id="4-2" title="新增资源功能" roles="OMB_GRes.Add" href="Views/BusinessManage/GroundResourceAdd.aspx" />
     </menu>
-    <menu title="轨道分析">
-      <item id="5-1" title="轨道参数转换" roles="OMB_CSZH.Caculate" href="Views/BusinessManage/GDCSZH.aspx" />
-      <item id="5-2" title="轨道差值分析" roles="OMB_CZFX.Caculate" href="Views/BusinessManage/GDCZFX.aspx" />
-      <item id="5-3" title="轨道交会预报" roles="OMB_JHYB.Caculate" href="Views/BusinessManage/GDJHYB.aspx" />
-      <item id="5-4" title="轨道交会分析" roles="OMB_JHFX.Caculate" href="Views/BusinessManage/GDJHFX.aspx" />
-      <item id="5-5" title="轨道预报" roles="OMB_GDYB.Caculate" href="Views/BusinessManage/GDYB.aspx" />
-    </menu>
-  <!--
-    <menu title="中心已接收数据">
-      <item id="6-1" title="查看西安卫星测控中心数据" roles="OMB_XiAnData.View" href="Views/BusinessManage/XiAnCeKongDataList.aspx" />
-      <item id="6-2" title="查看测角测速测距数据" roles="OMB_MeasureData.View" href="Views/BusinessManage/MeasureDataList.aspx" />
-      <item id="6-3" title="查看空间遥操作状态数据" roles="OMB_KJYCZData.View" href="#" />
-      <item id="6-4" title="查看空间目标信息" roles="OMB_KJMBData.View" href="#" />
-      <item id="6-5" title="查看空间环境信息" roles="OMB_KJHJData.View" href="#" />
-      <item id="6-6" title="查看碰撞预警报告" roles="OMB_PZYJData.View" href="#" />
-      <item id="6-7" title="查看交会预报报告" roles="OMB_JHYBData.View" href="#" />
-      <item id="6-8" title="查看试验需求" roles="OMB_SYXQData.View" href="#" />
-      <item id="6-9" title="查看天基目标观测试验数据处理结果" roles="OMB_TJMBTData.View" href="#" />
-      <item id="6-10" title="查看空间机动试验数据处理结果" roles="OMB_KJJDTData.View" href="#" />
-      <item id="6-11" title="查看遥操作试验数据处理结果" roles="OMB_YCZTData.View" href="#" />
-      <item id="6-12" title="查看仿真推演试验数据处理结果" roles="OMB_FZTYTData.View" href="#" /> 
-    </menu>
-      !-->
 </menus>

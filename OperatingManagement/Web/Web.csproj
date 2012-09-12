@@ -172,6 +172,7 @@
     <Content Include="Scripts\Pages\BusinessManage\OrbitDifferenceAnalysis.aspx.js" />
     <Content Include="Scripts\Pages\BusinessManage\OrbitIntersectionReport.aspx.js" />
     <Content Include="Scripts\Pages\BusinessManage\SYSJFF.aspx.js" />
+    <Content Include="Scripts\Pages\BusinessManage\TaskManage.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\DMJHEdit.aspx.js" />
     <Content Include="Scripts\Pages\BusinessManage\OrbitParaCalculate.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\ExperimentPlanList.aspx.js" />
@@ -198,12 +199,25 @@
     <Content Include="Scripts\Pages\PlanManage\YJJHEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\ZXJHEdit.aspx.js" />
     <Content Include="Scripts\Pages\common.js" />
+    <Content Include="ucs\ucCBLSat.ascx" />
     <Content Include="ucs\ucInfoType.ascx" />
     <Content Include="ucs\ucSatellite.ascx" />
     <Content Include="ucs\ucTask.ascx" />
     <Content Include="ucs\ucTimer.ascx" />
     <Content Include="ucs\ucXYXSInfo.ascx" />
     <Content Include="Views\Account\MyProfile.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\SatAdd.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\SatEdit.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\SatManage.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\TaskAdd.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\TaskEdit.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\TaskManage.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\ZYGNAdd.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\ZYGNEdit.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\ZYGNManage.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\ZYSXAdd.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\ZYSXEdit.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\ZYSXManage.aspx" />
     <Content Include="Views\BusinessManage\CenterOutputPolicyAdd.aspx" />
     <Content Include="Views\BusinessManage\CenterOutputPolicyEdit.aspx" />
     <Content Include="Views\BusinessManage\CenterOutputPolicyManage.aspx" />
@@ -319,6 +333,13 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
+    <Compile Include="ucs\ucCBLSat.ascx.cs">
+      <DependentUpon>ucCBLSat.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ucs\ucCBLSat.ascx.designer.cs">
+      <DependentUpon>ucCBLSat.ascx</DependentUpon>
+    </Compile>
     <Compile Include="ucs\ucInfoType.ascx.cs">
       <DependentUpon>ucInfoType.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -360,6 +381,90 @@
     </Compile>
     <Compile Include="Views\Account\MyProfile.aspx.designer.cs">
       <DependentUpon>MyProfile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\SatAdd.aspx.cs">
+      <DependentUpon>SatAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\SatAdd.aspx.designer.cs">
+      <DependentUpon>SatAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\SatEdit.aspx.cs">
+      <DependentUpon>SatEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\SatEdit.aspx.designer.cs">
+      <DependentUpon>SatEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\SatManage.aspx.cs">
+      <DependentUpon>SatManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\SatManage.aspx.designer.cs">
+      <DependentUpon>SatManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\TaskAdd.aspx.cs">
+      <DependentUpon>TaskAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\TaskAdd.aspx.designer.cs">
+      <DependentUpon>TaskAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\TaskEdit.aspx.cs">
+      <DependentUpon>TaskEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\TaskEdit.aspx.designer.cs">
+      <DependentUpon>TaskEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\TaskManage.aspx.cs">
+      <DependentUpon>TaskManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\TaskManage.aspx.designer.cs">
+      <DependentUpon>TaskManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\ZYGNAdd.aspx.cs">
+      <DependentUpon>ZYGNAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\ZYGNAdd.aspx.designer.cs">
+      <DependentUpon>ZYGNAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\ZYGNEdit.aspx.cs">
+      <DependentUpon>ZYGNEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\ZYGNEdit.aspx.designer.cs">
+      <DependentUpon>ZYGNEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\ZYGNManage.aspx.cs">
+      <DependentUpon>ZYGNManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\ZYGNManage.aspx.designer.cs">
+      <DependentUpon>ZYGNManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\ZYSXAdd.aspx.cs">
+      <DependentUpon>ZYSXAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\ZYSXAdd.aspx.designer.cs">
+      <DependentUpon>ZYSXAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\ZYSXEdit.aspx.cs">
+      <DependentUpon>ZYSXEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\ZYSXEdit.aspx.designer.cs">
+      <DependentUpon>ZYSXEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\ZYSXManage.aspx.cs">
+      <DependentUpon>ZYSXManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\ZYSXManage.aspx.designer.cs">
+      <DependentUpon>ZYSXManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\CenterOutputPolicyAdd.aspx.cs">
       <DependentUpon>CenterOutputPolicyAdd.aspx</DependentUpon>

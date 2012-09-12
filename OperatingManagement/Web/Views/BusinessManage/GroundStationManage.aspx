@@ -4,10 +4,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
-    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="bizmanage" />
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="resmanage" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuRes" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
     业务管理 &gt; 地面站管理
@@ -60,25 +60,25 @@
             <HeaderTemplate>
                 <table class="list">
                     <tr>
-                        <th style="width: 15%;">
+                        <th style="width: 28%;">
                             地面站名称
                         </th>
-                        <th style="width: 12%;">
+                        <th style="width: 8%;">
                             地面站编号
                         </th>
-                        <th style="width: 12%;">
+                        <th style="width: 8%;">
                             内部编码
                         </th>
                         <th style="width: 12%;">
                             外部编码
                         </th>
-                        <th style="width: 10%;">
+                        <th style="width: 8%;">
                             管理单位
                         </th>
                         <th style="width: 15%;">
                             站址坐标
                         </th>
-                        <th style="width: 8%;">
+                        <th style="width: 5%;">
                             状态
                         </th>
                         <th style="width: 8%;">
