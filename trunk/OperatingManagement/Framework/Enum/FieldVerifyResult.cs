@@ -37,6 +37,10 @@ namespace OperatingManagement.Framework
         /// <summary>
         /// The other name was exist in database(some field should be unique).
         /// </summary>
-        NameDuplicated2 = 6
+        NameDuplicated2 = 6,
+        /// <summary>
+        /// The other name was exist in database(some field should be unique).
+        /// </summary>
+        NameDuplicated3 = 7
     }
 }

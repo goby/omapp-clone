@@ -23,6 +23,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         #region Properties
         private OracleDatabase _dataBase = null;
         private const string s_up_task_selectall = "up_task_selectall";
+        private const string s_up_task_selectbyid = "up_task_selectbyid";
+        private const string s_up_task_insert = "up_task_insert";
+        private const string s_up_task_update = "up_task_update";
 
         /// <summary>
         /// 任务名称
@@ -37,9 +40,25 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         public string ObjectFlag { get; set; }
         /// <summary>
-        /// 任务编号，可能多个，逗号,分隔
+        /// 卫星编号，可能多个，逗号,分隔
         /// </summary>
         public string SatID { get; set; }
+        /// <summary>
+        /// 是否当前任务，1是，0否，表中只有一个为1的
+        /// </summary>
+        public string IsCurTask { get; set; }
+        /// <summary>
+        /// 任务开始时间
+        /// </summary>
+        public DateTime BeginTime { get; set; }
+        /// <summary>
+        /// 任务结束时间
+        /// </summary>
+        public DateTime EndTime { get; set; }
+        /// <summary>
+        /// 任务创建时间
+        /// </summary>
+        public DateTime CTime { get; set; }
 
         public static List<Task> _taskCache = null;
         public List<Task> Cache
@@ -101,13 +120,108 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         TaskName = dr["TaskName"].ToString(),
                         TaskNo = dr["TaskNo"].ToString(),
                         ObjectFlag = dr["ObjectFlag"].ToString(),
-                        SatID = dr["SatID"].ToString()
+                        SatID = dr["SatID"].ToString(),
+                        IsCurTask = dr["IsCurTask"].ToString(),
+                        BeginTime = dr["BeginTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["BeginTime"]),
+                        EndTime = dr["EndTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["EndTime"]),
+                        CTime = dr["CTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["CTime"])
                     };
 
                     infoList.Add(info);
                 }
             }
             return infoList;
+        }
+
+        /// <summary>
+        /// Select Task by id.
+        /// </summary>
+        /// <returns></returns>
+        public Task SelectById()
+        {
+            OracleParameter p = PrepareRefCursor();
+
+            DataSet ds = _dataBase.SpExecuteDataSet(s_up_task_selectbyid, new OracleParameter[]{
+                new OracleParameter("p_Id", this.Id), 
+                p
+            });
+
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    return new Task()
+                    {
+                        Id = Convert.ToInt32(dr["id"].ToString()),
+                        TaskName = dr["TaskName"].ToString(),
+                        TaskNo = dr["TaskNo"].ToString(),
+                        ObjectFlag = dr["ObjectFlag"].ToString(),
+                        SatID = dr["SatID"].ToString(),
+                        IsCurTask = dr["IsCurTask"].ToString(),
+                        BeginTime = dr["BeginTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["BeginTime"]),
+                        EndTime = dr["EndTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["EndTime"]),
+                        CTime = dr["CTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["CTime"])
+                    };
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Insert a Task.
+        /// </summary>
+        /// <returns></returns>
+        public FieldVerifyResult Add()
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            OracleParameter opId = new OracleParameter()
+            {
+                ParameterName = "v_Id",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _dataBase.SpExecuteNonQuery(s_up_task_insert, new OracleParameter[]{
+                new OracleParameter("p_TaskName",this.TaskName),
+                new OracleParameter("p_TaskNo",this.TaskNo),
+                new OracleParameter("p_ObjectFlag",this.ObjectFlag),
+                new OracleParameter("p_SatID",this.SatID),
+                new OracleParameter("p_IsCurTask",this.IsCurTask),
+                new OracleParameter("p_BeginTime",this.BeginTime),
+                new OracleParameter("p_EndTime",this.EndTime),
+                new OracleParameter("p_CTime",DateTime.Now),
+                opId,
+                p
+            });
+            if (opId.Value != null && opId.Value != DBNull.Value)
+                this.Id = Convert.ToInt32(opId.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+        }
+
+        public FieldVerifyResult Update()
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _dataBase.SpExecuteNonQuery(s_up_task_update, new OracleParameter[]{
+                new OracleParameter("p_Id", this.Id),
+                new OracleParameter("p_TaskName", this.TaskName),
+                new OracleParameter("p_TaskNo", this.TaskNo),
+                new OracleParameter("p_ObjectFlag", this.ObjectFlag),
+                new OracleParameter("p_SatID", this.SatID),
+                new OracleParameter("p_IsCurTask", Convert.ToInt32(this.IsCurTask)),
+                new OracleParameter("p_BeginTime", this.BeginTime),
+                new OracleParameter("p_EndTime", this.EndTime),
+                p
+            });
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
 
         /// <summary>
