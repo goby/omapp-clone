@@ -10,7 +10,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content6" ContentPlaceHolderID="MapPathContent" runat="server">
-    计划管理 &gt; 查看计划
+    计划管理 &gt; 查看临时计划
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
         <asp:Panel ID="pnlData" runat="server">

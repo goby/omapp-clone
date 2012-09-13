@@ -44,6 +44,11 @@ namespace OperatingManagement.Web.ucs
             get { return XYXSList.SelectedItem; }
         }
 
+        public ListItemCollection Items
+        {
+            get { return XYXSList.Items; }
+        }
+
         public string SelectedValue
         {
             get { return XYXSList.SelectedValue; }

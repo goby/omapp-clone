@@ -20,7 +20,7 @@
             <th style="text-align:left;"><span style="padding-left:5px">数据类型</span></th>
             <th style="text-align:left;"><span style="padding-left:5px">开始日期</span></th>
             <th style="text-align:left;"><span style="padding-left:5px">结束日期</span></th>
-            <th><asp:Label ID="Label1" runat="server" CssClass="error" Text="每类试验数据只能选择一个文件。"></asp:Label></th>
+            <th></th>
         </tr>
         <tr>
             <td id="tdTask"><uc1:ucTask ID="ucTask1" runat="server" /></td>
