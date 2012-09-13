@@ -267,9 +267,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 ShowMessage("没有选择要发送的数据。");
                 return;
             }
-            return;
+            //return;
 
-            #region 判断是否多选了，一种类型试验数据的子类只允许选一个
+            #region 判断是否多选了，一种类型试验数据的子类只允许选一个（不要做限制了）
+            /*
             bool blValid = true;
             string[] ycids = new string[0];
             if (!strYCIds.Equals(string.Empty))
@@ -327,9 +328,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
                         fzids[0] = fzids[0].Substring(0, fzids[0].IndexOf(';'));
                     break;
             }
-            #endregion
             if (!blValid)
                 return;
+            */
+            #endregion
 
             Thread oThread = new Thread(new ThreadStart(Data2File));
             oThread.Start();
@@ -364,7 +366,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             switch (ddlDataType.SelectedValue)
             {
                 case "0"://TJ
-                    if (ycids.Length == 1)
+                    //if (ycids.Length == 1)
                         ycids[0] = ycids[0].Substring(0, ycids[0].IndexOf(';'));
                     for (int i = 0; i < ufids.Length; i++)
                     {
@@ -378,7 +380,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     }
                     break;
                 case "2"://FZ
-                    if (fzids.Length == 1)
+                    //if (fzids.Length == 1)
                         fzids[0] = fzids[0].Substring(0, fzids[0].IndexOf(';'));
                     break;
             }
@@ -391,11 +393,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 case "0"://TJ
                     oBFCreator = new BizFileCreator();
-                    oBFCreator.CreateGCSJDataFile(ycids, ufids, taskNo, (CommunicationWays)Convert.ToInt32(sendWay));
+                    oBFCreator.CreateAndSendGCSJDataFile(ycids, ufids, taskNo, (CommunicationWays)Convert.ToInt32(sendWay));
                     break;
                 case "1"://KJ
                     oBFCreator = new BizFileCreator();
-                    oBFCreator.CreateJDSJDataFile(ycids, taskNo, (CommunicationWays)Convert.ToInt32(sendWay));
+                    oBFCreator.CreateAndSendJDSJDataFile(ycids, taskNo, (CommunicationWays)Convert.ToInt32(sendWay));
                     break;
                 case "2"://FZ
                     string dataType = "TYSJ";

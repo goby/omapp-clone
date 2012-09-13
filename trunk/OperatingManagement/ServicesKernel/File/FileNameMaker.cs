@@ -103,7 +103,7 @@ namespace ServicesKernel.File
         }
 
         /// <summary>
-        /// 外发时才需要，信息名称_信息时间_发送方标识_接收方标识.扩展名
+        /// 外发时才需要，信息名称_信息时间_发送方标识_接收方标识.扩展名，时间为当前时间
         /// </summary>
         /// <param name="infotype"></param>
         /// <param name="source"></param>
@@ -112,6 +112,19 @@ namespace ServicesKernel.File
         public static string GenarateFileNameTypeThree(string infotype, string des)
         {
             string DateFlag = DateTime.Now.ToString("yyyyMMddHHmm");
+            return GetFileName(infotype, des, DateFlag, 3, "", "", "");
+        }
+
+        /// <summary>
+        /// 外发时才需要，信息名称_信息时间_发送方标识_接收方标识.扩展名，时间为指定时间
+        /// </summary>
+        /// <param name="infotype"></param>
+        /// <param name="des"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public static string GenarateFileNameTypeThree(string infotype, string des, DateTime time)
+        {
+            string DateFlag = time.ToString("yyyyMMddHHmm");
             return GetFileName(infotype, des, DateFlag, 3, "", "", "");
         }
 

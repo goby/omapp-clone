@@ -31,7 +31,7 @@ namespace OperatingManagement.Web.ucs
         {
             InfoType objInfos = new InfoType();
             InfoTypeList.Items.Clear();
-            InfoTypeList.DataSource = objInfos.Cache;
+            InfoTypeList.DataSource = objInfos.Cache.Where(a => a.DATATYPE == "1");//只显示文件类型数据
             InfoTypeList.DataTextField = "DATANAME";
             InfoTypeList.DataValueField = "id";
             InfoTypeList.DataBind();

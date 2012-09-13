@@ -40,7 +40,7 @@ namespace ServicesKernel.File
         /// <param name="ufids"></param>
         /// <param name="taskNo"></param>
         /// <param name="sendWay"></param>
-        public void CreateGCSJDataFile(string[] ycids, string[] ufids, string taskNo, CommunicationWays sendWay)
+        public void CreateAndSendGCSJDataFile(string[] ycids, string[] ufids, string taskNo, CommunicationWays sendWay)
         {
             string dataType = "GCSJ";
             string subDataType;
@@ -105,8 +105,8 @@ namespace ServicesKernel.File
                 foreach (KeyValuePair<string, string> kval in fileList)
                 {
                     infoID = new InfoType().GetIDByExMark(kval.Value);
-                    //oSender.SendFile(kval.Key, Param.OutPutPath, sendWay, senderID, desID
-                    //    , infoID, true);
+                    oSender.SendFile(kval.Key, Param.OutPutPath, sendWay, senderID, desID
+                        , infoID, true);
                 }
             }
             else//有创建失败的，就删除已创建文件，并在文件发送记录里写一条总记录
@@ -154,7 +154,7 @@ namespace ServicesKernel.File
         /// <param name="ufids"></param>
         /// <param name="taskNo"></param>
         /// <param name="sendWay"></param>
-        public void CreateJDSJDataFile(string[] ycids, string taskNo, CommunicationWays sendWay)
+        public void CreateAndSendJDSJDataFile(string[] ycids, string taskNo, CommunicationWays sendWay)
         {
             string dataType = "JDSJ";
             string subDataType;
@@ -271,7 +271,7 @@ namespace ServicesKernel.File
                 #region Build File Basic info
                 oInfo.Id = oInfo.GetIDByExMark(dataType);
                 oInfo = oInfo.SelectByID();
-                oFile.CTime = DateTime.Now;
+                oFile.CTime = ycinfo.CTime;//DateTime.Now;
                 oFile.From = Param.SourceName;
                 oFile.TaskID = taskNo;
                 oFile.InfoTypeName = oInfo.DATANAME + "(" + oInfo.EXCODE + ")";
@@ -279,7 +279,7 @@ namespace ServicesKernel.File
                 XYXSInfo oXyxs = new XYXSInfo();
                 oXyxs = oXyxs.GetByAddrMark(tgtList[0]);
                 oFile.To = oXyxs.ADDRName + tgtList[0] + "(" + oXyxs.EXCODE + ")";
-                fileName = FileNameMaker.GenarateFileNameTypeThree(dataType, tgtList[0]);
+                fileName = FileNameMaker.GenarateFileNameTypeThree(dataType, tgtList[0], ycinfo.CTime);
                 oFile.FullName = Param.OutPutPath + fileName;
                 #endregion
             }
@@ -323,7 +323,7 @@ namespace ServicesKernel.File
             List<string> tgtList = FileExchangeConfig.GetTgtListForSending(dataType);
             try
             {
-                fileName = FileNameMaker.GenarateFileNameTypeThree(dataType, tgtList[0]);
+                fileName = FileNameMaker.GenarateFileNameTypeThree(dataType, tgtList[0], ufInfo.CTime);
             }
             catch (Exception ex)
             {

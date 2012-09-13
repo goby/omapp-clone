@@ -100,6 +100,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             this.ddlInfoType.AllowBlankItem = false;
             this.ddlSender.AllowBlankItem = false;
             this.ddlReceiver.AllowBlankItem = false;
+            this.ddlSender.SelectedValue = "3";//默认运控评估中心
         }
 
         /// <summary>

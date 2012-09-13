@@ -134,7 +134,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     BMFSXS = Convert.ToInt32(ds.Tables[0].Rows[0]["BMFSXS"]),
                     SX = ds.Tables[0].Rows[0]["SX"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["SX"].ToString(),
                     GN = ds.Tables[0].Rows[0]["GN"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["GN"].ToString(),
-                    CTime = DateTime.ParseExact(ds.Tables[0].Rows[0]["CTime"].ToString(), "yyyy/MM/dd hh:mm:ss", CultureInfo.InvariantCulture)
+                    CTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CTime"].ToString())
                 };
             }
             return info;
@@ -165,7 +165,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         BMFSXS = Convert.ToInt32(dr["BMFSXS"]),
                         SX = dr["SX"] == DBNull.Value ? string.Empty : dr["SX"].ToString(),
                         GN = dr["GN"] == DBNull.Value ? string.Empty : dr["GN"].ToString(),
-                        CTime = DateTime.ParseExact(ds.Tables[0].Rows[0]["CTime"].ToString(), "yyyy/MM/dd hh:mm:ss", CultureInfo.InvariantCulture)
+                        CTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CTime"].ToString())
                     };
 
                     infoList.Add(info);
