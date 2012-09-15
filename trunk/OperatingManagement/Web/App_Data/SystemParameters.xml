@@ -137,4 +137,8 @@
     <item text="bool" value="4"></item>
     <item text="enum" value="5"></item>
   </ZYSXType>
+  <SatelliteState description="卫星状态">
+    <item text="可用" value="0"></item>
+    <item text="不可用" value="1"></item>
+  </SatelliteState>
 </SystemParameters>

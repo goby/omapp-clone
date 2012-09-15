@@ -1,4 +1,7 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="SatAdd.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.BDManage.SatAdd" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="SatAdd.aspx.cs"
+    Inherits="OperatingManagement.Web.Views.BusinessManage.BDManage.SatAdd" %>
+
+<%@ Import Namespace="OperatingManagement.DataAccessLayer.BusinessManage" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -11,76 +14,160 @@
     基础数据管理 &gt; 新增卫星
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-    <table class="edit" style="width:800px;">
+    <table class="edit" style="width: 800px;">
         <tr>
-            <th style="width:100px;">卫星名称(<span class="red">*</span>)</th>
+            <th style="width: 200px;">
+                卫星名称(<span class="red">*</span>)
+            </th>
             <td>
                 <asp:TextBox ID="txtWXMC" runat="server" Width="300px" CssClass="text" MaxLength="25"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfv1" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtWXMC" ErrorMessage="必须填写“卫星名称”。"></asp:RequiredFieldValidator>
+                    ControlToValidate="txtWXMC" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
-            <th style="width:100px;">卫星编码(<span class="red">*</span>)</th>
+            <th>
+                卫星编码(<span class="red">*</span>)
+            </th>
             <td>
                 <asp:TextBox ID="txtWXBM" runat="server" Width="300px" CssClass="text" MaxLength="25"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfv2" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtWXBM" ErrorMessage="必须填写“卫星编码”。"></asp:RequiredFieldValidator>
+                    ControlToValidate="txtWXBM" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
-            <th style="width:100px;">卫星标识(<span class="red">*</span>)</th>
+            <th>
+                卫星标识(<span class="red">*</span>)
+            </th>
             <td>
                 <asp:TextBox ID="txtWXBS" runat="server" Width="300px" CssClass="text" MaxLength="10"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfv3" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtWXBS" ErrorMessage="必须填写“卫星标识”。"></asp:RequiredFieldValidator>
+                    ControlToValidate="txtWXBS" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
-            <th style="width:100px;">状态(<span class="red">*</span>)</th>
+            <th>
+                卫星状态(<span class="red">*</span>)
+            </th>
             <td>
-                <asp:RadioButtonList ID="rblState" runat="server" BorderColor="White" 
-                    BorderStyle="Double" BorderWidth="2px" RepeatDirection="Horizontal">
-                    <asp:ListItem Value="0">可用</asp:ListItem>
-                    <asp:ListItem Value="1">不可用</asp:ListItem>
-                </asp:RadioButtonList>
+                <asp:DropDownList ID="dplState" runat="server" CssClass="norDpl">
+                </asp:DropDownList>
             </td>
         </tr>
         <tr>
-            <th style="width:100px;">面质比(<span class="red">*</span>)</th>
+            <th>
+                面质比(<span class="red">*</span>)
+            </th>
             <td>
-                <asp:TextBox ID="txtMZB" runat="server" Width="300px" CssClass="text" MaxLength="20"></asp:TextBox>
-                <asp:RequiredFieldValidator ID="rfv4" runat="server" Display="Dynamic"
-                    ForeColor="Red" ControlToValidate="txtMZB" ErrorMessage="必须填写“面质比”。"></asp:RequiredFieldValidator>
+                <asp:TextBox ID="txtMZB" runat="server" Width="300px" CssClass="text" MaxLength="8"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfv4" runat="server" Display="Dynamic" ForeColor="Red"
+                    ControlToValidate="txtMZB" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
                 <asp:RegularExpressionValidator ID="rev3" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtMZB" ErrorMessage="“面质比”必须为8位内整型数值。"
-                     ValidationExpression="^[1-9][0-9]{0,8}$"></asp:RegularExpressionValidator>
+                    ControlToValidate="txtMZB" ErrorMessage="（请输入8位内正整数）" ValidationExpression="^[1-9][0-9]{0,7}$"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
-            <th style="width:100px;">表面反射系数(<span class="red">*</span>)</th>
+            <th>
+                表面反射系数(<span class="red">*</span>)
+            </th>
             <td>
-                <asp:TextBox ID="txtBMFSXS" runat="server" Width="300px" CssClass="text" MaxLength="20"></asp:TextBox>
-                <asp:RequiredFieldValidator ID="rfv5" runat="server" Display="Dynamic"
-                    ForeColor="Red" ControlToValidate="txtBMFSXS" ErrorMessage="必须填写“表面反射系数”。"></asp:RequiredFieldValidator>
-                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtMZB" ErrorMessage="“表面反射系数”必须为8位内整型数值。"
-                     ValidationExpression="^[1-9][0-9]{0,8}$"></asp:RegularExpressionValidator>
+                <asp:TextBox ID="txtBMFSXS" runat="server" Width="300px" CssClass="text" MaxLength="8"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfv5" runat="server" Display="Dynamic" ForeColor="Red"
+                    ControlToValidate="txtBMFSXS" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtBMFSXS" ErrorMessage="（请输入8位内正整数）" ValidationExpression="^[1-9][0-9]{0,7}$"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
-            <th>&nbsp;</th>
+            <th>
+                扩展属性
+            </th>
             <td>
-                <asp:Label ID="ltMessage" runat="server" CssClass="error" Text="“卫星名称”、“卫星编码”、“卫星标识”必须唯一。"></asp:Label>
+                <asp:Repeater ID="rpZYSXList" runat="server" ViewStateMode="Enabled">
+                    <HeaderTemplate>
+                        <table class="list">
+                            <tr>
+                                <th style="width: 15%; text-align: center;">
+                                    属性名称
+                                </th>
+                                <th style="width: 15%; text-align: center;">
+                                    属性编码
+                                </th>
+                                <th style="width: 15%; text-align: center;">
+                                    属性类型
+                                </th>
+                                <th style="width: 15%; text-align: center;">
+                                    属性范围
+                                </th>
+                                <th style="width: 40%; text-align: center;">
+                                    属性数值
+                                </th>
+                            </tr>
+                            <tbody id="tbZYSXList">
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <tr>
+                            <td style="text-align: center;">
+                                <%# Eval("PName")%>
+                            </td>
+                            <td style="text-align: center;">
+                                <%# Eval("PCode")%>
+                            </td>
+                            <td style="text-align: center;">
+                                <%# SystemParameters.GetSystemParameterText(SystemParametersType.ZYSXType, Eval("Type").ToString())%>
+                            </td>
+                            <td style="text-align: center;">
+                                <%# Eval("Scope")%>
+                            </td>
+                            <td style="text-align: left;">
+                                <asp:PlaceHolder ID="phPValueControls" runat="server"></asp:PlaceHolder>
+                                <asp:HiddenField ID="hfPID" runat="server" Value='<%#Eval("ID")%>' />
+                            </td>
+                        </tr>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        </tbody></table>
+                    </FooterTemplate>
+                </asp:Repeater>
+                <table class="listTitle">
+                    <tr>
+                        <td class="listTitle-c1">
+                        </td>
+                        <td class="listTitle-c2">
+                            <om:CollectionPager ID="cpZYSXPager" runat="server">
+                            </om:CollectionPager>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
         <tr>
-            <th>&nbsp;</th>
+            <th>
+                卫星功能
+            </th>
             <td>
-                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
-                    onclick="btnSubmit_Click" />&nbsp;&nbsp;
-                <asp:Button ID="btnEmpty" runat="server" CssClass="button" Text="清空" CausesValidation="False"
-                    onclick="btnEmpty_Click" />
+                <asp:TextBox ID="txtGN" runat="server" TextMode="MultiLine" Width="300px" Height="100px"
+                    CssClass="text" MaxLength="500"></asp:TextBox>
+            </td>
+        </tr>
+        <tr id="trMessage" runat="server" visible="false">
+            <th>
+                &nbsp;
+            </th>
+            <td>
+                <asp:Label ID="lblMessage" runat="server" CssClass="error" Text=""></asp:Label>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                &nbsp;
+            </th>
+            <td>
+                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提 交" OnClick="btnSubmit_Click" />&nbsp;&nbsp;
+                <asp:Button ID="btnReset" runat="server" CssClass="button" Text="清 除" OnClick="btnReset_Click"
+                    CausesValidation="false" />
+                <asp:Button ID="btnReturn" runat="server" CssClass="button" Text="返 回" OnClick="btnReturn_Click"
+                    CausesValidation="false" />
             </td>
         </tr>
     </table>

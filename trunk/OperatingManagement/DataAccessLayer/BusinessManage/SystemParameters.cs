@@ -52,7 +52,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         OrbitDifferenceAnalysis = 31,
         OrbitIntersectionReport = 32,
 
-        ZYSXType = 41
+        ZYSXType = 41,
+        SatelliteState
     }
 
     [Serializable]

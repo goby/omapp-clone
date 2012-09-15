@@ -1220,17 +1220,33 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             //CutOptional文件
             StringBuilder cutOptionalBuilder = new StringBuilder();
-            cutOptionalBuilder.AppendFormat("  预报数据时间间隔     :{0}\r\n", string.Format("{0:F6}", cutOptionalTimeInterval));
-            cutOptionalBuilder.AppendFormat("  力模型控        　　 :{0}\r\n", string.Empty);
-            cutOptionalBuilder.AppendFormat("  非球形引力阶数       :{0}\r\n", "20");
-            cutOptionalBuilder.AppendFormat("  非球形引力           :{0}\r\n", "2");
-            cutOptionalBuilder.AppendFormat("  第三体引力           :{0}\r\n", rblCutOptionalGravitation.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  潮汐摄动             :{0}\r\n", rblCutOptionalTide.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  光压摄动             :{0}\r\n", rblCutOptionalLight.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  大气阻尼摄动         :{0}\r\n", rblCutOptionalEther.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  后牛顿项             :{0}\r\n", rblCutOptionalNewton.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  相关力模型参数       :{0}\r\n", string.Empty);
+            //cutOptionalBuilder.AppendFormat("  预报数据时间间隔     :{0}\r\n", string.Format("{0:F6}", cutOptionalTimeInterval));
+            //cutOptionalBuilder.AppendFormat("  力模型控        　　 :{0}\r\n", string.Empty);
+            //cutOptionalBuilder.AppendFormat("  非球形引力阶数       :{0}\r\n", "20");
+            //cutOptionalBuilder.AppendFormat("  非球形引力           :{0}\r\n", "2");
+            //cutOptionalBuilder.AppendFormat("  第三体引力           :{0}\r\n", rblCutOptionalGravitation.SelectedValue);
+            //cutOptionalBuilder.AppendFormat("  潮汐摄动             :{0}\r\n", rblCutOptionalTide.SelectedValue);
+            //cutOptionalBuilder.AppendFormat("  光压摄动             :{0}\r\n", rblCutOptionalLight.SelectedValue);
+            //cutOptionalBuilder.AppendFormat("  大气阻尼摄动         :{0}\r\n", rblCutOptionalEther.SelectedValue);
+            //cutOptionalBuilder.AppendFormat("  后牛顿项             :{0}\r\n", rblCutOptionalNewton.SelectedValue);
+            //cutOptionalBuilder.AppendFormat("  相关力模型参数       :{0}\r\n", string.Empty);
 
+            int length = Math.Max( string.Format("{0:F6}", cutOptionalTimeInterval).Length, 13);
+            cutOptionalBuilder.AppendFormat("预报数据时间间隔   :   {0}                 !  单位：秒\r\n", FillWithSpace(string.Format("{0:F6}", cutOptionalTimeInterval), length));
+                  cutOptionalBuilder.Append("------------------- 力模型控制：\r\n");
+            cutOptionalBuilder.AppendFormat("非球形引力阶数     :   {0}                 !  不得大于50或小于0\r\n", FillWithSpace("20", length));
+            cutOptionalBuilder.AppendFormat("非球形引力         :   {0}                 !  0：不考虑 ; 1：只考虑带谐项 ; 2:带谐项和田谐项均考虑\r\n", FillWithSpace("2", length));
+            cutOptionalBuilder.AppendFormat("第三体引力         :   {0}                 !  0：不考虑 ; 1：只考虑太阳 ; 2:只考虑月球; 3: 日月均考虑\r\n", FillWithSpace(rblCutOptionalGravitation.SelectedValue, length));
+            cutOptionalBuilder.AppendFormat("潮汐摄动           :   {0}                 !  0：不考虑 ; 1：只考虑太阳 ; 2:只考虑月球; 3: 日月均考虑\r\n", FillWithSpace(rblCutOptionalTide.SelectedValue, length));
+            cutOptionalBuilder.AppendFormat("光压摄动           :   {0}                 !  0：不考虑 ; 1：考虑\r\n", FillWithSpace(rblCutOptionalLight.SelectedValue, length));
+            cutOptionalBuilder.AppendFormat("大气阻尼摄动       :   {0}                 !  0：不考虑 ; 1：考虑\r\n", FillWithSpace(rblCutOptionalEther.SelectedValue, length));
+            cutOptionalBuilder.AppendFormat("后牛顿项           :   {0}                 !  0：不考虑 ; 1：考虑\r\n", FillWithSpace(rblCutOptionalNewton.SelectedValue, length));
+                  cutOptionalBuilder.Append("------------------- 相关力模型参数：\r\n");
+            cutOptionalBuilder.AppendFormat("太阳辐射压         :   {0}                 !  单位：N/(m*m)\r\n", FillWithSpace("4.556000E-006", length));
+            cutOptionalBuilder.AppendFormat("大气密度峰时延     :   {0}                 !  单位：度\r\n", FillWithSpace("30.000000", length));
+            cutOptionalBuilder.AppendFormat("大气阻尼系数       :   {0}                 !\r\n", FillWithSpace("2.200000", length));
+            cutOptionalBuilder.AppendFormat("潮汐项Love数       :   {0}                 !\r\n", FillWithSpace("0.299000", length));
+            cutOptionalBuilder.AppendFormat("潮汐项滞后角       :   {0}                 !  单位：度\r\n", FillWithSpace("30.000000", length));
 
             string cuMainFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitIntersectionReport, "CuMainFileDirectory");
             if (!Directory.Exists(cuMainFileDirectory))

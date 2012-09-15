@@ -88,14 +88,33 @@ begin
 end;
 /
 
+create or replace procedure UP_Satellite_Search
+(
+       p_WXMC tb_satellite.WXMC%type,
+       p_WXBM tb_satellite.WXBM%type,
+       p_WXBS tb_satellite.WXBS%type,
+       p_State tb_satellite.State%type,
+       o_Cursor out sys_refcursor
+)
+is
+begin
+       open o_Cursor for
+            Select * From TB_SATELLITE 
+            Where (upper(WXMC) LIKE ('%' || upper(p_WXMC) || '%') Or p_WXMC IS NULL)
+              And (upper(WXBM) LIKE ('%' || upper(p_WXBM) || '%') Or p_WXBM IS NULL)
+              And (upper(WXBS) LIKE ('%' || upper(p_WXBS) || '%') Or p_WXBS IS NULL)
+              And (State=p_State Or p_State IS NULL)
+            Order By WXBM ASC;
+end;
+
 prompt
 prompt Creating procedure UP_SATELLITE_UPDATE
 prompt ======================================
 prompt
 create or replace procedure up_satellite_update
-(
-       p_WXBM tb_satellite.WXBM%type,
+( 
        p_WXMC tb_satellite.WXMC%type,
+       p_WXBM tb_satellite.WXBM%type,
        p_WXBS tb_satellite.WXBS%type,
        p_State tb_satellite.State%type,
        p_MZB tb_satellite.MZB%type,
@@ -138,6 +157,7 @@ begin
           COMMIT;
           v_result:=4; --Error
 end;
+
 /
 
 prompt
