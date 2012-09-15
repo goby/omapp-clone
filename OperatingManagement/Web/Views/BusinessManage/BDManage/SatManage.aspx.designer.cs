@@ -31,21 +31,75 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage {
         protected global::OperatingManagement.WebKernel.Controls.PageMenu PageMenu1;
         
         /// <summary>
-        /// rpTasks 控件。
+        /// txtWXMC 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpTasks;
+        protected global::System.Web.UI.WebControls.TextBox txtWXMC;
         
         /// <summary>
-        /// cpPager 控件。
+        /// txtWXBM 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpPager;
+        protected global::System.Web.UI.WebControls.TextBox txtWXBM;
+        
+        /// <summary>
+        /// txtWXBS 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtWXBS;
+        
+        /// <summary>
+        /// dplState 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dplState;
+        
+        /// <summary>
+        /// btnSearch 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSearch;
+        
+        /// <summary>
+        /// btnAdd 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAdd;
+        
+        /// <summary>
+        /// rpSatelliteList 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpSatelliteList;
+        
+        /// <summary>
+        /// cpSatellitePager 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpSatellitePager;
     }
 }

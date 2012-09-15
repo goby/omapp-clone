@@ -141,7 +141,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
         /// <summary>
         /// 获得与地面站相关的资源属性列表
-        /// 属性类型,1(int);2(double);3(string);4(bool);5(enum);
+        /// 属性归属,0(卫星);1(地面站);2(卫星和地面站);3(都不归属);
         /// </summary>
         /// <returns></returns>
         public List<ZYSX> GetGroundStationZYSXList()
@@ -150,7 +150,18 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             return infoList;
         }
         /// <summary>
+        /// 获得与卫星相关的资源属性列表
+        /// 属性归属,0(卫星);1(地面站);2(卫星和地面站);3(都不归属);
+        /// </summary>
+        /// <returns></returns>
+        public List<ZYSX> GetSatelliteZYSXList()
+        {
+            List<ZYSX> infoList = SelectAll().Where(a => a.Own == 0 || a.Own == 2).OrderBy(a => a.PName).ToList<ZYSX>();
+            return infoList;
+        }
+        /// <summary>
         /// 从控件中获得用户填写的值
+        /// 属性类型,1(int);2(double);3(string);4(bool);5(enum);
         /// </summary>
         /// <param name="placeHolder"></param>
         public void GetPValueFromControl(PlaceHolder placeHolder)
@@ -177,6 +188,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
         /// <summary>
         /// 生成控件
+        /// 属性类型,1(int);2(double);3(string);4(bool);5(enum);
         /// </summary>
         /// <returns></returns>
         public List<Control> GenerateControls()
@@ -364,6 +376,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
         /// <summary>
         /// 校验扩展属性值是否合法
+        /// 属性类型,1(int);2(double);3(string);4(bool);5(enum);
         /// 属性值区间,1(0-xxxxxx);2(m.n);3(length);5(a,b,c)';
         /// </summary>
         /// <returns>true:通过</returns>

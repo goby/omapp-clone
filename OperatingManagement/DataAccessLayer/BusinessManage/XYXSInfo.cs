@@ -220,7 +220,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         /// <param name="addrName">地址名称</param>
         /// <param name="addrMark">地址编码</param>
-        /// <param name="type">地面站归属；总参:01;总装:02;遥科学站:03</param>
+        /// <param name="own">地面站归属；总参:01;总装:02;遥科学站:03</param>
         /// <param name="type">类型；地面站:0;中心:1;分系统:2</param>
         /// <param name="status">状态；正常:1;删除:2</param>
         /// <returns></returns>

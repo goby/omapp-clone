@@ -1,4 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="SatManage.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.BDManage.SatManage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="SatManage.aspx.cs"
+    Inherits="OperatingManagement.Web.Views.BusinessManage.BDManage.SatManage" %>
+<%@ Import Namespace="OperatingManagement.DataAccessLayer.BusinessManage" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -8,48 +10,114 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    基础数据管理 &gt; 查看卫星
+    基础数据管理 &gt; 卫星管理
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-    <asp:Repeater ID="rpTasks" runat="server">
-        <HeaderTemplate>
-            <table class="list">
-                <tr>
-                    <th style="width:200px;">卫星名称</th>
-                    <th>卫星编码</th>
-                    <th style="width:150px;">卫星标识</th>
-                    <th style="width:70px;">状态</th>
-                    <th style="width:70px;">面质比</th>
-                    <th style="width:70px;">表面反射系数</th>
-                    <th style="width:70px;">创建时间</th>
-                    <th style="width:70px;">操作</th>
-                </tr>  
-                <tbody id="tbTasks">        
-        </HeaderTemplate>
-        <ItemTemplate>
+    <div class="index_content_search">
+        <table cellspacing="0" cellpadding="0" class="listTitle">
             <tr>
-                <td><%# Eval("WXMC") %></td>
-                <td><%# Eval("WXBM") %></td>
-                <td><%# Eval("WXBS") %></td>
-                <td><%# Eval("State").ToString() == "0" ? "可用" : "不可用"%></td>
-                <td><%# Eval("MZB") %></td>
-                <td><%# Eval("BMFSXS") %></td>
-                <td><%# Eval("CTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%></td>
-                <td>
-                    <button class="button" onclick="window.location.href = '/views/BusinessManage/BDManage/SatEdit.aspx?id=<%# Eval("WXBM") %>';return false;">编辑</button>
+                <th width="15%">
+                    卫星名称：
+                </th>
+                <td width="25%">
+                    <asp:TextBox ID="txtWXMC" runat="server" ClientIDMode="Static" MaxLength="50" CssClass="norText"></asp:TextBox>
                 </td>
-            </tr>            
-        </ItemTemplate>
-        <FooterTemplate>   
-                </tbody>           
-            </table>            
-        </FooterTemplate>
-    </asp:Repeater>
-    <table class="listTitle">
-        <tr>
-            <td class="listTitle-c2" align="right">
-                <om:CollectionPager ID="cpPager" runat="server"></om:CollectionPager>
-            </td>
-        </tr>
-    </table>
+                <th width="15%">
+                    卫星编码：
+                </th>
+                <td width="25%">
+                    <asp:TextBox ID="txtWXBM" runat="server" ClientIDMode="Static" MaxLength="10" CssClass="norText"></asp:TextBox>
+                </td>
+                <td width="20%">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    卫星标识：
+                </th>
+                <td>
+                    <asp:TextBox ID="txtWXBS" runat="server" ClientIDMode="Static" MaxLength="10" CssClass="norText"></asp:TextBox>
+                </td>
+                <th>
+                    卫星状态：
+                </th>
+                <td>
+                    <asp:DropDownList ID="dplState" runat="server" CssClass="norDpl">
+                    </asp:DropDownList>
+                </td>
+                <td>
+                    <asp:Button ID="btnSearch" runat="server" OnClick="btnSearch_Click" CssClass="button" Text="查 询" />
+                    <asp:Button ID="btnAdd" runat="server" OnClick="btnAdd_Click" CssClass="button" Text="添 加" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="index_content_view">
+        <asp:Repeater ID="rpSatelliteList" runat="server">
+            <HeaderTemplate>
+                <table class="list">
+                    <tr>
+                        <th style="width: 20%">
+                            卫星名称
+                        </th>
+                        <th style="width: 15%">
+                            卫星编码
+                        </th>
+                        <th style="width: 15%">
+                            卫星标识
+                        </th>
+                        <th style="width: 15%">
+                            面质比
+                        </th>
+                        <th style="width: 15%">
+                            表面反射系数
+                        </th>
+                        <th style="width: 10%">
+                            状态
+                        </th>
+                        <th style="width: 10%">
+                            编辑
+                        </th>
+                    </tr>
+                    <tbody id="tbTasks">
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <td>
+                        <%# Eval("WXMC") %>
+                    </td>
+                    <td>
+                        <%# Eval("WXBM") %>
+                    </td>
+                    <td>
+                        <%# Eval("WXBS") %>
+                    </td>
+                    <td>
+                        <%# Eval("MZB") %>
+                    </td>
+                    <td>
+                        <%# Eval("BMFSXS") %>
+                    </td>
+                    <td>
+                        <%# SystemParameters.GetSystemParameterText(SystemParametersType.SatelliteState, Eval("State").ToString())%>
+                    </td>
+                    <td>
+                        <asp:LinkButton ID="lbtnEditSatellite" runat="server" OnClick="lbtnEditSatellite_Click"
+                            CommandName="1" CommandArgument='<%# Eval("Id")%>'>编辑</asp:LinkButton>
+                    </td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                </tbody> </table>
+            </FooterTemplate>
+        </asp:Repeater>
+        <table class="listTitle">
+            <tr>
+                <td class="listTitle-c2" align="right">
+                    <om:CollectionPager ID="cpSatellitePager" runat="server">
+                    </om:CollectionPager>
+                </td>
+            </tr>
+        </table>
+    </div>
 </asp:Content>
