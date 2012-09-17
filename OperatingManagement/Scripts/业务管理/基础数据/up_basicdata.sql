@@ -334,4 +334,97 @@ end;
 /
 
 
+prompt
+prompt Creating procedure UP_ZYSX_INSERT
+prompt =================================
+prompt
+create or replace procedure htcuser.up_zysx_insert
+(
+       p_PName tb_zysx.pname%type,
+       p_PCode tb_zysx.pcode%type,
+       p_Type tb_zysx.type%type,
+       p_Scope tb_zysx.scope%type,
+       p_Own tb_zysx.own%type,
+       v_Id out tb_zysx.id%type,
+       v_result out number
+)
+is
+       m_count integer;
+begin
+       select count(*) into m_count from tb_zysx where pname=p_PName;
+       if m_count>0 then
+         v_result:=3; --Name Duplicated.
+         return;
+       end if;
+
+       select count(*) into m_count from tb_zysx where pcode=p_PCode;
+       if m_count>0 then
+         v_result:=6; --zysxNo Duplicated.
+         return;
+       end if;
+
+       savepoint p1;
+       select seq_tb_zysx.NEXTVAL INTO v_Id from dual;
+       insert into tb_zysx(Id,pname,pcode,  type, scope, own)
+       values(v_Id,p_PName,p_PCode,p_Type,p_Scope,p_Own);
+       commit;
+       v_result:=5; -- Success
+
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK TO SAVEPOINT p1;
+          COMMIT;
+          v_result:=4; --Error
+end;
+/
+
+prompt
+prompt Creating procedure UP_ZYSX_UPDATE
+prompt =================================
+prompt
+create or replace procedure htcuser.up_zysx_update
+(
+       p_id tb_zysx.id%type,
+       p_PName tb_zysx.pname%type,
+       p_PCode tb_zysx.pcode%type,
+       p_Type tb_zysx.type%type,
+       p_Scope tb_zysx.scope%type,
+       p_Own tb_zysx.own%type,
+       v_result out number
+)
+is
+       m_count integer;
+begin
+       select count(*) into m_count from tb_zysx where pname=p_PName and  id <> p_id;
+       if m_count>0 then
+         v_result:=3; --Name Duplicated.
+         return;
+       end if;
+
+       select count(*) into m_count from tb_zysx where pcode=p_PCode  and  id <> p_id;
+       if m_count>0 then
+         v_result:=6; --zysxNo Duplicated.
+         return;
+       end if;
+
+       savepoint p1;
+       update tb_zysx
+       set pname = p_PName
+           , pcode = p_PCode
+           , type = p_Type
+           , scope = p_Scope
+           , own = p_Own
+       where id = p_id;
+       commit;
+       v_result:=5; -- Success
+
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK TO SAVEPOINT p1;
+          COMMIT;
+          v_result:=4; --Error
+end;
+/
+
+
 spool off
