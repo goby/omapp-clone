@@ -9,11 +9,11 @@
       <item id="2-2" title="新增卫星" roles="OMB_FRcvInfo.View" href="Views/BusinessManage/GetFileRcvInfos.aspx" />
     </menu>
     <menu title="资源属性管理">
-      <item id="3-1" title="查看资源属性" roles="OMB_DSendInfo.View" href="#" />
-      <item id="3-2" title="新增资源属性" roles="OMB_DRcvInfo.View" href="#" />
+      <item id="3-1" title="查看资源属性" roles="OMB_ZYSXMan.View" href="Views/BusinessManage/BDManage/ZYSXManage.aspx" />
+      <item id="3-2" title="新增资源属性" roles="OMB_ZYSXMan.Add" href="Views/BusinessManage/BDManage/ZYSXAdd.aspx" />
     </menu>
     <menu title="资源功能管理">
-      <item id="4-1" title="查看资源功能" roles="OMB_ResMan.View" href="Views/BusinessManage/ResourceManage.aspx" />
-      <item id="4-2" title="新增资源功能" roles="OMB_GRes.Add" href="Views/BusinessManage/GroundResourceAdd.aspx" />
+      <item id="4-1" title="查看资源功能" roles="OMB_ZYGNMan.View" href="Views/BusinessManage/BDManage/ZYGNManage.aspx" />
+      <item id="4-2" title="新增资源功能" roles="OMB_ZYGNMan.Add" href="Views/BusinessManage/BDManage/ZYGNAdd.aspx" />
     </menu>
 </menus>

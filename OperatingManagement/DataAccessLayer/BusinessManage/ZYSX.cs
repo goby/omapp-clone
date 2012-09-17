@@ -526,6 +526,58 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             return enumDataSource;
         }
 
+        /// <summary>
+        /// Insert a ZYSX.
+        /// </summary>
+        /// <returns></returns>
+        public FieldVerifyResult Add()
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            OracleParameter opId = new OracleParameter()
+            {
+                ParameterName = "v_Id",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _dataBase.SpExecuteNonQuery("UP_ZYSX_Insert", new OracleParameter[]{
+                new OracleParameter("p_PName",this.PName),
+                new OracleParameter("p_PCode",this.PCode),
+                new OracleParameter("p_Type",this.Type),
+                new OracleParameter("p_Scope",this.Scope),
+                new OracleParameter("p_Own",this.Own),
+                opId,
+                p
+            });
+            if (opId.Value != null && opId.Value != DBNull.Value)
+                this.Id = Convert.ToInt32(opId.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+        }
+
+        public FieldVerifyResult Update()
+        {
+            OracleParameter p = new OracleParameter()
+            {
+                ParameterName = "v_result",
+                Direction = ParameterDirection.Output,
+                OracleDbType = OracleDbType.Double
+            };
+            _dataBase.SpExecuteNonQuery("UP_ZYSX_Update", new OracleParameter[]{
+                new OracleParameter("p_Id", this.Id),
+                new OracleParameter("p_PName",this.PName),
+                new OracleParameter("p_PCode",this.PCode),
+                new OracleParameter("p_Type",this.Type),
+                new OracleParameter("p_Scope",this.Scope),
+                new OracleParameter("p_Own",this.Own),
+                p
+            });
+            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+        }
+
         #endregion
 
         #region -Override BaseEntity-
