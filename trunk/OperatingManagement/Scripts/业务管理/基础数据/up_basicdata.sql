@@ -107,6 +107,8 @@ begin
             Order By WXBM ASC;
 end;
 
+/
+
 prompt
 prompt Creating procedure UP_SATELLITE_UPDATE
 prompt ======================================
