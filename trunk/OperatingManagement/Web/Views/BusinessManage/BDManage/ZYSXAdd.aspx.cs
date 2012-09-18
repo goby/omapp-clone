@@ -60,7 +60,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                     msg = "新增资源属性已成功。";
                     break;
                 case Framework.FieldVerifyResult.NameDuplicated2:
-                    msg = "已存在相同名称，请输入其他“资源属性编码”。";
+                    msg = "已存在相同属性编码，请输入其他“资源属性编码”。";
                     break;
                 //case Framework.FieldVerifyResult.NameDuplicated3:
                 //    msg = "已存在相同名称，请输入其他“任务标识”。";

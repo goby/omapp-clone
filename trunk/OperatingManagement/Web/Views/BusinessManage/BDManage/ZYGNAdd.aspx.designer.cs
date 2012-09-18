@@ -31,13 +31,13 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage {
         protected global::OperatingManagement.WebKernel.Controls.PageMenu PageMenu1;
         
         /// <summary>
-        /// txtTaskName 控件。
+        /// txtName 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTaskName;
+        protected global::System.Web.UI.WebControls.TextBox txtName;
         
         /// <summary>
         /// rfv1 控件。
@@ -49,13 +49,13 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv1;
         
         /// <summary>
-        /// txtTaskNo 控件。
+        /// txtCode 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTaskNo;
+        protected global::System.Web.UI.WebControls.TextBox txtCode;
         
         /// <summary>
         /// rfv2 控件。
@@ -67,58 +67,67 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv2;
         
         /// <summary>
-        /// rblCurTask 控件。
+        /// ucSatellite1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblCurTask;
+        protected global::OperatingManagement.Web.ucs.ucSatellite ucSatellite1;
         
         /// <summary>
-        /// txtFrom 控件。
+        /// lbSat 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFrom;
+        protected global::System.Web.UI.WebControls.ListBox lbSat;
         
         /// <summary>
-        /// rv2 控件。
+        /// rblOwn 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rv2;
+        protected global::System.Web.UI.WebControls.RadioButtonList rblOwn;
         
         /// <summary>
-        /// RadioButtonList1 控件。
+        /// ddlDMZ 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList RadioButtonList1;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDMZ;
         
         /// <summary>
-        /// hfUserId 控件。
+        /// lbDMZ 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfUserId;
+        protected global::System.Web.UI.WebControls.ListBox lbDMZ;
         
         /// <summary>
-        /// ltHref 控件。
+        /// RequiredFieldValidator1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltHref;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
+        
+        /// <summary>
+        /// RequiredFieldValidator2 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
         
         /// <summary>
         /// ltMessage 控件。

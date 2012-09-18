@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ZYGNAdd.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.BDManage.ZYGNAdd" %>
 
+<%@ Register Src="../../../ucs/ucSatellite.ascx" TagName="ucSatellite" TagPrefix="uc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -9,78 +10,106 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuBusiness" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    基础数据管理 &gt; 新增资源属性
+    基础数据管理 &gt; 新增资源功能
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
-    <table class="edit" style="width:800px;">
+    <table class="edit" style="width: 800px;">
         <tr>
-            <th style="width:100px;">属性名称(<span class="red">*</span>)</th>
+            <th style="width: 100px;">
+                名称(<span class="red">*</span>)
+            </th>
             <td>
-                <asp:TextBox ID="txtTaskName" runat="server" Width="300px" CssClass="text" MaxLength="25"></asp:TextBox>
+                <asp:TextBox ID="txtName" runat="server" Width="300px" CssClass="text" MaxLength="25"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfv1" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtTaskName" ErrorMessage="必须填写“属性名称”。"></asp:RequiredFieldValidator>
+                    ControlToValidate="txtName" ErrorMessage="必须填写“名称”。"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
-            <th style="width:100px;">属性编码(<span class="red">*</span>)</th>
+            <th style="width: 100px;">
+                编码(<span class="red">*</span>)
+            </th>
             <td>
-                <asp:TextBox ID="txtTaskNo" runat="server" Width="300px" CssClass="text" MaxLength="25"></asp:TextBox>
+                <asp:TextBox ID="txtCode" runat="server" Width="300px" CssClass="text" MaxLength="25"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfv2" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtTaskNo" ErrorMessage="必须填写“属性编码”。"></asp:RequiredFieldValidator>
-            </td>
-        </tr>
-
-        <tr>
-            <th style="width:100px;">属性类型(<span class="red">*</span>)</th>
-            <td>
-                <asp:RadioButtonList ID="rblCurTask" runat="server" BorderColor="White" 
-                    BorderStyle="Double" BorderWidth="2px" RepeatDirection="Horizontal">
-                    <asp:ListItem Value="1">int</asp:ListItem>
-                    <asp:ListItem Value="2">double</asp:ListItem>
-                    <asp:ListItem Value="3">string</asp:ListItem>
-                    <asp:ListItem Value="4">bool</asp:ListItem>
-                    <asp:ListItem Value="5">enum</asp:ListItem>
-                </asp:RadioButtonList>
+                    ControlToValidate="txtCode" ErrorMessage="必须填写“编码”。"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
-            <th style="width:100px;">属性值区间(<span class="red">*</span>)</th>
-            <td><asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" 
-                    runat="server" Width="300px"></asp:TextBox><asp:RequiredFieldValidator ID="rv2" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtFrom" ErrorMessage="必须填写“属性值区间”。"></asp:RequiredFieldValidator></td>
-        </tr>
-                <tr>
-            <th style="width:100px;">属性属于(<span class="red">*</span>)</th>
+            <th style="width: 100px;">
+                属性属于(<span class="red">*</span>)
+            </th>
             <td>
-                <asp:RadioButtonList ID="RadioButtonList1" runat="server" BorderColor="White" 
-                    BorderStyle="Double" BorderWidth="2px" RepeatDirection="Horizontal">
-                    <asp:ListItem Value="0">卫星</asp:ListItem>
-                    <asp:ListItem Value="1">地面站</asp:ListItem>
-                    <asp:ListItem Value="2">卫星和地面站</asp:ListItem>
-                    <asp:ListItem Value="3">都不属于</asp:ListItem>
-                </asp:RadioButtonList>
+                <br />
+                <table class="edit">
+                    <tr>
+                        <th style="width: 150px;">
+                            卫星属性
+                        </th>
+                        <th style="width: 100px;">
+                            匹配准则
+                        </th>
+                        <th style="width: 150px;">
+                            地面站属性
+                        </th>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top;">
+                            <uc1:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
+                            <br />
+                            <asp:ListBox ID="lbSat" runat="server" Height="110px" Width="113px">
+                            </asp:ListBox>
+                        </td>
+                        <td>
+                            <asp:RadioButtonList ID="rblOwn" runat="server" BorderColor="White" BorderStyle="Double"
+                                BorderWidth="2px">
+                                <asp:ListItem Value="&lt;" Selected="True">&lt;</asp:ListItem>
+                                <asp:ListItem Value="&lt;=">&lt;=</asp:ListItem>
+                                <asp:ListItem Value="=">=</asp:ListItem>
+                                <asp:ListItem Value="&gt;=">&gt;=</asp:ListItem>
+                                <asp:ListItem Value="&gt;">&gt;</asp:ListItem>
+                            </asp:RadioButtonList>
+                        </td>
+                        <td style="vertical-align: top;">
+                            <asp:DropDownList ID="ddlDMZ" runat="server" Width="113px">
+                            </asp:DropDownList>
+                            <br />
+                            <asp:ListBox ID="lbDMZ" runat="server" Height="110px" Width="113px">
+                            </asp:ListBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top;">
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
+                                ControlToValidate="lbSat" Display="Dynamic" ErrorMessage="未选择属性" 
+                                ForeColor="Red"></asp:RequiredFieldValidator>
+                        </td>
+                        <td>
+                            &nbsp;</td>
+                        <td style="vertical-align: top;">
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
+                                ControlToValidate="lbDMZ" Display="Dynamic" ErrorMessage="未选择属性" 
+                                ForeColor="Red"></asp:RequiredFieldValidator>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
         <tr>
-            <th>&nbsp;</th>
+            <th>
+                &nbsp;
+            </th>
             <td>
-                <asp:HiddenField ID="hfUserId" runat="server" />
-                <asp:Literal ID="ltHref" runat="server"></asp:Literal>
+                <asp:Label ID="ltMessage" runat="server" CssClass="error" Text="“名称”、“编码”必须唯一。"></asp:Label>
             </td>
         </tr>
         <tr>
-            <th>&nbsp;</th>
+            <th>
+                &nbsp;
+            </th>
             <td>
-                <asp:Label ID="ltMessage" runat="server" CssClass="error" Text="“属性名称”、“属性编码”必须唯一。"></asp:Label>
-            </td>
-        </tr>
-        <tr>
-            <th>&nbsp;</th>
-            <td>
-                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
-                    onclick="btnSubmit_Click" />&nbsp;&nbsp;
+                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" OnClick="btnSubmit_Click" />&nbsp;&nbsp;
                 <asp:Button ID="btnEmpty" runat="server" CssClass="button" Text="清空" CausesValidation="False"
-                    onclick="btnEmpty_Click" />
+                    OnClick="btnEmpty_Click" />
             </td>
         </tr>
     </table>
