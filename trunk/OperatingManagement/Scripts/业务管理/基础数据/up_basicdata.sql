@@ -429,4 +429,133 @@ end;
 /
 
 
+
+prompt
+
+prompt Creating procedure UP_ZYGN_INSERT
+prompt =================================
+prompt
+
+create or replace procedure htcuser.up_zygn_insert
+(
+       p_FName tb_zygn.fname%type,
+       p_FCode tb_zygn.fcode%type,
+       p_MatchRule tb_zygn.matchrule%type,
+       v_Id out tb_zygn.id%type,
+       v_result out number
+)
+is
+       m_count integer;
+begin
+       select count(*) into m_count from tb_zygn where fname=p_FName;
+       if m_count>0 then
+         v_result:=3; --Name Duplicated.
+         return;
+       end if;
+
+       select count(*) into m_count from tb_zygn where fcode=p_FCode;
+       if m_count>0 then
+         v_result:=6; --Code Duplicated.
+         return;
+       end if;
+
+       savepoint p1;
+       select seq_tb_zygn.NEXTVAL INTO v_Id from dual;
+       insert into tb_zygn(Id,fname,fcode,matchrule)
+       values(v_Id,p_FName,p_FCode,p_MatchRule);
+       commit;
+       v_result:=5; -- Success
+
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK TO SAVEPOINT p1;
+          COMMIT;
+          v_result:=4; --Error
+end;
+/
+
+prompt
+
+prompt Creating procedure UP_ZYGN_SELECTALL
+prompt ====================================
+prompt
+
+create or replace procedure htcuser.UP_ZYGN_SelectAll
+(
+       o_Cursor out sys_refcursor
+)
+is
+begin
+       open o_Cursor for
+            Select * From TB_ZYGN Order By ID Desc;
+end;
+/
+
+prompt
+
+prompt Creating procedure UP_ZYGN_SELECTBYID
+prompt =====================================
+prompt
+
+create or replace procedure htcuser.UP_ZYGN_SelectByID
+(
+       p_ID TB_ZYGN.ID%type,
+       o_Cursor out sys_refcursor
+)
+is
+begin
+       open o_Cursor for
+            Select * From TB_ZYGN Where ID=p_ID;
+end;
+/
+
+prompt
+
+prompt Creating procedure UP_ZYGN_UPDATE
+prompt =================================
+prompt
+
+create or replace procedure htcuser.up_zygn_update
+(
+       p_id tb_zygn.id%type,
+  p_FName tb_zygn.fname%type,
+       p_FCode tb_zygn.fcode%type,
+       p_MatchRule tb_zygn.matchrule%type,
+       v_result out number
+)
+is
+       m_count integer;
+begin
+       select count(*) into m_count from tb_zygn where fname=p_FName and  id <> p_id;
+       if m_count>0 then
+         v_result:=3; --Name Duplicated.
+         return;
+       end if;
+
+       select count(*) into m_count from tb_zygn where fcode=p_FCode  and  id <> p_id;
+       if m_count>0 then
+         v_result:=6; --Code Duplicated.
+         return;
+       end if;
+
+       savepoint p1;
+       update tb_zygn
+       set fname = p_FName
+           , fcode = p_FCode
+           , matchrule = p_MatchRule
+       where id = p_id;
+       commit;
+       v_result:=5; -- Success
+
+       EXCEPTION
+        WHEN OTHERS THEN
+          ROLLBACK TO SAVEPOINT p1;
+          COMMIT;
+          v_result:=4; --Error
+end;
+/
+
+
+
+
 spool off
