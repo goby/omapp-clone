@@ -95,7 +95,12 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
 
         protected void btnEmpty_Click(object sender, EventArgs e)
         {
-            Page.Response.Redirect(Request.CurrentExecutionFilePath);
+            Page.Response.Redirect(Request.CurrentExecutionFilePath + "?id=" + Request.QueryString["Id"]);
+        }
+
+        protected void btnReturn_Click(object sender, EventArgs e)
+        {
+            Page.Response.Redirect("ZYSXManage.aspx");
         }
     }
 }

@@ -78,8 +78,10 @@
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存" 
                     onclick="btnSubmit_Click" />&nbsp;&nbsp;
-                <asp:Button ID="btnEmpty" runat="server" CssClass="button" Text="清空" CausesValidation="False"
-                    onclick="btnEmpty_Click" />
+                <asp:Button ID="btnEmpty" runat="server" CssClass="button" Text="重置" CausesValidation="False"
+                    onclick="btnEmpty_Click" />&nbsp;&nbsp;
+                    <asp:Button ID="btnReturn" class="button" runat="server" 
+                    Text="返回" onclick="btnReturn_Click" CausesValidation="False" />
                 <asp:HiddenField ID="hfID" runat="server" />
             </td>
         </tr>
