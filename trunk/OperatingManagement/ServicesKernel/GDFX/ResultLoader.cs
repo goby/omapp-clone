@@ -61,7 +61,8 @@ namespace ServicesKernel.GDFX
             }
 
             ResultType oCSType;
-            if (resultType.ToLower() == "cutpre_unw" || resultType.ToLower() == "cutana_stw" || resultType.ToLower() == "cutana_unw")
+            if (resultType.ToLower() == "cutpre_stw" || resultType.ToLower() == "cutpre_unw" 
+                || resultType.ToLower() == "cutana_stw" || resultType.ToLower() == "cutana_unw")
             {
                 oCSType = FormatXMLConfig.GetTypeByName("CutPre_STW");
                 if (oCSType != null)

@@ -14,9 +14,9 @@ $(window).ready(function () {
         }
     });
 
-    //if (!!_autoOpen) {
-        _dialog.dialog('open');
-    //}
+//    if (!!autoOpen) {
+//        _dialog.dialog('open');
+//    }
 });
 
 var _resultDialog;
@@ -25,8 +25,8 @@ $(window).ready(function () {
 
     _resultDialog.dialog({
         autoOpen: false,
-        height: 300,
-        width: 400,
+        height: 500,
+        width: 600,
         modal: true,
         buttons: {
             '关闭': function () {

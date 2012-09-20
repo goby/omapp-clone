@@ -16,8 +16,10 @@ namespace ServicesKernel.GDFX
     public class Intepolater
     {
         private string[] fileNames = new string[] { "JPLEPH", "TESTRECL", "WGS84.GEO", "eopc04_IAU2000.dat" };
-        private const string dllPath = @"\GDDLL\CutPre\";
-        private const string outputPath = @"output\";
+        private const string dllPath = @"D:\Deploy\";
+        private const string dllFolder = @"GDDLL\Intep\";
+        private const string dllName = @"IntpDLL.dll";
+        //private const string outputPath = @"output\";
         private string strDllPath;
         //
         //private IntPtr handle;
@@ -57,7 +59,7 @@ namespace ServicesKernel.GDFX
             get
             {
                 if (strDllPath.Equals(string.Empty))
-                    strDllPath = GlobalSettings.MapPath("~" + dllPath);
+                    strDllPath = dllPath + dllFolder;//GlobalSettings.MapPath("~" + dllFolder);
                 return strDllPath;
             }
         }
@@ -71,11 +73,11 @@ namespace ServicesKernel.GDFX
         /// <returns></returns>
         public string CheckEphemerisFileData(string fileName, DateTime beginDate, DateTime endDate)
         {
-            string msg = "星历文件数据行{0}格式不合法。";
+            string msg = "星历文件数据行{0}格式不合法";
             bool blResult = false;
             int iLine = 1;
             string strLine = string.Empty;
-            int iTmp = 0;
+            //int iTmp = 0;
             string[] datas = new string[0];
             string sTmp = string.Empty;
             DateTime date;
@@ -83,42 +85,45 @@ namespace ServicesKernel.GDFX
 
             oSReader.BaseStream.Seek(0, SeekOrigin.Begin);
             strLine = oSReader.ReadLine();//I6
+
+            /*
             if (strLine != null)
                 strLine = strLine.Trim();
             else
             {
                 oSReader.Close();
-                return string.Format("星历文件{0}是空文件。", fileName);
+                return string.Format(msg + "【不正常结束】", iLine);
             }
 
             blResult = DataValidator.ValidateInt(strLine, 6, out iTmp);
             if (!blResult)
             {
                 oSReader.Close();
-                return string.Format(msg, iLine);
-            }
+                return string.Format(msg + "【int，长为6】", iLine);
+            }*/
 
-            iLine++;
-            strLine = oSReader.ReadLine();
+            //iLine++;
+            //strLine = oSReader.ReadLine();
             while (strLine != null)
             {
                 blResult = CheckEphemeris2ndRowData(strLine, out date);
                 if (!blResult)
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【日期不合法】", iLine);
                 }
                 if (date < beginDate || date > endDate)
                 {
                     oSReader.Close();
-                    return string.Format("星历文件数据行{0}时间不在差值文件范围内。", iLine);
+                    return string.Format(msg + "【星历文件数据时间不在差值文件范围内】", iLine);
                 }
                 iLine++;
                 strLine = oSReader.ReadLine();
             }
+            iLine--;
             oSReader.Close();
-            if (iTmp != (iLine - 1))//第一行的行数和后面的行数对应不起来
-                return string.Format("星历文件数据总行数与第一行行数不符。", iLine);
+            //if (iTmp != (iLine - 1))//第一行的行数和后面的行数对应不起来
+            //    return string.Format("【星历文件数据总行数{0}与第一行总数{1}不符】", iLine - 1, iTmp);
             return string.Empty;
         }
 
@@ -144,16 +149,12 @@ namespace ServicesKernel.GDFX
                 return blResult;
 
             iIdx = 0;
-            datas[iIdx + 5] = datas[iIdx + 5].Substring(0, datas[iIdx + 5].IndexOf('.') + 4);
-            if (datas[iIdx + 5].Length != 6)
-                datas[iIdx + 5] = "0" + datas[iIdx + 5];
-            sTmp = string.Format("{0}{1}{2} {3}{4}{5}", datas[iIdx], datas[iIdx + 1].PadLeft(2, '0'), datas[iIdx + 2].PadLeft(2, '0')
-                    , datas[iIdx + 3].PadLeft(2, '0'), datas[iIdx + 4].PadLeft(2, '0'), datas[iIdx + 5]);
+            sTmp = DataValidator.GetArrayTimeString(datas, iIdx);
             blResult = DataValidator.ValidateDate(sTmp, out date);
             if (!blResult)
                 return blResult;
 
-            iIdx += 6;
+            iIdx += 6;//为double
             for (int i = iIdx; i < datas.Length; i++)
             {
                 blResult = DataValidator.ValidateFloat(datas[i], 16, 6);
@@ -174,7 +175,7 @@ namespace ServicesKernel.GDFX
         {
             beginDate = DateTime.MaxValue;
             endDate = DateTime.MinValue;
-            string msg = "差值计算时间文件数据行{0}格式不合法。";
+            string msg = "差值计算时间文件数据行{0}格式不合法";
             bool blResult = false;
             int iLine = 1;
             string strLine = string.Empty;
@@ -183,6 +184,7 @@ namespace ServicesKernel.GDFX
             double dbTmp = 0;
             string[] datas = new string[0];
             string sTmp = string.Empty;
+            DateTime lastDate = DateTime.MinValue;
             DateTime date;
             StreamReader oSReader = new StreamReader(fileName);
 
@@ -193,14 +195,19 @@ namespace ServicesKernel.GDFX
             else
             {
                 oSReader.Close();
-                return string.Format("差值计算时间文件{0}是空文件。", fileName);
+                return string.Format("差值计算时间文件{0}是空文件", fileName);
             }
 
             blResult = DataValidator.ValidateInt(strLine, 0, out iTmp);
             if (!blResult)
             {
                 oSReader.Close();
-                return string.Format(msg, iLine);
+                return string.Format(msg + "【应为int】", iLine);
+            }
+            if (iTmp > 1 || iTmp < 0)
+            {
+                oSReader.Close();
+                return string.Format(msg + "【应为0或者1】", iLine);
             }
 
             iLine++;
@@ -212,34 +219,30 @@ namespace ServicesKernel.GDFX
                 if (datas.Length != 8)
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【包含数据量不足，应为8个】", iLine);
                 }
 
                 iIdx = 0;
-                datas[iIdx + 5] = datas[iIdx + 5].Substring(0, datas[iIdx + 5].IndexOf('.') + 4);
-                if (datas[iIdx + 5].Length != 6)
-                    datas[iIdx + 5] = "0" + datas[iIdx + 5];
-                sTmp = string.Format("{0}{1}{2} {3}{4}{5}", datas[iIdx], datas[iIdx + 1].PadLeft(2, '0'), datas[iIdx + 2].PadLeft(2, '0')
-                        , datas[iIdx + 3].PadLeft(2, '0'), datas[iIdx + 4].PadLeft(2, '0'), datas[iIdx + 5]);
+                sTmp = DataValidator.GetArrayTimeString(datas, iIdx);
                 blResult = DataValidator.ValidateDate(sTmp, out date);
                 if (!blResult)
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【日期不合法】", iLine);
                 }
 
-                iIdx+=5;
-                if (!DataValidator.ValidateFloat(datas[iIdx], 10, 6, out dbTmp))
+                iIdx += 5;
+                if (!DataValidator.ValidateFloat(datas[iIdx], 10, 6, out dbTmp) || dbTmp > 60 || dbTmp < 0)
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【最大差值应在60秒内】", iLine);
                 }
 
                 iIdx++;
                 if (!DataValidator.ValidateInt(datas[iIdx], 6, out iTmp))
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【int，长度为6】", iLine);
                 }
 
                 beginDate = date;
@@ -260,6 +263,13 @@ namespace ServicesKernel.GDFX
                         beginDate = date;
                     if (endDate <= date)
                         endDate = date;
+
+                    if (lastDate != DateTime.MinValue && (date - lastDate).TotalSeconds > 60)
+                    {
+                        oSReader.Close();
+                        return string.Format(msg + "【与上一条的时间差大于60秒】", iLine);
+                    }
+                    lastDate = date;
                     iLine++;
                     strLine = oSReader.ReadLine();
                 }
@@ -290,11 +300,7 @@ namespace ServicesKernel.GDFX
                 return blResult;
 
             iIdx = 0;
-            datas[iIdx + 5] = datas[iIdx + 5].Substring(0, datas[iIdx + 5].IndexOf('.') + 4);
-            if (datas[iIdx + 5].Length != 6)
-                datas[iIdx + 5] = "0" + datas[iIdx + 5];
-            sTmp = string.Format("{0}{1}{2} {3}{4}{5}", datas[iIdx], datas[iIdx + 1].PadLeft(2, '0'), datas[iIdx + 2].PadLeft(2, '0')
-                    , datas[iIdx + 3].PadLeft(2, '0'), datas[iIdx + 4].PadLeft(2, '0'), datas[iIdx + 5]);
+            sTmp = DataValidator.GetArrayTimeString(datas, iIdx);
             blResult = DataValidator.ValidateDate(sTmp, out date);
             return blResult;
         }
@@ -312,32 +318,42 @@ namespace ServicesKernel.GDFX
             string strResult = string.Empty;
             if (isCaculating)
             {
-                strResult = "同一时间只能只能执行单次计算任务，请稍候再计算。";
+                strResult = "同一时间只能只能执行单次计算任务，请稍候再计算";
                 return strResult;
             }
             isCaculating = true;
 
             int iTmp = ephemerisFileFullName.LastIndexOf(@"\") + 1;
-            string filePath = ephemerisFileFullName.Substring(0,  iTmp);
+            string filePath = ephemerisFileFullName.Substring(0, iTmp);
             int[] iPath = DataValidator.GetIntPath(filePath);
-            int[] iEName = DataValidator.GetIntPath(ephemerisFileFullName.Substring(iTmp + 1));
-            int[] iTName = DataValidator.GetIntPath(timeSeriesFileFullName.Substring(iTmp + 1));
-
-            INTEP(ref iPath[0], ref iEName[0], ref iTName[0], iPath.Length, iEName.Length, iTName.Length);
-            resultFileFullName = DllPath + "intepolateResult.dat";
+            int[] iEName = DataValidator.GetIntPath(ephemerisFileFullName.Substring(iTmp));
+            int[] iTName = DataValidator.GetIntPath(timeSeriesFileFullName.Substring(iTmp));
+            if ((iPath.Length + iEName.Length) > 100 || (iPath.Length + iTName.Length) > 101)
+            {
+                strResult = "文件全路径字符长度不得大于100，请重新设置。";
+                isCaculating = false;
+                return strResult;
+            }
+            int iResult = -1;
+            INTEP(ref iPath[0], ref iEName[0], ref iTName[0], iPath.Length, iEName.Length, iTName.Length, ref iResult);
+            resultFileFullName = filePath + "intepolateResult.txt";
             isCaculating = false;
             return strResult;
         }
 
-
         /// <summary>
-        /// Fortran 调用
+        /// 差值分析
         /// </summary>
-        /// <param name="dirIn"></param>
-        /// <param name="Ndir"></param>
-        [DllImport(dllPath + @"CutPreDLL.dll",
+        /// <param name="dirIn">文件路径数组</param>
+        /// <param name="f1">星历数据文件名数组</param>
+        /// <param name="f2">时间序列数据文件名数组</param>
+        /// <param name="Ndir">文件路径数组长度</param>
+        /// <param name="n1">f1的长度</param>
+        /// <param name="n2">f2的长度</param>
+        /// <param name="kjg">表示计算是否成功，0失败，1成功</param>
+        [DllImport(dllPath + dllFolder + dllName,
             SetLastError = true, CharSet = CharSet.Ansi,
             CallingConvention = CallingConvention.StdCall)]
-        public static extern void INTEP(ref int dirIn, ref int f1, ref int f2, int Ndir, int n1, int n2);
+        public static extern void INTEP(ref int dirIn, ref int f1, ref int f2, int Ndir, int n1, int n2, ref int kjg);
     }
 }

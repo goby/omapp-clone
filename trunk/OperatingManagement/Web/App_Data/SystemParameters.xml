@@ -111,24 +111,15 @@
     <item text="计算完成" value="2"></item>
   </ResourceCalculateStatus>
   <OrbitDifferenceAnalysis description="轨道分析-差值分析相关参数">
-    <item text="XLDataFileDirectory" value="D:\OrbitDifferenceAnalysis\XLDataFileDirectory\"></item>
     <item text="XLDataFileExtension" value="dat,txt"></item>
     <item text="XLDataFileMaxSize" value="4194304"></item>
-    <item text="DifCalTimeFileDirectory" value="D:\OrbitDifferenceAnalysis\DifCalTimeFileDirectory\"></item>
     <item text="DifCalTimeFileExtension" value="dat,txt"></item>
     <item text="DifCalTimeFileMaxSize" value="4194304"></item>
   </OrbitDifferenceAnalysis>
   <OrbitIntersectionReport description="轨道分析-交会预报">
-    <item text="CuMainFileDirectory" value="D:\OrbitIntersectionReport\CuMainFileDirectory\"></item>
-    <item text="CuSubFileDirectory" value="D:\OrbitIntersectionReport\CuSubFileDirectory\"></item>
-    <item text="CuOptionalFileDirectory" value="D:\OrbitIntersectionReport\CuOptionalFileDirectory\"></item>
     <item text="CuMainFileExtension" value="dat,txt"></item>
     <item text="CuSubFileExtension" value="dat,txt"></item>
     <item text="CuOptionalFileExtension" value="dat,txt"></item>
-    <item text="JPLEPHFilePath" value="D:\Include\JPLEPH"></item>
-    <item text="TESTRECLFilePath" value="D:\Include\TESTRECL"></item>
-    <item text="WGS84FilePath" value="D:\Include\WGS84.GEO"></item>
-    <item text="eopc04_IAU2000FilePath" value="D:\Include\eopc04_IAU2000.dat"></item>
   </OrbitIntersectionReport>
   <ZYSXType description="资源属性类型">
     <item text="int" value="1"></item>
@@ -140,5 +131,14 @@
   <SatelliteState description="卫星状态">
     <item text="可用" value="0"></item>
     <item text="不可用" value="1"></item>
-  </SatelliteState>
+  </SatelliteState>  
+  <GDJSResult description="轨道计算结果参数">
+    <item text="result_path" value="D:\Files\GDFX\"></item>
+    <item text="cvt_path" value="Convert\"></item>
+    <item text="cutana_path" value="CutAna\"></item>
+    <item text="cutpre_path" value="CutPre\"></item>
+    <item text="intep_path" value="Intep\"></item>
+    <item text="obspre_path" value="ObsPre\"></item>
+    <item text="upload_path" value="Upload\"></item>
+  </GDJSResult>
 </SystemParameters>

@@ -19,6 +19,7 @@ using System.IO;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.DataAccessLayer.BusinessManage;
+using ServicesKernel.GDFX;
 
 namespace OperatingManagement.Web.Views.BusinessManage
 {
@@ -28,8 +29,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                trMessage.Visible = false;
-                lblMessage.Text = string.Empty;
+                HideMessage();
             }
             catch (Exception ex)
             {
@@ -44,7 +44,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void btnCalculate_Click(object sender, EventArgs e)
         {
-            divCalResult.Visible = false;
+            HideMessage();
 
             #region 校验文件合法性，不能为空、后缀名等
             if (!fuXLDataFile.HasFile)
@@ -142,22 +142,23 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             finally{ }
             #endregion
-
+            string xlDataFilePath;
+            string difCalTimeFilePath;
             try
             {
                 #region 保存星历、时间文件至服务器
-                string xlDataFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitDifferenceAnalysis, "XLDataFileDirectory");
-                if (!Directory.Exists(xlDataFileDirectory))
-                    Directory.CreateDirectory(xlDataFileDirectory);
+                string filePath = SystemParameters.GetSystemParameterValue(SystemParametersType.GDJSResult, "result_path") 
+                    + SystemParameters.GetSystemParameterValue(SystemParametersType.GDJSResult, "intep_path");
+                if (!Directory.Exists(filePath))
+                    Directory.CreateDirectory(filePath);
                 //星历数据文件服务器路径
-                string xlDataFilePath = Path.Combine(xlDataFileDirectory, Guid.NewGuid().ToString() + Path.GetExtension(fuXLDataFile.PostedFile.FileName));
+                xlDataFilePath = Path.Combine(filePath, Guid.NewGuid().ToString() + Path.GetExtension(fuXLDataFile.PostedFile.FileName));
                 fuXLDataFile.PostedFile.SaveAs(xlDataFilePath);
 
-                string difCalTimeFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitDifferenceAnalysis, "DifCalTimeFileDirectory");
-                if (!Directory.Exists(difCalTimeFileDirectory))
-                    Directory.CreateDirectory(difCalTimeFileDirectory);
+                if (!Directory.Exists(filePath))
+                    Directory.CreateDirectory(filePath);
                 //差值计算时间文件服务器路径
-                string difCalTimeFilePath = Path.Combine(difCalTimeFileDirectory, Guid.NewGuid().ToString() + Path.GetExtension(fuDifCalTimeFile.PostedFile.FileName));
+                difCalTimeFilePath = Path.Combine(filePath, Guid.NewGuid().ToString() + Path.GetExtension(fuDifCalTimeFile.PostedFile.FileName));
                 fuDifCalTimeFile.PostedFile.SaveAs(difCalTimeFilePath);
                 #endregion
             }
@@ -172,37 +173,29 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 ltXLDataFilePath.Text = fuXLDataFile.PostedFile.FileName;
                 ltDifCalTimeFilePath.Text = fuDifCalTimeFile.PostedFile.FileName;
 
-                //定义计算结果
-                bool calResult = false;
                 //定义结果文件路径
-                string resultFilePath = string.Empty; //@"D:\ResourceCalculate\ResultFileDirectory\2f318cd1-82ba-4593-9884-263cfb2887bd.txt";
+                string resultFilePath = string.Empty;
+                string strResult = new GDFXProcessor().Intepolate(xlDataFilePath, difCalTimeFilePath, out resultFilePath);
+                if (strResult.Equals(string.Empty))
+                {
+                    //ShowMsg(string.Format("参数转换计算成功"));
+                    //for 下载文件使用
+                    lblResultFilePath.Text = resultFilePath;
+                    divCalResult.Visible = true;
+                    //ltResultFile.Text = File.ReadAllText(resultFilePath, System.Text.Encoding.Default);
+                }
+                else
+                    ShowMsg(string.Format("参数转换计算失败，{0}", strResult));
 
-                /**
-                * TODO: 在这里开始计算，将结果calResult和结果文件路径resultFilePath赋值
-                * */
-                //System.Threading.Thread.Sleep(10000);
-
-                lblResultFilePath.Text = resultFilePath;
-                lblCalResult.Text = calResult ? "计算成功" : "计算失败";
-                //if (!string.IsNullOrEmpty(resultFilePath) && File.Exists(resultFilePath))
-                //{
-                //    ltResultFile.Text = File.ReadAllText(resultFilePath, System.Text.Encoding.Default);
-                //}
-                divCalResult.Visible = true;
-
-                //DeleteFile(xlDataFilePath);
-                //DeleteFile(difCalTimeFilePath);
-
-                ClientScript.RegisterClientScriptBlock(this.GetType(),
-                   "open-dialog",
-                   "var _autoOpen=true;",
-                   true);
+                DeleteFile(xlDataFilePath);
+                DeleteFile(difCalTimeFilePath);
             }
             catch(Exception ex)
             {
                 throw (new AspNetException("轨道分析 - 差值分析页面计算过程出现异常，异常原因", ex));
             }
         }
+
         /// <summary>
         /// 清除所有信息
         /// </summary>
@@ -291,6 +284,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             trMessage.Visible = true;
             lblMessage.Text = msg;
+        }
+
+        private void HideMessage()
+        {
+            trMessage.Visible = false;
+            lblMessage.Text = "";
+            divCalResult.Visible = false;
         }
         #endregion
     }

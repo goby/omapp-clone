@@ -15,7 +15,9 @@ namespace ServicesKernel.GDFX
     /// </summary>
     public class ParamConvertor
     {
-        private const string dllPath = @"\GDDLL\Convert\";
+        private const string dllPath = @"D:\Deploy\";
+        private const string dllFolder = @"GDDLL\Convert\";
+        private const string dllName = @"EleCvtDLL.dll";
         private const string outputPath = @"output\";
         private string strDllPath;
         //
@@ -56,7 +58,7 @@ namespace ServicesKernel.GDFX
             get
             {
                 if (strDllPath.Equals(string.Empty))
-                    strDllPath = GlobalSettings.MapPath("~" + dllPath);
+                    strDllPath = dllPath + dllFolder;//GlobalSettings.MapPath("~" + dllFolder);
                 return strDllPath;
             }
         }
@@ -104,8 +106,7 @@ namespace ServicesKernel.GDFX
             int iIdx = 0;
             string[] datas = new string[0];
             bool blResult = false;
-            DateTime date;
-            datas = DataValidator.SplitRowDatas(rowData);//H  Lamda  Fai  A  YYYY  MM  DD  HH  MM  SS.SSSSSS
+            datas = DataValidator.SplitRowDatas(rowData);//H  Lamda  Fai  A
             if (datas.Length != 10)
                 return blResult;
             iIdx = 4;
@@ -115,13 +116,6 @@ namespace ServicesKernel.GDFX
                 if (!blResult)
                     return blResult;
             }
-
-            datas[iIdx + 5] = datas[iIdx + 5].Substring(0, datas[iIdx + 5].IndexOf('.') + 4);
-            if (datas[iIdx + 5].Length != 6)
-                datas[iIdx + 5] = "0" + datas[iIdx + 5];
-            sTmp = string.Format("{0}{1}{2} {3}{4}{5}", datas[iIdx], datas[iIdx + 1].PadLeft(2, '0'), datas[iIdx + 2].PadLeft(2, '0')
-                    , datas[iIdx + 3].PadLeft(2, '0'), datas[iIdx + 4].PadLeft(2, '0'), datas[iIdx + 5]);
-            blResult = DataValidator.ValidateDate(sTmp, out date);
             return blResult;
         }
 
@@ -174,11 +168,7 @@ namespace ServicesKernel.GDFX
                 return blResult;
             iIdx = 0;
 
-            datas[iIdx + 5] = datas[iIdx + 5].Substring(0, datas[iIdx + 5].IndexOf('.') + 4);
-            if (datas[iIdx + 5].Length != 6)
-                datas[iIdx + 5] = "0" + datas[iIdx + 5];
-            sTmp = string.Format("{0}{1}{2} {3}{4}{5}", datas[iIdx], datas[iIdx + 1].PadLeft(2, '0'), datas[iIdx + 2].PadLeft(2, '0')
-                    , datas[iIdx + 3].PadLeft(2, '0'), datas[iIdx + 4].PadLeft(2, '0'), datas[iIdx + 5]);
+            sTmp = DataValidator.GetArrayTimeString(datas, iIdx);
             blResult = DataValidator.ValidateDate(sTmp, out date);
             if (!blResult)
                 return blResult;
@@ -203,14 +193,15 @@ namespace ServicesKernel.GDFX
         /// <param name="emitFileName"></param>
         /// <param name="resultFile"></param>
         /// <returns></returns>
-        public string DoConvert(bool deg, bool km, string convertType, string convertFileFullName, string emitFileFullName, out string resultFile)
+        public string DoConvert(bool deg, bool km, int timezone, string convertType, string convertFileFullName
+            , string emitFileFullName, out string resultFile)
         {
             resultFile = string.Empty;
             string strResult = string.Empty;
 
             if (isCaculating)
             {
-                strResult = "同一时间只能只能执行单次计算任务，请稍候再计算。";
+                strResult = "同一时间只能只能执行单次计算任务，请稍候再计算";
                 return strResult;
             }
 
@@ -225,31 +216,40 @@ namespace ServicesKernel.GDFX
             //取得发射系文件路径的int类型数组
             int[] iPath = new int[0];
             int[] iName = new int[0];
-            if (convertType.IndexOf("8") >= 0 || convertType.IndexOf("9") >= 0)
+            //if (convertType.IndexOf("8") >= 0 || convertType.IndexOf("9") >= 0)
             {
                 iLine = emitFileFullName.LastIndexOf(@"\") + 1;
                 iPath = DataValidator.GetIntPath(emitFileFullName.Substring(0, iLine));
                 iName = DataValidator.GetIntPath(emitFileFullName.Substring(iLine));
             }
 
-            resultFile = this.DllPath + outputPath + "CvtResult_" + DateTime.Now.ToString("yyyyMMdd HHmmss.dat");
+            if (iPath.Length + iName.Length > 100)
+            {
+                strResult = "文件全路径字符长度不得大于100，请重新设置。";
+                isCaculating = false;
+                return strResult;
+            }
+            resultFile = emitFileFullName.Substring(0, emitFileFullName.LastIndexOf(@"\") + 1) 
+                + "CvtResult_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".dat";
             StreamWriter oSWriter = new StreamWriter(resultFile);
-            StreamReader oSReader = new StreamReader(emitFileFullName);
+            StreamReader oSReader = new StreamReader(convertFileFullName);
             oSReader.BaseStream.Seek(0, SeekOrigin.Begin);
             strLine = oSReader.ReadLine();
+            int[] ym;
+            double s;
             while (strLine != null)
             {
                 strLine = strLine.Trim();
                 if (!strLine.Equals(string.Empty))
                 {
-                    strResult = ConvertRow(deg, km, iCvtType, iName, iPath, strLine, out result);
+                    strResult = ConvertRow(deg, km, timezone, iCvtType, iName, iPath, strLine, out result, out ym, out s);
                     if (!strResult.Equals(string.Empty))
                     {
                         strResult = string.Format("第{0}行，{1}", iLine, strResult);
                         break;
                     }
                     strTmp = strLine.Substring(0, strLine.IndexOf('.') + 7);
-                    blResult = WriteToResult(oSWriter, strTmp, result);
+                    blResult = WriteToResult(oSWriter, ym, s, result);
                     if (!blResult)
                     {
                         strResult = string.Format("保存第{0}行计算结果出错", iLine);
@@ -274,7 +274,7 @@ namespace ServicesKernel.GDFX
         /// <param name="s">秒，double</param>
         /// <param name="orb">double[6]</param>
         /// <returns></returns>
-        private bool GetRowData(string rowData, out int[] ym, out double s, out double[] da)    
+        private bool GetRowData(string rowData, out int[] ym, out double s, out double[] da)
         {
             ym = new int[0];
             s = 0;
@@ -321,32 +321,31 @@ namespace ServicesKernel.GDFX
         /// <param name="line"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        public string ConvertRow(bool deg, bool km, int convertType, int[] emitFileName, int[] emitFilePath, string line, out double[] result)
+        public string ConvertRow(bool deg, bool km, int timezone, int convertType, int[] emitFileName
+            , int[] emitFilePath, string line, out double[] result, out int[] ym, out double s)
         {
             result = new double[0];
             string strResult = string.Empty;
-            int[] ym;
-            double s;
             double[] da;
             bool blResult = false;
             blResult = GetRowData(line, out ym, out s, out da);
             if (!blResult)
             {
-                strResult = string.Format("获取行数据{0}出错", line) ;
+                strResult = string.Format("获取行数据{0}出错", line);
                 return strResult;
             }
-            blResult = ParamConvert(deg, km, convertType, ym, s, da, emitFileName, emitFilePath, out result);
+            blResult = ParamConvert(deg, km, timezone, convertType, ym, s, da, emitFileName, emitFilePath, out result);
             if (!blResult)
                 strResult = string.Format("计算行数据{0}出错", line);
             return strResult;
         }
 
-        public bool ParamConvert(bool deg, bool km, int convertType, int[] YM, double s, double[] da, int[] emitFileName, int[] emitFilePath, out double[] result)
+        public bool ParamConvert(bool deg, bool km, int timezone, int convertType, int[] YM, double s, double[] da, int[] emitFileName, int[] emitFilePath, out double[] result)
         {
-            result = new double[0];
+            result = new double[6];
             bool blResult = true;
-            int kz = 0;
-            Convert(deg, km, convertType, kz, YM, s, da, result, ref emitFileName[0], emitFileName.Length, ref emitFilePath[0], emitFilePath.Length);
+            int iResult = 0;
+            Convert(deg, km, convertType, timezone, ref YM[0], s, ref da[0], ref result[0], ref emitFileName[0], emitFileName.Length, ref emitFilePath[0], emitFilePath.Length, ref iResult);
             return blResult;
         }
 
@@ -361,17 +360,32 @@ namespace ServicesKernel.GDFX
         /// <param name="S2"></param>
         /// <param name="Orb2"></param>
         /// <returns></returns>
-        private bool WriteToResult(StreamWriter oSTWResult, string yms, double[] da)
+        private bool WriteToResult(StreamWriter oSTWResult, int[] ym, double s, double[] da)
         {
             bool blResult = true;
             StringBuilder sb = new StringBuilder();
             sb.Append("  ");
-            sb.Append(yms);
+            sb.Append(ym[0]);
+
+            sb.Append(" ");
+            sb.Append(ym[1].ToString().PadLeft(2, '0'));
+
+            sb.Append(" ");
+            sb.Append(ym[2].ToString().PadLeft(2, '0'));
+
+            sb.Append(" ");
+            sb.Append(ym[3].ToString().PadLeft(2, '0'));
+
+            sb.Append(":");
+            sb.Append(ym[4].ToString().PadLeft(2, '0'));
+
+            sb.Append(":");
+            sb.Append(s.ToString("00.0"));
 
             for (int i = 0; i < da.Length; i++)
             {
                 sb.Append("  ");
-                sb.Append(da[i].ToString("0000000000.000000").TrimStart(new char[]{'0'}));
+                sb.Append(da[i].ToString("f6").PadLeft(16, ' '));
             }
             try
             {
@@ -385,14 +399,25 @@ namespace ServicesKernel.GDFX
         }
 
         /// <summary>
-        /// Fortran 调用
+        /// 参数转换
         /// </summary>
-        /// <param name="dirIn"></param>
-        /// <param name="Ndir"></param>
-        [DllImport(dllPath + @"EleCvtDLL.dll",
+        /// <param name="deg">是否为度</param>
+        /// <param name="km">是否为KM</param>
+        /// <param name="KCvt">转换类型</param>
+        /// <param name="Kz">时区，正负12之间</param>
+        /// <param name="ym">年月日时分</param>
+        /// <param name="s">秒</param>
+        /// <param name="da">数组</param>
+        /// <param name="result">输出结果</param>
+        /// <param name="emitFile">发射系文件名</param>
+        /// <param name="nfile">发射系文件名数组长度</param>
+        /// <param name="dir">发射系文件路径</param>
+        /// <param name="ndir">发射系文件路径长度</param>
+        /// <param name="Kjg">计算是否成功，1成功0失败</param>
+        [DllImport(dllPath + dllFolder + dllName,
             SetLastError = true, CharSet = CharSet.Ansi,
             CallingConvention = CallingConvention.StdCall)]
-        public static extern void Convert(bool deg, bool km, int KCvt, int Kz, int[] ym, double s, double[] da, double[] result
-            , ref int emitFile, int nfile, ref int dir, int ndir);
+        public static extern void Convert(bool deg, bool km, int KCvt, int Kz, ref int ym, double s, ref double da, ref double result
+            , ref int emitFile, int nfile, ref int dir, int ndir, ref int Kjg);
     }
 }

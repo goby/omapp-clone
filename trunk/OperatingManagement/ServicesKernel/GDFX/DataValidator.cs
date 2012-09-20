@@ -210,8 +210,14 @@ namespace ServicesKernel.GDFX
             string sRight;
             if (iTmp >= 0)
             {
-                sLeft = int.Parse(datas[iLast].Substring(0, iTmp)).ToString("00");
-                sRight = int.Parse(datas[iLast].Substring(iTmp + 1)).ToString("000");
+                if (datas[iLast].Substring(0, iTmp) != "")
+                    sLeft = int.Parse(datas[iLast].Substring(0, iTmp)).ToString("00");
+                else
+                    sLeft = "00";
+                if (datas[iLast].Substring(iTmp + 1) != "")
+                    sRight = int.Parse(datas[iLast].Substring(iTmp + 1)).ToString("000");
+                else
+                    sRight = "000";
                 datas[iLast] = sLeft + "." + sRight;
             }
             else

@@ -3,6 +3,16 @@
 
 <%@ Register Src="../../ucs/ucSatellite.ascx" TagName="ucSatellite" TagPrefix="uc4" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <style type="text/css">
+        .style1
+        {
+            height: 20px;
+        }
+        .style2
+        {
+            width: 120px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="gdfx" />
@@ -40,7 +50,7 @@
     <div id="divFileUpload" runat="server" visible="true">
         <table id="tbCutMainUpload" class="edit" style="width: 800px;">
             <tr>
-                <th style="width: 120px;">
+                <th class="style2" style="width:200px;">
                     CutMain文件(<span class="red">*</span>)
                 </th>
                 <td>
@@ -50,7 +60,7 @@
                 </td>
             </tr>
             <tr>
-                <th>
+                <th class="style2">
                     CutSub文件(<span class="red">*</span>)
                 </th>
                 <td>
@@ -60,7 +70,7 @@
                 </td>
             </tr>
             <tr>
-                <th>
+                <th class="style2">
                     CutOptional文件(<span class="red">*</span>)
                 </th>
                 <td>
@@ -712,7 +722,7 @@
             </td>
         </tr>
         <div id="divCalResult" runat="server" visible="false">
-            <tr>
+            <tr style="height:24px;">
                 <th>
                     计算结果文件路径
                 </th>
@@ -720,15 +730,21 @@
                     <asp:Label ID="lblResultFilePath" runat="server" Text=""></asp:Label>
                 </td>
             </tr>
-            <tr>
-                <th>
+            <tr style="height:24px;">
+                <th class="style1">
                     计算结果
                 </th>
-                <td>
+                <td class="style1">
                     <asp:Label ID="lblCalResult" runat="server" Text="等待计算" ForeColor="Red"></asp:Label>
-                    <asp:LinkButton ID="lbtnViewResult" runat="server" OnClientClick="javascript:_resultDialog.dialog('open');return false;" CausesValidation="false">查看</asp:LinkButton>
-                    <asp:LinkButton ID="lbtnResultFileDownload" runat="server" OnClick="lbtnResultFileDownload_Click"
-                        CausesValidation="false">下载</asp:LinkButton>
+                    &nbsp;
+                    <asp:LinkButton ID="lbtUNWFileDownload" runat="server" OnClick="lbtUNWFileDownload_Click" CausesValidation="false">保存UNW结果文件</asp:LinkButton>
+                    &nbsp;
+                    <asp:LinkButton ID="lbtSTWFileDownload" runat="server" OnClick="lbtSTWFileDownload_Click" CausesValidation="false">保存STW结果文件</asp:LinkButton>
+                    <!--<asp:LinkButton ID="lbtnViewResult" runat="server" 
+                        OnClientClick="javascript:_resultDialog.dialog('open');return false;" 
+                        CausesValidation="false" Visible="False">查看</asp:LinkButton> !-->
+                    &nbsp;
+                    <asp:LinkButton ID="lbtViewCurves" runat="server" OnClick="lbtViewCurves_Click" CausesValidation="false">查看曲线图</asp:LinkButton>
                 </td>
             </tr>
         </div>
