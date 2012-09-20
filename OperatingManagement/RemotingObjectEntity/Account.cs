@@ -123,6 +123,64 @@ namespace OperatingManagement.RemotingObjectEntity
             return sTmp;
         }
 
+        public string GetUserByID(int userid)
+        {
+            XElement root = new XElement("user");
+            XElement roles = new XElement("roles");
+            string sTmp = string.Empty;
+
+            Logger.Info(string.Format("收到获取某用户信息请求，UserID={0}", userid));
+            try
+            {
+
+                User u = new User()
+                {
+                    Id = userid
+                };
+                u = u.SelectById();
+
+                if (u == null)
+                    root.Add(new XElement("msg"), "获取不到指定的用户");
+                else
+                {
+                    root.Add(new XElement("msg"), "");
+                    root.Add(new XElement("id", u.Id),
+                        new XElement("displayName", u.DisplayName),
+                        new XElement("loginName", u.LoginName),
+                        new XElement("mobile", u.Mobile),
+                        new XElement("state", (int)u.Status),
+                        new XElement("userType", (int)u.UserType),
+                        new XElement("userCatalog", (int)u.UserCatalog));
+                    var rs = u.SelectRolesById();
+                    if (rs != null && rs.Count > 0)
+                    {
+                        foreach (var r in rs)
+                        {
+                            roles.Add(new XElement("role",
+                                new XElement("id", r.Id),
+                                new XElement("name", r.RoleName)));
+                        }
+                        root.Add(roles);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                sTmp = "获取用户信息过程出现异常";
+                root.Add(new XElement("msg", sTmp));
+                Logger.Error(sTmp, ex);
+            }
+            finally { }
+
+            if (sTmp == string.Empty)
+            {
+                sTmp = root.ToString();
+                Logger.Info("获取所有角色信息成功");
+                Logger.Debug(sTmp);
+            }
+            return sTmp;
+        }
+
         /// <summary>
         /// 获取所有角色
         /// </summary>

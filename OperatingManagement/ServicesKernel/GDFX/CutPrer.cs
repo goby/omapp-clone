@@ -15,9 +15,11 @@ namespace ServicesKernel.GDFX
     /// </summary>
     public class CutPrer
     {
-        private string[] fileNames = new string[] { "JPLEPH", "TESTRECL", "WGS84.GEO", "eopc04_IAU2000.dat" };
-        private const string dllPath = @"\GDDLL\CutPre\";
-        private const string outputPath = @"output\";
+        private string[] fileNames = new string[] { "JPLEPH", "TESTRECL", "WGS84.GEO", "eopc_IAU2000.txt" };
+        private const string dllPath = @"D:\Deploy\";
+        private const string dllFolder = @"GDDLL\CutPre\";
+        private const string dllName = @"CutPreDLL.dll";
+        //private const string outputPath = @"output\";
         private string strDllPath;
         //
         //private IntPtr handle;
@@ -57,7 +59,7 @@ namespace ServicesKernel.GDFX
             get
             {
                 if (strDllPath.Equals(string.Empty))
-                    strDllPath = GlobalSettings.MapPath("~" + dllPath);
+                    strDllPath = dllPath + dllFolder;//GlobalSettings.MapPath("~" + dllFolder);
                 return strDllPath;
             }
         }
@@ -71,9 +73,9 @@ namespace ServicesKernel.GDFX
             string strResult = string.Empty;
             for (int i = 0; i < fileNames.Length; i++)
             {
-                if (!DataFileHandle.Exists(DllPath + fileNames[i]))
+                if (!DataFileHandle.Exists(DllPath + @"\Include\" + fileNames[i]))
                 {
-                    strResult = string.Format("文件{0}不存在。", fileNames[i]);
+                    strResult = string.Format("文件{0}不存在", fileNames[i]);
                     break;
                 }
             }
@@ -103,42 +105,39 @@ namespace ServicesKernel.GDFX
             #region 检查第一行，后面与第一行格式不一致
             if (strLine != null)
             {
-                //YYYY  MM  DD  HH  MM  SS.SSSSSS   DU
+                //Ys  Ms  Ds  Hs  Mins  SS.Ss  Yf  Mf  Df  Hf  Minf  SS.Sf
                 datas = DataValidator.SplitRowDatas(strLine);
-                if (datas.Length != 7)
+                if (datas.Length != 12)
                 {
                     oSReader.Close();
                     return string.Format(msg, iLine);
                 }
 
                 iIdx = 0;
-                datas[iIdx + 5] = datas[iIdx + 5].Substring(0, datas[iIdx + 5].IndexOf('.') + 4);
-                if (datas[iIdx + 5].Length != 6)
-                    datas[iIdx + 5] = "0" + datas[iIdx + 5];
-                sTmp = string.Format("{0}{1}{2} {3}{4}{5}", datas[iIdx], datas[iIdx + 1].PadLeft(2, '0'), datas[iIdx + 2].PadLeft(2, '0')
-                        , datas[iIdx + 3].PadLeft(2, '0'), datas[iIdx + 4].PadLeft(2, '0'), datas[iIdx + 5]);
+                sTmp = DataValidator.GetArrayTimeString(datas, iIdx);
                 blResult = DataValidator.ValidateDate(sTmp, out date);
                 if (!blResult)
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【起始时间不合法】", iLine);
                 }
 
                 iIdx = 6;
-                blResult = DataValidator.ValidateFloat(datas[iIdx], 16, 6);
+                sTmp = DataValidator.GetArrayTimeString(datas, iIdx);
+                blResult = DataValidator.ValidateDate(sTmp, out date);
                 if (!blResult)
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【终止时间不合法】", iLine);
                 }
             }
             else
             {
                 oSReader.Close();
-                return string.Format(msg, iLine);
+                return string.Format(msg + "【空文件】", iLine);
             }
             #endregion
-            
+
             //检查第二行
             strLine = oSReader.ReadLine();
             iLine++;
@@ -199,17 +198,13 @@ namespace ServicesKernel.GDFX
             iIdx = 2;
 
             //Name	NO	  YYYY  MM  DD  HH  MM  SS.SSSSSS	KK 	D1  D2  D3  D4  D5  D6	 Sm	Ref
-            datas[iIdx + 5] = datas[iIdx + 5].Substring(0, datas[iIdx + 5].IndexOf('.') + 4);
-            if (datas[iIdx + 5].Length != 6)
-                datas[iIdx + 5] = "0" + datas[iIdx + 5];
-            sTmp = string.Format("{0}{1}{2} {3}{4}{5}", datas[iIdx], datas[iIdx + 1].PadLeft(2, '0'), datas[iIdx + 2].PadLeft(2, '0')
-                    , datas[iIdx + 3].PadLeft(2, '0'), datas[iIdx + 4].PadLeft(2, '0'), datas[iIdx + 5]);
+            sTmp = DataValidator.GetArrayTimeString(datas, iIdx);
             blResult = DataValidator.ValidateDate(sTmp, out date);
             if (!blResult)
                 return blResult;
 
             iIdx += 6;
-            blResult = (datas[iIdx] != "1" && datas[iIdx] != "2" && datas[iIdx] != "3");
+            blResult = !(datas[iIdx] != "1" && datas[iIdx] != "2" && datas[iIdx] != "3");
             if (!blResult)
                 return blResult;
 
@@ -322,8 +317,9 @@ namespace ServicesKernel.GDFX
             int iLine = 0;
             string strLine = string.Empty;
             string[] datas = new string[0];
-            string msg = "Optional文件数据行{0}不合法。";
+            string msg = "Optional文件数据行{0}不合法";
             int iTmp = 0;
+            double dbTmp = 0;
             StreamReader oSReader = new StreamReader(fileName);
 
             oSReader.BaseStream.Seek(0, SeekOrigin.Begin);
@@ -333,31 +329,31 @@ namespace ServicesKernel.GDFX
             datas = GetOptionalFileRowDatas(strLine);
             if (datas != null)
             {
-                if (!int.TryParse(datas[1].Trim(), out iTmp) || (iTmp > 30 || iTmp < 1))
+                if (!double.TryParse(datas[1].Trim(), out dbTmp) || (dbTmp > 30 || dbTmp < 1))
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【double，1-30之间】", iLine);
                 }
             }
             else
             {
                 oSReader.Close();
-                return string.Format(msg, iLine);
+                return string.Format(msg + "【不正常结束】", iLine);
             }
             #endregion
 
             #region 第二行，力模型控制，Pass
             iLine++;
             strLine = oSReader.ReadLine();
-            datas = GetOptionalFileRowDatas(strLine);
-            if (datas == null)
-            {
-                oSReader.Close();
-                return string.Format(msg, iLine);
-            }
+            //datas = GetOptionalFileRowDatas(strLine);
+            //if (datas == null)
+            //{
+            //    oSReader.Close();
+            //    return string.Format(msg, iLine);
+            //}
             #endregion
 
-            #region 第三行，非球形引力阶数，int
+            #region 第三行，非球形引力阶数，int，>0 & < 50
             iLine++;
             strLine = oSReader.ReadLine();
             datas = GetOptionalFileRowDatas(strLine);
@@ -366,17 +362,23 @@ namespace ServicesKernel.GDFX
                 if (!int.TryParse(datas[1], out iTmp))
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【应为int】", iLine);
+                }
+
+                if (iTmp > 50 || iTmp < 0)
+                {
+                    oSReader.Close();
+                    return string.Format(msg + "【应大于0小于50】", iLine);
                 }
             }
             else
             {
                 oSReader.Close();
-                return string.Format(msg, iLine);
+                return string.Format(msg + "【不正常结束】", iLine);
             }
             #endregion
 
-            #region 第四行，非球形引力，int
+            #region 第四行，非球形引力，int：0，1，2
             iLine++;
             strLine = oSReader.ReadLine();
             datas = GetOptionalFileRowDatas(strLine);
@@ -385,53 +387,66 @@ namespace ServicesKernel.GDFX
                 if (!int.TryParse(datas[1], out iTmp))
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【应为int】", iLine);
+                }
+                if (iTmp > 2 || iTmp < 0)
+                {
+                    oSReader.Close();
+                    return string.Format(msg + "【应为0或者1或者2】", iLine);
                 }
             }
             else
             {
                 oSReader.Close();
-                return string.Format(msg, iLine);
+                return string.Format(msg + "【不正常结束】", iLine);
             }
             #endregion
 
-            #region 第五行，第三体引力，0 or 1
+            #region 第五行，第三体引力，0 - 3
             iLine++;
             strLine = oSReader.ReadLine();
             datas = GetOptionalFileRowDatas(strLine);
             if (datas != null)
             {
-                datas[1] = datas[1].Trim();
-                if (datas[1] != "0" && datas[1] != "1")
+                if (!int.TryParse(datas[1], out iTmp))
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【应为int】", iLine);
+                }
+                if (iTmp > 3 || iTmp < 0)
+                {
+                    oSReader.Close();
+                    return string.Format(msg + "【int，应在0-3之间】", iLine);
                 }
             }
             else
             {
                 oSReader.Close();
-                return string.Format(msg, iLine);
+                return string.Format(msg + "【不正常结束】", iLine);
             }
             #endregion
 
-            #region 第六行，潮汐摄动，0 or 1
+            #region 第六行，潮汐摄动，0 - 3
             iLine++;
             strLine = oSReader.ReadLine();
             datas = GetOptionalFileRowDatas(strLine);
             if (datas != null)
             {
-                datas[1] = datas[1].Trim();
-                if (datas[1] != "0" && datas[1] != "1")
+                if (!int.TryParse(datas[1], out iTmp))
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【应为int】", iLine);
+                }
+                if (iTmp > 3 || iTmp < 0)
+                {
+                    oSReader.Close();
+                    return string.Format(msg + "【int，应在0-3之间】", iLine);
                 }
             }
             else
             {
                 oSReader.Close();
-                return string.Format(msg, iLine);
+                return string.Format(msg + "【不正常结束】", iLine);
             }
             #endregion
 
@@ -445,13 +460,13 @@ namespace ServicesKernel.GDFX
                 if (datas[1] != "0" && datas[1] != "1")
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【应为0 或 1】", iLine);
                 }
             }
             else
             {
                 oSReader.Close();
-                return string.Format(msg, iLine);
+                return string.Format(msg + "【不正常结束】", iLine);
             }
             #endregion
 
@@ -465,13 +480,13 @@ namespace ServicesKernel.GDFX
                 if (datas[1] != "0" && datas[1] != "1")
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【应为0 或 1】", iLine);
                 }
             }
             else
             {
                 oSReader.Close();
-                return string.Format(msg, iLine);
+                return string.Format(msg + "【不正常结束】", iLine);
             }
             #endregion
 
@@ -485,25 +500,25 @@ namespace ServicesKernel.GDFX
                 if (datas[1] != "0" && datas[1] != "1")
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【应为0 或 1】", iLine);
                 }
             }
             else
             {
                 oSReader.Close();
-                return string.Format(msg, iLine);
+                return string.Format(msg + "【不正常结束】", iLine);
             }
             #endregion
 
             #region 第十行，相关力模型参数，Pass
             iLine++;
             strLine = oSReader.ReadLine();
-            datas = GetOptionalFileRowDatas(strLine);
-            if (datas == null)
-            {
-                oSReader.Close();
-                return string.Format(msg, iLine);
-            }
+            //datas = GetOptionalFileRowDatas(strLine);
+            //if (datas == null)
+            //{
+            //    oSReader.Close();
+            //    return string.Format(msg, iLine);
+            //}
             #endregion
 
             oSReader.Close();
@@ -522,6 +537,7 @@ namespace ServicesKernel.GDFX
                 return null;
             rowData = rowData.Trim();
             datas = rowData.Split(new char[] { ':' });
+            datas[1] = datas[1].Trim().Split(new char[] { '!' })[0].Trim();
             return datas;
         }
 
@@ -535,27 +551,34 @@ namespace ServicesKernel.GDFX
             string strResult = string.Empty;
             if (isCaculating)
             {
-                strResult = "同一时间只能只能执行单次计算任务，请稍候再计算。";
+                strResult = "同一时间只能只能执行单次计算任务，请稍候再计算";
                 return strResult;
             }
             isCaculating = true;
 
             int[] iPath = DataValidator.GetIntPath(mainFilePath);
+            if (iPath.Length > 100)
+            {
+                strResult = "文件路径字符长度不得大于100，请重新设置。";
+                isCaculating = false;
+                return strResult;
+            }
             int iResult = 0;
-            CutPre(ref iPath[0], iPath.Length, iResult);
+            CutPre(ref iPath[0], iPath.Length, ref iResult);
             isCaculating = false;
             return strResult;
         }
 
 
         /// <summary>
-        /// Fortran 调用
+        /// 交会预报
         /// </summary>
-        /// <param name="dirIn"></param>
-        /// <param name="Ndir"></param>
-        [DllImport(dllPath + @"CutPreDLL.dll",
+        /// <param name="dirIn">文件路径</param>
+        /// <param name="Ndir">路径数组长度</param>
+        /// <param name="Kjg">计算是否成功，1成功0失败</param>
+        [DllImport(dllPath + dllFolder + dllName,
             SetLastError = true, CharSet = CharSet.Ansi,
             CallingConvention = CallingConvention.StdCall)]
-        public static extern void CutPre(ref int dirIn, int Ndir, int Kjg);
+        public static extern void CutPre(ref int dirIn, int Ndir, ref int Kjg);
     }
 }

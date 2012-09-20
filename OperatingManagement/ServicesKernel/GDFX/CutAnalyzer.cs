@@ -16,7 +16,9 @@ namespace ServicesKernel.GDFX
     public class CutAnalyzer
     {
         private string[] fileNames = new string[] { "JPLEPH", "TESTRECL", "WGS84.GEO", "eopc04_IAU2000.dat" };
-        private const string dllPath = @"\GDDLL\CutAna\";
+        private const string dllPath = @"D:\Deploy\";
+        private const string dllFolder = @"GDDLL\CutAna\";
+        private const string dllName = @"CutAnaDLL.dll";
         private const string outputPath = @"output\";
         private string strDllPath;
         //
@@ -58,7 +60,7 @@ namespace ServicesKernel.GDFX
             get
             {
                 if (strDllPath.Equals(string.Empty))
-                    strDllPath = GlobalSettings.MapPath("~" + dllPath);
+                    strDllPath = dllPath + dllFolder;//GlobalSettings.MapPath("~" + dllFolder);
                 return strDllPath;
             }
         }
@@ -84,7 +86,7 @@ namespace ServicesKernel.GDFX
 
             bool blResult = true;
             int iLine = 0;
-            string msg = "交会分析文件数据行{0}格式不合法。";
+            string msg = "交会分析文件数据行{0}格式不合法";
             string strLine = string.Empty;
             DateTime date;
 
@@ -99,14 +101,14 @@ namespace ServicesKernel.GDFX
                 if (!blResult)
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【日期不合法】", iLine);
                 }
                 minDate = date;
             }
             else
             {
                 oSReader.Close();
-                return string.Format("交会分析数据行{0}为空。", iLine);//第一行为空返回false
+                return string.Format(msg + "【不正常结束】", iLine);//第一行为空返回false
             }
 
             //获取第二行，获取时间间隔
@@ -118,7 +120,7 @@ namespace ServicesKernel.GDFX
                 if (!blResult)
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【日期不合法】", iLine);
                 }
                 interval = (int)(date - minDate).TotalMilliseconds;
             }
@@ -136,9 +138,9 @@ namespace ServicesKernel.GDFX
                 if (!blResult)
                 {
                     oSReader.Close();
-                    return string.Format(msg, iLine);
+                    return string.Format(msg + "【日期不合法】", iLine);
                 }
-                iLine++; 
+                iLine++;
                 strLine = oSReader.ReadLine();
             }
             oSReader.Close();
@@ -163,36 +165,23 @@ namespace ServicesKernel.GDFX
             string sTmp = string.Empty;
             //YYYY  MM  DD  HH  MM  SS.SSSSSS x1 y1 z1 vx1 vy1 vz1
             //格式: 2空格，I4，空格，2（I2，空格），2（I2，‘：’），F4.1，2空格，6(F16.6,2空格)
-            try
-            {
-                datas = DataValidator.SplitRowDatas(rowData);
-                if (datas.Length != 12)
-                    return false;
+            datas = DataValidator.SplitRowDatas(rowData);
+            if (datas.Length != 12)
+                return false;
 
-                //前六个数组成日期型
-                datas[5] = datas[5].Substring(0, datas[5].IndexOf('.') + 4);
-                if (datas[5].Length != 6)
-                    datas[5] = "0" + datas[5];
-                sTmp = string.Format("{0}{1}{2} {3}{4}{5}", datas[0], datas[1].PadLeft(2, '0'), datas[2].PadLeft(2, '0')
-                    , datas[3].PadLeft(2, '0'), datas[4].PadLeft(2, '0'), datas[5]);
-                blResult = DataValidator.ValidateDate(sTmp, out date);
+            //前六个数组成日期型
+            sTmp = DataValidator.GetArrayTimeString(datas, 0);
+            blResult = DataValidator.ValidateDate(sTmp, out date);
+            if (!blResult)
+                return blResult;
+
+            //后6个数为double
+            for (int i = 6; i < datas.Length; i++)
+            {
+                blResult = DataValidator.ValidateFloat(datas[i], 16, 6);
                 if (!blResult)
                     return blResult;
-
-                //后6个数为double
-                for (int i = 6; i < datas.Length; i++)
-                {
-                    blResult = DataValidator.ValidateFloat(datas[i], 16, 6);
-                    if (!blResult)
-                        return blResult;
-                }
             }
-            catch (Exception ex)
-            {
-                date = DateTime.MaxValue;
-                return false;
-            }
-            finally { }
             return blResult;
         }
 
@@ -214,30 +203,22 @@ namespace ServicesKernel.GDFX
             int iIdx = 0;
             //YYYY  MM  DD  HH  MM  SS.SSSSSS x1 y1 z1 vx1 vy1 vz1
             //格式: 2空格，I4，空格，2（I2，空格），2（I2，‘：’），F4.1，2空格，6(F16.6,2空格)
-            try
+            datas = DataValidator.SplitRowDatas(rowData);
+            ym = new int[5];
+            for (int i = 0; i < 5; i++)
             {
-                datas = DataValidator.SplitRowDatas(rowData);
-                ym = new int[5];
-                for (int i = 0; i < 5; i++)
-                {
-                    ym[i] = Convert.ToInt32(datas[i]);
-                }
-                iIdx = 5;
-                s = Convert.ToDouble(datas[iIdx]);
+                ym[i] = Convert.ToInt32(datas[i]);
+            }
+            iIdx = 5;
+            s = Convert.ToDouble(datas[iIdx]);
 
-                //后6个数为double
-                iIdx++;
-                orb = new double[6];
-                for (int i = iIdx; i < datas.Length; i++)
-                {
-                    orb[i - 6] = Convert.ToDouble(datas[i]);
-                }
-            }
-            catch (Exception ex)
+            //后6个数为double
+            iIdx++;
+            orb = new double[6];
+            for (int i = iIdx; i < datas.Length; i++)
             {
-                return false;
+                orb[i - 6] = Convert.ToDouble(datas[i]);
             }
-            finally { }
             return true;
         }
 
@@ -257,21 +238,9 @@ namespace ServicesKernel.GDFX
             string sTmp = string.Empty;
             //YYYY  MM  DD  HH  MM  SS.SSSSSS x1 y1 z1 vx1 vy1 vz1
             //格式: 2空格，I4，空格，2（I2，空格），2（I2，‘：’），F4.1，2空格，6(F16.6,2空格)
-            try
-            {
-                datas = DataValidator.SplitRowDatas(rowData);
-                datas[5] = datas[5].Substring(0, datas[5].IndexOf('.') + 4);
-                if (datas[5].Length != 6)
-                    datas[5] = "0" + datas[5];
-                sTmp = string.Format("{0}{1}{2} {3}{4}{5}", datas[0], datas[1].PadLeft(2, '0'), datas[2].PadLeft(2, '0')
-                    , datas[3].PadLeft(2, '0'), datas[4].PadLeft(2, '0'), datas[5]);
-                date = DateTime.ParseExact(sTmp, "yyyyMMdd HHmmss.fff", CultureInfo.InvariantCulture);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            finally { }
+            datas = DataValidator.SplitRowDatas(rowData);
+            sTmp = DataValidator.GetArrayTimeString(datas, 0);
+            date = DateTime.ParseExact(sTmp, "yyyyMMdd HHmmss.fff", CultureInfo.InvariantCulture);
             return true;
         }
 
@@ -302,7 +271,7 @@ namespace ServicesKernel.GDFX
             {
                 if (!DataFileHandle.Exists(DllPath + fileNames[i]))
                 {
-                    strResult = string.Format("文件{0}不存在。", fileNames[i]);
+                    strResult = string.Format("文件{0}不存在", fileNames[i]);
                     break;
                 }
             }
@@ -330,7 +299,7 @@ namespace ServicesKernel.GDFX
             string strResult = string.Empty;
             if (isCaculating)
             {
-                strResult = "同一时间只能只能执行单次计算任务，请稍候再计算。";
+                strResult = "同一时间只能只能执行单次计算任务，请稍后再计算";
                 return strResult;
             }
             isCaculating = true;
@@ -338,8 +307,9 @@ namespace ServicesKernel.GDFX
             #region 变量声明
             StreamReader oSubSR = new StreamReader(subFileFullName);
             StreamReader oTgtSR = new StreamReader(targetFileFullName);
-            StreamWriter oSTWResult = new StreamWriter(this.DllPath + outputPath + resultFileName + "_STW.dat");
-            StreamWriter oUNWResult = new StreamWriter(this.DllPath + outputPath + resultFileName + "_UNW.dat");
+            string filePath = subFileFullName.Substring(0, subFileFullName.LastIndexOf(@"\") + 1) + @"\output\";
+            StreamWriter oSTWResult = new StreamWriter(filePath + resultFileName + "_STW.dat");
+            StreamWriter oUNWResult = new StreamWriter(filePath + resultFileName + "_UNW.dat");
             #endregion
 
             oSubSR.BaseStream.Seek(0, SeekOrigin.Begin);
@@ -396,7 +366,7 @@ namespace ServicesKernel.GDFX
             double[] Orb2;
             int[] YM3;
             double S3;
-            double[] Orb3;
+            double[,] Orb3;
             string strSubLine = string.Empty;
             string strTgtLine = string.Empty;
             DateTime subDate = DateTime.MinValue;
@@ -464,23 +434,24 @@ namespace ServicesKernel.GDFX
                     if (!strResult.Equals(string.Empty))
                         break;
 
+                    int iResult;
                     //计算，如果计算函数不关心左右，则可以不用调整顺序
                     if (isRightTurn)
-                        blResult = Caculate(YM1, S1, Orb1, YM2, S2, Orb2, out YM3, out S3, out Orb3);
+                        iResult = Caculate(YM1, S1, Orb1, YM2, S2, Orb2, out YM3, out S3, out Orb3);
                     else
-                        blResult = Caculate(YM2, S2, Orb2, YM1, S1, Orb1, out YM3, out S3, out Orb3);
+                        iResult = Caculate(YM2, S2, Orb2, YM1, S1, Orb1, out YM3, out S3, out Orb3);
 
-                    if (!blResult)
+                    if (iResult != 1)
                     {
-                        strResult = string.Format("计算数据行{0}，{1}错误", strSubLine, strTgtLine);
+                        strResult = string.Format("计算数据行{0}，{1}错误，错误号：{2}", strSubLine, strTgtLine, iResult);
                         break;
                     }
 
-                    //存储计算结果到文件
-                    if (isRightTurn)
-                        blResult = WriteToResult(oSTWResult, YM1, S1, Orb1, YM2, S2, Orb2);//WriteToResult(oSTWResult, oUNWResult, YM3, S3, Orb3);
-                    else
-                        blResult = WriteToResult(oSTWResult, YM2, S2, Orb2, YM1, S1, Orb1);//WriteToResult(oSTWResult, oUNWResult, YM3, S3, Orb3);
+                    ////存储计算结果到文件
+                    //if (isRightTurn)
+                    //    blResult = WriteToResult(oSTWResult, oUNWResult, YM3, S3, Orb3);
+                    //else
+                    blResult = WriteToResult(oSTWResult, oUNWResult, YM3, S3, Orb3);
                     if (!blResult)
                     {
                         strResult = "存储计算结果出错";
@@ -604,16 +575,49 @@ namespace ServicesKernel.GDFX
         /// <param name="S3"></param>
         /// <param name="Orb3"></param>
         /// <returns></returns>
-        private bool Caculate(int[] YM1, double S1, double[] Orb1, int[] YM2, double S2, double[] Orb2, out int[] YM3, out double S3, out double[] Orb3)
+        private int Caculate(int[] YM1, double S1, double[] Orb1, int[] YM2, double S2, double[] Orb2, out int[] YM3, out double S3, out double[,] Orb3)
         {
-            YM3 = new int[0];
+            YM3 = new int[5];
             S3 = 0;
-            Orb3 = new double[0];
-            /*
-             * do caculate here
-            */
-            return true;
+            Orb3 = new double[2, 11];
+            int iResult = 0;
+
+            iResult = CutAna(ref YM1[0], S1, ref Orb1[0], ref YM2[0], S2, ref Orb2[0]
+                , ref YM3[0], ref S3, ref Orb3[0, 0]);
+            //Orb3 = ConvertArray(Orb3);
+            return iResult;
         }
+
+        /// <summary>
+        /// 转换数组，Fortran数组列与C#数组的行与列是反的（[0,1]->[1,0]）
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        private double[,] ConvertArray(double[,] result)
+        {
+            double[,] dbArray = new double[result.GetLength(1), result.GetLength(0)];
+            for (int i = 0; i < result.GetLength(0); i++)
+            {
+                for (int j = 0; j < result.GetLength(1); j++)
+                {
+                    dbArray[j, i] = result[i, j];
+                }
+            }
+            return dbArray;
+        }
+
+
+        /// <summary>
+        /// 交会分析
+        /// </summary>
+        /// <param name="dirIn">文件路径</param>
+        /// <param name="Ndir">路径数组长度</param>
+        /// <param name="Kjg">计算是否成功，1成功0失败</param>
+        [DllImport(dllPath + dllFolder + dllName,
+            SetLastError = true, CharSet = CharSet.Ansi,
+            CallingConvention = CallingConvention.StdCall)]
+        public static extern int CutAna(ref int Ym1, double S1, ref double Orb1, ref int Ym2, double S2, ref double Orb2,
+            ref int Ym3, ref double S3, ref double Res);
 
         /// <summary>
         /// 把计算结果写入结果文件
@@ -624,9 +628,62 @@ namespace ServicesKernel.GDFX
         /// <param name="S3"></param>
         /// <param name="Orb3"></param>
         /// <returns></returns>
-        private bool WriteToResult(StreamWriter oSTWResult, StreamWriter oUNWResult, int[] YM3, double S3, double[] Orb3)
+        private bool WriteToResult(StreamWriter oSTWResult, StreamWriter oUNWResult, int[] YM3, double S3, double[,] Orb3)
         {
             bool blResult = true;
+            StringBuilder sb = new StringBuilder();
+            StringBuilder sbUNW = new StringBuilder();
+            string sTmp = string.Empty;
+            sb.Append("  ");
+            sb.Append(YM3[0].ToString());
+
+            sb.Append(" ");
+            sb.Append(YM3[1].ToString().PadLeft(2, '0'));
+
+            sb.Append(" ");
+            sb.Append(YM3[2].ToString().PadLeft(2, '0'));
+
+            sb.Append(" ");
+            sb.Append(YM3[3].ToString().PadLeft(2, '0'));
+
+            sb.Append(":");
+            sb.Append(YM3[4].ToString().PadLeft(2, '0'));
+
+            sb.Append(":");
+            sb.Append(S3.ToString("00.0"));
+
+            sTmp = sb.ToString();//年月日时分秒
+            sb.Clear();
+
+            string strFormat = string.Empty;
+            int iLen = 0;
+            for (int i = 0; i < 11; i++)
+            {
+                if (i <= 3)
+                {
+                    strFormat = "f2";
+                    iLen = 12;
+                }
+                else if ((i > 3 && i <= 5) || i > 8)
+                {
+                    strFormat = "f3";
+                    iLen = 7;
+                }
+                else if (i > 5 && i <= 8)
+                {
+                    strFormat = "f4";
+                    iLen = 10;
+                }
+
+                sb.Append("  ");
+                sb.Append(Orb3[0, i].ToString(strFormat).PadLeft(iLen, ' '));
+
+                sbUNW.Append("  ");
+                sbUNW.Append(Orb3[1, i].ToString(strFormat).PadLeft(iLen, ' '));
+            }
+            oSTWResult.WriteLine(sTmp + sb.ToString());
+            oUNWResult.WriteLine(sTmp + sbUNW.ToString());
+
             return blResult;
         }
 

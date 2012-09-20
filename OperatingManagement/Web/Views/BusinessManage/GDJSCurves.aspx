@@ -17,17 +17,14 @@
 <table style="width:800px;" cellspacing="0" cellpadding="0" class="searchTable">
     <tr>
         <th style="width:20%;">结果类型(<span class="red">*</span>)</th>
-        <td style="width:35%;"><asp:DropDownList ID="ddlResultType" runat="server" 
-                onselectedindexchanged="ddlResultType_SelectedIndexChanged">
-        </asp:DropDownList></td>
+        <td style="width:35%;"><select id="resulttype"></select></td>
         <th style="width:10%;">数据名称(<span class="red">*</span>)</th>
-        <td style="width:35%;"><asp:DropDownList ID="ddlDataType" runat="server">
-        </asp:DropDownList></td>
+        <td style="width:35%;"><select id="dataname"></select></td>
     </tr>
     <tr>
         <th>轨道分析结果数据路径</th>
         <td>
-            <asp:Label ID="lbPath" runat="server" Text=""></asp:Label></td>
+            <asp:TextBox ID="txtPath" runat="server"></asp:TextBox></td>
         <th>&nbsp;</th>
         <td align="right">
             <asp:Button ID="btnCurve2" runat="server" Text="曲线图" CssClass="button" 
@@ -35,13 +32,19 @@
         </td>
     </tr>
     <tr>
-        <th>选择其他结果数据文件</th>
+        <th>选择本地结果数据文件</th>
         <td><asp:FileUpload ID="fuPath" ClientIDMode="Static" runat="server" /></td>
         <th>&nbsp;</th>
         <td align="right">
             <asp:Button ID="btnCurve" runat="server" Text="曲线图" CssClass="button" 
                 onclick="btnCurve_Click" />
+                <asp:HiddenField ID="hdResultType" ClientIDMode="Static" runat="server" />
+                <asp:HiddenField ID="hdDataType" ClientIDMode="Static" runat="server" />
         </td>
+    </tr>
+    <tr id="trMessage" runat="server" visible="false">
+        <th></th>
+        <td><asp:Label ID="lbMessage" runat="server" Text="" CssClass="error"></asp:Label></td>
     </tr>
 </table>
 </div>

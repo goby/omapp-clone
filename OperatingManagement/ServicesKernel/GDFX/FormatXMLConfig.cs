@@ -78,6 +78,20 @@ namespace ServicesKernel.GDFX
                 oRType = query.FirstOrDefault();
             return oRType;
         }
+
+        public static ResultType GetTypeByDisplayName(string displayName)
+        {
+            if (lstResults == null)
+                LoadXML();
+            if (lstResults == null)
+                return default(ResultType);
+
+            var query = lstResults.Where(a => a.DisplayName == displayName);
+            ResultType oRType = default(ResultType);
+            if (query != null && query.Count() > 0)
+                oRType = query.FirstOrDefault();
+            return oRType;
+        }
     }
 
     public class ResultType

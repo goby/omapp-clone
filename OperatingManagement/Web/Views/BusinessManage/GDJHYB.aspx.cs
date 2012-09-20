@@ -20,16 +20,13 @@ using System.Text;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.DataAccessLayer.BusinessManage;
+using ServicesKernel.GDFX;
 
 namespace OperatingManagement.Web.Views.BusinessManage
 {
     public partial class GDJHYB : AspNetPage
     {
         #region 属性
-        protected readonly string JPLEPHFilePath = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitIntersectionReport, "JPLEPHFilePath");
-        protected readonly string TESTRECLFilePath = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitIntersectionReport, "TESTRECLFilePath");
-        protected readonly string WGS84FilePath = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitIntersectionReport, "WGS84FilePath");
-        protected readonly string eopc04_IAU2000FilePath = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitIntersectionReport, "eopc04_IAU2000FilePath");
         /// <summary>
         /// CutSub各行信息列表
         /// </summary>
@@ -52,12 +49,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                trMessage.Visible = false;
-                lblMessage.Text = string.Empty;
-                ClientScript.RegisterClientScriptBlock(this.GetType(),
-                                                          "open-dialog",
-                                                          "var _autoOpen=false;",
-                                                          true);
+                HideMessage();
+                //ClientScript.RegisterClientScriptBlock(this.GetType(),
+                //                                          "open-dialog",
+                //                                          "var _autoOpen=false;",
+                //                                          true);
                 if (!IsPostBack)
                 {
                     txtCutMainReportBeginDate.Attributes.Add("readonly", "true");
@@ -206,49 +202,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 trMessage.Visible = true;
                 lblMessage.Text = "发生未知错误，操作失败。";
                 throw (new AspNetException("轨道分析 - 交会预报页面btnResetAll_Click方法出现异常，异常原因", ex));
-            }
-        }
-        
-        /// <summary>
-        /// 下载计算结果文件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lbtnResultFileDownload_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string resultFilePath = lblResultFilePath.Text.Trim();
-                if (string.IsNullOrEmpty(resultFilePath))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "请指定计算结果文件。";
-                    return;
-                }
-
-                if (!File.Exists(resultFilePath))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "计算结果文件不存在。";
-                    return;
-                }
-
-                Response.Clear();
-                Response.Buffer = false;
-                Response.ContentType = "application/octet-stream";
-                Response.AppendHeader("content-disposition", "attachment;filename=" + Path.GetFileName(resultFilePath) + ";");
-                Response.Write(File.ReadAllText(resultFilePath));
-                Response.Flush();
-                Response.End();
-            }
-            catch (System.Threading.ThreadAbortException ex1)
-            { }
-            catch(Exception ex)
-            {
-                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"下载计算结果文件失败。\")", true);
-                trMessage.Visible = true;
-                lblMessage.Text = "发生未知错误，操作失败。";
-                throw (new AspNetException("轨道分析 - 交会预报页面lbtnResultFileDownload_Click方法出现异常，异常原因", ex));
             }
         }
 
@@ -793,7 +746,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 }
                 #endregion
 
-                string cutPreDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitIntersectionReport, "FileDirectory");
+                string cutPreDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.GDJSResult, "result_path")
+                    + SystemParameters.GetSystemParameterValue(SystemParametersType.GDJSResult, "cutpre_path");
                 if (!Directory.Exists(cutPreDirectory))
                     Directory.CreateDirectory(cutPreDirectory);
                 //CutMain文件服务器路径
@@ -814,10 +768,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
                 CalculateOrbitIntersectionReport(cutPreDirectory);
             }
-            catch
+            catch (Exception ex)
             {
-                trMessage.Visible = true;
-                lblMessage.Text = "发生未知错误，操作失败。";
+                throw new AspNetException("轨道分析 - 交会预报页面进行计算时出现异常（上传文件方式）", ex);
             }
         }
 
@@ -826,394 +779,417 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         private void CreateFileAndCalculate()
         {
+            string cutPreDirectory = string.Empty;
             int activeViewIndex = 0;
-            #region 不能为空校验及数据获取
-            //预报起始历元日期
-            if (string.IsNullOrEmpty(txtCutMainReportBeginDate.Text.Trim()))
+            try
             {
-                rfvCutMainReportBeginDate.IsValid = false;
-                txtCutMainReportBeginDate.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            //预报起始历元时刻-毫秒
-            if (string.IsNullOrEmpty(txtCutMainReportBeginTimeMilliSecond.Text.Trim()))
-            {
-                rfvCutMainReportBeginTimeMilliSecond.IsValid = false;
-                txtCutMainReportBeginTimeMilliSecond.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            double cutMainReportBeginTimeMilliSecond = 0.0;
-            if (!double.TryParse(txtCutMainReportBeginTimeMilliSecond.Text.Trim(), out cutMainReportBeginTimeMilliSecond))
-            {
-                rvCutMainReportBeginTimeMilliSecond.IsValid = false;
-                txtCutMainReportBeginTimeMilliSecond.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            //预报结束历元日期
-            if (string.IsNullOrEmpty(txtCutMainReportEndDate.Text.Trim()))
-            {
-                rfvCutMainReportEndDate.IsValid = false;
-                txtCutMainReportEndDate.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            //预报结束历元时刻-毫秒
-            if (string.IsNullOrEmpty(txtCutMainReportEndTimeMilliSecond.Text.Trim()))
-            {
-                rfvCutMainEndTimeMS.IsValid = false;
-                txtCutMainReportEndTimeMilliSecond.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            double cutMainReportEndTimeMilliSecond = 0.0;
-            if (!double.TryParse(txtCutMainReportEndTimeMilliSecond.Text.Trim(), out cutMainReportEndTimeMilliSecond))
-            {
-                rvCutMainEndTimeMS.IsValid = false;
-                txtCutMainReportEndTimeMilliSecond.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            //历元日期
-            if (string.IsNullOrEmpty(txtCutMainLYDate.Text.Trim()))
-            {
-                rfvCutMainLYDate.IsValid = false;
-                txtCutMainLYDate.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            //历元时刻-毫秒
-            if (string.IsNullOrEmpty(txtCutMainLYTimeMilliSecond.Text.Trim()))
-            {
-                rfvCutMainLYTimeMilliSecond.IsValid = false;
-                txtCutMainLYTimeMilliSecond.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            double cutMainLYTimeMilliSecond = 0.0;
-            if (!double.TryParse(txtCutMainLYTimeMilliSecond.Text.Trim(), out cutMainLYTimeMilliSecond))
-            {
-                rvCutMainLYTimeMilliSecond.IsValid = false;
-                txtCutMainLYTimeMilliSecond.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            //CutMain D1
-            if (string.IsNullOrEmpty(txtCutMainD1.Text.Trim()))
-            {
-                rfvCutMainD1.IsValid = false;
-                txtCutMainD1.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            double d1 = 0.0;
-            if (!double.TryParse(txtCutMainD1.Text.Trim(), out d1))
-            {
-                rvCutMainD1.IsValid = false;
-                txtCutMainD1.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            if (string.IsNullOrEmpty(txtCutMainD2.Text.Trim()))
-            {
-                rfvCutMainD2.IsValid = false;
-                txtCutMainD2.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            double d2 = 0.0;
-            if (!double.TryParse(txtCutMainD2.Text.Trim(), out d2))
-            {
-                rvCutMainD2.IsValid = false;
-                txtCutMainD2.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            if (string.IsNullOrEmpty(txtCutMainD3.Text.Trim()))
-            {
-                rfvCutMainD3.IsValid = false;
-                txtCutMainD3.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            double d3 = 0.0;
-            if (!double.TryParse(txtCutMainD3.Text.Trim(), out d3))
-            {
-                rvCutMainD3.IsValid = false;
-                txtCutMainD3.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            if (string.IsNullOrEmpty(txtCutMainD4.Text.Trim()))
-            {
-                rfvCutMainD4.IsValid = false;
-                txtCutMainD4.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            double d4 = 0.0;
-            if (!double.TryParse(txtCutMainD4.Text.Trim(), out d4))
-            {
-                rvCutMainD4.IsValid = false;
-                txtCutMainD4.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            if (string.IsNullOrEmpty(txtCutMainD5.Text.Trim()))
-            {
-                rfvCutMainD5.IsValid = false;
-                txtCutMainD5.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            double d5 = 0.0;
-            if (!double.TryParse(txtCutMainD5.Text.Trim(), out d5))
-            {
-                rvCutMainD5.IsValid = false;
-                txtCutMainD5.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            if (string.IsNullOrEmpty(txtCutMainD6.Text.Trim()))
-            {
-                rfvCutMainD6.IsValid = false;
-                txtCutMainD6.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            double d6 = 0.0;
-            if (!double.TryParse(txtCutMainD6.Text.Trim(), out d6))
-            {
-                rvCutMainD6.IsValid = false;
-                txtCutMainD6.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            if (string.IsNullOrEmpty(txtCutMaindR.Text.Trim()))
-            {
-                rfvCutMaindR.IsValid = false;
-                txtCutMaindR.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            double dR = 0.0;
-            if (!double.TryParse(txtCutMaindR.Text.Trim(), out dR))
-            {
-                rvCutMaindR.IsValid = false;
-                txtCutMaindR.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            if (string.IsNullOrEmpty(txtCutMaindA.Text.Trim()))
-            {
-                rfvCutMaindA.IsValid = false;
-                txtCutMaindA.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            double dA = 0.0;
-            if (!double.TryParse(txtCutMaindA.Text.Trim(), out dA))
-            {
-                rvCutMaindA.IsValid = false;
-                txtCutMaindA.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            if (string.IsNullOrEmpty(txtCutMaindE.Text.Trim()))
-            {
-                rfvCutMaindE.IsValid = false;
-                txtCutMaindE.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            double dE = 0.0;
-            if (!double.TryParse(txtCutMaindE.Text.Trim(), out dE))
-            {
-                rvCutMaindE.IsValid = false;
-                txtCutMaindE.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            #endregion
+                #region 不能为空校验及数据获取
+                //预报起始历元日期
+                if (string.IsNullOrEmpty(txtCutMainReportBeginDate.Text.Trim()))
+                {
+                    rfvCutMainReportBeginDate.IsValid = false;
+                    txtCutMainReportBeginDate.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                //预报起始历元时刻-毫秒
+                if (string.IsNullOrEmpty(txtCutMainReportBeginTimeMilliSecond.Text.Trim()))
+                {
+                    rfvCutMainReportBeginTimeMilliSecond.IsValid = false;
+                    txtCutMainReportBeginTimeMilliSecond.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                double cutMainReportBeginTimeMilliSecond = 0.0;
+                if (!double.TryParse(txtCutMainReportBeginTimeMilliSecond.Text.Trim(), out cutMainReportBeginTimeMilliSecond))
+                {
+                    rvCutMainReportBeginTimeMilliSecond.IsValid = false;
+                    txtCutMainReportBeginTimeMilliSecond.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                //预报结束历元日期
+                if (string.IsNullOrEmpty(txtCutMainReportEndDate.Text.Trim()))
+                {
+                    rfvCutMainReportEndDate.IsValid = false;
+                    txtCutMainReportEndDate.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                //预报结束历元时刻-毫秒
+                if (string.IsNullOrEmpty(txtCutMainReportEndTimeMilliSecond.Text.Trim()))
+                {
+                    rfvCutMainEndTimeMS.IsValid = false;
+                    txtCutMainReportEndTimeMilliSecond.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                double cutMainReportEndTimeMilliSecond = 0.0;
+                if (!double.TryParse(txtCutMainReportEndTimeMilliSecond.Text.Trim(), out cutMainReportEndTimeMilliSecond))
+                {
+                    rvCutMainEndTimeMS.IsValid = false;
+                    txtCutMainReportEndTimeMilliSecond.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                //历元日期
+                if (string.IsNullOrEmpty(txtCutMainLYDate.Text.Trim()))
+                {
+                    rfvCutMainLYDate.IsValid = false;
+                    txtCutMainLYDate.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                //历元时刻-毫秒
+                if (string.IsNullOrEmpty(txtCutMainLYTimeMilliSecond.Text.Trim()))
+                {
+                    rfvCutMainLYTimeMilliSecond.IsValid = false;
+                    txtCutMainLYTimeMilliSecond.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                double cutMainLYTimeMilliSecond = 0.0;
+                if (!double.TryParse(txtCutMainLYTimeMilliSecond.Text.Trim(), out cutMainLYTimeMilliSecond))
+                {
+                    rvCutMainLYTimeMilliSecond.IsValid = false;
+                    txtCutMainLYTimeMilliSecond.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                //CutMain D1
+                if (string.IsNullOrEmpty(txtCutMainD1.Text.Trim()))
+                {
+                    rfvCutMainD1.IsValid = false;
+                    txtCutMainD1.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                double d1 = 0.0;
+                if (!double.TryParse(txtCutMainD1.Text.Trim(), out d1))
+                {
+                    rvCutMainD1.IsValid = false;
+                    txtCutMainD1.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                if (string.IsNullOrEmpty(txtCutMainD2.Text.Trim()))
+                {
+                    rfvCutMainD2.IsValid = false;
+                    txtCutMainD2.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                double d2 = 0.0;
+                if (!double.TryParse(txtCutMainD2.Text.Trim(), out d2))
+                {
+                    rvCutMainD2.IsValid = false;
+                    txtCutMainD2.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                if (string.IsNullOrEmpty(txtCutMainD3.Text.Trim()))
+                {
+                    rfvCutMainD3.IsValid = false;
+                    txtCutMainD3.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                double d3 = 0.0;
+                if (!double.TryParse(txtCutMainD3.Text.Trim(), out d3))
+                {
+                    rvCutMainD3.IsValid = false;
+                    txtCutMainD3.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                if (string.IsNullOrEmpty(txtCutMainD4.Text.Trim()))
+                {
+                    rfvCutMainD4.IsValid = false;
+                    txtCutMainD4.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                double d4 = 0.0;
+                if (!double.TryParse(txtCutMainD4.Text.Trim(), out d4))
+                {
+                    rvCutMainD4.IsValid = false;
+                    txtCutMainD4.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                if (string.IsNullOrEmpty(txtCutMainD5.Text.Trim()))
+                {
+                    rfvCutMainD5.IsValid = false;
+                    txtCutMainD5.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                double d5 = 0.0;
+                if (!double.TryParse(txtCutMainD5.Text.Trim(), out d5))
+                {
+                    rvCutMainD5.IsValid = false;
+                    txtCutMainD5.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                if (string.IsNullOrEmpty(txtCutMainD6.Text.Trim()))
+                {
+                    rfvCutMainD6.IsValid = false;
+                    txtCutMainD6.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                double d6 = 0.0;
+                if (!double.TryParse(txtCutMainD6.Text.Trim(), out d6))
+                {
+                    rvCutMainD6.IsValid = false;
+                    txtCutMainD6.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                if (string.IsNullOrEmpty(txtCutMaindR.Text.Trim()))
+                {
+                    rfvCutMaindR.IsValid = false;
+                    txtCutMaindR.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                double dR = 0.0;
+                if (!double.TryParse(txtCutMaindR.Text.Trim(), out dR))
+                {
+                    rvCutMaindR.IsValid = false;
+                    txtCutMaindR.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                if (string.IsNullOrEmpty(txtCutMaindA.Text.Trim()))
+                {
+                    rfvCutMaindA.IsValid = false;
+                    txtCutMaindA.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                double dA = 0.0;
+                if (!double.TryParse(txtCutMaindA.Text.Trim(), out dA))
+                {
+                    rvCutMaindA.IsValid = false;
+                    txtCutMaindA.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                if (string.IsNullOrEmpty(txtCutMaindE.Text.Trim()))
+                {
+                    rfvCutMaindE.IsValid = false;
+                    txtCutMaindE.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                double dE = 0.0;
+                if (!double.TryParse(txtCutMaindE.Text.Trim(), out dE))
+                {
+                    rvCutMaindE.IsValid = false;
+                    txtCutMaindE.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                #endregion
 
-            #region 准备数据
-            //预报起始历元日期
-            DateTime cutMainReportBeginDate = DateTime.Now;
-            if (!DateTime.TryParse(FormatDateTimeString(txtCutMainReportBeginDate.Text.Trim()), out cutMainReportBeginDate))
-            {
-                trMessage.Visible = true;
-                lblMessage.Text = "预报起始历元日期格式错误。";
-                txtCutMainReportBeginDate.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            DateTime cutMainReportEndDate = DateTime.Now;
-            if (!DateTime.TryParse(FormatDateTimeString(txtCutMainReportEndDate.Text.Trim()), out cutMainReportEndDate))
-            {
-                trMessage.Visible = true;
-                lblMessage.Text = "预报结束历元日期格式错误。";
-                txtCutMainReportEndDate.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
+                #region 准备数据
+                //预报起始历元日期
+                DateTime cutMainReportBeginDate = DateTime.Now;
+                if (!DateTime.TryParse(FormatDateTimeString(txtCutMainReportBeginDate.Text.Trim()), out cutMainReportBeginDate))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "预报起始历元日期格式错误。";
+                    txtCutMainReportBeginDate.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                DateTime cutMainReportEndDate = DateTime.Now;
+                if (!DateTime.TryParse(FormatDateTimeString(txtCutMainReportEndDate.Text.Trim()), out cutMainReportEndDate))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "预报结束历元日期格式错误。";
+                    txtCutMainReportEndDate.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
 
-            string reportBeginDate = cutMainReportBeginDate.ToString("yyyy  MM  dd  HH  mm  ss");
-            reportBeginDate = reportBeginDate + "." + FillWithSpace(string.Format("{0:F0}", cutMainReportBeginTimeMilliSecond * 1000.0), 6);
-            string reportEndDate = cutMainReportEndDate.ToString("yyyy  MM  dd  HH  mm  ss");
-            reportEndDate = reportEndDate + "." + FillWithSpace(string.Format("{0:F0}", cutMainReportEndTimeMilliSecond * 1000.0), 6);
+                string reportBeginDate = cutMainReportBeginDate.ToString("yyyy  MM  dd  HH  mm  ss");
+                reportBeginDate = reportBeginDate + "." + FillWithSpace(string.Format("{0:F0}", cutMainReportBeginTimeMilliSecond * 1000.0), 6);
+                string reportEndDate = cutMainReportEndDate.ToString("yyyy  MM  dd  HH  mm  ss");
+                reportEndDate = reportEndDate + "." + FillWithSpace(string.Format("{0:F0}", cutMainReportEndTimeMilliSecond * 1000.0), 6);
 
-            DateTime cutMainLYDate = DateTime.Now;
-            if (!DateTime.TryParse(FormatDateTimeString(txtCutMainLYDate.Text.Trim()), out cutMainLYDate))
-            {
-                trMessage.Visible = true;
-                lblMessage.Text = "历元日期格式错误。";
-                txtCutMainLYDate.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
+                DateTime cutMainLYDate = DateTime.Now;
+                if (!DateTime.TryParse(FormatDateTimeString(txtCutMainLYDate.Text.Trim()), out cutMainLYDate))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "历元日期格式错误。";
+                    txtCutMainLYDate.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
 
-            string lydate = cutMainLYDate.ToString("yyyy  MM  dd  HH  mm  ss");
-            lydate = lydate + "." + FillWithSpace(string.Format("{0:F0}", cutMainLYTimeMilliSecond * 1000.0), 6);
+                string lydate = cutMainLYDate.ToString("yyyy  MM  dd  HH  mm  ss");
+                lydate = lydate + "." + FillWithSpace(string.Format("{0:F0}", cutMainLYTimeMilliSecond * 1000.0), 6);
 
-            int kae = 0;
-            int.TryParse(rblCutMainKAE.SelectedValue.Trim(), out kae);
+                int kae = 0;
+                int.TryParse(rblCutMainKAE.SelectedValue.Trim(), out kae);
 
-            activeViewIndex = 1;
-            if (CutSubItemInfoList == null || CutSubItemInfoList.Count < 1)
-            {
-                trMessage.Visible = true;
-                lblMessage.Text = "请录入CutSub主星列表信息。";
-                txtCutMainLYDate.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
+                activeViewIndex = 1;
+                if (CutSubItemInfoList == null || CutSubItemInfoList.Count < 1)
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "请录入CutSub主星列表信息。";
+                    txtCutMainLYDate.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
 
-            activeViewIndex = 2;
-            if (string.IsNullOrEmpty(txtCutOptionalTimeInterval.Text.Trim()))
-            {
-                rfvCutOptionalTimeInterval.IsValid = false;
-                txtCutOptionalTimeInterval.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            double cutOptionalTimeInterval = 0.0;
-            if (!double.TryParse(txtCutOptionalTimeInterval.Text.Trim(), out cutOptionalTimeInterval))
-            {
-                rvCutOptionalTimeInterval.IsValid = false;
-                txtCutOptionalTimeInterval.Focus();
-                mvCut.ActiveViewIndex = activeViewIndex;
-                return;
-            }
-            #endregion
+                activeViewIndex = 2;
+                if (string.IsNullOrEmpty(txtCutOptionalTimeInterval.Text.Trim()))
+                {
+                    rfvCutOptionalTimeInterval.IsValid = false;
+                    txtCutOptionalTimeInterval.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                double cutOptionalTimeInterval = 0.0;
+                if (!double.TryParse(txtCutOptionalTimeInterval.Text.Trim(), out cutOptionalTimeInterval))
+                {
+                    rvCutOptionalTimeInterval.IsValid = false;
+                    txtCutOptionalTimeInterval.Focus();
+                    mvCut.ActiveViewIndex = activeViewIndex;
+                    return;
+                }
+                #endregion
 
-            #region 准备内容，生成文件
-            #region 准备CutMain文件内容
-            double cutMainSatelliteSm = 0.0;
-            double.TryParse(txtCutMainSatelliteSm.Text.Trim(), out cutMainSatelliteSm);
+                #region 准备内容，生成文件
+                #region 准备CutMain文件内容
+                double cutMainSatelliteSm = 0.0;
+                double.TryParse(txtCutMainSatelliteSm.Text.Trim(), out cutMainSatelliteSm);
 
-            double cutMainSatelliteRef = 0.0;
-            double.TryParse(txtCutMainSatelliteRef.Text.Trim(), out cutMainSatelliteRef);
+                double cutMainSatelliteRef = 0.0;
+                double.TryParse(txtCutMainSatelliteRef.Text.Trim(), out cutMainSatelliteRef);
 
-            int kk = 0;
-            int.TryParse(txtCutMainSatelliteKK.Text.Trim(), out kk);
+                int kk = 0;
+                int.TryParse(txtCutMainSatelliteKK.Text.Trim(), out kk);
 
-            StringBuilder cutMainBuilder = new StringBuilder();
-            cutMainBuilder.AppendFormat("  {0}  {1}\r\n", 
-                reportBeginDate, 
-                reportEndDate
-                );
-            cutMainBuilder.AppendFormat("  {0}  {1}  {2}  {3}  {4}  {5}  {6}  {7}  {8}  {9}  {10}  {11}\r\n",
-                 FillWithSpace(dplCutMainSatellite.SelectedItem.Text, 12),
-                 FillWithSpace(txtCutMainSatelliteNO.Text, 6),
-                 lydate,
-                 FillWithSpace(kk, 2),
-                 FillWithSpace(string.Format("{0:F6}", d1), 17),
-                 FillWithSpace(string.Format("{0:F6}", d2), 17),
-                 FillWithSpace(string.Format("{0:F6}", d3), 17),
-                 FillWithSpace(string.Format("{0:F6}", d4), 17),
-                 FillWithSpace(string.Format("{0:F6}", d5), 17),
-                 FillWithSpace(string.Format("{0:F6}", d6), 17),
-                 FillWithSpace(string.Format("{0:F6}", cutMainSatelliteSm), 17),
-                 FillWithSpace(string.Format("{0:F6}", cutMainSatelliteRef), 17)  
-                 );
-            cutMainBuilder.AppendFormat("  {0}  {1}  {2}  {3}  {4}\r\n",
-                FillWithSpace(CutSubItemInfoList.Count, 3),
-                FillWithSpace(string.Format("{0:F6}", dR), 17),
-                FillWithSpace(kae, 2),
-                FillWithSpace(string.Format("{0:F6}", dA), 17),
-                FillWithSpace(string.Format("{0:F6}", dE), 17)
-                );
-            foreach(CutSubItemInfo itemInfo in CutSubItemInfoList)
-            {
-                cutMainBuilder.AppendFormat("  {0}\r\n",
-                    FillWithSpace(itemInfo.SatelliteNO, 6)
+                StringBuilder cutMainBuilder = new StringBuilder();
+                cutMainBuilder.AppendFormat("  {0}  {1}\r\n",
+                    reportBeginDate,
+                    reportEndDate
                     );
-            }
-            #endregion
+                cutMainBuilder.AppendFormat("  {0}  {1}  {2}  {3}  {4}  {5}  {6}  {7}  {8}  {9}  {10}  {11}\r\n",
+                     FillWithSpace(dplCutMainSatellite.SelectedItem.Text, 12),
+                     FillWithSpace(txtCutMainSatelliteNO.Text, 6),
+                     lydate,
+                     FillWithSpace(kk, 2),
+                     FillWithSpace(string.Format("{0:F6}", d1), 17),
+                     FillWithSpace(string.Format("{0:F6}", d2), 17),
+                     FillWithSpace(string.Format("{0:F6}", d3), 17),
+                     FillWithSpace(string.Format("{0:F6}", d4), 17),
+                     FillWithSpace(string.Format("{0:F6}", d5), 17),
+                     FillWithSpace(string.Format("{0:F6}", d6), 17),
+                     FillWithSpace(string.Format("{0:F6}", cutMainSatelliteSm), 17),
+                     FillWithSpace(string.Format("{0:F6}", cutMainSatelliteRef), 17)
+                     );
+                cutMainBuilder.AppendFormat("  {0}  {1}  {2}  {3}  {4}\r\n",
+                    FillWithSpace(CutSubItemInfoList.Count, 3),
+                    FillWithSpace(string.Format("{0:F6}", dR), 17),
+                    FillWithSpace(kae, 2),
+                    FillWithSpace(string.Format("{0:F6}", dA), 17),
+                    FillWithSpace(string.Format("{0:F6}", dE), 17)
+                    );
+                foreach (CutSubItemInfo itemInfo in CutSubItemInfoList)
+                {
+                    cutMainBuilder.AppendFormat("  {0}\r\n",
+                        FillWithSpace(itemInfo.SatelliteNO, 6)
+                        );
+                }
+                #endregion
 
-            #region 准备CutSub文件内容
-            StringBuilder cutSubBuilder = new StringBuilder();
-            foreach (CutSubItemInfo itemInfo in CutSubItemInfoList)
+                #region 准备CutSub文件内容
+                StringBuilder cutSubBuilder = new StringBuilder();
+                foreach (CutSubItemInfo itemInfo in CutSubItemInfoList)
+                {
+                    cutSubBuilder.AppendFormat("  {0}  {1}  {2}  {3}  {4}  {5}  {6}  {7}  {8}  {9}  {10}  {11}\r\n",
+                     FillWithSpace(itemInfo.SatelliteName, 12),
+                     FillWithSpace(itemInfo.SatelliteNO, 6),
+                     lydate,
+                     FillWithSpace(kk, 2),
+                     itemInfo.D1,
+                     itemInfo.D2,
+                     itemInfo.D3,
+                     itemInfo.D4,
+                     itemInfo.D5,
+                     itemInfo.D6,
+                     itemInfo.Sm,
+                     itemInfo.Ref
+                     );
+                }
+                #endregion
+
+                #region 准备CutOptional文件内容
+                StringBuilder cutOptionalBuilder = new StringBuilder();
+                //文件内容格式固定
+                int length = Math.Max(string.Format("{0:F6}", cutOptionalTimeInterval).Length, 13);
+                cutOptionalBuilder.AppendFormat("预报数据时间间隔   :   {0}                 !  单位：秒\r\n", FillWithSpace(string.Format("{0:F6}", cutOptionalTimeInterval), length));
+                cutOptionalBuilder.Append("------------------- 力模型控制：\r\n");
+                cutOptionalBuilder.AppendFormat("非球形引力阶数     :   {0}                 !  不得大于50或小于0\r\n", FillWithSpace("20", length));
+                cutOptionalBuilder.AppendFormat("非球形引力         :   {0}                 !  0：不考虑 ; 1：只考虑带谐项 ; 2:带谐项和田谐项均考虑\r\n", FillWithSpace("2", length));
+                cutOptionalBuilder.AppendFormat("第三体引力         :   {0}                 !  0：不考虑 ; 1：只考虑太阳 ; 2:只考虑月球; 3: 日月均考虑\r\n", FillWithSpace(rblCutOptionalGravitation.SelectedValue, length));
+                cutOptionalBuilder.AppendFormat("潮汐摄动           :   {0}                 !  0：不考虑 ; 1：只考虑太阳 ; 2:只考虑月球; 3: 日月均考虑\r\n", FillWithSpace(rblCutOptionalTide.SelectedValue, length));
+                cutOptionalBuilder.AppendFormat("光压摄动           :   {0}                 !  0：不考虑 ; 1：考虑\r\n", FillWithSpace(rblCutOptionalLight.SelectedValue, length));
+                cutOptionalBuilder.AppendFormat("大气阻尼摄动       :   {0}                 !  0：不考虑 ; 1：考虑\r\n", FillWithSpace(rblCutOptionalEther.SelectedValue, length));
+                cutOptionalBuilder.AppendFormat("后牛顿项           :   {0}                 !  0：不考虑 ; 1：考虑\r\n", FillWithSpace(rblCutOptionalNewton.SelectedValue, length));
+                cutOptionalBuilder.Append("------------------- 相关力模型参数：\r\n");
+                cutOptionalBuilder.AppendFormat("太阳辐射压         :   {0}                 !  单位：N/(m*m)\r\n", FillWithSpace("4.556000E-006", length));
+                cutOptionalBuilder.AppendFormat("大气密度峰时延     :   {0}                 !  单位：度\r\n", FillWithSpace("30.000000", length));
+                cutOptionalBuilder.AppendFormat("大气阻尼系数       :   {0}                 !\r\n", FillWithSpace("2.200000", length));
+                cutOptionalBuilder.AppendFormat("潮汐项Love数       :   {0}                 !\r\n", FillWithSpace("0.299000", length));
+                cutOptionalBuilder.AppendFormat("潮汐项滞后角       :   {0}                 !  单位：度\r\n", FillWithSpace("30.000000", length));
+
+                #endregion
+
+                #region 生成文件
+                //三个文件必须放在同一目录下，文件名固定为CutMain.dat、CutSub.dat、CutOptional.dat
+                cutPreDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.GDJSResult, "result_path")
+                        + SystemParameters.GetSystemParameterValue(SystemParametersType.GDJSResult, "cutpre_path");
+                if (!Directory.Exists(cutPreDirectory))
+                    Directory.CreateDirectory(cutPreDirectory);
+                //CutMain文件服务器路径
+                string cuMainFilePath = Path.Combine(cutPreDirectory, "CutMain.dat");
+                File.AppendAllText(cuMainFilePath, cutMainBuilder.ToString(), Encoding.Default);
+
+                string cutSubFilePath = Path.Combine(cutPreDirectory, "CutSub.dat");
+                File.AppendAllText(cutSubFilePath, cutSubBuilder.ToString(), Encoding.Default);
+
+                string cutOptionalFilePath = Path.Combine(cutPreDirectory, "CutOptional.dat");
+                File.AppendAllText(cutOptionalFilePath, cutOptionalBuilder.ToString(), Encoding.Default);
+                #endregion
+
+                ltCutMainFilePath.Text = "系统生成文件CutMain.dat";
+                ltCutSubFilePath.Text = "系统生成文件CutSub.dat";
+                ltCutOptinalFilePath.Text = "系统生成文件CutOptinal.dat";
+                #endregion
+            }
+            catch (Exception ex)
             {
-                cutSubBuilder.AppendFormat("  {0}  {1}  {2}  {3}  {4}  {5}  {6}  {7}  {8}  {9}  {10}  {11}\r\n",
-                 FillWithSpace(itemInfo.SatelliteName, 12),
-                 FillWithSpace(itemInfo.SatelliteNO, 6),
-                 lydate,
-                 FillWithSpace(kk, 2),
-                 itemInfo.D1,
-                 itemInfo.D2,
-                 itemInfo.D3,
-                 itemInfo.D4,
-                 itemInfo.D5,
-                 itemInfo.D6,
-                 itemInfo.Sm,
-                 itemInfo.Ref
-                 );
+                throw new AspNetException("轨道分析 - 交会预报页面进行计算准备时出现异常（页面输入方式）", ex);
             }
-            #endregion
-
-            #region 准备CutOptional文件内容
-            StringBuilder cutOptionalBuilder = new StringBuilder();
-            //文件内容格式固定
-            cutOptionalBuilder.AppendFormat("  预报数据时间间隔:{0}\r\n", string.Format("{0:F6}", cutOptionalTimeInterval));
-            cutOptionalBuilder.AppendFormat("  力模型控制:{0}\r\n", string.Empty);
-            cutOptionalBuilder.AppendFormat("  非球形引力阶数:{0}\r\n", "20");
-            cutOptionalBuilder.AppendFormat("  非球形引力:{0}\r\n", "2");
-            cutOptionalBuilder.AppendFormat("  第三体引力:{0}\r\n", rblCutOptionalGravitation.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  潮汐摄动:{0}\r\n", rblCutOptionalTide.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  光压摄动:{0}\r\n", rblCutOptionalLight.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  大气阻尼摄动:{0}\r\n", rblCutOptionalEther.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  后牛顿项:{0}\r\n", rblCutOptionalNewton.SelectedValue);
-            cutOptionalBuilder.AppendFormat("  相关力模型参数:{0}\r\n", string.Empty);
-            #endregion
-
-            #region 生成文件
-            //三个文件必须放在同一目录下，文件名固定为CutMain.dat、CutSub.dat、CutOptional.dat
-            string cutPreDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.OrbitIntersectionReport, "FileDirectory");
-            if (!Directory.Exists(cutPreDirectory))
-                Directory.CreateDirectory(cutPreDirectory);
-            //CutMain文件服务器路径
-            string cuMainFilePath = Path.Combine(cutPreDirectory, "CutMain.dat");
-            File.AppendAllText(cuMainFilePath, cutMainBuilder.ToString(), Encoding.Default);
-
-            string cutSubFilePath = Path.Combine(cutPreDirectory, "CutSub.dat");
-            File.AppendAllText(cutSubFilePath, cutSubBuilder.ToString(), Encoding.Default);
-
-            string cutOptionalFilePath = Path.Combine(cutPreDirectory, "CutOptional.dat");
-            File.AppendAllText(cutOptionalFilePath, cutOptionalBuilder.ToString(), Encoding.Default);
-            #endregion
-
-            ltCutMainFilePath.Text = "系统生成文件CutMain.dat";
-            ltCutSubFilePath.Text = "系统生成文件CutSub.dat";
-            ltCutOptinalFilePath.Text = "系统生成文件CutOptinal.dat";
-            #endregion
             //ltCutMainFile.Text = File.ReadAllText(cuMainFilePath, System.Text.Encoding.Default);
             //ltCutSubFile.Text = File.ReadAllText(cutSubFilePath, System.Text.Encoding.Default);
             //ltCutOptinalFile.Text = File.ReadAllText(cutOptionalFilePath, System.Text.Encoding.Default);
 
-            CalculateOrbitIntersectionReport(cutPreDirectory);
+            try
+            {
+                CalculateOrbitIntersectionReport(cutPreDirectory);
+            }
+            catch (Exception ex)
+            {
+                throw new AspNetException("轨道分析 - 交会预报页面进行计算时出现异常（页面输入方式）", ex);
+            }
         }
 
         /// <summary>
@@ -1223,34 +1199,57 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="cutSubFilePath"></param>
         /// <param name="cutOptionalFilePath"></param>
         /// <returns></returns>
-        private bool CalculateOrbitIntersectionReport(string cutPrePath)
+        private void CalculateOrbitIntersectionReport(string cutPrePath)
         {
-            //定义计算结果
-            bool calResult = false;
-            //定义结果文件路径
-            string resultFilePath = string.Empty;//@"D:\ResourceCalculate\ResultFileDirectory\2f318cd1-82ba-4593-9884-263cfb2887bd.txt";
+            string strResult = string.Empty;
+            string resultFilePath = cutPrePath + @"output\";
 
-            /**
-            * TODO: 在这里开始计算，将结果calResult和结果文件路径resultFilePath赋值
-            * */
-            //System.Threading.Thread.Sleep(10000);
+            //计算
+            strResult = new GDFXProcessor().CutPre(cutPrePath);
 
-            lblResultFilePath.Text = resultFilePath;
-            lblCalResult.Text = calResult ? "计算成功" : "计算失败";
-            if (!string.IsNullOrEmpty(resultFilePath) && File.Exists(resultFilePath))
+            //处理计算结果，移动文件，给页面控件赋值，删除文件
+            lblCalResult.Text = (strResult.Equals(string.Empty)) ? "计算成功" : "计算失败";
+            if (!string.IsNullOrEmpty(strResult))
             {
-                ltResultFile.Text = File.ReadAllText(resultFilePath, System.Text.Encoding.Default);
+                try
+                {
+                    string[] fileNames = Directory.GetFiles(resultFilePath);
+                    if (fileNames != null && fileNames.Length > 0)
+                    {
+                        lblResultFilePath.Text = "";
+                        for (int i = 0; i < fileNames.Length; i++)
+                        {
+                            if (fileNames[i].Substring(0, 6).ToLower() == "cutunw" ||
+                                fileNames[i].Substring(0, 6).ToLower() == "cutstw")
+                            {
+                                //删除目标路径中的同名文件
+                                if (File.Exists(cutPrePath + fileNames[i]))
+                                    File.Delete(cutPrePath + fileNames[i]);
+                                //移动文件
+                                File.Move(resultFilePath + fileNames[i], cutPrePath + fileNames[i]);
+                                lblResultFilePath.Text += cutPrePath + fileNames[i] + "<br>";
+                            }
+                            else
+                                File.Delete(resultFilePath + fileNames[i]);
+                        }
+                        lblResultFilePath.Text = lblResultFilePath.Text.Substring(0, lblResultFilePath.Text.Length - 4);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new AspNetException("轨道分析 - 交会预报页面计算结果处理时出现异常", ex);
+                }
+                divCalResult.Visible = true;
             }
-            divCalResult.Visible = true;
 
-            DeleteFile(cutPrePath);
-
-            ClientScript.RegisterClientScriptBlock(this.GetType(),
-               "open-dialog",
-               "var _autoOpen=true;",
-               true);
-
-            return calResult;
+            try
+            {
+                DeleteFiles(cutPrePath);
+            }
+            catch (Exception ex)
+            {
+                throw new AspNetException("轨道分析 - 交会预报页面删除临时文件时出现异常", ex);
+            }
         }
         /// <summary>
         /// 绑定CutSub的主星列表信息
@@ -1302,12 +1301,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// 删除文件
         /// </summary>
         /// <param name="filePath"></param>
-        private void DeleteFile(string filePath)
+        private void DeleteFiles(string filePath)
         {
             if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
             {
-                try { File.Delete(filePath); }
-                catch { }
+                if (File.Exists(filePath + "CutMain.dat"))
+                    File.Delete(filePath + "CutMain.dat");
+                if (File.Exists(filePath + "CutOptional.dat"))
+                    File.Delete(filePath + "CutOptional.dat");
+                if (File.Exists(filePath + "CutSub.dat"))
+                    File.Delete(filePath + "CutSub.dat");
             }
         }
         /// <summary>
@@ -1354,5 +1357,95 @@ namespace OperatingManagement.Web.Views.BusinessManage
             return result;
         }
         #endregion
+
+        private void ShowMessage(string msg)
+        {
+            trMessage.Visible = true;
+            lblMessage.Text = msg;
+        }
+
+        private void HideMessage()
+        {
+            trMessage.Visible = false;
+            lblMessage.Text = "";
+            divCalResult.Visible = false;
+        }
+
+        protected void lbtViewCurves_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void lbtUNWFileDownload_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string[] resultFilePaths = lblResultFilePath.Text.Trim().Split(new string[]{"<br>"}, StringSplitOptions.RemoveEmptyEntries);
+                string strFilePath = string.Empty;
+                if (resultFilePaths.Length == 2)
+                {
+                    strFilePath = resultFilePaths[0];
+                    if (strFilePath.ToLower().IndexOf("cutunw") < 0)
+                        strFilePath = resultFilePaths[1];
+                }
+                else
+                    return;
+                if (string.IsNullOrEmpty(strFilePath) || !File.Exists(strFilePath))
+                {
+                    ShowMessage("UNW计算结果文件不存在。");
+                    return;
+                }
+
+                Response.Clear();
+                Response.Buffer = false;
+                Response.ContentType = "application/octet-stream";
+                Response.AppendHeader("content-disposition", "attachment;filename=" + Path.GetFileName(strFilePath) + ";");
+                Response.Write(File.ReadAllText(strFilePath));
+                Response.Flush();
+                Response.End();
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("轨道分析 - 交会预报页面另存UNW计算结果出现异常，异常原因", ex));
+            }
+        }
+
+        protected void lbtSTWFileDownload_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string[] resultFilePaths = lblResultFilePath.Text.Trim().Split(new string[] { "<br>" }, StringSplitOptions.RemoveEmptyEntries);
+                string strFilePath = string.Empty;
+                if (resultFilePaths.Length == 2)
+                {
+                    strFilePath = resultFilePaths[0];
+                    if (strFilePath.ToLower().IndexOf("cutstw") < 0)
+                        strFilePath = resultFilePaths[1];
+                }
+                else
+                    return;
+                if (string.IsNullOrEmpty(strFilePath) || !File.Exists(strFilePath))
+                {
+                    ShowMessage("STW计算结果文件不存在。");
+                    return;
+                }
+
+                Response.Clear();
+                Response.Buffer = false;
+                Response.ContentType = "application/octet-stream";
+                Response.AppendHeader("content-disposition", "attachment;filename=" + Path.GetFileName(strFilePath) + ";");
+                Response.Write(File.ReadAllText(strFilePath));
+                Response.Flush();
+                Response.End();
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("轨道分析 - 交会预报页面另存STW计算结果出现异常，异常原因", ex));
+            }
+        }
     }
 }

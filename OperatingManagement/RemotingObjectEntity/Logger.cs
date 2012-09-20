@@ -8,7 +8,7 @@ namespace OperatingManagement.RemotingObjectEntity
 {
     public class Logger
     {
-        private static string loggerName = "UAServer.Logging";
+        private static string loggerName = "OMServer.Logging";
         private static ILog mLogger = null;
 
         public static ILog GetLogger()
