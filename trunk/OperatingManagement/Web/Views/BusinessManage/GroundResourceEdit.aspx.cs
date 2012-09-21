@@ -280,6 +280,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         }
         public override void OnPageLoaded()
         {
+            this.PagePermission = "OMB_GRes.Edit";
             this.ShortTitle = "编辑地面站资源";
             this.SetTitle();
         }

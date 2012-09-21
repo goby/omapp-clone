@@ -89,7 +89,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMUserManage.View";
-            this.ShortTitle = "用户列表";
+            this.ShortTitle = "查看用户";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/usernrole/users.aspx.js");
         }

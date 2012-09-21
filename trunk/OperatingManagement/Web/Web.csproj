@@ -245,12 +245,8 @@
     <Content Include="Views\BusinessManage\GDCZFX.aspx" />
     <Content Include="Views\BusinessManage\GDJHYB.aspx" />
     <Content Include="Views\BusinessManage\GDCSZH.aspx" />
-    <Content Include="Views\BusinessManage\OrbitDifferenceAnalysis.aspx" />
-    <Content Include="Views\BusinessManage\OrbitIntersectionReport.aspx" />
-    <Content Include="Views\BusinessManage\ResourceAdd.aspx" />
     <Content Include="Views\BusinessManage\ResourceCalculateManage.aspx" />
     <Content Include="Views\BusinessManage\ResourceCalculateResultView.aspx" />
-    <Content Include="Views\BusinessManage\ResourceEdit.aspx" />
     <Content Include="Views\BusinessManage\ResourceManage.aspx" />
     <Content Include="Views\BusinessManage\ResourceRequirementAdd.aspx" />
     <Content Include="Views\BusinessManage\ResourceStatusAdd.aspx" />
@@ -625,27 +621,6 @@
     <Compile Include="Views\BusinessManage\GDCSZH.aspx.designer.cs">
       <DependentUpon>GDCSZH.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\BusinessManage\OrbitDifferenceAnalysis.aspx.cs">
-      <DependentUpon>OrbitDifferenceAnalysis.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\BusinessManage\OrbitDifferenceAnalysis.aspx.designer.cs">
-      <DependentUpon>OrbitDifferenceAnalysis.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\BusinessManage\OrbitIntersectionReport.aspx.cs">
-      <DependentUpon>OrbitIntersectionReport.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\BusinessManage\OrbitIntersectionReport.aspx.designer.cs">
-      <DependentUpon>OrbitIntersectionReport.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\BusinessManage\ResourceAdd.aspx.cs">
-      <DependentUpon>ResourceAdd.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\BusinessManage\ResourceAdd.aspx.designer.cs">
-      <DependentUpon>ResourceAdd.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Views\BusinessManage\ResourceCalculateManage.aspx.cs">
       <DependentUpon>ResourceCalculateManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -659,13 +634,6 @@
     </Compile>
     <Compile Include="Views\BusinessManage\ResourceCalculateResultView.aspx.designer.cs">
       <DependentUpon>ResourceCalculateResultView.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\BusinessManage\ResourceEdit.aspx.cs">
-      <DependentUpon>ResourceEdit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\BusinessManage\ResourceEdit.aspx.designer.cs">
-      <DependentUpon>ResourceEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\ResourceManage.aspx.cs">
       <DependentUpon>ResourceManage.aspx</DependentUpon>

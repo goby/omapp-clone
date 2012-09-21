@@ -15,8 +15,8 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
     {
         public override void OnPageLoaded()
         {
-            this.PagePermission = "OMB_ZYGNMan.Add";
-            this.ShortTitle = "新增资源功能";
+            this.PagePermission = "OMB_ZYGNMan.Edit";
+            this.ShortTitle = "修改资源功能";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/BusinessManage/ZYGNAdd.aspx.js");
         }

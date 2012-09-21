@@ -55,7 +55,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_TaskMan.View";
-            this.ShortTitle = "任务列表";
+            this.ShortTitle = "查看任务";
             this.SetTitle();
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Drawing;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -26,6 +27,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            ChartCurve.ChartAreas[0].AxisX.LabelStyle.Font = new Font("Trebuchet MS", 8);
+            ChartCurve.ChartAreas[0].AxisY.LabelStyle.Font = new Font("Trebuchet MS", 8);
+            ChartCurve.ChartAreas[0].AxisX.LabelStyle.Format = "G";
             if (!Page.IsPostBack)
             {
                 if (Request.QueryString["fp"] != null)
@@ -42,25 +46,36 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string resultType = hdResultType.Value;//"GDYB_MapJ";
             string dataType = hdDataType.Value;
             List<DateTime> lstDate;
+            List<string> lstDateStr;
             List<double> lstDDatas;
             List<int> lstIDatas;
             double maxValue;
             double minValue;
             int dataCount;
             string strResult = string.Empty;
+            divChart.Visible = false;
+            if (string.IsNullOrEmpty(resultType) || string.IsNullOrEmpty(dataType))
+            {
+                ShowMessage("请指定结果类型和数据类型");
+                return;
+            }
             ResultLoader oRLoader = new ResultLoader();
-            strResult = oRLoader.LoadResultFile(filePath, resultType, dataType, true, out lstDate, out lstDDatas
-                , out lstIDatas, out maxValue, out minValue, out dataCount);
+            strResult = oRLoader.LoadResultFile(filePath, resultType, dataType, true, out lstDate, out lstDateStr
+                , out lstDDatas, out lstIDatas, out maxValue, out minValue, out dataCount);
             if (!string.IsNullOrEmpty(strResult))
             {
                 HideMessage();
                 ChartCurve.ChartAreas[0].AxisX.Maximum = lstDate[lstDate.Count() - 1].ToOADate();
                 ChartCurve.ChartAreas[0].AxisX.Minimum = lstDate[0].ToOADate();
-                ChartCurve.ChartAreas[0].AxisY.Maximum = maxValue;
-                ChartCurve.ChartAreas[0].AxisY.Minimum = minValue;
+                if (maxValue != minValue)//计算结果为同一值
+                {
+                    ChartCurve.ChartAreas[0].AxisY.Maximum = maxValue;
+                    ChartCurve.ChartAreas[0].AxisY.Minimum = minValue;
+                }
                 ChartCurve.ChartAreas[0].AxisX.Interval = 0;
                 ChartCurve.ChartAreas[0].AxisX.IntervalAutoMode = IntervalAutoMode.VariableCount;
                 ChartCurve.Series["Series1"].Points.DataBindXY(lstDate, lstDDatas);
+                divChart.Visible = true;
             }
             else
                 ShowMessage(strResult);
@@ -96,10 +111,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 string filePath = SystemParameters.GetSystemParameterValue(SystemParametersType.GDJSResult, "result_path")
                     + SystemParameters.GetSystemParameterValue(SystemParametersType.GDJSResult, "upload_path");
+                if (!Directory.Exists(filePath))
+                    Directory.CreateDirectory(filePath);
                 string fileNewPath = Path.Combine(filePath, fuPath.FileName);
                 if (File.Exists(fileNewPath))
                     File.Delete(fileNewPath);
                 fuPath.SaveAs(fileNewPath);
+                txtPath.Text = fileNewPath;
                 InitChart(fileNewPath);
             }
             catch (Exception ex)
@@ -112,7 +130,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
         protected void btnCurve2_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(txtPath.Text.Trim()))
-                InitChart(txtPath.Text.Trim());
+            {
+                if (File.Exists(txtPath.Text.Trim()))
+                    InitChart(txtPath.Text.Trim());
+                else
+                    ShowMessage("分析结果文件不存在，请确认。");
+            }
         }
 
         protected void CurveChart_PreRender(object sender, EventArgs e)

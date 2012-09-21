@@ -121,7 +121,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "OMUserManage.Add";
+            this.PagePermission = "OMRoleManage.Add";
             this.ShortTitle = "新增角色";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/usernrole/roleadd.aspx.js");

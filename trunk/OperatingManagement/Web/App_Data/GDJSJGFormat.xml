@@ -7,52 +7,59 @@
     <filename>CutSTW*.txt</filename>
     <isBigFile>false</isBigFile>
     <data>
-      <name>dR</name>
+      <name>Rho</name>
       <position>4</position>
       <datatype>double</datatype>
-      <intlen>8</intlen>
+      <intlen>7</intlen>
       <declen>2</declen>
     </data>
     <data>
       <name>A</name>
       <position>5</position>
       <datatype>double</datatype>
-      <intlen>4</intlen>
+      <intlen>3</intlen>
       <declen>3</declen>
     </data>
     <data>
       <name>E</name>
       <position>6</position>
       <datatype>double</datatype>
-      <intlen>4</intlen>
+      <intlen>3</intlen>
       <declen>3</declen>
     </data>
     <data>
-      <name>ddR</name>
+      <name>dRho</name>
       <position>7</position>
       <datatype>double</datatype>
-      <intlen>6</intlen>
+      <intlen>5</intlen>
       <declen>4</declen>
     </data>
     <data>
       <name>dA</name>
       <position>8</position>
       <datatype>double</datatype>
-      <intlen>6</intlen>
+      <intlen>5</intlen>
       <declen>4</declen>
     </data>
     <data>
       <name>dE</name>
       <position>9</position>
       <datatype>double</datatype>
-      <intlen>6</intlen>
+      <intlen>5</intlen>
       <declen>5</declen>
     </data>
     <data>
-      <name>ANG</name>
+      <name>Theta1</name>
       <position>10</position>
       <datatype>double</datatype>
-      <intlen>4</intlen>
+      <intlen>3</intlen>
+      <declen>3</declen>
+    </data>
+    <data>
+      <name>Theta2</name>
+      <position>12</position>
+      <datatype>double</datatype>
+      <intlen>3</intlen>
       <declen>3</declen>
     </data>
   </type>
@@ -63,52 +70,59 @@
     <filename>CutUNW*.txt</filename>
     <isBigFile>false</isBigFile>
     <data>
-      <name>dR</name>
+      <name>Rho</name>
       <position>4</position>
       <datatype>double</datatype>
-      <intlen>8</intlen>
+      <intlen>7</intlen>
       <declen>2</declen>
     </data>
     <data>
       <name>A</name>
       <position>5</position>
       <datatype>double</datatype>
-      <intlen>4</intlen>
+      <intlen>3</intlen>
       <declen>3</declen>
     </data>
     <data>
       <name>E</name>
       <position>6</position>
       <datatype>double</datatype>
-      <intlen>4</intlen>
+      <intlen>3</intlen>
       <declen>3</declen>
     </data>
     <data>
-      <name>ddR</name>
+      <name>dRho</name>
       <position>7</position>
       <datatype>double</datatype>
-      <intlen>6</intlen>
+      <intlen>5</intlen>
       <declen>4</declen>
     </data>
     <data>
       <name>dA</name>
       <position>8</position>
       <datatype>double</datatype>
-      <intlen>6</intlen>
+      <intlen>5</intlen>
       <declen>4</declen>
     </data>
     <data>
       <name>dE</name>
       <position>9</position>
       <datatype>double</datatype>
-      <intlen>6</intlen>
+      <intlen>5</intlen>
       <declen>5</declen>
     </data>
     <data>
-      <name>ANG</name>
+      <name>Theta1</name>
       <position>10</position>
       <datatype>double</datatype>
-      <intlen>4</intlen>
+      <intlen>3</intlen>
+      <declen>3</declen>
+    </data>
+    <data>
+      <name>Theta2</name>
+      <position>12</position>
+      <datatype>double</datatype>
+      <intlen>3</intlen>
       <declen>3</declen>
     </data>
   </type>
@@ -119,52 +133,80 @@
     <filename>CutAnalyze_STW*.txt</filename>
     <isBigFile>false</isBigFile>
     <data>
-      <name>dR</name>
+      <name>S</name>
       <position>4</position>
       <datatype>double</datatype>
-      <intlen>8</intlen>
+      <intlen>9</intlen>
+      <declen>2</declen>
+    </data>
+    <data>
+      <name>T</name>
+      <position>5</position>
+      <datatype>double</datatype>
+      <intlen>9</intlen>
+      <declen>2</declen>
+    </data>
+    <data>
+      <name>W</name>
+      <position>6</position>
+      <datatype>double</datatype>
+      <intlen>9</intlen>
+      <declen>2</declen>
+    </data>
+    <data>
+      <name>Rho</name>
+      <position>7</position>
+      <datatype>double</datatype>
+      <intlen>7</intlen>
       <declen>2</declen>
     </data>
     <data>
       <name>A</name>
-      <position>5</position>
+      <position>8</position>
       <datatype>double</datatype>
-      <intlen>4</intlen>
+      <intlen>3</intlen>
       <declen>3</declen>
     </data>
     <data>
       <name>E</name>
-      <position>6</position>
+      <position>9</position>
       <datatype>double</datatype>
-      <intlen>4</intlen>
+      <intlen>3</intlen>
       <declen>3</declen>
     </data>
     <data>
-      <name>ddR</name>
-      <position>7</position>
+      <name>dRho</name>
+      <position>10</position>
       <datatype>double</datatype>
-      <intlen>6</intlen>
+      <intlen>5</intlen>
       <declen>4</declen>
     </data>
     <data>
       <name>dA</name>
-      <position>8</position>
+      <position>11</position>
       <datatype>double</datatype>
-      <intlen>6</intlen>
+      <intlen>5</intlen>
       <declen>4</declen>
     </data>
     <data>
       <name>dE</name>
-      <position>9</position>
+      <position>12</position>
       <datatype>double</datatype>
-      <intlen>6</intlen>
+      <intlen>5</intlen>
       <declen>5</declen>
     </data>
     <data>
-      <name>ANG</name>
-      <position>10</position>
+      <name>Theta1</name>
+      <position>13</position>
       <datatype>double</datatype>
-      <intlen>4</intlen>
+      <intlen>3</intlen>
+      <declen>3</declen>
+    </data>
+    <data>
+      <name>Theta2</name>
+      <position>14</position>
+      <datatype>double</datatype>
+      <intlen>3</intlen>
       <declen>3</declen>
     </data>
   </type>
@@ -175,52 +217,80 @@
     <filename>CutAnalyze_UNW*.txt</filename>
     <isBigFile>false</isBigFile>
     <data>
-      <name>dR</name>
+      <name>U</name>
       <position>4</position>
       <datatype>double</datatype>
-      <intlen>8</intlen>
+      <intlen>9</intlen>
+      <declen>2</declen>
+    </data>
+    <data>
+      <name>N</name>
+      <position>5</position>
+      <datatype>double</datatype>
+      <intlen>9</intlen>
+      <declen>2</declen>
+    </data>
+    <data>
+      <name>W</name>
+      <position>6</position>
+      <datatype>double</datatype>
+      <intlen>9</intlen>
+      <declen>2</declen>
+    </data>
+    <data>
+      <name>Rho</name>
+      <position>7</position>
+      <datatype>double</datatype>
+      <intlen>7</intlen>
       <declen>2</declen>
     </data>
     <data>
       <name>A</name>
-      <position>5</position>
+      <position>8</position>
       <datatype>double</datatype>
-      <intlen>4</intlen>
+      <intlen>3</intlen>
       <declen>3</declen>
     </data>
     <data>
       <name>E</name>
-      <position>6</position>
+      <position>9</position>
       <datatype>double</datatype>
-      <intlen>4</intlen>
+      <intlen>3</intlen>
       <declen>3</declen>
     </data>
     <data>
-      <name>ddR</name>
-      <position>7</position>
+      <name>dRho</name>
+      <position>10</position>
       <datatype>double</datatype>
-      <intlen>6</intlen>
+      <intlen>5</intlen>
       <declen>4</declen>
     </data>
     <data>
       <name>dA</name>
-      <position>8</position>
+      <position>11</position>
       <datatype>double</datatype>
-      <intlen>6</intlen>
+      <intlen>5</intlen>
       <declen>4</declen>
     </data>
     <data>
       <name>dE</name>
-      <position>9</position>
+      <position>12</position>
       <datatype>double</datatype>
-      <intlen>6</intlen>
+      <intlen>5</intlen>
       <declen>5</declen>
     </data>
     <data>
-      <name>ANG</name>
-      <position>10</position>
+      <name>Theta1</name>
+      <position>13</position>
       <datatype>double</datatype>
-      <intlen>4</intlen>
+      <intlen>3</intlen>
+      <declen>3</declen>
+    </data>
+    <data>
+      <name>Theta2</name>
+      <position>14</position>
+      <datatype>double</datatype>
+      <intlen>3</intlen>
       <declen>3</declen>
     </data>
   </type>

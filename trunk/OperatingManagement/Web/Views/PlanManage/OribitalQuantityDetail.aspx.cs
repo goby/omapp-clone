@@ -69,7 +69,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "OribitalQuantity.Detail";
+            this.PagePermission = "OMPLAN_OQ.View";
             this.ShortTitle = "轨道根数明细";
             base.OnPageLoaded();
             //this.AddJavaScriptInclude("scripts/pages/");

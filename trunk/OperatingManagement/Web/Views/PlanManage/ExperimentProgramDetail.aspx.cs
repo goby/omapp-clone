@@ -39,7 +39,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "ExperimentProgram.Detail";
+            this.PagePermission = "OMPLAN_ExProgram.View";
             this.ShortTitle = "实验程序明细";
             base.OnPageLoaded();
         }

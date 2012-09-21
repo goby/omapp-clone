@@ -23,7 +23,7 @@ namespace ServicesKernel.GDFX
         /// <summary>
         /// 载入轨道计算结果文件指定数据
         /// </summary>
-        /// <param name="filePath">结果文件路径</param>
+        /// <param name="filePath">结果文件路径,FullName</param>
         /// <param name="resultType">结果类型</param>
         /// <param name="dataType">数据列名</param>
         /// <param name="parseDate">是否解析日期</param>
@@ -32,10 +32,13 @@ namespace ServicesKernel.GDFX
         /// <param name="intDatas">int型数据列</param>
         /// <returns></returns>
         public string LoadResultFile(string filePath, string resultType, string dataType
-            , bool parseDate, out List<DateTime> dates, out List<double> dblDatas, out List<int> intDatas
+            , bool parseDate, out List<DateTime> dates, out List<string> datestrs
+            , out List<double> dblDatas, out List<int> intDatas
             , out double maxValue, out double minValue, out int totalCount)
         {
+            #region Declare variant
             dates = new List<DateTime>();
+            datestrs = new List<string>();
             dblDatas = new List<double>();
             intDatas = new List<int>();
             maxValue = double.MinValue;
@@ -52,6 +55,7 @@ namespace ServicesKernel.GDFX
             string[] strDatas;
             DateTime date;
             ResultType oRType = FormatXMLConfig.GetTypeByName(resultType);
+            #endregion
 
             #region Load Config Info
             if (oRType == null)
@@ -60,45 +64,39 @@ namespace ServicesKernel.GDFX
                 return strResult;
             }
 
-            ResultType oCSType;
-            if (resultType.ToLower() == "cutpre_stw" || resultType.ToLower() == "cutpre_unw" 
-                || resultType.ToLower() == "cutana_stw" || resultType.ToLower() == "cutana_unw")
-            {
-                oCSType = FormatXMLConfig.GetTypeByName("CutPre_STW");
-                if (oCSType != null)
-                    oRType.Results = oCSType.Results;
-                else
-                {
-                    strResult = "读取轨道计算配置信息CutPre_STW失败";
-                    return strResult;
-                }
-            }
-
             ResultData oRData = oRType.GetDataByName(dataType);
             if (oRData == null)
             {
-                strResult = "读取轨道计算配置信息Data失败";
+                strResult = string.Format("读取轨道计算配置信息Data of {0}失败", dataType);
                 return strResult;
             }
             #endregion
 
-            string strFileName = oRType.FileName;
-            string strFileFullName = Path.Combine(filePath, strFileName);
-            string[] files = Directory.GetFiles(filePath, oRType.FileName, SearchOption.TopDirectoryOnly);
-            if (files.Length == 0)
-            {
-                strResult = string.Format("在文件目录中找不到结果文件",oRType.FileName);
-                return strResult;
-            }
-            strFileFullName = files[0];
-            strResult = string.Format("读取{0}文件【{1}】出错，", resultType, strFileName);
-            StreamReader oReader = new StreamReader(strFileFullName);
+            #region Open file & read n Line
+            strResult = string.Format("读取{0}文件【{1}】出错，", resultType, filePath);
+            StreamReader oReader = new StreamReader(filePath);
             oReader.BaseStream.Seek(0, SeekOrigin.Begin);
-            strLine = oReader.ReadLine();
-            strLine = oReader.ReadLine();
+            switch(resultType.ToLower().Substring(0, 4))
+            {
+                case "cutp"://交会预报
+                    oReader.ReadLine();
+                    oReader.ReadLine();
+                    strLine = oReader.ReadLine();
+                    break;
+                case "cuta"://交会分析
+                    strLine = oReader.ReadLine();
+                    break;
+                case "gdyb"://轨道预报
+                    oReader.ReadLine();
+                    strLine = oReader.ReadLine();
+                    break;
+            }
+            #endregion
 
             while (strLine != null && !strLine.Equals(string.Empty))
             {
+                if (strLine.IndexOf(": ") > 0)
+                    strLine = strLine.Replace(": ", ":0");//有的数据时分秒位会有dd:dd: d.ddd的情况，应为dd:dd:dd.ddd
                 if ((oRType.IsBigFile && iTick == 1) || !oRType.IsBigFile)
                 {
                     strDatas = DataValidator.SplitRowDatas(strLine);
@@ -112,6 +110,7 @@ namespace ServicesKernel.GDFX
                             return strResult;
                         }
                         dates.Add(date);
+                        datestrs.Add(date.ToString("yyyy/MM/dd hh:mm:ss.fff"));
                     }
 
                     //if (oRData.Type == DataType.doubletype)

@@ -217,7 +217,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "OribitalQuantity.List";
+            this.PagePermission = "OMPLAN_OQ.View";
             this.ShortTitle = "查看卫星轨道根数";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/PlanManage/OribitalQuantityList.aspx.js");

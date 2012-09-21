@@ -14,29 +14,30 @@
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
 <div class="index_content_search">
-<table style="width:800px;" cellspacing="0" cellpadding="0" class="searchTable">
-    <tr>
+<table style="width:1100px;" cellspacing="0" cellpadding="0" class="searchTable">
+    <tr style="height:30px;">
         <th style="width:20%;">结果类型(<span class="red">*</span>)</th>
         <td style="width:35%;"><select id="resulttype"></select></td>
         <th style="width:10%;">数据名称(<span class="red">*</span>)</th>
         <td style="width:35%;"><select id="dataname"></select></td>
     </tr>
-    <tr>
+    <tr style="height:30px;">
         <th>轨道分析结果数据路径</th>
         <td>
-            <asp:TextBox ID="txtPath" runat="server"></asp:TextBox></td>
+            <asp:TextBox ID="txtPath" runat="server" Width="273px"></asp:TextBox></td>
         <th>&nbsp;</th>
         <td align="right">
-            <asp:Button ID="btnCurve2" runat="server" Text="曲线图" CssClass="button" 
+            <asp:Button ID="btnCurve2" runat="server" Text="查看曲线图" CssClass="button" 
                 onclick="btnCurve2_Click" />
         </td>
     </tr>
-    <tr>
+    <tr style="height:30px;">
         <th>选择本地结果数据文件</th>
-        <td><asp:FileUpload ID="fuPath" ClientIDMode="Static" runat="server" /></td>
+        <td><asp:FileUpload ID="fuPath" ClientIDMode="Static" runat="server" 
+                Width="278px" /></td>
         <th>&nbsp;</th>
         <td align="right">
-            <asp:Button ID="btnCurve" runat="server" Text="曲线图" CssClass="button" 
+            <asp:Button ID="btnCurve" runat="server" Text="查看曲线图" CssClass="button" 
                 onclick="btnCurve_Click" />
                 <asp:HiddenField ID="hdResultType" ClientIDMode="Static" runat="server" />
                 <asp:HiddenField ID="hdDataType" ClientIDMode="Static" runat="server" />
@@ -48,7 +49,7 @@
     </tr>
 </table>
 </div>
-<div id="divOneResourceStatus" runat="server" visible="true" class="index_content_view">
+<div id="divChart" runat="server" visible="false" class="index_content_view">
     <asp:CHART id="ChartCurve" runat="server" Palette="BrightPastel" 
         BackColor="AliceBlue" ImageType="Png" 
         ImageLocation="~/TempImages/ChartPic_#SEQ(300,3)" Width="1100px" Height="600px" 
@@ -69,8 +70,8 @@
 					<LabelStyle Font="Trebuchet MS, 8.25pt, style=Bold" />
 					<MajorGrid LineColor="64, 64, 64, 64" />
 				</axisy>
-				<axisx IntervalType="Minutes" Interval="10" LineColor="64, 64, 64, 64">
-					<LabelStyle Font="Trebuchet MS, 8.25pt, style=Bold" />
+				<axisx LineColor="64, 64, 64, 64">
+					<LabelStyle Font="Trebuchet MS, 8.25pt, style=Bold" Interval="Auto" />
 					<MajorGrid LineColor="64, 64, 64, 64" />
 				</axisx>
 			</asp:ChartArea>

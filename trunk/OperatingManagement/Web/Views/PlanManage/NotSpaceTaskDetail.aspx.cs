@@ -68,7 +68,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "NotSpaceTask.Detail";
+            this.PagePermission = "OMPLAN_NSpaceTask.View";
             this.ShortTitle = "非空间引导数据明细";
             base.OnPageLoaded();
             //this.AddJavaScriptInclude("scripts/pages/");

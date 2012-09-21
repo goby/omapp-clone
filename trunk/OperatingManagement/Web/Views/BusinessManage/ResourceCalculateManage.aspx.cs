@@ -413,6 +413,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         public override void OnPageLoaded()
         {
+            this.PagePermission = "OMB_ResCac.Caculate";
             this.ShortTitle = "查询资源调度计算";
             this.SetTitle();
         }

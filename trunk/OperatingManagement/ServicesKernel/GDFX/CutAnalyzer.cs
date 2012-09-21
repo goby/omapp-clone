@@ -295,7 +295,8 @@ namespace ServicesKernel.GDFX
         public string DoCaculate(string subFileFullName, string targetFileFullName, DateTime beginDate, DateTime endDate, int maxInterval
             , int minInterval, bool isSubInterval, bool isSubBeginDate, bool isSubEndDate, out string resultFileName)
         {
-            resultFileName = "CutAnyalyze_" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            DateTime now = DateTime.Now;
+            resultFileName = "CutAna";
             string strResult = string.Empty;
             if (isCaculating)
             {
@@ -308,10 +309,11 @@ namespace ServicesKernel.GDFX
             StreamReader oSubSR = new StreamReader(subFileFullName);
             StreamReader oTgtSR = new StreamReader(targetFileFullName);
             string filePath = subFileFullName.Substring(0, subFileFullName.LastIndexOf(@"\") + 1) + @"\output\";
-            StreamWriter oSTWResult = new StreamWriter(filePath + resultFileName + "_STW.dat");
-            StreamWriter oUNWResult = new StreamWriter(filePath + resultFileName + "_UNW.dat");
+            StreamWriter oSTWResult = new StreamWriter(filePath + string.Format("{0}_{1}_{2}.dat", resultFileName, "STW", now.ToString("yyyyMMddhhmmss")));
+            StreamWriter oUNWResult = new StreamWriter(filePath + string.Format("{0}_{1}_{2}.dat", resultFileName, "UNW", now.ToString("yyyyMMddhhmmss")));
             #endregion
 
+            resultFileName = string.Format("{0}_{1}_{2}.dat", resultFileName, "UNW", now.ToString("yyyyMMddhhmmss"));
             oSubSR.BaseStream.Seek(0, SeekOrigin.Begin);
             oTgtSR.BaseStream.Seek(0, SeekOrigin.Begin);
             //间隔大的放在前面，哪个间隔大又是从它开始，则开始时间设为minValue

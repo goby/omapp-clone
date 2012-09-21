@@ -42,7 +42,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "Plan.Detail";
+            this.PagePermission = "OMPLAN_Plan.View";
             this.ShortTitle = "计划明细";
             base.OnPageLoaded();
             //this.AddJavaScriptInclude("scripts/pages/");

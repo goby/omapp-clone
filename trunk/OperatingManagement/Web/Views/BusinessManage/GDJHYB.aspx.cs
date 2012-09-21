@@ -1209,16 +1209,17 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
             //处理计算结果，移动文件，给页面控件赋值，删除文件
             lblCalResult.Text = (strResult.Equals(string.Empty)) ? "计算成功" : "计算失败";
-            if (!string.IsNullOrEmpty(strResult))
+            if (string.IsNullOrEmpty(strResult))
             {
                 try
                 {
-                    string[] fileNames = Directory.GetFiles(resultFilePath);
+                    string[] fileNames = Directory.GetFiles(resultFilePath);//得到的是全路径
                     if (fileNames != null && fileNames.Length > 0)
                     {
                         lblResultFilePath.Text = "";
                         for (int i = 0; i < fileNames.Length; i++)
                         {
+                            fileNames[i] = fileNames[i].Substring(fileNames[i].LastIndexOf(@"\") + 1);
                             if (fileNames[i].Substring(0, 6).ToLower() == "cutunw" ||
                                 fileNames[i].Substring(0, 6).ToLower() == "cutstw")
                             {
@@ -1241,6 +1242,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 }
                 divCalResult.Visible = true;
             }
+            else
+                ShowMessage(strResult);
 
             try
             {
@@ -1303,7 +1306,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="filePath"></param>
         private void DeleteFiles(string filePath)
         {
-            if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+            if (!string.IsNullOrEmpty(filePath) && Directory.Exists(filePath))
             {
                 if (File.Exists(filePath + "CutMain.dat"))
                     File.Delete(filePath + "CutMain.dat");
@@ -1371,11 +1374,30 @@ namespace OperatingManagement.Web.Views.BusinessManage
             divCalResult.Visible = false;
         }
 
+        /// <summary>
+        /// 查看计算结果曲线图
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbtViewCurves_Click(object sender, EventArgs e)
         {
+            if (lblResultFilePath.Text == "")
+                Response.Redirect("GDJSCurves.aspx");
 
+            string resultFilePath = lblResultFilePath.Text.Trim().Split(new string[]{"<br>"}, StringSplitOptions.RemoveEmptyEntries)[0];
+            string fileType = "CutPre_STW";
+            if (resultFilePath.ToLower().IndexOf("UNW") >= 0)
+                fileType = "CutPre_UNW";
+
+            if (!string.IsNullOrEmpty(resultFilePath) && File.Exists(resultFilePath))
+                Response.Redirect(string.Format("GDJSCurves.aspx?fp={0}&ft={1}", resultFilePath, fileType));
         }
 
+        /// <summary>
+        /// 保存UNW计算结果文件到本地
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbtUNWFileDownload_Click(object sender, EventArgs e)
         {
             try
@@ -1412,6 +1434,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
         }
 
+        /// <summary>
+        /// 保存STW计算结果文件到本地
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbtSTWFileDownload_Click(object sender, EventArgs e)
         {
             try

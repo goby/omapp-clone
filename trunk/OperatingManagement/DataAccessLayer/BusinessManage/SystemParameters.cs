@@ -53,7 +53,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         OrbitIntersectionReport = 32,
         GDJSResult = 33,
 
-        ZYSXType = 41
+        ZYSXType = 41,
+        SatelliteState
     }
 
     [Serializable]

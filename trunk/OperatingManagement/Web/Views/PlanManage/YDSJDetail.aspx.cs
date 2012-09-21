@@ -48,7 +48,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "YDSJ.Detail";
+            this.PagePermission = "OMPLAN_SpaceTask.View";
             this.ShortTitle = "引导数据明细";
             base.OnPageLoaded();
             //this.AddJavaScriptInclude("scripts/pages/");
