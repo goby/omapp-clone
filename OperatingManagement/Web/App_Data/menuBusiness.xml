@@ -5,19 +5,19 @@
     <item id="1-2" title="新增任务" roles="OMB_COPloicy.Add" href="Views/BusinessManage/BDManage/TaskAdd.aspx" />
   </menu>
   <menu title="地面站管理">
-    <item id="1-1" title="查看地面站" roles="OMB_GSMan.View" href="Views/BusinessManage/GroundStationManage.aspx" />
-    <item id="1-2" title="新增地面站" roles="OMB_GSMan.Add" href="Views/BusinessManage/GroundStationAdd.aspx" />
+    <item id="2-1" title="查看地面站" roles="OMB_GSMan.View" href="Views/BusinessManage/GroundStationManage.aspx" />
+    <item id="2-2" title="新增地面站" roles="OMB_GSMan.Add" href="Views/BusinessManage/GroundStationAdd.aspx" />
   </menu>
   <menu title="卫星管理">
-    <item id="1-1" title="查看卫星" roles="OMB_SatkMan.View" href="Views/BusinessManage/BDManage/SatManage.aspx" />
-    <item id="1-2" title="新增卫星" roles="OMB_SatkMan.Add" href="Views/BusinessManage/BDManage/SatAdd.aspx" />
+    <item id="3-1" title="查看卫星" roles="OMB_SatkMan.View" href="Views/BusinessManage/BDManage/SatManage.aspx" />
+    <item id="3-2" title="新增卫星" roles="OMB_SatkMan.Add" href="Views/BusinessManage/BDManage/SatAdd.aspx" />
   </menu>
   <menu title="资源属性管理">
-    <item id="3-1" title="查看资源属性" roles="OMB_ZYSXMan.View" href="Views/BusinessManage/BDManage/ZYSXManage.aspx" />
-    <item id="3-2" title="新增资源属性" roles="OMB_ZYSXMan.Add" href="Views/BusinessManage/BDManage/ZYSXAdd.aspx" />
+    <item id="4-1" title="查看资源属性" roles="OMB_ZYSXMan.View" href="Views/BusinessManage/BDManage/ZYSXManage.aspx" />
+    <item id="4-2" title="新增资源属性" roles="OMB_ZYSXMan.Add" href="Views/BusinessManage/BDManage/ZYSXAdd.aspx" />
   </menu>
   <menu title="资源功能管理">
-    <item id="4-1" title="查看资源功能" roles="OMB_ZYGNMan.View" href="Views/BusinessManage/BDManage/ZYGNManage.aspx" />
-    <item id="4-2" title="新增资源功能" roles="OMB_ZYGNMan.Add" href="Views/BusinessManage/BDManage/ZYGNAdd.aspx" />
+    <item id="5-1" title="查看资源功能" roles="OMB_ZYGNMan.View" href="Views/BusinessManage/BDManage/ZYGNManage.aspx" />
+    <item id="5-2" title="新增资源功能" roles="OMB_ZYGNMan.Add" href="Views/BusinessManage/BDManage/ZYGNAdd.aspx" />
   </menu>
 </menus>
