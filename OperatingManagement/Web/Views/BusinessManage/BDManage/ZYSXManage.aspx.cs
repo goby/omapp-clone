@@ -55,7 +55,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_ZYSXMan.View";
-            this.ShortTitle = "资源属性列表";
+            this.ShortTitle = "查看资源属性";
             this.SetTitle();
         }
 

@@ -200,6 +200,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         public override void OnPageLoaded()
         {
+            this.PagePermission = "OMB_ComRes.Edit";
             this.ShortTitle = "编辑通信资源";
             this.SetTitle();
         }

@@ -55,7 +55,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMB_ZYGNMan.View";
-            this.ShortTitle = "资源功能列表";
+            this.ShortTitle = "查看资源功能";
             this.SetTitle();
         }
 

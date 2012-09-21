@@ -50,7 +50,7 @@
     <div id="divFileUpload" runat="server" visible="true">
         <table id="tbCutMainUpload" class="edit" style="width: 800px;">
             <tr>
-                <th class="style2" style="width:200px;">
+                <th class="style2" style="width:120px;">
                     CutMain文件(<span class="red">*</span>)
                 </th>
                 <td>

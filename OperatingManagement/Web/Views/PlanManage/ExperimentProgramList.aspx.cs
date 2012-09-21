@@ -208,7 +208,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "ExperimentProgram.List";
+            this.PagePermission = "OMPLAN_ExProgram.View";
             this.ShortTitle = "查看试验程序";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/PlanManage/ExperimentProgramList.aspx.js");

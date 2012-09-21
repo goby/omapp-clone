@@ -226,7 +226,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "NotSpaceTask.List";
+            this.PagePermission = "OMPLAN_NSpaceTask.View";
             this.ShortTitle = "查看非空间机动任务";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/PlanManage/NotSpaceTaskList.aspx.js");

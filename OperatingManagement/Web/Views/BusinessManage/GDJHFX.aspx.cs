@@ -71,19 +71,26 @@ namespace OperatingManagement.Web.Views.BusinessManage
             string resultFileName = string.Empty;
             string resultFilePath = string.Empty;
 
-            strResult = oProc.CutAnalyze(subNewPath, tgtNewPath, out resultFileName);
-            if (strResult.Equals(string.Empty))
+            try
             {
-                resultFilePath = filePath + @"output\" + resultFileName;
-                lblResultPath.Text = resultFilePath;
-                lblResultFilePath.Text = string.Format("{0}<br>{1}", resultFilePath + "_UNW.dat", resultFilePath + "_STW.dat");
-                divCalResult.Visible = true;
-                //ShowMessage("交会分析计算成功。");
+                strResult = oProc.CutAnalyze(subNewPath, tgtNewPath, out resultFileName);
+                if (strResult.Equals(string.Empty))
+                {
+                    resultFilePath = filePath + @"output\" + resultFileName;
+                    lblResultPath.Text = resultFilePath;
+                    lblResultFilePath.Text = string.Format("{0}<br>{1}", resultFilePath.ToLower(),
+                        resultFilePath.ToLower().Replace("unw", "stw"));
+                    divCalResult.Visible = true;
+                }
+                else
+                    ShowMessage(string.Format("交会分析计算失败，{0}", strResult));
+                DeleteFile(subNewPath);
+                DeleteFile(tgtNewPath);
             }
-            else
-                ShowMessage(string.Format("交会分析计算失败，{0}", strResult));
-            DeleteFile(subNewPath);
-            DeleteFile(tgtNewPath);
+            catch (Exception ex)
+            {
+                throw (new AspNetException("轨道分析 - 交会分析页面计算时出现异常，异常原因", ex));
+            }
         }
         /// <summary>
         /// 删除文件
@@ -110,7 +117,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
             lblMessage.Text = "";
             divCalResult.Visible = false;
         }
-
+        /// <summary>
+        /// UNW 结果文件保存到本地
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbtUNWFileDownload_Click(object sender, EventArgs e)
         {
             try
@@ -140,6 +151,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         }
 
+        /// <summary>
+        /// STW结果保存到本地
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbtSTWFileDownload_Click(object sender, EventArgs e)
         {
             try
@@ -168,8 +184,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
         }
 
+        /// <summary>
+        /// 查看计算结果的曲线
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbtViewCurves_Click(object sender, EventArgs e)
         {
+            if (lblResultPath.Text == "")
+                Response.Redirect("GDJSCurves.aspx");
+
             string resultFilePath = lblResultPath.Text.Trim();
             if (!string.IsNullOrEmpty(resultFilePath) && File.Exists(resultFilePath + "_UNW.dat"))
             {

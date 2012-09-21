@@ -273,7 +273,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "OMB_GSMan.Add";
+            this.PagePermission = "OMB_GSMan.Edit";
             this.ShortTitle = "编辑地面站";
             this.SetTitle();
         }

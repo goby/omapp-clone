@@ -195,6 +195,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         public override void OnPageLoaded()
         {
+            this.PagePermission = "OMB_CRes.Edit";
             this.ShortTitle = "编辑中心资源";
             this.SetTitle();
         }

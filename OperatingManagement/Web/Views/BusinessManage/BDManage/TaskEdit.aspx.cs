@@ -13,7 +13,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
     {
         public override void OnPageLoaded()
         {
-            this.PagePermission = "OMB_TaskManage.Edit";
+            this.PagePermission = "OMB_TaskMan.Edit";
             this.ShortTitle = "编辑任务";
             this.SetTitle();
         }

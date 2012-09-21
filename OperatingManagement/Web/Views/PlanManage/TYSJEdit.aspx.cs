@@ -120,7 +120,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         }
         public override void OnPageLoaded()
         {
-            this.PagePermission = "Plan.Edit";
+            this.PagePermission = "OMPLAN_Plan.Edit";
             this.ShortTitle = "编辑计划";
             base.OnPageLoaded();
             this.AddJavaScriptInclude("scripts/pages/PlanManage/TYSJEdit.aspx.js");

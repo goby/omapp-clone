@@ -97,6 +97,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         public override void OnPageLoaded()
         {
+            this.PagePermission = "OMB_ResCacResult.View";
             this.ShortTitle = "查看资源调度计算结果";
             this.SetTitle();
         }

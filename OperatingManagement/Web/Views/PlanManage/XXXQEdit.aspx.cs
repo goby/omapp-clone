@@ -483,7 +483,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "Plan.Edit";
+            this.PagePermission = "OMPLAN_Plan.Edit";
             this.ShortTitle = "空间信息需求编辑";
             base.OnPageLoaded();
             this.AddJavaScriptInclude("scripts/pages/PlanManage/XXXQEdit.aspx.js");

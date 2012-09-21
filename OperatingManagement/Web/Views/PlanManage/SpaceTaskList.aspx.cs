@@ -219,7 +219,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         public override void OnPageLoaded()
         {
-            this.PagePermission = "SpaceTask.List";
+            this.PagePermission = "OMPLAN_SpaceTask.View";
             this.ShortTitle = "查看空间机动任务";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/PlanManage/SpaceTaskList.aspx.js");

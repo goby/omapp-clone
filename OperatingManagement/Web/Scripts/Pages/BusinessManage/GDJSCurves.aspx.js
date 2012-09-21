@@ -1,7 +1,7 @@
 ﻿var Request = { QueryString: function (key) {
     var svalue = window.location.search.match(new RegExp("[\?\&]" + key + "=([^\&]*)(\&?)", "i"));
     return svalue ? svalue[1] : svalue;
-}
+    }
 };
 
 $(window).ready(function () {
@@ -38,7 +38,6 @@ $(window).ready(function () {
 
             initOptions(selectResult, keys, values);
 
-            selectOnChanged(values[0]);
             selectResult.bind('change', function (e) {
                 selectOnChanged($(this).val());
             })
@@ -47,13 +46,28 @@ $(window).ready(function () {
                 dataSelectOnChanged();
             })
             //Get request value of filetype(ft)
-            var ft = Request.QueryString("ft");
-            if (ft != null) {
+            var ft;
+            var datas = [];
+            if ($('#hdResultType').val() != "")
+                ft = $('#hdResultType').val();
+            else
+                ft = Request.QueryString("ft");
+            if (ft != null && ft != $('#resulttype').val()) {
                 if (rvalues[ft] != null) {
                     $('#resulttype').attr('value', ft);
-                    selectOnChanged(ft);
+                    datas = rvalues[$('#resulttype').val()];
+                    renderOptions(selectData, datas);
                 }
             }
+            else if (ft == null) {
+                datas = rvalues[$('#resulttype').val()];
+                renderOptions(selectData, datas);
+            }
+            $('#hdResultType').attr('value', $('#resulttype').val());
+            if ($('#hdDataType').val() != "")
+                $('#dataname').attr('value', $('#hdDataType').val());
+            else
+                $('#hdDataType').attr('value', $('#dataname').val());
 
         }
     })
@@ -83,12 +97,13 @@ function selectOnChanged(key) {
     var keys = rvalues[key];
     if (keys) {
         $('#hdResultType').attr('value', key);
+        //为data List填充值
         renderOptions(selectData, keys);
-        $('#hdDataType').attr('value', keys[0]);
+        //如果没有回发，则隐藏域默认为第一个dataname的值
+        $('#hdDataType').attr('value', keys[0]);;
     }
+}
 
-    function dataSelectOnChanged() {
-        $('#hdDataType').attr('value', $('#dataname').val());
-    }
-
+function dataSelectOnChanged() {
+    $('#hdDataType').attr('value', $('#dataname').val());
 }

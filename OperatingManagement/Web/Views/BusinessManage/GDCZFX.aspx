@@ -44,7 +44,7 @@
        <td>
           <asp:Label ID="lblCalResult" runat="server" Text="计算成功" ForeColor="Red"></asp:Label>
           <!--<asp:LinkButton ID="lbtnViewResult" runat="server" OnClientClick="javascript:_resultDialog.dialog('open');return false;">查看</asp:LinkButton> !-->
-          <asp:LinkButton ID="lbtnResultFileDownload" runat="server" OnClick="lbtnResultFileDownload_Click" CausesValidation="false">另存</asp:LinkButton>
+          <asp:LinkButton ID="lbtnResultFileDownload" runat="server" OnClick="lbtnResultFileDownload_Click" CausesValidation="false">保存计算结果</asp:LinkButton>
        </td>    
     </tr>
     </div>

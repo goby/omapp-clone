@@ -299,7 +299,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
         }
         public override void OnPageLoaded()
         {
-            this.PagePermission = "OMB_SatManage.Edit";
+            this.PagePermission = "OMB_SatkMan.Edit";
             this.ShortTitle = "编辑卫星";
             this.SetTitle();
         }

@@ -41,7 +41,7 @@ namespace OperatingManagement.Web.Views.UserAndRole
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMRoleManage.View";
-            this.ShortTitle = "角色列表";
+            this.ShortTitle = "查看角色";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/usernrole/roles.aspx.js");
         }
