@@ -102,6 +102,21 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
+                if (string.IsNullOrEmpty(dplOpticalEquipment.SelectedValue.Trim()))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "是否光学设备不能为空";
+                    return;
+                }
+
+                int opticalEquipment = 0;
+                if (!int.TryParse(dplOpticalEquipment.SelectedValue.Trim(), out opticalEquipment))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "是否光学设备格式错误";
+                    return;
+                }
+
                 if (cblFunctionType.SelectedItem == null)
                 {
                     trMessage.Visible = true;
@@ -127,6 +142,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 groundResource.RID = rid;
                 groundResource.EquipmentName = txtEquipmentName.Text.Trim();
                 groundResource.EquipmentCode = txtEquipmentCode.Text.Trim();
+                groundResource.OpticalEquipment = opticalEquipment;
                 groundResource.FunctionType = functionType;
                 groundResource.Status = 1;//正常
                 groundResource.CreatedTime = DateTime.Now;
@@ -267,6 +283,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplGroundStation.DataBind();
             //dplGrountStation.Items.Insert(0, new ListItem("请选择", ""));
 
+            dplOpticalEquipment.Items.Clear();
+            dplOpticalEquipment.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.GroundResourceOpticalEquipment);
+            dplOpticalEquipment.DataTextField = "key";
+            dplOpticalEquipment.DataValueField = "value";
+            dplOpticalEquipment.DataBind();
+            //dplOpticalEquipment.Items.Insert(0, new ListItem("请选择", ""));
+
             cblFunctionType.Items.Clear();
             cblFunctionType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.GroundResourceFunctionType);
             cblFunctionType.DataTextField = "key";
@@ -292,6 +315,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         private void ResetControls()
         {
             dplGroundStation.SelectedIndex = 0;
+            dplOpticalEquipment.SelectedIndex = 0;
 
             txtEquipmentName.Text = string.Empty;
             txtEquipmentCode.Text = string.Empty;

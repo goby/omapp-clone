@@ -45,6 +45,17 @@
                     ForeColor="Red" ControlToValidate="dplGroundStation" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
+         <tr>
+            <th>
+                是否光学设备(<span class="red">*</span>)
+            </th>
+            <td>
+                <asp:DropDownList ID="dplOpticalEquipment" runat="server" CssClass="norDpl">
+                </asp:DropDownList>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="dplOpticalEquipment" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+            </td>
+        </tr>
         <tr>
             <th>
                 功能类型(<span class="red">*</span>)

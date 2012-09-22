@@ -45,6 +45,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         public string EquipmentCode { get; set; }
         /// <summary>
+        /// 是否光学设备
+        /// </summary>
+        public int OpticalEquipment { get; set; }
+        /// <summary>
         /// 功能类型
         /// </summary>
         public string FunctionType { get; set; }
@@ -124,6 +128,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     RID = Convert.ToInt32(ds.Tables[0].Rows[0]["RID"]),
                     EquipmentName = ds.Tables[0].Rows[0]["EquipmentName"].ToString(),
                     EquipmentCode = ds.Tables[0].Rows[0]["EquipmentCode"].ToString(),
+                    OpticalEquipment = Convert.ToInt32(ds.Tables[0].Rows[0]["OpticalEquipment"]),
                     FunctionType = ds.Tables[0].Rows[0]["FunctionType"].ToString(),
                     Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
                     ExtProperties = ds.Tables[0].Rows[0]["ExtProperties"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ExtProperties"].ToString(),
@@ -161,6 +166,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         RID = Convert.ToInt32(dr["RID"]),
                         EquipmentName = dr["EquipmentName"].ToString(),
                         EquipmentCode = dr["EquipmentCode"].ToString(),
+                        OpticalEquipment = Convert.ToInt32(dr["OpticalEquipment"]),
                         FunctionType = dr["FunctionType"].ToString(),
                         Status = Convert.ToInt32(dr["Status"]),
                         ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
@@ -229,6 +235,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         RID = Convert.ToInt32(dr["RID"]),
                         EquipmentName = dr["EquipmentName"].ToString(),
                         EquipmentCode = dr["EquipmentCode"].ToString(),
+                        OpticalEquipment = Convert.ToInt32(dr["OpticalEquipment"]),
                         FunctionType = dr["FunctionType"].ToString(),
                         Status = Convert.ToInt32(dr["Status"]),
                         ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
@@ -276,6 +283,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         RID = Convert.ToInt32(dr["RID"]),
                         EquipmentName = dr["EquipmentName"].ToString(),
                         EquipmentCode = dr["EquipmentCode"].ToString(),
+                        OpticalEquipment = Convert.ToInt32(dr["OpticalEquipment"]),
                         FunctionType = dr["FunctionType"].ToString(),
                         Status = Convert.ToInt32(dr["Status"]),
                         ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
@@ -314,6 +322,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                                         new OracleParameter("p_RID",RID),
                                         new OracleParameter("p_EquipmentName",EquipmentName),
                                         new OracleParameter("p_EquipmentCode",EquipmentCode),
+                                        new OracleParameter("p_OpticalEquipment",OpticalEquipment),
                                         new OracleParameter("p_FunctionType",FunctionType),
                                         new OracleParameter("p_Status",Status),
                                         new OracleParameter("p_ExtProperties",string.IsNullOrEmpty(ExtProperties) ? DBNull.Value as object : ExtProperties),
@@ -341,6 +350,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                                         new OracleParameter("p_RID",RID),
                                         new OracleParameter("p_EquipmentName",EquipmentName),
                                         new OracleParameter("p_EquipmentCode",EquipmentCode),
+                                        new OracleParameter("p_OpticalEquipment",OpticalEquipment),
                                         new OracleParameter("p_FunctionType",FunctionType),
                                         new OracleParameter("p_Status",Status),
                                         new OracleParameter("p_ExtProperties",string.IsNullOrEmpty(ExtProperties) ? DBNull.Value as object : ExtProperties),

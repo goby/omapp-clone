@@ -35,6 +35,7 @@ create or replace procedure UP_GroundRes_Insert
        p_RID TB_GroundResource.Rid%type,
        p_EquipmentName TB_GroundResource.EquipmentName%type,
        p_EquipmentCode TB_GroundResource.EquipmentCode%type,
+       p_OpticalEquipment TB_GroundResource.OpticalEquipment%type,
        p_FunctionType TB_GroundResource.FunctionType%type,
        p_Status TB_GroundResource.Status%type,
        p_ExtProperties TB_GroundResource.ExtProperties%type,
@@ -50,8 +51,8 @@ begin
        savepoint p1;
        --v_GRID:=to_number(fn_genseqnum('4002'));
      Select SEQ_TB_GroundResource.NEXTVAL INTO v_GRID From DUAL;
-       Insert into TB_GroundResource(GRID,RID,EquipmentName,EquipmentCode,FunctionType,Status,ExtProperties,CreatedTime,CreatedUserID,UpdatedTime,UpdatedUserID)
-       Values(v_GRID,p_RID,p_EquipmentName,p_EquipmentCode,p_FunctionType,p_Status,p_ExtProperties,p_CreatedTime,p_CreatedUserID,p_UpdatedTime,p_UpdatedUserID);
+       Insert into TB_GroundResource(GRID,RID,EquipmentName,EquipmentCode,OpticalEquipment,FunctionType,Status,ExtProperties,CreatedTime,CreatedUserID,UpdatedTime,UpdatedUserID)
+       Values(v_GRID,p_RID,p_EquipmentName,p_EquipmentCode,p_OpticalEquipment,p_FunctionType,p_Status,p_ExtProperties,p_CreatedTime,p_CreatedUserID,p_UpdatedTime,p_UpdatedUserID);
        commit;
        v_Result:=5; -- Success
 
@@ -64,12 +65,14 @@ end;
 
 
 
+
 create or replace procedure UP_GroundRes_Update
 (
        p_GRID TB_GroundResource.GRID%type,
        p_RID TB_GroundResource.RID%type,
        p_EquipmentName TB_GroundResource.EquipmentName%type,
        p_EquipmentCode TB_GroundResource.EquipmentCode%type,
+       p_OpticalEquipment TB_GroundResource.OpticalEquipment%type,
        p_FunctionType TB_GroundResource.FunctionType%type,
        p_Status TB_GroundResource.Status%type,
        p_ExtProperties TB_GroundResource.ExtProperties%type,
@@ -87,6 +90,7 @@ begin
      Set RID=p_RID
         ,EquipmentName=p_EquipmentName
         ,EquipmentCode=p_EquipmentCode
+        ,OpticalEquipment=p_OpticalEquipment
         ,FunctionType=p_FunctionType
         ,Status=p_Status
         ,ExtProperties=p_ExtProperties
@@ -104,6 +108,7 @@ begin
           COMMIT;
         v_Result:=4; --Error
 end;
+
 
 
 create or replace procedure UP_GroundRes_Search

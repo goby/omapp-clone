@@ -1,17 +1,18 @@
 -- Create table
 create table TB_GROUNDRESOURCE
 (
-  grid          NUMBER(10) not null,
-  rid           NUMBER(5) not null,
-  equipmentname NVARCHAR2(50) not null,
-  equipmentcode NVARCHAR2(50) not null,
-  functiontype  NVARCHAR2(50) not null,
-  status        NUMBER(2) not null,
-  extproperties NVARCHAR2(2000),
-  createdtime   DATE not null,
-  createduserid NUMBER(10),
-  updatedtime   DATE,
-  updateduserid NUMBER(10)
+  grid             NUMBER(10) not null,
+  rid              NUMBER(5) not null,
+  equipmentname    NVARCHAR2(50) not null,
+  equipmentcode    NVARCHAR2(50) not null,
+  opticalequipment NUMBER(2) not null,
+  functiontype     NVARCHAR2(50) not null,
+  status           NUMBER(2) not null,
+  extproperties    NVARCHAR2(2000),
+  createdtime      DATE not null,
+  createduserid    NUMBER(10),
+  updatedtime      DATE,
+  updateduserid    NUMBER(10)
 )
 tablespace TSHTC
   pctfree 10
@@ -32,6 +33,8 @@ comment on column TB_GROUNDRESOURCE.equipmentname
   is '设备名称';
 comment on column TB_GROUNDRESOURCE.equipmentcode
   is '设备编号';
+comment on column TB_GROUNDRESOURCE.opticalequipment
+  is '是否光学设备';
 comment on column TB_GROUNDRESOURCE.functiontype
   is '功能类型';
 comment on column TB_GROUNDRESOURCE.status
