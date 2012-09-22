@@ -43,6 +43,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         XYXSInfoType = 17,
         XYXSInfoOwn = 18,
         XYXSInfoStatus = 19,
+        GroundResourceOpticalEquipment = 61,
 
         ResourceCalculate = 20,
         ResourceCalculateResultFileSource = 21,

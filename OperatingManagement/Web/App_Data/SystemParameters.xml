@@ -46,6 +46,10 @@
     <item text="轨道测量" value="GDCL"></item>
     <item text="数传接收" value="SCJS"></item>
   </GroundResourceFunctionType>
+  <GroundResourceOpticalEquipment description="地面站资源是否光学设备列表">
+    <item text="是" value="1"></item>
+    <item text="否" value="2"></item>
+  </GroundResourceOpticalEquipment>
   <CommunicationResourceDirection description="通信资源方向列表">
     <item text="西安卫星测控中心与运控评估中心" value="XA-YK"></item>
     <item text="运控评估中心与数据接收站" value="YK-SSZ"></item>

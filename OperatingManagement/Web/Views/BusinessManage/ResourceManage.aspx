@@ -88,22 +88,25 @@
                         <th style="width: 7%;">
                             管理单位
                         </th>
-                        <th style="width: 18%;">
+                        <th style="width: 15%;">
                             站址坐标
+                        </th>
+                        <th style="width: 9%;">
+                            是否光学设备
                         </th>
                         <th style="width: 12%;">
                             功能类型
                         </th>
-                        <th style="width: 7%;">
+                        <th style="width: 5%;">
                             状态
                         </th>
                         <th style="width: 7%;">
                             健康/占用
                         </th>
-                        <th style="width: 7%;">
+                        <th style="width: 5%;">
                             编辑
                         </th>
-                         <th style="width: 7%;">
+                         <th style="width: 5%;">
                             删除
                         </th>
                     </tr>
@@ -128,6 +131,9 @@
                     </td>
                     <td>
                         <%#Eval("Coordinate").ToString()%>
+                    </td>
+                     <td>
+                        <%# SystemParameters.GetSystemParameterText(SystemParametersType.GroundResourceOpticalEquipment, Eval("OpticalEquipment").ToString())%>
                     </td>
                     <td>
                         <%# GetGroundResourceFunctionType(Eval("FunctionType").ToString())%>
