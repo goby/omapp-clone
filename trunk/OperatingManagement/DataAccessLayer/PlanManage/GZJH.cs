@@ -37,15 +37,24 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string XXFL { get; set; }
         /// <summary>
+        /// 总圈数，用4位整型数表示
+        /// </summary>
+        public string QS { get; set; }
+
+        public List<GZJH_Content> GZJHContents { get; set; }
+        #endregion
+    }
+
+    [Serializable]
+    public class GZJH_Content
+    {
+        #region -Properties-
+        /// <summary>
         /// 工作单位，用2位整型数表示
         /// </summary>
         public string DW { get; set; }
         //设备代号，用2位整型数表示
         public string SB { get; set; }
-        /// <summary>
-        /// 总圈数，用4位整型数表示
-        /// </summary>
-        public string QS { get; set; }
         /// <summary>
         /// 本行计划对应的卫星飞行圈次
         /// </summary>

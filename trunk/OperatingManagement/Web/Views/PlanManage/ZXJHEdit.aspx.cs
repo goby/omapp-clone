@@ -1739,12 +1739,6 @@ namespace OperatingManagement.Web.Views.PlanManage
             finally { }
         }
 
-        protected void btnStationOutIn_Click(object sender, EventArgs e)
-        {
-            pnlMain.Visible = false;
-            pnlStation.Visible = true;
-        }
-
         /// <summary>
         /// 上传用户文件
         /// </summary>
@@ -1752,8 +1746,14 @@ namespace OperatingManagement.Web.Views.PlanManage
         /// <param name="e"></param>
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(FileUpload1.FileName))
+            {
+                return;
+            }
+
             string filename = FileUpload1.FileName.Substring(FileUpload1.FileName.LastIndexOf('\\') + 1);
             string filepath = GetFullFilePath(filename);
+            hfStationFile.Value = filepath;
 
             FileUpload1.SaveAs(filepath);
             lblUpload.Visible = true;
@@ -1762,7 +1762,12 @@ namespace OperatingManagement.Web.Views.PlanManage
             StationInOutFileReader reader = new StationInOutFileReader();
             List<StationInOut> list;
             list = reader.Read(filename);
+
+            rpDatas.DataSource = list;
+            rpDatas.DataBind();
             #endregion
+
+            ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showFileContentForm();</script>");
         }
 
         /// <summary>
@@ -1784,6 +1789,14 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             path += filename;
             return path;
+        }
+
+        protected void btnGetStationData_Click(object sender, EventArgs e)
+        {
+            string filepath = hfStationFile.Value;  //文件路径
+            string ids = txtIds.Text;   //行号
+
+            System.IO.File.Delete(filepath);    //删除临时文件
         }
     }
 }

@@ -26,7 +26,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
 
         #region -Properties-
         private OracleDatabase _database = null;
-
+        /// <summary>
+        /// 行号
+        /// </summary>
+        public int rowIndex { get; set; }
         /// <summary>
         /// 站名
         /// </summary>
