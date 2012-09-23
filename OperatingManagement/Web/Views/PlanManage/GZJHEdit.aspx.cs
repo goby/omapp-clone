@@ -28,8 +28,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             if (!IsPostBack)
             {
                 btnFormal.Visible = false; 
-                txtStartTime.Attributes.Add("readonly", "true");
-                txtEndTime.Attributes.Add("readonly", "true");
+
                 inital();
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
@@ -63,47 +62,19 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         private void inital()
         {
+            txtJXH.Attributes.Add("readonly", "true");
+            txtQS.Attributes.Add("readonly", "true");
+
             //信息分类
             ddlXXFL.DataSource = PlanParameters.ReadParameters("GZJHXXFL");
             ddlXXFL.DataTextField = "Text";
             ddlXXFL.DataValueField = "Value";
             ddlXXFL.DataBind();
-            //任务代号
-            ddlDH.DataSource = PlanParameters.ReadParameters("GZJHDH");
-            ddlDH.DataTextField = "Text";
-            ddlDH.DataValueField = "Value";
-            ddlDH.DataBind();
-            //工作方式
-            ddlFS.DataSource = PlanParameters.ReadParameters("DJZYSQFS");
-            ddlFS.DataTextField = "Text";
-            ddlFS.DataValueField = "Value";
-            ddlFS.DataBind();
-            //计划性质
-            ddlJXZ.DataSource = PlanParameters.ReadParameters("DJZYSQSXZ");
-            ddlJXZ.DataTextField = "Text";
-            ddlJXZ.DataValueField = "Value";
-            ddlJXZ.DataBind();
-            //设备工作模式
-            ddlMS.DataSource = PlanParameters.ReadParameters("GZJHMS");
-            ddlMS.DataTextField = "Text";
-            ddlMS.DataValueField = "Value";
-            ddlMS.DataBind();
-            //圈标
-            ddlQB.DataSource = PlanParameters.ReadParameters("GZJHQB");
-            ddlQB.DataTextField = "Text";
-            ddlQB.DataValueField = "Value";
-            ddlQB.DataBind();
-            //工作性质
-            ddlGXZ.DataSource = PlanParameters.ReadParameters("GZJHGXZ");
-            ddlGXZ.DataTextField = "Text";
-            ddlGXZ.DataValueField = "Value";
-            ddlGXZ.DataBind();
-            //信息类别标志
-            ddlBID.DataSource = PlanParameters.ReadParameters("GZJHBID");
-            ddlBID.DataTextField = "Text";
-            ddlBID.DataValueField = "Value";
-            ddlBID.DataBind();
-                
+
+            List<GZJH_Content> list = new List<GZJH_Content>();
+            list.Add(new GZJH_Content());
+            rpDatas.DataSource = list;
+            rpDatas.DataBind();            
         }
         private void BindJhTable(string sID)
         {
@@ -145,57 +116,48 @@ namespace OperatingManagement.Web.Views.PlanManage
                 txtJXH.Text = root.InnerText;
                 root = xmlDoc.SelectSingleNode("地面站工作计划/XXFL");
                 ddlXXFL.SelectedValue = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/DW");
-                txtDW.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/SB");
-                txtSB.Text = root.InnerText;
                 root = xmlDoc.SelectSingleNode("地面站工作计划/QS");
                 txtQS.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/QH");
-                txtQH.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/DH");
-                ddlDH.SelectedValue = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/FS");
-                ddlFS.SelectedValue = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/JXZ");
-                ddlJXZ.SelectedValue = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/MS");
-                ddlMS.SelectedValue = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/QB");
-                ddlQB.SelectedValue = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/GXZ");
-                ddlGXZ.SelectedValue = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/ZHB");
-                txtPreStartTime.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/GZK");
-                txtTrackStartTime.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/GZJ");
-                txtTrackEndTime.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/KSHX");
-                txtWaveOnStartTime.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/GSHX");
-                txtWaveOffStartTime.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/RK");
-                txtStartTime.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/JS");
-                txtEndTime.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/BID");
-                ddlBID.SelectedValue = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/SBZ");
-                txtJSBZ.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/RTs");
-                txtTransStartTime.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/RTe");
-                txtTransEndTime.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/SL");
-                txtTransSpeedRate.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/HBZ");
-                txtHBZ.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/Ts");
-                DataStartTime.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/Te");
-                DataEndTime.Text = root.InnerText;
 
+                #region Content
+                root = xmlDoc.SelectSingleNode("地面站工作计划");
+                List<GZJH_Content> list = new List<GZJH_Content>();
+                GZJH_Content c;
+                foreach (XmlNode n in root.ChildNodes)
+                {
+                    if (n.Name == "Content")
+                    {
+                        c = new GZJH_Content();
+                        c.DW = n["DW"].InnerText;
+                        c.SB = n["SB"].InnerText;
+                        c.QH = n["QH"].InnerText;
+                        c.DH = n["DH"].InnerText;
+                        c.FS = n["FS"].InnerText;
+                        c.JXZ = n["JXZ"].InnerText;
+                        c.MS = n["MS"].InnerText;
+                        c.QB = n["QB"].InnerText;
+                        c.GXZ = n["GXZ"].InnerText;
+                        c.ZHB = n["ZHB"].InnerText;
+                        c.GZK = n["GZK"].InnerText;
+                        c.GZJ = n["GZJ"].InnerText;
+                        c.KSHX = n["KSHX"].InnerText;
+                        c.GSHX = n["GSHX"].InnerText;
+                        c.RK = n["RK"].InnerText;
+                        c.JS = n["JS"].InnerText;
+                        c.BID = n["BID"].InnerText;
+                        c.SBZ = n["SBZ"].InnerText;
+                        c.RTs = n["RTs"].InnerText;
+                        c.RTe = n["RTe"].InnerText;
+                        c.SL = n["SL"].InnerText;
+                        c.HBZ = n["HBZ"].InnerText;
+                        c.Ts = n["Ts"].InnerText;
+                        c.Te = n["Te"].InnerText;
+                        list.Add(c);
+                    }
+                }
+                rpDatas.DataSource = list;
+                rpDatas.DataBind();
+                #endregion
             }
             catch (Exception ex)
             {
@@ -224,33 +186,70 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.TaskID = ucTask1.SelectedValue;
                 //obj.JXH = txtJXH.Text;
                 obj.XXFL = ddlXXFL.SelectedValue;
-                obj.DW = txtDW.Text;
-                obj.SB = txtSB.Text;
-                obj.QS = txtQS.Text;
-                obj.QH = txtQH.Text;
-                obj.DH = ddlDH.SelectedValue;
-                obj.FS = ddlFS.SelectedValue;
-                obj.JXZ = ddlJXZ.SelectedValue;
-                obj.MS = ddlMS.SelectedValue;
-                obj.QB = ddlQB.SelectedValue;
-                obj.GXZ = ddlGXZ.SelectedValue;
-                obj.ZHB = txtPreStartTime.Text;
-                obj.RK = txtStartTime.Text;
-                obj.GZK = txtTrackStartTime.Text;
-                obj.KSHX = txtWaveOnStartTime.Text;
-                obj.GSHX = txtWaveOffStartTime.Text;
-                obj.GZJ = txtTrackEndTime.Text;
-                obj.JS = txtEndTime.Text;
-                obj.BID = ddlBID.SelectedValue;
-                obj.SBZ = txtJSBZ.Text;
-                obj.RTs = txtTransStartTime.Text;
-                obj.RTe = txtTransEndTime.Text;
-                obj.SL = txtTransSpeedRate.Text;
-                obj.HBZ = txtHBZ.Text;
-                obj.Ts = DataStartTime.Text;
-                obj.Te = DataEndTime.Text;
-                //CultureInfo provider = CultureInfo.InvariantCulture;
+                //obj.QS = txtQS.Text;
+                obj.GZJHContents = new List<GZJH_Content>();
 
+                #region GZJH_Content
+                GZJH_Content co;
+                foreach (RepeaterItem it in rpDatas.Items)
+                {
+                    co = new GZJH_Content();
+                    #region 赋值
+                    TextBox txtDW = (TextBox)it.FindControl("txtDW");
+                    TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                    DropDownList ddlDH = (DropDownList)it.FindControl("ddlDH");
+                    DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
+                    DropDownList ddlJXZ = (DropDownList)it.FindControl("ddlJXZ");
+                    DropDownList ddlMS = (DropDownList)it.FindControl("ddlMS");
+                    DropDownList ddlQB = (DropDownList)it.FindControl("ddlQB");
+                    DropDownList ddlGXZ = (DropDownList)it.FindControl("ddlGXZ");
+                    TextBox txtPreStartTime = (TextBox)it.FindControl("txtPreStartTime");
+                    TextBox txtQH = (TextBox)it.FindControl("txtQH");
+                    TextBox txtTrackStartTime = (TextBox)it.FindControl("txtTrackStartTime");
+                    TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
+                    TextBox txtWaveOnStartTime = (TextBox)it.FindControl("txtWaveOnStartTime");
+                    TextBox txtWaveOffStartTime = (TextBox)it.FindControl("txtWaveOffStartTime");
+                    TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                    TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+                    DropDownList ddlBID = (DropDownList)it.FindControl("ddlBID");
+                    TextBox txtJSBZ = (TextBox)it.FindControl("txtJSBZ");
+                    TextBox txtTransStartTime = (TextBox)it.FindControl("txtTransStartTime");
+                    TextBox txtTransEndTime = (TextBox)it.FindControl("txtTransEndTime");
+                    TextBox txtTransSpeedRate = (TextBox)it.FindControl("txtTransSpeedRate");
+                    TextBox txtHBZ = (TextBox)it.FindControl("txtHBZ");
+                    TextBox DataStartTime = (TextBox)it.FindControl("DataStartTime");
+                    TextBox DataEndTime = (TextBox)it.FindControl("DataEndTime");
+
+                    co.DW = txtDW.Text;
+                    co.SB = txtSB.Text;
+                    co.DH = ddlDH.SelectedItem.Text;
+                    co.FS = ddlFS.SelectedItem.Text;
+                    co.JXZ = ddlJXZ.SelectedItem.Text;
+                    co.MS = ddlMS.SelectedItem.Text;
+                    co.QB = ddlQB.SelectedItem.Text;
+                    co.GXZ = ddlGXZ.SelectedItem.Text;
+                    co.ZHB = txtPreStartTime.Text;
+                    co.QH = txtQH.Text;
+                    co.GZK = txtTrackStartTime.Text;
+                    co.GZJ = txtTrackEndTime.Text;
+                    co.KSHX = txtWaveOnStartTime.Text;
+                    co.GSHX = txtWaveOffStartTime.Text;
+                    co.RK = txtStartTime.Text;
+                    co.JS = txtEndTime.Text;
+                    co.BID = ddlBID.SelectedItem.Text;
+                    co.SBZ = txtJSBZ.Text;
+                    co.RTs = txtTransStartTime.Text;
+                    co.RTe = txtTransEndTime.Text;
+                    co.SL = txtTransSpeedRate.Text;
+                    co.HBZ = txtHBZ.Text;
+                    co.Ts = DataStartTime.Text;
+                    co.Te = DataEndTime.Text;
+                    #endregion
+                    obj.GZJHContents.Add(co);
+                }
+                obj.QS = obj.GZJHContents.Count.ToString(); //圈数，自动计算得到
+                #endregion
+                
                 PlanFileCreator creater = new PlanFileCreator(isTempJH);
 
                 if (hfStatus.Value == "new")
@@ -322,33 +321,71 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.TaskID = ucTask1.SelectedValue;
                 //obj.JXH = txtJXH.Text;
                 obj.XXFL = ddlXXFL.SelectedValue;
-                obj.DW = txtDW.Text;
-                obj.SB = txtSB.Text;
-                obj.QS = txtQS.Text;
-                obj.QH = txtQH.Text;
-                obj.DH = ddlDH.SelectedValue;
-                obj.FS = ddlFS.SelectedValue;
-                obj.JXZ = ddlJXZ.SelectedValue;
-                obj.MS = ddlMS.SelectedValue;
-                obj.QB = ddlQB.SelectedValue;
-                obj.GXZ = ddlGXZ.SelectedValue;
-                obj.ZHB = txtPreStartTime.Text;
-                obj.RK = txtStartTime.Text;
-                obj.GZK = txtTrackStartTime.Text;
-                obj.KSHX = txtWaveOnStartTime.Text;
-                obj.GSHX = txtWaveOffStartTime.Text;
-                obj.GZJ = txtTrackEndTime.Text;
-                obj.JS = txtEndTime.Text;
-                obj.BID = ddlBID.SelectedValue;
-                obj.SBZ = txtJSBZ.Text;
-                obj.RTs = txtTransStartTime.Text;
-                obj.RTe = txtTransEndTime.Text;
-                obj.SL = txtTransSpeedRate.Text;
-                obj.HBZ = txtHBZ.Text;
-                obj.Ts = DataStartTime.Text;
-                obj.Te = DataEndTime.Text;
+                //obj.QS = txtQS.Text;
+                obj.GZJHContents = new List<GZJH_Content>();
 
-                CultureInfo provider = CultureInfo.InvariantCulture;
+                #region GZJH_Content
+                GZJH_Content co;
+                foreach (RepeaterItem it in rpDatas.Items)
+                {
+                    co = new GZJH_Content();
+                    #region 赋值
+                    TextBox txtDW = (TextBox)it.FindControl("txtDW");
+                    TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                    DropDownList ddlDH = (DropDownList)it.FindControl("ddlDH");
+                    DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
+                    DropDownList ddlJXZ = (DropDownList)it.FindControl("ddlJXZ");
+                    DropDownList ddlMS = (DropDownList)it.FindControl("ddlMS");
+                    DropDownList ddlQB = (DropDownList)it.FindControl("ddlQB");
+                    DropDownList ddlGXZ = (DropDownList)it.FindControl("ddlGXZ");
+                    TextBox txtPreStartTime = (TextBox)it.FindControl("txtPreStartTime");
+                    TextBox txtQH = (TextBox)it.FindControl("txtQH");
+                    TextBox txtTrackStartTime = (TextBox)it.FindControl("txtTrackStartTime");
+                    TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
+                    TextBox txtWaveOnStartTime = (TextBox)it.FindControl("txtWaveOnStartTime");
+                    TextBox txtWaveOffStartTime = (TextBox)it.FindControl("txtWaveOffStartTime");
+                    TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                    TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+                    DropDownList ddlBID = (DropDownList)it.FindControl("ddlBID");
+                    TextBox txtJSBZ = (TextBox)it.FindControl("txtJSBZ");
+                    TextBox txtTransStartTime = (TextBox)it.FindControl("txtTransStartTime");
+                    TextBox txtTransEndTime = (TextBox)it.FindControl("txtTransEndTime");
+                    TextBox txtTransSpeedRate = (TextBox)it.FindControl("txtTransSpeedRate");
+                    TextBox txtHBZ = (TextBox)it.FindControl("txtHBZ");
+                    TextBox DataStartTime = (TextBox)it.FindControl("DataStartTime");
+                    TextBox DataEndTime = (TextBox)it.FindControl("DataEndTime");
+
+                    co.DW = txtDW.Text;
+                    co.SB = txtSB.Text;
+                    co.DH = ddlDH.SelectedItem.Text;
+                    co.FS = ddlFS.SelectedItem.Text;
+                    co.JXZ = ddlJXZ.SelectedItem.Text;
+                    co.MS = ddlMS.SelectedItem.Text;
+                    co.QB = ddlQB.SelectedItem.Text;
+                    co.GXZ = ddlGXZ.SelectedItem.Text;
+                    co.ZHB = txtPreStartTime.Text;
+                    co.QH = txtQH.Text;
+                    co.GZK = txtTrackStartTime.Text;
+                    co.GZJ = txtTrackEndTime.Text;
+                    co.KSHX = txtWaveOnStartTime.Text;
+                    co.GSHX = txtWaveOffStartTime.Text;
+                    co.RK = txtStartTime.Text;
+                    co.JS = txtEndTime.Text;
+                    co.BID = ddlBID.SelectedItem.Text;
+                    co.SBZ = txtJSBZ.Text;
+                    co.RTs = txtTransStartTime.Text;
+                    co.RTe = txtTransEndTime.Text;
+                    co.SL = txtTransSpeedRate.Text;
+                    co.HBZ = txtHBZ.Text;
+                    co.Ts = DataStartTime.Text;
+                    co.Te = DataEndTime.Text;
+                    #endregion
+                    obj.GZJHContents.Add(co);
+                }
+                obj.QS = obj.GZJHContents.Count.ToString(); //圈数，自动计算得到
+                #endregion
+
+                //CultureInfo provider = CultureInfo.InvariantCulture;
 
                 PlanFileCreator creater = new PlanFileCreator(isTempJH);
 
@@ -444,33 +481,70 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.TaskID = ucTask1.SelectedValue;
                 //obj.JXH = txtJXH.Text;
                 obj.XXFL = ddlXXFL.SelectedValue;
-                obj.DW = txtDW.Text;
-                obj.SB = txtSB.Text;
-                obj.QS = txtQS.Text;
-                obj.QH = txtQH.Text;
-                obj.DH = ddlDH.SelectedValue;
-                obj.FS = ddlFS.SelectedValue;
-                obj.JXZ = ddlJXZ.SelectedValue;
-                obj.MS = ddlMS.SelectedValue;
-                obj.QB = ddlQB.SelectedValue;
-                obj.GXZ = ddlGXZ.SelectedValue;
-                obj.ZHB = txtPreStartTime.Text;
-                obj.RK = txtStartTime.Text;
-                obj.GZK = txtTrackStartTime.Text;
-                obj.KSHX = txtWaveOnStartTime.Text;
-                obj.GSHX = txtWaveOffStartTime.Text;
-                obj.GZJ = txtTrackEndTime.Text;
-                obj.JS = txtEndTime.Text;
-                obj.BID = ddlBID.SelectedValue;
-                obj.SBZ = txtJSBZ.Text;
-                obj.RTs = txtTransStartTime.Text;
-                obj.RTe = txtTransEndTime.Text;
-                obj.SL = txtTransSpeedRate.Text;
-                obj.HBZ = txtHBZ.Text;
-                obj.Ts = DataStartTime.Text;
-                obj.Te = DataEndTime.Text;
+                //obj.QS = txtQS.Text;
+                obj.GZJHContents = new List<GZJH_Content>();
 
-                CultureInfo provider = CultureInfo.InvariantCulture;
+                #region GZJH_Content
+                GZJH_Content co;
+                foreach (RepeaterItem it in rpDatas.Items)
+                {
+                    co = new GZJH_Content();
+                    #region 赋值
+                    TextBox txtDW = (TextBox)it.FindControl("txtDW");
+                    TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                    DropDownList ddlDH = (DropDownList)it.FindControl("ddlDH");
+                    DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
+                    DropDownList ddlJXZ = (DropDownList)it.FindControl("ddlJXZ");
+                    DropDownList ddlMS = (DropDownList)it.FindControl("ddlMS");
+                    DropDownList ddlQB = (DropDownList)it.FindControl("ddlQB");
+                    DropDownList ddlGXZ = (DropDownList)it.FindControl("ddlGXZ");
+                    TextBox txtPreStartTime = (TextBox)it.FindControl("txtPreStartTime");
+                    TextBox txtQH = (TextBox)it.FindControl("txtQH");
+                    TextBox txtTrackStartTime = (TextBox)it.FindControl("txtTrackStartTime");
+                    TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
+                    TextBox txtWaveOnStartTime = (TextBox)it.FindControl("txtWaveOnStartTime");
+                    TextBox txtWaveOffStartTime = (TextBox)it.FindControl("txtWaveOffStartTime");
+                    TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                    TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+                    DropDownList ddlBID = (DropDownList)it.FindControl("ddlBID");
+                    TextBox txtJSBZ = (TextBox)it.FindControl("txtJSBZ");
+                    TextBox txtTransStartTime = (TextBox)it.FindControl("txtTransStartTime");
+                    TextBox txtTransEndTime = (TextBox)it.FindControl("txtTransEndTime");
+                    TextBox txtTransSpeedRate = (TextBox)it.FindControl("txtTransSpeedRate");
+                    TextBox txtHBZ = (TextBox)it.FindControl("txtHBZ");
+                    TextBox DataStartTime = (TextBox)it.FindControl("DataStartTime");
+                    TextBox DataEndTime = (TextBox)it.FindControl("DataEndTime");
+
+                    co.DW = txtDW.Text;
+                    co.SB = txtSB.Text;
+                    co.DH = ddlDH.SelectedItem.Text;
+                    co.FS = ddlFS.SelectedItem.Text;
+                    co.JXZ = ddlJXZ.SelectedItem.Text;
+                    co.MS = ddlMS.SelectedItem.Text;
+                    co.QB = ddlQB.SelectedItem.Text;
+                    co.GXZ = ddlGXZ.SelectedItem.Text;
+                    co.ZHB = txtPreStartTime.Text;
+                    co.QH = txtQH.Text;
+                    co.GZK = txtTrackStartTime.Text;
+                    co.GZJ = txtTrackEndTime.Text;
+                    co.KSHX = txtWaveOnStartTime.Text;
+                    co.GSHX = txtWaveOffStartTime.Text;
+                    co.RK = txtStartTime.Text;
+                    co.JS = txtEndTime.Text;
+                    co.BID = ddlBID.SelectedItem.Text;
+                    co.SBZ = txtJSBZ.Text;
+                    co.RTs = txtTransStartTime.Text;
+                    co.RTe = txtTransEndTime.Text;
+                    co.SL = txtTransSpeedRate.Text;
+                    co.HBZ = txtHBZ.Text;
+                    co.Ts = DataStartTime.Text;
+                    co.Te = DataEndTime.Text;
+                    #endregion
+                    obj.GZJHContents.Add(co);
+                }
+                obj.QS = obj.GZJHContents.Count.ToString(); //圈数，自动计算得到
+                #endregion
+
 
                 PlanFileCreator creater = new PlanFileCreator();
 
@@ -520,6 +594,279 @@ namespace OperatingManagement.Web.Views.PlanManage
             catch (Exception ex)
             {
                 throw (new AspNetException("另存计划信息出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
+        protected void rpDatas_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            try
+            {
+                if (e.CommandName == "Add")
+                {
+                    List<GZJH_Content> list = new List<GZJH_Content>();
+                    GZJH_Content co;
+                    Repeater rp = (Repeater)source;
+                    ViewState["op"] = "Add";
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        #region 赋值
+                        co = new GZJH_Content();
+                        TextBox txtDW = (TextBox)it.FindControl("txtDW");
+                        TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                        DropDownList ddlDH = (DropDownList)it.FindControl("ddlDH");
+                        DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
+                        DropDownList ddlJXZ = (DropDownList)it.FindControl("ddlJXZ");
+                        DropDownList ddlMS = (DropDownList)it.FindControl("ddlMS");
+                        DropDownList ddlQB = (DropDownList)it.FindControl("ddlQB");
+                        DropDownList ddlGXZ = (DropDownList)it.FindControl("ddlGXZ");
+                        TextBox txtPreStartTime = (TextBox)it.FindControl("txtPreStartTime");
+                        TextBox txtQH = (TextBox)it.FindControl("txtQH");
+                        TextBox txtTrackStartTime = (TextBox)it.FindControl("txtTrackStartTime");
+                        TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
+                        TextBox txtWaveOnStartTime = (TextBox)it.FindControl("txtWaveOnStartTime");
+                        TextBox txtWaveOffStartTime = (TextBox)it.FindControl("txtWaveOffStartTime");
+                        TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                        TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+                        DropDownList ddlBID = (DropDownList)it.FindControl("ddlBID");
+                        TextBox txtJSBZ = (TextBox)it.FindControl("txtJSBZ");
+                        TextBox txtTransStartTime = (TextBox)it.FindControl("txtTransStartTime");
+                        TextBox txtTransEndTime = (TextBox)it.FindControl("txtTransEndTime");
+                        TextBox txtTransSpeedRate = (TextBox)it.FindControl("txtTransSpeedRate");
+                        TextBox txtHBZ = (TextBox)it.FindControl("txtHBZ");
+                        TextBox DataStartTime = (TextBox)it.FindControl("DataStartTime");
+                        TextBox DataEndTime = (TextBox)it.FindControl("DataEndTime");
+
+                        co.DW = txtDW.Text;
+                        co.SB = txtSB.Text;
+                        co.DH = ddlDH.SelectedItem.Text;
+                        co.FS = ddlFS.SelectedItem.Text;
+                        co.JXZ = ddlJXZ.SelectedItem.Text;
+                        co.MS = ddlMS.SelectedItem.Text;
+                        co.QB = ddlQB.SelectedItem.Text;
+                        co.GXZ = ddlGXZ.SelectedItem.Text;
+                        co.ZHB = txtPreStartTime.Text;
+                        co.QH = txtQH.Text;
+                        co.GZK = txtTrackStartTime.Text;
+                        co.GZJ = txtTrackEndTime.Text;
+                        co.KSHX = txtWaveOnStartTime.Text;
+                        co.GSHX = txtWaveOffStartTime.Text;
+                        co.RK = txtStartTime.Text;
+                        co.JS = txtEndTime.Text;
+                        co.BID = ddlBID.SelectedItem.Text;
+                        co.SBZ = txtJSBZ.Text;
+                        co.RTs = txtTransStartTime.Text;
+                        co.RTe = txtTransEndTime.Text;
+                        co.SL = txtTransSpeedRate.Text;
+                        co.HBZ = txtHBZ.Text;
+                        co.Ts = DataStartTime.Text;
+                        co.Te = DataEndTime.Text;
+                        #endregion
+                        list.Add(co);
+                    }
+                    #region new a GZJH_Content
+                    co = new GZJH_Content() { 
+                        DW="",
+                        SB="",
+                        DH="",
+                        FS="",
+                        JXZ = "",
+                        MS = "",
+                        QB = "",
+                        GXZ = "",
+                        ZHB = "",
+                        QH = "",
+                        GZK = "",
+                        GZJ = "",
+                        KSHX = "",
+                        GSHX = "",
+                        RK = "",
+                        JS = "",
+                        BID = "",
+                        SBZ = "",
+                        RTs = "",
+                        RTe = "",
+                        SL = "",
+                        HBZ = "",
+                        Ts = "",
+                        Te = ""
+                    };
+                    #endregion
+                    list.Add(co);
+                    rp.DataSource = list;
+                    rp.DataBind();
+
+                }
+                if (e.CommandName == "Del")
+                {
+                    List<GZJH_Content> list = new List<GZJH_Content>();
+                    GZJH_Content co;
+                    Repeater rp = (Repeater)source;
+                    ViewState["op"] = "Del";
+                    if (rp.Items.Count <= 1)
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
+                    }
+                    else
+                    {
+                        foreach (RepeaterItem it in rp.Items)
+                        {
+                            if (e.Item.ItemIndex != it.ItemIndex)
+                            {
+                                #region 赋值
+                                co = new GZJH_Content();
+                                TextBox txtDW = (TextBox)it.FindControl("txtDW");
+                                TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                                DropDownList ddlDH = (DropDownList)it.FindControl("ddlDH");
+                                DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
+                                DropDownList ddlJXZ = (DropDownList)it.FindControl("ddlJXZ");
+                                DropDownList ddlMS = (DropDownList)it.FindControl("ddlMS");
+                                DropDownList ddlQB = (DropDownList)it.FindControl("ddlQB");
+                                DropDownList ddlGXZ = (DropDownList)it.FindControl("ddlGXZ");
+                                TextBox txtPreStartTime = (TextBox)it.FindControl("txtPreStartTime");
+                                TextBox txtQH = (TextBox)it.FindControl("txtQH");
+                                TextBox txtTrackStartTime = (TextBox)it.FindControl("txtTrackStartTime");
+                                TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
+                                TextBox txtWaveOnStartTime = (TextBox)it.FindControl("txtWaveOnStartTime");
+                                TextBox txtWaveOffStartTime = (TextBox)it.FindControl("txtWaveOffStartTime");
+                                TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                                TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+                                DropDownList ddlBID = (DropDownList)it.FindControl("ddlBID");
+                                TextBox txtJSBZ = (TextBox)it.FindControl("txtJSBZ");
+                                TextBox txtTransStartTime = (TextBox)it.FindControl("txtTransStartTime");
+                                TextBox txtTransEndTime = (TextBox)it.FindControl("txtTransEndTime");
+                                TextBox txtTransSpeedRate = (TextBox)it.FindControl("txtTransSpeedRate");
+                                TextBox txtHBZ = (TextBox)it.FindControl("txtHBZ");
+                                TextBox DataStartTime = (TextBox)it.FindControl("DataStartTime");
+                                TextBox DataEndTime = (TextBox)it.FindControl("DataEndTime");
+
+                                co.DW = txtDW.Text;
+                                co.SB = txtSB.Text;
+                                co.DH = ddlDH.SelectedItem.Text;
+                                co.FS = ddlFS.SelectedItem.Text;
+                                co.JXZ = ddlJXZ.SelectedItem.Text;
+                                co.MS = ddlMS.SelectedItem.Text;
+                                co.QB = ddlQB.SelectedItem.Text;
+                                co.GXZ = ddlGXZ.SelectedItem.Text;
+                                co.ZHB = txtPreStartTime.Text;
+                                co.QH = txtQH.Text;
+                                co.GZK = txtTrackStartTime.Text;
+                                co.GZJ = txtTrackEndTime.Text;
+                                co.KSHX = txtWaveOnStartTime.Text;
+                                co.GSHX = txtWaveOffStartTime.Text;
+                                co.RK = txtStartTime.Text;
+                                co.JS = txtEndTime.Text;
+                                co.BID = ddlBID.SelectedItem.Text;
+                                co.SBZ = txtJSBZ.Text;
+                                co.RTs = txtTransStartTime.Text;
+                                co.RTe = txtTransEndTime.Text;
+                                co.SL = txtTransSpeedRate.Text;
+                                co.HBZ = txtHBZ.Text;
+                                co.Ts = DataStartTime.Text;
+                                co.Te = DataEndTime.Text;
+                                #endregion
+                                list.Add(co);
+                            }
+                        }
+                        rp.DataSource = list;
+                        rp.DataBind();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("绑定目标信息出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
+        protected void rpDatas_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            try
+            {
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                {
+                    #region 初始化各个下拉列表的值
+
+                    //任务代号
+                    DropDownList ddlDH = (DropDownList)e.Item.FindControl("ddlDH") as DropDownList;
+                    ddlDH.DataSource = PlanParameters.ReadParameters("GZJHDH");
+                    ddlDH.DataTextField = "Text";
+                    ddlDH.DataValueField = "Value";
+                    ddlDH.DataBind();
+                    //工作方式
+                    DropDownList ddlFS = (DropDownList)e.Item.FindControl("ddlFS") as DropDownList;
+                    ddlFS.DataSource = PlanParameters.ReadParameters("DJZYSQFS");
+                    ddlFS.DataTextField = "Text";
+                    ddlFS.DataValueField = "Value";
+                    ddlFS.DataBind();
+                    //计划性质
+                    DropDownList ddlJXZ = (DropDownList)e.Item.FindControl("ddlJXZ") as DropDownList;
+                    ddlJXZ.DataSource = PlanParameters.ReadParameters("DJZYSQSXZ");
+                    ddlJXZ.DataTextField = "Text";
+                    ddlJXZ.DataValueField = "Value";
+                    ddlJXZ.DataBind();
+                    //设备工作模式
+                    DropDownList ddlMS = (DropDownList)e.Item.FindControl("ddlMS") as DropDownList;
+                    ddlMS.DataSource = PlanParameters.ReadParameters("GZJHMS");
+                    ddlMS.DataTextField = "Text";
+                    ddlMS.DataValueField = "Value";
+                    ddlMS.DataBind();
+                    //圈标
+                    DropDownList ddlQB = (DropDownList)e.Item.FindControl("ddlQB") as DropDownList;
+                    ddlQB.DataSource = PlanParameters.ReadParameters("GZJHQB");
+                    ddlQB.DataTextField = "Text";
+                    ddlQB.DataValueField = "Value";
+                    ddlQB.DataBind();
+                    //工作性质
+                    DropDownList ddlGXZ = (DropDownList)e.Item.FindControl("ddlGXZ") as DropDownList;
+                    ddlGXZ.DataSource = PlanParameters.ReadParameters("GZJHGXZ");
+                    ddlGXZ.DataTextField = "Text";
+                    ddlGXZ.DataValueField = "Value";
+                    ddlGXZ.DataBind();
+                    //信息类别标志
+                    DropDownList ddlBID = (DropDownList)e.Item.FindControl("ddlBID") as DropDownList;
+                    ddlBID.DataSource = PlanParameters.ReadParameters("GZJHBID");
+                    ddlBID.DataTextField = "Text";
+                    ddlBID.DataValueField = "Value";
+                    ddlBID.DataBind();
+                    #endregion
+
+                    GZJH_Content g = (GZJH_Content)e.Item.DataItem;
+                    if ( !string.IsNullOrEmpty(g.DH))
+                    {
+                        ddlDH.SelectedValue = g.DH;
+                    }
+                    if (!string.IsNullOrEmpty(g.FS))
+                    {
+                        ddlFS.SelectedValue = g.FS;
+                    }
+                    if (!string.IsNullOrEmpty(g.JXZ))
+                    {
+                        ddlJXZ.SelectedValue = g.JXZ;
+                    }
+                    
+                    if (!string.IsNullOrEmpty(g.MS))
+                    {
+                        ddlMS.SelectedValue = g.MS;
+                    }
+                    if (!string.IsNullOrEmpty(g.QB))
+                    {
+                        ddlQB.SelectedValue = g.QB;
+                    }
+                    if (!string.IsNullOrEmpty(g.GXZ))
+                    {
+                        ddlGXZ.SelectedValue = g.GXZ;
+                    }
+                    if (!string.IsNullOrEmpty(g.BID))
+                    {
+                        ddlBID.SelectedValue = g.BID;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("绑定地面计划信息出现异常，异常原因", ex));
             }
             finally { }
         }

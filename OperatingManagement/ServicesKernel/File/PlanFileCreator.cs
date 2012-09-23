@@ -548,105 +548,114 @@ namespace ServicesKernel.File
             xmlWriter.WriteString(obj.XXFL);
             xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("DW");
-            xmlWriter.WriteString(obj.DW);
-            xmlWriter.WriteEndElement();
-
-            xmlWriter.WriteStartElement("SB");
-            xmlWriter.WriteString(obj.SB);
-            xmlWriter.WriteEndElement();
-
             xmlWriter.WriteStartElement("QS");
             xmlWriter.WriteString(obj.QS);
             xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("QH");
-            xmlWriter.WriteString(obj.QH);
-            xmlWriter.WriteEndElement();
+            #region Content
+            for (int i = 1; i <= obj.GZJHContents.Count; i++)
+            {
+                xmlWriter.WriteStartElement("Content");
 
-            xmlWriter.WriteStartElement("DH");
-            xmlWriter.WriteString(obj.DH);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("DW");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].DW);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("FS");
-            xmlWriter.WriteString(obj.FS);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("SB");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].SB);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("JXZ");
-            xmlWriter.WriteString(obj.JXZ);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("QH");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].QH);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("MS");
-            xmlWriter.WriteString(obj.MS);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("DH");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].DH);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("QB");
-            xmlWriter.WriteString(obj.QB);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("FS");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].FS);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("GXZ");
-            xmlWriter.WriteString(obj.GXZ);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("JXZ");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].JXZ);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("ZHB");
-            xmlWriter.WriteString(obj.ZHB);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("MS");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].MS);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("RK");
-            xmlWriter.WriteString(obj.RK);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("QB");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].QB);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("GZK");
-            xmlWriter.WriteString(obj.GZK);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("GXZ");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].GXZ);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("KSHX");
-            xmlWriter.WriteString(obj.KSHX);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("ZHB");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].ZHB);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("GSHX");
-            xmlWriter.WriteString(obj.GSHX);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("RK");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].RK);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("GZJ");
-            xmlWriter.WriteString(obj.GZJ);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("GZK");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].GZK);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("JS");
-            xmlWriter.WriteString(obj.JS);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("KSHX");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].KSHX);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("BID");
-            xmlWriter.WriteString(obj.BID);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("GSHX");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].GSHX);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("SBZ");
-            xmlWriter.WriteString(obj.SBZ);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("GZJ");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].GZJ);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("RTs");
-            xmlWriter.WriteString(obj.RTs);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("JS");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].JS);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("RTe");
-            xmlWriter.WriteString(obj.RTe);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("BID");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].BID);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("SL");
-            xmlWriter.WriteString(obj.SL);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("SBZ");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].SBZ);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("HBZ");
-            xmlWriter.WriteString(obj.HBZ);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("RTs");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].RTs);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("Ts");
-            xmlWriter.WriteString(obj.Ts);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("RTe");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].RTe);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("Te");
-            xmlWriter.WriteString(obj.Te);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("SL");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].SL);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("HBZ");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].HBZ);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("Ts");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].Ts);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("Te");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].Te);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteEndElement();
+            }
+            #endregion
 
             xmlWriter.WriteEndElement();
             xmlWriter.Close();

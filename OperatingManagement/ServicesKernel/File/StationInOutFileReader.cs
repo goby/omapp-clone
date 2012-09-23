@@ -43,6 +43,7 @@ namespace ServicesKernel.File
             for (int i = 1; i < content.Length; i++)
             {
                 station = GetStationInOutFromString(content[i]);
+                station.rowIndex = i;
                 list.Add(station);
             }
 

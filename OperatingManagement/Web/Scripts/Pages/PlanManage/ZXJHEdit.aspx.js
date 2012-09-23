@@ -50,3 +50,59 @@ function setdayte(o){
 			changeYear: true
 		});
 }
+
+//弹出进出站及航捷数据统计文件内容窗口
+function showFileContentForm() {
+    var _dialog;
+    _dialog = $("#dialog-station");
+    _dialog.dialog({
+        autoOpen: false,
+        height: 550,
+        width: 750,
+        modal: true,
+        buttons: {
+            '确定': function () {
+                var list = $('#tbStations').find('input:checkbox:[checked]');
+                if (list.length == 0) {
+                    showMsg('请选择进出站及航捷数据。');
+                }
+                else {
+                    $(this).dialog("close");
+                    var ids = list.map(function () { return this.value; }).get().join(',');
+                    $('#txtIds').val(ids);
+                    var btn = $('#btnGetStationData');
+                    btn.click();
+                }
+            },
+            '关闭': function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+    _dialog.dialog('open');
+    _dialog.parent().appendTo($("form:first"));
+    return false;
+}
+
+function checkAll(o) {
+    if ($('#tbStations').length > 0) {
+        $('#tbStations').find('input:checkbox:not([disabled])').attr('checked', o.checked);
+    }
+}
+
+function sendPlan() {
+
+
+    var chks = $('#tbStations').find('input:checkbox:[checked]');
+    if (chks.length == 0) {
+        _dialog.find('p.content').eq(0).html('请选择进出站及航捷数据。');
+        _dialog.dialog('open');
+        return false;
+    }
+
+
+    var ids = chks.map(function () { return this.value; }).get().join(',');
+
+    showSend(ids);
+    return false;
+}

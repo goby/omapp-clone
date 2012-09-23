@@ -183,6 +183,7 @@
     <Content Include="Scripts\Pages\PlanManage\ExperimentProgramList.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\GenaratedPlanList.aspx.js" />
     <Content Include="Scripts\Pages\BusinessManage\GetFileSInfos.aspx.js" />
+    <Content Include="Scripts\Pages\PlanManage\GZJHEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\HJXQEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\MBXQEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\PlanAdd.aspx.js" />
