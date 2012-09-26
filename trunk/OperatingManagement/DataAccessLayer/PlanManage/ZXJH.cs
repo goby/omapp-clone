@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 using OperatingManagement.Framework.Basic;
 using OperatingManagement.Framework;
@@ -73,6 +74,207 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 处理评估
         /// </summary>
         public List<ZXJH_SYEstimate> SYEstimates { get; set; }
+        #endregion
+
+        #region -Methods-
+        public ZXJH SelectByID(int id)
+        {
+            ZXJH result = new ZXJH();
+            string fileindex;   //Detail File Path
+            List<JH> list;
+            list = (new JH()).SelectByIDS(id.ToString());
+
+            if (list.Count <= 0)
+            {
+                return null;
+            }
+
+            fileindex = list[0].FileIndex;
+
+            #region 变量
+            List<ZXJH_SYContent> listSY = new List<ZXJH_SYContent>();
+            List<ZXJH_WorkContent> listWC = new List<ZXJH_WorkContent>();
+            List<ZXJH_CommandMake> listCM = new List<ZXJH_CommandMake>();
+            List<ZXJH_SYDataHandle> listDH = new List<ZXJH_SYDataHandle>();
+            List<ZXJH_DirectAndMonitor> listDM = new List<ZXJH_DirectAndMonitor>();
+            List<ZXJH_RealTimeControl> listRC = new List<ZXJH_RealTimeControl>();
+            List<ZXJH_SYEstimate> listE = new List<ZXJH_SYEstimate>();
+
+            ZXJH_SYContent sy;
+            ZXJH_WorkContent wc;
+            ZXJH_CommandMake cm;
+            ZXJH_SYDataHandle dh;
+            ZXJH_DirectAndMonitor dam;
+            ZXJH_RealTimeControl rc;
+            ZXJH_SYEstimate sye;
+
+            #endregion
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(fileindex);
+            #region 试验计划
+            XmlNode root = xmlDoc.SelectSingleNode("中心运行计划/日期");
+            result.Date = root.InnerText;
+            root = xmlDoc.SelectSingleNode("中心运行计划/试验计划/对应日期的试验个数");
+            result.SYCount = root.InnerText;
+
+            #endregion
+
+            #region listItems
+            #region 试验计划
+            root = xmlDoc.SelectSingleNode("中心运行计划/试验计划");
+            foreach (XmlNode no in root.ChildNodes)
+            {
+                if (no.Name == "试验内容")
+                {
+                    sy = new ZXJH_SYContent();
+                    foreach (XmlNode n in no.ChildNodes)
+                    {
+                        switch (n.Name)
+                        {
+                            case "卫星代号":
+                                sy.SatID = n.InnerText;
+                                break;
+                            case "试验":
+                                sy.SYID = n["在当日计划中的ID"].InnerText;
+                                sy.SYName = n["试验项目名称"].InnerText;
+                                sy.SYStartTime = n["试验开始时间"].InnerText;
+                                sy.SYEndTime = n["试验结束时间"].InnerText;
+                                sy.SYDays = n["试验运行的天数"].InnerText;
+                                sy.SYNote = n["说明"].InnerText;
+                                break;
+                            case "数传":
+                                sy.SY_SCStationNO = n["站编号"].InnerText;
+                                sy.SY_SCEquipmentNO = n["设备编号"].InnerText;
+                                sy.SY_SCFrequencyBand = n["频段"].InnerText;
+                                sy.SY_SCLaps = n["圈次"].InnerText;
+                                sy.SY_SCStartTime = n["开始时间"].InnerText;
+                                sy.SY_SCEndTime = n["结束时间"].InnerText;
+                                break;
+                            case "测控":
+                                sy.SY_CKStationNO = n["站编号"].InnerText;
+                                sy.SY_CKEquipmentNO = n["设备编号"].InnerText;
+                                sy.SY_CKLaps = n["圈次"].InnerText;
+                                sy.SY_CKStartTime = n["开始时间"].InnerText;
+                                sy.SY_CKEndTime = n["结束时间"].InnerText;
+                                break;
+                            case "注数":
+                                sy.SY_ZSFirst = n["最早时间要求"].InnerText;
+                                sy.SY_ZSLast = n["最晚时间要求"].InnerText;
+                                sy.SY_ZSContent = n["主要内容"].InnerText;
+                                break;
+                        }
+                    }
+                    listSY.Add(sy);
+                }
+
+                //listSY.Add(sy);
+            }
+            result.SYContents = listSY;
+
+            #endregion 试验计划
+
+            #region  任务管理
+            root = xmlDoc.SelectSingleNode("中心运行计划/工作计划/任务管理");
+            foreach (XmlNode n in root.ChildNodes)
+            {
+                wc = new ZXJH_WorkContent();
+                wc.Work = n["工作"].InnerText;
+                wc.SYID = n["对应试验ID"].InnerText;
+                wc.StartTime = n["开始时间"].InnerText;
+                wc.MinTime = n["最短持续时间"].InnerText;
+                wc.MaxTime = n["最长持续时间"].InnerText;
+                listWC.Add(wc);
+            }
+            result.WorkContents = listWC;
+
+            #endregion
+
+            #region  指令制作
+            root = xmlDoc.SelectSingleNode("中心运行计划/工作计划/指令制作");
+            foreach (XmlNode n in root.ChildNodes)
+            {
+                cm = new ZXJH_CommandMake();
+                cm.Work_Command_SatID = n["卫星代号"].InnerText;
+                cm.Work_Command_SYID = n["对应试验ID"].InnerText;
+                cm.Work_Command_Programe = n["对应控制程序"].InnerText;
+                cm.Work_Command_FinishTime = n["完成时间"].InnerText;
+                cm.Work_Command_UpWay = n["上注方式"].InnerText;
+                cm.Work_Command_UpTime = n["上注时间"].InnerText;
+                cm.Work_Command_Note = n["说明"].InnerText;
+                listCM.Add(cm);
+            }
+            result.CommandMakes = listCM;
+
+            #endregion
+
+            #region 实时试验数据处理
+            root = xmlDoc.SelectSingleNode("中心运行计划/工作计划/实时试验数据处理");
+            foreach (XmlNode n in root.ChildNodes)
+            {
+                dh = new ZXJH_SYDataHandle();
+                dh.SYID = n["对应试验ID"].InnerText;
+                dh.SatID = n["卫星代号"].InnerText;
+                dh.Laps = n["圈次"].InnerText;
+                dh.MainStationEquipment = n["主站设备"].InnerText;
+                dh.BakStationEquipment = n["备站设备"].InnerText;
+                dh.Content = n["工作内容"].InnerText;
+                dh.StartTime = n["实时开始处理时间"].InnerText;
+                dh.EndTime = n["实时结束处理时间"].InnerText;
+                listDH.Add(dh);
+            }
+            result.SYDataHandles = listDH;
+
+            #endregion
+
+            #region 指挥与监视
+            root = xmlDoc.SelectSingleNode("中心运行计划/工作计划/指挥与监视");
+            foreach (XmlNode n in root.ChildNodes)
+            {
+                dam = new ZXJH_DirectAndMonitor();
+                dam.SYID = n["对应试验ID"].InnerText;
+                dam.StartTime = n["开始时间"].InnerText;
+                dam.EndTime = n["结束时间"].InnerText;
+                dam.RealTimeDemoTask = n["实时演示任务"].InnerText;
+                listDM.Add(dam);
+            }
+            result.DirectAndMonitors = listDM;
+
+            #endregion
+
+            #region 实时控制
+            root = xmlDoc.SelectSingleNode("中心运行计划/工作计划/实时控制");
+            foreach (XmlNode n in root.ChildNodes)
+            {
+                rc = new ZXJH_RealTimeControl();
+                rc.Work = n["工作"].InnerText;
+                rc.SYID = n["对应试验ID"].InnerText;
+                rc.StartTime = n["开始时间"].InnerText;
+                rc.EndTime = n["结束时间"].InnerText;
+                listRC.Add(rc);
+            }
+            result.RealTimeControls = listRC;
+
+            #endregion
+
+            #region 处理评估
+            root = xmlDoc.SelectSingleNode("中心运行计划/工作计划/处理评估");
+            foreach (XmlNode n in root.ChildNodes)
+            {
+                sye = new ZXJH_SYEstimate();
+                sye.SYID = n["对应试验ID"].InnerText;
+                sye.StartTime = n["开始时间"].InnerText;
+                sye.EndTime = n["结束时间"].InnerText;
+                listE.Add(sye);
+            }
+            result.SYEstimates = listE;
+
+            #endregion
+
+            #endregion
+
+
+            return result;
+        }
         #endregion
     }
 
