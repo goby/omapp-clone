@@ -36,20 +36,20 @@
         </tr>
         <tr>
             <th style="width: 100px;">
-                属性属于(<span class="red">*</span>)
+                属性(<span class="red">*</span>)
             </th>
             <td>
                 <br />
                 <table class="edit">
                     <tr>
                         <th style="width: 150px;">
-                            卫星属性
+                            卫星
                         </th>
                         <th style="width: 100px;">
                             匹配准则
                         </th>
                         <th style="width: 150px;">
-                            地面站属性
+                            地面站资源
                         </th>
                     </tr>
                     <tr>

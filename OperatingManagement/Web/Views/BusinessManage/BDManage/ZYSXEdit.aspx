@@ -51,11 +51,27 @@
                     runat="server" Width="300px"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rv2" runat="server" Display="Dynamic" ForeColor="Red"
                      ControlToValidate="txtScope" ErrorMessage="必须填写“属性值区间”。"></asp:RequiredFieldValidator>
+                <asp:RegularExpressionValidator ID="rvInt" runat="server" ClientIDMode = "Static"
+                    ControlToValidate="txtScope" Display="Dynamic" ErrorMessage="请按int型说明填写" 
+                    ForeColor="Red" ValidationExpression="\d{1,}-\d{6}"></asp:RegularExpressionValidator>
+                    <asp:RegularExpressionValidator ID="rvDouble" runat="server"  ClientIDMode = "Static"
+                    ControlToValidate="txtScope" Display="Dynamic" ErrorMessage="请按double型说明填写" 
+                    ForeColor="Red" ValidationExpression="\d{1}.\d{1}"></asp:RegularExpressionValidator>
+                    <asp:RegularExpressionValidator ID="rvString" runat="server"  ClientIDMode = "Static"
+                    ControlToValidate="txtScope" Display="Dynamic" ErrorMessage="请按string型说明填写" 
+                    ForeColor="Red" ValidationExpression="\d{1,}"></asp:RegularExpressionValidator>
+                    <asp:RegularExpressionValidator ID="rvBool" runat="server"  ClientIDMode = "Static"
+                    ControlToValidate="txtScope" Display="Dynamic" ErrorMessage="请按bool型说明填写" 
+                    ForeColor="Red" ValidationExpression="^([\w\d\u4e00-\u9fa5])+(,[\w\d\u4e00-\u9fa5])$"></asp:RegularExpressionValidator>
+                    <asp:RegularExpressionValidator ID="rvEnum" runat="server"  ClientIDMode = "Static"
+                    ControlToValidate="txtScope" Display="Dynamic" ErrorMessage="请按enum型说明填写" 
+                    ForeColor="Red" ValidationExpression="^([\w\d\u4e00-\u9fa5])+(,[\w\d\u4e00-\u9fa5]+)*$"></asp:RegularExpressionValidator>
+                <br />
                 <asp:Label ID="Label1" runat="server" ForeColor="#3399FF" 
-                    Text="int(0-xxxxxx);double(m.n);string(length);enum(a,b,c)"></asp:Label>
+                    Text="int(0-xxxxxx);double(m.n);string(length);bool(a,b);enum(a,b,c)"></asp:Label>
             </td>
         </tr>
-                <tr>
+        <tr>
             <th style="width:100px;">属性属于(<span class="red">*</span>)</th>
             <td>
                 <asp:RadioButtonList ID="rblOwn" runat="server" BorderColor="White" 
