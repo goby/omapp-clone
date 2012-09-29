@@ -94,6 +94,51 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rv2;
         
         /// <summary>
+        /// rvInt 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator rvInt;
+        
+        /// <summary>
+        /// rvDouble 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator rvDouble;
+        
+        /// <summary>
+        /// rvString 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator rvString;
+        
+        /// <summary>
+        /// rvBool 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator rvBool;
+        
+        /// <summary>
+        /// rvEnum 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator rvEnum;
+        
+        /// <summary>
         /// Label1 控件。
         /// </summary>
         /// <remarks>

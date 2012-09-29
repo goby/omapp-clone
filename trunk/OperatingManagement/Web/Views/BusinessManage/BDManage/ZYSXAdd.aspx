@@ -71,7 +71,7 @@
                     Text="int(0-xxxxxx);double(m.n);string(length);bool(a,b);enum(a,b,c)"></asp:Label>
             </td>
         </tr>
-                <tr>
+        <tr>
             <th style="width:100px;">属性属于(<span class="red">*</span>)</th>
             <td>
                 <asp:RadioButtonList ID="rblOwn" runat="server" BorderColor="White" 
@@ -92,7 +92,7 @@
         <tr>
             <th>&nbsp;</th>
             <td>
-                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交" 
+                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="提交"
                     onclick="btnSubmit_Click" />&nbsp;&nbsp;
                 <asp:Button ID="btnEmpty" runat="server" CssClass="button" Text="清空" CausesValidation="False"
                     onclick="btnEmpty_Click" />
