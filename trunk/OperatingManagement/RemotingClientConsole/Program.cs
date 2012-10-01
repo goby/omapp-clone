@@ -11,7 +11,7 @@ namespace RemotingClientConsole
     class Program
     {
         private static string strIP = "";
-        private static string strPort = "8085";
+        private static string strPort = "2005";
 
         [STAThread]
         static void Main(string[] args)
@@ -39,6 +39,9 @@ namespace RemotingClientConsole
             Console.WriteLine(strResult);
 
             strResult = GetAllUsers();
+            Console.WriteLine(strResult);
+
+            strResult = GetUser(10);
             Console.WriteLine(strResult);
 
             Console.WriteLine("Convert result ..." + strResult);
@@ -81,6 +84,15 @@ namespace RemotingClientConsole
             IAccount account = OperatingManagement.RemotingClient.RemotingActivator.GetObject<IAccount>(strIP, strPort);
 
             string xml = account.GetAllUsers();
+            //xml to entity
+            UMResult oResult = EntityConvert.ToResult(xml);
+            return xml;
+        }
+
+        private static string GetUser(int id)
+        {
+            IAccount account = OperatingManagement.RemotingClient.RemotingActivator.GetObject<IAccount>(strIP, strPort);
+            string xml = account.GetUserByID(id);
             //xml to entity
             UMResult oResult = EntityConvert.ToResult(xml);
             return xml;

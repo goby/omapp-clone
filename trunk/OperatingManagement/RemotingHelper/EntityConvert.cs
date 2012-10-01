@@ -91,13 +91,25 @@ namespace OperatingManagement.RemotingHelper
                 var users = root.Elements("user");
                 if (users != null && users.Count() > 0)
                 {
-                    oResult.Users = (from q in users
-                                         select new User()
-                                         {
-                                             Id = Convert.ToInt32(q.Element("id").Value),
-                                             LoginName = q.Element("loginname").Value,
-                                             DisplayName = q.Element("displayname").Value
-                                         }).ToList();
+                    oResult.Users = new List<User>();
+                    User oUser;
+                    for (int i = 0; i< users.Count();i++)
+                    {
+                        oUser = new User();
+                        oUser.Id = Convert.ToInt32(users.ElementAt(i).Element("id").Value);
+                        oUser.LoginName = users.ElementAt(i).Element("loginName").Value;
+                        oUser.DisplayName = users.ElementAt(i).Element("displayName").Value;
+                        if (users.ElementAt(i).Element("state") != null)
+                            oUser.State = Convert.ToInt32(users.ElementAt(i).Element("state").Value);
+                        if (users.ElementAt(i).Element("userCatalog") != null)
+                            oUser.UserCatalog = Convert.ToInt32(users.ElementAt(i).Element("userCatalog").Value);
+                        if (users.ElementAt(i).Element("userType") != null)
+                            oUser.UserType = Convert.ToInt32(users.ElementAt(i).Element("userType").Value);
+                        if (users.ElementAt(i).Element("mobile") != null)
+                            oUser.Mobile = users.ElementAt(i).Element("mobile").Value;
+                        oUser.Roles = GetUserRoles(users.ElementAt(i));
+                        oResult.Users.Add(oUser);
+                    }
                 }
 
                 //get roles
@@ -113,6 +125,23 @@ namespace OperatingManagement.RemotingHelper
                 }
             }
             return oResult;
+        }
+
+        private static List<Role> GetUserRoles(XElement user)
+        {
+            var roles = user.Elements("role");
+            List<Role> roleList = null;
+            if (roles != null && roles.Count() > 0)
+            {
+                roleList = new List<Role>();
+                roleList = (from q in roles
+                                 select new Role()
+                                 {
+                                     Id = Convert.ToInt32(q.Element("id").Value),
+                                     Name = q.Element("name").Value
+                                 }).ToList();
+            }
+            return roleList;
         }
     }
 }

@@ -24,6 +24,6 @@ namespace OperatingManagement.RemotingObjectInterface
 
         string GetAllUsers();
 
-        string GetUserByID(int userid);
+        string GetUserByID(int id);
     }
 }

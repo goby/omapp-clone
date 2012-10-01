@@ -12,8 +12,23 @@ namespace OperatingManagement.RemotingObjectEntity
 {
     public class Account:MarshalByRefObject, IAccount
     {
-        private static bool IsTest = false;
+        //private static bool IsTest = false;
 
+        private bool IsTest
+        {
+            get
+            {
+                if (ConfigurationManager.AppSettings["ForTest"] != null)
+                {
+                    if (ConfigurationManager.AppSettings["ForTest"] != "1")
+                        return false;
+                    else
+                        return true;
+                }
+                else
+                    return false;
+            }
+        }
         /// <summary>
         /// 验证用户名密码
         /// </summary>
@@ -123,11 +138,22 @@ namespace OperatingManagement.RemotingObjectEntity
             return sTmp;
         }
 
+        
         public string GetUserByID(int userid)
         {
-            XElement root = new XElement("user");
+            XElement root = new XElement("users");
             XElement roles = new XElement("roles");
             string sTmp = string.Empty;
+
+            #region for test
+            if (IsTest)
+            {
+                if (userid == 10)
+                    return @"<users>\r\n  <msg />\r\n  <user>\r\n    <id>10</id>\r\n    <displayName>wf user 3</displayName>\r\n    <loginName>wfuser3</loginName>\r\n    <mobile></mobile>\r\n    <state>0</state>\r\n    <userType>0</userType>\r\n    <userCatalog>0</userCatalog>\r\n    <roles>\r\n      <role>\r\n        <id>1</id>\r\n        <name>用户管理员</name>\r\n      </role>\r\n      <role>\r\n        <id>4</id>\r\n        <name>工作流管理</name>\r\n      </role>\r\n      <role>\r\n        <id>5</id>\r\n        <name>工作流客户端管理</name>\r\n      </role>\r\n      <role>\r\n        <id>49</id>\r\n        <name>用户管理-无删除</name>\r\n      </role>\r\n    </roles>\r\n  </user>\r\n</users>";
+                else
+                    return "";
+            }
+            #endregion
 
             Logger.Info(string.Format("收到获取某用户信息请求，UserID={0}", userid));
             try
@@ -144,7 +170,8 @@ namespace OperatingManagement.RemotingObjectEntity
                 else
                 {
                     root.Add(new XElement("msg"), "");
-                    root.Add(new XElement("id", u.Id),
+                    XElement user = new XElement("user", 
+                        new XElement("id", u.Id),
                         new XElement("displayName", u.DisplayName),
                         new XElement("loginName", u.LoginName),
                         new XElement("mobile", u.Mobile),
@@ -160,8 +187,9 @@ namespace OperatingManagement.RemotingObjectEntity
                                 new XElement("id", r.Id),
                                 new XElement("name", r.RoleName)));
                         }
-                        root.Add(roles);
+                        user.Add(roles);
                     }
+                    root.Add(user);
                 }
             }
             catch (Exception ex)
@@ -310,7 +338,7 @@ namespace OperatingManagement.RemotingObjectEntity
             #region for Test...
             if (IsTest)
             {
-                return @"<users>\r\n  <msg />\r\n  <user>\r\n    <id>1</id>\r\n    <loginname>admin</loginname>\r\n    <displayname>系统管理员</displayname>\r\n    <note></note>\r\n  </user>\r\n  <user>\r\n    <id>2</id>\r\n    <loginname>opercindy</loginname>\r\n    <displayname>付仁华</displayname>\r\n    <note>用户付仁华</note>\r\n  </user>\r\n  <user>\r\n    <id>8</id>\r\n    <loginname>wfuser1</loginname>\r\n    <displayname>wf user 1</displayname>\r\n    <note></note>\r\n  </user>\r\n  <user>\r\n    <id>10</id>\r\n    <loginname>wfuser3</loginname>\r\n    <displayname>wf user 3</displayname>\r\n    <note></note>\r\n  </user>\r\n  <user>\r\n    <id>9</id>\r\n    <loginname>wfuser2</loginname>\r\n    <displayname>wf user 2</displayname>\r\n    <note></note>\r\n  </user>\r\n  <user>\r\n    <id>11</id>\r\n    <loginname>wfuser4</loginname>\r\n    <displayname>wf user 4</displayname>\r\n    <note></note>\r\n  </user>\r\n  <user>\r\n    <id>12</id>\r\n    <loginname>wfuser5</loginname>\r\n    <displayname>wf user 5</displayname>\r\n    <note></note>\r\n  </user>\r\n  <user>\r\n    <id>13</id>\r\n    <loginname>wfuser6</loginname>\r\n    <displayname>wf user 6</displayname>\r\n    <note></note>\r\n  </user>\r\n  <user>\r\n    <id>7</id>\r\n    <loginname>mygirl</loginname>\r\n    <displayname>my girl</displayname>\r\n    <note></note>\r\n  </user>\r\n</users>";
+                return @"<users>\r\n  <msg />\r\n  <user>\r\n    <id>1</id>\r\n    <loginName>admin</loginName>\r\n    <displayName>系统管理员</displayName>\r\n    <note></note>\r\n  </user>\r\n  <user>\r\n    <id>2</id>\r\n    <loginName>opercindy</loginName>\r\n    <displayName>付仁华</displayName>\r\n    <note>用户付仁华</note>\r\n  </user>\r\n  <user>\r\n    <id>8</id>\r\n    <loginName>wfuser1</loginName>\r\n    <displayName>wf user 1</displayName>\r\n    <note></note>\r\n  </user>\r\n  <user>\r\n    <id>10</id>\r\n    <loginName>wfuser3</loginName>\r\n    <displayName>wf user 3</displayName>\r\n    <note></note>\r\n  </user>\r\n  <user>\r\n    <id>9</id>\r\n    <loginName>wfuser2</loginName>\r\n    <displayName>wf user 2</displayName>\r\n    <note></note>\r\n  </user>\r\n  <user>\r\n    <id>11</id>\r\n    <loginName>wfuser4</loginName>\r\n    <displayName>wf user 4</displayName>\r\n    <note></note>\r\n  </user>\r\n  <user>\r\n    <id>12</id>\r\n    <loginName>wfuser5</loginName>\r\n    <displayName>wf user 5</displayName>\r\n    <note></note>\r\n  </user>\r\n  <user>\r\n    <id>13</id>\r\n    <loginName>wfuser6</loginName>\r\n    <displayName>wf user 6</displayName>\r\n    <note></note>\r\n  </user>\r\n  <user>\r\n    <id>7</id>\r\n    <loginName>mygirl</loginName>\r\n    <displayName>my girl</displayName>\r\n    <note></note>\r\n  </user>\r\n</users>";
             }
             #endregion
             User oUser = new User();
@@ -322,11 +350,28 @@ namespace OperatingManagement.RemotingObjectEntity
                 {
                     foreach (var u in users)
                     {
+                        //var rs = u.SelectRolesById();
+                        //XElement roles = new XElement("roles");
+                        //if (rs != null && rs.Count > 0)
+                        //{
+                        //    foreach (var r in rs)
+                        //    {
+                        //        roles.Add(new XElement("role",
+                        //            new XElement("id", r.Id),
+                        //            new XElement("name", r.RoleName)));
+                        //    }
+                        //}
+
                         root.Add(new XElement("user",
                             new XElement("id", u.Id),
-                            new XElement("loginname", u.LoginName),
-                            new XElement("displayname", u.DisplayName),
-                            new XElement("note", u.Note)));
+                            new XElement("displayName", u.DisplayName),
+                            new XElement("loginName", u.LoginName),
+                            new XElement("mobile", u.Mobile),
+                            new XElement("state", (int)u.Status),
+                            new XElement("userType", (int)u.UserType),
+                            new XElement("userCatalog", (int)u.UserCatalog)
+                            //, roles
+                            ));
                     }
                 }
             }

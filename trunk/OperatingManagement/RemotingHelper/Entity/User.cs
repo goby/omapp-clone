@@ -63,5 +63,7 @@ namespace OperatingManagement.RemotingHelper
         /// Gets/Sets the time when this user was created.
         /// </summary>
         public DateTime CreatedTime { get; set; }
+
+        public List<Role> Roles { get; set; }
     }
 }

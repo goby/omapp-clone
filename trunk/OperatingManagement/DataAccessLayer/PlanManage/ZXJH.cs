@@ -55,11 +55,11 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public List<ZXJH_WorkContent> WorkContents { get; set; }
         /// <summary>
-        /// 指令制作
+        /// 指Ling制作
         /// </summary>
         public List<ZXJH_CommandMake> CommandMakes { get; set; }
         /// <summary>
-        /// 实时试验数据处理
+        /// RealTime试验数据处理
         /// </summary>
         public List<ZXJH_SYDataHandle> SYDataHandles { get; set; }
         /// <summary>
@@ -67,7 +67,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public List<ZXJH_DirectAndMonitor> DirectAndMonitors { get; set; }
         /// <summary>
-        /// 实时控制
+        /// RealTime控制
         /// </summary>
         public List<ZXJH_RealTimeControl> RealTimeControls { get; set; }
         /// <summary>
@@ -285,7 +285,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
     public class ZXJH_SYContent
     {
         /// <summary>
-        /// 卫星代号
+        /// WX代号
         /// </summary>
         public string SatID { get; set; }
         #region 试验
@@ -315,7 +315,81 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         public string SYNote { get; set; }
         #endregion
 
-        #region 数传
+        #region 数chuan
+        public List<ZXJH_SYContent_SC> SCList { get; set; }
+        /// <summary>
+        /// 数chuan-站编号
+        /// </summary>
+        public string SY_SCStationNO { get; set; }
+        /// <summary>
+        /// 数chuan-设备编号
+        /// </summary>
+        public string SY_SCEquipmentNO { get; set; }
+        /// <summary>
+        /// 数chuan-频段; S或者X
+        /// </summary>
+        public string SY_SCFrequencyBand { get; set; }
+        /// <summary>
+        /// 数chuan-QC
+        /// </summary>
+        public string SY_SCLaps { get; set; }
+        /// <summary>
+        /// 数chuan-开始时间
+        /// </summary>
+        public string SY_SCStartTime { get; set; }
+        /// <summary>
+        /// 数chuan-结束时间
+        /// </summary>
+        public string SY_SCEndTime { get; set; }
+        #endregion
+
+        #region 测kong
+        public List<ZXJH_SYContent_CK> CKList { get; set; }
+        /// <summary>
+        /// 测kong-站编号
+        /// </summary>
+        public string SY_CKStationNO { get; set; }
+        /// <summary>
+        /// 测kong-设备编号
+        /// </summary>
+        public string SY_CKEquipmentNO { get; set; }
+        /// <summary>
+        /// 测kong-QC
+        /// </summary>
+        public string SY_CKLaps { get; set; }
+        /// <summary>
+        /// 测kong-开始时间
+        /// </summary>
+        public string SY_CKStartTime { get; set; }
+        /// <summary>
+        /// 测kong-结束时间
+        /// </summary>
+        public string SY_CKEndTime { get; set; }
+        #endregion
+
+        #region 注shu
+        public List<ZXJH_SYContent_ZS> ZSList { get; set; }
+        /// <summary>
+        /// 注shu-最早时间要求
+        /// </summary>
+        public string SY_ZSFirst { get; set; }
+        /// <summary>
+        /// 注shu-最晚时间要求
+        /// </summary>
+        public string SY_ZSLast { get; set; }
+        /// <summary>
+        /// 注shu-主要内容
+        /// </summary>
+        public string SY_ZSContent { get; set; }
+        #endregion
+    }
+
+    /// <summary>
+    /// 工作计划-试验内容-数chuan
+    /// </summary>
+    [Serializable]
+    public class ZXJH_SYContent_SC
+    {
         /// <summary>
         /// 数传-站编号
         /// </summary>
@@ -329,7 +403,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string SY_SCFrequencyBand { get; set; }
         /// <summary>
-        /// 数传-圈次
+        /// 数传-QC
         /// </summary>
         public string SY_SCLaps { get; set; }
         /// <summary>
@@ -340,45 +414,54 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 数传-结束时间
         /// </summary>
         public string SY_SCEndTime { get; set; }
-        #endregion
+    }
 
-        #region 测控
+    /// <summary>测kong
+    /// 工作计划-试验内容-数chuan
+    /// </summary>
+    [Serializable]
+    public class ZXJH_SYContent_CK
+    {
         /// <summary>
-        /// 测控-站编号
+        /// 测kong-站编号
         /// </summary>
         public string SY_CKStationNO { get; set; }
         /// <summary>
-        /// 测控-设备编号
+        /// 测kong-设备编号
         /// </summary>
         public string SY_CKEquipmentNO { get; set; }
         /// <summary>
-        /// 测控-圈次
+        /// 测kong-QC
         /// </summary>
         public string SY_CKLaps { get; set; }
         /// <summary>
-        /// 测控-开始时间
+        /// 测kong-开始时间
         /// </summary>
         public string SY_CKStartTime { get; set; }
         /// <summary>
-        /// 测控-结束时间
+        /// 测kong-结束时间
         /// </summary>
         public string SY_CKEndTime { get; set; }
-        #endregion
+    }
 
-        #region 注数-(700任务不需填写)
+    /// <summary>测kong
+    /// 工作计划-试验内容-注shu
+    /// </summary>
+    [Serializable]
+    public class ZXJH_SYContent_ZS
+    {
         /// <summary>
-        /// 注数-最早时间要求
+        /// 注shu-最早时间要求
         /// </summary>
         public string SY_ZSFirst { get; set; }
         /// <summary>
-        /// 注数-最晚时间要求
+        /// 注shu-最晚时间要求
         /// </summary>
         public string SY_ZSLast { get; set; }
         /// <summary>
-        /// 注数-主要内容
+        /// 注shu-主要内容
         /// </summary>
         public string SY_ZSContent { get; set; }
-        #endregion
     }
 
     /// <summary>
@@ -412,43 +495,43 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
     }
 
     /// <summary>
-    /// 工作计划-指令制作
+    /// 工作计划-指Ling制作
     /// </summary>
     [Serializable]
     public class ZXJH_CommandMake
     {
         /// <summary>
-        /// 指令制作-卫星代号
+        /// 指Ling制作-WX代号
         /// </summary>
         public string Work_Command_SatID { get; set; }
         /// <summary>
-        /// 指令制作-对应试验ID
+        /// 指Ling制作-对应试验ID
         /// </summary>
         public string Work_Command_SYID { get; set; }
         /// <summary>
-        /// 指令制作-对应控制程序
+        /// 指Ling制作-对应控制程序
         /// </summary>
         public string Work_Command_Programe { get; set; }
         /// <summary>
-        /// 指令制作-完成时间
+        /// 指Ling制作-完成时间
         /// </summary>
         public string Work_Command_FinishTime { get; set; }
         /// <summary>
-        /// 指令制作-上注方式
+        /// 指Ling制作-上zhu方式
         /// </summary>
         public string Work_Command_UpWay { get; set; }
         /// <summary>
-        /// 指令制作-上注时间/圈次
+        /// 指Ling制作-上zhu时间/QC
         /// </summary>
         public string Work_Command_UpTime { get; set; }
         /// <summary>
-        /// 指令制作-说明
+        /// 指Ling制作-说明
         /// </summary>
         public string Work_Command_Note { get; set; }
     }
 
     /// <summary>
-    /// 工作计划-实时试验数据处理
+    /// 工作计划-RealTime试验数据处理
     /// </summary>
     [Serializable]
     public class ZXJH_SYDataHandle
@@ -459,17 +542,25 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string SYID { get; set; }
         /// <summary>
-        /// 卫星代号
+        /// WX代号
         /// </summary>
         public string SatID { get; set; }
         /// <summary>
-        /// 圈次
+        /// QC
         /// </summary>
         public string Laps { get; set; }
         /// <summary>
-        /// 主站设备
+        /// 主zhan
+        /// </summary>
+        public string MainStation { get; set; }
+        /// <summary>
+        /// 主zhan设备
         /// </summary>
         public string MainStationEquipment { get; set; }
+        /// <summary>
+        /// 备站
+        /// </summary>
+        public string BakStation { get; set; }
         /// <summary>
         /// 备站设备
         /// </summary>
@@ -479,11 +570,11 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string Content { get; set; }
         /// <summary>
-        /// 实时开始处理时间
+        /// RealTime开始处理时间
         /// </summary>
         public string StartTime { get; set; }
         /// <summary>
-        /// 实时结束处理时间
+        /// RealTime结束处理时间
         /// </summary>
         public string EndTime { get; set; }
         #endregion
@@ -509,14 +600,14 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string EndTime { get; set; }
         /// <summary>
-        /// 实时演示任务：有/无
+        /// RealTime演示任务：有/无
         /// </summary>
         public string RealTimeDemoTask { get; set; }
         #endregion
     }
 
     /// <summary>
-    /// 工作计划-实时控制
+    /// 工作计划-RealTime控制
     /// </summary>
     [Serializable]
     public class ZXJH_RealTimeControl
