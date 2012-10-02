@@ -388,7 +388,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
     /// 工作计划-试验内容-数chuan
     /// </summary>
     [Serializable]
-    public class ZXJH_SYContent_SC
+    public class ZXJH_SYContent_SC : Object, ICloneable
     {
         /// <summary>
         /// 数传-站编号
@@ -414,13 +414,18 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 数传-结束时间
         /// </summary>
         public string SY_SCEndTime { get; set; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 
     /// <summary>测kong
     /// 工作计划-试验内容-数chuan
     /// </summary>
     [Serializable]
-    public class ZXJH_SYContent_CK
+    public class ZXJH_SYContent_CK : Object, ICloneable
     {
         /// <summary>
         /// 测kong-站编号
@@ -442,13 +447,18 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 测kong-结束时间
         /// </summary>
         public string SY_CKEndTime { get; set; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 
     /// <summary>测kong
     /// 工作计划-试验内容-注shu
     /// </summary>
     [Serializable]
-    public class ZXJH_SYContent_ZS
+    public class ZXJH_SYContent_ZS : Object, ICloneable
     {
         /// <summary>
         /// 注shu-最早时间要求
@@ -462,13 +472,18 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 注shu-主要内容
         /// </summary>
         public string SY_ZSContent { get; set; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 
     /// <summary>
     /// 工作计划-任务管理
     /// </summary>
     [Serializable]
-    public class ZXJH_WorkContent 
+    public class ZXJH_WorkContent : Object, ICloneable
     { 
         #region -Properties-
         /// <summary>
@@ -492,6 +507,11 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string MaxTime { get; set; }
         #endregion
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 
     /// <summary>
@@ -534,7 +554,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
     /// 工作计划-RealTime试验数据处理
     /// </summary>
     [Serializable]
-    public class ZXJH_SYDataHandle
+    public class ZXJH_SYDataHandle: Object, ICloneable
     {
         #region -Properties-
         /// <summary>
@@ -578,6 +598,11 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string EndTime { get; set; }
         #endregion
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 
     /// <summary>

@@ -135,7 +135,7 @@ namespace ServicesKernel.File
                     FieldVerifyResult oResult = oSendInfo.Add();
                     if (oResult != FieldVerifyResult.Success)
                     {
-                        Log(string.Format("删除文件完成，插入发送记录失败", oResult.ToString()));
+                        Log(string.Format("删除文件完成，插入发送记录失败，{0}", oResult.ToString()));
                     }
                 }
                 catch (Exception ex)
@@ -148,7 +148,7 @@ namespace ServicesKernel.File
         }
 
         /// <summary>
-        /// 生成空间机动试验数据
+        /// 生成KJJD试验数据
         /// </summary>
         /// <param name="ycids"></param>
         /// <param name="ufids"></param>
@@ -245,9 +245,9 @@ namespace ServicesKernel.File
         }
 
         /// <summary>
-        /// 遥测评估数据生成文件，试验数据分发时使用
+        /// YCPG数据生成文件，试验数据分发时使用
         /// </summary>
-        /// <param name="ycinfo">遥测评估数据</param>
+        /// <param name="ycinfo">YCPG数据</param>
         /// <param name="dataType">试验数据类型</param>
         /// <param name="taskNo">任务代号</param>
         /// <param name="fileName">文件名</param>
@@ -257,7 +257,7 @@ namespace ServicesKernel.File
             FileCreateResult oResult = FileCreateResult.CreateSuccess;
             dataType = GetInfoTypeFromYCPG(ycinfo);
             fileName = string.Empty;
-            if (dataType.Equals(string.Empty))
+            if (string.IsNullOrEmpty(dataType))
             {
                 Log("获取不到dataType");
                 return FileCreateResult.LackFileInfo;
@@ -294,6 +294,7 @@ namespace ServicesKernel.File
             string[] datas = new string[fields.Length];
             try
             {
+                //datas无来源
                 oResult = oFileHandle.CreateFormat3File(oFile, fields, datas);
             }
             catch (Exception ex)
@@ -314,9 +315,9 @@ namespace ServicesKernel.File
             FileCreateResult oResult = FileCreateResult.CreateSuccess;
             dataType = GetInfoTypeFromUserFrame(ufInfo);
             fileName = string.Empty;
-            if (dataType.Equals(string.Empty))
+            if (string.IsNullOrEmpty(dataType))
             {
-                Log("获取不到strType");
+                Log("获取不到dataType");
                 return FileCreateResult.LackFileInfo;
             }
 
@@ -332,12 +333,21 @@ namespace ServicesKernel.File
             finally { }
 
             string fileFullName = Param.OutPutPath + fileName;
-            if (dataType == "PLEO")//LEO成像相机图像数据
+            if (dataType == "PLEO")//LEO成像 相机图像数据
             {
-                if (ConvertPLEOData(ufInfo.Directory + ufInfo.FileName, fileFullName))
-                    oResult = FileCreateResult.CreateSuccess;
+                string strUFFilePath = System.Configuration.ConfigurationManager.AppSettings["UFFilePath"];
+                if (string.IsNullOrEmpty(strUFFilePath))
+                {
+                    Log("无法获取UFFilePath");
+                    oResult = FileCreateResult.LackFileInfo;
+                }
                 else
-                    oResult = FileCreateResult.SomethingError;
+                {
+                    if (ConvertPLEOData(strUFFilePath + ufInfo.FileName, fileFullName))
+                        oResult = FileCreateResult.CreateSuccess;
+                    else
+                        oResult = FileCreateResult.SomethingError;
+                }
             }
             else
             {
@@ -425,27 +435,37 @@ namespace ServicesKernel.File
         }
 
         /// <summary>
-        /// 通过遥测评估类型获取信息类型
+        /// 通过YCPG类型获取信息类型
         /// </summary>
         /// <param name="ycinfo"></param>
         /// <returns></returns>
         private string GetInfoTypeFromYCPG(YCPG ycinfo)
         {
+            string strTJType = System.Configuration.ConfigurationManager.AppSettings["TJtypeInYCPG"];
+            string strJDTypes = System.Configuration.ConfigurationManager.AppSettings["JDtypeInYCPG"];
+
             string strType = string.Empty;
-            switch (ycinfo.SType)
-            {
-                case "0":
-                    strType = "GCZT";
-                    break;
-                case "1":
-                    strType = "JDZT";
-                    break;
-                case "2":
-                    strType = "JDCL";
-                    break;
-                default:
-                    break;
-            }
+            if (strTJType != null)
+                strTJType = strTJType.Replace("'", "");
+            else
+                return null;
+
+            if (strJDTypes != null)
+                strJDTypes = strJDTypes.Replace("'", "");
+            else
+                return null;
+            string[] strJDType = strJDTypes.Split(new char[]{','});
+            if (strJDType.Length != 2)
+                return null;
+
+            if (ycinfo.SType == strTJType)
+                strType = "GCZT";
+            else if (ycinfo.SType == strJDType[0])
+                strType = "JDZT";
+            else if (ycinfo.SType == strJDType[1])
+                strType = "JDCL";
+            else
+                return null;
             return strType;
         }
         
@@ -456,21 +476,26 @@ namespace ServicesKernel.File
         /// <returns></returns>
         private string GetInfoTypeFromUserFrame(UserFrame ufinfo)
         {
+            //格式：'','',''
+            string strUFTypes = System.Configuration.ConfigurationManager.AppSettings["TJtypeInUserFrame"];
             string strType = string.Empty;
-            switch (ufinfo.Userid)
-            {
-                case "user1"://GEO相机图像数据
-                    strType = "PGEO";
-                    break;
-                case "user2"://LEO成像相机图像数据
-                    strType = "PLEO";
-                    break;
-                case "user3"://LEO引导相机图像数据
-                    strType = "GLEO";
-                    break;
-                default:
-                    break;
-            }
+
+            if (strUFTypes != null)
+                strUFTypes = strUFTypes.Replace("'", "");
+            else
+                return null;
+            string[] strJDType = strUFTypes.Split(new char[] { ',' });
+            if (strJDType.Length != 3)
+                return null;
+
+            if (ufinfo.Userid == strJDType[0])
+                strType = "PGEO";
+            else if (ufinfo.Userid == strJDType[1])
+                strType = "PLEO";
+            else if (ufinfo.Userid == strJDType[2])
+                strType = "GLEO";
+            else
+                return null;
             return strType;
         }
 
@@ -483,9 +508,11 @@ namespace ServicesKernel.File
         private bool ConvertPLEOData(string srcDataFilePath, string tgtDataFilePath)
         {
             //文件总大小：41944000b / 8 = 5243000B
-            int iFileSize = 5243000;
+            long iFileSize = 5243000;
             bool blResult = false;
             FileStream oFRStream = new FileStream(srcDataFilePath, FileMode.Open, FileAccess.Read);
+            System.IO.File.Copy(srcDataFilePath, tgtDataFilePath, true);
+            iFileSize = (new System.IO.FileInfo(srcDataFilePath)).Length;
             FileStream oFWStream = new FileStream(tgtDataFilePath, FileMode.Truncate, FileAccess.Write);
             try
             {
@@ -505,12 +532,12 @@ namespace ServicesKernel.File
 
                 iLen = 5;//40b帧标识
                 btData = new byte[iLen];
-                iIdx += oFRStream.Read(btData, iIdx, iLen);
+                iIdx += oFRStream.Read(btData, 0, iLen);
                 oFWStream.Write(btData, 0, btData.Length);
 
-                iLen = 3;//20bit帧计数，高4位补0
+                iLen = 3;//20bit帧计数，高12bit补0
                 btData = new byte[iLen];
-                iIdx += oFRStream.Read(btData, iIdx, iLen);
+                iIdx += oFRStream.Read(btData, 0, iLen);
                 sTmp = Byte2BinaryStr(btData[iLen - 1]);
                 sOff = sTmp.Substring(4).PadLeft(8, '0');
                 btData[iLen - 1] = BinaryStr2Byte(sOff);
@@ -519,36 +546,37 @@ namespace ServicesKernel.File
                 oFWStream.Write(btTmp, 0, btTmp.Length);
 
                 sOff = sTmp.Substring(0, 4);
-                iLen = 5;//40b时间码
+                iLen = 5;//40b时间码，接前面错过来的4位
                 btData = new byte[iLen];
-                iIdx += oFRStream.Read(btData, iIdx, iLen);
+                iIdx += oFRStream.Read(btData, 0, iLen);
+                btTmp = new byte[iLen - 1];
                 Array.Copy(btData, 0, btTmp, 0, iLen - 1);
                 sBin = Bytes2BinaryStr(btTmp);
-                sTmp = Byte2BinaryStr(btData[iLen - 1]).Substring(4);
-                sBin = sOff + sBin + sTmp;
+                sTmp = Byte2BinaryStr(btData[iLen - 1]);
+                sBin = sTmp.Substring(4) + sOff + sBin;
                 btTmp = BinaryStr2Bytes(sBin);
                 oFWStream.Write(btData, 0, btData.Length);
 
                 sOff = sTmp.Substring(0, 4);
-                iLen = 25;//200b遥测参数
+                iLen = 25;//200b遥测参数，接前面错过来的4位
                 btData = new byte[iLen];
-                iIdx += oFRStream.Read(btData, iIdx, iLen);
+                iIdx += oFRStream.Read(btData, 0, iLen);
+                btTmp = new byte[iLen - 1];
                 Array.Copy(btData, 0, btTmp, 0, iLen - 1);
                 sBin = Bytes2BinaryStr(btTmp);
-                sTmp = Byte2BinaryStr(btData[iLen - 1]).Substring(4);
-                sBin = sOff + sBin + sTmp;
+                sTmp = Byte2BinaryStr(btData[iLen - 1]);
+                sBin = sTmp.Substring(4) + sOff + sBin;
                 btTmp = BinaryStr2Bytes(sBin);
                 oFWStream.Write(btData, 0, btData.Length);
 
                 sOff = sTmp.Substring(0, 4);
                 iLen = 82;//660b保留
                 btData = new byte[iLen];
-                iIdx += oFRStream.Read(btData, iIdx, iLen);
+                iIdx += oFRStream.Read(btData, 0, iLen);
                 //Array.Copy(btData, 0, btTmp, 0, iLen - 1);
                 sBin = Bytes2BinaryStr(btData);
                 //sTmp = Byte2BinaryStr(btData[iLen - 1]).Substring(4);
-                sBin = sOff + sBin;// +sTmp;
-                sBin = sBin.Substring(0, sBin.Length - 4) + "0000" + sBin.Substring(sBin.Length - 5);
+                sBin = "0000" + sBin + sOff;// +sTmp;
                 btTmp = BinaryStr2Bytes(sBin);
                 oFWStream.Write(btData, 0, btData.Length);
 
@@ -564,7 +592,7 @@ namespace ServicesKernel.File
             catch (Exception ex)
             {
                 blResult = false;
-                Log("转换LEO引导相机成像文件出现异常", ex);
+                Log("转换LEO引导 相机成像文件出现异常", ex);
             }
             finally 
             {

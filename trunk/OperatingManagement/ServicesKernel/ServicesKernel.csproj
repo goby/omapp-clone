@@ -60,6 +60,7 @@
     <Compile Include="File\DataFileHandle.cs" />
     <Compile Include="File\FileNameMaker.cs" />
     <Compile Include="File\StationInOutFileReader.cs" />
+    <Compile Include="File\PlanProcessor.cs" />
     <Compile Include="File\XMLFileHandle.cs" />
     <Compile Include="GDFX\CutAnalyzer.cs" />
     <Compile Include="GDFX\CutPrer.cs" />
