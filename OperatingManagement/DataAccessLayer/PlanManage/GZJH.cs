@@ -46,7 +46,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
     }
 
     [Serializable]
-    public class GZJH_Content
+    public class GZJH_Content : Object, ICloneable
     {
         #region -Properties-
         /// <summary>
@@ -162,5 +162,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         public string HSL { get; set; }
 
         #endregion
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

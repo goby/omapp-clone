@@ -84,7 +84,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <param name="taskNo">任务代号</param>
         /// <param name="satID">卫星编号</param>
         /// <returns></returns>
-        public List<UserFrame> GetSYSJ(DateTime beginTime, DateTime endTime, string taskNo, string satID)
+        public List<UserFrame> GetSYSJ(DateTime beginTime, DateTime endTime, string taskNo, string satID, string dataType)
         {
             OracleParameter p = PrepareRefCursor();
 
@@ -104,6 +104,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_SatID", satID),
                 new OracleParameter("p_BeginTime", OracleDbType.Date, oBeginTime, ParameterDirection.Input),
                 new OracleParameter("p_EndTime", OracleDbType.Date, oEndTime, ParameterDirection.Input),
+                new OracleParameter("p_DataType", dataType),
                 p
             });
 

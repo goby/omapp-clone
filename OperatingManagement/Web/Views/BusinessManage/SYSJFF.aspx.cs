@@ -138,6 +138,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             BindData(true);
+            //string path = System.Configuration.ConfigurationManager.AppSettings["YCPGFilePath"];
+            //System.IO.FileStream oFile = System.IO.File.Create(path + "1.txt");
+            //oFile.Write(new byte[] { 0, 1, 0, 1 }, 0, 4);
+            //oFile.Close();
         }
 
         public void BindData(bool fromSearchBtn)
@@ -203,12 +207,14 @@ namespace OperatingManagement.Web.Views.BusinessManage
             }
             #endregion
 
+            string dataType = string.Empty;
             switch (sType)
             {
                 case "0"://TJ
                     try
                     {
-                        listYCData = new YCPG().GetSYSJ(dtFrom, dtTo, sType, taskNo, satID);
+                        dataType = System.Configuration.ConfigurationManager.AppSettings["TJtypeInYCPG"];
+                        listYCData = new YCPG().GetSYSJ(dtFrom, dtTo, dataType, taskNo, satID);
                         BindYCDataSource(listYCData);
                     }
                     catch (Exception ex)
@@ -218,7 +224,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     finally { }
                     try
                     {
-                        listUFData = new UserFrame().GetSYSJ(dtFrom, dtTo, taskNo, satID);
+                        dataType = System.Configuration.ConfigurationManager.AppSettings["TJtypeInUserFrame"];
+                        listUFData = new UserFrame().GetSYSJ(dtFrom, dtTo, taskNo, satID, dataType);
                         BindUFDataSource(listUFData);
                     }
                     catch (Exception ex)
@@ -230,7 +237,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 case "1"://KJ
                     try
                     {
-                        listYCData = new YCPG().GetSYSJ(dtFrom, dtTo, sType, taskNo, satID);
+                        dataType = System.Configuration.ConfigurationManager.AppSettings["JDtypeInYCPG"];
+                        listYCData = new YCPG().GetSYSJ(dtFrom, dtTo, dataType, taskNo, satID);
                         BindYCDataSource(listYCData);
                     }
                     catch (Exception ex)
@@ -366,7 +374,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             switch (ddlDataType.SelectedValue)
             {
                 case "0"://TJ
-                    //if (ycids.Length == 1)
+                    if (ycids.Length == 1)
                         ycids[0] = ycids[0].Substring(0, ycids[0].IndexOf(';'));
                     for (int i = 0; i < ufids.Length; i++)
                     {
