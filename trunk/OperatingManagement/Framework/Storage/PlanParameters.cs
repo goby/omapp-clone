@@ -27,13 +27,15 @@ namespace OperatingManagement.Framework.Storage
         /// DMJHMS:地面计划设备工作模式;
         /// DMJHBID:地面计划信息类别标志;
         /// TYSJSatName:仿真推演试验数据卫星名称;
-        /// YDSJTargetList:引导数据发送目标列表;
+        /// YDSJSTTargetList:引导数据空间机动任务发送目标列表;
+        /// YDSJNOSTTargetList:引导数据非空间机动任务发送目标列表;
         /// </param>
         /// <returns></returns>
         public static List<PlanParameter> ReadParameters(string elementname)
         {
-            if (AspNetCache.Instance.Get(_CacheKey) != null)
-                return AspNetCache.Instance.Get(_CacheKey) as List<PlanParameter>;
+            string key = _CacheKey + "/" + elementname;
+            if (AspNetCache.Instance.Get(key) != null)
+                return AspNetCache.Instance.Get(key) as List<PlanParameter>;
             string fullFileName = GlobalSettings.MapPath(_FullFileName);
             FileDependency fd = new FileDependency(fullFileName);
             XElement xe = XElement.Load(fullFileName);
@@ -47,8 +49,37 @@ namespace OperatingManagement.Framework.Storage
                                  Value = q1.Attribute("value").Value
                                  //Hex = q1.Attribute("hex").Value
                              }).ToList();
-                AspNetCache.Instance.Insert(_CacheKey, items, fd);
+                AspNetCache.Instance.Insert(key, items, fd);
                 return items;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static PlanParameter ReadParameter(string elementname)
+        {
+            string key = _CacheKey + "/" + elementname;
+            if (AspNetCache.Instance.Get(key) != null)
+                return AspNetCache.Instance.Get(key) as PlanParameter;
+            string fullFileName = GlobalSettings.MapPath(_FullFileName);
+            FileDependency fd = new FileDependency(fullFileName);
+            XElement xe = XElement.Load(fullFileName);
+            try
+            {
+                if (xe.Element(elementname) != null)
+                {
+                    PlanParameter item = new PlanParameter()
+                        {
+                            Text = elementname,
+                            Value = xe.Element(elementname).Value
+                        };
+                    AspNetCache.Instance.Insert(key, item, fd);
+                    return item;
+                }
+                else
+                    return null;
             }
             catch
             {
@@ -62,18 +93,7 @@ namespace OperatingManagement.Framework.Storage
         /// <returns></returns>
         public static string ReadMBXQDefaultUser()
         {
-            string fullFileName = GlobalSettings.MapPath(_FullFileName);
-            XElement xe = XElement.Load(fullFileName);
-            string item;
-            try
-            {
-                item = xe.Element("MBXQDefaultUser").Value;
-                return item;
-            }
-            catch
-            {
-                return null;
-            }
+            return ReadParamValue("MBXQDefaultUser");
         }
 
         /// <summary>
@@ -82,18 +102,7 @@ namespace OperatingManagement.Framework.Storage
         /// <returns></returns>
         public static string ReadMBXQDefaultTargetInfo()
         {
-            string fullFileName = GlobalSettings.MapPath(_FullFileName);
-            XElement xe = XElement.Load(fullFileName);
-            string item;
-            try
-            {
-                item = xe.Element("MBXQDefaultTargetInfo").Value;
-                return item;
-            }
-            catch
-            {
-                return null;
-            }
+            return ReadParamValue("MBXQDefaultTargetInfo");
         }
 
         /// <summary>
@@ -102,18 +111,7 @@ namespace OperatingManagement.Framework.Storage
         /// <returns></returns>
         public static string ReadHJXQDefaultUser()
         {
-            string fullFileName = GlobalSettings.MapPath(_FullFileName);
-            XElement xe = XElement.Load(fullFileName);
-            string item;
-            try
-            {
-                item = xe.Element("HJXQDefaultUser").Value;
-                return item;
-            }
-            catch
-            {
-                return null;
-            }
+            return ReadParamValue("HJXQDefaultUser");
         }
 
         /// <summary>
@@ -122,18 +120,7 @@ namespace OperatingManagement.Framework.Storage
         /// <returns></returns>
         public static string ReadHJXQHJXQDefaultEnvironInfo()
         {
-            string fullFileName = GlobalSettings.MapPath(_FullFileName);
-            XElement xe = XElement.Load(fullFileName);
-            string item;
-            try
-            {
-                item = xe.Element("HJXQDefaultEnvironInfo").Value;
-                return item;
-            }
-            catch
-            {
-                return null;
-            }
+            return ReadParamValue("HJXQDefaultEnvironInfo");
         }
 
         /// <summary>
@@ -142,18 +129,7 @@ namespace OperatingManagement.Framework.Storage
         /// <returns></returns>
         public static string ReadYJJHJXH()
         {
-            string fullFileName = GlobalSettings.MapPath(_FullFileName);
-            XElement xe = XElement.Load(fullFileName);
-            string item;
-            try
-            {
-                item = xe.Element("YJJHJXH").Value;
-                return item;
-            }
-            catch
-            {
-                return null;
-            }
+            return ReadParamValue("YJJHJXH");
         }
 
         /// <summary>
@@ -162,18 +138,7 @@ namespace OperatingManagement.Framework.Storage
         /// <returns></returns>
         public static string ReadDJZYSQMLB()
         {
-            string fullFileName = GlobalSettings.MapPath(_FullFileName);
-            XElement xe = XElement.Load(fullFileName);
-            string item;
-            try
-            {
-                item = xe.Element("DJZYSQMLB").Value;
-                return item;
-            }
-            catch
-            {
-                return null;
-            }
+            return ReadParamValue("DJZYSQMLB");
         }
 
         /// <summary>
@@ -182,18 +147,21 @@ namespace OperatingManagement.Framework.Storage
         /// <returns></returns>
         public static string ReadDJZYSQQB()
         {
-            string fullFileName = GlobalSettings.MapPath(_FullFileName);
-            XElement xe = XElement.Load(fullFileName);
-            string item;
-            try
-            {
-                item = xe.Element("DJZYSQQB").Value;
-                return item;
-            }
-            catch
-            {
+            return ReadParamValue("DJZYSQQB");
+        }
+
+        /// <summary>
+        /// 读取某个参数设置的值
+        /// </summary>
+        /// <param name="paramName"></param>
+        /// <returns></returns>
+        public static string ReadParamValue(string paramName)
+        {
+            PlanParameter oParm = ReadParameter(paramName);
+            if (oParm != null)
+                return oParm.Value;
+            else
                 return null;
-            }
         }
 
     }

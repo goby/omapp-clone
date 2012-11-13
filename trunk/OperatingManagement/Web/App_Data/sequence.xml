@@ -1,6 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
 <sequences>
-  <SYJH>0000</SYJH>
+  <SYJH>0006</SYJH>
   <GZJH>0000</GZJH>
   <YJJH>0000</YJJH>
   <TYSJ>0000</TYSJ>
@@ -15,4 +14,5 @@
   <JDSJ>0000</JDSJ>
   <JDZT>0000</JDZT>
   <JDCL>0000</JDCL>
+  <DJZYSQ>0001</DJZYSQ>
 </sequences>

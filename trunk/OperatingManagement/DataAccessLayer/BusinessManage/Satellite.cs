@@ -55,11 +55,11 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 面质比
         /// </summary>
-        public int MZB { get; set; }
+        public double SM { get; set; }
         /// <summary>
         /// 表面反射系数
         /// </summary>
-        public int BMFSXS { get; set; }
+        public double Ref { get; set; }
         /// <summary>
         /// 按属性表顺序填写属性值
         /// </summary>
@@ -72,6 +72,22 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 创建时间
         /// </summary>
         public DateTime CTime { get; set; }
+        /// <summary>
+        /// 形状
+        /// </summary>
+        public int Shape { get; set; }
+        /// <summary>
+        /// 直径
+        /// </summary>
+        public double D { get; set; }
+        /// <summary>
+        /// 长度
+        /// </summary>
+        public double L { get; set; }
+        /// <summary>
+        /// 表面光滑或者粗糙
+        /// </summary>
+        public int RG { get; set; }
 
         public static List<Satellite> _satelliteCache = null;
         public List<Satellite> Cache
@@ -108,6 +124,11 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 OracleDbType = OracleDbType.Int32,
             };
         }
+
+        private void RefreshCache()
+        {
+            this.Cache = SelectAll();
+        }
         #endregion
 
         #region -Public Method-
@@ -130,11 +151,15 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     WXMC = ds.Tables[0].Rows[0]["WXMC"].ToString(),
                     WXBS = ds.Tables[0].Rows[0]["WXBS"].ToString(),
                     State = ds.Tables[0].Rows[0]["State"].ToString(),
-                    MZB = Convert.ToInt32(ds.Tables[0].Rows[0]["MZB"]),
-                    BMFSXS = Convert.ToInt32(ds.Tables[0].Rows[0]["BMFSXS"]),
+                    SM = Math.Round(Convert.ToDouble(ds.Tables[0].Rows[0]["SM"]), 3),
+                    Ref = Math.Round(Convert.ToDouble(ds.Tables[0].Rows[0]["Ref"]), 3),
                     SX = ds.Tables[0].Rows[0]["SX"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["SX"].ToString(),
                     GN = ds.Tables[0].Rows[0]["GN"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["GN"].ToString(),
-                    CTime = ds.Tables[0].Rows[0]["CTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["CTime"].ToString())
+                    CTime = ds.Tables[0].Rows[0]["CTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["CTime"].ToString()),
+                    Shape = Convert.ToInt32(ds.Tables[0].Rows[0]["Shape"]),
+                    D = Math.Round(Convert.ToDouble(ds.Tables[0].Rows[0]["D"]), 3),
+                    L = Math.Round(Convert.ToDouble(ds.Tables[0].Rows[0]["L"]), 3),
+                    RG = Convert.ToInt32(ds.Tables[0].Rows[0]["RG"])
                 };
             }
             return info;
@@ -161,11 +186,15 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         WXMC = dr["WXMC"].ToString(),
                         WXBS = dr["WXBS"].ToString(),
                         State = dr["State"].ToString(),
-                        MZB = Convert.ToInt32(dr["MZB"]),
-                        BMFSXS = Convert.ToInt32(dr["BMFSXS"]),
+                        SM = Math.Round(Convert.ToDouble(dr["SM"]), 3),
+                        Ref = Math.Round(Convert.ToDouble(dr["Ref"]), 3),
                         SX = dr["SX"] == DBNull.Value ? string.Empty : dr["SX"].ToString(),
                         GN = dr["GN"] == DBNull.Value ? string.Empty : dr["GN"].ToString(),
-                        CTime = dr["CTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["CTime"].ToString())
+                        CTime = dr["CTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["CTime"].ToString()),
+                        Shape = Convert.ToInt32(dr["Shape"]),
+                        D = Math.Round(Convert.ToDouble(dr["D"]), 3),
+                        L = Math.Round(Convert.ToDouble(dr["L"]), 3),
+                        RG = Convert.ToInt32(dr["RG"])
                     };
 
                     infoList.Add(info);
@@ -204,11 +233,15 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         WXMC = dr["WXMC"].ToString(),
                         WXBS = dr["WXBS"].ToString(),
                         State = dr["State"].ToString(),
-                        MZB = Convert.ToInt32(dr["MZB"]),
-                        BMFSXS = Convert.ToInt32(dr["BMFSXS"]),
+                        SM = Math.Round(Convert.ToDouble(dr["SM"]), 3),
+                        Ref = Math.Round(Convert.ToDouble(dr["Ref"]), 3),
                         SX = dr["SX"] == DBNull.Value ? string.Empty : dr["SX"].ToString(),
                         GN = dr["GN"] == DBNull.Value ? string.Empty : dr["GN"].ToString(),
-                        CTime = dr["CTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["CTime"].ToString())
+                        CTime = dr["CTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["CTime"].ToString()),
+                        Shape = Convert.ToInt32(dr["Shape"]),
+                        D = Math.Round(Convert.ToDouble(dr["D"]), 3),
+                        L = Math.Round(Convert.ToDouble(dr["L"]), 3),
+                        RG = Convert.ToInt32(dr["RG"])
                     };
 
                     infoList.Add(info);
@@ -234,15 +267,19 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_WXBM",this.WXBM),
                 new OracleParameter("p_WXBS",this.WXBS),
                 new OracleParameter("p_State",this.State),
-                new OracleParameter("p_MZB",this.MZB),
-                new OracleParameter("p_BMFSXS",this.BMFSXS),
+                new OracleParameter("p_SM",this.SM),
+                new OracleParameter("p_Ref",this.Ref),
                 new OracleParameter("p_SX",string.IsNullOrEmpty(this.SX) ? DBNull.Value as Object : this.SX),
                 new OracleParameter("p_GN",string.IsNullOrEmpty(this.GN) ? DBNull.Value as Object : this.GN),
                 new OracleParameter("p_CTime", CTime == DateTime.MinValue ? DateTime.Now : CTime),
+                new OracleParameter("p_Shape",this.Shape),
+                new OracleParameter("p_D",this.D),
+                new OracleParameter("p_L",this.L),
+                new OracleParameter("p_RG",this.RG),
                 p
             });
             //清除缓存
-            _satelliteCache = null;
+            RefreshCache();
             return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
 
@@ -259,15 +296,18 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_WXBM",this.WXBM),
                 new OracleParameter("p_WXBS",this.WXBS),
                 new OracleParameter("p_State",this.State),
-                new OracleParameter("p_MZB",this.MZB),
-                new OracleParameter("p_BMFSXS",this.BMFSXS),
+                new OracleParameter("p_SM",this.SM),
+                new OracleParameter("p_Ref",this.Ref),
                 new OracleParameter("p_SX",string.IsNullOrEmpty(this.SX) ? DBNull.Value as Object : this.SX),
                 new OracleParameter("p_GN",string.IsNullOrEmpty(this.GN) ? DBNull.Value as Object : this.GN),
-                //new OracleParameter("p_CTime", CTime == DateTime.MinValue ? DateTime.Now : CTime),
+                new OracleParameter("p_Shape",this.Shape),
+                new OracleParameter("p_D",this.D),
+                new OracleParameter("p_L",this.L),
+                new OracleParameter("p_RG",this.RG),
                 p
             });
             //清除缓存
-            _satelliteCache = null;
+            RefreshCache();
             return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
 

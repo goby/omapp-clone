@@ -18,6 +18,17 @@
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table cellpadding="0" class="edit1" style="width: 900px;">
         <tr>
+            <th>
+                上传进出站及航捷数据统计文件
+            </th>
+            <td align="left" colspan="3" style="width: 750px;">
+                <asp:FileUpload ID="FileUpload1" class="upload" runat="server" Width="455px" />
+                <asp:Button ID="btnUpdate" class="button" runat="server" Text="上传" CausesValidation="False"
+                    OnClick="btnUpdate_Click" Width="54px" />
+                <!--<asp:Label ID="lblUpload" CssClass="error" runat="server" Text="文件上传成功" Visible="false"></asp:Label>!-->
+            </td>
+        </tr>
+        <tr>
             <th style="width: 150px;">
                 任务代号(<span class="red">*</span>)
             </th>
@@ -27,12 +38,12 @@
             <th style="width: 150px;">
                 卫星(<span class="red">*</span>)
             </th>
-            <td style="width: 300px;">
+            <td>
                 <uc2:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
             </td>
         </tr>
         <tr>
-            <th style="width: 150px;">
+            <th>
                 计划开始时间
             </th>
             <td>
@@ -41,10 +52,10 @@
                 &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtPlanStartTime"
                     ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
             </td>
-            <th style="width: 150px;">
+            <th>
                 计划结束时间
             </th>
-            <td style="width: 300px;">
+            <td>
                 <asp:TextBox ID="txtPlanEndTime" runat="server" CssClass="text" MaxLength="10" ClientIDMode="Static"
                     onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
                 &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="txtPlanEndTime"
@@ -55,7 +66,7 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 150px;">
+            <th>
                 计划序号
             </th>
             <td>
@@ -63,17 +74,17 @@
                     Enabled="False"></asp:TextBox>
                 &nbsp;<span style="color: #3399FF;">自动生成</span>
             </td>
-            <th style="width: 150px;">
+            <th>
                 信息分类
             </th>
-            <td style="width: 300px;">
+            <td>
                 <asp:DropDownList ID="ddlXXFL" runat="server" DataTextField="Text" DataValueField="Value"
                     Width="154px">
                 </asp:DropDownList>
             </td>
         </tr>
         <tr>
-            <th style="width: 150px;">
+            <th>
                 备注
             </th>
             <td colspan="3">
@@ -81,10 +92,8 @@
                     Height="40px" TextMode="MultiLine"></asp:TextBox>
             </td>
         </tr>
-    </table>
-    <table id="tbQS" cellpadding="0" class="edit1" style="width: 900px;">
         <tr>
-            <th style="width: 150px;">
+            <th>
                 总圈数
             </th>
             <td colspan="3">
@@ -97,7 +106,7 @@
     </table>
     <asp:Repeater ID="rpDatas" runat="server" OnItemCommand="rpDatas_ItemCommand" OnItemDataBound="rpDatas_ItemDataBound">
         <HeaderTemplate>
-            <table class="edit1"  style="width: 900px;"  cellpadding="0"  id="detailtable">
+            <table class="edit1" style="width: 900px;" cellpadding="0" id="detailtable">
                 <tbody>
         </HeaderTemplate>
         <ItemTemplate>
@@ -105,7 +114,7 @@
                 <th style="width: 150px;">
                     工作单位
                 </th>
-                <td>
+                <td style="width: 300px;">
                     <asp:TextBox ID="txtDW" MaxLength="2" CssClass="text" runat="server" Text='<%# Eval("DW")%>'
                         onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46" onpaste="return !clipboardData.getData('text').match(/\D/)"
                         ondragenter="return false" Style="ime-mode: Disabled"></asp:TextBox>
@@ -121,7 +130,7 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px;">
+                <th>
                     任务代号
                 </th>
                 <td>
@@ -129,7 +138,7 @@
                         Width="154px">
                     </asp:DropDownList>
                 </td>
-                <th style="width: 150px;">
+                <th>
                     工作方式
                 </th>
                 <td>
@@ -139,7 +148,7 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px;">
+                <th>
                     计划性质
                 </th>
                 <td>
@@ -147,7 +156,7 @@
                         Width="154px">
                     </asp:DropDownList>
                 </td>
-                <th style="width: 150px;">
+                <th>
                     设备工作模式
                 </th>
                 <td>
@@ -157,7 +166,7 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px;">
+                <th>
                     本帧计划的圈标识
                 </th>
                 <td>
@@ -175,14 +184,14 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px;">
+                <th>
                     任务准备开始时间
                 </th>
                 <td>
                     <asp:TextBox MaxLength="14" ID="txtPreStartTime" CssClass="text" runat="server" Text='<%# Eval("ZHB")%>'
                         onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                 </td>
-                <th style="width: 150px;">
+                <th>
                     &nbsp;本行计划飞行圈次
                 </th>
                 <td>
@@ -192,14 +201,14 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px;">
+                <th>
                     跟踪开始时间
                 </th>
                 <td>
                     <asp:TextBox MaxLength="14" ID="txtTrackStartTime" CssClass="text" runat="server"
                         Text='<%# Eval("GZK")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                 </td>
-                <th style="width: 150px;">
+                <th>
                     跟踪结束时间
                 </th>
                 <td>
@@ -211,14 +220,14 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px;">
+                <th>
                     开上行载波时间
                 </th>
                 <td>
                     <asp:TextBox MaxLength="14" ID="txtWaveOnStartTime" CssClass="text" runat="server"
                         Text='<%# Eval("KSHX")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                 </td>
-                <th style="width: 150px;">
+                <th>
                     关上行载波时间
                 </th>
                 <td>
@@ -230,14 +239,14 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px;">
+                <th>
                     任务开始时间
                 </th>
                 <td>
                     <asp:TextBox MaxLength="14" ID="txtStartTime" CssClass="text" runat="server" Text='<%# Eval("RK")%>'
                         onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                 </td>
-                <th style="width: 150px;">
+                <th>
                     任务结束时间
                 </th>
                 <td>
@@ -249,7 +258,7 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px;">
+                <th>
                     信息类别标志
                 </th>
                 <td>
@@ -257,7 +266,7 @@
                         Width="154px">
                     </asp:DropDownList>
                 </td>
-                <th style="width: 150px;">
+                <th>
                     实时传送数据标志
                 </th>
                 <td>
@@ -265,14 +274,14 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px;">
+                <th>
                     数据传输开始时间
                 </th>
                 <td>
                     <asp:TextBox MaxLength="14" ID="txtTransStartTime" CssClass="text" runat="server"
                         Text='<%# Eval("RTs")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                 </td>
-                <th style="width: 150px;">
+                <th>
                     数据传输结束时间
                 </th>
                 <td>
@@ -284,7 +293,7 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px;">
+                <th>
                     数据传输速率
                 </th>
                 <td>
@@ -293,7 +302,7 @@
                         onpaste="return !clipboardData.getData('text').match(/\D/)" ondragenter="return false"
                         Style="ime-mode: Disabled"></asp:TextBox>
                 </td>
-                <th style="width: 150px;">
+                <th>
                     事后回放传送数据标志
                 </th>
                 <td>
@@ -301,14 +310,14 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px;">
+                <th>
                     数据起始时间
                 </th>
                 <td>
                     <asp:TextBox MaxLength="14" ID="DataStartTime" CssClass="text" runat="server" Text='<%# Eval("Ts")%>'
                         onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                 </td>
-                <th style="width: 150px;">
+                <th>
                     数据结束时间
                 </th>
                 <td>
@@ -320,9 +329,32 @@
                 </td>
             </tr>
             <tr>
+                <th>
+                    事后回放信息类别标志
+                </th>
                 <td>
+                    <asp:DropDownList ID="ddlSHBID" runat="server" DataTextField="Text" DataValueField="Value"
+                        Width="154px">
+                    </asp:DropDownList>
                 </td>
-                <td colspan="3">
+                <th>
+                    事后回放数据传输开始时间
+                </th>
+                <td>
+                    <asp:TextBox MaxLength="14" ID="txtSHTransStartTime" CssClass="text" runat="server"
+                        Text='<%# Eval("HRTs")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    事后回放数据传输速率
+                </th>
+                <td>
+                    <asp:TextBox ID="txtHSL" MaxLength="4" CssClass="text" runat="server" Text='<%# Eval("SL")%>'
+                        onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46" onpaste="return !clipboardData.getData('text').match(/\D/)"
+                        ondragenter="return false" Style="ime-mode: Disabled"></asp:TextBox>
+                </td>
+                <td colspan="2">
                     <asp:Button ID="btn1" CausesValidation="False" CssClass="button" runat="server" CommandName="Add"
                         Text="添加" />
                     <asp:Button ID="btn2" CausesValidation="False" CssClass="button" runat="server" CommandName="Del"
@@ -361,15 +393,128 @@
                 &nbsp;&nbsp;
                 <asp:Button ID="btnFormal" class="button" runat="server" OnClick="btnFormal_Click"
                     Text="转为正式计划" />
-                <asp:HiddenField ID="HfID" runat="server" />
-                <asp:HiddenField ID="HfFileIndex" runat="server" />
-                <asp:HiddenField ID="hfTaskID" runat="server" />
-                <asp:HiddenField ID="hfSatID" runat="server" />
-                <asp:HiddenField ID="hfStatus" runat="server" />
-                <asp:HiddenField ID="hfURL" runat="server" />
+                <div style="display: none;">
+                    <asp:HiddenField ID="HfID" runat="server" />
+                    <asp:HiddenField ID="HfFileIndex" runat="server" />
+                    <asp:HiddenField ID="hfTaskID" runat="server" />
+                    <asp:HiddenField ID="hfSatID" runat="server" />
+                    <asp:HiddenField ID="hfStatus" runat="server" />
+                    <asp:HiddenField ID="hfURL" runat="server" />
+                    <asp:HiddenField ID="hfStationFile" runat="server" ClientIDMode="Static" />
+                    <asp:TextBox ID="txtIds" runat="server" ClientIDMode="Static"></asp:TextBox>
+                    <asp:Button ID="btnGetStationData" ClientIDMode="Static" class="button" runat="server"
+                        CausesValidation="false" OnClick="btnGetStationData_Click" Text="获取数据" />
+                </div>
             </td>
         </tr>
     </table>
+    <div id="dialog-station" style="display: none" title="选择进出站及航捷数据">
+        <asp:Repeater ID="rpStation" runat="server">
+            <HeaderTemplate>
+                <table class="list" style="width: 1500px">
+                    <tr>
+                        <th style="width: 20px;">
+                            <input type="checkbox" onclick="checkAll(this)" />
+                        </th>
+                        <th style="width: 100px;">
+                            站名
+                        </th>
+                        <th style="width: 70px;">
+                            次数
+                        </th>
+                        <th style="width: 70px;">
+                            圈次
+                        </th>
+                        <th style="width: 70px;">
+                            升降轨
+                        </th>
+                        <th style="width: 120px;">
+                            跟踪时长
+                        </th>
+                        <th style="width: 120px;">
+                            超过最高仰角时长
+                        </th>
+                        <th style="width: 120px;">
+                            跟踪开始时间
+                        </th>
+                        <th style="width: 120px;">
+                            任务开始时间
+                        </th>
+                        <th style="width: 120px;">
+                            到最高仰角时间
+                        </th>
+                        <th style="width: 120px;">
+                            航捷时间
+                        </th>
+                        <th style="width: 120px;">
+                            出最高仰角时间
+                        </th>
+                        <th style="width: 120px;">
+                            任务结束时间
+                        </th>
+                        <th style="width: 120px;">
+                            跟踪结束时间
+                        </th>
+                        <th style="width: 120px;">
+                            航捷角
+                        </th>
+                    </tr>
+                    <tbody id="tbStations">
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="chkDelete" value="<%# Eval("rowIndex") %>" />
+                    </td>
+                    <td>
+                        <%# Eval("ZM")%>
+                    </td>
+                    <td>
+                        <%# Eval("N")%>
+                    </td>
+                    <td>
+                        <%# Eval("QC")%>
+                    </td>
+                    <td>
+                        <%# Eval("SJG")%>
+                    </td>
+                    <td>
+                        <%# Eval("SP1")%>
+                    </td>
+                    <td>
+                        <%# Eval("SP2")%>
+                    </td>
+                    <td>
+                        <%# Eval("T1")%>
+                    </td>
+                    <td>
+                        <%# Eval("T2")%>
+                    </td>
+                    <td>
+                        <%# Eval("T3")%>
+                    </td>
+                    <td>
+                        <%# Eval("T4")%>
+                    </td>
+                    <td>
+                        <%# Eval("T5")%>
+                    </td>
+                    <td>
+                        <%# Eval("T6")%>
+                    </td>
+                    <td>
+                        <%# Eval("T7")%>
+                    </td>
+                    <td>
+                        <%# Eval("h")%>
+                    </td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                </tbody> </table>
+            </FooterTemplate>
+        </asp:Repeater>
+    </div>
     <div id="dialog-form" style="display: none" title="提示信息">
         <p class="content">
         </p>

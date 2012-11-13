@@ -170,4 +170,26 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
         #endregion
     }
+
+    public class MatchRule : BaseEntity<int, MatchRule>
+    {
+        public string PCode { get; set; }
+        public emLogicSymbol LogicSymbol { get; set; }
+
+        #region -Override BaseEntity-
+        protected override void ValidationRules()
+        {
+        }
+        #endregion
+    }
+
+    public enum emLogicSymbol
+    {
+        LessThan = 0,
+        LessThanEqual = 1,
+        Equal = 2,
+        MoreThanEqual = 3,
+        MoreThan = 4
+    }
+
 }

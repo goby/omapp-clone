@@ -166,7 +166,7 @@ namespace OperatingManagement.RemotingObjectEntity
                 u = u.SelectById();
 
                 if (u == null)
-                    root.Add(new XElement("msg"), "获取不到指定的用户");
+                    root.Add(new XElement("msg", "获取不到指定的用户"));
                 else
                 {
                     root.Add(new XElement("msg"), "");

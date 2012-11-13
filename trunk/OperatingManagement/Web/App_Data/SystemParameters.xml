@@ -145,4 +145,12 @@
     <item text="obspre_path" value="ObsPre\"></item>
     <item text="upload_path" value="Upload\"></item>
   </GDJSResult>
+  <SatelliteShape description="卫星形状">
+    <item text="球体" value="0"></item>
+    <item text="圆柱体" value="1"></item>
+  </SatelliteShape>
+  <SatelliteFace description="卫星表面">
+    <item text="粗糙" value="0"></item>
+    <item text="光滑" value="1"></item>
+  </SatelliteFace>
 </SystemParameters>

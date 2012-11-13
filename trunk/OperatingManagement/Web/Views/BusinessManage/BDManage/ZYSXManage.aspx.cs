@@ -105,7 +105,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
         }
 
         protected string GetOwnName(string type)
-        {//0(卫星);1(地面站);2(卫星和地面站);3(都不归属)
+        {//0(卫星);1(地面站资源);2(卫星和地面站资源);3(都不归属)
             string result = "";
             switch (type)
             {
@@ -113,10 +113,10 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                     result = "卫星";
                     break;
                 case "1":
-                    result = "地面站";
+                    result = "地面站资源";
                     break;
                 case "2":
-                    result = "卫星和地面站";
+                    result = "卫星和地面站资源";
                     break;
                 case "3":
                     result = "都不归属";

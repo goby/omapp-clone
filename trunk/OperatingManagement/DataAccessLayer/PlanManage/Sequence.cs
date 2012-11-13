@@ -12,9 +12,9 @@ using Oracle.DataAccess.Client;
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
     /// <summary>
-    /// 天基目标观测试验数据
+    /// 序列号
     /// </summary>
-    public class Sequence 
+    public class Sequence
     {
 
         public Sequence()
@@ -23,7 +23,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         }
 
         /// <summary>
-        /// 获取应用研究工作计划编号
+        /// 获取YY研究工作计划编号
         /// </summary>
         /// <returns></returns>
         public int GetYJJHSequnce()
@@ -31,7 +31,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             return GetSequence("seq_tb_yjjh");
         }
         /// <summary>
-        /// 获取空间信息需求编号
+        /// 获取KJ信息需求编号
         /// </summary>
         /// <returns></returns>
         public int GetXXXQSequnce()
@@ -39,7 +39,15 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             return GetSequence("seq_tb_xxxq");
         }
         /// <summary>
-        /// 获取地面站工作计划编号
+        /// 获取ZZ DMZ工作计划编号
+        /// </summary>
+        /// <returns></returns>
+        public int GeZZGZJHSequnce()
+        {
+            return GetSequence("seq_tb_zzgzjh");
+        }
+        /// <summary>
+        /// 获取CK资源需求编号
         /// </summary>
         /// <returns></returns>
         public int GetDJZYSQSequnce()
@@ -47,7 +55,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             return GetSequence("seq_tb_djzysq");
         }
         /// <summary>
-        /// 获取ZC地面站工作计划编号
+        /// 获取ZC DMZ工作计划编号
         /// </summary>
         /// <returns></returns>
         public int GetGZJHSequnce()
@@ -63,7 +71,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             return GetSequence("seq_tb_zxjh");
         }
         /// <summary>
-        /// 获取仿真推演试验数据编号
+        /// 获取FZTY试验数据编号
         /// </summary>
         /// <returns></returns>
         public int GetTYSJSequnce()
@@ -79,7 +87,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <returns></returns>
         public int GetSequence(string seqname)
         {
-            int result=1;
+            int result = 1;
             OracleParameter seqnum = new OracleParameter
             {
                 ParameterName = "o_seqnum",

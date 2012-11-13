@@ -31,11 +31,11 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         #region -Properties-
         private OracleDatabase _database = null;
 
-        public int ID {get;set;}
+        public int ID { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime CTime {get;set;}
+        public DateTime CTime { get; set; }
         /// <summary>
         /// 任务代号
         /// </summary>
@@ -93,55 +93,56 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         {
             DataSet ds = null;
 
-                ds = new DataSet();
-                ds.Tables.Add();
-                OracleCommand command = _database.GetStoreProcCommand(GET_SYCXList_ByDate);
-                if (startDate != DateTime.MinValue )
-                {
-                    _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
-                }
-                else
-                {
-                    _database.AddInParameter(command, "p_startDate", OracleDbType.Date, startDate);
-                }
-                if (endDate != DateTime.MinValue)
-                {
-                    _database.AddInParameter(command, "p_endDate", OracleDbType.Date, DBNull.Value);
-                }
-                else
-                {
-                    _database.AddInParameter(command, "p_endDate", OracleDbType.Date, endDate);
-                }
-                using (IDataReader reader = _database.ExecuteReader(command))
-                {
-                    ds.Tables[0].Load(reader);
-                }
+            ds = new DataSet();
+            ds.Tables.Add();
+            OracleCommand command = _database.GetStoreProcCommand(GET_SYCXList_ByDate);
+            if (startDate == DateTime.MinValue)
+            {
+                _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
+            }
+            else
+            {
+                _database.AddInParameter(command, "p_startDate", OracleDbType.Date, startDate);
+            }
+            if (endDate == DateTime.MinValue)
+            {
+                _database.AddInParameter(command, "p_endDate", OracleDbType.Date, DBNull.Value);
+            }
+            else
+            {
+                _database.AddInParameter(command, "p_endDate", OracleDbType.Date, endDate);
+            }
+            using (IDataReader reader = _database.ExecuteReader(command))
+            {
+                ds.Tables[0].Load(reader);
+            }
 
-                List<SYCX> objDatas = new List<SYCX>();
-                if (ds != null && ds.Tables.Count == 1)
+            List<SYCX> objDatas = new List<SYCX>();
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    objDatas.Add(new SYCX()
                     {
-                        objDatas.Add(new SYCX()
-                        {
-                            Id = Convert.ToInt32(dr["ID"].ToString()),
-                            CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
-                            TaskID = dr["TASKID"].ToString(),
-                            PType = (SYCXType)(Convert.ToInt32( dr["PTYPE"].ToString())),
-                            PName = dr["PNAME"].ToString(),
-                            PNID = Convert.ToInt32(dr["PNID"].ToString()),
-                            PlanID = Convert.ToInt32(dr["PLANID"].ToString()),
-                            StartTime = Convert.ToDateTime(dr["STARTTIME"].ToString()),
-                            EndTime = Convert.ToDateTime(dr["ENDTIME"].ToString()),
-                            InfoType = dr["INFOTYPE"].ToString(),
-                            LineCount = Convert.ToInt32(dr["LINECOUNT"].ToString()),
-                            FileIndex = dr["FILEINDEX"].ToString(),
-                            Reserve = dr["RESERVE"].ToString()
-                        });
-                    }
+                        Id = Convert.ToInt32(dr["ID"].ToString()),
+                        ID = Convert.ToInt32(dr["ID"].ToString()),
+                        CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        TaskID = dr["TASKID"].ToString(),
+                        PType = (SYCXType)(Convert.ToInt32(dr["PTYPE"].ToString())),
+                        PName = dr["PNAME"].ToString(),
+                        PNID = Convert.ToInt32(dr["PNID"].ToString()),
+                        PlanID = Convert.ToInt32(dr["PLANID"].ToString()),
+                        StartTime = Convert.ToDateTime(dr["STARTTIME"].ToString()),
+                        EndTime = Convert.ToDateTime(dr["ENDTIME"].ToString()),
+                        InfoType = dr["INFOTYPE"].ToString(),
+                        LineCount = Convert.ToInt32(dr["LINECOUNT"].ToString()),
+                        FileIndex = dr["FILEINDEX"].ToString(),
+                        Reserve = dr["RESERVE"].ToString()
+                    });
                 }
+            }
 
-                return objDatas;
+            return objDatas;
         }
 
         /// <summary>
@@ -164,6 +165,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                     return new SYCX()
                     {
                         Id = Convert.ToInt32(dr["ID"].ToString()),
+                        ID = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
                         TaskID = dr["TASKID"].ToString(),
                         PType = (SYCXType)(Convert.ToInt32(dr["PTYPE"].ToString())),

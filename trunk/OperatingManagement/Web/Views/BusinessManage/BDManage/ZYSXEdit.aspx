@@ -53,7 +53,7 @@
                      ControlToValidate="txtScope" ErrorMessage="必须填写“属性值区间”。"></asp:RequiredFieldValidator>
                 <asp:RegularExpressionValidator ID="rvInt" runat="server" ClientIDMode = "Static"
                     ControlToValidate="txtScope" Display="Dynamic" ErrorMessage="请按int型说明填写" 
-                    ForeColor="Red" ValidationExpression="\d{1,}-\d{6}"></asp:RegularExpressionValidator>
+                    ForeColor="Red" ValidationExpression="\d{1}-\d{6}"></asp:RegularExpressionValidator>
                     <asp:RegularExpressionValidator ID="rvDouble" runat="server"  ClientIDMode = "Static"
                     ControlToValidate="txtScope" Display="Dynamic" ErrorMessage="请按double型说明填写" 
                     ForeColor="Red" ValidationExpression="\d{1}.\d{1}"></asp:RegularExpressionValidator>
@@ -77,8 +77,8 @@
                 <asp:RadioButtonList ID="rblOwn" runat="server" BorderColor="White" 
                     BorderStyle="Double" BorderWidth="2px" RepeatDirection="Horizontal">
                     <asp:ListItem Value="0" Selected="True">卫星</asp:ListItem>
-                    <asp:ListItem Value="1">地面站</asp:ListItem>
-                    <asp:ListItem Value="2">卫星和地面站</asp:ListItem>
+                    <asp:ListItem Value="1">地面站资源</asp:ListItem>
+                    <asp:ListItem Value="2">卫星和地面站资源</asp:ListItem>
                     <asp:ListItem Value="3">都不属于</asp:ListItem>
                 </asp:RadioButtonList>
             </td>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml.Linq;
 using System.Threading;
 using System.IO;
+using OperatingManagement.Framework.Core;
 
 namespace ServicesKernel.File
 {
@@ -14,7 +15,7 @@ namespace ServicesKernel.File
 
         #region 外部文件命名
         /// <summary>
-        /// 只有外发才需要：版本号_对象标识_信源标识_模式标识_信息类型标识_日期_编号.xml
+        /// 只有外发才需要：版本号_对象标识_信源标识_模式标识_信息类型标识_日期_时刻_编号.xml
         /// </summary>
         /// <param name="infotype"></param>
         /// <param name="dateType">日期类型U:UTC日期;B:北京日期</param>
@@ -34,13 +35,44 @@ namespace ServicesKernel.File
             string DateFlag = "";
             if (dateType == "U")
             {
-                DateFlag = "U"+DateTime.UtcNow.ToString("yyyyMMdd");
+                DateFlag = "U"+DateTime.UtcNow.ToString("yyyyMMdd_HHmmss");
             }
             else if (dateType == "B")
             {
-                DateFlag = "B" + DateTime.Now.ToString("yyyyMMdd");
+                DateFlag = "B" + DateTime.Now.ToString("yyyyMMdd_HHmmss");
             }
             return GetFileName(infotype, "", DateFlag, 1, ver, flag, mode);
+        }
+
+        /// <summary>
+        /// 只有外发才需要：版本号_对象标识_信源标识_模式标识_信息类型标识_日期_时刻_编号.xml
+        /// </summary>
+        /// <param name="infotype"></param>
+        /// <param name="dateType">日期类型U:UTC日期;B:北京日期</param>
+        /// <param name="toMark">发送目标</param>
+        /// <returns></returns>
+        public static string GenarateFileNameTypeOne(string infotype, string dateType, string toMark)
+        {
+            //版本号用2个字符表示，本版本命名方法固定为“01”，程序中配置为“01”；
+            string ver = Param.Version;
+            //对象标识用4个字符表示，采用可读性ASCII码字符，本任务固定为“7000”，程序中配置为“7000”；
+            string flag = System.Configuration.ConfigurationManager.AppSettings["ObjectCode"];
+            //模式标识用2个字符表示，用来标识文件内信息所对应的运行模式。“OP”代表实战，“TS”代表联试；
+            string mode = Param.RunnningMode;
+
+            if (ver == null || flag == null || mode == null)
+                return null;
+
+            string DateFlag = "";
+            if (dateType == "U")
+            {
+                DateFlag = "U" + DateTime.UtcNow.ToString("yyyyMMdd_HHmmss");
+            }
+            else if (dateType == "B")
+            {
+                DateFlag = "B" + DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            }
+            return GetFileName(infotype, toMark, DateFlag, 1, ver, flag, mode);
         }
 
         /// <summary>
@@ -72,7 +104,7 @@ namespace ServicesKernel.File
                         //版本号_对象标识_信源标识_模式标识_信息类型标识_日期_编号. xml
                         string sequence = GetSequenceNO(infoCode);
                         return version + seperator + objectCode + seperator + fromMark + seperator + runningMode +
-                            seperator + infoCode + seperator + time + sequence + ".xml";
+                            seperator + infoCode + seperator + time + seperator + sequence + ".xml";
                     case 2:
                         return "";
                     case 3:
@@ -136,20 +168,20 @@ namespace ServicesKernel.File
         /// <returns></returns>
         private static string GetSequenceNO(string infoCode)
         {
-            string strSeqPath = @"../app_data/sequence.xml";
+            string strSeqPath = @"~/app_data/sequence.xml";
             string strSeqNo = "";
 
             ReaderWriterLock rwl = new ReaderWriterLock();
             try
             {
                 rwl.AcquireWriterLock(1000);
-                XDocument doc = XDocument.Load(strSeqPath);
+                XDocument doc = XDocument.Load(GlobalSettings.MapPath(strSeqPath));
                 XElement root = doc.Root;
                 XElement element = root.Element(infoCode);
                 strSeqNo = element.Value;
                 int iSeq = Convert.ToInt32(strSeqNo);
                 element.Value = (iSeq + 1).ToString().PadLeft(4, '0');
-                StreamWriter oSW = new StreamWriter(strSeqPath);
+                StreamWriter oSW = new StreamWriter(GlobalSettings.MapPath(strSeqPath));
                 oSW.Write(doc.ToString());
                 oSW.Close();
             }

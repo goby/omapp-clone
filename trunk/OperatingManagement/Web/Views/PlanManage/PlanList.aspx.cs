@@ -203,6 +203,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                             case "XXXQ":
                                 SendingFilePaths = creater.CreateSendingXXXQFile(txtId.Text, li.Value);
                                 break;
+                            case "DJZYSQ":
+                                SendingFilePaths = creater.CreateSendingDJZYSQFile(txtId.Text, li.Value);
+                                break;
                             case "DMJH":
                             case "GZJH":
                                 SendingFilePaths = creater.CreateSendingGZJHFile(txtId.Text, li.Value);
@@ -224,30 +227,27 @@ namespace OperatingManagement.Web.Views.PlanManage
                         bool boolResult = true; //文件发送结果
                         FileSender objSender = new FileSender();
                         string[] filePaths = SendingFilePaths.Split(',');
-                        for (int i = 0; i < filePaths.Length; i++)
+                        if (string.IsNullOrEmpty(SendingFilePaths) || filePaths.Length <= 0)
                         {
-                            //if (txtPlanType.Text == "XXXQ")
-                            //{
-                            //    if (filePaths[i].Contains("MBXQ"))
-                            //    {
-                            //        infotypeid = (new InfoType()).GetIDByExMark("MBXX");
-                            //    }
-                            //    else if (filePaths[i].Contains("HJXX"))
-                            //    {
-                            //        infotypeid = (new InfoType()).GetIDByExMark("HJXX");
-                            //    }
-                            //}
-                            boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), GetFilePathByFilePath(filePaths[i]), protocl, senderid, reveiverid, infotypeid, true);
                             lblMessage.Visible = true;
-                            if (boolResult)
+                            lblMessage.Text += " 所选计划不包含发送目标\"" + li.Text + "\" 的数据。" + "<br />";
+                        }
+                        else
+                        {
+                            for (int i = 0; i < filePaths.Length; i++)
                             {
-                                lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
-                            }
-                            else
-                            {
-                                lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
-                            }
-                            
+                                boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), GetFilePathByFilePath(filePaths[i]), protocl, senderid, reveiverid, infotypeid, true);
+                                lblMessage.Visible = true;
+                                if (boolResult)
+                                {
+                                    lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
+                                }
+                                else
+                                {
+                                    lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
+                                }
+
+                            }//endfor
                         }
 
                     }//li

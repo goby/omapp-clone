@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -25,29 +26,17 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
         {
             if (!IsPostBack)
             {
-                InitData();
                 BindZYGN();
             }
         }
 
         protected void InitData()
         {
-            ZYSX zy = new ZYSX();
-            lbDMZ.DataSource = zy.GetGroundStationZYSXList();
-            lbDMZ.DataTextField = "PName";
-            lbDMZ.DataValueField = "PCode";
-            lbDMZ.DataBind();
-
-            lbSat.DataSource = zy.GetSatelliteZYSXList();
-            lbSat.DataTextField = "PName";
-            lbSat.DataValueField = "PCode";
-            lbSat.DataBind();
-
-            GroundResource g = new GroundResource();
-            ddlDMZ.DataSource = g.SelectAll();
-            ddlDMZ.DataTextField = "EquipmentName";
-            ddlDMZ.DataValueField = "EquipmentCode";
-            ddlDMZ.DataBind();
+            List<MatchRule> lstRules = new List<MatchRule>();
+            MatchRule oRule = new MatchRule();
+            lstRules.Add(oRule);
+            rpPPZZ.DataSource = lstRules;
+            rpPPZZ.DataBind();
         }
 
         void BindZYGN()
@@ -68,11 +57,45 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
 
             txtName.Text = zy.FName;
             txtCode.Text = zy.FCode;
-            ucSatellite1.SelectedValue = SpliteMatchRule( zy.MatchRule,1);
-            ddlDMZ.SelectedValue = SpliteMatchRule(zy.MatchRule, 4);
-            lbSat.SelectedValue = SpliteMatchRule(zy.MatchRule, 2);
-            lbDMZ.SelectedValue = SpliteMatchRule(zy.MatchRule, 5);
-            rblOwn.SelectedValue = SpliteMatchRule(zy.MatchRule, 3);
+            string[] strRules = new string[0];
+            if (!zy.MatchRule.Equals(string.Empty))
+            {
+                strRules = zy.MatchRule.Split(new char[]{','});
+            }
+            List<MatchRule> lstRules = new List<MatchRule>();
+            MatchRule oRule;
+            string strTmp = string.Empty;
+            for (int i = 0; i < strRules.Length; i++)
+            {
+                oRule = new MatchRule();
+                strTmp = strRules[i].TrimStart(new char[]{'['}).TrimEnd(new char[]{']'});
+                oRule.PCode = strTmp.Substring(0, strTmp.IndexOf(']'));
+                strTmp = strTmp.Replace(oRule.PCode + "]", "");
+                oRule.LogicSymbol = (emLogicSymbol)Enum.Parse(typeof(emLogicSymbol), GetLogicName(strTmp.Substring(0, strTmp.IndexOf('['))));
+                lstRules.Add(oRule);
+            }
+            rpPPZZ.DataSource = lstRules;
+            rpPPZZ.DataBind();
+        }
+
+        private string GetLogicName(string logic)
+        {
+            switch (logic)
+            {
+                case ">":
+                    return "MoreThan";
+                case ">=":
+                    return "MoreThanEqual";
+                case "<":
+                    return "LessThan";
+                case "<=":
+                    return "LessThanEqual";
+                case "=":
+                    return "Equal";
+                default :
+                    return string.Empty;
+
+            }
         }
 
         /// <summary>
@@ -135,14 +158,35 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            StringBuilder sbRules = new StringBuilder();
+            string strPCode = string.Empty;
+            string strLogic = string.Empty;
+            DropDownList ddlList;
+            List<string> lstSXs = new List<string>();
+            foreach (RepeaterItem it in rpPPZZ.Items)
+            {
+                ddlList = (DropDownList)it.FindControl("ddlZYSX");
+                if (ddlList != null)
+                    strPCode = ddlList.SelectedValue;
+                if (!lstSXs.Contains(strPCode))
+                    lstSXs.Add(strPCode);
+                else
+                {
+                    ltMessage.Text = "资源属性选择有重复。";
+                    return;
+                }
+                ddlList = (DropDownList)it.FindControl("ddlLogic");
+                if (ddlList != null)
+                    strLogic = ddlList.SelectedItem.Text;
+                sbRules.Append("[" + strPCode + "]" + strLogic + "[" + strPCode + "],");
+            }
 
             DataAccessLayer.BusinessManage.ZYGN t = new DataAccessLayer.BusinessManage.ZYGN()
             {
                 Id = Convert.ToInt32( hfID.Value),
                 FName = txtName.Text.Trim(),
                 FCode = txtCode.Text.Trim(),
-                MatchRule = ucSatellite1.SelectedValue + "." + lbSat.SelectedValue + rblOwn.SelectedValue
-                                    + ddlDMZ.SelectedValue + "." + lbDMZ.SelectedValue
+                MatchRule = sbRules.ToString().TrimEnd(new char[] { ',' })
 
             };
             var result = Framework.FieldVerifyResult.Error;
@@ -182,6 +226,88 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
         protected void btnReturn_Click(object sender, EventArgs e)
         {
             Page.Response.Redirect("ZYGNManage.aspx");
+        }
+
+        protected void rpPPZZ_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            List<MatchRule> lstRules = new List<MatchRule>();
+            MatchRule oRule;
+            Repeater rp = (Repeater)source;
+            DropDownList ddlList;
+
+            if (e.CommandName == "Add")
+            {
+                foreach (RepeaterItem it in rp.Items)
+                {
+                    oRule = new MatchRule();
+                    ddlList = (DropDownList)it.FindControl("ddlZYSX");
+                    if (ddlList != null)
+                        oRule.PCode = ddlList.SelectedValue;
+                    ddlList = (DropDownList)it.FindControl("ddlLogic");
+                    if (ddlList != null)
+                        oRule.LogicSymbol = (emLogicSymbol)(Enum.Parse(typeof(emLogicSymbol), ddlList.SelectedValue));
+                    lstRules.Add(oRule);
+                }
+                oRule = new MatchRule();
+                lstRules.Add(oRule);
+                rp.DataSource = lstRules;
+                rp.DataBind();
+            }
+            if (e.CommandName == "Del")
+            {
+                if (rp.Items.Count == 1)
+                {
+                    oRule = new MatchRule();
+                    lstRules.Add(oRule);
+                }
+                else
+                {
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        if (e.Item.ItemIndex != it.ItemIndex)
+                        {
+                            oRule = new MatchRule();
+                            ddlList = (DropDownList)it.FindControl("ddlZYSX");
+                            if (ddlList != null)
+                                oRule.PCode = ddlList.SelectedValue;
+                            ddlList = (DropDownList)it.FindControl("ddlLogic");
+                            if (ddlList != null)
+                                oRule.LogicSymbol = (emLogicSymbol)(Enum.Parse(typeof(emLogicSymbol), ddlList.SelectedValue));
+                            lstRules.Add(oRule);
+                        }
+                    }
+                }
+                rp.DataSource = lstRules;
+                rp.DataBind();
+            }
+        }
+
+        protected void rpPPZZ_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            try
+            {
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                {
+                    DropDownList ddlSX = (DropDownList)e.Item.FindControl("ddlZYSX") as DropDownList;
+                    ddlSX.DataSource = new ZYSX().Cache;
+                    ddlSX.DataTextField = "PName";
+                    ddlSX.DataValueField = "PCode";
+                    ddlSX.DataBind();
+
+                    DropDownList ddlLogic = (DropDownList)e.Item.FindControl("ddlLogic") as DropDownList;
+                    Repeater rp = (Repeater)sender;
+                    List<MatchRule> lstRules = (List<MatchRule>)rp.DataSource;
+                    ddlLogic.SelectedIndex = ddlLogic.Items.IndexOf(
+                        ddlLogic.Items.FindByValue(Enum.GetName(typeof(emLogicSymbol), (lstRules[e.Item.ItemIndex].LogicSymbol))));
+                    ddlSX.SelectedIndex = ddlSX.Items.IndexOf(ddlSX.Items.FindByValue(lstRules[e.Item.ItemIndex].PCode));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("绑定匹配准则信息出现异常，异常原因", ex));
+            }
+            finally { }
+
         }
     }
 }

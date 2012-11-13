@@ -105,7 +105,8 @@ namespace ServicesKernel.File
                     foreach (XElement tgt in node.Element("TgtList").Elements("TgtCode"))
                     {
                         sendList.Add(sType + sSeperator + sSrc + sSeperator + tgt.Value, sSuffix);
-                        listtgt.Add(tgt.Value);
+                        if (!listtgt.Contains(tgt.Value))
+                            listtgt.Add(tgt.Value);
                     }
                     if (!tgtList.ContainsKey(sType))
                     { tgtList.Add(sType, listtgt); }

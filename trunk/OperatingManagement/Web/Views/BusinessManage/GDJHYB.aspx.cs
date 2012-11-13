@@ -530,8 +530,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
             objSatellite.SelectByID();
             txtCutMainSatelliteNO.Text = objSatellite.Id;
             txtCutMainSatelliteKK.Text = objSatellite.State;
-            txtCutMainSatelliteSm.Text = objSatellite.MZB.ToString();
-            txtCutMainSatelliteRef.Text = objSatellite.BMFSXS.ToString();
+            txtCutMainSatelliteSm.Text = objSatellite.SM.ToString();
+            txtCutMainSatelliteRef.Text = objSatellite.Ref.ToString();
             switch (txtCutMainSatelliteKK.Text)
             {
                 case "1":
@@ -594,8 +594,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
             objSatellite.SelectByID();
             txtCutSubSatelliteNO.Text = objSatellite.Id;
             txtCutSubSatelliteKK.Text = objSatellite.State;
-            txtCutSubSatelliteSm.Text = objSatellite.MZB.ToString();
-            txtCutSubSatelliteRef.Text = objSatellite.BMFSXS.ToString();
+            txtCutSubSatelliteSm.Text = objSatellite.SM.ToString();
+            txtCutSubSatelliteRef.Text = objSatellite.Ref.ToString();
             switch (txtCutSubSatelliteKK.Text)
             {
                 case "1":

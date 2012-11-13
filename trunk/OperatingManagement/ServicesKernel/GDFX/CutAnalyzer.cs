@@ -16,7 +16,7 @@ namespace ServicesKernel.GDFX
     public class CutAnalyzer
     {
         private string[] fileNames = new string[] { "JPLEPH", "TESTRECL", "WGS84.GEO", "eopc04_IAU2000.dat" };
-        private const string dllPath = @"D:\Deploy\";
+        private const string dllPath = @"E:\YKZX_Manage\";
         private const string dllFolder = @"GDDLL\CutAna\";
         private const string dllName = @"CutAnaDLL.dll";
         private const string outputPath = @"output\";

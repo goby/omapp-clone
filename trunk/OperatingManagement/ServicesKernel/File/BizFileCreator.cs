@@ -289,19 +289,43 @@ namespace ServicesKernel.File
             }
             finally { }
 
+            if (ycinfo.STBlob == null)
+                return FileCreateResult.SomethingError;
+
             DataFileHandle oFileHandle = new DataFileHandle("");
+            #region YC数据写入文件，读完就删除
+            string strLine = string.Empty;
+            string strYCFName = Param.TempJHSavePath + Guid.NewGuid() + ".txt";
+            List<string> lstDatas = new List<string>();
+            if (!Directory.Exists(Param.TempJHSavePath))
+                Directory.CreateDirectory(Param.TempJHSavePath);
+            DataFileHandle.WriteDataToFile(strYCFName, ycinfo.STBlob, ycinfo.STBlob.Length);
+
+            StreamReader oReader = new StreamReader(strYCFName);
+            strLine = oReader.ReadLine();
+            while (!string.IsNullOrEmpty(strLine))
+            {
+                lstDatas.Add(strLine);
+                strLine = oReader.ReadLine();
+            }
+            oReader.Close();
+            DataFileHandle.DeleteFile(strYCFName);
+            #endregion
+
             string[] fields = BuildYCFields(dataType);
-            string[] datas = new string[fields.Length];
-            try
+            if (lstDatas.Count > 0)
             {
-                //datas无来源
-                oResult = oFileHandle.CreateFormat3File(oFile, fields, datas);
+                try
+                {
+                    oResult = oFileHandle.CreateFormat3File(oFile, fields, lstDatas.ToArray());
+                }
+                catch (Exception ex)
+                {
+                    Log(string.Format("创建{0}文件异常，文件路径{1}", dataType, oFile.FullName), ex);
+                }
+                finally { }
             }
-            catch (Exception ex)
-            {
-                Log(string.Format("创建{0}文件异常，文件路径{1}", dataType, oFile.FullName), ex);
-            }
-            finally { }
+
             return oResult;
         }
 
@@ -418,17 +442,17 @@ namespace ServicesKernel.File
         /// <returns></returns>
         private string[] BuildYCFields(string dataType)
         {
-            string[] fields = new string[0];
+            string[] fields = new string[1];
             switch (dataType)
             {
                 case "GCZT"://43
-                    fields = "T0,Px78,Px79,Px80,Px81,Px82,Px83,PK1,PK2,PK3,PK4,PK5,PK6,PK7,PK8,PK9,PK10,PK11,PK12,PK14,PK15,PK16,PK32,PK33,PK34,PK35,PK36,PK37,PK38,PK39,ZT68,Px148,Px150,Px153,Px154,Px155,ZCX32,ZCX13,ZCX14,ZCX15,ZCX25,ZCX21,ZCX22".Split(new char[]{','});
+                    fields[0] = "T0,Px78,Px79,Px80,Px81,Px82,Px83,PK1,PK2,PK3,PK4,PK5,PK6,PK7,PK8,PK9,PK10,PK11,PK12,PK14,PK15,PK16,PK32,PK33,PK34,PK35,PK36,PK37,PK38,PK39,ZT68,Px148,Px150,Px153,Px154,Px155,ZCX32,ZCX13,ZCX14,ZCX15,ZCX25,ZCX21,ZCX22".Replace(",", "  ");
                     break;
                 case "JDZT"://64
-                    fields = "ZJ,T0,FL1,φ,θ,ψ,φφ,θθ,ψψ,X1,Y1,Z1,VX1,VY1,VZ1,q0,q1,q2,q3,BJ1,BJ2,X2,Y2,Z2,VX2,VY2,VZ2,X3,Y3,Z3,VX3,VY3,VZ3,X4,Y4,Z4,VX4,VY4,VZ4,BJ3,BJ4,BJ5,BJ6,qa0,qa1,qa2,qa3,qb0,qb1,qb2,qb3,BJ7,Wx,Wy,Wz,Wxx,Wyy,Wzz,BJ8,BJ9,BJ10,BJ11,FL2,FL3".Split(new char[] { ',' });
+                    fields[0] = "ZJ,T0,FL1,φ,θ,ψ,φφ,θθ,ψψ,X1,Y1,Z1,VX1,VY1,VZ1,q0,q1,q2,q3,BJ1,BJ2,X2,Y2,Z2,VX2,VY2,VZ2,X3,Y3,Z3,VX3,VY3,VZ3,X4,Y4,Z4,VX4,VY4,VZ4,BJ3,BJ4,BJ5,BJ6,qa0,qa1,qa2,qa3,qb0,qb1,qb2,qb3,BJ7,Wx,Wy,Wz,Wxx,Wyy,Wzz,BJ8,BJ9,BJ10,BJ11,FL2,FL3".Replace(",", "  ");
                     break;
                 case "JDCL"://44
-                    fields = "ZJ,BZ1,T1,BZ2,GLAX,GLAY,GLAZ,GLAXX,GLAYY,GLAZZ,BZ3,T2,BZ4,GLBX,GLBY,GLBZ,GLBXX,GLBYY,GLBZZ,BZ5,R1,A1,E1,RR1,AA1,EE1,LA1,LE1,BZ6,R2,A2,E2,RR2,AA2,EE2,LA2,LE2,BZ7,RX3,RY3,RZ3,RRX3,RRY3,RRZ3".Split(new char[] { ',' });
+                    fields[0] = "ZJ,BZ1,T1,BZ2,GLAX,GLAY,GLAZ,GLAXX,GLAYY,GLAZZ,BZ3,T2,BZ4,GLBX,GLBY,GLBZ,GLBXX,GLBYY,GLBZZ,BZ5,R1,A1,E1,RR1,AA1,EE1,LA1,LE1,BZ6,R2,A2,E2,RR2,AA2,EE2,LA2,LE2,BZ7,RX3,RY3,RZ3,RRX3,RRY3,RRZ3".Replace(",", "  ");
                     break;
             }
             return fields;
@@ -588,6 +612,7 @@ namespace ServicesKernel.File
                     iLen = oFRStream.Read(btData, 0, iBufferSize);
                     oFWStream.Write(btData, 0, iLen);
                 }
+                blResult = true;
             }
             catch (Exception ex)
             {

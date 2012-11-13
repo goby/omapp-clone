@@ -28,6 +28,11 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
         {
 
             System.Globalization.CultureInfo provider = System.Globalization.CultureInfo.InvariantCulture;
+            if (ucCBLSats.SelectedValues.Equals(string.Empty))
+            {
+                ltMessage.Text = "卫星为必选项，请选择。";
+                return;
+            }
             DataAccessLayer.BusinessManage.Task t = new DataAccessLayer.BusinessManage.Task()
             {
                 TaskName = txtTaskName.Text.Trim(),

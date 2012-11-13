@@ -16,6 +16,7 @@ using OperatingManagement.Framework.Storage;
 using System.Web.Security;
 using System.Xml;
 using ServicesKernel.File;
+using OperatingManagement.ServicesKernel.File;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
@@ -28,8 +29,6 @@ namespace OperatingManagement.Web.Views.PlanManage
             if (!IsPostBack)
             {
                 btnFormal.Visible = false; 
-
-                inital();
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
@@ -55,6 +54,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     btnReturn.Visible = false;
                     hfStatus.Value = "new"; //新建
                     btnSaveTo.Visible = false;
+                    inital();
                 }
             }
             
@@ -85,6 +85,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 HfFileIndex.Value = jh[0].FileIndex;
                 hfTaskID.Value = jh[0].TaskID.ToString();
                 txtJXH.Text = jh[0].PlanID.ToString("0000");
+                txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm:ss");
+                txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
                 ucTask1.SelectedValue = jh[0].TaskID.ToString();
                 string[] strTemp = jh[0].FileIndex.Split('_');
                 if (strTemp.Length >= 2)
@@ -149,9 +151,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                         c.RTs = n["RTs"].InnerText;
                         c.RTe = n["RTe"].InnerText;
                         c.SL = n["SL"].InnerText;
+                        c.HBID = n["HBID"].InnerText;
                         c.HBZ = n["HBZ"].InnerText;
                         c.Ts = n["Ts"].InnerText;
                         c.Te = n["Te"].InnerText;
+                        c.HRTs = n["HRTs"].InnerText;
+                        c.HSL = n["HSL"].InnerText;
                         list.Add(c);
                     }
                 }
@@ -219,6 +224,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtHBZ = (TextBox)it.FindControl("txtHBZ");
                     TextBox DataStartTime = (TextBox)it.FindControl("DataStartTime");
                     TextBox DataEndTime = (TextBox)it.FindControl("DataEndTime");
+                    DropDownList ddlSHBID = (DropDownList)it.FindControl("ddlSHBID");
+                    TextBox txtSHTransStartTime = (TextBox)it.FindControl("txtSHTransStartTime");
+                    TextBox txtHSL = (TextBox)it.FindControl("txtHSL");
 
                     co.DW = txtDW.Text;
                     co.SB = txtSB.Text;
@@ -241,9 +249,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                     co.RTs = txtTransStartTime.Text;
                     co.RTe = txtTransEndTime.Text;
                     co.SL = txtTransSpeedRate.Text;
+                    co.HBID = ddlSHBID.SelectedItem.Text;
                     co.HBZ = txtHBZ.Text;
                     co.Ts = DataStartTime.Text;
                     co.Te = DataEndTime.Text;
+                    co.HRTs = txtSHTransStartTime.Text;
+                    co.HSL = txtHSL.Text;
                     #endregion
                     obj.GZJHContents.Add(co);
                 }
@@ -354,6 +365,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtHBZ = (TextBox)it.FindControl("txtHBZ");
                     TextBox DataStartTime = (TextBox)it.FindControl("DataStartTime");
                     TextBox DataEndTime = (TextBox)it.FindControl("DataEndTime");
+                    DropDownList ddlSHBID = (DropDownList)it.FindControl("ddlSHBID");
+                    TextBox txtSHTransStartTime = (TextBox)it.FindControl("txtSHTransStartTime");
+                    TextBox txtHSL = (TextBox)it.FindControl("txtHSL");
 
                     co.DW = txtDW.Text;
                     co.SB = txtSB.Text;
@@ -376,9 +390,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                     co.RTs = txtTransStartTime.Text;
                     co.RTe = txtTransEndTime.Text;
                     co.SL = txtTransSpeedRate.Text;
+                    co.HBID = ddlSHBID.SelectedItem.Text;
                     co.HBZ = txtHBZ.Text;
                     co.Ts = DataStartTime.Text;
                     co.Te = DataEndTime.Text;
+                    co.HRTs = txtSHTransStartTime.Text;
+                    co.HSL = txtHSL.Text;
                     #endregion
                     obj.GZJHContents.Add(co);
                 }
@@ -514,6 +531,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtHBZ = (TextBox)it.FindControl("txtHBZ");
                     TextBox DataStartTime = (TextBox)it.FindControl("DataStartTime");
                     TextBox DataEndTime = (TextBox)it.FindControl("DataEndTime");
+                    DropDownList ddlSHBID = (DropDownList)it.FindControl("ddlSHBID");
+                    TextBox txtSHTransStartTime = (TextBox)it.FindControl("txtSHTransStartTime");
+                    TextBox txtHSL = (TextBox)it.FindControl("txtHSL");
 
                     co.DW = txtDW.Text;
                     co.SB = txtSB.Text;
@@ -536,9 +556,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                     co.RTs = txtTransStartTime.Text;
                     co.RTe = txtTransEndTime.Text;
                     co.SL = txtTransSpeedRate.Text;
+                    co.HBID = ddlSHBID.SelectedItem.Text;
                     co.HBZ = txtHBZ.Text;
                     co.Ts = DataStartTime.Text;
                     co.Te = DataEndTime.Text;
+                    co.HRTs = txtSHTransStartTime.Text;
+                    co.HSL = txtHSL.Text;
                     #endregion
                     obj.GZJHContents.Add(co);
                 }
@@ -636,6 +659,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                         TextBox txtHBZ = (TextBox)it.FindControl("txtHBZ");
                         TextBox DataStartTime = (TextBox)it.FindControl("DataStartTime");
                         TextBox DataEndTime = (TextBox)it.FindControl("DataEndTime");
+                        DropDownList ddlSHBID = (DropDownList)it.FindControl("ddlSHBID");
+                        TextBox txtSHTransStartTime = (TextBox)it.FindControl("txtSHTransStartTime");
+                        TextBox txtHSL = (TextBox)it.FindControl("txtHSL");
 
                         co.DW = txtDW.Text;
                         co.SB = txtSB.Text;
@@ -658,9 +684,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                         co.RTs = txtTransStartTime.Text;
                         co.RTe = txtTransEndTime.Text;
                         co.SL = txtTransSpeedRate.Text;
+                        co.HBID = ddlSHBID.SelectedItem.Text;
                         co.HBZ = txtHBZ.Text;
                         co.Ts = DataStartTime.Text;
                         co.Te = DataEndTime.Text;
+                        co.HRTs = txtSHTransStartTime.Text;
+                        co.HSL = txtHSL.Text;
                         #endregion
                         list.Add(co);
                     }
@@ -687,9 +716,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                         RTs = "",
                         RTe = "",
                         SL = "",
+                        HBID="",
                         HBZ = "",
                         Ts = "",
-                        Te = ""
+                        Te = "",
+                        HRTs="",
+                        HSL=""
                     };
                     #endregion
                     list.Add(co);
@@ -739,6 +771,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                                 TextBox txtHBZ = (TextBox)it.FindControl("txtHBZ");
                                 TextBox DataStartTime = (TextBox)it.FindControl("DataStartTime");
                                 TextBox DataEndTime = (TextBox)it.FindControl("DataEndTime");
+                                DropDownList ddlSHBID = (DropDownList)it.FindControl("ddlSHBID");
+                                TextBox txtSHTransStartTime = (TextBox)it.FindControl("txtSHTransStartTime");
+                                TextBox txtHSL = (TextBox)it.FindControl("txtHSL");
 
                                 co.DW = txtDW.Text;
                                 co.SB = txtSB.Text;
@@ -761,9 +796,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                                 co.RTs = txtTransStartTime.Text;
                                 co.RTe = txtTransEndTime.Text;
                                 co.SL = txtTransSpeedRate.Text;
+                                co.HBID = ddlSHBID.SelectedItem.Text;
                                 co.HBZ = txtHBZ.Text;
                                 co.Ts = DataStartTime.Text;
                                 co.Te = DataEndTime.Text;
+                                co.HRTs = txtSHTransStartTime.Text;
+                                co.HSL = txtHSL.Text;
                                 #endregion
                                 list.Add(co);
                             }
@@ -830,6 +868,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                     ddlBID.DataTextField = "Text";
                     ddlBID.DataValueField = "Value";
                     ddlBID.DataBind();
+                    //信息类别标志
+                    DropDownList ddlSHBID = (DropDownList)e.Item.FindControl("ddlSHBID") as DropDownList;
+                    ddlSHBID.DataSource = PlanParameters.ReadParameters("GZJHBID");
+                    ddlSHBID.DataTextField = "Text";
+                    ddlSHBID.DataValueField = "Value";
+                    ddlSHBID.DataBind();
                     #endregion
 
                     GZJH_Content g = (GZJH_Content)e.Item.DataItem;
@@ -862,6 +906,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         ddlBID.SelectedValue = g.BID;
                     }
+                    if (!string.IsNullOrEmpty(g.HBID))
+                    {
+                        ddlSHBID.SelectedValue = g.HBID;
+                    }
                 }
             }
             catch (Exception ex)
@@ -869,6 +917,86 @@ namespace OperatingManagement.Web.Views.PlanManage
                 throw (new AspNetException("绑定地面计划信息出现异常，异常原因", ex));
             }
             finally { }
+        }
+
+        /// <summary>
+        /// 上传用户文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(FileUpload1.FileName))
+            {
+                return;
+            }
+
+            string filename = FileUpload1.FileName.Substring(FileUpload1.FileName.LastIndexOf('\\') + 1);
+            string filepath = GetFullFilePath(filename);
+            hfStationFile.Value = filepath;
+
+            FileUpload1.SaveAs(filepath);
+            //lblUpload.Visible = true;
+
+            #region 读取文件内容
+            StationInOutFileReader reader = new StationInOutFileReader();
+            List<StationInOut> list;
+            try
+            {
+                list = reader.Read(filename);
+                rpStation.DataSource = list;
+                rpStation.DataBind();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新建总参GZJH，载入StationInOut文件出现异常，异常原因", ex));
+            }
+            finally { }
+            #endregion
+
+            ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showFileContentForm();</script>");
+        }
+
+        /// <summary>
+        /// 获得完整路径
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        private string GetFullFilePath(string filename)
+        {
+            string path = System.Configuration.ConfigurationManager.AppSettings["StationInOutFilePath"];
+            if (path != string.Empty)
+            {
+                if (path[path.Length - 1] != '\\')
+                    path = path + @"\";
+            }
+            else
+            {
+                path = AppDomain.CurrentDomain.BaseDirectory + @"TempJHSavePath\";
+            }
+            path += filename;
+            return path;
+        }
+
+        protected void btnGetStationData_Click(object sender, EventArgs e)
+        {
+            GZJH ojh =null;
+            string filepath = hfStationFile.Value;  //文件路径
+            string ids = txtIds.Text;   //行号
+
+            PlanProcessor pp = new PlanProcessor();
+            try
+            {
+                pp.AddSIOtoZCDMZJH(ref ojh, filepath, ids);
+                rpDatas.DataSource = ojh.GZJHContents;
+                rpDatas.DataBind();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新建总参GZJH，加入StationInOut文件出现异常，异常原因", ex));
+            }
+            finally { }
+            System.IO.File.Delete(filepath);    //删除临时文件
         }
 
     }

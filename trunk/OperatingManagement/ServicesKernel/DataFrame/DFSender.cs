@@ -22,16 +22,8 @@ namespace ServicesKernel.DataFrame
         /// <returns></returns>
         public string SendDF(byte[] data, string taskCode, string satelliteID, int infoTypeID, int source, int destination, DateTime dataTime)
         {
-            string strResult = string.Empty;
             IDFSender oSender = DFSenderClientAgent.GetObject<IDFSender>();
-            strResult = oSender.SendDF(data, taskCode, satelliteID, infoTypeID, source, destination, dataTime);
-            XElement root = XElement.Parse(strResult);
-            //1，提交失败，0，提交成功
-            if (root.Element("code").Value == "0")
-                strResult = string.Empty;
-            else
-                strResult = root.Element("msg").Value;
-            return strResult;
+            return oSender.SendDF(data, taskCode, satelliteID, infoTypeID, source, destination, dataTime);
         }
     }
 }

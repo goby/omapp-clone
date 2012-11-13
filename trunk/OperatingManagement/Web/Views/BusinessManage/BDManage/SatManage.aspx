@@ -57,25 +57,37 @@
             <HeaderTemplate>
                 <table class="list">
                     <tr>
-                        <th style="width: 20%">
+                        <th style="width: 10%">
                             卫星名称
                         </th>
-                        <th style="width: 15%">
+                        <th style="width: 10%">
                             卫星编码
                         </th>
-                        <th style="width: 15%">
+                        <th style="width: 10%">
                             卫星标识
                         </th>
-                        <th style="width: 15%">
+                        <th style="width: 10%">
                             面质比
                         </th>
-                        <th style="width: 15%">
+                        <th style="width: 10%">
                             表面反射系数
                         </th>
-                        <th style="width: 10%">
-                            状态
+                        <th style="width: 5%">
+                            形状
+                        </th>
+                        <th style="width: 12%">
+                            直径
+                        </th>
+                        <th style="width: 13%">
+                            长度
                         </th>
                         <th style="width: 10%">
+                            表面情况
+                        </th>
+                        <th style="width: 5%">
+                            状态
+                        </th>
+                        <th style="width: 5%">
                             编辑
                         </th>
                     </tr>
@@ -93,10 +105,22 @@
                         <%# Eval("WXBS") %>
                     </td>
                     <td>
-                        <%# Eval("MZB") %>
+                        <%# Eval("SM") %>
                     </td>
                     <td>
-                        <%# Eval("BMFSXS") %>
+                        <%# Eval("Ref") %>
+                    </td>
+                    <td>
+                        <%# GetShapeName(Eval("Shape").ToString())%>
+                    </td>
+                    <td>
+                        <%# Eval("D") %>
+                    </td>
+                    <td>
+                        <%# Eval("L") %>
+                    </td>
+                    <td>
+                        <%# GetRGName(Eval("RG").ToString())%>
                     </td>
                     <td>
                         <%# SystemParameters.GetSystemParameterText(SystemParametersType.SatelliteState, Eval("State").ToString())%>

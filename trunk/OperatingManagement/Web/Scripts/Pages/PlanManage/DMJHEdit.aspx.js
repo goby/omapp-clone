@@ -38,14 +38,14 @@ function showMsg(msg) {
     _dialog.dialog('open');
     return false;
 }
-//弹出选择设备计划窗口
+//弹出选择测控资源使用计划窗口
 function showSBJHForm() {
     var _dialog;
     _dialog = $("#dialog-sbjh");
     _dialog.dialog({
         autoOpen: false,
         height: 450,
-        width: 550,
+        width: 600,
         modal: true,
         buttons: {
             '关闭': function () {
@@ -76,8 +76,48 @@ function SelectSBJH(id, fileindex) {
     txtId.val(id);
     var btn = $('#btnSBJH');
     var filepath = unescape(fileindex);
-    btn.text("所选设备计划： "+filepath + "    (点击取消选择)");
+    btn.text("所选测控资源使用计划： " + filepath + "    (点击取消选择)");
     var btn = $('#btnHidden');
     btn.click();
     return false;
+}
+
+
+//弹出进出站及航捷数据统计文件内容窗口
+function showFileContentForm() {
+    var _dialog;
+    _dialog = $("#dialog-station");
+    _dialog.dialog({
+        autoOpen: false,
+        height: 550,
+        width: 750,
+        modal: true,
+        buttons: {
+            '确定': function () {
+                var list = $('#tbStations').find('input:checkbox:[checked]');
+                if (list.length == 0) {
+                    showMsg('请选择进出站及航捷数据。');
+                }
+                else {
+                    $(this).dialog("close");
+                    var ids = list.map(function () { return this.value; }).get().join(',');
+                    $('#txtIds').val(ids);
+                    var btn = $('#btnGetStationData');
+                    btn.click();
+                }
+            },
+            '关闭': function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+    _dialog.dialog('open');
+    _dialog.parent().appendTo($("form:first"));
+    return false;
+}
+
+function checkAll(o) {
+    if ($('#tbStations').length > 0) {
+        $('#tbStations').find('input:checkbox:not([disabled])').attr('checked', o.checked);
+    }
 }

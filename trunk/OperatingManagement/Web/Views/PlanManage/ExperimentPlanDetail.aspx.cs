@@ -29,10 +29,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     string sID = Request.QueryString["id"];
                     HfID.Value = sID;
-                    SYJH jh = new SYJH();
-                    jh.Id = Convert.ToInt32(sID);
-                    jh.SelectById();
-                    HfFileIndex.Value = jh.FileIndex;
+                    List<JH> jh = (new JH(false)).SelectByIDS(sID);
+                    HfFileIndex.Value = System.Configuration.ConfigurationManager.AppSettings["SYJHPath"]  + jh[0].FileIndex.Substring(jh[0].FileIndex.LastIndexOf(@"\") + 1) ;
                     BindXML();
                 }
             }
@@ -42,9 +40,16 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             List<SYJH_SY> listTask = new List<SYJH_SY>();
             SYJH_SY task;
+            if (!File.Exists(HfFileIndex.Value))
+            {
+                txtJHID.Text = string.Format("文件{0}不存在", HfFileIndex.Value);
+                return;
+            }
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(HfFileIndex.Value);
-            XmlNode root = xmlDoc.SelectSingleNode("试验计划/时间");
+            XmlNode root = xmlDoc.SelectSingleNode("试验计划/编号");
+            txtJHID.Text = root.InnerText;
+            root = xmlDoc.SelectSingleNode("试验计划/时间");
             txtSYTime.Text = root.InnerText;
             root = xmlDoc.SelectSingleNode("试验计划/试验个数");
             txtSYCount.Text = root.InnerText;
@@ -73,10 +78,9 @@ namespace OperatingManagement.Web.Views.PlanManage
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMPLAN_ExPlan.View";
-            this.ShortTitle = "实验计划明细";
+            this.ShortTitle = "试验计划明细";
             base.OnPageLoaded();
         }
-
 
     }
 }

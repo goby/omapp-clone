@@ -17,6 +17,7 @@ using System.Xml;
 using System.Collections;
 using ServicesKernel.File;
 using System.Data;
+using OperatingManagement.ServicesKernel.File;
 
 namespace OperatingManagement.Web.Views.PlanManage
 {
@@ -465,12 +466,14 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         #region GZDP
                         Repeater rpg = it.FindControl("rpGZDP") as Repeater;
-                        foreach (RepeaterItem itg in rp.Items)
+                        foreach (RepeaterItem itg in rpg.Items)
                         {
                             dp = new DJZYSQ_Task_GZDP();
                             TextBox txtFXH = (TextBox)itg.FindControl("txtFXH");
                             DropDownList ddlPDXZ = (DropDownList)itg.FindControl("ddlPDXZ");
                             TextBox txtDPXZ = (TextBox)itg.FindControl("txtDPXZ");
+                            if (txtFXH == null)
+                                return;
 
                             dp.FXH = txtFXH.Text;
                             dp.PDXZ = ddlPDXZ.Text;
@@ -1016,7 +1019,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 isTempJH = GetIsTempJHValue();
                 DJZYSQ obj = new DJZYSQ();
-                obj.SNO = txtSequence.Text;
+                //obj.SNO = txtSequence.Text;
+                obj.SNO = (new Sequence()).GetDJZYSQSequnce().ToString();
                 obj.SJ = DateTime.Now.ToString("yyyyMMddHHmmss");
                 obj.SCID = txtSCID.Text;
                 // obj.TaskCount = txtTaskCount.Text;
@@ -1069,11 +1073,31 @@ namespace OperatingManagement.Web.Views.PlanManage
                     rt.TNUM = txtTNUM.Text;
                     rt.ZHB = txtPreStartTime.Text;
                     rt.RK = txtStartTime.Text;
+                    if (rt.RK.Substring(0, 1).ToUpper() == "F")
+                    {
+                        ltMessage.Text = "开始时间不合法";
+                        return;
+                    }
                     rt.GZK = txtTrackStartTime.Text;
+                    if (rt.GZK.Substring(0, 1).ToUpper() == "F")
+                    {
+                        ltMessage.Text = "跟踪开始时间不合法";
+                        return;
+                    }
                     rt.KSHX = txtWaveOnStartTime.Text;
                     rt.GSHX = txtWaveOffStartTime.Text;
                     rt.GZJ = txtTrackEndTime.Text;
+                    if (rt.GZJ.Substring(0, 1).ToUpper() == "F")
+                    {
+                        ltMessage.Text = "跟踪结束时间不合法";
+                        return;
+                    }
                     rt.JS = txtEndTime.Text;
+                    if (rt.JS.Substring(0, 1).ToUpper() == "F")
+                    {
+                        ltMessage.Text = "结束时间不合法";
+                        return;
+                    }
                     rt.GZDPs = new List<DJZYSQ_Task_GZDP>();
                     rt.ReakTimeTransfors = new List<DJZYSQ_Task_ReakTimeTransfor>();
                     rt.AfterFeedBacks = new List<DJZYSQ_Task_AfterFeedBack>();
@@ -1158,7 +1182,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         TaskID = obj.TaskID,
                         PlanType = "DJZYSQ",
-                        PlanID = (new Sequence()).GetDJZYSQSequnce(),
+                        PlanID = Convert.ToInt32(obj.SNO),
                         StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
                         EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
                         SRCType = 0,
@@ -1198,6 +1222,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
 
                 ltMessage.Text = "计划保存成功";
+
+                txtSequence.Text = obj.SNO;
+                txtDatetime.Text = obj.SJ;
+                txtTaskCount.Text = obj.SNUM;
                 //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
                 //
             }
@@ -1214,7 +1242,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 isTempJH = GetIsTempJHValue();
                 DJZYSQ obj = new DJZYSQ();
-                obj.SNO = txtSequence.Text;
+                //obj.SNO = txtSequence.Text;
+                obj.SNO = (new Sequence()).GetDJZYSQSequnce().ToString();
                 obj.SJ = DateTime.Now.ToString("yyyyMMddHHmmss");
                 obj.SCID = txtSCID.Text;
                 // obj.TaskCount = txtTaskCount.Text;
@@ -1267,17 +1296,39 @@ namespace OperatingManagement.Web.Views.PlanManage
                     rt.TNUM = txtTNUM.Text;
                     rt.ZHB = txtPreStartTime.Text;
                     rt.RK = txtStartTime.Text;
+                    if (rt.RK.Substring(0, 1).ToUpper() == "F")
+                    {
+                        ltMessage.Text = "开始时间不合法";
+                        return;
+                    }
                     rt.GZK = txtTrackStartTime.Text;
+                    if (rt.GZK.Substring(0, 1).ToUpper() == "F")
+                    {
+                        ltMessage.Text = "跟踪开始时间不合法";
+                        return;
+                    }
                     rt.KSHX = txtWaveOnStartTime.Text;
                     rt.GSHX = txtWaveOffStartTime.Text;
                     rt.GZJ = txtTrackEndTime.Text;
+                    if (rt.GZJ.Substring(0, 1).ToUpper() == "F")
+                    {
+                        ltMessage.Text = "跟踪结束时间不合法";
+                        return;
+                    }
                     rt.JS = txtEndTime.Text;
+                    if (rt.JS.Substring(0, 1).ToUpper() == "F")
+                    {
+                        ltMessage.Text = "结束时间不合法";
+                        return;
+                    }
                     rt.ReakTimeTransfors = new List<DJZYSQ_Task_ReakTimeTransfor>();
                     rt.AfterFeedBacks = new List<DJZYSQ_Task_AfterFeedBack>();
                     //obj.DMJHTasks.Add(rt);
                     #endregion
                     #region GZDP
                     Repeater rpg = it.FindControl("rpGZDP") as Repeater;
+                    if (rt.GZDPs == null)
+                        rt.GZDPs = new List<DJZYSQ_Task_GZDP>();
                     foreach (RepeaterItem its in rpg.Items)
                     {
 
@@ -1295,6 +1346,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     #endregion
                     #region ReakTimeTransfor
                     Repeater rps = it.FindControl("rpReakTimeTransfor") as Repeater;
+                    if (rt.ReakTimeTransfors == null)
+                        rt.ReakTimeTransfors = new List<DJZYSQ_Task_ReakTimeTransfor>();
                     foreach (RepeaterItem its in rps.Items)
                     {
 
@@ -1317,6 +1370,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     #endregion
                     #region AfterFeedBack
                     Repeater rpa = it.FindControl("rpAfterFeedBack") as Repeater;
+                    if (rt.AfterFeedBacks == null)
+                        rt.AfterFeedBacks = new List<DJZYSQ_Task_AfterFeedBack>();
                     foreach (RepeaterItem its in rpa.Items)
                     {
 
@@ -1362,7 +1417,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     TaskID = obj.TaskID,
                     PlanType = "DJZYSQ",
-                    PlanID = (new Sequence()).GetDJZYSQSequnce(),
+                    PlanID = Convert.ToInt32(obj.SNO),
                     StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
                     EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
                     SRCType = 0,
@@ -1373,6 +1428,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                 var result = jh.Add();
 
                 ltMessage.Text = "计划保存成功";
+
+                txtSequence.Text = obj.SNO;
+                txtDatetime.Text = obj.SJ;
+                txtTaskCount.Text = obj.SNUM;
                 //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
                 //
             }
@@ -1591,7 +1650,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             try
             {
                 DJZYSQ obj = new DJZYSQ();
-                obj.SNO = txtSequence.Text;
+                //obj.SNO = txtSequence.Text;
+                obj.SNO = (new Sequence()).GetDJZYSQSequnce().ToString();
                 obj.SJ = DateTime.Now.ToString("yyyyMMddHHmmss");
                 obj.SCID = txtSCID.Text;
                 // obj.TaskCount = txtTaskCount.Text;
@@ -1739,7 +1799,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     TaskID = obj.TaskID,
                     PlanType = "DJZYSQ",
-                    PlanID = (new Sequence()).GetDJZYSQSequnce(),
+                    PlanID = Convert.ToInt32(obj.SNO),
                     StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
                     EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
                     SRCType = 0,
@@ -1765,6 +1825,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                 #endregion
 
                 ltMessage.Text = "计划保存成功";
+
+                txtSequence.Text = obj.SNO;
+                txtDatetime.Text = obj.SJ;
+                txtTaskCount.Text = obj.SNUM;
                 //
             }
             catch (Exception ex)
@@ -1774,6 +1838,71 @@ namespace OperatingManagement.Web.Views.PlanManage
             finally { }
         }
 
+        /// <summary>
+        /// 上传用户文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(FileUpload1.FileName))
+            {
+                return;
+            }
+
+            string filename = FileUpload1.FileName.Substring(FileUpload1.FileName.LastIndexOf('\\') + 1);
+            string filepath = GetFullFilePath(filename);
+            hfStationFile.Value = filepath;
+
+            FileUpload1.SaveAs(filepath);
+            lblUpload.Visible = true;
+
+            #region 读取文件内容
+            StationInOutFileReader reader = new StationInOutFileReader();
+            List<StationInOut> list;
+            list = reader.Read(filename);
+
+            rpStation.DataSource = list;
+            rpStation.DataBind();
+            #endregion
+
+            ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showFileContentForm();</script>");
+        }
+
+        /// <summary>
+        /// 获得完整路径
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        private string GetFullFilePath(string filename)
+        {
+            string path = System.Configuration.ConfigurationManager.AppSettings["StationInOutFilePath"];
+            if (path != string.Empty)
+            {
+                if (path[path.Length - 1] != '\\')
+                    path = path + @"\";
+            }
+            else
+            {
+                path = AppDomain.CurrentDomain.BaseDirectory + @"TempJHSavePath\";
+            }
+            path += filename;
+            return path;
+        }
+
+        protected void btnGetStationData_Click(object sender, EventArgs e)
+        {
+            DJZYSQ ojh=null;
+            string filepath = hfStationFile.Value;  //文件路径
+            string ids = txtIds.Text;   //行号
+
+            PlanProcessor pp = new PlanProcessor();
+            pp.AddSIOtoCKZYSQ(ref ojh, filepath, ids);
+            Repeater1.DataSource = ojh.DMJHTasks;
+            Repeater1.DataBind();
+
+            System.IO.File.Delete(filepath);    //删除临时文件
+        }
         //
     }
 }

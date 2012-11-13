@@ -352,9 +352,17 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     if (zysx != null && phPValueControls != null)
                     {
                         List<Control> controlsList = zysx.GenerateControls();
+                        TextBox oTxt;
                         foreach (Control ctl in controlsList)
                         {
-                            phPValueControls.Controls.Add(ctl);
+                            if (ctl.ClientID.Substring(0, 3) == "txt")
+                            {
+                                oTxt = (System.Web.UI.WebControls.TextBox)ctl;
+                                oTxt.Text = "";
+                                phPValueControls.Controls.Add(oTxt);
+                            }
+                            else
+                                phPValueControls.Controls.Add(ctl);
                         }
                     }
                 }

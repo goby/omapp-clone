@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.IO;
 
 namespace ServicesKernel.File
@@ -135,7 +136,7 @@ namespace ServicesKernel.File
                 return FileCreateResult.LackFileInfo;
 
             if (System.IO.File.Exists(oFileInfo.FullName))
-                return FileCreateResult.FileExisted;
+                DeleteFile(oFileInfo.FullName);
 
             StreamWriter oSW = new StreamWriter(oFileInfo.FullName);
             oSW.WriteLine("<说明区>");
@@ -265,7 +266,7 @@ namespace ServicesKernel.File
                     Directory.CreateDirectory(targetPath);
 
                 //制文件不存在，移动，若存在应该怎么办？
-                if (!Directory.Exists(strTgtFile))
+                if (!System.IO.File.Exists(strTgtFile))
                 {
                     oFile.CopyTo(strTgtFile);
                     strLog = "";
@@ -328,6 +329,77 @@ namespace ServicesKernel.File
                 return true;
             else
                 return false;
+        }
+
+        /// <summary>
+        /// 获取文件名称
+        /// </summary>
+        /// <param name="fileFullName"></param>
+        /// <returns></returns>
+        public static string GetFileName(string fileFullName)
+        {
+            if (!string.IsNullOrEmpty(fileFullName))
+                return fileFullName.Substring(fileFullName.LastIndexOf('\\') + 1);
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// 获取文件路径
+        /// </summary>
+        /// <param name="fileFullName"></param>
+        /// <returns></returns>
+        public static string GetFilePath(string fileFullName)
+        {
+            if (!string.IsNullOrEmpty(fileFullName))
+                return fileFullName.Substring(0, fileFullName.LastIndexOf('\\'));
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// 写数据到文件
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="data"></param>
+        /// <param name="dataLen"></param>
+        public static void WriteDataToFile(string filename, byte[] data, int dataLen)
+        {
+            ReaderWriterLock rwl = new ReaderWriterLock();
+            FileStream fs = null;
+            try
+            {
+                rwl.AcquireWriterLock(1000);
+                try
+                {
+                    if (System.IO.File.Exists(filename))
+                    {
+                        fs = new FileStream(filename, FileMode.Append, FileAccess.Write);
+                    }
+                    else
+                    {
+                        fs = new FileStream(filename, FileMode.Create, FileAccess.Write);
+                    }
+                    fs.Write(data, 0, dataLen);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+                finally
+                {
+                    if (fs != null)
+                    {
+                        fs.Dispose();
+                        fs.Close();
+                    }
+                    rwl.ReleaseWriterLock();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
         #endregion
 

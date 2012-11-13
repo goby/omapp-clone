@@ -59,7 +59,19 @@ function sendYDSJ1() {
         return false;
     }
 
-    var ids = chks.map(function () { return this.value; }).get().join(',');
+    var ids = chks.map(function () { return this.value.split('|')[0]; }).get().join(',');
+    var sats = chks.map(function () { return this.value.split('|')[1]; }).get().join(',');
+    var satid = sats.split(',');
+    if (satid.length > 1) {
+        for (i = 1; i < satid.length; i++) {
+            if (satid[0] != satid[1]) {
+                showMsg('选择的数据必须是同一颗星的。');
+                return false;
+            }
+        }
+    }
+    var txtSatId = $('#txtSatId');
+    txtSatId.val(satid[0]);
     showSend(ids);
     return false;
 }
@@ -94,11 +106,12 @@ function hideSelectAll() {
 
 function showPopSendForm() {
     var _dialog;
+    $('#tartgetPanel').find('input:checkbox').attr('checked', false);
     _dialog = $("#tartgetPanel");
     _dialog.dialog({
         autoOpen: false,
         height: 350,
-        width: 330,
+        width: 400,
         modal: true,
         buttons: {
             '确定': function () {

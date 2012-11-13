@@ -10,7 +10,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    计划管理 &gt; 空间机动任务
+    计划管理 &gt; 引导数据-空间机动任务
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <asp:Panel ID="pnlData" runat="server">
@@ -63,7 +63,7 @@
                             <button class="button" onclick="return selectAll();">
                                 全选</button>&nbsp;&nbsp;
                             <button class="button" onclick="return sendYDSJ1();">
-                                发送任务</button>
+                                发送</button>
                         </td>
                         <td class="listTitle-c2">
                             <div class="load" id="submitIndicator" style="display: none">
@@ -137,7 +137,7 @@
                             <button class="button" onclick="return selectAll();">
                                 全选</button>&nbsp;&nbsp;
                             <button class="button" onclick="return sendYDSJ1();">
-                                发送任务</button>
+                                发送</button>
                         </td>
                         <td class="listTitle-c2">
                             <om:CollectionPager ID="cpPager" runat="server">

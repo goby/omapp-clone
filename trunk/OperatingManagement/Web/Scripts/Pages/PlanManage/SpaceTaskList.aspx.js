@@ -95,6 +95,7 @@ function hideSelectAll() {
 
 function showPopSendForm() {
     var _dialog;
+    $('#tartgetPanel').find('input:checkbox').attr('checked', false);
     _dialog = $("#tartgetPanel");
     _dialog.dialog({
         autoOpen: false,

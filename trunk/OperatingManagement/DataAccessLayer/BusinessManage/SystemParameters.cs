@@ -55,7 +55,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         GDJSResult = 33,
 
         ZYSXType = 41,
-        SatelliteState
+        SatelliteState =42,
+        SatelliteShape = 43,
+        SatelliteFace = 44
     }
 
     [Serializable]
