@@ -19,6 +19,7 @@ using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.RemotingObjectInterface;
 using OperatingManagement.RemotingClient;
 using ServicesKernel.File;
+using ServicesKernel;
 
 namespace OperatingManagement.Web.Views.BusinessManage
 {

@@ -44,15 +44,19 @@
     <tr>
         <th style="text-align:right;">卫星名称(<span class="red">*</span>)</th>
         <td>
-            <uc1:ucSatellite ID="ucSatellite1" runat="server" />
+            <uc1:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
         </td>
     </tr>
     <tr>
         <th style="text-align:right;">测站编码(<span class="red">*</span>)</th>
         <td>
-            <asp:CheckBoxList ID="cblXyxs" runat="server" BorderColor="White" 
-                BorderStyle="Double" BorderWidth="2px" ClientIDMode="Static">
+            <asp:CheckBoxList ID="cblXyxs1" runat="server" BorderColor="White" 
+                BorderStyle="Double" BorderWidth="2px" ClientIDMode="Static" 
+                Visible="False">
             </asp:CheckBoxList>
+            <asp:RadioButtonList ID="rblDMZ" runat="server" BorderColor="White" 
+                BorderStyle="Double" BorderWidth="2px" RepeatColumns="2">
+            </asp:RadioButtonList>
         </td>
     </tr>
     <tr>
@@ -81,7 +85,7 @@
     <tr>
         <th>&nbsp;</th>
         <td>
-            <asp:Button ID="btnCalculate" runat="server" Text="开始预报" CssClass="button" OnClientClick="return CheckInput();"
+            <asp:Button ID="btnCalculate" runat="server" Text="开始预报" CssClass="button" CausesValidation="true"
                 onclick="btnCalculate_Click" />
         </td>
     </tr>

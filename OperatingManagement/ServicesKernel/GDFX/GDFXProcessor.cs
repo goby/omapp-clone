@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FileServer.Base;
 using log4net;
 
 namespace ServicesKernel.GDFX
@@ -147,8 +148,8 @@ namespace ServicesKernel.GDFX
         /// <summary>
         /// 参数转换
         /// </summary>
-        /// <param name="angle"></param>
-        /// <param name="length"></param>
+        /// <param name="angle">是为度，否为弧度</param>
+        /// <param name="length">是为千米，否为米</param>
         /// <param name="timezone">时区，正负12之间，整数</param>
         /// <param name="convertType"></param>
         /// <param name="convertFilePath">路径+文件名</param>
@@ -351,13 +352,11 @@ namespace ServicesKernel.GDFX
 
     public class Logger
     {
-        private static string loggerName = "OMServer.Logging";
-        private static ILog mLogger = null;
+        //private static string loggerName = "OMServer.Logging";
+        //private static ILog mLogger = null;
         public static ILog GetLogger()
         {
-            if (mLogger == null)
-                mLogger = LogManager.GetLogger(loggerName);
-            return mLogger;
+            return LogManager.GetLogger("ExceptionLogger");
         }
     }
 }

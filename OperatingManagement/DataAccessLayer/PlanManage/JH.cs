@@ -73,8 +73,8 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                     case "XXXQ":
                         returnValue = "空间信息需求";
                         break;
-                    case "DMJH":
-                        returnValue = "地面站工作计划";
+                    case "DJZYSQ":
+                        returnValue = "测控资源使用申请";
                         break;
                     case "ZXJH":
                         returnValue = "中心运行计划";
@@ -82,14 +82,14 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                     case "TYSJ":
                         returnValue = "仿真推演试验数据";
                         break;
-                    case "SBJH":
-                        returnValue = "设备工作计划";
+                    case "DJZYJH":
+                        returnValue = "测控资源使用计划";
                         break;
                     case "GZJH":
                         returnValue = "地面站工作计划";
                         break;
                     case "SYJH":
-                        returnValue = "实验计划";
+                        returnValue = "试验计划";
                         break;
                 }
                 return returnValue;
@@ -205,60 +205,74 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <returns></returns>
         public List<JH> GetJHList(string planType,  DateTime startDate, DateTime endDate)
         {
+            return GetJHList("", planType, startDate, endDate);
+        }
+
+        /// <summary>
+        /// 根据时间及类型获取计划列表
+        /// </summary>
+        /// <param name="planType"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        public List<JH> GetJHList(string taskID, string planType, DateTime startDate, DateTime endDate)
+        {
             DataSet ds = null;
 
-                ds = new DataSet();
-                ds.Tables.Add();
-                OracleCommand command = _database.GetStoreProcCommand(GET_PlanList);
-                if (isTempJH)
-                {
-                    command = _database.GetStoreProcCommand("UP_JHTemp_GETLIST");
-                }
+            ds = new DataSet();
+            ds.Tables.Add();
+            OracleCommand command = _database.GetStoreProcCommand(GET_PlanList);
+            if (isTempJH)
+            {
+                command = _database.GetStoreProcCommand("UP_JHTemp_GETLIST");
+            }
 
-                _database.AddInParameter(command, "p_planType", OracleDbType.Varchar2, planType);
-                if (startDate == DateTime.MinValue)
+            if (!isTempJH)
+                _database.AddInParameter(command, "p_taskID", OracleDbType.Varchar2, taskID);
+            _database.AddInParameter(command, "p_planType", OracleDbType.Varchar2, planType);
+            if (startDate == DateTime.MinValue)
+            {
+                _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
+            }
+            else
+            {
+                _database.AddInParameter(command, "p_startDate", OracleDbType.Date, startDate);
+            }
+            if (endDate == DateTime.MinValue)
+            {
+                _database.AddInParameter(command, "p_endDate", OracleDbType.Date, DBNull.Value);
+            }
+            else
+            {
+                _database.AddInParameter(command, "p_endDate", OracleDbType.Date, endDate);
+            }
+            using (IDataReader reader = _database.ExecuteReader(command))
+            {
+                ds.Tables[0].Load(reader);
+            }
+            List<JH> objDatas = new List<JH>();
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
-                }
-                else
-                {
-                    _database.AddInParameter(command, "p_startDate", OracleDbType.Date, startDate);
-                }
-                if (endDate == DateTime.MinValue)
-                {
-                    _database.AddInParameter(command, "p_endDate", OracleDbType.Date, DBNull.Value);
-                }
-                else
-                {
-                    _database.AddInParameter(command, "p_endDate", OracleDbType.Date, endDate);
-                }
-                using (IDataReader reader = _database.ExecuteReader(command))
-                {
-                    ds.Tables[0].Load(reader);
-                }
-                List<JH> objDatas = new List<JH>();
-                if (ds != null && ds.Tables.Count == 1)
-                {
-                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    objDatas.Add(new JH()
                     {
-                        objDatas.Add(new JH()
-                        {
-                            ID = Convert.ToInt32(dr["ID"].ToString()),
-                            CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
-                            TaskID = dr["taskid"].ToString(),
-                            TaskName= dr["taskname"].ToString(),
-                            PlanType = dr["plantype"].ToString(),
-                            PlanID = Convert.ToInt32(dr["PlanID"].ToString()),
-                            StartTime = Convert.ToDateTime(dr["StartTime"].ToString()),
-                            EndTime = Convert.ToDateTime(dr["EndTime"].ToString()),
-                            SRCType = Convert.ToInt32(dr["SRCType"].ToString()),
-                            SRCID = Convert.ToInt32(dr["SRCID"].ToString()),
-                            FileIndex = dr["FileIndex"].ToString(),
-                            Reserve = dr["Reserve"].ToString()
-                        });
-                    }
+                        ID = Convert.ToInt32(dr["ID"].ToString()),
+                        CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        TaskID = dr["taskid"].ToString(),
+                        TaskName = dr["taskname"].ToString(),
+                        PlanType = dr["plantype"].ToString(),
+                        PlanID = Convert.ToInt32(dr["PlanID"].ToString()),
+                        StartTime = Convert.ToDateTime(dr["StartTime"].ToString()),
+                        EndTime = Convert.ToDateTime(dr["EndTime"].ToString()),
+                        SRCType = Convert.ToInt32(dr["SRCType"].ToString()),
+                        SRCID = Convert.ToInt32(dr["SRCID"].ToString()),
+                        FileIndex = dr["FileIndex"].ToString(),
+                        Reserve = dr["Reserve"].ToString()
+                    });
                 }
-                return objDatas;
+            }
+            return objDatas;
         }
 
         /// <summary>

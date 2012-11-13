@@ -50,6 +50,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\Oracle.DataAccess.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceBusAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\ServiceBusAPI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
@@ -173,6 +177,7 @@
     <Content Include="Scripts\Pages\BusinessManage\GDYB.aspx.js" />
     <Content Include="Scripts\Pages\BusinessManage\OrbitDifferenceAnalysis.aspx.js" />
     <Content Include="Scripts\Pages\BusinessManage\OrbitIntersectionReport.aspx.js" />
+    <Content Include="Scripts\Pages\BusinessManage\SatAdd.aspx.js" />
     <Content Include="Scripts\Pages\BusinessManage\SYSJFF.aspx.js" />
     <Content Include="Scripts\Pages\BusinessManage\TaskManage.aspx.js" />
     <Content Include="Scripts\Pages\BusinessManage\ZYSXAdd.aspx.js" />
@@ -205,6 +210,7 @@
     <Content Include="Scripts\Pages\PlanManage\ZXJHEdit.aspx.js" />
     <Content Include="Scripts\Pages\common.js" />
     <Content Include="ucs\ucCBLSat.ascx" />
+    <Content Include="ucs\ucGDType.ascx" />
     <Content Include="ucs\ucInfoType.ascx" />
     <Content Include="ucs\ucSatellite.ascx" />
     <Content Include="ucs\ucTask.ascx" />
@@ -261,6 +267,7 @@
     <Content Include="Views\Exp\Exp.aspx" />
     <Content Include="Views\Exp\PNF404.aspx" />
     <Content Include="Views\PlanManage\DJZYSQEdit.aspx" />
+    <Content Include="Views\PlanManage\ZZGZJHEdit.aspx" />
     <Content Include="Views\PlanManage\ExperimentPlanDetail.aspx" />
     <Content Include="Views\PlanManage\ExperimentPlanList.aspx" />
     <Content Include="Views\PlanManage\ExperimentProgramDetail.aspx" />
@@ -341,6 +348,13 @@
     </Compile>
     <Compile Include="ucs\ucCBLSat.ascx.designer.cs">
       <DependentUpon>ucCBLSat.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ucs\ucGDType.ascx.cs">
+      <DependentUpon>ucGDType.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ucs\ucGDType.ascx.designer.cs">
+      <DependentUpon>ucGDType.ascx</DependentUpon>
     </Compile>
     <Compile Include="ucs\ucInfoType.ascx.cs">
       <DependentUpon>ucInfoType.ascx</DependentUpon>
@@ -726,6 +740,13 @@
     </Compile>
     <Compile Include="Views\PlanManage\DJZYSQEdit.aspx.designer.cs">
       <DependentUpon>DJZYSQEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlanManage\ZZGZJHEdit.aspx.cs">
+      <DependentUpon>ZZGZJHEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\PlanManage\ZZGZJHEdit.aspx.designer.cs">
+      <DependentUpon>ZZGZJHEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\PlanManage\ExperimentPlanDetail.aspx.cs">
       <DependentUpon>ExperimentPlanDetail.aspx</DependentUpon>

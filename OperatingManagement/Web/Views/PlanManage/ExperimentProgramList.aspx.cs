@@ -15,6 +15,7 @@ using OperatingManagement.DataAccessLayer.PlanManage;
 using System.Web.Security;
 using System.Data;
 using ServicesKernel.File;
+using OperatingManagement.ServicesKernel.File;
 
 
 namespace OperatingManagement.Web.Views.PlanManage
@@ -27,6 +28,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 txtStartDate.Attributes.Add("readonly", "true");
                 txtEndDate.Attributes.Add("readonly", "true");
+                DefaultSearch();
+                HideMessage();
             }
             cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
         }
@@ -38,6 +41,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 SaveCondition();
                 cpPager.CurrentPage = 1;
                 BindGridView(true);
+                HideMessage();
             }
             catch (Exception ex)
             {
@@ -56,6 +60,16 @@ namespace OperatingManagement.Web.Views.PlanManage
             { ViewState["_EndDate"] = null; }
             else
             { ViewState["_EndDate"] = Convert.ToDateTime(txtEndDate.Text.Trim()).AddDays(1).AddMilliseconds(-1); }
+        }
+
+        /// <summary>
+        /// 默认查询两周内的数据
+        /// </summary>
+        private void DefaultSearch()
+        {
+            txtStartDate.Text = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
+            txtEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            //btnSearch_Click(new Object(), new EventArgs());
         }
 
         //绑定列表
@@ -109,95 +123,112 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
-                JH objJH = new JH();
+                string ConfigSYCXPath = System.Configuration.ConfigurationManager.AppSettings["SYCXPath"];
+                string fileIndex = "";  //文件路径
+                PlanFileCreator creater = new PlanFileCreator(false);
+                SYCX objSYCX = new SYCX() { Id=proid };
+                objSYCX = objSYCX.SelectById();
+                fileIndex = ConfigSYCXPath +objSYCX.FileIndex.Substring(objSYCX.FileIndex.LastIndexOf("\\")+1);
+                string savefilepath = "";
+
+                string result="";
+                PlanProcessor pp = new PlanProcessor();
+                string xxfl = radBtnXXFL.SelectedValue;
+                DateTime beginTime = Convert.ToDateTime(txtStartTime.Text);
+                DateTime endTime = Convert.ToDateTime(txtEndTime.Text);
+
+                JH objJH = new JH(true);
                 objJH.SRCType = 1; //试验程序
                 objJH.SRCID = proid;
-
-                #region  应用程序计划
-                YJJH objYJJH = new YJJH();
-                objYJJH.TaskID = "700任务(0500)";
-                objYJJH.SatID = "TS3";
-                objYJJH.JXH = (new Sequence()).GetYJJHSequnce().ToString("0000");
-                objJH.FileIndex = (new PlanFileCreator()).CreateYJJHFile(objYJJH, 0);
-
-                objJH.TaskID = objYJJH.TaskID;
-                objJH.PlanType = "YJJH";
-                objJH.PlanID = Convert.ToInt32(objYJJH.JXH);
-                objJH.Add();
-                #endregion
-
-                #region  空间信息需求
-                XXXQ objXXXQ = new XXXQ();
-                objXXXQ.TaskID = "700任务(0501)";
-                objXXXQ.SatID = "TS3";
-
-                MBXQ objMBXQ = new MBXQ();
-                objMBXQ.User = PlanParameters.ReadMBXQDefaultUser();
-                objMBXQ.TargetInfo = PlanParameters.ReadMBXQDefaultTargetInfo();
-                objMBXQ.SatInfos = new List<MBXQSatInfo> { new MBXQSatInfo() };
-
-                HJXQ objHJXQ = new HJXQ();
-                objHJXQ.User = PlanParameters.ReadHJXQDefaultUser();
-                objHJXQ.EnvironInfo = PlanParameters.ReadHJXQHJXQDefaultEnvironInfo();
-                objHJXQ.SatInfos = new List<HJXQSatInfo> { new HJXQSatInfo() };
-
-                objXXXQ.objMBXQ = objMBXQ;
-                objXXXQ.objHJXQ = objHJXQ;
-
-                objJH.FileIndex = (new PlanFileCreator()).CreateXXXQFile(objXXXQ, 0);
-                objJH.TaskID = objXXXQ.TaskID;
-                objJH.PlanType = "XXXQ";
-                objJH.PlanID = (new Sequence()).GetXXXQSequnce();
-                objJH.Add();
-                #endregion
+                objJH.StartTime = beginTime;
+                objJH.EndTime = endTime;
 
                 #region  地面站工作计划
-                DJZYSQ objGZJH = new DJZYSQ();
-                objGZJH.TaskID = "700任务(0501)";
-                objGZJH.SatID = "TS3";
-                objGZJH.DMJHTasks = new List<DJZYSQ_Task> 
-                        {
-                            new DJZYSQ_Task
-                            {
-                                ReakTimeTransfors = new List<DJZYSQ_Task_ReakTimeTransfor>{new DJZYSQ_Task_ReakTimeTransfor()},
-                                AfterFeedBacks = new List<DJZYSQ_Task_AfterFeedBack>{new DJZYSQ_Task_AfterFeedBack()}
-                            }
-                        };
-                objJH.FileIndex = (new PlanFileCreator()).CreateDMJHFile(objGZJH, 0);
-                objJH.TaskID = objGZJH.TaskID;
-                objJH.PlanType = "DJZYSQ";
-                objJH.PlanID = (new Sequence()).GetDJZYSQSequnce();
-                objJH.Add();
+                List<GZJH> gjhs= pp.SYCXFile2ZCDMZGZJHs(fileIndex, xxfl, beginTime, endTime, out result);
+                if (!result.Equals(string.Empty))
+                {
+                    ShowMessage(string.Format("生成总参地面站工作计划出错，原因：{0}", result));
+                    return;
+                }
+                if (gjhs.Count > 0)
+                {
+                    objJH.PlanType = "GZJH";
+                    for (int i = 0; i < gjhs.Count(); i++)
+                    {
+                        objJH.PlanID = (new Sequence()).GetGZJHSequnce();
+                        gjhs[i].JXH = objJH.PlanID.ToString();
+
+                        savefilepath = creater.CreateGZJHFile(gjhs[i], 0);
+
+                        objJH.TaskID = gjhs[i].TaskID;
+                        objJH.FileIndex = savefilepath;
+                        objJH.SatID = gjhs[i].SatID;
+                        objJH.Add();
+                    }
+                }
+                else
+                {
+                    ShowMessage("未能生成地面站工作计划");
+                    return;
+                }
                 #endregion
 
                 #region  中心运行计划
-                ZXJH objZXJH = new ZXJH();
-                objZXJH.TaskID = "700任务(0501)";
-                objZXJH.SatID = "TS3";
-                objZXJH.WorkContents = new List<ZXJH_WorkContent> { new ZXJH_WorkContent() };
-                objZXJH.SYDataHandles = new List<ZXJH_SYDataHandle> { new ZXJH_SYDataHandle() };
-                objZXJH.DirectAndMonitors = new List<ZXJH_DirectAndMonitor> { new ZXJH_DirectAndMonitor() };
-                objZXJH.RealTimeControls = new List<ZXJH_RealTimeControl> { new ZXJH_RealTimeControl() };
-                objZXJH.SYEstimates = new List<ZXJH_SYEstimate> { new ZXJH_SYEstimate() };
-                objJH.FileIndex = (new PlanFileCreator()).CreateZXJHFile(objZXJH, 0);
-                objJH.TaskID = objZXJH.TaskID;
-                objJH.PlanType = "ZXJH";
-                objJH.PlanID = (new Sequence()).GetZXJHSequnce();
-                objJH.Add();
+                ZXJH zjh = pp.SYCXFile2ZXJH(fileIndex, xxfl, beginTime, endTime, out result);
+                if (!result.Equals(string.Empty))
+                {
+                    ShowMessage(string.Format("生成中心运行计划出错，原因：{0}", result));
+                    return;
+                }
+
+                if (null != zjh && zjh.SYContents != null)
+                {
+                    savefilepath = creater.CreateZXJHFile(zjh, 0);
+
+                    objJH.PlanType = "ZXJH";
+                    objJH.PlanID = (new Sequence()).GetZXJHSequnce();
+                    objJH.TaskID = zjh.TaskID;
+                    objJH.FileIndex = savefilepath;
+                    objJH.SatID = zjh.SatID;
+                    objJH.Add();
+                }
+                else
+                {
+                    ShowMessage("未能生成中心运行计划");
+                    return;
+                }
                 #endregion
 
-                #region  仿真推演试验数据
-                TYSJ objTYSJ = new TYSJ();
-                objTYSJ.TaskID = "700任务(0501)";
-                objTYSJ.SatID = "TS3";
+                #region 测控资源申请
+                List<DJZYSQ> djhs = pp.SYCXFile2CKZYSYSQ(fileIndex, xxfl, beginTime, endTime, out result);
+                if (!result.Equals(string.Empty))
+                {
+                    ShowMessage(string.Format("生成测控资源申请出错，原因：{0}", result));
+                    return;
+                }
+                if (djhs.Count > 0)
+                {
+                    objJH.PlanType = "DJZYSQ";
+                    for (int i = 0; i < djhs.Count(); i++)
+                    {
+                        objJH.PlanID = (new Sequence()).GetDJZYSQSequnce();
+                        djhs[i].SNO = objJH.PlanID.ToString();
+                        savefilepath = creater.CreateDMJHFile(djhs[i], 0);
 
-                objJH.FileIndex = (new PlanFileCreator()).CreateTYSJFile(objTYSJ, 0);
-                objJH.TaskID = objTYSJ.TaskID;
-                objJH.PlanType = "TYSJ";
-                objJH.PlanID = (new Sequence()).GetTYSJSequnce();
-                objJH.Add();
+                        objJH.TaskID = djhs[i].TaskID;
+                        objJH.FileIndex = savefilepath;
+                        objJH.SatID = djhs[i].SatID;
+                        objJH.Add();
+                    }
+                }
+                else
+                {
+                    ShowMessage("未能生成测控资源使用申请");
+                    return;
+                }
+
                 #endregion
-
+                ShowMessage("计划生成成功。");
             }
             catch (Exception ex)
             {
@@ -217,6 +248,25 @@ namespace OperatingManagement.Web.Views.PlanManage
         protected void btnReset_Click(object sender, EventArgs e)
         {
             Page.Response.Redirect(Request.CurrentExecutionFilePath);
+            HideMessage();
+        }
+
+        protected void btnCreatePlan_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(txtID.Text);
+            CreatePlans(id);
+        }
+
+        private void ShowMessage(string msg)
+        {
+            trMessage.Visible = true;
+            ltMessage.Text = msg;
+        }
+
+        private void HideMessage()
+        {
+            trMessage.Visible = false;
+            ltMessage.Text = "";
         }
     }
 }

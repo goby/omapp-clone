@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="NotSpaceTaskList.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.NotSpaceTaskList" %>
 <%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
+<%@ Register src="../../ucs/ucGDType.ascx" tagname="ucGDType" tagprefix="uc2" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -10,7 +11,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-计划管理 &gt; 非空间机动任务
+计划管理 &gt; 引导数据-非空间机动任务
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <asp:Panel ID="pnlData" runat="server">
@@ -21,26 +22,28 @@
                   起始时间：
                </th>
                <td>
-                <asp:TextBox ID="txtStartDate" ClientIDMode="Static"  CssClass="text" runat="server" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                <asp:TextBox ID="txtStartDate" ClientIDMode="Static"  CssClass="text" runat="server" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" Width="100px"></asp:TextBox>
                </td>
                <th>
                   结束时间：
                </th>
                <td>
                 
-                <asp:TextBox ID="txtEndDate" ClientIDMode="Static"  CssClass="text" runat="server" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                <asp:TextBox ID="txtEndDate" ClientIDMode="Static"  CssClass="text" runat="server" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" Width="100px"></asp:TextBox>
                 
-               </td>
-               <td>
+                </td>
+                <th>
+                    任务：
+                </th>
+                <td>
                    <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="True" 
-                       BlankItemText="==全部==" BlankItemValue="-1" />
-                   <asp:DropDownList ID="ddlType" runat="server">
-                       <asp:ListItem Value="-1">==全部==</asp:ListItem>
-                       <asp:ListItem Value="0">卫星初始轨道根数</asp:ListItem>
-                       <asp:ListItem Value="1">卫星瞬时精轨根数</asp:ListItem>
-                       <asp:ListItem Value="2">卫星事后精轨根数</asp:ListItem>
-                       <%--<asp:ListItem Value="3">空间目标信息国内双行根数</asp:ListItem>--%>
-                   </asp:DropDownList>
+                       BlankItemText="全部" BlankItemValue="-1" />
+                </td>
+                <th>
+                    数据类型：
+                </th>
+                <td>
+                    <uc2:ucGDType ID="ucGDType" runat="server" />
                <asp:Button class="button" ID="btnSearch" runat="server" onclick="btnSearch_Click" Text="查询" 
                     Width="69px" />
 &nbsp;<%--<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
@@ -52,6 +55,7 @@
                        Operator="GreaterThanEqual" Type="Date"></asp:CompareValidator>
                     <div style="display:none;">
                     <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
+                    <asp:TextBox ID="txtSatId" runat="server" ClientIDMode="Static"></asp:TextBox>
                     <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden"  OnClick="btnHidden_Click" />
                     <asp:Button  class="button" ID="btnSubmit" runat="server" ClientIDMode="Static" OnClick="btnSubmit_Click" Text="发送" />
                     &nbsp;&nbsp;
@@ -70,7 +74,7 @@
                                 <button class="button" onclick="return selectAll();">
                                     全选</button>&nbsp;&nbsp;
                                 <button class="button" onclick="return sendYDSJ1();">
-                                    发送任务</button>
+                                    发送</button>
                             </td>
                             <td class="listTitle-c2">
                                 <div class="load" id="submitIndicator" style="display: none">
@@ -87,13 +91,13 @@
                                     <th style="width: 20px;">
                                         <input type="checkbox" onclick="checkAll(this)" />
                                     </th>
-                                    <th style="width: 150px;">
+                                    <th style="width: 200px;">
                                         信息标识
                                     </th>
-                                    <th style="width: 150px;">
+                                    <th style="width: 100px;">
                                         信息代号
                                     </th>
-                                    <th style="width: 150px;">
+                                    <th style="width: 100px;">
                                         卫星编号
                                     </th>
                                     <th>
@@ -108,10 +112,10 @@
                         <ItemTemplate>
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>" />
+                                    <input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>|<%# Eval("SatId")%>" />
                                 </td>
                                 <td>
-                                    <%# Eval("ITYPEName")%>
+                                    <%# Eval("DataName")%>
                                 </td>
                                 <td>
                                     <%# Eval("ICODE")%>
@@ -140,7 +144,7 @@
                                 <button class="button" onclick="return selectAll();">
                                     全选</button>&nbsp;&nbsp;
                                 <button class="button" onclick="return sendYDSJ1();">
-                                    发送任务</button>
+                                    发送</button>
                             </td>
                             <td class="listTitle-c2">
                                 <om:CollectionPager ID="cpPager" runat="server">
@@ -163,7 +167,7 @@
                 <br />
                 <asp:RadioButtonList ID="rbtProtocl" runat="server" 
                 RepeatDirection="Horizontal">
-                        <asp:ListItem Value="2" Selected>Fep with Tcp</asp:ListItem>
+                        <asp:ListItem Value="2" Selected="True">Fep with Tcp</asp:ListItem>
                         <asp:ListItem Value="1">Fep with Udp</asp:ListItem>
                         <asp:ListItem Value="0">Ftp</asp:ListItem>
                     </asp:RadioButtonList>
@@ -187,7 +191,7 @@
         </table>
     </div>
     <div id="divMessage"  title="消息">
-            <asp:Label ID="lblMessage" runat="server" ForeColor="Red"></asp:Label>
+            <asp:Label ID="lblMessage" runat="server" ForeColor="Red" CssClass="error"></asp:Label>
         </div>
     <div id="dialog-form" style="display:none" title="提示信息">
 	    <p class="content"></p>

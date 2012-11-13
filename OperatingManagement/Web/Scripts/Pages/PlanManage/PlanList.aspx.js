@@ -94,6 +94,9 @@ function showEdit(planid, plantype) {
             case "GZJH":
                 window.location.href = "/Views/PlanManage/GZJHEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;
+            case "ZZGZJH":
+                window.location.href = "/Views/PlanManage/ZZGZJHEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
+                break;
             case "ZXJH":
                 window.location.href = "/Views/PlanManage/ZXJHEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;
@@ -117,6 +120,7 @@ function showSend(ids) {
 
 function showPopSendForm() {
     var _dialog;
+    $('#tartgetPanel').find('input:checkbox').attr('checked', false);
     _dialog = $("#tartgetPanel");
     _dialog.dialog({
         autoOpen: false,

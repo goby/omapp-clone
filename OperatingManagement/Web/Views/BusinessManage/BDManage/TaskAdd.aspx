@@ -48,7 +48,7 @@
             <td>
                 <asp:RadioButtonList ID="rblCurTask" runat="server" BorderColor="White" 
                     BorderStyle="Double" BorderWidth="2px" RepeatDirection="Horizontal">
-                    <asp:ListItem Value="1">是</asp:ListItem>
+                    <asp:ListItem Value="1" Selected="True">是</asp:ListItem>
                     <asp:ListItem Value="0">否</asp:ListItem>
                 </asp:RadioButtonList>
             </td>

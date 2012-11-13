@@ -5,8 +5,11 @@ using System.Text;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
+using System.Configuration;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.DataAccessLayer.BusinessManage;
+using OperatingManagement.Framework.Storage;
+using OperatingManagement.Framework.Components;
 
 namespace ServicesKernel.File
 {
@@ -42,13 +45,13 @@ namespace ServicesKernel.File
         /// <summary>
         /// 发送源名称
         /// </summary>
-        public string Source 
+        public string Source
         {
             get
             {
                 return Param.SourceName;
             }
-            set{}
+            set { }
         }
         public string Destination { get; set; }
         public string TaskID { get; set; }
@@ -62,11 +65,12 @@ namespace ServicesKernel.File
 
         private string strOutputPath = null;
         private string strSavePath = null;
-        private string _filepath=null;
+        private string _filepath = null;
+        private const string strSplitorTwoBlanks = "  ";
         /// <summary>
         /// 内部文件完整路径
         /// </summary>
-        public string FilePath 
+        public string FilePath
         {
             get
             {
@@ -108,7 +112,7 @@ namespace ServicesKernel.File
         /// <summary>
         /// 内部文件保存目录
         /// </summary>
-        public string SavePath 
+        public string SavePath
         {
             get
             {
@@ -146,7 +150,7 @@ namespace ServicesKernel.File
         /// <param name="obj"></param>
         /// <param name="type">0:Add;1:Edit</param>
         /// <returns></returns>
-        public string CreateYJJHFile(YJJH obj,int type)
+        public string CreateYJJHFile(YJJH obj, int type)
         {
             if (type == 0)
             {
@@ -232,7 +236,7 @@ namespace ServicesKernel.File
             xmlWriter.WriteString(obj.objMBXQ.Sum);
             xmlWriter.WriteEndElement();
 
-            
+
             for (int i = 1; i <= obj.objMBXQ.SatInfos.Count; i++)
             {
                 xmlWriter.WriteStartElement("卫星");
@@ -251,7 +255,7 @@ namespace ServicesKernel.File
 
                 xmlWriter.WriteEndElement();
             }
-           
+
 
 
             xmlWriter.WriteEndElement();
@@ -284,7 +288,7 @@ namespace ServicesKernel.File
             xmlWriter.WriteString(obj.objHJXQ.Sum);
             xmlWriter.WriteEndElement();
 
-            
+
             for (int i = 1; i <= obj.objHJXQ.SatInfos.Count; i++)
             {
                 xmlWriter.WriteStartElement("卫星");
@@ -307,11 +311,170 @@ namespace ServicesKernel.File
 
                 xmlWriter.WriteEndElement();
             }
-            
+
 
             xmlWriter.WriteEndElement();
             #endregion
 
+            xmlWriter.WriteEndElement();
+            xmlWriter.Close();
+            return FilePath;
+        }
+
+        /// <summary>
+        /// 内部存储ZZDMZ
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="type">0:新增; 1:修改</param>
+        /// <returns></returns>
+        public string CreateZZGZJHFile(ZZGZJH obj, int type)
+        {
+            if (type == 0)
+            {
+                filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("ZZGZJH", obj.TaskID, obj.SatID);
+                FilePath = SavePath + filename;
+            }
+
+            xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
+            xmlWriter.Formatting = Formatting.Indented;
+            xmlWriter.WriteStartDocument();
+
+            xmlWriter.WriteStartElement("总装地面站工作计划");
+            #region basicinfo
+            xmlWriter.WriteStartElement("编号");
+            xmlWriter.WriteString(obj.Sequence);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("时间");
+            xmlWriter.WriteString(obj.DateTime);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("工作单位");
+            xmlWriter.WriteString(obj.StationName);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("设备代号");
+            xmlWriter.WriteString(obj.EquipmentID);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("任务个数");
+            xmlWriter.WriteString(obj.TaskCount);
+            xmlWriter.WriteEndElement();
+            #endregion
+
+            #region 任务
+            for (int i = 0; i < obj.DMJHTasks.Count; i++)
+            {
+                xmlWriter.WriteStartElement("任务");
+                #region BasicInfo
+                xmlWriter.WriteStartElement("任务标志");
+                xmlWriter.WriteString(obj.DMJHTasks[i].TaskFlag);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("工作方式");
+                xmlWriter.WriteString(obj.DMJHTasks[i].WorkWay);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("计划性质");
+                xmlWriter.WriteString(obj.DMJHTasks[i].PlanPropertiy);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("工作模式");
+                xmlWriter.WriteString(obj.DMJHTasks[i].WorkMode);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("任务准备开始时间");
+                xmlWriter.WriteString(obj.DMJHTasks[i].PreStartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("任务开始时间");
+                xmlWriter.WriteString(obj.DMJHTasks[i].StartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("跟踪开始时间");
+                xmlWriter.WriteString(obj.DMJHTasks[i].TrackStartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("开上行载波时间");
+                xmlWriter.WriteString(obj.DMJHTasks[i].WaveOnStartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("关上行载波时间");
+                xmlWriter.WriteString(obj.DMJHTasks[i].WaveOffStartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("跟踪结束时间");
+                xmlWriter.WriteString(obj.DMJHTasks[i].TrackEndTime);
+                xmlWriter.WriteEndElement();
+                #endregion
+
+                #region 实时传输
+                for (int j = 0; j < obj.DMJHTasks[i].ReakTimeTransfors.Count; j++)
+                {
+                    xmlWriter.WriteStartElement("实时传输");
+
+                    xmlWriter.WriteStartElement("格式标志");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].FormatFlag);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("信息流标志");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].InfoFlowFlag);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("数据传输开始时间");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].TransStartTime);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("数据传输结束时间");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].TransEndTime);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("数据传输速率");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].ReakTimeTransfors[j].TransSpeedRate);
+                    xmlWriter.WriteEndElement();
+                    xmlWriter.WriteEndElement();
+                }
+                #endregion
+
+                #region 事后回放
+                for (int j = 0; j < obj.DMJHTasks[i].AfterFeedBacks.Count; j++)
+                {
+                    xmlWriter.WriteStartElement("事后回放");
+
+                    xmlWriter.WriteStartElement("格式标志");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].FormatFlag);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("信息流标志");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].InfoFlowFlag);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("数据起始时间");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].DataStartTime);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("数据结束时间");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].DataEndTime);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("数据传输开始时间");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].TransStartTime);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteStartElement("数据传输速率");
+                    xmlWriter.WriteString(obj.DMJHTasks[i].AfterFeedBacks[j].TransSpeedRate);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteEndElement();
+                }
+                #endregion
+                xmlWriter.WriteStartElement("任务结束时间");
+                xmlWriter.WriteString(obj.DMJHTasks[i].EndTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteEndElement();
+            }
+            #endregion
             xmlWriter.WriteEndElement();
             xmlWriter.Close();
             return FilePath;
@@ -323,7 +486,7 @@ namespace ServicesKernel.File
         /// <param name="obj"></param>
         /// <param name="type">0:新增; 1:修改</param>
         /// <returns></returns>
-        public string CreateDMJHFile(DJZYSQ obj,int type)
+        public string CreateDMJHFile(DJZYSQ obj, int type)
         {
             if (type == 0)
             {
@@ -641,6 +804,10 @@ namespace ServicesKernel.File
                 xmlWriter.WriteString(obj.GZJHContents[i - 1].SL);
                 xmlWriter.WriteEndElement();
 
+                xmlWriter.WriteStartElement("HBID");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].HBID);
+                xmlWriter.WriteEndElement();
+
                 xmlWriter.WriteStartElement("HBZ");
                 xmlWriter.WriteString(obj.GZJHContents[i - 1].HBZ);
                 xmlWriter.WriteEndElement();
@@ -651,6 +818,14 @@ namespace ServicesKernel.File
 
                 xmlWriter.WriteStartElement("Te");
                 xmlWriter.WriteString(obj.GZJHContents[i - 1].Te);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("HRTs");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].HRTs);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("HSL");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].HSL);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteEndElement();
@@ -665,7 +840,7 @@ namespace ServicesKernel.File
         /// <summary>
         /// 中心计划
         /// </summary>
-        public string CreateZXJHFile(ZXJH obj,int type)
+        public string CreateZXJHFile(ZXJH obj, int type)
         {
             if (type == 0)
             {
@@ -725,77 +900,89 @@ namespace ServicesKernel.File
                 xmlWriter.WriteEndElement();
                 #endregion
                 #region 数传
-                xmlWriter.WriteStartElement("数传");
-                xmlWriter.WriteStartElement("站编号");
-                xmlWriter.WriteString(obj.SYContents[i - 1].SY_SCStationNO);
-                xmlWriter.WriteEndElement();
+                foreach (ZXJH_SYContent_SC sc in obj.SYContents[i - 1].SCList)
+                {
+                    xmlWriter.WriteStartElement("数传");
 
-                xmlWriter.WriteStartElement("设备编号");
-                xmlWriter.WriteString(obj.SYContents[i - 1].SY_SCEquipmentNO);
-                xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("站编号");
+                    xmlWriter.WriteString(sc.SY_SCStationNO);
+                    xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("频段");
-                xmlWriter.WriteString(obj.SYContents[i - 1].SY_SCFrequencyBand);
-                xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("设备编号");
+                    xmlWriter.WriteString(sc.SY_SCEquipmentNO);
+                    xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("圈次");
-                xmlWriter.WriteString(obj.SYContents[i - 1].SY_SCLaps);
-                xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("频段");
+                    xmlWriter.WriteString(sc.SY_SCFrequencyBand);
+                    xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("开始时间");
-                xmlWriter.WriteString(obj.SYContents[i - 1].SY_SCStartTime);
-                xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("圈次");
+                    xmlWriter.WriteString(sc.SY_SCLaps);
+                    xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("结束时间");
-                xmlWriter.WriteString(obj.SYContents[i - 1].SY_SCEndTime);
-                xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("开始时间");
+                    xmlWriter.WriteString(sc.SY_SCStartTime);
+                    xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("结束时间");
+                    xmlWriter.WriteString(sc.SY_SCEndTime);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteEndElement();
+                }
                 #endregion
                 #region 测控
-                xmlWriter.WriteStartElement("测控");
-                xmlWriter.WriteStartElement("站编号");
-                xmlWriter.WriteString(obj.SYContents[i - 1].SY_CKStationNO);
-                xmlWriter.WriteEndElement();
+                foreach (ZXJH_SYContent_CK ck in obj.SYContents[i - 1].CKList)
+                {
+                    xmlWriter.WriteStartElement("测控");
 
-                xmlWriter.WriteStartElement("设备编号");
-                xmlWriter.WriteString(obj.SYContents[i - 1].SY_CKEquipmentNO);
-                xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("站编号");
+                    xmlWriter.WriteString(ck.SY_CKStationNO);
+                    xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("圈次");
-                xmlWriter.WriteString(obj.SYContents[i - 1].SY_CKLaps);
-                xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("设备编号");
+                    xmlWriter.WriteString(ck.SY_CKEquipmentNO);
+                    xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("开始时间");
-                xmlWriter.WriteString(obj.SYContents[i - 1].SY_CKStartTime);
-                xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("圈次");
+                    xmlWriter.WriteString(ck.SY_CKLaps);
+                    xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("结束时间");
-                xmlWriter.WriteString(obj.SYContents[i - 1].SY_CKEndTime);
-                xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("开始时间");
+                    xmlWriter.WriteString(ck.SY_CKStartTime);
+                    xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("结束时间");
+                    xmlWriter.WriteString(ck.SY_CKEndTime);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteEndElement();
+                }
                 #endregion
                 #region 注数
-                xmlWriter.WriteStartElement("注数");
-                xmlWriter.WriteStartElement("最早时间要求");
-                xmlWriter.WriteString(obj.SYContents[i - 1].SY_ZSFirst);
-                xmlWriter.WriteEndElement();
+                foreach (ZXJH_SYContent_ZS zs in obj.SYContents[i - 1].ZSList)
+                {
+                    xmlWriter.WriteStartElement("注数");
 
-                xmlWriter.WriteStartElement("最晚时间要求");
-                xmlWriter.WriteString(obj.SYContents[i - 1].SY_ZSLast);
-                xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("最早时间要求");
+                    xmlWriter.WriteString(zs.SY_ZSFirst);
+                    xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteStartElement("主要内容");
-                xmlWriter.WriteString(obj.SYContents[i - 1].SY_ZSContent);
-                xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("最晚时间要求");
+                    xmlWriter.WriteString(zs.SY_ZSLast);
+                    xmlWriter.WriteEndElement();
 
-                xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("主要内容");
+                    xmlWriter.WriteString(zs.SY_ZSContent);
+                    xmlWriter.WriteEndElement();
+
+                    xmlWriter.WriteEndElement();
+                }
                 #endregion
                 xmlWriter.WriteEndElement();
             }
             #endregion
-                
+
             xmlWriter.WriteEndElement();
             #endregion
 
@@ -805,27 +992,27 @@ namespace ServicesKernel.File
             xmlWriter.WriteStartElement("任务管理");
             for (int i = 1; i <= obj.WorkContents.Count; i++)
             {
-                xmlWriter.WriteStartElement("工作内容"+i.ToString());
+                xmlWriter.WriteStartElement("工作内容" + i.ToString());
 
-                    xmlWriter.WriteStartElement("工作");
-                    xmlWriter.WriteString(obj.WorkContents[i - 1].Work);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("工作");
+                xmlWriter.WriteString(obj.WorkContents[i - 1].Work);
+                xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("对应试验ID");
-                    xmlWriter.WriteString(obj.WorkContents[i - 1].SYID);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("对应试验ID");
+                xmlWriter.WriteString(obj.WorkContents[i - 1].SYID);
+                xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("开始时间");
-                    xmlWriter.WriteString(obj.WorkContents[i - 1].StartTime);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("开始时间");
+                xmlWriter.WriteString(obj.WorkContents[i - 1].StartTime);
+                xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("最短持续时间");
-                    xmlWriter.WriteString(obj.WorkContents[i - 1].MinTime);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("最短持续时间");
+                xmlWriter.WriteString(obj.WorkContents[i - 1].MinTime);
+                xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("最长持续时间");
-                    xmlWriter.WriteString(obj.WorkContents[i - 1].MaxTime);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("最长持续时间");
+                xmlWriter.WriteString(obj.WorkContents[i - 1].MaxTime);
+                xmlWriter.WriteEndElement();
                 xmlWriter.WriteEndElement();
             }
             xmlWriter.WriteEndElement();
@@ -869,67 +1056,75 @@ namespace ServicesKernel.File
             #endregion
             #region 实时试验数据处理
             xmlWriter.WriteStartElement("实时试验数据处理");
-                            for (int i = 1; i <= obj.SYDataHandles.Count; i++)
-                            {
-                                xmlWriter.WriteStartElement("工作内容"+i.ToString());
+            for (int i = 1; i <= obj.SYDataHandles.Count; i++)
+            {
+                xmlWriter.WriteStartElement("工作内容" + i.ToString());
 
-                                    xmlWriter.WriteStartElement("对应试验ID");
-                                    xmlWriter.WriteString(obj.SYDataHandles[i - 1].SYID);
-                                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("对应试验ID");
+                xmlWriter.WriteString(obj.SYDataHandles[i - 1].SYID);
+                xmlWriter.WriteEndElement();
 
-                                    xmlWriter.WriteStartElement("卫星代号");
-                                    xmlWriter.WriteString(obj.SYDataHandles[i - 1].SatID);
-                                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("卫星代号");
+                xmlWriter.WriteString(obj.SYDataHandles[i - 1].SatID);
+                xmlWriter.WriteEndElement();
 
-                                    xmlWriter.WriteStartElement("圈次");
-                                    xmlWriter.WriteString(obj.SYDataHandles[i - 1].Laps);
-                                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("圈次");
+                xmlWriter.WriteString(obj.SYDataHandles[i - 1].Laps);
+                xmlWriter.WriteEndElement();
 
-                                    xmlWriter.WriteStartElement("主站设备");
-                                    xmlWriter.WriteString(obj.SYDataHandles[i - 1].MainStationEquipment);
-                                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("主站");
+                xmlWriter.WriteString(obj.SYDataHandles[i - 1].MainStationEquipment);
+                xmlWriter.WriteEndElement();
 
-                                    xmlWriter.WriteStartElement("备站设备");
-                                    xmlWriter.WriteString(obj.SYDataHandles[i - 1].BakStationEquipment);
-                                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("主站设备");
+                xmlWriter.WriteString(obj.SYDataHandles[i - 1].MainStation);
+                xmlWriter.WriteEndElement();
 
-                                    xmlWriter.WriteStartElement("工作内容");
-                                    xmlWriter.WriteString(obj.SYDataHandles[i - 1].Content);
-                                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("备站");
+                xmlWriter.WriteString(obj.SYDataHandles[i - 1].BakStation);
+                xmlWriter.WriteEndElement();
 
-                                    xmlWriter.WriteStartElement("实时开始处理时间");
-                                    xmlWriter.WriteString(obj.SYDataHandles[i - 1].StartTime);
-                                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("备站设备");
+                xmlWriter.WriteString(obj.SYDataHandles[i - 1].BakStationEquipment);
+                xmlWriter.WriteEndElement();
 
-                                    xmlWriter.WriteStartElement("实时结束处理时间");
-                                    xmlWriter.WriteString(obj.SYDataHandles[i - 1].EndTime);
-                                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("工作内容");
+                xmlWriter.WriteString(obj.SYDataHandles[i - 1].Content);
+                xmlWriter.WriteEndElement();
 
-                                xmlWriter.WriteEndElement();
-                            }
+                xmlWriter.WriteStartElement("实时开始处理时间");
+                xmlWriter.WriteString(obj.SYDataHandles[i - 1].StartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("实时结束处理时间");
+                xmlWriter.WriteString(obj.SYDataHandles[i - 1].EndTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteEndElement();
+            }
             xmlWriter.WriteEndElement();
             #endregion
             #region 指挥与监视
             xmlWriter.WriteStartElement("指挥与监视");
             for (int i = 1; i <= obj.DirectAndMonitors.Count; i++)
             {
-                xmlWriter.WriteStartElement("工作内容"+i.ToString());
+                xmlWriter.WriteStartElement("工作内容" + i.ToString());
 
-                    xmlWriter.WriteStartElement("对应试验ID");
-                    xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].SYID);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("对应试验ID");
+                xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].SYID);
+                xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("开始时间");
-                    xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].StartTime);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("开始时间");
+                xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].StartTime);
+                xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("结束时间");
-                    xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].EndTime);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("结束时间");
+                xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].EndTime);
+                xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("实时演示任务");
-                    xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].RealTimeDemoTask);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("实时演示任务");
+                xmlWriter.WriteString(obj.DirectAndMonitors[i - 1].RealTimeDemoTask);
+                xmlWriter.WriteEndElement();
                 xmlWriter.WriteEndElement();
             }
             xmlWriter.WriteEndElement();
@@ -938,23 +1133,23 @@ namespace ServicesKernel.File
             xmlWriter.WriteStartElement("实时控制");
             for (int i = 1; i <= obj.RealTimeControls.Count; i++)
             {
-                xmlWriter.WriteStartElement("工作内容"+i.ToString());
+                xmlWriter.WriteStartElement("工作内容" + i.ToString());
 
-                    xmlWriter.WriteStartElement("工作");
-                    xmlWriter.WriteString(obj.RealTimeControls[i - 1].Work);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("工作");
+                xmlWriter.WriteString(obj.RealTimeControls[i - 1].Work);
+                xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("对应试验ID");
-                    xmlWriter.WriteString(obj.RealTimeControls[i - 1].SYID);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("对应试验ID");
+                xmlWriter.WriteString(obj.RealTimeControls[i - 1].SYID);
+                xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("开始时间");
-                    xmlWriter.WriteString(obj.RealTimeControls[i - 1].StartTime);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("开始时间");
+                xmlWriter.WriteString(obj.RealTimeControls[i - 1].StartTime);
+                xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("结束时间");
-                    xmlWriter.WriteString(obj.RealTimeControls[i - 1].EndTime);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("结束时间");
+                xmlWriter.WriteString(obj.RealTimeControls[i - 1].EndTime);
+                xmlWriter.WriteEndElement();
                 xmlWriter.WriteEndElement();
             }
             xmlWriter.WriteEndElement();
@@ -963,19 +1158,19 @@ namespace ServicesKernel.File
             xmlWriter.WriteStartElement("处理评估");
             for (int i = 1; i <= obj.SYEstimates.Count; i++)
             {
-                xmlWriter.WriteStartElement("工作内容"+i.ToString());
+                xmlWriter.WriteStartElement("工作内容" + i.ToString());
 
-                    xmlWriter.WriteStartElement("对应试验ID");
-                    xmlWriter.WriteString(obj.SYEstimates[i - 1].SYID);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("对应试验ID");
+                xmlWriter.WriteString(obj.SYEstimates[i - 1].SYID);
+                xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("开始时间");
-                    xmlWriter.WriteString(obj.SYEstimates[i - 1].StartTime);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("开始时间");
+                xmlWriter.WriteString(obj.SYEstimates[i - 1].StartTime);
+                xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("结束时间");
-                    xmlWriter.WriteString(obj.SYEstimates[i - 1].EndTime);
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("结束时间");
+                xmlWriter.WriteString(obj.SYEstimates[i - 1].EndTime);
+                xmlWriter.WriteEndElement();
                 xmlWriter.WriteEndElement();
             }
             xmlWriter.WriteEndElement();
@@ -990,7 +1185,7 @@ namespace ServicesKernel.File
         /// <summary>
         /// 仿真推演
         /// </summary>
-        public string CreateTYSJFile(TYSJ obj,int type)
+        public string CreateTYSJFile(TYSJ obj, int type)
         {
             if (type == 0)
             {
@@ -1035,6 +1230,81 @@ namespace ServicesKernel.File
             xmlWriter.Close();
             return FilePath;
         }
+
+        /// <summary>
+        /// 创建实验计划外发文件 xml格式-文件类型一
+        /// 返回0： 没有创建文件； 1：创建文件成功
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="filename"></param>
+        private int CreateSYJHFile(SYJH obj, string filename)
+        {
+            if (obj.SYJH_SY_List.Count <= 0)
+            {
+                return 0;
+            }
+
+            xmlWriter = new XmlTextWriter(filename, Encoding.UTF8);
+            xmlWriter.Formatting = Formatting.Indented;
+            xmlWriter.WriteStartDocument();
+
+            xmlWriter.WriteStartElement("试验计划");
+
+            xmlWriter.WriteStartElement("编号");
+            xmlWriter.WriteString(obj.JHID.ToString("0000"));
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("时间");
+            xmlWriter.WriteString(obj.CreateTime);
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteStartElement("试验个数");
+            xmlWriter.WriteString(obj.SYCount);
+            xmlWriter.WriteEndElement();
+
+            #region 试验
+            foreach (SYJH_SY sy in obj.SYJH_SY_List)
+            {
+                xmlWriter.WriteStartElement("试验");
+
+                xmlWriter.WriteStartElement("卫星名称");
+                xmlWriter.WriteString(sy.SYSatName);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("试验类别");
+                xmlWriter.WriteString(sy.SYType);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("试验项目");
+                xmlWriter.WriteString(sy.SYItem);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("开始时间");
+                xmlWriter.WriteString(sy.SYStartTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("结束时间");
+                xmlWriter.WriteString(sy.SYEndTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("系统名称");
+                xmlWriter.WriteString(sy.SYSysName);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("系统任务");
+                xmlWriter.WriteString(sy.SYSysTask);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteEndElement();
+            }
+            #endregion
+
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.Close();
+
+            return 1;
+        }
         /// <summary>
         /// 测试要生成的文件文件名是否已存在
         /// </summary>
@@ -1053,7 +1323,17 @@ namespace ServicesKernel.File
         public bool TestXXXQFileName(XXXQ obj)
         {
             filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("XXXQ", obj.TaskID, obj.SatID);
-             return TestFileName();
+            return TestFileName();
+        }
+        /// <summary>
+        /// 测试要生成的文件文件名是否已存在
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool TestZZGZJHFileName(ZZGZJH obj)
+        {
+            filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("ZZGZJH", obj.TaskID, obj.SatID);
+            return TestFileName();
         }
         /// <summary>
         /// 测试要生成的文件文件名是否已存在
@@ -1061,9 +1341,9 @@ namespace ServicesKernel.File
         /// <param name="obj"></param>
         /// <returns></returns>
         public bool TestDMJHFileName(DJZYSQ obj)
-        { 
+        {
             filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("DMJH", obj.TaskID, obj.SatID);
-             return TestFileName();
+            return TestFileName();
         }
         /// <summary>
         /// 测试要生成的文件文件名是否已存在
@@ -1081,9 +1361,9 @@ namespace ServicesKernel.File
         /// <param name="obj"></param>
         /// <returns></returns>
         public bool TestZXJHFileName(ZXJH obj)
-        { 
+        {
             filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("ZXJH", obj.TaskID, obj.SatID);
-             return TestFileName();
+            return TestFileName();
         }
         /// <summary>
         /// 测试要生成的文件文件名是否已存在
@@ -1091,9 +1371,9 @@ namespace ServicesKernel.File
         /// <param name="obj"></param>
         /// <returns></returns>
         public bool TestTYSJFileName(TYSJ obj)
-        { 
-             filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("TYSJ", obj.TaskID, obj.SatID);
-             return TestFileName();
+        {
+            filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("TYSJ", obj.TaskID, obj.SatID);
+            return TestFileName();
         }
         #endregion
 
@@ -1105,16 +1385,147 @@ namespace ServicesKernel.File
         /// <param name="desValue">信宿地址值</param>
         /// <param name="destinationName">信宿地址名称</param>
         /// <returns>生成的外发文件完整路径名串</returns>
-        public string CreateSendingYJJHFile(string ids,string desValue)
+        public string CreateSendingSYJHFile(string ids, string desValue)
         {
             XYXSInfo info = new XYXSInfo();
             info = info.GetByAddrMark(desValue);
-            string destinationName = info.ADDRName + info.ADDRMARK + "(" +info.EXCODE+ ")";
+            string destinationName = info.ADDRName + info.ADDRMARK + "(" + info.EXCODE + ")";
             OperatingManagement.DataAccessLayer.BusinessManage.InfoType itype = new OperatingManagement.DataAccessLayer.BusinessManage.InfoType();
 
-            string SendFileNames  ="";
+            string SendFileNames = "";
+            List<JH> listJH = (new JH()).SelectByIDS(ids);
+            string strFilePath = System.Configuration.ConfigurationManager.AppSettings["SYJHPath"];
+            string strFileName = string.Empty;
+            SYJH obj;
+            SYJH_SY task;
+            string dataCode = PlanParameters.ReadParamValue("SYJHDataCode");
+            Task oTask = new Task();
+            foreach (JH jh in listJH)
+            {
+                string[] sysnames;   //系统名称,逗号分隔
+                string[] systasks;       //系统任务,逗号分隔
+
+                obj = new SYJH();
+                obj.TaskID = jh.TaskID;
+                obj.SYJH_SY_List = new List<SYJH_SY>();
+                strFileName = jh.FileIndex.Substring(jh.FileIndex.LastIndexOf(@"\") + 1);
+                if (System.IO.File.Exists(Path.Combine(strFilePath, strFileName)))
+                {
+                    #region 读取计划XML文件，变量赋值
+                    XmlDocument xmlDoc = new XmlDocument();
+                    xmlDoc.Load(Path.Combine(strFilePath, strFileName));
+
+                    obj.CTime = DateTime.Now;
+                    XmlNode root = xmlDoc.SelectSingleNode("试验计划/编号");
+                    obj.JHID = Convert.ToInt32(root.InnerText);
+                    root = xmlDoc.SelectSingleNode("试验计划/时间");
+                    obj.CreateTime = root.InnerText;
+                    root = xmlDoc.SelectSingleNode("试验计划/试验个数");
+                    obj.SYCount = root.InnerText;
+                    root = xmlDoc.SelectSingleNode("试验计划");
+                    foreach (XmlNode n in root.ChildNodes)
+                    {
+                        if (n.Name == "试验")
+                        {
+                            sysnames = n["系统名称"].InnerText.Split(',');
+                            systasks = n["系统任务"].InnerText.Split(',');
+
+                            for (int i = 0; i < sysnames.Length; i++)
+                            {
+                                if (desValue == sysnames[i])    //名称编码与发送目标一致时才发送，所以只保留编码相同的试验
+                                {
+                                    task = new SYJH_SY();
+                                    task.SYSatName = n["卫星名称"].InnerText;
+                                    task.SYType = n["试验类别"].InnerText;
+                                    task.SYItem = n["试验项目"].InnerText;
+                                    task.SYStartTime = n["开始时间"].InnerText;
+                                    task.SYEndTime = n["结束时间"].InnerText;
+                                    //task.SYSysName = n["系统名称"].InnerText;
+                                    //task.SYSysTask = n["系统任务"].InnerText;
+                                    task.SYSysName = info.GetByAddrMark(sysnames[i]).ADDRName; //文件里存的是编码，发送时转成中文
+                                    task.SYSysTask = systasks[i];
+                                    obj.SYJH_SY_List.Add(task);
+                                }
+                            }
+                            //obj.SYJH_SY_List.Add(task);
+                        }
+                    }
+                    obj.SYCount = obj.SYJH_SY_List.Count.ToString("0000"); //重新计算新的试验数目
+                    #endregion
+
+                    //西安中心
+                    if (desValue == PlanParameters.ReadParamValue("XSCCCode"))
+                    {
+                        #region 写入文件-文件类型一
+                        filename = FileNameMaker.GenarateFileNameTypeOne(dataCode, "B", desValue);
+                        //RenamePlanFile(jh.FileIndex, SendingPath);  //移动并重命名文件到外发目录
+                        //当返回值不为0，即创建文件成功时才保存文件路径
+                        if (0 != CreateSYJHFile(obj, SendingPath))
+                        {
+                            SendFileNames = SendFileNames + SendingPath + ",";
+                        }
+                        #endregion
+
+                    }
+                    else
+                    {
+                        #region 写入文件-文件类型三
+                        filename = FileNameMaker.GenarateFileNameTypeThree(dataCode, desValue);
+                        SendFileNames = SendFileNames + SendingPath + ",";
+                        itype = itype.GetByExMark(dataCode);
+
+                        sw = new StreamWriter(SendingPath);
+                        sw.WriteLine("<说明区>");
+                        sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
+                        sw.WriteLine("[信源S]：" + this.Source);
+                        sw.WriteLine("[信宿D]：" + destinationName);
+                        sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(obj.TaskID) + "(" + oTask.GetObjectFlagByTaskNo(obj.TaskID) + ")");
+                        sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
+                        sw.WriteLine("[数据区行数L]：" + obj.SYJH_SY_List.Count.ToString("0000"));
+                        sw.WriteLine("<符号区>");
+                        sw.WriteLine("[格式标识1]：XXFL  JXH  SatName  Type  TestItem  StartTime  EndTime");
+                        sw.WriteLine("[格式标识2]：SysName  Task");
+                        sw.WriteLine("[数据区]：");
+                        foreach (SYJH_SY sy in obj.SYJH_SY_List)
+                        {
+                            sw.WriteLine("ZJ" + "  " + jh.Id + "  " + sy.SYSatName + "  " + sy.SYType + "  " + sy.SYItem + "  " + sy.SYStartTime + "  " + sy.SYEndTime);
+                            sw.WriteLine(sy.SYSysName + "  " + sy.SYSysTask);
+                        }
+                        sw.WriteLine("<辅助区>");
+                        sw.WriteLine("[备注]：");
+                        sw.WriteLine("[结束]：END");
+
+                        sw.Close();
+                        #endregion
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(SendFileNames) && SendFileNames[SendFileNames.Length - 1] == ',')
+            {
+                SendFileNames = SendFileNames.Substring(0, SendFileNames.Length - 1);
+            }
+            return SendFileNames;
+        }
+        /// <summary>
+        /// 创建外部应用计划文件
+        /// </summary>
+        /// <param name="ids">计划ID串</param>
+        /// <param name="desValue">信宿地址值</param>
+        /// <param name="destinationName">信宿地址名称</param>
+        /// <returns>生成的外发文件完整路径名串</returns>
+        public string CreateSendingYJJHFile(string ids, string desValue)
+        {
+            XYXSInfo info = new XYXSInfo();
+            info = info.GetByAddrMark(desValue);
+            string destinationName = info.ADDRName + info.ADDRMARK + "(" + info.EXCODE + ")";
+            OperatingManagement.DataAccessLayer.BusinessManage.InfoType itype = new OperatingManagement.DataAccessLayer.BusinessManage.InfoType();
+
+            string SendFileNames = "";
             List<JH> listJH = (new JH()).SelectByIDS(ids);
             YJJH obj;
+            string dataCode = PlanParameters.ReadParamValue("YJJHDataCode");
+            Task oTask = new Task();
             foreach (JH jh in listJH)
             {
                 #region 读取计划XML文件，变量赋值
@@ -1126,7 +1537,7 @@ namespace ServicesKernel.File
                 XmlNode root = xmlDoc.SelectSingleNode("应用研究工作计划/XXFL");
                 obj.XXFL = root.InnerText;
                 root = xmlDoc.SelectSingleNode("应用研究工作计划/JXH");
-                obj.JXH= root.InnerText;
+                obj.JXH = root.InnerText;
                 root = xmlDoc.SelectSingleNode("应用研究工作计划/SysName");
                 obj.SysName = root.InnerText;
                 root = xmlDoc.SelectSingleNode("应用研究工作计划/StartTime");
@@ -1135,37 +1546,42 @@ namespace ServicesKernel.File
                 obj.EndTime = root.InnerText;
                 root = xmlDoc.SelectSingleNode("应用研究工作计划/Task");
                 obj.Task = root.InnerText;
+                obj.TaskID = jh.TaskID;
                 #endregion
 
-                #region 写入文件
-                filename = FileNameMaker.GenarateFileNameTypeThree("YJJH", desValue);
-                SendFileNames = SendFileNames+SendingPath+",";
-                itype = itype.GetByExMark("YJJH");
+                
+                if (obj.SysName == info.ADDRName)   //系统名称和发送目标一致时才发送
+                {
+                    #region 写入文件
+                    filename = FileNameMaker.GenarateFileNameTypeThree(dataCode, desValue);
+                    SendFileNames = SendFileNames + SendingPath + ",";
+                    itype = itype.GetByExMark(dataCode);
 
-                sw = new StreamWriter(SendingPath);
-                sw.WriteLine("<说明区>");
-                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
-                sw.WriteLine("[信源S]：" + this.Source);
-                sw.WriteLine("[信宿D]：" + destinationName);
-                sw.WriteLine("[任务代码M]：" + (new Task()).GetTaskName(obj.TaskID));
-                sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
-                sw.WriteLine("[数据区行数L]：0001");
-                sw.WriteLine("<符号区>");
-                sw.WriteLine("[格式标识1]：XXFL  JXH  SysName  StartTime  EndTime  Task");
-                sw.WriteLine("[数据区]：");
-                sw.WriteLine(obj.XXFL + "  " + obj.JXH + "  " + obj.SysName + "  " + obj.StartTime + "  " + obj.EndTime + "  "+obj.Task);
-                sw.WriteLine("<辅助区>");
-                sw.WriteLine("[备注]：");
-                sw.WriteLine("[结束]：END");
+                    sw = new StreamWriter(SendingPath);
+                    sw.WriteLine("<说明区>");
+                    sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
+                    sw.WriteLine("[信源S]：" + this.Source);
+                    sw.WriteLine("[信宿D]：" + destinationName);
+                    sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(obj.TaskID) + "(" + oTask.GetObjectFlagByTaskNo(obj.TaskID) + ")");
+                    sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
+                    sw.WriteLine("[数据区行数L]：0001");
+                    sw.WriteLine("<符号区>");
+                    sw.WriteLine("[格式标识1]：XXFL  JXH  SysName  StartTime  EndTime  Task");
+                    sw.WriteLine("[数据区]：");
+                    sw.WriteLine(obj.XXFL + "  " + obj.JXH + "  " + obj.SysName + "  " + obj.StartTime + "  " + obj.EndTime + "  " + obj.Task);
+                    sw.WriteLine("<辅助区>");
+                    sw.WriteLine("[备注]：");
+                    sw.WriteLine("[结束]：END");
 
-                sw.Close();
-                #endregion
+                    sw.Close();
+                    #endregion
+                }
 
             }
 
-            if (SendFileNames[SendFileNames.Length - 1] == ',')
+            if (!string.IsNullOrEmpty(SendFileNames) && SendFileNames[SendFileNames.Length - 1] == ',')
             {
-                SendFileNames = SendFileNames.Substring(0,SendFileNames.Length-1);
+                SendFileNames = SendFileNames.Substring(0, SendFileNames.Length - 1);
             }
             return SendFileNames;
         }
@@ -1180,19 +1596,24 @@ namespace ServicesKernel.File
         {
             XYXSInfo info = new XYXSInfo();
             info = info.GetByAddrMark(desValue);
-            string destinationName = info.ADDRName + info.ADDRMARK + "(" +info.EXCODE+ ")";
+            string destinationName = info.ADDRName + info.ADDRMARK + "(" + info.EXCODE + ")";
 
             OperatingManagement.DataAccessLayer.BusinessManage.InfoType itype = new OperatingManagement.DataAccessLayer.BusinessManage.InfoType();
-           
-            string SendFileNames  ="";
+
+            string SendFileNames = "";
             string filenameMBXQ = "";
             string filenameHJXQ = "";
             List<JH> listJH = (new JH()).SelectByIDS(ids);
             XXXQ obj;
+            string strMBXQDataCode = PlanParameters.ReadParamValue("MBXQDataCode");
+            string strHJXQDataCode = PlanParameters.ReadParamValue("HJXQDataCode");
+            string strXXXQDataCode = PlanParameters.ReadParamValue("XXXQDataCode");
+            Task oTask = new Task();
             foreach (JH jh in listJH)
             {
                 #region 读取计划XML文件，变量赋值
                 obj = new XXXQ();
+                obj.TaskID = jh.TaskID;
                 obj.objMBXQ = new MBXQ();
                 obj.objHJXQ = new HJXQ();
                 XmlDocument xmlDoc = new XmlDocument();
@@ -1240,7 +1661,7 @@ namespace ServicesKernel.File
                 root = xmlDoc.SelectSingleNode("空间信息需求/空间环境信息需求/TimeSection1");
                 obj.objHJXQ.TimeSection1 = root.InnerText;
                 root = xmlDoc.SelectSingleNode("空间信息需求/空间环境信息需求/TimeSection2");
-                obj.objHJXQ.TimeSection2= root.InnerText;
+                obj.objHJXQ.TimeSection2 = root.InnerText;
                 root = xmlDoc.SelectSingleNode("空间信息需求/空间环境信息需求/Sum");
                 obj.objHJXQ.Sum = root.InnerText;
 
@@ -1266,19 +1687,19 @@ namespace ServicesKernel.File
                 #region 写入文件
 
                 #region MBXQ
-                filename = FileNameMaker.GenarateFileNameTypeThree("MBXQ", desValue);
+                filename = FileNameMaker.GenarateFileNameTypeThree(strMBXQDataCode, desValue);
                 SendFileNames = SendFileNames + SendingPath + ",";
                 filenameMBXQ = filename;    //用于在XXXQ文件里的数据行记录
-                itype = itype.GetByExMark("MBXX");
+                itype = itype.GetByExMark(strMBXQDataCode);
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
                 sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
-                sw.WriteLine("[任务代码M]：" + (new Task()).GetTaskName(obj.TaskID));
-                sw.WriteLine("[信息类别B]：" + itype.DATANAME+"("+itype.EXCODE+")");
-                sw.WriteLine("[数据区行数L]：" + (obj.objMBXQ.SatInfos.Count+1).ToString("0000"));
+                sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(obj.TaskID) + "(" + oTask.GetObjectFlagByTaskNo(obj.TaskID) + ")");
+                sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
+                sw.WriteLine("[数据区行数L]：" + (obj.objMBXQ.SatInfos.Count + 1).ToString("0000"));
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[格式标识1]：User  Time  TargetInfo  TimeSection1  TimeSection2  Sum");
                 sw.WriteLine("[格式标识2]：SatName  InfoName  InfoTime");
@@ -1295,10 +1716,10 @@ namespace ServicesKernel.File
                 sw.Close();
                 #endregion
                 #region HJXQ
-                filename = FileNameMaker.GenarateFileNameTypeThree("HJXQ", desValue);
+                filename = FileNameMaker.GenarateFileNameTypeThree(strHJXQDataCode, desValue);
                 SendFileNames = SendFileNames + SendingPath + ",";
                 filenameHJXQ = filename;    //用于在XXXQ文件里的数据行记录
-                itype = itype.GetByExMark("HJXX");
+                itype = itype.GetByExMark(strHJXQDataCode);
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
@@ -1324,9 +1745,9 @@ namespace ServicesKernel.File
                 sw.Close();
                 #endregion
                 #region XXXQ
-                filename = FileNameMaker.GenarateFileNameTypeThree("XXXQ", desValue);
+                filename = FileNameMaker.GenarateFileNameTypeThree(strXXXQDataCode, desValue);
                 SendFileNames = SendFileNames + SendingPath + ",";
-                itype = itype.GetByExMark("XXXQ");
+                itype = itype.GetByExMark(strXXXQDataCode);
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
@@ -1349,7 +1770,7 @@ namespace ServicesKernel.File
                 #endregion
             }
 
-            if (SendFileNames[SendFileNames.Length - 1] == ',')
+            if (!string.IsNullOrEmpty(SendFileNames) && SendFileNames[SendFileNames.Length - 1] == ',')
             {
                 SendFileNames = SendFileNames.Substring(0, SendFileNames.Length - 1);
             }
@@ -1366,84 +1787,106 @@ namespace ServicesKernel.File
         {
             XYXSInfo info = new XYXSInfo();
             info = info.GetByAddrMark(desValue);
-            string destinationName = info.ADDRName + info.ADDRMARK + "(" +info.EXCODE+ ")";
-           
+            string destinationName = info.ADDRName + info.ADDRMARK + "(" + info.EXCODE + ")";
+            OperatingManagement.DataAccessLayer.BusinessManage.InfoType itype = new OperatingManagement.DataAccessLayer.BusinessManage.InfoType();
+
             string SendFileNames = "";
             List<JH> listJH = (new JH()).SelectByIDS(ids);
-            DJZYSQ obj;
+            GZJH obj;
+            string dataCode = PlanParameters.ReadParamValue("GZJHDataCode");
+            Task oTask = new Task();
             foreach (JH jh in listJH)
             {
-                //if (desValue == "XSCC")
-                //{
-                //    filename = FileNameMaker.GenarateFileNameTypeOne("GZJH", "B");
-                //    RenamePlanFile(jh.FileIndex, SendingPath);  //移动并重命名文件到外发目录
-                //}
-                //else
-                //{
-                    #region 有问题，暂时空着
-                    /*
-                    #region 读取计划XML文件，变量赋值
-                    obj = new DMJH();
-                    List<DMJH_Task> listTask = new List<DMJH_Task>();
-                    DMJH_Task task;
-                    XmlDocument xmlDoc = new XmlDocument();
-                    xmlDoc.Load(jh.FileIndex);
+                #region 读取计划XML文件，变量赋值
+                obj = new GZJH();
+                obj.TaskID = jh.TaskID;
+                obj.GZJHContents = new List<GZJH_Content>();
+                //List<GZJH_Content> list = new List<GZJH_Content>();
+                GZJH_Content c;
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(jh.FileIndex);
 
-                    obj.CTime = jh.CTime;
-                    XmlNode root = xmlDoc.SelectSingleNode("地面站工作计划/编号");
-                    obj.Sequence = root.InnerText;
-                    root = xmlDoc.SelectSingleNode("地面站工作计划/时间");
-                    obj.DateTime = root.InnerText;
-                    root = xmlDoc.SelectSingleNode("地面站工作计划/工作单位");
-                    obj.StationName = root.InnerText;
-                    root = xmlDoc.SelectSingleNode("地面站工作计划/设备代号");
-                    obj.EquipmentID = root.InnerText;
-                    root = xmlDoc.SelectSingleNode("地面站工作计划/任务个数");
-                    obj.TaskCount = root.InnerText;
+                XmlNode root = xmlDoc.SelectSingleNode("地面站工作计划/JXH");
+                obj.JXH = root.InnerText;
+                root = xmlDoc.SelectSingleNode("地面站工作计划/XXFL");
+                obj.XXFL = root.InnerText;
+                // root = xmlDoc.SelectSingleNode("地面站工作计划/QS");
+                //obj.QS = root.InnerText;
 
-                    root = xmlDoc.SelectSingleNode("地面站工作计划");
-                    foreach (XmlNode n in root.ChildNodes)
+                #region Content
+                root = xmlDoc.SelectSingleNode("地面站工作计划");
+
+                foreach (XmlNode n in root.ChildNodes)
+                {
+                    if (n.Name == "Content")
                     {
-                        if (n.Name == "任务")
+                        if (desValue == n["DW"].InnerText)
                         {
-                            task = new DMJH_Task();
-                            task.TaskFlag = n["任务标志"].InnerText;
-                            task.WorkWay = n["工作方式"].InnerText;
-                            task.PlanPropertiy = n["计划性质"].InnerText;
-                            task.WorkMode = n["工作模式"].InnerText;
-                            task.PreStartTime = n["任务准备开始时间"].InnerText;
-                            task.StartTime = n["任务开始时间"].InnerText;
-                            task.TrackStartTime = n["跟踪开始时间"].InnerText;
-                            task.WaveOnStartTime = n["开上行载波时间"].InnerText;
-                            task.WaveOffStartTime = n["关上行载波时间"].InnerText;
-                            task.TrackEndTime = n["跟踪结束时间"].InnerText;
-                            task.EndTime = n["任务结束时间"].InnerText;
-                            listTask.Add(task);
+                            c = new GZJH_Content();
+                            //c.DW = n["DW"].InnerText;
+                            c.DW = info.GetByAddrMark(n["DW"].InnerText).ADDRName;
+                            c.SB = n["SB"].InnerText;
+                            c.QH = n["QH"].InnerText;
+                            c.DH = n["DH"].InnerText;
+                            c.FS = n["FS"].InnerText;
+                            c.JXZ = n["JXZ"].InnerText;
+                            c.MS = n["MS"].InnerText;
+                            c.QB = n["QB"].InnerText;
+                            c.GXZ = n["GXZ"].InnerText;
+                            c.ZHB = n["ZHB"].InnerText;
+                            c.GZK = n["GZK"].InnerText;
+                            c.GZJ = n["GZJ"].InnerText;
+                            c.KSHX = n["KSHX"].InnerText;
+                            c.GSHX = n["GSHX"].InnerText;
+                            c.RK = n["RK"].InnerText;
+                            c.JS = n["JS"].InnerText;
+                            c.BID = n["BID"].InnerText;
+                            c.SBZ = n["SBZ"].InnerText;
+                            c.RTs = n["RTs"].InnerText;
+                            c.RTe = n["RTe"].InnerText;
+                            c.SL = n["SL"].InnerText;
+                            c.HBID = n["HBID"].InnerText;
+                            c.HBZ = n["HBZ"].InnerText;
+                            c.Ts = n["Ts"].InnerText;
+                            c.Te = n["Te"].InnerText;
+                            c.HRTs = n["HRTs"].InnerText;
+                            c.HSL = n["HSL"].InnerText;
+                            obj.GZJHContents.Add(c);
                         }
                     }
-                    #endregion
+                }
+                obj.QS = obj.GZJHContents.Count.ToString("0000"); //重新计算圈数
+                #endregion
 
+                #endregion
+
+                if (obj.GZJHContents.Count > 0) //系统名称和发送目标一致时才发送
+                {
                     #region 写入文件
-                    filename = FileNameMaker.GenarateFileNameTypeThree("GZJH", desValue);
+                    filename = FileNameMaker.GenarateFileNameTypeThree(dataCode, desValue);
+                    SendFileNames = SendFileNames + SendingPath + ",";
+                    itype = itype.GetByExMark(dataCode);
 
                     sw = new StreamWriter(SendingPath);
                     sw.WriteLine("<说明区>");
                     sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                     sw.WriteLine("[信源S]：" + this.Source);
                     sw.WriteLine("[信宿D]：" + destinationName);
-                    sw.WriteLine("[任务代码M]：700任务(0501)");
-                    sw.WriteLine("[信息类别B]：地面站工作计划");
-                    sw.WriteLine("[数据区行数L]：" + (Convert.ToInt32( obj.TaskCount) +1).ToString("0000") );
+                    sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(obj.TaskID) + "(" + oTask.GetObjectFlagByTaskNo(obj.TaskID) + ")");
+                    sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
+                    sw.WriteLine("[数据区行数L]：" + Convert.ToInt32(obj.GZJHContents.Count).ToString("0000"));
                     sw.WriteLine("<符号区>");
-                    sw.WriteLine("[格式标识1]：JXH  XXFL  DW  SB	QS");
-                    sw.WriteLine("[格式标识2]：QH  DH  FS  JXZ  MS  QB  GXZ  ZHB  RK  GZK  KSHX  GSHX  GZJ  JS  BID  SBZ  RTs  RTe  SL  BID  HBZ  Ts  Te  RTs  SL");
+                    sw.WriteLine("[格式标识1]：JXH  XXFL  QS");
+                    sw.WriteLine("[格式标识2]：DW  SB  QH  DH  FS  JXZ  MS  QB  GXZ  ZHB  RK  GZK  KSHX  GSHX  GZJ  JS  BID  SBZ  RTs  RTe  SL  BID  HBZ  Ts  Te  RTs  SL");
                     sw.WriteLine("[数据区]：");
-                    sw.WriteLine(obj.Sequence + "  " + "ZJ" + "  " + obj.StationName + "  " + obj.EquipmentID + "  " + "0001");
-                    foreach (DMJH_Task t in obj.DMJHTasks)
+                    sw.WriteLine(obj.JXH + "  " + obj.XXFL + "  " + obj.QS);
+                    foreach (GZJH_Content t in obj.GZJHContents)
                     {
-                        sw.WriteLine("0001"+ "  " + t.TaskFlag + "  " + t.WorkWay + "  " + t.PlanPropertiy + "  " + t.WorkMode + "  "
-                            + "Q1" + "  " + "M" + "  " + t.PreStartTime + "  " + t.StartTime + "  " +t.TrackStartTime + "  " +t.WaveOnStartTime
-                             + "  " +t.WaveOffStartTime + "  " +t.TrackEndTime + "  " +t.EndTime + "  ");
+                        sw.WriteLine(t.DW + "  " + t.SB + "  " + t.QH + "  " + t.DH + "  " + t.FS + "  " + t.JXZ + "  "
+                            + t.MS + "  " + t.QB + "  " + t.GXZ + "  " + t.ZHB + "  " + t.RK + "  " + t.GZK + "  " + t.GZJ
+                             + "  " + t.KSHX + "  " + t.GSHX + "  " + t.GZJ + "  " + t.JS + "  " + t.BID + "  " + t.SBZ
+                             + "  " + t.RTs + "  " + t.RTe + "  " + t.SL + "  " + t.HBID + "  " + t.HBZ + "  " + t.Ts
+                             + "  " + t.Te + "  " + t.HRTs + "  " + t.HSL);
                     }
                     sw.WriteLine("<辅助区>");
                     sw.WriteLine("[备注]：");
@@ -1451,28 +1894,62 @@ namespace ServicesKernel.File
 
                     sw.Close();
                     #endregion
- */
-                    #endregion
-                //}
-
-                filename = FileNameMaker.GenarateFileNameTypeOne("GZJH", "B");
-                RenamePlanFile(jh.FileIndex, SendingPath);  //移动并重命名文件到外发目录
-                SendFileNames = SendFileNames + SendingPath + ",";
+                }
+                //filename = FileNameMaker.GenarateFileNameTypeOne("GZJH", "B");
+                //filename = FileNameMaker.GenarateFileNameTypeOne("GZJH", "B", desValue);
+                //RenamePlanFile(jh.FileIndex, SendingPath);  //移动并重命名文件到外发目录
+                //SendFileNames = SendFileNames + SendingPath + ",";
             }
 
-            if (SendFileNames[SendFileNames.Length - 1] == ',')
+            if (!string.IsNullOrEmpty(SendFileNames) && SendFileNames[SendFileNames.Length - 1] == ',')
             {
-                SendFileNames = SendFileNames.Substring(0,SendFileNames.Length-1);
+                SendFileNames = SendFileNames.Substring(0, SendFileNames.Length - 1);
             }
             return SendFileNames;
         }
 
+        /// <summary>
+        /// 生成测控资源使用申请外发文件
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="desValue"></param>
+        /// <returns></returns>
+        public string CreateSendingDJZYSQFile(string ids, string desValue)
+        {
+            XYXSInfo info = new XYXSInfo();
+            info = info.GetByAddrMark(desValue);
+            string destinationName = info.ADDRName + info.ADDRMARK + "(" + info.EXCODE + ")";
+            OperatingManagement.DataAccessLayer.BusinessManage.InfoType itype = new OperatingManagement.DataAccessLayer.BusinessManage.InfoType();
+
+            string SendFileNames = "";
+            List<JH> listJH = (new JH()).SelectByIDS(ids);
+            string dataCode = PlanParameters.ReadParamValue("DJZYSQDataCode");
+            foreach (JH jh in listJH)
+            {
+                this.filename = FileNameMaker.GenarateFileNameTypeOne(dataCode, "B", desValue);
+                CopyFile(jh.FileIndex, this.SendingPath);
+                SendFileNames = SendFileNames + this.SendingPath + ",";
+            }
+
+            if (!string.IsNullOrEmpty(SendFileNames) && SendFileNames[SendFileNames.Length - 1] == ',')
+            {
+                SendFileNames = SendFileNames.Substring(0, SendFileNames.Length - 1);
+            }
+            return SendFileNames;
+        }
+
+        /// <summary>
+        /// 中心计划不外发
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="desValue"></param>
+        /// <returns></returns>
         public string CreateSendingZXJHFile(string ids, string desValue)
         {
             XYXSInfo info = new XYXSInfo();
             info = info.GetByAddrMark(desValue);
-            string destinationName = info.ADDRName + info.ADDRMARK + "(" +info.EXCODE+ ")";
-           
+            string destinationName = info.ADDRName + info.ADDRMARK + "(" + info.EXCODE + ")";
+
             //string SendFileNames = "";
             //List<JH> listJH = (new JH()).SelectByIDS(ids);
             //ZXJH obj;
@@ -1502,16 +1979,19 @@ namespace ServicesKernel.File
         {
             XYXSInfo info = new XYXSInfo();
             info = info.GetByAddrMark(desValue);
-            string destinationName = info.ADDRName + info.ADDRMARK + "(" +info.EXCODE+ ")";
+            string destinationName = info.ADDRName + info.ADDRMARK + "(" + info.EXCODE + ")";
             OperatingManagement.DataAccessLayer.BusinessManage.InfoType itype = new OperatingManagement.DataAccessLayer.BusinessManage.InfoType();
 
             string SendFileNames = "";
             List<JH> listJH = (new JH()).SelectByIDS(ids);
             TYSJ obj;
+            string strYDSJDataCode = PlanParameters.ReadParamValue("TYSJDataCode");
+            Task oTask = new Task();
             foreach (JH jh in listJH)
             {
                 #region 读取计划XML文件，变量赋值
                 obj = new TYSJ();
+                obj.TaskID = jh.TaskID;
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(jh.FileIndex);
 
@@ -1531,16 +2011,16 @@ namespace ServicesKernel.File
                 #endregion
 
                 #region 写入文件
-                filename = FileNameMaker.GenarateFileNameTypeThree("TYSJ", desValue);
+                filename = FileNameMaker.GenarateFileNameTypeThree(strYDSJDataCode, desValue);
                 SendFileNames = SendFileNames + SendingPath + ",";
-                itype = itype.GetByExMark("TYSJ");
+                itype = itype.GetByExMark(strYDSJDataCode);
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
                 sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
-                sw.WriteLine("[任务代码M]：" + (new Task()).GetTaskName(obj.TaskID));
+                sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(obj.TaskID) + "(" + oTask.GetObjectFlagByTaskNo(obj.TaskID) + ")");
                 sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                 sw.WriteLine("[数据区行数L]：0001");
                 sw.WriteLine("<符号区>");
@@ -1553,7 +2033,7 @@ namespace ServicesKernel.File
 
                 sw.Close();
                 #endregion
-                
+
             }
 
             if (SendFileNames[SendFileNames.Length - 1] == ',')
@@ -1562,7 +2042,12 @@ namespace ServicesKernel.File
             }
             return SendFileNames;
         }
-
+        /// <summary>
+        /// 生成外发轨道根数文件
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="desValue"></param>
+        /// <returns></returns>
         public string CreateSendingGDGSFile(string ids, string desValue)
         {
             XYXSInfo info = new XYXSInfo();
@@ -1573,6 +2058,7 @@ namespace ServicesKernel.File
             string SendFileNames = "";
             List<GD> listJH = (new GD()).SelectByIDS(ids);
             Dictionary<string, int> dicTaskID = new Dictionary<string, int>();
+            Task oTask = new Task();
             foreach (GD obj in listJH)
             {
                 if (dicTaskID.ContainsKey(obj.TaskID))
@@ -1582,14 +2068,15 @@ namespace ServicesKernel.File
                 else
                 {
                     dicTaskID.Add(obj.TaskID, 1);
-                    
+
                 }
             }
             //相同任务的轨道数据写进一个文件里
+            string strGDGSDataCode = PlanParameters.ReadParamValue("GDGSDataCode");
             foreach (string key in dicTaskID.Keys)
             {
                 #region 写入文件
-                filename = FileNameMaker.GenarateFileNameTypeThree("GDGS", desValue);
+                filename = FileNameMaker.GenarateFileNameTypeThree(strGDGSDataCode, desValue);
                 SendFileNames = SendFileNames + SendingPath + ",";
                 itype = itype.GetByExMark("GD");
                 sw = new StreamWriter(SendingPath);
@@ -1598,9 +2085,9 @@ namespace ServicesKernel.File
                 sw.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
-                sw.WriteLine("[任务代码M]：" + (new Task()).GetTaskName(key));
+                sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(key) + "(" + oTask.GetObjectFlagByTaskNo(key) + ")");
                 sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
-                sw.WriteLine("[数据区行数L]："+dicTaskID[key].ToString("0000") );
+                sw.WriteLine("[数据区行数L]：" + dicTaskID[key].ToString("0000"));
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[格式标识1]：T01  T02  a  e  i  Ω  w  M");
                 sw.WriteLine("[数据区]：");
@@ -1616,7 +2103,7 @@ namespace ServicesKernel.File
                 sw.WriteLine("[备注]：");
                 sw.WriteLine("[结束]：END");
 
-                
+
                 #endregion
             }
             sw.Close();
@@ -1627,6 +2114,179 @@ namespace ServicesKernel.File
             }
             return SendFileNames;
         }
+        /// <summary>
+        /// 从轨道数据生成外发引导数据文件
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="desValue"></param>
+        /// <returns></returns>
+        public string CreateSendingYDSJFileFromGD(string ids, string desValue)
+        {
+            XYXSInfo info = new XYXSInfo();
+            info = info.GetByAddrMark(desValue);
+            string destinationName = info.ADDRName + info.ADDRMARK + "(" + info.EXCODE + ")";
+            OperatingManagement.DataAccessLayer.BusinessManage.InfoType itype = new OperatingManagement.DataAccessLayer.BusinessManage.InfoType();
+
+            string SendFileNames = "";
+            List<GD> listJH = (new GD()).SelectByIDS(ids);
+            Dictionary<string, int> dicTaskID = new Dictionary<string, int>();
+            Task oTask = new Task();
+            foreach (GD obj in listJH)
+            {
+                if (dicTaskID.ContainsKey(obj.TaskID))
+                {
+                    dicTaskID[obj.TaskID] = dicTaskID[obj.TaskID] + 1;
+                }
+                else
+                {
+                    dicTaskID.Add(obj.TaskID, 1);
+
+                }
+            }
+            //相同任务的轨道数据写进一个文件里
+            string strYDSJDataCode = PlanParameters.ReadParamValue("YDSJDataCode");
+            foreach (string key in dicTaskID.Keys)
+            {
+                #region 写入文件
+                filename = FileNameMaker.GenarateFileNameTypeThree(strYDSJDataCode, desValue);
+                SendFileNames = SendFileNames + SendingPath + ",";
+                itype = itype.GetByExMark(strYDSJDataCode);
+                sw = new StreamWriter(SendingPath);
+
+                sw.WriteLine("<说明区>");
+                sw.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
+                sw.WriteLine("[信源S]：" + this.Source);
+                sw.WriteLine("[信宿D]：" + destinationName);
+                sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(key) + "(" + oTask.GetObjectFlagByTaskNo(key) + ")");
+                sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
+                sw.WriteLine("[数据区行数L]：" + dicTaskID[key].ToString("0000"));
+                sw.WriteLine("<符号区>");
+                sw.WriteLine("[格式标识1]：T01  T02  a  e  i  Ω  w  M");
+                sw.WriteLine("[数据区]：");
+                foreach (GD obj in listJH)
+                {
+                    if (obj.TaskID == key)
+                    {
+                        sw.WriteLine(obj.Times.ToString("yyyyMMdd") + "  " + obj.Times.ToString("HHmmssffff") + "  "
+                            + obj.A + "  " + obj.E + "  " + obj.I + "  " + obj.Q + "  " + obj.W + "  " + obj.M);
+                    }
+                }
+                sw.WriteLine("<辅助区>");
+                sw.WriteLine("[备注]：");
+                sw.WriteLine("[结束]：END");
+
+
+                #endregion
+            }
+            sw.Close();
+
+            if (SendFileNames[SendFileNames.Length - 1] == ',')
+            {
+                SendFileNames = SendFileNames.Substring(0, SendFileNames.Length - 1);
+            }
+            return SendFileNames;
+        }
+        /// <summary>
+        /// 生成引导数据外发文件
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="desValue"></param>
+        /// <returns></returns>
+        public string CreateSendingYDSJFile(string ids, string desValue)
+        {
+            XYXSInfo info = new XYXSInfo();
+            info = info.GetByAddrMark(desValue);
+            string destinationName = info.ADDRName + info.ADDRMARK + "(" + info.EXCODE + ")";
+            OperatingManagement.DataAccessLayer.BusinessManage.InfoType itype = new OperatingManagement.DataAccessLayer.BusinessManage.InfoType();
+
+            string SendFileNames = "";
+            List<YDSJ> listJH = (new YDSJ()).SelectByIDS(ids);
+            Dictionary<string, int> dicTaskID = new Dictionary<string, int>();
+            Task oTask = new Task();
+            foreach (YDSJ obj in listJH)
+            {
+                if (dicTaskID.ContainsKey(obj.TaskID))
+                {
+                    dicTaskID[obj.TaskID] = dicTaskID[obj.TaskID] + 1;
+                }
+                else
+                {
+                    dicTaskID.Add(obj.TaskID, 1);
+
+                }
+            }
+            //相同任务的引导数据写进一个文件里
+            string strDataCode = PlanParameters.ReadParamValue("YDSJDataCode");
+            foreach (string key in dicTaskID.Keys)
+            {
+                #region 写入文件
+                filename = FileNameMaker.GenarateFileNameTypeThree(strDataCode, desValue);
+                SendFileNames = SendFileNames + SendingPath + ",";
+                itype = itype.GetByExMark(strDataCode);
+                sw = new StreamWriter(SendingPath);
+
+                sw.WriteLine("<说明区>");
+                sw.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
+                sw.WriteLine("[信源S]：" + this.Source);
+                sw.WriteLine("[信宿D]：" + destinationName);
+                sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(key) + "(" + oTask.GetObjectFlagByTaskNo(key) + ")");
+                sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
+                sw.WriteLine("[数据区行数L]：" + dicTaskID[key].ToString("0000"));
+                sw.WriteLine("<符号区>");
+                sw.WriteLine("[格式标识1]：SatName  T01  T02  a  e  i  Ω  w  M");
+                sw.WriteLine("[数据区]：");
+                foreach (YDSJ obj in listJH)
+                {
+                    if (obj.TaskID == key)
+                    {
+                        sw.WriteLine(obj.SatName + strSplitorTwoBlanks + obj.Times.ToString("yyyyMMdd") + strSplitorTwoBlanks + obj.Times.ToString("HHmmssffff") + strSplitorTwoBlanks
+                            + obj.A + strSplitorTwoBlanks + obj.E + strSplitorTwoBlanks + obj.I + strSplitorTwoBlanks + obj.O + strSplitorTwoBlanks + obj.W + strSplitorTwoBlanks + obj.M);
+                    }
+                }
+                sw.WriteLine("<辅助区>");
+                sw.WriteLine("[备注]：");
+                sw.WriteLine("[结束]：END");
+                #endregion
+            }
+            sw.Close();
+
+            if (SendFileNames[SendFileNames.Length - 1] == ',')
+            {
+                SendFileNames = SendFileNames.Substring(0, SendFileNames.Length - 1);
+            }
+            return SendFileNames;
+        }
+
+        /// <summary>
+        /// 生成引导数据外发文件（向4701/4702发送）
+        /// </summary>
+        /// <param name="desValue"></param>
+        /// <returns></returns>
+        public string CreateSendingYDSJFile(string taskNo, string desValue, string[] datas)
+        {
+            FileBaseInfo oFBInfo = new FileBaseInfo();
+            XYXSInfo info = new XYXSInfo();
+            InfoType itype = new InfoType();
+            string strDataCode = PlanParameters.ReadParamValue("YDSJDataCode");
+            itype = itype.GetByExMark(strDataCode);
+            info = info.GetByAddrMark(desValue);
+            filename = FileNameMaker.GenarateFileNameTypeThree(strDataCode, desValue);
+            oFBInfo.FullName = this.SendingPath;
+            oFBInfo.From = this.Source;
+            oFBInfo.To = info.ADDRName +info.ADDRMARK + "(" + info.EXCODE + ")";
+            oFBInfo.InfoTypeName = itype.DATANAME + "(" + itype.EXCODE + ")";
+            Task oTask = new Task();
+            oFBInfo.TaskID = oTask.GetTaskName(taskNo) + "(" + oTask.GetObjectFlagByTaskNo(taskNo) + ")";
+            oFBInfo.LineCount = datas.Length;
+
+            DataFileHandle oDFHandle = new DataFileHandle(oFBInfo.FullName);
+            string[] fields = new string[]{"T01  T02  a  e  i  Ω  w  M"};
+            FileCreateResult oResult = oDFHandle.CreateFormat3File(oFBInfo, fields, datas);
+            if (oResult == FileCreateResult.CreateSuccess)
+                return oFBInfo.FullName;
+            else
+                return null;
+        }
         #endregion
 
         /// <summary>
@@ -1634,10 +2294,20 @@ namespace ServicesKernel.File
         /// </summary>
         /// <param name="oldfile"></param>
         /// <param name="newfile"></param>
-        public void RenamePlanFile(string oldfile,string newfile)
+        public void RenamePlanFile(string oldfile, string newfile)
         {
             FileInfo fi = new FileInfo(oldfile);
             fi.MoveTo(newfile);
+        }
+
+        /// <summary>
+        /// 复制文件
+        /// </summary>
+        /// <param name="srcFile"></param>
+        /// <param name="tgtFile"></param>
+        private void CopyFile(string srcFile, string tgtFile)
+        {
+            System.IO.File.Copy(srcFile, tgtFile, true);
         }
 
         /// <summary>

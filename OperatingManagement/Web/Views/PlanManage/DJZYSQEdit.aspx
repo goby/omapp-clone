@@ -22,7 +22,7 @@
                     <strong>计划基本信息</strong>
                 </td>
             </tr>
-            <tr>
+            <tr style="display:none;">
                 <th style="width: 100px;">
                     <asp:Button ID="btnGetPlanInfo" runat="server" CssClass="button" OnClick="txtGetPlanInfo_Click"
                         Text="选择测控资源设用计划" CausesValidation="False" />
@@ -38,6 +38,17 @@
                     <br />
                 </td>
             </tr>
+            <tr>
+                    <th style="width: 120px;">
+                        上传进出站及航捷数据统计文件
+                    </th>
+                    <td align="left" colspan="3">
+                        <asp:FileUpload ID="FileUpload1" class="upload" runat="server" Width="455px" />
+                        <asp:Button ID="btnUpdate" class="button" runat="server" Text="上传" CausesValidation="False"
+                            OnClick="btnUpdate_Click" Width="54px" />
+                        <asp:Label ID="lblUpload" CssClass="error" runat="server" Text="文件上传成功" Visible="false"></asp:Label>
+                    </td>
+                </tr>
             <tr>
                 <th style="width: 100px;">
                     任务代号(<span class="red">*</span>)
@@ -81,7 +92,8 @@
                     申请序列号
                 </th>
                 <td>
-                    <asp:TextBox ID="txtSequence" CssClass="text" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtSequence" CssClass="text" runat="server"  Enabled="false"></asp:TextBox>
+                    &nbsp;<span style="color:#3399FF;">保存时自动生成</span>
                 </td>
                 <th>
                     时间
@@ -95,12 +107,14 @@
                 <th>
                     航天器标识</th>
                 <td>
-                    <asp:TextBox ID="txtSCID" CssClass="text" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtSCID" CssClass="text" runat="server"></asp:TextBox><asp:RequiredFieldValidator ID="rfSCID" runat="server" ControlToValidate="txtSCID"
+                        ErrorMessage="航天器标识不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
                 </td>
                 <th>
                     申请数量</th>
                 <td>
-                    <asp:TextBox ID="txtTaskCount" CssClass="text" runat="server" ReadOnly="True"></asp:TextBox>
+                    <asp:TextBox ID="txtTaskCount" CssClass="text" runat="server" ReadOnly="True"  Enabled="false"></asp:TextBox>
+                     &nbsp;<span style="color:#3399FF;">保存时自动生成</span>
                 </td>
             </tr>
             <tr>
@@ -294,7 +308,7 @@
                                             <HeaderTemplate>
                                                 <table class="list">
                                                     <tr>
-                                                        <th style="width: 150px;">
+                                                        <th align="left" style="width: 150px; ">
                                                             格式标志
                                                         </th>
                                                         <th style="width: 150px;">
@@ -432,16 +446,16 @@
                                             <HeaderTemplate>
                                                 <table class="list">
                                                     <tr>
-                                                        <th style="width: 125px;">
+                                                        <th style="width: 100px;">
                                                             点频序号
                                                         </th>
-                                                        <th style="width: 125px;">
+                                                        <th style="width: 100px;">
                                                             频段选择
                                                         </th>
-                                                        <th style="width: 125px;">
+                                                        <th style="width: 100px;">
                                                             点频选择
                                                         </th>
-                                                        <th style="width: 100px;">
+                                                        <th>
                                                         </th>
                                                     </tr>
                                                     <tbody>
@@ -501,7 +515,7 @@
                     Text="返回" Width="65px" 
                     onclick="btnReturn_Click" CausesValidation="False" />
     &nbsp;&nbsp;&nbsp;
-                <asp:Button ID="btnFormal"  class="button" runat="server" onclick="btnFormal_Click" 
+                <asp:Button ID="btnFormal"  class="button" runat="server" onclick="btnFormal_Click"
                     Text="转为正式计划" />
     </div>
     <div style="display: none">
@@ -511,11 +525,122 @@
         <asp:HiddenField ID="hfSatID" runat="server" />
         <asp:HiddenField ID="hfStatus" runat="server" />
         <asp:HiddenField ID="hfURL" runat="server" />
+        <asp:HiddenField ID="hfStationFile" runat="server" ClientIDMode="Static" />
+        <asp:TextBox ID="txtIds" runat="server" ClientIDMode="Static"></asp:TextBox>
+        <asp:Button ID="btnGetStationData" ClientIDMode="Static" class="button" runat="server" CausesValidation="false"
+                    OnClick="btnGetStationData_Click" Text="获取数据" />
     </div>
     <div id="dialog-form" style="display: none" title="提示信息">
         <p class="content">
         </p>
     </div>
+    <div id="dialog-station" style="display: none" title="选择进出站及航捷数据">
+            <asp:Repeater ID="rpStation" runat="server">
+                <HeaderTemplate>
+                    <table class="list" style="width: 1500px">
+                        <tr>
+                            <th style="width: 20px;">
+                                <input type="checkbox" onclick="checkAll(this)" />
+                            </th>
+                            <th style="width: 100px;">
+                                站名
+                            </th>
+                            <th style="width: 70px;">
+                                次数
+                            </th>
+                            <th style="width: 70px;">
+                                圈次
+                            </th>
+                            <th style="width: 70px;">
+                                升降轨
+                            </th>
+                            <th style="width: 120px;">
+                                跟踪时长
+                            </th>
+                            <th style="width: 120px;">
+                                超过最高仰角时长
+                            </th>
+                            <th style="width: 120px;">
+                                跟踪开始时间
+                            </th>
+                            <th style="width: 120px;">
+                                任务开始时间
+                            </th>
+                            <th style="width: 120px;">
+                                到最高仰角时间
+                            </th>
+                            <th style="width: 120px;">
+                                航捷时间
+                            </th>
+                            <th style="width: 120px;">
+                                出最高仰角时间
+                            </th>
+                            <th style="width: 120px;">
+                                任务结束时间
+                            </th>
+                            <th style="width: 120px;">
+                                跟踪结束时间
+                            </th>
+                            <th style="width: 120px;">
+                                航捷角
+                            </th>
+                        </tr>
+                        <tbody id="tbStations">
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="chkDelete" value="<%# Eval("rowIndex") %>" />
+                        </td>
+                        <td>
+                            <%# Eval("ZM")%>
+                        </td>
+                        <td>
+                            <%# Eval("N")%>
+                        </td>
+                        <td>
+                            <%# Eval("QC")%>
+                        </td>
+                        <td>
+                            <%# Eval("SJG")%>
+                        </td>
+                        <td>
+                            <%# Eval("SP1")%>
+                        </td>
+                        <td>
+                            <%# Eval("SP2")%>
+                        </td>
+                        <td>
+                            <%# Eval("T1")%>
+                        </td>
+                        <td>
+                            <%# Eval("T2")%>
+                        </td>
+                        <td>
+                            <%# Eval("T3")%>
+                        </td>
+                        <td>
+                            <%# Eval("T4")%>
+                        </td>
+                        <td>
+                            <%# Eval("T5")%>
+                        </td>
+                        <td>
+                            <%# Eval("T6")%>
+                        </td>
+                        <td>
+                            <%# Eval("T7")%>
+                        </td>
+                        <td>
+                            <%# Eval("h")%>
+                        </td>
+                    </tr>
+                </ItemTemplate>
+                <FooterTemplate>
+                    </tbody> </table>
+                </FooterTemplate>
+            </asp:Repeater>
+        </div>
     <div id="dialog-sbjh" style="display: none" title="选择测控资源使用计划">
         <p class="content">
         </p>
@@ -539,7 +664,7 @@
                         <th style="width: 150px;">
                             结束时间
                         </th>
-                        <th style="width: 70px;">
+                        <th style="width: 100px;">
                             选择
                         </th>
                     </tr>

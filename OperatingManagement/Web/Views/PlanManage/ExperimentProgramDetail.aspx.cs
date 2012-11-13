@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using System.Web;
+using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -32,15 +34,22 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             DataAccessLayer.PlanManage.SYCX cx = new DataAccessLayer.PlanManage.SYCX { Id = id };
             DataAccessLayer.PlanManage.SYCX obj = cx.SelectById();
-            XmlDocument xml = new XmlDocument();
-            xml.Load(HttpContext.Current.Server.MapPath(obj.FileIndex));
-            txtContent.Text = xml.InnerText;
+            string fileFullName = System.Configuration.ConfigurationManager.AppSettings["SYCXPath"] + obj.FileIndex.Substring(obj.FileIndex.LastIndexOf(@"\") + 1);
+            if (File.Exists(fileFullName))
+            {
+                XmlDocument xml = new XmlDocument();
+                XDocument doc = XDocument.Load(fileFullName);
+                //xml.Load(obj.FileIndex);
+                txtContent.Text = doc.ToString();
+            }
+            else
+                txtContent.Text = string.Format("文件{0}不存在", fileFullName);
         }
 
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMPLAN_ExProgram.View";
-            this.ShortTitle = "实验程序明细";
+            this.ShortTitle = "试验程序明细";
             base.OnPageLoaded();
         }
 

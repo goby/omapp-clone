@@ -89,20 +89,3 @@ function checkAll(o) {
         $('#tbStations').find('input:checkbox:not([disabled])').attr('checked', o.checked);
     }
 }
-
-function sendPlan() {
-
-
-    var chks = $('#tbStations').find('input:checkbox:[checked]');
-    if (chks.length == 0) {
-        _dialog.find('p.content').eq(0).html('请选择进出站及航捷数据。');
-        _dialog.dialog('open');
-        return false;
-    }
-
-
-    var ids = chks.map(function () { return this.value; }).get().join(',');
-
-    showSend(ids);
-    return false;
-}

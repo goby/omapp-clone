@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
+using System.IO;
 using System.Web.UI;
+using System.Web.Security;
 using System.Web.UI.WebControls;
+using System.Configuration;
 
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.WebKernel.Route;
@@ -12,10 +16,9 @@ using OperatingManagement.DataAccessLayer;
 using OperatingManagement.Framework;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.DataAccessLayer.BusinessManage;
-using System.Web.Security;
-using System.Data;
 using ServicesKernel.File;
 using ServicesKernel.DataFrame;
+using ServicesKernel.GDFX;
 using OperatingManagement.Framework.Storage;
 using OperatingManagement.Framework.Components;
 
@@ -153,12 +156,11 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             List<PlanParameter> targetList;
             ckbDestination.Items.Clear();
-            targetList = PlanParameters.ReadParameters("YDSJTargetList");
-            //targetList = FileExchangeConfig.GetTgtListForSending("YDSJ");
-            foreach (PlanParameter tgt in targetList)
-            {
-                ckbDestination.Items.Add(new ListItem(tgt.Text, tgt.Value));
-            }
+            targetList = PlanParameters.ReadParameters("YDSJSTTargetList");
+            ckbDestination.DataSource = targetList;
+            ckbDestination.DataTextField = "Text";
+            ckbDestination.DataValueField = "Value";
+            ckbDestination.DataBind();
         }
 
         protected void btnSend_Click(object sender, EventArgs e)
@@ -168,46 +170,110 @@ namespace OperatingManagement.Web.Views.PlanManage
         //最终发送
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            string cvtFilePath = string.Empty;
+            lblMessage.Text = "";
             try
             {
-                DataFrameBuilder dfBuilder = new DataFrameBuilder();
-                lblMessage.Text = "";//清空发送信息
+                List<YDSJ> lstYDSJ = (new YDSJ()).SelectByIDS(txtId.Text);
+                string filePath = SystemParameters.GetSystemParameterValue(SystemParametersType.GDJSResult, "result_path")
+                    + SystemParameters.GetSystemParameterValue(SystemParametersType.GDJSResult, "cvt_path");
+                if (!System.IO.Directory.Exists(filePath))
+                    System.IO.Directory.CreateDirectory(filePath);
+                cvtFilePath = System.IO.Path.Combine(filePath, Guid.NewGuid() + ".dat");
+                StreamWriter oWriter = new StreamWriter(cvtFilePath);
+                string strLine = string.Empty;
+                int iIdx = 0;
+                Dictionary<string, List<int>> dicTaskRow = new Dictionary<string, List<int>>();
+                List<int> lstIdx;
+                foreach (YDSJ oYdsj in lstYDSJ)
+                {
+                    strLine = string.Format("  {0}  {1}  {2}  {3}  {4}  {5}.{6}  {7}  {8}  {9}  {10}  {11}  {12}",
+                        oYdsj.Times.Year, oYdsj.Times.Month, oYdsj.Times.Day, oYdsj.Times.Hour, oYdsj.Times.Minute
+                        , oYdsj.Times.Second, oYdsj.Times.Millisecond.ToString("000000"), oYdsj.A.ToString("0000000000.000000")
+                        , oYdsj.E.ToString("0000000000.000000"), oYdsj.I.ToString("0000000000.000000"), oYdsj.O.ToString("0000000000.000000")
+                        , oYdsj.W.ToString("0000000000.000000"), oYdsj.M.ToString("0000000000.000000"));
+                    oWriter.WriteLine(strLine);
+                    //if (dicTaskRow.ContainsKey(oYdsj.SatName))
+                    //    dicTaskRow[oYdsj.SatName].Add(iIdx);
+                    //else
+                    //{
+                    //    lstIdx = new List<int>();
+                    //    dicTaskRow.Add(oYdsj.TaskID, lstIdx);
+                    //}
+                    iIdx++;
+                }
+                oWriter.Close();
+                int iTimeZone = 8;
+                string strResultFile;
+                //瞬时Kepler根数-J2000坐标系
+                string strResult = new GDFXProcessor().ParamConvert(true, true, iTimeZone, "16"
+                , cvtFilePath, cvtFilePath, out strResultFile);
+                if (!strResult.Equals(string.Empty))
+                {
+                    lblMessage.Text = strResult;
+                    return;
+                }
+                string[] datas = new string[iIdx];
+                StreamReader oReader = new StreamReader(strResultFile);
+                strLine = oReader.ReadLine();
+                iIdx = 0;
+                DateTime dt;
+                while (!string.IsNullOrEmpty(strLine))
+                {
+                    strResult = strLine.Substring(0, 23).Trim();
+                    dt = DateTime.ParseExact(strResult, "yyyy MM dd HH:mm:ss.f", System.Globalization.CultureInfo.InvariantCulture);
+                    while (strLine.IndexOf("   ") >= 0)
+                    {
+                        strLine = strLine.Replace("   ", "  ");
+                    }
+                    datas[iIdx] = dt.ToString("yyyyMMdd") + "  " + dt.ToString("HHmmssffff") + strLine.Substring(23);
+                    strLine = oReader.ReadLine();
+                    iIdx++;
+                }
+                    //foreach (KeyValuePair<string, List<int>> kValue in dicTaskRow)
+                    //{
+
+                    //}
+
+                FileSender objFileSender = new FileSender();
+                bool blResult = true; //发送结果
+                XYXSInfo objXYXSInfo = new XYXSInfo();
+                //发送协议
+                CommunicationWays protocl = (CommunicationWays)Convert.ToInt32(rbtProtocl.SelectedValue);
+                string strYDSJCode = PlanParameters.ReadParamValue("YDSJDataCode");
+                //信息类型id
+                int infotypeid = (new InfoType()).GetIDByExMark(strYDSJCode);
+                //发送方ID （运控中心 YKZX）
+                int senderid = objXYXSInfo.GetIdByAddrMark(System.Configuration.ConfigurationManager.AppSettings["ZXBM"]);
+                //接收方ID 
+                int reveiverid;
                 foreach (ListItem li in ckbDestination.Items)
                 {
                     if (li.Selected)
                     {
-                        XYXSInfo objXYXSInfo = new XYXSInfo();
-                        //发送方ID （运控中心 YKZX）
-                        int senderid = objXYXSInfo.GetIdByAddrMark(System.Configuration.ConfigurationManager.AppSettings["ZXBM"]);
-                        //接收方ID 
-                        int reveiverid = objXYXSInfo.GetIdByAddrMark(li.Value);
-                        //信息类型id
-                        int infotypeid = (new InfoType()).GetIDByExMark("YDSJ");
-                        string boolResult = ""; //文件发送结果
-                        DFSender objSender = new DFSender();
-                        List<YDSJ> list = (new YDSJ()).SelectByIDS(txtId.Text);
-                        for (int i = 0; i < list.Count; i++)
+                        reveiverid = objXYXSInfo.GetIdByAddrMark(li.Value);
+                        strResultFile = new PlanFileCreator().CreateSendingYDSJFile(ConfigurationManager.AppSettings["CurTaskNo"], li.Value, datas);
+                        blResult = objFileSender.SendFile(GetFileNameByFilePath(strResultFile), GetFilePathByFilePath(strResultFile), protocl, senderid, reveiverid, infotypeid, true);
+                        if (blResult)
                         {
-                            boolResult = objSender.SendDF( dfBuilder.BuildYDSJDF( list[i],DateTime.Now ),list[i].TaskID,list[i].SatName,infotypeid, senderid, reveiverid, DateTime.Now);
-                            switch (boolResult)
-                            {
-                                case "0" :
-                                    lblMessage.Text +=  " 数据发送请求提交成功。" + "<br />";
-                                    break;
-                                case "1" :
-                                     lblMessage.Text += " 数据发送请求提交失败。" + "<br />";
-                                    break;
-                            }
+                            lblMessage.Text += GetFileNameByFilePath(strResultFile) + " 文件发送请求提交成功。" + "<br />";
                         }
-
-                    }//li
+                        else
+                        {
+                            lblMessage.Text += GetFileNameByFilePath(strResultFile) + " 文件发送请求提交失败。" + "<br />";
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
-                throw (new AspNetException("发送计划出现异常，异常原因", ex));
+                throw (new AspNetException("发送引导数据出现异常，异常原因", ex));
             }
-            finally { }
+            finally
+            {
+                if (File.Exists(cvtFilePath))
+                    File.Delete(cvtFilePath); 
+            }
 
         }
         //取消
@@ -236,7 +302,24 @@ namespace OperatingManagement.Web.Views.PlanManage
             Page.Response.Redirect(Request.CurrentExecutionFilePath);
         }
 
+        /// <summary>
+        /// 获取文件完整路径下的文件名
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        private string GetFileNameByFilePath(string filepath)
+        {
+            return filepath.Substring(filepath.LastIndexOf("\\") + 1);
+        }
 
-
+        /// <summary>
+        /// 获取文件完整路径下的文件路径
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        private string GetFilePathByFilePath(string filepath)
+        {
+            return filepath.Substring(0, filepath.LastIndexOf("\\") + 1);
+        }
     }
 }

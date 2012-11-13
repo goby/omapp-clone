@@ -50,8 +50,9 @@
                 卫星状态(<span class="red">*</span>)
             </th>
             <td>
-                <asp:DropDownList ID="dplState" runat="server" CssClass="norDpl">
-                </asp:DropDownList>
+                <asp:RadioButtonList ID="rblState" runat="server" BorderColor="White" 
+                    BorderStyle="Double" BorderWidth="2px" RepeatDirection="Horizontal" ClientIDMode="Static">
+                </asp:RadioButtonList>
             </td>
         </tr>
         <tr>
@@ -63,7 +64,7 @@
                 <asp:RequiredFieldValidator ID="rfv4" runat="server" Display="Dynamic" ForeColor="Red"
                     ControlToValidate="txtMZB" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
                 <asp:RegularExpressionValidator ID="rev3" runat="server" Display="Dynamic" ForeColor="Red"
-                    ControlToValidate="txtMZB" ErrorMessage="（请输入8位内正整数）" ValidationExpression="^[1-9][0-9]{0,7}$"></asp:RegularExpressionValidator>
+                    ControlToValidate="txtMZB" ErrorMessage="（请输入8位内数字，精度最大3位）" ValidationExpression="\d{1,5}(.\d{1,3})?"></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
@@ -75,7 +76,52 @@
                 <asp:RequiredFieldValidator ID="rfv5" runat="server" Display="Dynamic" ForeColor="Red"
                     ControlToValidate="txtBMFSXS" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" Display="Dynamic"
-                    ForeColor="Red" ControlToValidate="txtBMFSXS" ErrorMessage="（请输入8位内正整数）" ValidationExpression="^[1-9][0-9]{0,7}$"></asp:RegularExpressionValidator>
+                    ForeColor="Red" ControlToValidate="txtBMFSXS" ErrorMessage="（请输入8位内数字，精度最大3位）" ValidationExpression="\d{1,5}(.\d{1,3})?"></asp:RegularExpressionValidator>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                形状(<span class="red">*</span>)
+            </th>
+            <td>
+                <asp:RadioButtonList ID="rblShape" runat="server" BorderColor="White" 
+                    BorderStyle="Double" BorderWidth="2px" RepeatDirection="Horizontal">
+                </asp:RadioButtonList>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                直径(<span class="red">*</span>)
+            </th>
+            <td>
+                <asp:TextBox ID="txtD" runat="server" Width="300px" CssClass="text" MaxLength="8"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic" ForeColor="Red"
+                    ControlToValidate="txtD" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtD" ErrorMessage="（请输入8位内数字，精度最大3位）" ValidationExpression="\d{1,5}(.\d{1,3})?"></asp:RegularExpressionValidator>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                长度(<span class="red">*</span>)
+            </th>
+            <td>
+                <asp:TextBox ID="txtL" runat="server" Width="300px" CssClass="text" MaxLength="8" Text="0"></asp:TextBox>
+                <span style="color:#3399FF;">球体时长度为0</span>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic" ForeColor="Red"
+                    ControlToValidate="txtL" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtL" ErrorMessage="（请输入8位内数字，精度最大3位）" ValidationExpression="\d{1,5}(.\d{1,3})?"></asp:RegularExpressionValidator>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                表面情况(<span class="red">*</span>)
+            </th>
+            <td>
+                <asp:RadioButtonList ID="rblRG" runat="server" BorderColor="White" 
+                    BorderStyle="Double" BorderWidth="2px" RepeatDirection="Horizontal">
+                </asp:RadioButtonList>
             </td>
         </tr>
         <tr>
@@ -146,8 +192,28 @@
                 卫星功能
             </th>
             <td>
-                <asp:TextBox ID="txtGN" runat="server" TextMode="MultiLine" Width="300px" Height="100px"
-                    CssClass="text" MaxLength="500"></asp:TextBox>
+                <asp:HiddenField ID="hfWXGNs" runat="server" ClientIDMode="Static" />
+                <asp:HiddenField ID="hfSatID" runat="server"  ClientIDMode="Static" />
+                <asp:Repeater ID="rpWXGNs" runat="server">
+                    <HeaderTemplate>
+                        <table class="list" id="tbWXGNs">
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <tr>
+                            <td>
+                                <ul class="taskList">
+                                    <li>
+                                        <input type="checkbox" id="chkGN<%# Eval("Id") %>" value="<%# Eval("Id") %>" />
+                                        <span class="spanFNames" style="width:auto;"><%# Eval("FName") %></span>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </ItemTemplate>
+                    <FooterTemplate>                    
+                        </table>
+                    </FooterTemplate>
+                </asp:Repeater>
             </td>
         </tr>
          <tr>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -31,34 +32,43 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
 
         protected void InitData()
         {
-            ZYSX zy = new ZYSX();
-            lbDMZ.DataSource = zy.GetGroundStationZYSXList();
-            lbDMZ.DataTextField = "PName";
-            lbDMZ.DataValueField = "PCode";
-            lbDMZ.DataBind();
-
-            lbSat.DataSource = zy.GetSatelliteZYSXList();
-            lbSat.DataTextField = "PName";
-            lbSat.DataValueField = "PCode";
-            lbSat.DataBind();
-
-            GroundResource g = new GroundResource();
-            ddlDMZ.DataSource = g.SelectAll();
-            ddlDMZ.DataTextField = "EquipmentName";
-            ddlDMZ.DataValueField = "EquipmentCode";
-            ddlDMZ.DataBind();
+            List<MatchRule> lstRules = new List<MatchRule>();
+            MatchRule oRule = new MatchRule();
+            lstRules.Add(oRule);
+            rpPPZZ.DataSource = lstRules;
+            rpPPZZ.DataBind();
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            StringBuilder sbRules = new StringBuilder();
+            string strPCode = string.Empty;
+            string strLogic = string.Empty;
+            DropDownList ddlList;
+            List<string> lstSXs = new List<string>();
+            foreach (RepeaterItem it in rpPPZZ.Items)
+            {
+                ddlList = (DropDownList)it.FindControl("ddlZYSX");
+                if (ddlList != null)
+                    strPCode = ddlList.SelectedValue;
+                if (!lstSXs.Contains(strPCode))
+                    lstSXs.Add(strPCode);
+                else
+                {
+                    ltMessage.Text = "资源属性选择有重复。";
+                    return;
+                }
+                ddlList = (DropDownList)it.FindControl("ddlLogic");
+                if (ddlList != null)
+                    strLogic = ddlList.SelectedItem.Text;
+                sbRules.Append("[" + strPCode + "]" + strLogic + "[" + strPCode + "],");
+            }
 
             DataAccessLayer.BusinessManage.ZYGN t = new DataAccessLayer.BusinessManage.ZYGN()
             {
                 FName = txtName.Text.Trim(),
                 FCode = txtCode.Text.Trim(),
-                MatchRule = ucSatellite1.SelectedValue + "."+lbSat.SelectedValue + rblOwn.SelectedValue
-                                    + ddlDMZ.SelectedValue + "." + lbDMZ.SelectedValue
-
+                MatchRule = sbRules.ToString().TrimEnd(new char[]{','})
             };
             var result = Framework.FieldVerifyResult.Error;
             try
@@ -92,6 +102,81 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
         protected void btnEmpty_Click(object sender, EventArgs e)
         {
             Page.Response.Redirect(Request.CurrentExecutionFilePath);
+        }
+
+        protected void rpPPZZ_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            List<MatchRule> lstRules = new List<MatchRule>();
+            MatchRule oRule;
+            Repeater rp = (Repeater)source;
+            DropDownList ddlList;
+
+            if (e.CommandName == "Add")
+            {
+                foreach (RepeaterItem it in rp.Items)
+                {
+                    oRule = new MatchRule();
+                    ddlList = (DropDownList)it.FindControl("ddlZYSX");
+                    if (ddlList != null)
+                        oRule.PCode = ddlList.SelectedValue;
+                    ddlList = (DropDownList)it.FindControl("ddlLogic");
+                    if (ddlList != null)
+                        oRule.LogicSymbol = (emLogicSymbol)(Enum.Parse(typeof(emLogicSymbol), ddlList.SelectedValue));
+                    lstRules.Add(oRule);
+                }
+                oRule = new MatchRule();
+                lstRules.Add(oRule);
+                rp.DataSource = lstRules;
+                rp.DataBind();
+            }
+            if (e.CommandName == "Del")
+            {
+                if (rp.Items.Count == 1)
+                {
+                    oRule = new MatchRule();
+                    lstRules.Add(oRule);
+                }
+                else
+                {
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        if (e.Item.ItemIndex != it.ItemIndex)
+                        {
+                            oRule = new MatchRule();
+                            ddlList = (DropDownList)it.FindControl("ddlZYSX");
+                            if (ddlList != null)
+                                oRule.PCode = ddlList.SelectedValue;
+                            ddlList = (DropDownList)it.FindControl("ddlLogic");
+                            if (ddlList != null)
+                                oRule.LogicSymbol = (emLogicSymbol)(Enum.Parse(typeof(emLogicSymbol), ddlList.SelectedValue));
+                            lstRules.Add(oRule);
+                        }
+                    }
+                }
+                rp.DataSource = lstRules;
+                rp.DataBind();
+            }
+
+        }
+
+        protected void rpPPZZ_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            try
+            {
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                {
+                    DropDownList ddlSY = (DropDownList)e.Item.FindControl("ddlZYSX") as DropDownList;
+                    ddlSY.DataSource = new ZYSX().Cache;
+                    ddlSY.DataTextField = "PName";
+                    ddlSY.DataValueField = "PCode";
+                    ddlSY.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("绑定匹配准则信息出现异常，异常原因", ex));
+            }
+            finally { }
         }
     }
 }

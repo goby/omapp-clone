@@ -8,12 +8,20 @@
       <SrcCode>YKZX</SrcCode>
       <TgtList>
         <TgtCode>XSCC</TgtCode>
+      </TgtList>
+    </Info>
+    <Info>
+      <Type>SYJH</Type>
+      <Name>试验计划</Name>
+      <Suffix>PLA</Suffix>
+      <SrcCode>YKZX</SrcCode>
+      <TgtList>
         <TgtCode>XXZX</TgtCode>
       </TgtList>
     </Info>
     <Info>
-      <Type>GZJH</Type>
-      <Name>地面站工作计划</Name>
+      <Type>DJZYSQ</Type>
+      <Name>测控资源使用申请</Name>
       <Suffix>xml</Suffix>
       <SrcCode>YKZX</SrcCode>
       <TgtList>
@@ -95,6 +103,20 @@
       </TgtList>
     </Info>
     <Info>
+      <Type>YDSJ</Type>
+      <Name>引导数据</Name>
+      <Suffix>LED</Suffix>
+      <SrcCode>YKZX</SrcCode>
+      <TgtList>
+        <TgtCode>XSCC</TgtCode>
+        <TgtCode>JYZ1</TgtCode>
+        <TgtCode>JYZ2</TgtCode>
+        <TgtCode>CLZX</TgtCode>
+        <TgtCode>JZZX</TgtCode>
+        <TgtCode>ZLZX</TgtCode>
+      </TgtList>
+    </Info>
+    <Info>
       <Type>GCSJ</Type>
       <Name>天基目标观测试验数据</Name>
       <Suffix>DAT</Suffix>
@@ -169,13 +191,11 @@
   </toSend>
   <toReceive>
     <Info>
-      <Type>SBJH</Type>
-      <Name>设备工作计划</Name>
+      <Type>DJZYJH</Type>
+      <Name>测控资源使用计划</Name>
       <Suffix>xml</Suffix>
       <SrcCode>XSCC</SrcCode>
-      <TgtList>
-        <TgtCode>YKZX</TgtCode>
-      </TgtList>
+      <TgtCode>YKZX</TgtCode>
     </Info>
     <Info>
       <Type>MBXX</Type>
@@ -428,10 +448,10 @@
             <Type>XSCC</Type>
             <Name>西安中心（XSCC）</Name>
         </Info>
-        <!--<Info>
-            <Type>XXZX</Type>
-            <Name>总参二部信息处理中心（XXZX）</Name>
-        </Info>-->
+        <Info>
+            <Type>CLZX</Type>
+            <Name>总参二部信息处理中心（CLZX）</Name>
+        </Info>
         <Info>
             <Type>JZZX</Type>
             <Name>总参三部技侦中心（JZZX）</Name>

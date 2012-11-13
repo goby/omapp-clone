@@ -173,6 +173,11 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 OracleDbType = OracleDbType.Int32,
             };
         }
+
+        private void RefreshCache()
+        {
+            this.Cache = SelectAll();
+        }
         #endregion
 
         #region -Public Method-
@@ -283,6 +288,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                                         v_Result});
             if (v_ID.Value != null && v_ID.Value != DBNull.Value)
                 this.Id = Convert.ToInt32(v_ID.Value);
+            RefreshCache();
             return (FieldVerifyResult)Convert.ToInt32(v_Result.Value);
         }
         /// <summary>
@@ -313,6 +319,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                                         new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
                                         new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0.0 ? DBNull.Value as object : UpdatedUserID),
                                         v_Result});
+            RefreshCache();
             return (FieldVerifyResult)Convert.ToInt32(v_Result.Value);
         }
         /// <summary>

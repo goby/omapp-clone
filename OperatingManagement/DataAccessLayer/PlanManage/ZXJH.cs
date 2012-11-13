@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Configuration;
 using System.Xml;
 
 using OperatingManagement.Framework.Basic;
@@ -15,7 +16,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
     /// <summary>
     /// 中心计划
     /// </summary>
-    public class ZXJH 
+    public class ZXJH
     {
         #region -Properties-
         public int ID { get; set; }
@@ -77,7 +78,13 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         #endregion
 
         #region -Methods-
-        public ZXJH SelectByID(int id)
+        /// <summary>
+        /// 此方法For 运行管理使用
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="sharedPath">计划文件的共享路径，以/结束</param>
+        /// <returns></returns>
+        public ZXJH SelectByID(int id, string sharedPath)
         {
             ZXJH result = new ZXJH();
             string fileindex;   //Detail File Path
@@ -90,6 +97,9 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             }
 
             fileindex = list[0].FileIndex;
+            fileindex = sharedPath + fileindex.Substring(fileindex.LastIndexOf(@"\") + 1);
+            result.TaskID = list[0].TaskID;
+            result.SatID = list[0].SatID;
 
             #region 变量
             List<ZXJH_SYContent> listSY = new List<ZXJH_SYContent>();
@@ -215,7 +225,9 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 dh.SYID = n["对应试验ID"].InnerText;
                 dh.SatID = n["卫星代号"].InnerText;
                 dh.Laps = n["圈次"].InnerText;
+                dh.MainStation = n["主站"].InnerText;
                 dh.MainStationEquipment = n["主站设备"].InnerText;
+                dh.BakStation = n["备站"].InnerText;
                 dh.BakStationEquipment = n["备站设备"].InnerText;
                 dh.Content = n["工作内容"].InnerText;
                 dh.StartTime = n["实时开始处理时间"].InnerText;
@@ -484,7 +496,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
     /// </summary>
     [Serializable]
     public class ZXJH_WorkContent : Object, ICloneable
-    { 
+    {
         #region -Properties-
         /// <summary>
         /// 工作: 试验规划、计划管理、试验数据处理
@@ -506,6 +518,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 最长持续时间
         /// </summary>
         public string MaxTime { get; set; }
+        /// <summary>
+        /// 完成状态
+        /// </summary>
+        public string Status { get; set; }
         #endregion
 
         public object Clone()
@@ -548,13 +564,17 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 指Ling制作-说明
         /// </summary>
         public string Work_Command_Note { get; set; }
+        /// <summary>
+        /// 完成状态
+        /// </summary>
+        public string Status { get; set; }
     }
 
     /// <summary>
     /// 工作计划-RealTime试验数据处理
     /// </summary>
     [Serializable]
-    public class ZXJH_SYDataHandle: Object, ICloneable
+    public class ZXJH_SYDataHandle : Object, ICloneable
     {
         #region -Properties-
         /// <summary>
@@ -597,6 +617,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// RealTime结束处理时间
         /// </summary>
         public string EndTime { get; set; }
+        /// <summary>
+        /// 完成状态
+        /// </summary>
+        public string Status { get; set; }
         #endregion
 
         public object Clone()
@@ -628,6 +652,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// RealTime演示任务：有/无
         /// </summary>
         public string RealTimeDemoTask { get; set; }
+        /// <summary>
+        /// 完成状态
+        /// </summary>
+        public string Status { get; set; }
         #endregion
     }
 
@@ -654,6 +682,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 结束时间
         /// </summary>
         public string EndTime { get; set; }
+        /// <summary>
+        /// 完成状态
+        /// </summary>
+        public string Status { get; set; }
         #endregion
     }
 
@@ -676,6 +708,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 完成时间
         /// </summary>
         public string EndTime { get; set; }
+        /// <summary>
+        /// 完成状态
+        /// </summary>
+        public string Status { get; set; }
         #endregion
     }
 

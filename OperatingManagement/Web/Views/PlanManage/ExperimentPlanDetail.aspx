@@ -13,26 +13,35 @@
     计划管理 &gt; 查看试验计划明细
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
-    <table cellpadding="0" class="style1 edit1">
+    <table cellpadding="0" class="style1 edit1"  style="width: 700px;">
+    <tr>
+            <th style="width: 120px;">
+                编号
+            </th>
+            <td>
+                <asp:TextBox ID="txtJHID" runat="server" CssClass="text" MaxLength="10"
+                    Width="200px"></asp:TextBox>
+            </td>
+        </tr>
         <tr>
-            <th style="width: 180px;">
+            <th style="width: 120px;">
                 时间
             </th>
             <td>
-                <asp:TextBox ID="txtSYTime" runat="server" CssClass="text" MaxLength="10" onclick="setday(this);"
-                    Width="300px"></asp:TextBox>
+                <asp:TextBox ID="txtSYTime" runat="server" CssClass="text" MaxLength="10"
+                    Width="200px"></asp:TextBox>
             </td>
         </tr>
         <tr>
-            <th style="width: 180px;">
+            <th style="width: 120px;">
                 试验个数
             </th>
             <td>
-                <asp:TextBox ID="txtSYCount" runat="server" CssClass="text" MaxLength="10" Width="300px"></asp:TextBox>
+                <asp:TextBox ID="txtSYCount" runat="server" CssClass="text" MaxLength="10" Width="200px"></asp:TextBox>
             </td>
         </tr>
-        <tr>
-            <th style="width: 180px;">
+        <tr style = "display:none;">
+            <th style="width: 120px;">
                 &nbsp;
             </th>
             <td>
@@ -41,67 +50,66 @@
             </td>
         </tr>
     </table>
-    <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="Repeater1_ItemDataBound"
-        OnItemCommand="Repeater1_ItemCommand">
+    <asp:Repeater ID="Repeater1" runat="server">
         <ItemTemplate>
-            <table class="edit1" style="width: 800px;">
+            <table class="edit1" style="width: 700px;">
                 <tr>
-                    <th style="width: 180px;" rowspan="7">
+                    <th style="width: 120px;" rowspan="7">
                         试验
                     </th>
-                    <th style="width: 140px;">
+                    <th style="width: 100px;">
                         卫星名称
                     </th>
                     <td>
-                        <asp:TextBox ID="txtSYSatName" CssClass="text" runat="server" Text='<%# Eval("SYSatName")%>'></asp:TextBox>
+                        <asp:TextBox Width="200px" ID="txtSYSatName" CssClass="text" runat="server" Text='<%# Eval("SYSatName")%>'></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
-                    <th style="width: 140px;">
+                    <th style="width: 100px;">
                         试验类别
                     </th>
                     <td>
-                        <asp:TextBox ID="txtSYType" CssClass="text" runat="server" Text='<%# Eval("SYType")%>'></asp:TextBox>
+                        <asp:TextBox Width="200px" ID="txtSYType" CssClass="text" runat="server" Text='<%# Eval("SYType")%>'></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
-                    <th style="width: 140px;">
+                    <th style="width: 100px;">
                         试验项目
                     </th>
                     <td>
-                        <asp:TextBox ID="txtSYItem" CssClass="text" runat="server" Text='<%# Eval("SYItem")%>'></asp:TextBox>
+                        <asp:TextBox Width="200px" ID="txtSYItem" CssClass="text" runat="server" Text='<%# Eval("SYItem")%>'></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
-                    <th style="width: 140px;">
+                    <th style="width: 100px;">
                         开始时间
                     </th>
                     <td>
-                        <asp:TextBox ID="txtStartTime" CssClass="text" runat="server" Text='<%# Eval("SYStartTime")%>'></asp:TextBox>
+                        <asp:TextBox Width="200px" ID="txtStartTime" CssClass="text" runat="server" Text='<%# Eval("SYStartTime")%>'></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
-                    <th style="width: 140px;">
+                    <th style="width: 100px;">
                         结束时间
                     </th>
                     <td>
-                        <asp:TextBox ID="txtEndTime" CssClass="text" runat="server" Text='<%# Eval("SYEndTime")%>'></asp:TextBox>
+                        <asp:TextBox Width="200px" ID="txtEndTime" CssClass="text" runat="server" Text='<%# Eval("SYEndTime")%>'></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
-                    <th style="width: 140px;">
+                    <th style="width: 100px;">
                         系统名称
                     </th>
                     <td>
-                        <asp:TextBox ID="txtSYSysName" CssClass="text" runat="server" Text='<%# Eval("SYSysName")%>'></asp:TextBox>
+                        <asp:TextBox Width="200px" ID="txtSYSysName" CssClass="text" runat="server" Text='<%# Eval("SYSysName")%>'></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
-                    <th style="width: 140px;">
+                    <th style="width: 100px;">
                         系统任务
                     </th>
                     <td>
-                        <asp:TextBox ID="txtSYSysTask" CssClass="text" runat="server" Text='<%# Eval("SYSysTask")%>'></asp:TextBox>
+                        <asp:TextBox Width="200px" ID="txtSYSysTask" CssClass="text" runat="server" Text='<%# Eval("SYSysTask")%>'></asp:TextBox>
                     </td>
                 </tr>
             </table>

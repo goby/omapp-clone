@@ -68,6 +68,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                     BindDataSource();
                     BindControls();
                     BindZYSXList();
+                    BindZYGNList();
                 }
                 BindRepeaterItems();
                 cpZYSXPager.PostBackPage += new EventHandler(cpZYSXPager_PostBackPage);
@@ -89,6 +90,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
             try
             {
                 string msg = string.Empty;
+                #region Check Input Box
                 if (string.IsNullOrEmpty(txtWXMC.Text.Trim()))
                 {
                     trMessage.Visible = true;
@@ -110,21 +112,6 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                     return;
                 }
 
-                if (string.IsNullOrEmpty(dplState.SelectedValue))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "卫星状态不能为空";
-                    return;
-                }
-
-                int state = 0;
-                if (!int.TryParse(dplState.SelectedValue, out state))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "卫星状态格式错误";
-                    return;
-                }
-
                 if (string.IsNullOrEmpty(txtMZB.Text.Trim()))
                 {
                     trMessage.Visible = true;
@@ -132,8 +119,8 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                     return;
                 }
 
-                int mzb = 0;
-                if (!int.TryParse(txtMZB.Text.Trim(), out mzb))
+                double mzb = 0;
+                if (!double.TryParse(txtMZB.Text.Trim(), out mzb))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "面质比格式错误";
@@ -147,13 +134,50 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                     return;
                 }
 
-                int bmfsxs = 0;
-                if (!int.TryParse(txtBMFSXS.Text.Trim(), out bmfsxs))
+                double bmfsxs = 0;
+                if (!double.TryParse(txtBMFSXS.Text.Trim(), out bmfsxs))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "表面反射系数格式错误";
                     return;
                 }
+
+                if (string.IsNullOrEmpty(txtD.Text.Trim()))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "直径不能为空";
+                    return;
+                }
+
+                double dblD = 0;
+                if (!double.TryParse(txtD.Text.Trim(), out dblD))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "直径格式错误";
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(txtBMFSXS.Text.Trim()))
+                {
+                    trMessage.Visible = true;
+                    lblMessage.Text = "长度不能为空";
+                    return;
+                }
+
+                double dblL = 0;
+
+                if (rblShape.SelectedValue == "0")
+                    txtL.Text = "";
+                else
+                {
+                    if (!double.TryParse(txtL.Text.Trim(), out dblL))
+                    {
+                        trMessage.Visible = true;
+                        lblMessage.Text = "长度格式错误";
+                        return;
+                    }
+                }
+                #endregion
 
                 if (!LoopRepeaterItems())
                 {
@@ -173,10 +197,14 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                 satellite.WXMC = txtWXMC.Text.Trim();
                 satellite.WXBM = txtWXBM.Text.Trim();
                 satellite.WXBS = txtWXBS.Text.Trim();
-                satellite.State = state.ToString();
-                satellite.MZB = mzb;
-                satellite.BMFSXS = bmfsxs;
-                satellite.GN = txtGN.Text.Trim();
+                satellite.State = rblState.SelectedValue;
+                satellite.SM = mzb;
+                satellite.Ref = bmfsxs;
+                satellite.Shape = int.Parse(rblShape.SelectedValue);
+                satellite.D = dblD;
+                satellite.L = dblL;
+                satellite.RG = int.Parse(rblRG.SelectedValue);
+                satellite.GN = hfWXGNs.Value;
                 //satellite.CreatedTime = DateTime.Now;
 
                 if (ZYSXIDPValueDic != null && ZYSXIDPValueDic.Count > 0)
@@ -192,7 +220,8 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
 
                     satellite.SX = extProperties;
                 }
-
+                #region 注释了
+                /*
                 if (satellite.HaveActiveWXMC())
                 {
                     trMessage.Visible = true;
@@ -210,13 +239,23 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                     trMessage.Visible = true;
                     lblMessage.Text = "卫星标识已经存在";
                     return;
-                }
+                }*/
+                #endregion
 
                 result = satellite.Update();
                 switch (result)
                 {
                     case Framework.FieldVerifyResult.Error:
                         msg = "发生了数据错误，无法完成请求的操作。";
+                        break;
+                    case Framework.FieldVerifyResult.NameDuplicated:
+                        msg = "卫星名称已经存在。";
+                        break;
+                    case Framework.FieldVerifyResult.NameDuplicated2:
+                        msg = "卫星编码已经存在。";
+                        break;
+                    case Framework.FieldVerifyResult.NameDuplicated3:
+                        msg = "卫星标识已经存在。";
                         break;
                     case Framework.FieldVerifyResult.Success:
                         msg = "编辑卫星成功。";
@@ -302,6 +341,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
             this.PagePermission = "OMB_SatkMan.Edit";
             this.ShortTitle = "编辑卫星";
             this.SetTitle();
+            this.AddJavaScriptInclude("scripts/pages/businessManage/SatAdd.aspx.js");
         }
         #region Method
         /// <summary>
@@ -309,11 +349,26 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
         /// </summary>
         private void BindDataSource()
         {
-            dplState.Items.Clear();
-            dplState.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.SatelliteState);
-            dplState.DataTextField = "key";
-            dplState.DataValueField = "value";
-            dplState.DataBind();
+            rblState.Items.Clear();
+            rblState.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.SatelliteState);
+            rblState.DataTextField = "key";
+            rblState.DataValueField = "value";
+            rblState.DataBind();
+            rblState.SelectedIndex = 0;
+
+            rblShape.Items.Clear();
+            rblShape.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.SatelliteShape);
+            rblShape.DataTextField = "key";
+            rblShape.DataValueField = "value";
+            rblShape.DataBind();
+            rblShape.SelectedIndex = 0;
+
+            rblRG.Items.Clear();
+            rblRG.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.SatelliteFace);
+            rblRG.DataTextField = "key";
+            rblRG.DataValueField = "value";
+            rblRG.DataBind();
+            rblRG.SelectedIndex = 0;
         }
         /// <summary>
         /// 绑定控件值
@@ -328,10 +383,14 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                 txtWXMC.Text = satellite.WXMC;
                 txtWXBM.Text = satellite.WXBM;
                 txtWXBS.Text = satellite.WXBS;
-                dplState.SelectedValue = satellite.State;
-                txtMZB.Text = satellite.MZB.ToString();
-                txtBMFSXS.Text = satellite.BMFSXS.ToString();
-                txtGN.Text = satellite.GN;
+                rblState.SelectedIndex = rblState.Items.IndexOf(rblState.Items.FindByValue(satellite.State));
+                txtMZB.Text = satellite.SM.ToString();
+                txtBMFSXS.Text = satellite.Ref.ToString();
+                txtD.Text = satellite.D.ToString();
+                txtL.Text = satellite.L.ToString();
+                rblShape.SelectedIndex = rblShape.Items.IndexOf(rblShape.Items.FindByValue(satellite.Shape.ToString()));
+                rblRG.SelectedIndex = rblRG.Items.IndexOf(rblRG.Items.FindByValue(satellite.RG.ToString()));
+                hfWXGNs.Value = satellite.GN;
                 lblCreatedTime.Text = satellite.CTime == DateTime.MinValue ? satellite.CTime.ToString("yyyy-MM-dd HH:mm:ss") : satellite.CTime.ToString("yyyy-MM-dd HH:mm:ss");
 
                 if (!string.IsNullOrEmpty(satellite.SX))
@@ -373,6 +432,23 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
             cpZYSXPager.BindToControl = rpZYSXList;
             rpZYSXList.DataSource = cpZYSXPager.DataSourcePaged;
             rpZYSXList.DataBind();
+        }
+        /// <summary>
+        /// 绑定资源功能
+        /// </summary>
+        private void BindZYGNList()
+        {
+            List<ZYGN> lstZYGN = new List<ZYGN>();
+            try
+            {
+                lstZYGN = new ZYGN().SelectAll();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增卫星页面-绑定资源功能时出现异常，异常原因", ex));
+            }
+            rpWXGNs.DataSource = lstZYGN;
+            rpWXGNs.DataBind();
         }
         /// <summary>
         /// 生成属性对应控件

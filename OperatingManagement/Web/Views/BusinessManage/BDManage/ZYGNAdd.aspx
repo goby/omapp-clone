@@ -36,62 +36,52 @@
         </tr>
         <tr>
             <th style="width: 100px;">
-                属性(<span class="red">*</span>)
+                匹配准则(<span class="red">*</span>)
             </th>
             <td>
-                <br />
-                <table class="edit">
-                    <tr>
-                        <th style="width: 150px;">
-                            卫星
-                        </th>
-                        <th style="width: 100px;">
-                            匹配准则
-                        </th>
-                        <th style="width: 150px;">
-                            地面站资源
-                        </th>
-                    </tr>
-                    <tr>
-                        <td style="vertical-align: top;">
-                            <uc1:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
-                            <br />
-                            <asp:ListBox ID="lbSat" runat="server" Height="110px" Width="113px">
-                            </asp:ListBox>
-                        </td>
-                        <td>
-                            <asp:RadioButtonList ID="rblOwn" runat="server" BorderColor="White" BorderStyle="Double"
-                                BorderWidth="2px">
-                                <asp:ListItem Value="&lt;" Selected="True">&lt;</asp:ListItem>
-                                <asp:ListItem Value="&lt;=">&lt;=</asp:ListItem>
-                                <asp:ListItem Value="=">=</asp:ListItem>
-                                <asp:ListItem Value="&gt;=">&gt;=</asp:ListItem>
-                                <asp:ListItem Value="&gt;">&gt;</asp:ListItem>
-                            </asp:RadioButtonList>
-                        </td>
-                        <td style="vertical-align: top;">
-                            <asp:DropDownList ID="ddlDMZ" runat="server" Width="113px">
-                            </asp:DropDownList>
-                            <br />
-                            <asp:ListBox ID="lbDMZ" runat="server" Height="110px" Width="113px">
-                            </asp:ListBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="vertical-align: top;">
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
-                                ControlToValidate="lbSat" Display="Dynamic" ErrorMessage="未选择属性" 
-                                ForeColor="Red"></asp:RequiredFieldValidator>
-                        </td>
-                        <td>
-                            &nbsp;</td>
-                        <td style="vertical-align: top;">
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
-                                ControlToValidate="lbDMZ" Display="Dynamic" ErrorMessage="未选择属性" 
-                                ForeColor="Red"></asp:RequiredFieldValidator>
-                        </td>
-                    </tr>
-                </table>
+                <asp:Repeater ID="rpPPZZ" runat="server" OnItemCommand="rpPPZZ_ItemCommand"
+                        OnItemDataBound="rpPPZZ_ItemDataBound">
+                        <HeaderTemplate>
+                            <table class="edit1">
+                                <tbody>
+                        </HeaderTemplate>
+                        <ItemTemplate>
+                            <tr>
+                                <td style="width: 100px;">属性</td>
+                                <td style="width: 200px;" colspan="2" >
+                                    <asp:DropDownList ID="ddlZYSX" runat="server" Width="180px" DataTextField="Text" DataValueField="Value">
+                                    </asp:DropDownList></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;">
+                                    卫星
+                                    <br />
+                                </td>
+                                <td>
+                                    <asp:DropDownList ID="ddlLogic" runat="server" Width="180px">
+                                        <asp:ListItem Value="LessThan">&lt;</asp:ListItem>
+                                        <asp:ListItem Value="LessThanEqual">&lt;=</asp:ListItem>
+                                        <asp:ListItem Value="Equal">=</asp:ListItem>
+                                        <asp:ListItem Value="MoreThanEqual">&gt;=</asp:ListItem>
+                                        <asp:ListItem Value="MoreThan">&gt;</asp:ListItem>
+                                    </asp:DropDownList>
+                                </td>
+                                <td style="width: 100px;">
+                                    地面站资源
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" align="right">
+                                    <asp:Button ID="btnAdd" runat="server" CssClass="button" CausesValidation="false" CommandName="Add" Text="添加" />
+                                    <asp:Button ID="btnDel" runat="server" CssClass="button" CausesValidation="false" CommandName="Del" Text="删除" />
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            </tbody> </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
             </td>
         </tr>
         <tr>

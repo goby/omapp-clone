@@ -39,7 +39,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 this.STTimeEnd = DateTime.Parse(dr["STTimeEnd"].ToString());
             this.SType = dr["SType"] == DBNull.Value ? string.Empty : dr["SType"].ToString();
             this.Reserve = dr["Reserve"] == DBNull.Value ? string.Empty : dr["Reserve"].ToString();
-
+            if (dr["STBlob"] != DBNull.Value)
+                this.STBlob = (byte[])dr["STBlob"];
         }
 
         #region -Properties-
@@ -50,6 +51,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         public DateTime STTimeEnd { get; set; }
         public string SType { get; set; }
         public string Reserve { get; set; }
+        public byte[] STBlob { get; set; }
         #endregion
 
         #region -Private methods
@@ -125,7 +127,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             YCPG sinfo = null;
             if (ds != null && ds.Tables.Count == 1)
             {
-                if (ds.Tables[0].Rows.Count == 1)
+                if (ds.Tables[0].Rows.Count >= 1)
                     sinfo = new YCPG(ds.Tables[0].Rows[0]);
             }
             return sinfo;

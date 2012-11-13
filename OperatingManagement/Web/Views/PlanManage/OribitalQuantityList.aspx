@@ -2,6 +2,7 @@
     CodeBehind="OribitalQuantityList.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.OribitalQuantityList" %>
 
 <%@ Register Src="../../ucs/ucTask.ascx" TagName="ucTask" TagPrefix="uc1" %>
+<%@ Register src="../../ucs/ucGDType.ascx" tagname="ucGDType" tagprefix="uc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -23,33 +24,27 @@
                     </th>
                     <td>
                         <asp:TextBox ID="txtStartDate" ClientIDMode="Static" CssClass="text" runat="server"
-                            onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                            onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" Width="100px"></asp:TextBox>
                     </td>
                     <th>
                         结束时间：
                     </th>
                     <td>
                         <asp:TextBox ID="txtEndDate" ClientIDMode="Static" CssClass="text" runat="server"
-                            onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                            onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" Width="100px"></asp:TextBox>
                     </td>
                     <th>
                         任务：
                     </th>
                     <td>
-                        <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="True" BlankItemText="==全部=="
+                        <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="True" BlankItemText="全部"
                             BlankItemValue="-1" />
                     </td>
                     <th>
                         数据类型：
                     </th>
                     <td>
-                        <asp:DropDownList ID="ddlType" runat="server">
-                            <asp:ListItem Value="-1">==全部==</asp:ListItem>
-                            <asp:ListItem Value="0">卫星初始轨道根数</asp:ListItem>
-                            <asp:ListItem Value="1">卫星瞬时精轨根数</asp:ListItem>
-                            <asp:ListItem Value="2">卫星事后精轨根数</asp:ListItem>
-                            <%--<asp:ListItem Value="3">空间目标信息国内双行根数</asp:ListItem>--%>
-                        </asp:DropDownList>
+                        <uc2:ucGDType ID="ucGDType" runat="server" />
                     </td>
                     <td>
                         <asp:Button class="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
@@ -101,13 +96,13 @@
                             <th style="width: 20px;">
                                 <input type="checkbox" onclick="checkAll(this)" />
                             </th>
-                            <th style="width: 150px;">
+                            <th style="width: 200px;">
                                 信息标识
                             </th>
-                            <th style="width: 150px;">
+                            <th style="width: 100px;">
                                 信息代号
                             </th>
-                            <th style="width: 150px;">
+                            <th style="width: 100px;">
                                 卫星编号
                             </th>
                             <th>
@@ -125,7 +120,7 @@
                             <input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>" />
                         </td>
                         <td>
-                            <%# Eval("ITYPEName")%>
+                            <%# Eval("DataName")%>
                         </td>
                         <td>
                             <%# Eval("ICODE")%>

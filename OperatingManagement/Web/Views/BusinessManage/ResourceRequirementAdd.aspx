@@ -174,7 +174,7 @@
                                         <td style="text-align: center;">
                                             <asp:LinkButton ID="lbtnDeleteUnusedEquipment" runat="server" OnClick="lbtnDeleteUnusedEquipment_Click"
                                                 OnClientClick="javascript:return confirm('是否删除不可用设备？')" CausesValidation="false"
-                                                CommandName="delete" CommandArgument='<%# Eval("GRCode").ToString() + "$" + Eval("EquipmentCode").ToString()%>'>删除不可用设备</asp:LinkButton>
+                                                CommandName="delete" CommandArgument='<%# Eval("GRCode").ToString() + "$" + Eval("EquipmentCode").ToString()%>'>删除</asp:LinkButton>
                                         </td>
                                     </tr>
                                 </ItemTemplate>
@@ -264,7 +264,7 @@
                                         <td style="text-align: center;">
                                             <asp:LinkButton ID="lbtnDeletePeriodOfTime" runat="server" OnClick="lbtnDeletePeriodOfTime_Click"
                                                 OnClientClick="javascript:return confirm('是否删除支持时段？')" CausesValidation="false"
-                                                CommandName="delete" CommandArgument='<%# Eval("BeginTime").ToString() + "$" + Eval("EndTime").ToString()%>'>删除支持时段</asp:LinkButton>
+                                                CommandName="delete" CommandArgument='<%# Eval("BeginTime").ToString() + "$" + Eval("EndTime").ToString()%>'>删除</asp:LinkButton>
                                         </td>
                                     </tr>
                                 </ItemTemplate>

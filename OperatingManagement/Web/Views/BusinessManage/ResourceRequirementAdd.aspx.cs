@@ -145,12 +145,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "需求名称不能为空";
                     return;
                 }
-                //if (string.IsNullOrEmpty(txtTimeBenchmark.Text.Trim()))
-                //{
-                //    trMessage.Visible = true;
-                //    lblMessage.Text = "时间基准不能为空";
-                //    return;
-                //}
                 if (string.IsNullOrEmpty(txtPriority.Text.Trim()))
                 {
                     trMessage.Visible = true;
@@ -246,19 +240,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 BindResourceRequirementList();
                 ResetControls();
                 trMessage.Visible = true;
-                
-                //List<ResourceRequirement> resourceRequirementList = new List<ResourceRequirement>();
-                //if (HttpContext.Current.Cache[CacheID.ToString()] == null)
-                //{
-                //    resourceRequirementList.Add(resourceRequirement);
-                //    HttpContext.Current.Cache.Insert(CacheID.ToString(), resourceRequirementList, null, System.Web.Caching.Cache.NoAbsoluteExpiration, new TimeSpan(0, 30, 0));
-                //}
-                //else
-                //{
-                //    resourceRequirementList = (HttpContext.Current.Cache[CacheID.ToString()] as List<ResourceRequirement>);
-                //    resourceRequirementList.Add(resourceRequirement);
-                //    HttpContext.Current.Cache[CacheID.ToString()] = resourceRequirementList;
-                //}
             }
             catch (System.Threading.ThreadAbortException ex1)
             { }
@@ -324,9 +305,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"时间基准格式错误，计算失败。\")", true);
                     return;
                 }
-                //timeBenchmark = timeBenchmark.AddHours(Convert.ToDouble(dplTimeBenchmarkHour.SelectedValue));
-                //timeBenchmark = timeBenchmark.AddMinutes(Convert.ToDouble(dplTimeBenchmarkMinute.SelectedValue));
-                //timeBenchmark = timeBenchmark.AddSeconds(Convert.ToDouble(dplTimeBenchmarkSecond.SelectedValue));
 
                 string xmlStr = ResourceRequirement.GenerateResourceCalculateXML(timeBenchmark, ResourceRequirementList);
                 if (string.IsNullOrEmpty(xmlStr))

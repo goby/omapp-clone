@@ -16,15 +16,15 @@ namespace OperatingManagement.Web.ucs
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
-            {
-                BindDataSource();
-            }
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+            if (!Page.IsPostBack)
+            {
+                BindDataSource();
+            }
         }
 
         private void BindDataSource()

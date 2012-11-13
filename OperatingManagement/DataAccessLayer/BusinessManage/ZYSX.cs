@@ -60,6 +60,22 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 资源属性值，扩展，与数据库不对应
         /// </summary>
         public dynamic PValue { get; set; }
+        public static List<ZYSX> _zysxCache = null;
+        public List<ZYSX> Cache
+        {
+            get
+            {
+                if (_zysxCache == null)
+                {
+                    _zysxCache = SelectAll();
+                }
+                return _zysxCache;
+            }
+            set
+            {
+                _zysxCache = value;
+            }
+        }
         #endregion
 
         #region -Private Methods-
@@ -82,6 +98,11 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 OracleDbType = OracleDbType.Int32,
             };
         }
+
+        private void RefreshCache()
+        {
+            this.Cache = SelectAll();
+        }
         #endregion
 
         #region -Public Method-
@@ -91,23 +112,34 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <returns>资源属性实体</returns>
         public ZYSX SelectByID()
         {
-            OracleParameter o_Cursor = PrepareRefCursor();
-            DataSet ds = _dataBase.SpExecuteDataSet("UP_ZYSX_SelectByID", new OracleParameter[] { new OracleParameter("p_ID", Id), o_Cursor });
-
-            ZYSX info = null;
-            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            if (this.Cache != null)
             {
-                info = new ZYSX()
-                {
-                    Id = Convert.ToInt32(ds.Tables[0].Rows[0]["ID"]),
-                    PName = ds.Tables[0].Rows[0]["PName"].ToString(),
-                    PCode = ds.Tables[0].Rows[0]["PCode"].ToString(),
-                    Type = ds.Tables[0].Rows[0]["Type"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["Type"]),
-                    Scope = ds.Tables[0].Rows[0]["Scope"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["Scope"].ToString(),
-                    Own = ds.Tables[0].Rows[0]["Own"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["Own"]),
-                };
+                List<ZYSX> lstSX = Cache.Where(t => t.Id == this.Id).ToList();
+                if (lstSX.Count > 0)
+                    return lstSX[0];
+                else
+                    return null;
             }
-            return info;
+            else
+            {
+                OracleParameter o_Cursor = PrepareRefCursor();
+                DataSet ds = _dataBase.SpExecuteDataSet("UP_ZYSX_SelectByID", new OracleParameter[] { new OracleParameter("p_ID", Id), o_Cursor });
+
+                ZYSX info = null;
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    info = new ZYSX()
+                    {
+                        Id = Convert.ToInt32(ds.Tables[0].Rows[0]["ID"]),
+                        PName = ds.Tables[0].Rows[0]["PName"].ToString(),
+                        PCode = ds.Tables[0].Rows[0]["PCode"].ToString(),
+                        Type = ds.Tables[0].Rows[0]["Type"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["Type"]),
+                        Scope = ds.Tables[0].Rows[0]["Scope"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["Scope"].ToString(),
+                        Own = ds.Tables[0].Rows[0]["Own"] == DBNull.Value ? 0 : Convert.ToInt32(ds.Tables[0].Rows[0]["Own"]),
+                    };
+                }
+                return info;
+            }
         }
 
         /// <summary>
@@ -146,7 +178,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <returns></returns>
         public List<ZYSX> GetGroundStationZYSXList()
         {
-            List<ZYSX> infoList = SelectAll().Where(a => a.Own == 1 || a.Own == 2).OrderBy(a=> a.PName).ToList<ZYSX>();
+            List<ZYSX> infoList = Cache.Where(a => a.Own == 1 || a.Own == 2).OrderBy(a=> a.PName).ToList<ZYSX>();
             return infoList;
         }
         /// <summary>
@@ -156,7 +188,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <returns></returns>
         public List<ZYSX> GetSatelliteZYSXList()
         {
-            List<ZYSX> infoList = SelectAll().Where(a => a.Own == 0 || a.Own == 2).OrderBy(a => a.PName).ToList<ZYSX>();
+            List<ZYSX> infoList = Cache.Where(a => a.Own == 0 || a.Own == 2).OrderBy(a => a.PName).ToList<ZYSX>();
             return infoList;
         }
         /// <summary>
@@ -555,6 +587,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             });
             if (opId.Value != null && opId.Value != DBNull.Value)
                 this.Id = Convert.ToInt32(opId.Value);
+            RefreshCache();
             return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
 
@@ -575,6 +608,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_Own",this.Own),
                 p
             });
+            RefreshCache();
             return (FieldVerifyResult)Convert.ToInt32(p.Value);
         }
 

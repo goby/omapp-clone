@@ -110,6 +110,18 @@ namespace OperatingManagement.RemotingHelper
                         oUser.Roles = GetUserRoles(users.ElementAt(i));
                         oResult.Users.Add(oUser);
                     }
+
+                    var urolesElement = users.ElementAt(0).Element("roles");
+                    if (urolesElement != null)
+                    {
+                        var uroles = urolesElement.Elements("role");
+                        oResult.Roles = (from q in uroles
+                                         select new Role()
+                                         {
+                                             Id = Convert.ToInt32(q.Element("id").Value),
+                                             Name = q.Element("name").Value
+                                         }).ToList();
+                    }
                 }
 
                 //get roles

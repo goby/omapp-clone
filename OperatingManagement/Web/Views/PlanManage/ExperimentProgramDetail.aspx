@@ -9,8 +9,8 @@
 <body>
     <form id="form1" runat="server">
     <div>
-    <asp:TextBox ID="txtContent" runat="server" Height="469px" TextMode="MultiLine" 
-            Width="659px" ReadOnly="True"></asp:TextBox>
+    <asp:TextBox ID="txtContent" runat="server" Height="1200px" TextMode="MultiLine" 
+            Width="1500px" ReadOnly="True"></asp:TextBox>
     </div>
     </form>
 </body>

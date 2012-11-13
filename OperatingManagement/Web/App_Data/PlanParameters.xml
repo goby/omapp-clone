@@ -76,13 +76,13 @@
         <item text="Ka频段" value="KA"></item>
         <item text="X频段" value="XX"></item>
     </DJZYSQPDXZ>
-    <DMJHMS description="地面计划设备工作模式">
-        <item text="标准TTC模式" value="B"></item>
-        <item text="扩频模式1" value="K1"></item>
-        <item text="扩频模式2" value="K2"></item>
-        <item text="S频段数传接收模式" value="SC"></item>
-        <item text="X频段数传接收模式" value="XC"></item>
-    </DMJHMS>
+    <ZZGZJHMS description="地面计划设备工作模式">
+        <item text="标准TTC模式" value="01"></item>
+        <item text="扩频模式1" value="02"></item>
+        <item text="扩频模式2" value="03"></item>
+        <item text="S频段数传接收模式" value="04"></item>
+        <item text="X频段数传接收模式" value="05"></item>
+    </ZZGZJHMS>
     <GZJHXXFL description="地面站工作计划信息分类">
         <item text="周计划" value="ZJ"></item>
         <item text="日计划" value="RJ"></item>
@@ -125,12 +125,29 @@
         <item text="探索四号卫星" value="探索五号卫星"></item>
         <item text="探索五号卫星" value="探索五号卫星"></item>
     </TYSJSatName>
-    <YDSJTargetList description="引导数据发送目标列表">
-        <item text="863-YZ4701机动站（JYZ1）" value="JYZ1"></item>
-        <item text="863-YZ4702机动站（JYZ2）" value="JYZ2"></item>
-        <item text="西安卫星测控中心（XSCC）" value="XSCC"></item>
-        <item text="总参二部信息处理中心（XXZX）" value="XXZX"></item>
-        <item text="总参三部技侦中心（JZZX）" value="JZZX"></item>
-        <item text="总参气象水文空间天气总站资料处理中心（ZLZX）" value="ZLZX"></item>
-    </YDSJTargetList>
+    <YDSJNOSTTargetList description="引导数据非空间机动任务发送目标列表">
+        <item text="863-YZ4701机动站(JYZ1)" value="JYZ1"></item>
+        <item text="863-YZ4702机动站(JYZ2)" value="JYZ2"></item>
+        <!--<item text="西安卫星测控中心(XSCC)" value="XSCC"></item>-->
+        <item text="总参二部信息处理中心(CLZX)" value="CLZX"></item>
+        <item text="总参三部技侦中心(JZZX)" value="JZZX"></item>
+        <item text="总参气象水文空间天气总站资料处理中心(ZLZX)" value="ZLZX"></item>
+    </YDSJNOSTTargetList>
+  <YDSJSTTargetList description="引导数据空间机动任务发送目标列表">
+    <item text="863-YZ4701机动站(JYZ1)" value="JYZ1"></item>
+    <item text="863-YZ4702机动站(JYZ2)" value="JYZ2"></item>
+  </YDSJSTTargetList>
+  <XSCCCode description="西安测控中心编码">XSCC</XSCCCode>
+  <YKXZ0471Code description="遥科学站-0471编码">JYZ1</YKXZ0471Code>
+  <YKXZ0472Code description="遥科学站-0472编码">JYZ2</YKXZ0472Code>
+  <YDSJDataCode description="引导数据编码">YDSJ</YDSJDataCode>
+  <GDGSDataCode description="轨道根数数据编码">GDGS</GDGSDataCode>
+  <DJZYSQDataCode description="测控资源使用申请数据编码">DJZYSQ</DJZYSQDataCode>
+  <TYSJDataCode description="仿真推演数据编码">TYSJ</TYSJDataCode>
+  <MBXQDataCode description="目标需求数据编码">MBXQ</MBXQDataCode>
+  <HJXQDataCode description="环境需求数据编码">HJXQ</HJXQDataCode>
+  <XXXQDataCode description="信息需求数据编码">XXXQ</XXXQDataCode>
+  <YJJHDataCode description="应用研究计划数据编码">YJJH</YJJHDataCode>
+  <SYJHDataCode description="试验计划数据编码">SYJH</SYJHDataCode>
+  <GZJHDataCode description="地面站工作计划数据编码">GZJH</GZJHDataCode>
 </PlanParameters>

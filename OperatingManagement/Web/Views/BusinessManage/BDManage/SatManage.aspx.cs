@@ -159,6 +159,36 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
             rpSatelliteList.DataSource = cpSatellitePager.DataSourcePaged;
             rpSatelliteList.DataBind();
         }
+
+        /// <summary>
+        /// 获取形状名称
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        protected string GetShapeName(string type)
+        {
+            if (type == "0")
+                return "球体";
+            else if (type == "1")
+                return "圆柱体";
+            else
+                return type;
+        }
+
+        /// <summary>
+        /// 获取表名情况名称
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        protected string GetRGName(string type)
+        {
+            if (type == "0")
+                return "粗糙";
+            else if (type == "1")
+                return "光滑";
+            else
+                return type;
+        }
         #endregion
     }
 }

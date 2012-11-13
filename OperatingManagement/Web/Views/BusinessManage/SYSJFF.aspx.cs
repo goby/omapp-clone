@@ -16,6 +16,7 @@ using OperatingManagement.Framework;
 using OperatingManagement.Framework.Components;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 using ServicesKernel.File;
+using ServicesKernel;
 
 namespace OperatingManagement.Web.Views.BusinessManage
 {

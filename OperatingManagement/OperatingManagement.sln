@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{E06714A0-7
 		Libs\OM.FS.Base.dll = Libs\OM.FS.Base.dll
 		Libs\Oracle.DataAccess.dll = Libs\Oracle.DataAccess.dll
 		Libs\OraOps10.dll = Libs\OraOps10.dll
+		Libs\ServiceBusAPI.dll = Libs\ServiceBusAPI.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{4D524B9A-85C0-42E5-98B6-164264897140}"
