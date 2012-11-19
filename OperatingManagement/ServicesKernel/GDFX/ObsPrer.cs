@@ -40,7 +40,7 @@ namespace ServicesKernel.GDFX
         /// <param name="QC">圈次</param>
         /// <returns></returns>
         public string DoCaculate(DateTime fromDate, int preDays, int preInterval
-            , string satID, string dmzID, bool QCY, int QC, out string resultPath)
+            , string satID, string[] dmzID, bool QCY, int QC, out string resultPath)
         {
             string strResult = string.Empty;
             resultPath = string.Empty;
@@ -101,8 +101,8 @@ namespace ServicesKernel.GDFX
             }
             catch (Exception ex)
             {
-                strResult = string.Format("计算出现异常{0}", ex.Message);
-                Logger.GetLogger().Error("计算出现异常", ex);
+                strResult = string.Format("轨道预报计算出现异常{0}", ex.Message);
+                Logger.GetLogger().Error("轨道预报计算出现异常", ex);
                 CloseClientConnect();
                 return strResult;
             }
@@ -113,7 +113,7 @@ namespace ServicesKernel.GDFX
             CloseClientConnect();
             resultPath = Utility.ByteToString(responseBlock);
             if (resultPath.ToUpper() == "ERR")
-                strResult = "计算出现错误";
+                strResult = "轨道预报计算出现错误";
             else
                 this.ResultFileNames = Directory.GetFiles(resultPath);
             return strResult;
@@ -171,7 +171,7 @@ namespace ServicesKernel.GDFX
         }
 
         private byte[] BuildRequestPack(DateTime fromDate, int preDays, int preInterval
-            , string satID, string dmzID, bool QCY, int QC)
+            , string satID, string[] dmzID, bool QCY, int QC)
         {
             byte[] datas = null;
             try
@@ -179,7 +179,7 @@ namespace ServicesKernel.GDFX
                 short year = (short)fromDate.Year;
                 byte month = (byte)fromDate.Month;
                 byte day = (byte)fromDate.Day;
-                int dmzCount = 1;
+                int dmzCount = dmzID.Length;
                 TimeSpan ts = fromDate - new DateTime(year, month, day);
                 using (MemoryStream ms = new MemoryStream())
                 {
@@ -187,15 +187,26 @@ namespace ServicesKernel.GDFX
                     br.Write(year);
                     br.Write(month);
                     br.Write(day);
-                    br.Write(ts.TotalMilliseconds);
+                    br.Write(Convert.ToUInt32(ts.TotalMilliseconds));
                     br.Write(preDays * 86400000);//毫秒
                     br.Write(preInterval);
                     br.Write(Convert.ToInt32(satID, 16));
                     br.Write(QCY);//QCY
                     br.Write(QC);
                     br.Write(dmzCount);
-                    br.Write(Convert.ToInt32(dmzID, 16));
+                    for (int i = 0; i < dmzID.Length; i++)
+                    {
+                        br.Write(Convert.ToInt32(dmzID[i], 16));
+                    }
                     datas = ms.ToArray();
+                    Logger.GetLogger().Error(string.Format("year:{0}, month:{1}, day:{2}, ms:{3}, predays:{4}, preInterval:{5}, satid:{6}, QCY:{7}, QC:{8}, DMZCount:{9}, DMZID:{10}"
+                        , year, month, day, ts.TotalMilliseconds, preDays, preInterval, satID, QCY, QC, dmzCount, dmzID));
+                    string print = string.Empty;
+                    for (int i = 0; i < datas.Length; i++)
+                    {
+                        print += string.Format("Datas[{0}]：{1}", i, datas[i]);
+                    }
+                    Logger.GetLogger().Error(print);
                 }
             }
             catch (Exception ex)

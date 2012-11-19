@@ -68,7 +68,7 @@ namespace OperatingManagement.DataAccessLayer.System
                 new OracleParameter("p_Ids",ids),
                 p
             });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
         /// <summary>
         /// Selects all Roles from database.
@@ -151,7 +151,7 @@ namespace OperatingManagement.DataAccessLayer.System
                 new OracleParameter("p_Permissions",permissions),
                 p
             });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
         /// <summary>
         /// UPdates the specific record in database.
@@ -173,7 +173,7 @@ namespace OperatingManagement.DataAccessLayer.System
                 new OracleParameter("p_Permissions",permissions),
                 p
             });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
         #endregion
         

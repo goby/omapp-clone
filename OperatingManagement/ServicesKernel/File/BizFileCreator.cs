@@ -313,6 +313,7 @@ namespace ServicesKernel.File
             #endregion
 
             string[] fields = BuildYCFields(dataType);
+            oFile.LineCount = lstDatas.Count();
             if (lstDatas.Count > 0)
             {
                 try
@@ -445,14 +446,14 @@ namespace ServicesKernel.File
             string[] fields = new string[1];
             switch (dataType)
             {
-                case "GCZT"://43
-                    fields[0] = "T0,Px78,Px79,Px80,Px81,Px82,Px83,PK1,PK2,PK3,PK4,PK5,PK6,PK7,PK8,PK9,PK10,PK11,PK12,PK14,PK15,PK16,PK32,PK33,PK34,PK35,PK36,PK37,PK38,PK39,ZT68,Px148,Px150,Px153,Px154,Px155,ZCX32,ZCX13,ZCX14,ZCX15,ZCX25,ZCX21,ZCX22".Replace(",", "  ");
+                case "GCZT"://45
+                    fields[0] = "T0,Px78,Px79,Px80,Px81,Px82,Px83,PK1,PK2,PK3,PK4,PK5,PK6,PK7,PK8,PK9,PK10,PK11,PK12,PK14,PK15,PK16,PK32,PK33,PK34,PK35,PK36,PK37,PK38,PK39,ZT68,Px148,Px150,Px153,Px154,Px155,ZCX32,ZCX13,ZCX14,ZCX15,ZCX25,ZCX21,ZCX71,ZCX22,ZCX72".Replace(",", "  ");
                     break;
-                case "JDZT"://64
-                    fields[0] = "ZJ,T0,FL1,φ,θ,ψ,φφ,θθ,ψψ,X1,Y1,Z1,VX1,VY1,VZ1,q0,q1,q2,q3,BJ1,BJ2,X2,Y2,Z2,VX2,VY2,VZ2,X3,Y3,Z3,VX3,VY3,VZ3,X4,Y4,Z4,VX4,VY4,VZ4,BJ3,BJ4,BJ5,BJ6,qa0,qa1,qa2,qa3,qb0,qb1,qb2,qb3,BJ7,Wx,Wy,Wz,Wxx,Wyy,Wzz,BJ8,BJ9,BJ10,BJ11,FL2,FL3".Replace(",", "  ");
+                case "JDZT"://80
+                    fields[0] = "ZJ,T0,FL1,FL2,FL3,X1,Y1,Z1,VX1,VY1,VZ1,q0,q1,q2,q3,φ,θ,ψ,φφ,θθ,ψψ,AX1,AY1,AZ1,R,A,E,BJ1,BJ2,a1,e1,i1,Ω1,w1,u1,RL1,X2,Y2,Z2,VX2,VY2,VZ2,X3,Y3,Z3,VX3,VY3,VZ3,Tx,Ty,Tz2,BJ3,a2,u2,a3,e3,i3,Ω3,w3,u3,a4,e4,i4,Ω4,w4,u4,RL2,RL3,X4,Y4,Z4,VX4,VY4,VZ4,AX4,AY4,AZ4,Px,Py,Pz".Replace(",", "  ");
                     break;
-                case "JDCL"://44
-                    fields[0] = "ZJ,BZ1,T1,BZ2,GLAX,GLAY,GLAZ,GLAXX,GLAYY,GLAZZ,BZ3,T2,BZ4,GLBX,GLBY,GLBZ,GLBXX,GLBYY,GLBZZ,BZ5,R1,A1,E1,RR1,AA1,EE1,LA1,LE1,BZ6,R2,A2,E2,RR2,AA2,EE2,LA2,LE2,BZ7,RX3,RY3,RZ3,RRX3,RRY3,RRZ3".Replace(",", "  ");
+                case "JDCL"://50
+                    fields[0] = "ZJ,T0,T1,BZ1,GLAX,GLAY,GLAZ,GLAXX,GLAYY,GLAZZ,T2,BZ2,GLBX,GLBY,GLBZ,GLBXX,GLBYY,GLBZZ,BZ3,R1,A1,E1,RR1,AA1,EE1,LA1,LE1,BZ4,R2,A2,E2,RR2,AA2,EE2,LA2,LE2,qa0,qa1,qa2,qa3,qb0,qb1,qb2,qb3,Wx,Wy,Wz,Wxx,Wyy,Wzz".Replace(",", "  ");
                     break;
             }
             return fields;

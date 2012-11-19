@@ -83,7 +83,7 @@ namespace OperatingManagement.DataAccessLayer.System
                 new OracleParameter("p_Actions", this.ActionIds),
                 p
             });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace OperatingManagement.DataAccessLayer.System
                 new OracleParameter("p_Ids",ids),
                 p
             });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace OperatingManagement.DataAccessLayer.System
                 new OracleParameter("p_Actions", this.ActionIds),
                 p 
             });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
 

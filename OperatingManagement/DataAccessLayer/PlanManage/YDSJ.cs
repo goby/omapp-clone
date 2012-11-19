@@ -266,8 +266,8 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 p
             });
             if (opId.Value != null && opId.Value != DBNull.Value)
-                this.Id = Convert.ToInt32(opId.Value);
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+                this.Id = Convert.ToInt32(opId.Value.ToString());
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
         #endregion

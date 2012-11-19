@@ -189,9 +189,9 @@
                 <td align="left"  style="text-align: left">
                 <b>请选择要使用的发送协议：</b>
                 <br />
-                <input type="radio" name="rdProtocl" value="0" checked="checked" />Fep with Tcp
+                <input type="radio" name="rdProtocl" value="2" checked="checked" />Fep with Tcp
                 <input type="radio" name="rdProtocl" value="1" />Fep with Udp
-                <input type="radio" name="rdProtocl" value="2" />Ftp
+                <input type="radio" name="rdProtocl" value="0" />Ftp
                     <br />
                 </td>
             </tr>

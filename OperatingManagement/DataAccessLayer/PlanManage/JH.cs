@@ -355,8 +355,8 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 p
             });
             if (opId.Value != null && opId.Value != DBNull.Value)
-                this.Id = Convert.ToInt32(opId.Value);
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+                this.Id = Convert.ToInt32(opId.Value.ToString());
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
         public FieldVerifyResult Update()
@@ -381,7 +381,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                  new OracleParameter("p_FileIndex",this.FileIndex),
                 p
             });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
 
@@ -403,7 +403,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 new OracleParameter("v_Id",this.Id),
                 p
             });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
         public FieldVerifyResult UpdateFileIndex()
@@ -425,7 +425,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                 new OracleParameter("p_FileIndex",this.FileIndex),
                 p
             });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
         #endregion
 

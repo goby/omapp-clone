@@ -175,6 +175,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             ShowMsg("");//清空提示信息
+            //ParseFile(@"D:\MapJ_20121122-20121123.txt");
+            //return;
             string strTarget = string.Empty;
             List<string> targets = new List<string>();
             string strYKXZ = string.Empty;
@@ -321,7 +323,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             string strResult = string.Empty;
             string strFullName = string.Empty;
             string resultPath = string.Empty;
-            string ykxzid = new XYXSInfo().GetByAddrMark(ykxzCode).INCODE;
+            string[] ykxzid = new string[1];
+            ykxzid[0] = new XYXSInfo().GetByAddrMark(ykxzCode).INCODE;
             oGD.Id = int.Parse(txtId.Text.Trim());
             oGD = oGD.SelectById();
             if (oGD != null)
@@ -334,11 +337,15 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 else
                 {
+                    lblMessage.Text = "轨道预报成功，结果路径" + resultPath;
+                    string strFName = string.Empty;
                     for (int i = 0; i < oPrer.ResultFileNames.Length; i++)
                     {
-                        if (oPrer.ResultFileNames[i].Substring(0, 4).ToUpper() == "MAPJ")
+                        strFName = oPrer.ResultFileNames[i];
+                        strFName = strFName.Substring(strFName.LastIndexOf(@"\") + 1);
+                        if (strFName.Substring(0, 5).ToUpper() == "MAPJ_")
                         {
-                            strFullName = Path.Combine(Param.GDYBResultFilePath, oPrer.ResultFileNames[i]);
+                            strFullName = Path.Combine(Param.GDYBResultFilePath, resultPath.Substring(resultPath.LastIndexOf(@"\") + 1), strFName);
                             break;
                         }
                     }
@@ -347,26 +354,33 @@ namespace OperatingManagement.Web.Views.PlanManage
             else
                 return string.Empty;
 
+            if (!File.Exists(strFullName))
+            {
+                lblMessage.Text += "<br>文件不存在";
+                return string.Empty;
+            }
+
             if (!string.IsNullOrEmpty(strFullName))
             {
                 StreamReader oSReader = new StreamReader(strFullName);
                 oSReader.BaseStream.Seek(0, SeekOrigin.Begin);
                 string strLine = string.Empty;
                 List<string> datas = new List<string>();
+                strLine = oSReader.ReadLine();//第一行标题
                 strLine = oSReader.ReadLine();
                 DateTime dt;
                 try
                 {
-                    while (!strLine.Equals(string.Empty))
+                    while (!string.IsNullOrEmpty(strLine))
                     {
                         strLine = strLine.Trim();
-                        strResult = strLine.Substring(0, 23).Trim();
+                        strResult = strLine.Substring(0, 10) + " " + strLine.Substring(11, 10).Replace(" ", "0");  //strLine.Substring(0, 23).Trim().Replace(" 0:", "00:");
                         dt = DateTime.ParseExact(strResult, "yyyy MM dd HH:mm:ss.f", System.Globalization.CultureInfo.InvariantCulture);
                         while (strLine.IndexOf("   ") >= 0)
                         {
                             strLine = strLine.Replace("   ", "  ");
                         }
-                        datas.Add(dt.ToString("yyyyMMdd") + "  " + dt.ToString("HHmmssffff") + strLine.Substring(23));
+                        datas.Add(dt.ToString("yyyyMMdd") + "  " + dt.ToString("HHmmssffff") + "  " + strLine.Substring(23));
                         strLine = oSReader.ReadLine();
                     }
                     oSReader.Close();
@@ -377,7 +391,49 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
 
                 if (datas != null && datas.Count() > 0)
-                    return new PlanFileCreator().CreateSendingYDSJFile(oGD.TaskID, ykxzid, datas.ToArray());
+                    return new PlanFileCreator().CreateSendingYDSJFile(oGD.TaskID, ykxzCode, datas.ToArray());
+                else
+                    return string.Empty;
+            }
+            else
+                return string.Empty;
+        }
+
+        private string ParseFile(string strFullName)
+        {
+            string strResult = string.Empty;
+            if (!string.IsNullOrEmpty(strFullName))
+            {
+                StreamReader oSReader = new StreamReader(strFullName);
+                oSReader.BaseStream.Seek(0, SeekOrigin.Begin);
+                string strLine = string.Empty;
+                List<string> datas = new List<string>();
+                strLine = oSReader.ReadLine();//第一行标题
+                strLine = oSReader.ReadLine();
+                DateTime dt;
+                try
+                {
+                    while (!string.IsNullOrEmpty(strLine))
+                    {
+                        strLine = strLine.Trim();
+                        strResult = strLine.Substring(0, 10) + " " + strLine.Substring(11, 10).Replace(" ", "0");  //strLine.Substring(0, 23).Trim().Replace(" 0:", "00:");
+                        dt = DateTime.ParseExact(strResult, "yyyy MM dd HH:mm:ss.f", System.Globalization.CultureInfo.InvariantCulture);
+                        while (strLine.IndexOf("   ") >= 0)
+                        {
+                            strLine = strLine.Replace("   ", "  ");
+                        }
+                        datas.Add(dt.ToString("yyyyMMdd") + "  " + dt.ToString("HHmmssffff") + "  " + strLine.Substring(23));
+                        strLine = oSReader.ReadLine();
+                    }
+                    oSReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    throw new AspNetException("非空间机动任务列表页面发送数据出现异常", ex);
+                }
+
+                if (datas != null && datas.Count() > 0)
+                    return new PlanFileCreator().CreateSendingYDSJFile("0700", "JYZ1", datas.ToArray());
                 else
                     return string.Empty;
             }
