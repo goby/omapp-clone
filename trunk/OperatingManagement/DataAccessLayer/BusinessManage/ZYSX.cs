@@ -586,9 +586,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 p
             });
             if (opId.Value != null && opId.Value != DBNull.Value)
-                this.Id = Convert.ToInt32(opId.Value);
+                this.Id = Convert.ToInt32(opId.Value.ToString());
             RefreshCache();
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
         public FieldVerifyResult Update()
@@ -609,7 +609,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 p
             });
             RefreshCache();
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
         #endregion

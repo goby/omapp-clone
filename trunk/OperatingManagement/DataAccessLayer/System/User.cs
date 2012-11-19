@@ -239,8 +239,8 @@ namespace OperatingManagement.DataAccessLayer.System
                 p
             });
             if (opId.Value != null && opId.Value != DBNull.Value)
-                this.Id = Convert.ToDouble(opId.Value);
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+                this.Id = Convert.ToDouble(opId.Value.ToString());
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
         /// <summary>
         /// Updates the User object in database.
@@ -267,7 +267,7 @@ namespace OperatingManagement.DataAccessLayer.System
                 new OracleParameter("p_Note",this.Note),
                 p
             });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
         /// <summary>
         /// Add the specific user to roles.
@@ -286,7 +286,7 @@ namespace OperatingManagement.DataAccessLayer.System
                 new OracleParameter("p_Roles",roles),
                 p
             });
-            return Convert.ToDouble(p.Value) > 0;
+            return Convert.ToDouble(p.Value.ToString()) > 0;
         }
         /// <summary>
         /// Selects the specific user by login name.
@@ -339,7 +339,7 @@ namespace OperatingManagement.DataAccessLayer.System
                 new OracleParameter("p_Ids",ids),
                 p
             });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
         /// <summary>
         /// Selects the specific user by identification.

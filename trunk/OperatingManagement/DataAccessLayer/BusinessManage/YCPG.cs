@@ -24,7 +24,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             _database = OracleDatabase.FromConfiguringNode("ApplicationServices");
         }
 
-        public YCPG(DataRow dr)
+        public YCPG(DataRow dr, bool getBlob)
         {
             _database = OracleDatabase.FromConfiguringNode("ApplicationServices");
             if (dr["Id"] != DBNull.Value)
@@ -33,14 +33,17 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             this.SatID = dr["SatID"] == DBNull.Value ? string.Empty : dr["SatID"].ToString();
             if (dr["CTime"] != DBNull.Value)
                 this.CTime = DateTime.Parse(dr["CTime"].ToString());
-            if (dr["STTimeStart"] != DBNull.Value)
-                this.STTimeStart = DateTime.Parse(dr["STTimeStart"].ToString());
-            if (dr["STTimeEnd"] != DBNull.Value)
-                this.STTimeEnd = DateTime.Parse(dr["STTimeEnd"].ToString());
+            if (dr["DataTimeB"] != DBNull.Value)
+                this.STTimeStart = DateTime.Parse(dr["DataTimeB"].ToString());
+            if (dr["DataTimeE"] != DBNull.Value)
+                this.STTimeEnd = DateTime.Parse(dr["DataTimeE"].ToString());
             this.SType = dr["SType"] == DBNull.Value ? string.Empty : dr["SType"].ToString();
             this.Reserve = dr["Reserve"] == DBNull.Value ? string.Empty : dr["Reserve"].ToString();
-            if (dr["STBlob"] != DBNull.Value)
-                this.STBlob = (byte[])dr["STBlob"];
+            if (getBlob)
+            {
+                if (dr["STBlob"] != DBNull.Value)
+                    this.STBlob = (byte[])dr["STBlob"];
+            }
         }
 
         #region -Properties-
@@ -105,7 +108,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             {
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    sinfos.Add(new YCPG(dr));
+                    sinfos.Add(new YCPG(dr, false));
                 }
             }
             return sinfos;
@@ -128,7 +131,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             if (ds != null && ds.Tables.Count == 1)
             {
                 if (ds.Tables[0].Rows.Count >= 1)
-                    sinfo = new YCPG(ds.Tables[0].Rows[0]);
+                    sinfo = new YCPG(ds.Tables[0].Rows[0], true);
             }
             return sinfo;
         }

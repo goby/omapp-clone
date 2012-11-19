@@ -280,7 +280,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             });
             //清除缓存
             RefreshCache();
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
         public FieldVerifyResult Update()
@@ -308,7 +308,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             });
             //清除缓存
             RefreshCache();
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
         /// <summary>

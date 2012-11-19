@@ -32,7 +32,7 @@
                      ValidationExpression="((\d{1,5}))"></asp:RegularExpressionValidator></td>
     </tr>
     <tr>
-        <th style="text-align:right;">预报时间间隔(<span class="red">*</span>)</th>
+        <th style="text-align:right;">预报时间间隔（秒）(<span class="red">*</span>)</th>
         <td>
             <asp:TextBox ID="txtTimeSpan" ClientIDMode="Static" CssClass="text"  
                     runat="server"></asp:TextBox><asp:RequiredFieldValidator ID="rv2" runat="server" Display="Dynamic" ForeColor="Red"
@@ -51,11 +51,10 @@
         <th style="text-align:right;">测站编码(<span class="red">*</span>)</th>
         <td>
             <asp:CheckBoxList ID="cblXyxs1" runat="server" BorderColor="White" 
-                BorderStyle="Double" BorderWidth="2px" ClientIDMode="Static" 
-                Visible="False">
+                BorderStyle="Double" BorderWidth="2px" ClientIDMode="Static">
             </asp:CheckBoxList>
             <asp:RadioButtonList ID="rblDMZ" runat="server" BorderColor="White" 
-                BorderStyle="Double" BorderWidth="2px" RepeatColumns="2">
+                BorderStyle="Double" BorderWidth="2px" RepeatColumns="2" Visible="False">
             </asp:RadioButtonList>
         </td>
     </tr>
@@ -68,7 +67,7 @@
         </td>
     </tr>
     <tr>
-        <th style="text-align:right;">圈次(<span class="red">*</span>)</th>
+        <th style="text-align:right;">圈次（整数）(<span class="red">*</span>)</th>
         <td>
             <asp:TextBox ID="txtQC" ClientIDMode="Static" CssClass="text"
                     runat="server"></asp:TextBox>

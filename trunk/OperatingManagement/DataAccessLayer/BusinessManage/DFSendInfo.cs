@@ -208,8 +208,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 p
             });
             if (opId.Value != null && opId.Value != DBNull.Value)
-                this.Id = Convert.ToInt32(opId.Value);
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+                this.Id = Convert.ToInt32(opId.Value.ToString());
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
         public FieldVerifyResult Update()
@@ -226,7 +226,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     new OracleParameter("p_Status", this.Status),
                     p
                 });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
         #endregion

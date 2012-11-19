@@ -423,9 +423,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             });
 
             if (opId.Value != null && opId.Value != DBNull.Value)
-                this.Id = Convert.ToInt32(opId.Value);
+                this.Id = Convert.ToInt32(opId.Value.ToString());
 
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
         /// <summary>
@@ -450,7 +450,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_LastUpdateTime", DateTime.Now),
                 p
             });
-            return (FieldVerifyResult)Convert.ToInt32(p.Value);
+            return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
         /// <summary>
