@@ -302,42 +302,42 @@
     <isBigFile>true</isBigFile>
     <data>
       <name>X</name>
-      <position>4</position>
-      <datatype>double</datatype>
-      <intlen>10</intlen>
-      <declen>6</declen>
-    </data>
-    <data>
-      <name>Y</name>
-      <position>5</position>
-      <datatype>double</datatype>
-      <intlen>10</intlen>
-      <declen>6</declen>
-    </data>
-    <data>
-      <name>Z</name>
       <position>6</position>
       <datatype>double</datatype>
       <intlen>10</intlen>
       <declen>6</declen>
     </data>
     <data>
-      <name>vX</name>
+      <name>Y</name>
       <position>7</position>
       <datatype>double</datatype>
       <intlen>10</intlen>
       <declen>6</declen>
     </data>
     <data>
-      <name>vY</name>
+      <name>Z</name>
       <position>8</position>
       <datatype>double</datatype>
       <intlen>10</intlen>
       <declen>6</declen>
     </data>
     <data>
-      <name>vZ</name>
+      <name>vX</name>
       <position>9</position>
+      <datatype>double</datatype>
+      <intlen>10</intlen>
+      <declen>6</declen>
+    </data>
+    <data>
+      <name>vY</name>
+      <position>10</position>
+      <datatype>double</datatype>
+      <intlen>10</intlen>
+      <declen>6</declen>
+    </data>
+    <data>
+      <name>vZ</name>
+      <position>11</position>
       <datatype>double</datatype>
       <intlen>10</intlen>
       <declen>6</declen>
@@ -351,42 +351,42 @@
     <isBigFile>true</isBigFile>
     <data>
       <name>X</name>
-      <position>4</position>
-      <datatype>double</datatype>
-      <intlen>10</intlen>
-      <declen>6</declen>
-    </data>
-    <data>
-      <name>Y</name>
-      <position>5</position>
-      <datatype>double</datatype>
-      <intlen>10</intlen>
-      <declen>6</declen>
-    </data>
-    <data>
-      <name>Z</name>
       <position>6</position>
       <datatype>double</datatype>
       <intlen>10</intlen>
       <declen>6</declen>
     </data>
     <data>
-      <name>vX</name>
+      <name>Y</name>
       <position>7</position>
       <datatype>double</datatype>
       <intlen>10</intlen>
       <declen>6</declen>
     </data>
     <data>
-      <name>vY</name>
+      <name>Z</name>
       <position>8</position>
       <datatype>double</datatype>
       <intlen>10</intlen>
       <declen>6</declen>
     </data>
     <data>
-      <name>vZ</name>
+      <name>vX</name>
       <position>9</position>
+      <datatype>double</datatype>
+      <intlen>10</intlen>
+      <declen>6</declen>
+    </data>
+    <data>
+      <name>vY</name>
+      <position>10</position>
+      <datatype>double</datatype>
+      <intlen>10</intlen>
+      <declen>6</declen>
+    </data>
+    <data>
+      <name>vZ</name>
+      <position>11</position>
       <datatype>double</datatype>
       <intlen>10</intlen>
       <declen>6</declen>
@@ -399,21 +399,21 @@
     <filename>SubSatPoint*.txt</filename>
     <isBigFile>true</isBigFile>
     <data>
-      <name>L</name>
+      <name>Lambda</name>
       <position>4</position>
       <datatype>double</datatype>
       <intlen>10</intlen>
       <declen>6</declen>
     </data>
     <data>
-      <name>B</name>
+      <name>Phi</name>
       <position>5</position>
       <datatype>double</datatype>
       <intlen>10</intlen>
       <declen>6</declen>
     </data>
     <data>
-      <name>H</name>
+      <name>Rho</name>
       <position>6</position>
       <datatype>double</datatype>
       <intlen>10</intlen>
@@ -426,72 +426,82 @@
     <displayname>轨道预报测站观测量</displayname>
     <filename>StaObsPre*.txt</filename>
     <isBigFile>true</isBigFile>
+    <timeBeginPoint>1</timeBeginPoint>
+    <!-- 1，空格分隔；2，冒号分隔-->
+    <timeFormat>2</timeFormat>
     <data>
       <name>R</name>
-      <position>4</position>
-      <datatype>double</datatype>
-      <intlen>9</intlen>
-      <declen>3</declen>
-    </data>
-    <data>
-      <name>RR</name>
       <position>5</position>
       <datatype>double</datatype>
       <intlen>9</intlen>
       <declen>3</declen>
     </data>
     <data>
-      <name>A</name>
+      <name>dotR</name>
       <position>6</position>
       <datatype>double</datatype>
-      <intlen>8</intlen>
+      <intlen>9</intlen>
       <declen>3</declen>
     </data>
     <data>
-      <name>AA</name>
+      <name>A</name>
       <position>7</position>
       <datatype>double</datatype>
       <intlen>8</intlen>
       <declen>3</declen>
     </data>
     <data>
-      <name>E</name>
+      <name>dotA</name>
       <position>8</position>
       <datatype>double</datatype>
       <intlen>8</intlen>
       <declen>3</declen>
     </data>
     <data>
-      <name>EE</name>
+      <name>E</name>
       <position>9</position>
       <datatype>double</datatype>
       <intlen>8</intlen>
       <declen>3</declen>
     </data>
     <data>
-      <name>Th</name>
+      <name>dotE</name>
       <position>10</position>
       <datatype>double</datatype>
       <intlen>8</intlen>
       <declen>3</declen>
     </data>
     <data>
-      <name>TTh</name>
+      <name>Theta1</name>
       <position>11</position>
       <datatype>double</datatype>
       <intlen>8</intlen>
       <declen>3</declen>
     </data>
     <data>
-      <name>K</name>
+      <name>Theta2</name>
       <position>12</position>
+      <datatype>double</datatype>
+      <intlen>8</intlen>
+      <declen>3</declen>
+    </data>
+    <data>
+      <name>V</name>
+      <position>13</position>
       <datatype>int</datatype>
       <intlen>4</intlen>
       <declen>0</declen>
     </data>
     <data>
-      <name>M</name>
-      <position>13</position>
+      <name>Psi</name>
+      <position>14</position>
+      <datatype>double</datatype>
+      <intlen>6</intlen>
+      <declen>6</declen>
+    </data>
+    <data>
+      <name>m</name>
+      <position>15</position>
       <datatype>double</datatype>
       <intlen>6</intlen>
       <declen>6</declen>
@@ -503,30 +513,33 @@
     <displayname>轨道预报观测引导文件</displayname>
     <filename>ObsGuiding*.txt</filename>
     <isBigFile>false</isBigFile>
+    <timeBeginPoint>1</timeBeginPoint>
+    <!-- 1，空格分隔；2，冒号分隔-->
+    <timeFormat>2</timeFormat>
     <data>
       <name>A</name>
-      <position>4</position>
-      <datatype>double</datatype>
-      <intlen>8</intlen>
-      <declen>3</declen>
-    </data>
-    <data>
-      <name>AA</name>
       <position>5</position>
       <datatype>double</datatype>
       <intlen>8</intlen>
       <declen>3</declen>
     </data>
     <data>
-      <name>E</name>
+      <name>dotA</name>
       <position>6</position>
       <datatype>double</datatype>
       <intlen>8</intlen>
       <declen>3</declen>
     </data>
     <data>
-      <name>EE</name>
+      <name>E</name>
       <position>7</position>
+      <datatype>double</datatype>
+      <intlen>8</intlen>
+      <declen>3</declen>
+    </data>
+    <data>
+      <name>dotE</name>
+      <position>8</position>
       <datatype>double</datatype>
       <intlen>8</intlen>
       <declen>3</declen>
@@ -538,16 +551,19 @@
     <displayname>轨道预报太阳角度文件</displayname>
     <filename>SunAH*.txt</filename>
     <isBigFile>true</isBigFile>
+    <timeBeginPoint>1</timeBeginPoint>
+    <!-- 1，空格分隔；2，冒号分隔-->
+    <timeFormat>2</timeFormat>
     <data>
       <name>A</name>
-      <position>4</position>
+      <position>5</position>
       <datatype>double</datatype>
       <intlen>5</intlen>
       <declen>3</declen>
     </data>
     <data>
       <name>E</name>
-      <position>5</position>
+      <position>6</position>
       <datatype>double</datatype>
       <intlen>5</intlen>
       <declen>3</declen>

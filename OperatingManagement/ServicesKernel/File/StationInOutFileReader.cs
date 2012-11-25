@@ -36,10 +36,20 @@ namespace ServicesKernel.File
         /// <returns></returns>
         public List<StationInOut> Read(string filename)
         {
+            string fullpath = GetFullFilePath(filename);
+            return ReadData(fullpath);
+        }
+
+        /// <summary>
+        /// 读取进出站及航捷数据统计文件
+        /// </summary>
+        /// <param name="filename">文件完整路径</param>
+        /// <returns></returns>
+        public List<StationInOut> ReadData(string fileFullName)
+        {
             StationInOut station;
             List<StationInOut> list = new List<StationInOut>();
-            string fullpath = GetFullFilePath(filename);
-            string[] content = System.IO.File.ReadAllLines(fullpath);
+            string[] content = System.IO.File.ReadAllLines(fileFullName);
             for (int i = 1; i < content.Length; i++)
             {
                 station = GetStationInOutFromString(content[i]);
@@ -49,6 +59,7 @@ namespace ServicesKernel.File
 
             return list;
         }
+
 
         public StationInOut GetStationInOutFromString(string data)
         {

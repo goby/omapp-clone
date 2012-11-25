@@ -21,6 +21,7 @@ using OperatingManagement.Framework.Core;
 using OperatingManagement.WebKernel.Route;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.WebKernel.Basic;
+using ServicesKernel;
 
 namespace OperatingManagement.Web.Views.BusinessManage
 {
@@ -285,6 +286,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void btnCalculate_Click(object sender, EventArgs e)
         {
+            string xmlStr = string.Empty;
+            #region 校验输入
             try
             {
                 //校验
@@ -306,36 +309,65 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
-                string xmlStr = ResourceRequirement.GenerateResourceCalculateXML(timeBenchmark, ResourceRequirementList);
+                xmlStr = ResourceRequirement.GenerateResourceCalculateXML(timeBenchmark, ResourceRequirementList);
                 if (string.IsNullOrEmpty(xmlStr))
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"请添加资源需求，计算失败。\")", true);
                     return;
                 }
-                DateTime createdTime = DateTime.Now;
-                string requirementFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "RequirementFileDirectory").TrimEnd(new char[] { '\\' }) + "\\";
-                string requirementFileName = Guid.NewGuid().ToString() + ".xml";
-                string requirementFileDisplayName = "资源需求文件" + createdTime.ToString("yyyyMMddHHmmss") + ".xml";
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增资源调度计算页面 校验数据出现异常，异常原因", ex));
+            }
+            #endregion
+
+            #region 调用资源调度计算
+            DateTime createdTime = DateTime.Now;
+            string rfDirectory = string.Empty;
+            string rfName = string.Empty;
+            string rfDisplayName = string.Empty;
+            string resultFileDirectory = string.Empty;
+            string resultFileName = "out.xml";
+            string strResult = string.Empty;
+            try
+            {
+                rfDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "RequirementFileDirectory").TrimEnd(new char[] { '\\' }) + "\\";
+                rfName = Guid.NewGuid().ToString() + ".xml";
+                rfDisplayName = "资源需求文件" + createdTime.ToString("yyyyMMddHHmmss") + ".xml";
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.LoadXml(xmlStr);
-                if (!Directory.Exists(requirementFileDirectory))
-                    Directory.CreateDirectory(requirementFileDirectory);
-                xmlDocument.Save(Path.Combine(requirementFileDirectory, requirementFileName));
+                if (!Directory.Exists(rfDirectory))
+                    Directory.CreateDirectory(rfDirectory);
+                xmlDocument.Save(Path.Combine(rfDirectory, rfName));
 
-                //string resultFileDirectory = SystemParameters.GetSystemParameterValue(SystemParametersType.ResourceCalculate, "ResultFileDirectory").TrimEnd(new char[] { '\\' }) + "\\";
-                //string resultFileName = Guid.NewGuid().ToString() + ".xml";
                 //string resultFileDisplayName = string.Empty;
-                //TODO:调用计算软件计算，将以上字段赋值
+                ZYDDCaculator oCaculator = new ZYDDCaculator();
+                strResult = oCaculator.DoCaculate(Path.Combine(rfDirectory, rfName), out resultFileDirectory);
+                if (!string.IsNullOrEmpty(strResult))
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", string.Format("alert(\"{0}。\")", strResult), true);
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("新增资源调度计算页面 调度计算出现异常，异常原因", ex));
+            }
+            #endregion
 
+            #region 写入计算结果数据
+            try
+            {
                 ResourceCalculate resourceCalculate = new ResourceCalculate();
-                resourceCalculate.RequirementFileDirectory = requirementFileDirectory;
-                resourceCalculate.RequirementFileName = requirementFileName;
-                resourceCalculate.RequirementFileDisplayName = requirementFileDisplayName;
-                //resourceCalculate.ResultFileDirectory = resultFileDirectory;
-                //resourceCalculate.ResultFileName = resultFileName;
+                resourceCalculate.RequirementFileDirectory = rfDirectory;
+                resourceCalculate.RequirementFileName = rfName;
+                resourceCalculate.RequirementFileDisplayName = rfDisplayName;
+                resourceCalculate.ResultFileDirectory = resultFileDirectory;
+                resourceCalculate.ResultFileName = resultFileName;
                 //resourceCalculate.ResultFileDisplayName = resultFileDisplayName;
                 resourceCalculate.ResultFileSource = 1;
-                //resourceCalculate.CalculateResult = 1;
+                if (!string.IsNullOrEmpty(strResult))
+                    resourceCalculate.CalculateResult = 2;
+                else
+                    resourceCalculate.CalculateResult = 1;
                 resourceCalculate.Status = 1;
                 resourceCalculate.CreatedTime = createdTime;
                 resourceCalculate.CreatedUserID = LoginUserInfo.Id;
@@ -362,8 +394,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
             catch(Exception ex)
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alert", "alert(\"系统异常，提交计算失败。\")", true);
-                throw (new AspNetException("新增资源调度计算页面btnCalculate_Click方法出现异常，异常原因", ex));
+                throw (new AspNetException("新增资源调度计算页面 写入计算结果数据出现异常，异常原因", ex));
             }
+            #endregion
         }
         /// <summary>
         /// 编辑资源需求(功能暂时隐藏)

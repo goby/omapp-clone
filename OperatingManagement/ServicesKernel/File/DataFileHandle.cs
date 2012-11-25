@@ -272,7 +272,7 @@ namespace ServicesKernel.File
                     strLog = "";
                 }
                 else
-                    strLog = strLog + "失败，目标文件已存在";
+                    strLog = string.Format("{0}失败，目标文件已存在，源路径{1}，目标路径{2}", strLog, fileFullName, strTgtFile);
             }
             catch (Exception ex)
             {

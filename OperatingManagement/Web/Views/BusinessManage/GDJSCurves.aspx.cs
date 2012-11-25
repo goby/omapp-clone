@@ -9,9 +9,11 @@ using System.Web.UI.WebControls;
 
 using System.Web.UI.DataVisualization.Charting;
 using ServicesKernel.GDFX;
+using ServicesKernel.File;
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer.BusinessManage;
+using OperatingManagement.DataAccessLayer.PlanManage;
 
 namespace OperatingManagement.Web.Views.BusinessManage
 {
@@ -132,7 +134,22 @@ namespace OperatingManagement.Web.Views.BusinessManage
             if (!string.IsNullOrEmpty(txtPath.Text.Trim()))
             {
                 if (File.Exists(txtPath.Text.Trim()))
-                    InitChart(txtPath.Text.Trim());
+                {
+                    string resultType = hdResultType.Value;
+                    switch (resultType)
+                    {
+                        case "GDYB_VisibleStatistics":
+                        case "GDYB_StationInOut":
+                        case "GDYB_SunTransit":
+                        case "GDYB_MoonTransit":
+                        case "GDYB_EarthShadow":
+                            ShowData(txtPath.Text.Trim());
+                            break;
+                        default:
+                            InitChart(txtPath.Text.Trim());
+                            break;
+                    }
+                }
                 else
                     ShowMessage("分析结果文件不存在，请确认。");
             }
@@ -140,6 +157,39 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         protected void CurveChart_PreRender(object sender, EventArgs e)
         {
+        }
+
+        private void ShowData(string filePath)
+        {
+            string resultType = hdResultType.Value;//"GDYB_MapJ";
+            string dialogName = string.Empty;
+            switch (resultType.Substring(5))
+            {
+                case "StationInOut":
+                    dialogName = "'#dialog-station'";
+                    #region 读取文件内容
+                    StationInOutFileReader reader = new StationInOutFileReader();
+                    List<StationInOut> list;
+                    list = reader.ReadData(filePath);
+                    rpStation.DataSource = list;
+                    rpStation.DataBind();
+                    #endregion
+                    break;
+                case "VisibleStatistics":
+                    dialogName = "'#dialog-VS'";
+                    break;
+                case "SunTransit":
+                    dialogName = "'#dialog-ST'";
+                    break;
+                case "MoonTransit":
+                    dialogName = "'#dialog-MT'";
+                    break;
+                case "EarthShadow":
+                    dialogName = "'#dialog-ES'";
+                    break;
+            }
+
+            ClientScript.RegisterStartupScript(this.GetType(), "File", string.Format("<script type='text/javascript'>showDialogForm({0});</script>", dialogName));
         }
     }
 }

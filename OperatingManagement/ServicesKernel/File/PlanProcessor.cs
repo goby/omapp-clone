@@ -70,6 +70,8 @@ namespace OperatingManagement.ServicesKernel.File
             result = string.Empty;
             string strSYID = string.Empty;
             string strTmp = string.Empty;
+            string strDMZID = string.Empty;
+            string strDMZDeviceID = string.Empty;
 
             #region Read all important data
             //Get BeginTime & EndTime
@@ -154,29 +156,29 @@ namespace OperatingManagement.ServicesKernel.File
                 oSC.SY_SCStartTime = lstSCActions.ElementAt(i).BeginTime.ToString(PEDefinition.LongTimeFormat14);
                 oSC.SY_SCEndTime = lstSCActions.ElementAt(i).EndTime.ToString(PEDefinition.LongTimeFormat14);
 
-                strTmp = lstSCActions.ElementAt(i).ParticipatorCode;
                 //执行者编号为系统编号或是子系统编号需要单独处理
-                strCodes = strTmp.Split(splitor_hline);
-                if (strCodes.Length == 3)
-                {
-                    oSC.SY_SCStationNO = strCodes[1];
-                    oSC.SY_SCEquipmentNO = strCodes[2];
-                    oSYContent.SCList.Add(oSC);
-                }
-                else if (strCodes.Length == 2)
+                strTmp = lstSCActions.ElementAt(i).ParticipatorCode;
+                strDMZID = GetDMZID(strTmp, out strDMZDeviceID);
+                if (string.IsNullOrEmpty(strDMZDeviceID))
                 {
                     ZXJH_SYContent_SC oNSc;
-                    if (dicParticipator.ContainsKey(strTmp))
+                    if (dicParticipator.ContainsKey(strDMZID))
                     {
-                        for (int j = 0; j < dicParticipator[strTmp].Length; j++)
+                        for (int j = 0; j < dicParticipator[strDMZID].Length; j++)
                         {
                             oNSc = (ZXJH_SYContent_SC)oSC.Clone();
-                            oNSc.SY_SCStationNO = strCodes[1];
-                            oNSc.SY_SCEquipmentNO = dicParticipator[strTmp][j];
+                            oNSc.SY_SCStationNO = strDMZID;
+                            oNSc.SY_SCEquipmentNO = dicParticipator[strDMZID][j];
                             oSYContent.SCList.Add(oNSc);
                         }
                     }
                     //没有这个key怎么办？
+                }
+                else
+                {
+                    oSC.SY_SCStationNO = strDMZID;
+                    oSC.SY_SCEquipmentNO = strDMZDeviceID;
+                    oSYContent.SCList.Add(oSC);
                 }
                 //else 执行者编号不合法？
             }
@@ -195,29 +197,31 @@ namespace OperatingManagement.ServicesKernel.File
                 oCK.SY_CKStartTime = lstCKActions.ElementAt(i).BeginTime.ToString(PEDefinition.LongTimeFormat14);
                 oCK.SY_CKEndTime = lstCKActions.ElementAt(i).EndTime.ToString(PEDefinition.LongTimeFormat14);
 
-                strTmp = lstCKActions.ElementAt(i).ParticipatorCode;
                 //执行者编号为系统编号或是子系统编号需要单独处理
-                strCodes = strTmp.Split(splitor_hline);
-                if (strCodes.Length == 3)
-                {
-                    oCK.SY_CKStationNO = strCodes[1];
-                    oCK.SY_CKEquipmentNO = strCodes[2];
-                    oSYContent.CKList.Add(oCK);
-                }
-                else if (strCodes.Length == 2)
+                strTmp = lstSCActions.ElementAt(i).ParticipatorCode;
+                strDMZID = GetDMZID(strTmp, out strDMZDeviceID);
+                if (string.IsNullOrEmpty(strDMZDeviceID))
                 {
                     ZXJH_SYContent_CK oNCK;
-                    if (dicParticipator.ContainsKey(strTmp))
+                    if (dicParticipator.ContainsKey(strDMZID))
                     {
-                        for (int j = 0; j < dicParticipator[strTmp].Length; j++)
+                        for (int j = 0; j < dicParticipator[strDMZID].Length; j++)
                         {
                             oNCK = (ZXJH_SYContent_CK)oCK.Clone();
-                            oNCK.SY_CKStationNO = strCodes[1];
-                            oNCK.SY_CKEquipmentNO = dicParticipator[strTmp][j];
+                            oNCK.SY_CKStationNO = strDMZID;
+                            oNCK.SY_CKEquipmentNO = dicParticipator[strDMZID][j];
                             oSYContent.CKList.Add(oNCK);
                         }
                     }
+                    //没有这个key怎么办？
                 }
+                else
+                {
+                    oCK.SY_CKStationNO = strDMZID;
+                    oCK.SY_CKEquipmentNO = strDMZDeviceID;
+                    oSYContent.CKList.Add(oCK);
+                }
+                //else 执行者编号不合法？
             }
 
             #endregion
@@ -488,15 +492,16 @@ namespace OperatingManagement.ServicesKernel.File
                 oJH.SatID = satids;
 
                 #endregion
-                string[] strPCodes = new string[0];
+                string strPCode = string.Empty;
+                string strDeviceID = string.Empty;
 
                 #region Set Content Value
                 for (int i = 0; i < lstActions.Count(); i++)
                 {
                     oContent = new GZJH_Content();
                     //工作单位 & 设备
-                    strPCodes = lstActions[i].ParticipatorCode.Split(splitor_hline);
-                    oContent.DW = strPCodes[1];
+                    strPCode = GetDMZID(lstActions[i].ParticipatorCode, out strDeviceID);
+                    oContent.DW = strDeviceID;
                     //属于总can的dmz才生成计划
                     if (ZCDMZList.Contains(oContent.DW))
                     {
@@ -541,9 +546,9 @@ namespace OperatingManagement.ServicesKernel.File
                             oContent.HSL = lstActions[i].WorkingParams[PEDefinition.V_HSL].Value;
 
                         //设备
-                        if (strPCodes.Length > 2)
+                        if (!string.IsNullOrEmpty(strDeviceID))
                         {
-                            oContent.SB = strPCodes[2];
+                            oContent.SB = strDeviceID;
                             lstContents.Add(oContent);
                         }
                         else
@@ -701,16 +706,17 @@ namespace OperatingManagement.ServicesKernel.File
                     return null;
                 strDH = strDH.Split(splitor_hline)[1];
                 #endregion
-                string[] strPCodes = new string[0];
+                string strPCode = string.Empty;
+                string strDeviceID = string.Empty;
 
                 #region Set Task Value
                 for (int i = 0; i < lstActions.Count(); i++)
                 {
                     oTask = new DJZYSQ_Task();
                     //工作单位 & 设备
-                    strPCodes = lstActions[i].ParticipatorCode.Split(splitor_hline);
+                    strPCode = GetDMZID(lstActions[i].ParticipatorCode, out strDeviceID);
                     //属于总zhuang的动作才生成计划
-                    if (ZZDMZList.Contains(strPCodes[1]))
+                    if (ZZDMZList.Contains(strPCode))
                     {
                         strSCID = lstActions[i].WorkingParams[PEDefinition.V_SCID].Value;
                         if (dicSQs.ContainsKey(strSCID))
@@ -722,14 +728,14 @@ namespace OperatingManagement.ServicesKernel.File
                             oSQ.SJ = DateTime.Now.ToString(PEDefinition.LongTimeFormat14);
                             oSQ.SatID = strSCID;
                         }
-                        oTask.GZDY = dicZYSQ_GZDY[strPCodes[1]];
+                        oTask.GZDY = dicZYSQ_GZDY[strPCode];
                         oTask.SXH = (i + 1).ToString();
                         oTask.SXZ = strSXZ;
                         oTask.MLB = "TT";
                         oTask.FS = strFS;
-                        strTmp = lstActions[i].ParticipatorCode.Split(splitor_hline)[1];
-                        oTask.GZDY = dicZYSQ_GZDY[strTmp];
-                        oTask.SBDH = dicZYSQ_SB[strTmp];
+                        //strTmp = lstActions[i].ParticipatorCode.Split(splitor_hline)[1];
+                        oTask.GZDY = dicZYSQ_GZDY[strPCode];
+                        oTask.SBDH = dicZYSQ_SB[strPCode];
                         oTask.QC = lstActions[i].QC.ToString();
                         oTask.QB = PEDefinition.V_QB;//默认一般Q
                         oTask.SHJ = "5";//CK事件类型，5为SC
@@ -799,9 +805,9 @@ namespace OperatingManagement.ServicesKernel.File
                         oTask.AfterFeedBacks = lstAfFbak;
 
                         //工作单位 & 设备
-                        strPCodes = lstActions[i].ParticipatorCode.Split(splitor_hline);
-                        oTask.GZDY = dicZYSQ_GZDY[strPCodes[1]];
-                        oTask.SBDH = dicZYSQ_SB[strPCodes[1]];
+                        //strPCode = GetDMZID(lstActions[i].ParticipatorCode, out strDeviceID);
+                        //oTask.GZDY = dicZYSQ_GZDY[strPCode];
+                        //oTask.SBDH = dicZYSQ_SB[strPCode];
 
                         if (oSQ.DMJHTasks == null)
                             oSQ.DMJHTasks = new List<DJZYSQ_Task>();
@@ -1383,6 +1389,8 @@ namespace OperatingManagement.ServicesKernel.File
             dicParticipator.Clear();
             string satids = string.Empty;
             string strCode = string.Empty;
+            string strDMZid = string.Empty;
+            string strDeviceID = string.Empty;
             string[] strSubSysCodes;
             var participator = epNode.Element(PEDefinition.E_ParticipatorDeclare).Elements(PEDefinition.E_System);
             for (int i = 0; i < participator.Count(); i++)
@@ -1396,14 +1404,33 @@ namespace OperatingManagement.ServicesKernel.File
                 }
 
                 var subSyss = participator.ElementAt(i).Element(PEDefinition.E_SubSysList).Elements(PEDefinition.E_SubSys);
-                strSubSysCodes = new string[subSyss.Count()];
-                for (int j = 0; j < subSyss.Count(); j++)
+                if (strCode.Substring(0, 5).ToUpper() == "G-CKZ")//地面站到组件
                 {
-                    strSubSysCodes[j] = GetAttributeValue(PEDefinition.P_Code, subSyss.ElementAt(j), out result);
-                    if (strSubSysCodes[j].Split(splitor_hline).Length == 3)
-                        strSubSysCodes[j] = strSubSysCodes[j].Split(splitor_hline)[2];
+                    for (int j = 0; j < subSyss.Count(); j++)
+                    {
+                        strCode = GetAttributeValue(PEDefinition.P_Code, subSyss.ElementAt(j), out result);
+                        strDMZid = GetDMZID(strCode, out strDeviceID);
+                        var cops = subSyss.ElementAt(j).Element(PEDefinition.E_ComponentList).Elements(PEDefinition.E_Component);
+                        strSubSysCodes = new string[cops.Count()];
+                        for (int k = 0; k < cops.Count(); k++)
+                        {
+                            strCode = GetAttributeValue(PEDefinition.P_Code, cops.ElementAt(k), out result);
+                            strSubSysCodes[k] = strCode.Split(splitor_hline)[3];
+                        }
+                        dicParticipator.Add(strDMZid, strSubSysCodes);
+                    }
                 }
-                dicParticipator.Add(strCode, strSubSysCodes);
+                else
+                {
+                    strSubSysCodes = new string[subSyss.Count()];
+                    for (int j = 0; j < subSyss.Count(); j++)
+                    {
+                        strSubSysCodes[j] = GetAttributeValue(PEDefinition.P_Code, subSyss.ElementAt(j), out result);
+                        if (strSubSysCodes[j].Split(splitor_hline).Length == 3)
+                            strSubSysCodes[j] = strSubSysCodes[j].Split(splitor_hline)[2];
+                    }
+                    dicParticipator.Add(strCode, strSubSysCodes);
+                }
             }
             satids = satids.TrimEnd(new char[] { ',' });
             return satids;
@@ -1723,7 +1750,7 @@ namespace OperatingManagement.ServicesKernel.File
             if (dicActions != null)
             {
                 var actions = dicActions.Values.Where(i => i.Name == value
-                    && i.ParticipatorCode.Substring(0, 1).ToUpper() == "G");
+                    && i.ParticipatorCode.Substring(0, 5).ToUpper() == "G-CKZ");
                 if (actions != null && actions.Count() > 0)
                     return (Action)actions.ElementAt(0);
                 else
@@ -1785,7 +1812,7 @@ namespace OperatingManagement.ServicesKernel.File
             if (dicActions != null)
             {
                 var actions = dicActions.Values.Where(i => i.Name == value
-                    && i.ParticipatorCode.Substring(0, 1).ToUpper() == "G");
+                    && i.ParticipatorCode.Substring(0, 5).ToUpper() == "G-CKZ");
                 if (actions != null && actions.Count() > 0)
                 {
                     List<Action> lstActions = new List<Action>();
@@ -1820,7 +1847,7 @@ namespace OperatingManagement.ServicesKernel.File
             if (dicActions != null)
             {
                 var actions = dicActions.Values.Where(i => i.Name == value
-                    && i.ParticipatorCode.Substring(0, 1).ToUpper() == "G"
+                    && i.ParticipatorCode.Substring(0, 5).ToUpper() == "G-CKZ"
                     && (i.BeginTime >= beginTime && i.BeginTime <= endTime));
                 if (actions != null && actions.Count() > 0)
                 {
@@ -1842,6 +1869,26 @@ namespace OperatingManagement.ServicesKernel.File
                 result = "解析不到动作信息";
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 获取地面站编码
+        /// </summary>
+        /// <param name="actionOwner"></param>
+        /// <returns></returns>
+        private string GetDMZID(string actionOwner
+            , out string deviceID)
+        {
+            deviceID = string.Empty;
+            if (!actionOwner.Contains("-"))
+                return string.Empty;
+            string[] stmps = actionOwner.Split(splitor_hline);
+            if (stmps.Length > 3)
+                deviceID = stmps[3];
+            if (stmps.Length >= 3)
+                return stmps[2];
+            else
+                return string.Empty;
         }
         #endregion
 
@@ -2164,6 +2211,7 @@ namespace OperatingManagement.ServicesKernel.File
         public const string E_SubSysList = "子系统列表";
         public const string E_SubSys = "子系统";
         public const string E_ComponentList = "组件列表";
+        public const string E_Component = "组件";
 
         //以下是试验时间相关
         public const string E_ExperimentTime = "试验时间";

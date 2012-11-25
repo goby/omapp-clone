@@ -53,8 +53,9 @@ namespace ServicesKernel.GDFX
             double dbTmp = 0;
             //int iTmp = 0;
             string[] strDatas;
-            DateTime date;
+            DateTime date = DateTime.MinValue;
             ResultType oRType = FormatXMLConfig.GetTypeByName(resultType);
+            bool isGDYB = false;
             #endregion
 
             #region Load Config Info
@@ -89,11 +90,15 @@ namespace ServicesKernel.GDFX
                 case "gdyb"://轨道预报
                     oReader.ReadLine();
                     strLine = oReader.ReadLine();
+                    if (resultType.ToLower().Substring(0, 8) == "gdyb_map")
+                        isGDYB = true;
                     break;
             }
             #endregion
 
-            while (strLine != null && !strLine.Equals(string.Empty))
+
+            strLine = strLine.TrimStart();
+            while (!string.IsNullOrEmpty(strLine))
             {
                 if (strLine.IndexOf(": ") > 0)
                     strLine = strLine.Replace(": ", ":0");//有的数据时分秒位会有dd:dd: d.ddd的情况，应为dd:dd:dd.ddd
@@ -102,12 +107,36 @@ namespace ServicesKernel.GDFX
                     strDatas = DataValidator.SplitRowDatas(strLine);
                     if (parseDate)
                     {
-                        blResult = DataValidator.ValidateDateColon(strDatas, 0, out date);
-                        if (!blResult)
+                        if (isGDYB)
                         {
-                            strResult += string.Format("行{0}日期格式错误", iLine);
-                            oReader.Close();
-                            return strResult;
+                            try
+                            {
+                                strResult = strLine.Substring(0, 10) + " " + strLine.Substring(11, 10).Replace("  ", " 0");
+                                date = DateTime.ParseExact(strResult, "yyyy MM dd HH mm ss.f", System.Globalization.CultureInfo.InvariantCulture);
+                            }
+                            catch (Exception ex)
+                            {
+                                strResult += string.Format("行{0}日期格式错误", iLine);
+                                oReader.Close();
+                                return strResult;
+                            }
+                        }
+                        else
+                        {
+                            try
+                            {
+                                blResult = DataValidator.ValidateDateColon(strDatas, oRType.TimeBeginPoint, out date);
+                            }
+                            catch (Exception ex)
+                            {
+                                blResult = false;
+                            }
+                            if (!blResult)
+                            {
+                                strResult += string.Format("行{0}日期格式错误", iLine);
+                                oReader.Close();
+                                return strResult;
+                            }
                         }
                         dates.Add(date);
                         datestrs.Add(date.ToString("yyyy/MM/dd hh:mm:ss.fff"));
@@ -134,6 +163,8 @@ namespace ServicesKernel.GDFX
                         maxValue = dbTmp;
                 }
                 strLine = oReader.ReadLine();
+                if (strLine != null)
+                    strLine = strLine.TrimStart();
                 iLine++;
                 iTick++;
                 if (oRType.IsBigFile && iTick == 301)//对于大文件，每n分钟显示一个点

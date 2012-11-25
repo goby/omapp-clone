@@ -33,6 +33,10 @@ namespace ServicesKernel.GDFX
                     oRType.Name = node.Element("name").Value;
                     oRType.FileName = node.Element("filename").Value;
                     oRType.IsBigFile = bool.Parse(node.Element("isBigFile").Value);
+                    if (node.Element("timeBeginPoint") != null)
+                        oRType.TimeBeginPoint = int.Parse(node.Element("timeBeginPoint").Value);
+                    if (node.Element("timeFormat") != null)
+                        oRType.TimeFormat = int.Parse(node.Element("timeFormat").Value);
                     var sDatas = node.Elements("data");
                     if (sDatas != null && sDatas.Count() > 0)
                     {
@@ -100,6 +104,8 @@ namespace ServicesKernel.GDFX
         public string Name { get; set; }
         public string FileName { get; set; }
         public bool IsBigFile { get; set; }
+        public int TimeBeginPoint { get; set; }
+        public int TimeFormat { get; set; }
         public List<ResultData> Results { get; set; }
 
         public ResultData GetDataByName(string dname)

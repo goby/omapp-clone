@@ -358,9 +358,9 @@ namespace ServicesKernel.File
             finally { }
 
             string fileFullName = Param.OutPutPath + fileName;
+            string strUFFilePath = System.Configuration.ConfigurationManager.AppSettings["UFFilePath"];
             if (dataType == "PLEO")//LEO成像 相机图像数据
             {
-                string strUFFilePath = System.Configuration.ConfigurationManager.AppSettings["UFFilePath"];
                 if (string.IsNullOrEmpty(strUFFilePath))
                 {
                     Log("无法获取UFFilePath");
@@ -376,7 +376,7 @@ namespace ServicesKernel.File
             }
             else
             {
-                string stmp = DataFileHandle.CopyFile(ufInfo.Directory + ufInfo.FileName, Param.OutPutPath, fileName);
+                string stmp = DataFileHandle.CopyFile(strUFFilePath + ufInfo.FileName, Param.OutPutPath, fileName);
                 if (stmp != string.Empty)
                     Log(string.Format("复制图像数据失败：{0}", stmp));
             }

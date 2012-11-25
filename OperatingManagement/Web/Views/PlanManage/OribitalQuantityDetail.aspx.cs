@@ -51,20 +51,20 @@ namespace OperatingManagement.Web.Views.PlanManage
             //lblD.Text = obj.Times.ToString("yyyyMMdd HH:mm:ss.fff");
             lblD.Text = obj.D.ToString();
             lblT.Text = obj.T.ToString();
-            lblA.Text = obj.A.ToString();
-            lblRa.Text = obj.Ra.ToString();
-            lblRp.Text = obj.Rp.ToString();
-            lblE.Text = obj.E.ToString();
-            lblI.Text = obj.I.ToString();
-            lblOhm.Text = obj.Q.ToString();
-            lblOmega.Text = obj.W.ToString();
-            lblM.Text = obj.M.ToString();
-            lblP.Text = obj.P.ToString();
-            lblPi.Text = obj.PP.ToString();
-            lblCDSM.Text = obj.CDSM.ToString();
-            lblKSM.Text = obj.KSM.ToString();
-            lblKZ1.Text = obj.KZ1.ToString();
-            lblKZ2.Text = obj.KZ2.ToString();
+            lblA.Text = obj.A.ToString("f4");
+            lblRa.Text = obj.Ra.ToString("f6");
+            lblRp.Text = obj.Rp.ToString("f6");
+            lblE.Text = obj.E.ToString("f6");
+            lblI.Text = obj.I.ToString("f4");
+            lblOhm.Text = obj.Q.ToString("f6");
+            lblOmega.Text = obj.W.ToString("f6");
+            lblM.Text = obj.M.ToString("f6");
+            lblP.Text = obj.P.ToString("f6");
+            lblPi.Text = obj.PP.ToString("f6");
+            lblCDSM.Text = obj.CDSM.ToString("f6");
+            lblKSM.Text = obj.KSM.ToString("f6");
+            lblKZ1.Text = obj.KZ1.ToString("f6");
+            lblKZ2.Text = obj.KZ2.ToString("f6");
         }
 
         public override void OnPageLoaded()

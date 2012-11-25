@@ -63,27 +63,28 @@
     <data name="vZ" />
   </result>
   <result name="轨道预报星下点预报" value="GDYB_SubSatPoint">
-    <data name="L" />
-    <data name="B" />
-    <data name="H" />
+    <data name="Lambda" />
+    <data name="Phi" />
+    <data name="Rho" />
   </result>
   <result name="轨道预报测站观测量" value="GDYB_StaObsPre">
     <data name="R" />
-    <data name="RR" />
+    <data name="dotR" />
     <data name="A" />
-    <data name="AA" />
+    <data name="dotA" />
     <data name="E" />
-    <data name="EE" />
-    <data name="Th" />
-    <data name="TTh" />
-    <data name="K" />
-    <data name="M" />
+    <data name="dotE" />
+    <data name="Theta1" />
+    <data name="Theta2" />
+    <data name="V" />
+    <data name="Psi" />
+    <data name="m" />
   </result>
   <result name="轨道预报观测引导文件" value="GDYB_ObsGuiding">
     <data name="A" />
-    <data name="AA" />
+    <data name="dotA" />
     <data name="E" />
-    <data name="EE" />
+    <data name="dotE" />
   </result>
   <result name="轨道预报太阳角度文件" value="GDYB_SunAH">
     <data name="A" />
