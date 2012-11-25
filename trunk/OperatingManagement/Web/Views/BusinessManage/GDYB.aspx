@@ -88,10 +88,112 @@
                 onclick="btnCalculate_Click" />
         </td>
     </tr>
+    <div id="divCalResult" runat="server" visible="false">
+        <tr style="height:24px;">
+            <th>
+                计算结果文件路径
+            </th>
+            <td>
+                <asp:Label ID="lblResultFilePath" runat="server" Text=""></asp:Label>
+                <asp:LinkButton ID="LinkButton1" runat="server" OnClick="lbtViewCurves_Click" CausesValidation="false">查看曲线图</asp:LinkButton>
+            </td>
+        </tr>
+        <tr>
+            <th class="style1">
+                地影文件
+            </th>
+            <td>
+                <asp:LinkButton ID="lbtEarthShadow" runat="server" OnClick="lbtEarthShadow_Click" CausesValidation="false">保存EarthShadow结果文件</asp:LinkButton>
+            </td>
+        </tr>
+        <tr>
+            <th class="style1">
+                空间位置预报J
+            </th>
+            <td>
+                <asp:LinkButton ID="lbtMapJ" runat="server" OnClick="lbtMapJ_Click" CausesValidation="false">保存MapJ结果文件</asp:LinkButton>
+            </td>
+        </tr>
+        <tr>
+            <th class="style1">
+                空间位置预报JK
+            </th>
+            <td>
+                <asp:LinkButton ID="lbtMapJK" runat="server" OnClick="lbtMapJK_Click" CausesValidation="false">保存MapJK结果文件</asp:LinkButton>
+            </td>
+        </tr>
+        <tr>
+            <th class="style1">
+                空间位置预报W
+            </th>
+            <td>
+                <asp:LinkButton ID="lbtMapW" runat="server" OnClick="lbtMapW_Click" CausesValidation="false">保存MapW结果文件</asp:LinkButton>
+            </td>
+        </tr>
+        <tr>
+            <th class="style1">
+                月凌文件
+            </th>
+            <td>
+                <asp:LinkButton ID="lbtMoonTransit" runat="server" OnClick="lbtMoonTransit_Click" CausesValidation="false">保存MoonTransit结果文件</asp:LinkButton>
+            </td>
+        </tr>
+        <tr>
+            <th class="style1">
+                观测引导文件
+            </th>
+            <td>
+                <asp:LinkButton ID="lbtObsGuiding" runat="server" OnClick="lbtObsGuiding_Click" CausesValidation="false">保存ObsGuiding结果文件</asp:LinkButton>
+            </td>
+        </tr>
+        <tr>
+            <th class="style1">
+                测站观测量文件
+            </th>
+            <td>
+                <asp:LinkButton ID="lbtStaObsPre" runat="server" OnClick="lbtStaObsPre_Click" CausesValidation="false">保存StaObsPre结果文件</asp:LinkButton>
+            </td>
+        </tr>
+        <tr>
+            <th class="style1">
+                进出站及航捷数据统计文件
+            </th>
+            <td>
+                <asp:LinkButton ID="lbtStationInOut" runat="server" OnClick="lbtStationInOut_Click" CausesValidation="false">保存StationInOut结果文件</asp:LinkButton>
+            </td>
+        </tr>
+        <tr>
+            <th class="style1">
+                星下点预报
+            </th>
+            <td>
+                <asp:LinkButton ID="lbtSubSatPoint" runat="server" OnClick="lbtSubSatPoint_Click" CausesValidation="false">保存SubSatPoint结果文件</asp:LinkButton>
+            </td>
+        </tr>
+        <tr>
+            <th class="style1">
+                太阳角度文件
+            </th>
+            <td>
+                <asp:LinkButton ID="lbtSunAH" runat="server" OnClick="lbtSunAH_Click" CausesValidation="false">保存SunAH结果文件</asp:LinkButton>
+            </td>
+        </tr>
+        <tr>
+            <th class="style1">
+                日凌文件
+            </th>
+            <td>
+                <asp:LinkButton ID="lbtSunTransit" runat="server" OnClick="lbtSunTransit_Click" CausesValidation="false">保存SunTransit结果文件</asp:LinkButton>
+            </td>
+        </tr>
+        <tr>
+            <th class="style1">
+                测站可见性统计文件
+            </th>
+            <td>
+                <asp:LinkButton ID="lbtVS" runat="server" OnClick="lbtVS_Click" CausesValidation="false">保存VisibleStatistics结果文件</asp:LinkButton>
+            </td>
+        </tr>
+    </div>
 </table>
-<div id="dialog-form" style="display:none" title="提示信息">
-	<p class="content">
-        <b>角度：</b><asp:Literal ID="ltAngle" runat="server"></asp:Literal><br />
-    </p>
-</div>
 </asp:Content>

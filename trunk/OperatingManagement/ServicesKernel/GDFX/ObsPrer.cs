@@ -196,7 +196,7 @@ namespace ServicesKernel.GDFX
                     br.Write(dmzCount);
                     for (int i = 0; i < dmzID.Length; i++)
                     {
-                        br.Write(Convert.ToInt32(dmzID[i], 16));
+                        br.Write(Convert.ToInt16(dmzID[i], 16));
                     }
                     datas = ms.ToArray();
                     Logger.GetLogger().Error(string.Format("year:{0}, month:{1}, day:{2}, ms:{3}, predays:{4}, preInterval:{5}, satid:{6}, QCY:{7}, QC:{8}, DMZCount:{9}, DMZID:{10}"

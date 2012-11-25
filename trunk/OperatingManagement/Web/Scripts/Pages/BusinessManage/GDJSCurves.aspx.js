@@ -107,3 +107,23 @@ function selectOnChanged(key) {
 function dataSelectOnChanged() {
     $('#hdDataType').attr('value', $('#dataname').val());
 }
+
+//弹出进出站及航捷数据统计文件内容窗口
+function showDialogForm(name) {
+    var _dialog;
+    _dialog = $(name);
+    _dialog.dialog({
+        autoOpen: false,
+        height: 550,
+        width: 1200,
+        modal: true,
+        buttons: {
+            '关闭': function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+    _dialog.dialog('open');
+    _dialog.parent().appendTo($("form:first"));
+    return false;
+}

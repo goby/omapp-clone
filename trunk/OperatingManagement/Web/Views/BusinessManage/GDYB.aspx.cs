@@ -95,25 +95,18 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
             strResult = oPrer.DoCaculate(dt, preDays, interval, ucSatellite1.SelectedValue
                 , dmzids.ToArray(), qcy, qc, out resultPath);
+            //resultPath = @"D:\WorkingForder\htc\Dev\ref\轨道分析\Version 2.0 20120723\测试数据\ObsPredict\output\";
             if (!string.IsNullOrEmpty(strResult))
             {
                 ShowMessage(strResult);
+                divCalResult.Visible = false;
                 return;
             }
             else
             {
-                ShowMessage("轨道预报成功，结果路径" + resultPath);
-                string strFName = string.Empty;
-                for (int i = 0; i < oPrer.ResultFileNames.Length; i++)
-                {
-                    strFName = oPrer.ResultFileNames[i];
-                    strFName = strFName.Substring(strFName.LastIndexOf(@"\") + 1);
-                    if (strFName.Substring(0, 5).ToUpper() == "MAPJ_")
-                    {
-                        strFullName = Path.Combine(Param.GDYBResultFilePath, resultPath.Substring(resultPath.LastIndexOf(@"\") + 1), strFName);
-                        break;
-                    }
-                }
+                lblResultFilePath.Text = resultPath;
+                ShowMessage("轨道预报成功。");
+                divCalResult.Visible = true;
             }
         }
 
@@ -121,6 +114,130 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             ltMessage.Text = msg;
             ltMessage.Visible = true;
+        }
+
+        private void DownLoadFile(string fileType)
+        {
+            try
+            {
+                string fileFullName = GetFileFullName(fileType);
+                if (string.IsNullOrEmpty(fileFullName) || !File.Exists(fileFullName))
+                {
+                    ShowMessage(string.Format("{0}计算结果文件不存在。", fileType));
+                    return;
+                }
+
+                Response.Clear();
+                Response.Buffer = false;
+                Response.ContentType = "application/octet-stream";
+                Response.AppendHeader("content-disposition", "attachment;filename=" + Path.GetFileName(fileFullName) + ";");
+                Response.Write(File.ReadAllText(fileFullName));
+                Response.Flush();
+                Response.End();
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException(string.Format("轨道分析 - 轨道预报页面另存{0}计算结果出现异常，异常原因", fileType), ex));
+            }
+        }
+
+        private string GetFileFullName(string fileType)
+        {
+            string strFilePath = lblResultFilePath.Text;
+            if (strFilePath.Equals(string.Empty))
+            {
+                ShowMessage("文件路径不存在");
+                return string.Empty;
+            }
+
+            string[] fileNames = Directory.GetFiles(strFilePath);
+            string fileFullName = string.Empty;
+            string strTmp = string.Empty;
+            for (int i = 0; i < fileNames.Length; i++)
+            {
+                strTmp = fileNames[i].Substring(fileNames[i].LastIndexOf(@"\") + 1);
+                if (strTmp.Length > fileType.Length)
+                {
+                    if (strTmp.Substring(0, fileType.Length + 1).ToUpper() == fileType.ToUpper() + "_")
+                    {
+                        fileFullName = fileNames[i];
+                        break;
+                    }
+                }
+            }
+            return fileFullName;
+        }
+
+        protected void lbtViewCurves_Click(object sender, EventArgs e)
+        {
+            string resultFilePath = GetFileFullName("MapJ");
+            if (resultFilePath == string.Empty)
+                return;
+            string fileType = "GDYB_MapJ";
+            if (File.Exists(resultFilePath))
+                Response.Redirect(string.Format("GDJSCurves.aspx?fp={0}&ft={1}", resultFilePath, fileType));
+        }
+
+        protected void lbtEarthShadow_Click(object sender, EventArgs e)
+        {
+            DownLoadFile(((LinkButton)sender).ID.Substring(3));
+        }
+
+        protected void lbtMapJ_Click(object sender, EventArgs e)
+        {
+            DownLoadFile(((LinkButton)sender).ID.Substring(3));
+        }
+
+        protected void lbtMapJK_Click(object sender, EventArgs e)
+        {
+            DownLoadFile(((LinkButton)sender).ID.Substring(3));
+        }
+
+        protected void lbtMapW_Click(object sender, EventArgs e)
+        {
+            DownLoadFile(((LinkButton)sender).ID.Substring(3));
+        }
+
+        protected void lbtMoonTransit_Click(object sender, EventArgs e)
+        {
+            DownLoadFile(((LinkButton)sender).ID.Substring(3));
+        }
+
+        protected void lbtObsGuiding_Click(object sender, EventArgs e)
+        {
+            DownLoadFile(((LinkButton)sender).ID.Substring(3));
+        }
+
+        protected void lbtStaObsPre_Click(object sender, EventArgs e)
+        {
+            DownLoadFile(((LinkButton)sender).ID.Substring(3));
+        }
+
+        protected void lbtStationInOut_Click(object sender, EventArgs e)
+        {
+            DownLoadFile(((LinkButton)sender).ID.Substring(3));
+        }
+
+        protected void lbtSubSatPoint_Click(object sender, EventArgs e)
+        {
+            DownLoadFile(((LinkButton)sender).ID.Substring(3));
+        }
+
+        protected void lbtSunAH_Click(object sender, EventArgs e)
+        {
+            DownLoadFile(((LinkButton)sender).ID.Substring(3));
+        }
+
+        protected void lbtSunTransit_Click(object sender, EventArgs e)
+        {
+            DownLoadFile(((LinkButton)sender).ID.Substring(3));
+        }
+
+        protected void lbtVS_Click(object sender, EventArgs e)
+        {
+            DownLoadFile("VisibleStatistics");
         }
     }
 }
