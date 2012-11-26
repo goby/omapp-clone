@@ -125,9 +125,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                 ucSatellite1.SelectedValue = strTemp[strTemp.Length - 2];
             }
             txtNote.Text = jh[0].Reserve.ToString();
+            //计划启动后不能修改计划
             if (DateTime.Now > jh[0].StartTime)
             {
-                btnSubmit.Visible = false;
+                //btnSubmit.Visible = false;
                 //hfOverDate.Value = "true";
             }
         }
@@ -807,8 +808,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                     sy.SCList = new List<ZXJH_SYContent_SC>();
                     sy.CKList = new List<ZXJH_SYContent_CK>();
                     sy.ZSList = new List<ZXJH_SYContent_ZS>();
-                    TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
-                    sy.SatID = txtSYSatID.Text;
+                    //TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
+                    //sy.SatID = txtSYSatID.Text;
+                    ucs.ucSatellite ddlSYSatID = (ucs.ucSatellite)it.FindControl("ddlSYSatID");
+                    sy.SatID = ddlSYSatID.SelectedValue;
                     #region 试验
                     TextBox txtSYID = (TextBox)it.FindControl("txtSYID");
                     TextBox txtSYName = (TextBox)it.FindControl("txtSYName");
@@ -907,7 +910,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 foreach (RepeaterItem it in rpCommandMake.Items)
                 {
                     cm = new ZXJH_CommandMake();
-                    TextBox txtWork_Command_SatID = (TextBox)it.FindControl("txtWork_Command_SatID");
+                    ucs.ucSatellite txtWork_Command_SatID = (ucs.ucSatellite)it.FindControl("txtWork_Command_SatID");
                     TextBox txtWork_Command_SYID = (TextBox)it.FindControl("txtWork_Command_SYID");
                     TextBox txtWork_Command_Programe = (TextBox)it.FindControl("txtWork_Command_Programe");
                     TextBox txtWork_Command_FinishTime = (TextBox)it.FindControl("txtWork_Command_FinishTime");
@@ -915,7 +918,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtWork_Command_UpTime = (TextBox)it.FindControl("txtWork_Command_UpTime");
                     TextBox txtWork_Command_Note = (TextBox)it.FindControl("txtWork_Command_Note");
 
-                    cm.Work_Command_SatID = txtWork_Command_SatID.Text;
+                    cm.Work_Command_SatID = txtWork_Command_SatID.SelectedValue;
                     cm.Work_Command_SYID = txtWork_Command_SYID.Text;
                     cm.Work_Command_Programe = txtWork_Command_Programe.Text;
                     cm.Work_Command_FinishTime = txtWork_Command_FinishTime.Text;
@@ -1099,8 +1102,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                     sy.SCList = new List<ZXJH_SYContent_SC>();
                     sy.CKList = new List<ZXJH_SYContent_CK>();
                     sy.ZSList = new List<ZXJH_SYContent_ZS>();
-                    TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
-                    sy.SatID = txtSYSatID.Text;
+                    //TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
+                    //sy.SatID = txtSYSatID.Text;
+                    ucs.ucSatellite ddlSYSatID = (ucs.ucSatellite)it.FindControl("ddlSYSatID");
+                    sy.SatID = ddlSYSatID.SelectedValue;
                     #region 试验
                     TextBox txtSYID = (TextBox)it.FindControl("txtSYID");
                     TextBox txtSYName = (TextBox)it.FindControl("txtSYName");
@@ -1199,7 +1204,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 foreach (RepeaterItem it in rpCommandMake.Items)
                 {
                     cm = new ZXJH_CommandMake();
-                    TextBox txtWork_Command_SatID = (TextBox)it.FindControl("txtWork_Command_SatID");
+                    ucs.ucSatellite txtWork_Command_SatID = (ucs.ucSatellite)it.FindControl("txtWork_Command_SatID");
                     TextBox txtWork_Command_SYID = (TextBox)it.FindControl("txtWork_Command_SYID");
                     TextBox txtWork_Command_Programe = (TextBox)it.FindControl("txtWork_Command_Programe");
                     TextBox txtWork_Command_FinishTime = (TextBox)it.FindControl("txtWork_Command_FinishTime");
@@ -1207,7 +1212,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtWork_Command_UpTime = (TextBox)it.FindControl("txtWork_Command_UpTime");
                     TextBox txtWork_Command_Note = (TextBox)it.FindControl("txtWork_Command_Note");
 
-                    cm.Work_Command_SatID = txtWork_Command_SatID.Text;
+                    cm.Work_Command_SatID = txtWork_Command_SatID.SelectedValue;
                     cm.Work_Command_SYID = txtWork_Command_SYID.Text;
                     cm.Work_Command_Programe = txtWork_Command_Programe.Text;
                     cm.Work_Command_FinishTime = txtWork_Command_FinishTime.Text;
@@ -1391,8 +1396,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                 foreach (RepeaterItem it in rp.Items)
                 {
                     sy = new ZXJH_SYContent();
-                    TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
-                    sy.SatID = txtSYSatID.Text;
+                    //TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
+                    //sy.SatID = txtSYSatID.Text;
+                    ucs.ucSatellite ddlSYSatID = (ucs.ucSatellite)it.FindControl("ddlSYSatID");
+                    sy.SatID = ddlSYSatID.SelectedValue;
                     #region 试验
                     TextBox txtSYID = (TextBox)it.FindControl("txtSYID");
                     TextBox txtSYName = (TextBox)it.FindControl("txtSYName");
@@ -1473,8 +1480,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                         if (e.Item.ItemIndex != it.ItemIndex)
                         {
                             sy = new ZXJH_SYContent();
-                            TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
-                            sy.SatID = txtSYSatID.Text;
+                            //TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
+                            //sy.SatID = txtSYSatID.Text;
+                            ucs.ucSatellite ddlSYSatID = (ucs.ucSatellite)it.FindControl("ddlSYSatID");
+                            sy.SatID = ddlSYSatID.SelectedValue;
                             #region 试验
                             TextBox txtSYID = (TextBox)it.FindControl("txtSYID");
                             TextBox txtSYName = (TextBox)it.FindControl("txtSYName");
@@ -1548,7 +1557,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 foreach (RepeaterItem it in rp.Items)
                 {
                     obj = new ZXJH_CommandMake();
-                    TextBox txtWork_Command_SatID = (TextBox)it.FindControl("txtWork_Command_SatID");
+                    ucs.ucSatellite txtWork_Command_SatID = (ucs.ucSatellite)it.FindControl("txtWork_Command_SatID");
                     TextBox txtWork_Command_SYID = (TextBox)it.FindControl("txtWork_Command_SYID");
                     TextBox txtWork_Command_Programe = (TextBox)it.FindControl("txtWork_Command_Programe");
                     TextBox txtWork_Command_FinishTime = (TextBox)it.FindControl("txtWork_Command_FinishTime");
@@ -1556,7 +1565,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtWork_Command_UpTime = (TextBox)it.FindControl("txtWork_Command_UpTime");
                     TextBox txtWork_Command_Note = (TextBox)it.FindControl("txtWork_Command_Note");
 
-                    obj.Work_Command_SatID = txtWork_Command_SatID.Text;
+                    obj.Work_Command_SatID = txtWork_Command_SatID.SelectedValue;
                     obj.Work_Command_SYID = txtWork_Command_SYID.Text;
                     obj.Work_Command_Programe = txtWork_Command_Programe.Text;
                     obj.Work_Command_FinishTime = txtWork_Command_FinishTime.Text;
@@ -1589,7 +1598,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                         if (e.Item.ItemIndex != it.ItemIndex)
                         {
                             obj = new ZXJH_CommandMake();
-                            TextBox txtWork_Command_SatID = (TextBox)it.FindControl("txtWork_Command_SatID");
+                            ucs.ucSatellite txtWork_Command_SatID = (ucs.ucSatellite)it.FindControl("txtWork_Command_SatID");
                             TextBox txtWork_Command_SYID = (TextBox)it.FindControl("txtWork_Command_SYID");
                             TextBox txtWork_Command_Programe = (TextBox)it.FindControl("txtWork_Command_Programe");
                             TextBox txtWork_Command_FinishTime = (TextBox)it.FindControl("txtWork_Command_FinishTime");
@@ -1597,7 +1606,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                             TextBox txtWork_Command_UpTime = (TextBox)it.FindControl("txtWork_Command_UpTime");
                             TextBox txtWork_Command_Note = (TextBox)it.FindControl("txtWork_Command_Note");
 
-                            obj.Work_Command_SatID = txtWork_Command_SatID.Text;
+                            obj.Work_Command_SatID = txtWork_Command_SatID.SelectedValue;
                             obj.Work_Command_SYID = txtWork_Command_SYID.Text;
                             obj.Work_Command_Programe = txtWork_Command_Programe.Text;
                             obj.Work_Command_FinishTime = txtWork_Command_FinishTime.Text;
@@ -1665,13 +1674,16 @@ namespace OperatingManagement.Web.Views.PlanManage
                     Repeater rpSC = e.Item.FindControl("rpSYContentSC") as Repeater;
                     Repeater rpCK = e.Item.FindControl("rpSYContentCK") as Repeater;
                     Repeater rpZS = e.Item.FindControl("rpSYContentZS") as Repeater;
+                    ucs.ucSatellite ddlSYSatID = e.Item.FindControl("ddlSYSatID") as ucs.ucSatellite;
 
+                    ddlSYSatID.SelectedValue = sy.SatID;
                     rpSC.DataSource = sy.SCList;
                     rpSC.DataBind();
                     rpCK.DataSource = sy.CKList;
                     rpCK.DataBind();
                     rpZS.DataSource = sy.ZSList;
                     rpZS.DataBind();
+
                     #endregion
                 }
             }
@@ -1718,8 +1730,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                     sy.SCList = new List<ZXJH_SYContent_SC>();
                     sy.CKList = new List<ZXJH_SYContent_CK>();
                     sy.ZSList = new List<ZXJH_SYContent_ZS>();
-                    TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
-                    sy.SatID = txtSYSatID.Text;
+                    //TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
+                    //sy.SatID = txtSYSatID.Text;
+                    ucs.ucSatellite ddlSYSatID = (ucs.ucSatellite)it.FindControl("ddlSYSatID");
+                    sy.SatID = ddlSYSatID.SelectedValue;
                     #region 试验
                     TextBox txtSYID = (TextBox)it.FindControl("txtSYID");
                     TextBox txtSYName = (TextBox)it.FindControl("txtSYName");
@@ -1818,7 +1832,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 foreach (RepeaterItem it in rpCommandMake.Items)
                 {
                     cm = new ZXJH_CommandMake();
-                    TextBox txtWork_Command_SatID = (TextBox)it.FindControl("txtWork_Command_SatID");
+                    //TextBox txtWork_Command_SatID = (TextBox)it.FindControl("txtWork_Command_SatID");
+                    ucs.ucSatellite txtWork_Command_SatID = (ucs.ucSatellite)it.FindControl("txtWork_Command_SatID");
                     TextBox txtWork_Command_SYID = (TextBox)it.FindControl("txtWork_Command_SYID");
                     TextBox txtWork_Command_Programe = (TextBox)it.FindControl("txtWork_Command_Programe");
                     TextBox txtWork_Command_FinishTime = (TextBox)it.FindControl("txtWork_Command_FinishTime");
@@ -1826,7 +1841,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtWork_Command_UpTime = (TextBox)it.FindControl("txtWork_Command_UpTime");
                     TextBox txtWork_Command_Note = (TextBox)it.FindControl("txtWork_Command_Note");
 
-                    cm.Work_Command_SatID = txtWork_Command_SatID.Text;
+                    cm.Work_Command_SatID = txtWork_Command_SatID.SelectedValue;
                     cm.Work_Command_SYID = txtWork_Command_SYID.Text;
                     cm.Work_Command_Programe = txtWork_Command_Programe.Text;
                     cm.Work_Command_FinishTime = txtWork_Command_FinishTime.Text;
@@ -2254,6 +2269,25 @@ namespace OperatingManagement.Web.Views.PlanManage
                 ltMessage.Text = string.Format("{0}的内容不能为空", msg);
                 return false;
             }
+        }
+
+        protected void rpCommandMake_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            try
+            {
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                {
+                    ZXJH_CommandMake wc = (ZXJH_CommandMake)e.Item.DataItem;
+                    ucs.ucSatellite txtWork_Command_SatID = (ucs.ucSatellite)e.Item.FindControl("txtWork_Command_SatID") as ucs.ucSatellite;
+
+                    txtWork_Command_SatID.SelectedValue = wc.Work_Command_SatID;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("绑定地面计划信息出现异常，异常原因", ex));
+            }
+            finally { }
         }
     }
 }

@@ -1887,6 +1887,8 @@ namespace ServicesKernel.File
                              + "  " + t.KSHX + "  " + t.GSHX + "  " + t.GZJ + "  " + t.JS + "  " + t.BID + "  " + t.SBZ
                              + "  " + t.RTs + "  " + t.RTe + "  " + t.SL + "  " + t.HBID + "  " + t.HBZ + "  " + t.Ts
                              + "  " + t.Te + "  " + t.HRTs + "  " + t.HSL);
+                             //+ "  " + t.RTs + "  " + t.RTe + "  " + t.SL + "  " + t.HBID + "  " + t.HBZ + "  " + t.Ts
+                             //+ "  " + t.Te + "  " + t.HRTs + "  " + t.HSL);
                     }
                     sw.WriteLine("<辅助区>");
                     sw.WriteLine("[备注]：");
@@ -2096,8 +2098,7 @@ namespace ServicesKernel.File
                     if (obj.TaskID == key)
                     {
                         sw.WriteLine(obj.Times.ToString("yyyyMMdd") + "  " + obj.Times.ToString("HHmmssffff") + "  "
-                            + (obj.A * 0.001).ToString("f4") + strSplitorTwoBlanks + obj.E.ToString("f6") + strSplitorTwoBlanks + obj.I.ToString("f4") + "  "
-                            + obj.Q.ToString("f6") + strSplitorTwoBlanks + obj.W.ToString("f6") + strSplitorTwoBlanks + obj.M.ToString("f6"));
+                            + obj.A.ToString("f4") + "  " + obj.E.ToString("f6") + "  " + obj.I.ToString("f6") + "  " + obj.Q.ToString("f6") + "  " + obj.W.ToString("f6") + "  " + obj.M.ToString("f6"));
                     }
                 }
                 sw.WriteLine("<辅助区>");
@@ -2164,14 +2165,12 @@ namespace ServicesKernel.File
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[格式标识1]：T01  T02  a  e  i  Ω  w  M");
                 sw.WriteLine("[数据区]：");
-                //A数据库里存的是米，发出去时转为千米
                 foreach (GD obj in listJH)
                 {
                     if (obj.TaskID == key)
                     {
                         sw.WriteLine(obj.Times.ToString("yyyyMMdd") + "  " + obj.Times.ToString("HHmmssffff") + "  "
-                            + (obj.A * 0.001).ToString("f4") + strSplitorTwoBlanks + obj.E.ToString("f6") + strSplitorTwoBlanks + obj.I.ToString("f4") + "  "
-                            + obj.Q.ToString("f6") + strSplitorTwoBlanks + obj.W.ToString("f6") + strSplitorTwoBlanks + obj.M.ToString("f6"));
+                            + obj.A + "  " + obj.E + "  " + obj.I + "  " + obj.Q + "  " + obj.W + "  " + obj.M);
                     }
                 }
                 sw.WriteLine("<辅助区>");
@@ -2238,14 +2237,12 @@ namespace ServicesKernel.File
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[格式标识1]：SatName  T01  T02  a  e  i  Ω  w  M");
                 sw.WriteLine("[数据区]：");
-                //A数据库里存的是米，发出去时转为千米
                 foreach (YDSJ obj in listJH)
                 {
                     if (obj.TaskID == key)
                     {
                         sw.WriteLine(obj.SatName + strSplitorTwoBlanks + obj.Times.ToString("yyyyMMdd") + strSplitorTwoBlanks + obj.Times.ToString("HHmmssffff") + strSplitorTwoBlanks
-                            + (obj.A * 0.001).ToString("f4") + strSplitorTwoBlanks + obj.E.ToString("f6") + strSplitorTwoBlanks + obj.I.ToString("f4") + "  "
-                            + obj.Q.ToString("f6") + strSplitorTwoBlanks + obj.W.ToString("f6") + strSplitorTwoBlanks + obj.M.ToString("f6"));
+                            + obj.A + strSplitorTwoBlanks + obj.E + strSplitorTwoBlanks + obj.I + strSplitorTwoBlanks + obj.O + strSplitorTwoBlanks + obj.W + strSplitorTwoBlanks + obj.M);
                     }
                 }
                 sw.WriteLine("<辅助区>");

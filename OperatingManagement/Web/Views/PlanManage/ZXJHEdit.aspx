@@ -340,13 +340,18 @@
                                                             注数-最早时间要求
                                                         </th>
                                                         <td style="width: 270px;">
-                                                            <asp:TextBox ID="txtZSFirst" runat="server" CssClass="text" Text='<%# Eval("SY_ZSFirst")%>'></asp:TextBox>
+                                                            <asp:TextBox ID="txtZSFirst" runat="server" CssClass="text" Text='<%# Eval("SY_ZSFirst")%>'
+                                                             onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                                         </td>
                                                         <th style="width: 120px;">
                                                             注数-最晚时间要求
                                                         </th>
                                                         <td style="width: 265px;">
-                                                            <asp:TextBox ID="txtZSLast" runat="server" CssClass="text" Text='<%# Eval("SY_ZSLast")%>'></asp:TextBox>
+                                                            <asp:TextBox ID="txtZSLast" runat="server" CssClass="text" Text='<%# Eval("SY_ZSLast")%>'
+                                                             onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                                                             <asp:CompareValidator ID="CompareVa3" runat="server" ControlToCompare="txtZSFirst"
+                                                                ControlToValidate="txtZSLast" Display="Dynamic" ErrorMessage="结束时间应大于开始时间"
+                                                                ForeColor="Red" Operator="GreaterThan"></asp:CompareValidator>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -375,7 +380,8 @@
                                             卫星代号
                                         </th>
                                         <td>
-                                            <asp:TextBox ID="txtSYSatID" runat="server" CssClass="text" Text='<%# Eval("SatID")%>'></asp:TextBox>
+                                            <uc2:ucSatellite ID="ddlSYSatID" runat="server" AllowBlankItem="False" />
+                                            <%--<asp:TextBox ID="txtSYSatID" runat="server" CssClass="text" Text='<%# Eval("SatID")%>'></asp:TextBox>--%>
                                         </td>
                                         <td colspan="2">
                                             <asp:Button ID="btnSYAdd" CausesValidation="False" CssClass="button" runat="server"
@@ -472,7 +478,9 @@
                             指令制作
                         </th>
                         <td>
-                            <asp:Repeater ID="rpCommandMake" runat="server" OnItemCommand="rpCommandMake_ItemCommand">
+                            <asp:Repeater ID="rpCommandMake" runat="server" 
+                                OnItemCommand="rpCommandMake_ItemCommand" 
+                                onitemdatabound="rpCommandMake_ItemDataBound">
                                 <HeaderTemplate>
                                     <table class="edit1">
                                         <tbody>
@@ -483,7 +491,8 @@
                                             卫星代号
                                         </th>
                                         <td style="width: 270px;">
-                                            <asp:TextBox ID="txtWork_Command_SatID" runat="server" CssClass="text" Text='<%# Eval("Work_Command_SatID")%>'></asp:TextBox>
+                                            <uc2:ucSatellite ID="txtWork_Command_SatID" runat="server" AllowBlankItem="False" />
+                                            <%--<asp:TextBox ID="txtWork_Command_SatID" runat="server" CssClass="text" Text='<%# Eval("Work_Command_SatID")%>'></asp:TextBox>--%>
                                         </td>
                                         <th style="width: 120px;">
                                             对应试验ID
