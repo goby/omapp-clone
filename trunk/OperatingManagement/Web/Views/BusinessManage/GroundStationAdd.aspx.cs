@@ -48,9 +48,15 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            string msg = string.Empty;
+            double longitudeValue = 0.0;
+            double latitudeValue = 0.0;
+            double gaoCheng = 0.0;
+            int tcpPort = 0;
+            int udpPort = 0;
+            #region Check Input
             try
             {
-                string msg = string.Empty;
                 if (string.IsNullOrEmpty(txtAddrName.Text.Trim()))
                 {
                     trMessage.Visible = true;
@@ -99,7 +105,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "经度坐标值不能为空";
                     return;
                 }
-                double longitudeValue = 0.0;
                 if (!double.TryParse(txtLongitude.Text.Trim(), out longitudeValue))
                 {
                     trMessage.Visible = true;
@@ -112,7 +117,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "纬度坐标值不能为空";
                     return;
                 }
-                double latitudeValue = 0.0;
                 if (!double.TryParse(txtLatitude.Text.Trim(), out latitudeValue))
                 {
                     trMessage.Visible = true;
@@ -126,7 +130,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "高程坐标值不能为空";
                     return;
                 }
-                double gaoCheng = 0.0;
                 if (!double.TryParse(txtGaoCheng.Text.Trim(), out gaoCheng))
                 {
                     trMessage.Visible = true;
@@ -134,7 +137,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
-                int tcpPort = 0;
                 if (!string.IsNullOrEmpty(txtTCPPort.Text.Trim()) && !int.TryParse(txtTCPPort.Text.Trim(), out tcpPort))
                 {
                     trMessage.Visible = true;
@@ -142,20 +144,29 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
-                int udpPort = 0;
                 if (!string.IsNullOrEmpty(txtUDPPort.Text.Trim()) && !int.TryParse(txtUDPPort.Text.Trim(), out udpPort))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "UDP端口格式错误";
                     return;
                 }
-
-                //string ftpPath = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("新增地面站页面保存数据-校验数据出现异常，异常原因", ex));
+            }
+            #endregion
+            //string ftpPath = string.Empty;
                 //if (!string.IsNullOrEmpty(txtFTPPath.Text.Trim()) || !string.IsNullOrEmpty(txtFTPUser.Text.Trim()) || !string.IsNullOrEmpty(txtFTPPwd.Text.Trim()))
                 //{
                 //    ftpPath = txtFTPPath.Text.Trim() + "@" + txtFTPUser.Text.Trim() + "@" + txtFTPPwd.Text.Trim();
-                //}
+            //}
 
+            #region Save Data
+            try
+            {
                 Framework.FieldVerifyResult result;
                 XYXSInfo xyxsInfo = new XYXSInfo();
                 xyxsInfo.ADDRName = txtAddrName.Text.Trim();
@@ -175,6 +186,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 xyxsInfo.Status = 1;//正常
                 xyxsInfo.CreatedTime = DateTime.Now;
                 xyxsInfo.CreatedUserID = LoginUserInfo.Id;
+                xyxsInfo.DWCode = txtDWCode.Text.Trim();
 
                 result = xyxsInfo.Add();
                 switch (result)
@@ -199,6 +211,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 lblMessage.Text = "发生未知错误，操作失败。";
                 throw (new AspNetException("新增地面站页面btnSubmit_Click方法出现异常，异常原因", ex));
             }
+            #endregion
         }
         /// <summary>
         /// 清除当前控件的值
@@ -291,6 +304,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             txtFTPPath.Text = string.Empty;
             txtFTPUser.Text = string.Empty;
             txtFTPPwd.Text = string.Empty;
+            txtDWCode.Text = string.Empty;
         }
 
         #endregion

@@ -67,6 +67,24 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv2;
         
         /// <summary>
+        /// txtOutTaskNo 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtOutTaskNo;
+        
+        /// <summary>
+        /// rfv5 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv5;
+        
+        /// <summary>
         /// txtObjectFlag 控件。
         /// </summary>
         /// <remarks>
@@ -92,6 +110,24 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::OperatingManagement.Web.ucs.ucCBLSat ucCBLSats;
+        
+        /// <summary>
+        /// txtSCID 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSCID;
+        
+        /// <summary>
+        /// rfv6 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv6;
         
         /// <summary>
         /// rblCurTask 控件。

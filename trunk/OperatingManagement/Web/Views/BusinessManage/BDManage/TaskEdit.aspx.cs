@@ -44,8 +44,10 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
 
             txtTaskName.Text = task.TaskName;
             txtTaskNo.Text = task.TaskNo;
+            txtOutTaskNo.Text = task.OutTaskNo;
             txtObjectFlag.Text = task.ObjectFlag;
             ucCBLSats.SelectedValues = task.SatID;
+            txtSCID.Text = task.SCID;
             rblCurTask.SelectedValue = task.IsCurTask;
             txtFrom.Text = task.BeginTime.ToString("yyyy-MM-dd");
             txtTo.Text = task.EndTime.ToString("yyyy-MM-dd");
@@ -65,8 +67,10 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                 Id = Convert.ToInt32(Request.QueryString["Id"]),
                 TaskName = txtTaskName.Text.Trim(),
                 TaskNo = txtTaskNo.Text.Trim(),
+                OutTaskNo = txtOutTaskNo.Text.Trim(),
                 ObjectFlag = txtObjectFlag.Text.Trim(),
                 SatID = ucCBLSats.SelectedValues.ToString(),
+                SCID = txtSCID.Text.Trim(),
                 IsCurTask = rblCurTask.SelectedValue.ToString(),
                 BeginTime = DateTime.ParseExact(txtFrom.Text.Trim(), "yyyy-MM-dd", provider),
                 EndTime = DateTime.ParseExact(txtTo.Text.Trim(), "yyyy-MM-dd", provider)
@@ -92,7 +96,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                     msg = "发生了数据错误，无法完成请求的操作。";
                     break;
                 case Framework.FieldVerifyResult.Success:
-                    msg = "编辑任务已成功。";
+                    msg = "任务已编辑成功。";
                     break;
                 case Framework.FieldVerifyResult.NameDuplicated2:
                     msg = "已存在相同名称，请输入其他“任务代号”。";

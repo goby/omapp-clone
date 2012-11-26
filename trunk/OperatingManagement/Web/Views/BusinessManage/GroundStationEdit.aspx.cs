@@ -67,9 +67,15 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            string msg = string.Empty;
+            double longitudeValue = 0.0;
+            double latitudeValue = 0.0;
+            double gaoCheng = 0.0;
+            int tcpPort = 0;
+            int udpPort = 0;
+            #region Check Input
             try
             {
-                string msg = string.Empty;
                 if (string.IsNullOrEmpty(txtAddrName.Text.Trim()))
                 {
                     trMessage.Visible = true;
@@ -118,7 +124,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "经度坐标值不能为空";
                     return;
                 }
-                double longitudeValue = 0.0;
                 if (!double.TryParse(txtLongitude.Text.Trim(), out longitudeValue))
                 {
                     trMessage.Visible = true;
@@ -131,7 +136,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "纬度坐标值不能为空";
                     return;
                 }
-                double latitudeValue = 0.0;
                 if (!double.TryParse(txtLatitude.Text.Trim(), out latitudeValue))
                 {
                     trMessage.Visible = true;
@@ -145,7 +149,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     lblMessage.Text = "高程坐标值不能为空";
                     return;
                 }
-                double gaoCheng = 0.0;
                 if (!double.TryParse(txtGaoCheng.Text.Trim(), out gaoCheng))
                 {
                     trMessage.Visible = true;
@@ -153,7 +156,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
-                int tcpPort = 0;
                 if (!string.IsNullOrEmpty(txtTCPPort.Text.Trim()) && !int.TryParse(txtTCPPort.Text.Trim(), out tcpPort))
                 {
                     trMessage.Visible = true;
@@ -161,20 +163,24 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     return;
                 }
 
-                int udpPort = 0;
                 if (!string.IsNullOrEmpty(txtUDPPort.Text.Trim()) && !int.TryParse(txtUDPPort.Text.Trim(), out udpPort))
                 {
                     trMessage.Visible = true;
                     lblMessage.Text = "UDP端口格式错误";
                     return;
                 }
+            }
+            catch (Exception ex)
+            {
+                trMessage.Visible = true;
+                lblMessage.Text = "发生未知错误，操作失败。";
+                throw (new AspNetException("编辑地面站页面保存数据-校验数据出现异常，异常原因", ex));
+            }
+            #endregion
 
-                //string ftpPath = string.Empty;
-                //if (!string.IsNullOrEmpty(txtFTPPath.Text.Trim()) || !string.IsNullOrEmpty(txtFTPUser.Text.Trim()) || !string.IsNullOrEmpty(txtFTPPwd.Text.Trim()))
-                //{
-                //    ftpPath = txtFTPPath.Text.Trim() + "@" + txtFTPUser.Text.Trim() + "@" + txtFTPPwd.Text.Trim();
-                //}
-
+            #region Save Data
+            try
+            {
                 Framework.FieldVerifyResult result;
                 XYXSInfo xyxsInfo = new XYXSInfo();
                 xyxsInfo.Id = RID;
@@ -204,6 +210,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 //xyxsInfo.CreatedUserID = LoginUserInfo.Id;
                 xyxsInfo.UpdatedTime = DateTime.Now;
                 xyxsInfo.UpdatedUserID = LoginUserInfo.Id;
+                xyxsInfo.DWCode = txtDWCode.Text.Trim();
 
                 result = xyxsInfo.Update();
                 switch (result)
@@ -226,8 +233,9 @@ namespace OperatingManagement.Web.Views.BusinessManage
             {
                 trMessage.Visible = true;
                 lblMessage.Text = "发生未知错误，操作失败。";
-                throw (new AspNetException("编辑地面站页面btnSubmit_Click方法出现异常，异常原因", ex));
+                throw (new AspNetException("编辑地面站页面保存数据时出现异常，异常原因", ex));
             }
+            #endregion
         }
         /// <summary>
         /// 重置当前控件的值
@@ -289,14 +297,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
             dplOwn.DataTextField = "key";
             dplOwn.DataValueField = "value";
             dplOwn.DataBind();
-            //dplOwner.Items.Insert(0, new ListItem("请选择", ""));
 
             dplCoordinate.Items.Clear();
             dplCoordinate.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.GroundResourceCoordinate);
             dplCoordinate.DataTextField = "key";
             dplCoordinate.DataValueField = "value";
             dplCoordinate.DataBind();
-            //dplCoordinate.Items.Insert(0, new ListItem("请选择", ""));
         }
         /// <summary>
         /// 绑定控件值
@@ -313,7 +319,6 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 txtInCode.Text = xyxsInfo.INCODE;
                 txtExCode.Text = xyxsInfo.EXCODE;
                 dplOwn.SelectedValue = xyxsInfo.Own;
-                //dplCoordinate.SelectedValue = xyxsInfo.Coordinate;
                 txtMainIP.Text = xyxsInfo.MainIP;
                 txtTCPPort.Text = xyxsInfo.TCPPort.ToString();
                 txtBakIP.Text = xyxsInfo.BakIP;
@@ -323,11 +328,11 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 txtFTPPwd.Text = xyxsInfo.FTPPwd;
                 lblCreatedTime.Text = xyxsInfo.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss");
                 lblUpdatedTime.Text = xyxsInfo.UpdatedTime == DateTime.MinValue ? xyxsInfo.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss") : xyxsInfo.UpdatedTime.ToString("yyyy-MM-dd HH:mm:ss");
+                txtDWCode.Text = xyxsInfo.DWCode;
 
                 string[] coordinateInfo = xyxsInfo.Coordinate.Split(new char[] { ',', '，', ':', '：' }, StringSplitOptions.RemoveEmptyEntries);
                 if (coordinateInfo != null && coordinateInfo.Length == 3)
                 {
-                    //dplCoordinate.SelectedValue = coordinateInfo[0];
                     txtLongitude.Text = coordinateInfo[0];
                     txtLatitude.Text = coordinateInfo[1];
                     txtGaoCheng.Text = coordinateInfo[2];

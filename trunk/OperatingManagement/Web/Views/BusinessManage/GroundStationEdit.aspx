@@ -19,7 +19,7 @@
                 地面站名称(<span class="red">*</span>)
             </th>
             <td>
-                <asp:TextBox ID="txtAddrName" runat="server" CssClass="norText" MaxLength="100"></asp:TextBox>
+                <asp:TextBox ID="txtAddrName" runat="server" CssClass="norText" MaxLength="100" Width="250px"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtAddrName" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
@@ -49,9 +49,19 @@
                 外部编码(<span class="red">*</span>)
             </th>
             <td>
-                <asp:TextBox ID="txtExCode" runat="server" CssClass="norText"></asp:TextBox>
+                <asp:TextBox ID="txtExCode" runat="server" CssClass="norText"></asp:TextBox>格式如：XX XX XX XX
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtExCode" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                工作单位编码(<span class="red">*</span>)
+            </th>
+            <td>
+                <asp:TextBox ID="txtDWCode" runat="server" CssClass="norText"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvDWCode" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtDWCode" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>

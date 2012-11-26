@@ -22,11 +22,19 @@
             </td>
         </tr>
         <tr>
-            <th style="width:100px;">任务代号(<span class="red">*</span>)</th>
+            <th style="width:100px;">内部任务代号(<span class="red">*</span>)</th>
             <td>
                 <asp:TextBox ID="txtTaskNo" runat="server" Width="300px" CssClass="text" MaxLength="25"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfv2" runat="server" Display="Dynamic" ForeColor="Red"
                      ControlToValidate="txtTaskNo" ErrorMessage="必须填写“任务代号”。"></asp:RequiredFieldValidator>
+            </td>
+        </tr>
+        <tr>
+            <th style="width:100px;">外部任务代号(<span class="red">*</span>)</th>
+            <td>
+                <asp:TextBox ID="txtOutTaskNo" runat="server" Width="300px" CssClass="text" MaxLength="25"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfv5" runat="server" Display="Dynamic" ForeColor="Red"
+                     ControlToValidate="txtOutTaskNo" ErrorMessage="必须填写“外部任务代号”。"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
@@ -41,6 +49,14 @@
             <th style="width:100px;">卫星(<span class="red">*</span>)</th>
             <td>
                 <uc1:ucCBLSat ID="ucCBLSats" runat="server" />
+            </td>
+        </tr>
+        <tr>
+            <th style="width:100px;">航天器标识(<span class="red">*</span>)</th>
+            <td>
+                <asp:TextBox ID="txtSCID" runat="server" Width="300px" CssClass="text" MaxLength="10"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfv6" runat="server" Display="Dynamic" ForeColor="Red"
+                     ControlToValidate="txtSCID" ErrorMessage="必须填写“航天器标识”。"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
