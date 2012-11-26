@@ -32,12 +32,12 @@
                 <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" />
             </td>
         </tr>
-        <tr>
+<%--        <tr>
             <th class="style1">卫星(<span class="red">*</span>)</th>
             <td>
                 <uc2:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
             </td>
-        </tr>
+        </tr>--%>
         <tr>
             <th class="style1">计划序号</th>
             <td>
@@ -52,9 +52,9 @@
                 <asp:DropDownList ID="ddlSatName" runat="server" AutoPostBack="True" 
                     Height="20px" onselectedindexchanged="ddlSatName_SelectedIndexChanged" 
                     Width="150px">
-                    <asp:ListItem>探索三号卫星</asp:ListItem>
-                    <asp:ListItem>探索四号卫星</asp:ListItem>
-                    <asp:ListItem>探索五号卫星</asp:ListItem>
+                    <asp:ListItem Value="0730">探索三号卫星</asp:ListItem>
+                    <asp:ListItem Value="074A">探索四号卫星</asp:ListItem>
+                    <asp:ListItem Value="075A">探索五号卫星</asp:ListItem>
                 </asp:DropDownList>
             </td>
         </tr>

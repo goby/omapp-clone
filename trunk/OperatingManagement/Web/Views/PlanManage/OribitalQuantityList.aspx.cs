@@ -32,7 +32,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 pnlAll1.Visible = false;
                 pnlAll2.Visible = false;
                 BindCheckBoxDestination();
-                DefaultSearch();
+                //DefaultSearch();
                 //ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>hideSelectAll();</script>");
             }
             cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);

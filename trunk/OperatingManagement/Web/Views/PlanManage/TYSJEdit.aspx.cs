@@ -70,16 +70,18 @@ namespace OperatingManagement.Web.Views.PlanManage
                 hfTaskID.Value = jh[0].TaskID.ToString();
                 ucTask1.SelectedValue = jh[0].TaskID.ToString();
                 txtJXH.Text = jh[0].PlanID.ToString("0000");
-                string[] strTemp = jh[0].FileIndex.Split('_');
-                if (strTemp.Length >= 2)
-                {
-                    hfSatID.Value = strTemp[strTemp.Length - 2];
-                    ucSatellite1.SelectedValue = strTemp[strTemp.Length - 2];
-                }
+                hfSatID.Value = jh[0].SatID;
+                //string[] strTemp = jh[0].FileIndex.Split('_');
+                //if (strTemp.Length >= 2)
+                //{
+                //    hfSatID.Value = strTemp[strTemp.Length - 2];
+                //    ucSatellite1.SelectedValue = strTemp[strTemp.Length - 2];
+                //}
                 txtNote.Text = jh[0].Reserve.ToString();
+                //计划启动后不能修改计划
                 if (DateTime.Now > jh[0].StartTime)
                 {
-                    btnSubmit.Visible = false;
+                    //btnSubmit.Visible = false;
                     //hfOverDate.Value = "true";
                 }
             }
@@ -140,7 +142,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 objTYSJ.EndTime = txtEndTime.Text;
                 objTYSJ.Condition = txtCondition.Text;
                 objTYSJ.TaskID = ucTask1.SelectedItem.Value;
-                objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
+                //objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
+                objTYSJ.SatID = ddlSatName.SelectedItem.Value;
                 CultureInfo provider = CultureInfo.InvariantCulture;
 
                 PlanFileCreator creater = new PlanFileCreator(isTempJH);
@@ -167,7 +170,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 else
                 {
                     //当任务和卫星更新时，需要更新文件名称
-                    if (hfSatID.Value != ucSatellite1.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
+                    if (hfSatID.Value != ddlSatName.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
+                        //if (hfSatID.Value != ucSatellite1.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
                     {
                         string filepath = creater.CreateTYSJFile(objTYSJ, 0);
 
@@ -222,7 +226,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 PlanFileCreator creater = new PlanFileCreator(isTempJH);
 
                 objTYSJ.TaskID = ucTask1.SelectedItem.Value;
-                objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
+                //objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
+                objTYSJ.SatID = ddlSatName.SelectedItem.Value;
                 int planid = (new Sequence()).GetTYSJSequnce();
 
                 //检查文件是否已经存在
@@ -415,7 +420,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 PlanFileCreator creater = new PlanFileCreator();
 
                 objTYSJ.TaskID = ucTask1.SelectedItem.Value;
-                objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
+                //objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
+                objTYSJ.SatID = ddlSatName.SelectedItem.Value;
                 int planid = (new Sequence()).GetTYSJSequnce();
 
                 //检查文件是否已经存在
