@@ -32,13 +32,21 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         public string TaskName { get; set; }
         ///// <summary>
-        ///// 任务代号
+        ///// 内部任务代号
         ///// </summary>
         public string TaskNo { get; set; }
+        ///// <summary>
+        ///// 外部任务代号
+        ///// </summary>
+        public string OutTaskNo { get; set; }
         /// <summary>
         /// 对象标识
         /// </summary>
         public string ObjectFlag { get; set; }
+        /// <summary>
+        /// 航天器标识
+        /// </summary>
+        public string SCID { get; set; }
         /// <summary>
         /// 卫星编号，可能多个，逗号,分隔
         /// </summary>
@@ -119,8 +127,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         Id = Convert.ToInt32(dr["id"].ToString()),
                         TaskName = dr["TaskName"].ToString(),
                         TaskNo = dr["TaskNo"].ToString(),
+                        OutTaskNo = dr["OutTaskNo"].ToString(),
                         ObjectFlag = dr["ObjectFlag"].ToString(),
                         SatID = dr["SatID"].ToString(),
+                        SCID = dr["SCID"].ToString(),
                         IsCurTask = dr["IsCurTask"].ToString(),
                         BeginTime = dr["BeginTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["BeginTime"]),
                         EndTime = dr["EndTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["EndTime"]),
@@ -155,8 +165,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         Id = Convert.ToInt32(dr["id"].ToString()),
                         TaskName = dr["TaskName"].ToString(),
                         TaskNo = dr["TaskNo"].ToString(),
+                        OutTaskNo = dr["OutTaskNo"].ToString(),
                         ObjectFlag = dr["ObjectFlag"].ToString(),
                         SatID = dr["SatID"].ToString(),
+                        SCID = dr["SCID"].ToString(),
                         IsCurTask = dr["IsCurTask"].ToString(),
                         BeginTime = dr["BeginTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["BeginTime"]),
                         EndTime = dr["EndTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["EndTime"]),
@@ -188,8 +200,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             _dataBase.SpExecuteNonQuery(s_up_task_insert, new OracleParameter[]{
                 new OracleParameter("p_TaskName",this.TaskName),
                 new OracleParameter("p_TaskNo",this.TaskNo),
+                new OracleParameter("p_OutTaskNo",this.OutTaskNo),
                 new OracleParameter("p_ObjectFlag",this.ObjectFlag),
                 new OracleParameter("p_SatID",this.SatID),
+                new OracleParameter("p_SCID",this.SCID),
                 new OracleParameter("p_IsCurTask",this.IsCurTask),
                 new OracleParameter("p_BeginTime",this.BeginTime),
                 new OracleParameter("p_EndTime",this.EndTime),
@@ -214,8 +228,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_Id", this.Id),
                 new OracleParameter("p_TaskName", this.TaskName),
                 new OracleParameter("p_TaskNo", this.TaskNo),
+                new OracleParameter("p_OutTaskNo",this.OutTaskNo),
                 new OracleParameter("p_ObjectFlag", this.ObjectFlag),
                 new OracleParameter("p_SatID", this.SatID),
+                new OracleParameter("p_SCID",this.SCID),
                 new OracleParameter("p_IsCurTask", Convert.ToInt32(this.IsCurTask)),
                 new OracleParameter("p_BeginTime", this.BeginTime),
                 new OracleParameter("p_EndTime", this.EndTime),
@@ -259,21 +275,44 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
-        /// 通过任务代号获取卫星编号
+        /// 通过内部任务代号和卫星代号获取外部任务代号
         /// </summary>
         /// <param name="taskNo"></param>
+        /// <param name="satid"></param>
         /// <returns></returns>
-        public string GetSatIDByTaskNo(string taskNo)
+        public string GetOutTaskNo(string taskNo, string satid)
         {
             string strResult = string.Empty;
             if (Cache != null)
             {
-                var query = Cache.Where(a => a.TaskNo == taskNo);
+                var query = Cache.Where(a => a.TaskNo == taskNo && a.SatID == satid);
                 if (query != null && query.Count() > 0)
-                    strResult = query.FirstOrDefault().SatID;
+                    strResult = query.FirstOrDefault().OutTaskNo;
             }
             return strResult;
         }
+
+        /// <summary>
+        /// 通过外部任务代号获取内部任务代号及卫星代号
+        /// </summary>
+        /// <param name="outTaskNo"></param>
+        /// <param name="taskNo"></param>
+        /// <param name="satid"></param>
+        public void GetTaskNoSatID(string outTaskNo, out string taskNo, out string satid)
+        {
+            taskNo = string.Empty;
+            satid = string.Empty;
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => a.OutTaskNo == outTaskNo);
+                if (query != null && query.Count() > 0)
+                {
+                    taskNo = query.FirstOrDefault().TaskNo;
+                    satid = query.FirstOrDefault().SatID;
+                }
+            }
+        }
+
         /// <summary>
         /// 通过任务代号获取任务名称
         /// </summary>

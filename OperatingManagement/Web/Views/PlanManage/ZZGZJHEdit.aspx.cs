@@ -104,10 +104,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     ucSatellite1.SelectedValue = strTemp[strTemp.Length - 2];
                 }
                 txtNote.Text = jh[0].Reserve.ToString();
-                //计划启动后不能修改计划
                 if (DateTime.Now > jh[0].StartTime)
                 {
-                    //btnSubmit.Visible = false;
+                    btnSubmit.Visible = false;
                     //hfOverDate.Value = "true";
                 }
             }

@@ -50,6 +50,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["CreatedUserID"]);
             UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]);
             UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"]);
+            DWCode = dr["DWCODE"].ToString();
 
             if (dr["FTPPath"] != DBNull.Value && dr["FTPPath"] != null)
             {
@@ -135,6 +136,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 最后修改用户ID
         /// </summary>
         public double UpdatedUserID { get; set; }
+        /// <summary>
+        /// 单位编码
+        /// </summary>
+        public string DWCode { get; set; }
         public static List<XYXSInfo> _xyxsInfoCache = null;
         public List<XYXSInfo> Cache
         {
@@ -284,6 +289,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                                         new OracleParameter("p_CreatedUserID",CreatedUserID == 0.0 ? DBNull.Value as object : CreatedUserID),
                                         new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
                                         new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0.0 ? DBNull.Value as object : UpdatedUserID),
+                                        new OracleParameter("p_DWCode",DWCode),
                                         v_ID,
                                         v_Result});
             if (v_ID.Value != null && v_ID.Value != DBNull.Value)
@@ -318,6 +324,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                                         new OracleParameter("p_CreatedUserID",CreatedUserID == 0.0 ? DBNull.Value as object : CreatedUserID),
                                         new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
                                         new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0.0 ? DBNull.Value as object : UpdatedUserID),
+                                        new OracleParameter("p_DWCode",DWCode),
                                         v_Result});
             RefreshCache();
             return (FieldVerifyResult)Convert.ToInt32(v_Result.Value);

@@ -2237,12 +2237,14 @@ namespace ServicesKernel.File
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[格式标识1]：SatName  T01  T02  a  e  i  Ω  w  M");
                 sw.WriteLine("[数据区]：");
+                //A数据库里存的是米，发出去时转为千米
                 foreach (YDSJ obj in listJH)
                 {
                     if (obj.TaskID == key)
                     {
                         sw.WriteLine(obj.SatName + strSplitorTwoBlanks + obj.Times.ToString("yyyyMMdd") + strSplitorTwoBlanks + obj.Times.ToString("HHmmssffff") + strSplitorTwoBlanks
-                            + obj.A + strSplitorTwoBlanks + obj.E + strSplitorTwoBlanks + obj.I + strSplitorTwoBlanks + obj.O + strSplitorTwoBlanks + obj.W + strSplitorTwoBlanks + obj.M);
+                            + (obj.A * 0.001).ToString("f4") + strSplitorTwoBlanks + obj.E.ToString("f6") + strSplitorTwoBlanks + obj.I.ToString("f4") + "  "
+                            + obj.O.ToString("f6") + strSplitorTwoBlanks + obj.W.ToString("f6") + strSplitorTwoBlanks + obj.M.ToString("f6"));
                     }
                 }
                 sw.WriteLine("<辅助区>");
