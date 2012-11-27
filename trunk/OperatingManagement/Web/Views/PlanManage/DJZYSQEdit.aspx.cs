@@ -10,6 +10,7 @@ using OperatingManagement.WebKernel.Route;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.DataAccessLayer.PlanManage;
+using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.Framework;
 using OperatingManagement.Framework.Storage;
 using System.Web.Security;
@@ -32,6 +33,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                 btnFormal.Visible = false; 
                 txtPlanStartTime.Attributes.Add("readonly", "true");
                 txtPlanEndTime.Attributes.Add("readonly", "true");
+                txtSCID.Attributes.Add("readonly", "true");
+                InitialTask();
+
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
@@ -64,6 +68,14 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
         }
 
+        public void InitialTask()
+        {
+            ddlTask.Items.Clear();
+            ddlTask.DataSource = new Task().Cache;
+            ddlTask.DataTextField = "TaskNo";
+            ddlTask.DataValueField = "SCID";
+            ddlTask.DataBind();
+        }
         public void initial()
         {
             try
@@ -223,6 +235,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                     ddlSHJ.SelectedValue = view.SHJ;
 
                     #endregion
+                    ddlSBDH.Enabled = false;
+                    TextBox txtSBDH = (TextBox)e.Item.FindControl("txtSBDH");
+                    txtSBDH.Attributes.Add("readonly", "true");
+                    ddlGZDY.Attributes.Add("onchange", "SetSBDH(this,'" + ddlSBDH.ClientID + "','" + txtSBDH.ClientID+ "')");
+                    //ddlGZDY.Attributes["onchange"] = "SetSBDH('" + ddlSBDH.ClientID + "');";
                     //任务类别
                     TextBox txtMLB = (TextBox)e.Item.FindControl("txtMLB");
                     txtMLB.Text = PlanParameters.ReadDJZYSQMLB();
@@ -1042,6 +1059,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
                     DropDownList ddlGZDY = (DropDownList)it.FindControl("ddlGZDY");
                     DropDownList ddlSBDH = (DropDownList)it.FindControl("ddlSBDH");
+                    TextBox txtSBDH = (TextBox)it.FindControl("txtSBDH");
                     TextBox txtQC = (TextBox)it.FindControl("txtQC");
                     TextBox txtQB = (TextBox)it.FindControl("txtQB");
                     DropDownList ddlSHJ = (DropDownList)it.FindControl("ddlSHJ");
@@ -1063,7 +1081,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     rt.MLB = txtMLB.Text;
                     rt.FS = ddlFS.SelectedValue;
                     rt.GZDY = ddlGZDY.SelectedValue;
-                    rt.SBDH = ddlSBDH.SelectedValue;
+                    //rt.SBDH = ddlSBDH.SelectedValue;
+                    rt.SBDH = txtSBDH.Text;
                     rt.QC = txtQC.Text;
                     rt.QB = txtQB.Text;
                     rt.SHJ = ddlSHJ.SelectedValue;
@@ -1198,7 +1217,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     //当任务和卫星更新时，需要更新文件名称
                     if (hfSatID.Value != ucSatellite1.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
                     {
-                        string filepath = creater.CreateDMJHFile(obj, 0);
+                        string filepath = creater.CreateDMJHFile(obj, 1);
 
                         DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
                         {
@@ -1265,6 +1284,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
                     DropDownList ddlGZDY = (DropDownList)it.FindControl("ddlGZDY");
                     DropDownList ddlSBDH = (DropDownList)it.FindControl("ddlSBDH");
+                    TextBox txtSBDH = (TextBox)it.FindControl("txtSBDH");
                     TextBox txtQC = (TextBox)it.FindControl("txtQC");
                     TextBox txtQB = (TextBox)it.FindControl("txtQB");
                     DropDownList ddlSHJ = (DropDownList)it.FindControl("ddlSHJ");
@@ -1286,7 +1306,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     rt.MLB = txtMLB.Text;
                     rt.FS = ddlFS.SelectedValue;
                     rt.GZDY = ddlGZDY.SelectedValue;
-                    rt.SBDH = ddlSBDH.SelectedValue;
+                    //rt.SBDH = ddlSBDH.SelectedValue;
+                    rt.SBDH = txtSBDH.Text;
                     rt.QC = txtQC.Text;
                     rt.QB = txtQB.Text;
                     rt.SHJ = ddlSHJ.SelectedValue;
@@ -1673,6 +1694,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
                     DropDownList ddlGZDY = (DropDownList)it.FindControl("ddlGZDY");
                     DropDownList ddlSBDH = (DropDownList)it.FindControl("ddlSBDH");
+                    TextBox txtSBDH = (TextBox)it.FindControl("txtSBDH");
                     TextBox txtQC = (TextBox)it.FindControl("txtQC");
                     TextBox txtQB = (TextBox)it.FindControl("txtQB");
                     DropDownList ddlSHJ = (DropDownList)it.FindControl("ddlSHJ");
@@ -1694,7 +1716,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     rt.MLB = txtMLB.Text;
                     rt.FS = ddlFS.SelectedValue;
                     rt.GZDY = ddlGZDY.SelectedValue;
-                    rt.SBDH = ddlSBDH.SelectedValue;
+                    //rt.SBDH = ddlSBDH.SelectedValue;
+                    rt.SBDH = txtSBDH.Text;
                     rt.QC = txtQC.Text;
                     rt.QB = txtQB.Text;
                     rt.SHJ = ddlSHJ.SelectedValue;

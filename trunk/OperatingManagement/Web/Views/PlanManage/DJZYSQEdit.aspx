@@ -54,7 +54,11 @@
                     任务代号(<span class="red">*</span>)
                 </th>
                 <td style="width: 350px;">
-                    <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" />
+                    <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" ClientIDMode="Static" />
+
+                    <asp:DropDownList ID="ddlTask" ClientIDMode="Static" runat="server" style="display:none;">
+                    </asp:DropDownList>
+
                 </td>
                 <th style="width: 100px;">
                     卫星(<span class="red">*</span>)
@@ -107,7 +111,7 @@
                 <th>
                     航天器标识</th>
                 <td>
-                    <asp:TextBox ID="txtSCID" CssClass="text" runat="server"></asp:TextBox><asp:RequiredFieldValidator ID="rfSCID" runat="server" ControlToValidate="txtSCID"
+                    <asp:TextBox ID="txtSCID" CssClass="text" runat="server" ClientIDMode="Static" ></asp:TextBox><asp:RequiredFieldValidator ID="rfSCID" runat="server" ControlToValidate="txtSCID"
                         ErrorMessage="航天器标识不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
                 </td>
                 <th>
@@ -185,7 +189,7 @@
                                     </th>
                                     <td>
                                         <asp:DropDownList ID="ddlGZDY" runat="server" DataTextField="Text" DataValueField="Value"
-                                            Width="154px">
+                                            Width="154px" >
                                         </asp:DropDownList>
                                         <%--<asp:TextBox ID="txtWorkMode" CssClass="text" runat="server" Text='<%# Eval("WorkMode")%>'></asp:TextBox>--%>
                                     </td>
@@ -193,10 +197,10 @@
                                         设备代号
                                     </th>
                                     <td style="width: 350px;">
-                                        <asp:DropDownList ID="ddlSBDH" runat="server" DataTextField="Text" DataValueField="Value"
-                                            Width="154px">
+                                        <asp:DropDownList ID="ddlSBDH" runat="server"  DataTextField="Text" DataValueField="Value"
+                                            Width="154px" style="display:none;" >
                                         </asp:DropDownList>
-                                        <%--<asp:TextBox ID="txtWorkWay" CssClass="text" runat="server" Text='<%# Eval("WorkWay")%>'></asp:TextBox>--%>
+                                        <asp:TextBox ID="txtSBDH" CssClass="text" runat="server" Text='<%# Eval("SBDH")%>'></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -247,8 +251,10 @@
                                         <asp:TextBox MaxLength="14" ID="txtPreStartTime" CssClass="text" runat="server" Text='<%# Eval("ZHB")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
                                     <th style="width: 100px;">
+                                        任务开始时间
                                     </th>
                                     <td>
+                                        <asp:TextBox MaxLength="14" ID="txtStartTime" CssClass="text" runat="server" Text='<%# Eval("RK")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -259,24 +265,15 @@
                                         <asp:TextBox MaxLength="14" ID="txtTrackStartTime" CssClass="text" runat="server" Text='<%# Eval("GZK")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
                                      <th style="width: 100px;">
-                                        跟踪结束时间
-                                    </th>
-                                    <td>
-                                        <asp:TextBox MaxLength="14" ID="txtTrackEndTime" CssClass="text" runat="server" Text='<%# Eval("GZJ")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
-                                        <asp:CompareValidator ID="CompareValidator11" runat="server" 
-                    ControlToCompare="txtTrackStartTime" ControlToValidate="txtTrackEndTime" 
-                    Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
-                    Operator="GreaterThan" Type="Double"></asp:CompareValidator>
-                                    </td>
-                                    
-                                </tr>
-                                <tr>
-                                <th style="width: 100px;">
                                         开上行载波时间
                                     </th>
                                     <td>
                                         <asp:TextBox MaxLength="14" ID="txtWaveOnStartTime" CssClass="text" runat="server" Text='<%# Eval("KSHX")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                     </td>
+                                    
+                                </tr>
+                                <tr>
+                                
                                     <th style="width: 100px;">
                                         关上行载波时间
                                     </th>
@@ -287,16 +284,20 @@
                     Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
                     Operator="GreaterThan" Type="Double"></asp:CompareValidator>
                                     </td>
-                                   
-                                </tr>
-                                <tr>
-                                <th style="width: 100px;">
-                                        任务开始时间
+                                   <th style="width: 100px;">
+                                        跟踪结束时间
                                     </th>
                                     <td>
-                                        <asp:TextBox MaxLength="14" ID="txtStartTime" CssClass="text" runat="server" Text='<%# Eval("RK")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                                        <asp:TextBox MaxLength="14" ID="txtTrackEndTime" CssClass="text" runat="server" Text='<%# Eval("GZJ")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                                        <asp:CompareValidator ID="CompareValidator11" runat="server" 
+                    ControlToCompare="txtTrackStartTime" ControlToValidate="txtTrackEndTime" 
+                    Display="Dynamic" ErrorMessage="跟踪结束时间应大于跟踪开始时间" ForeColor="Red" 
+                    Operator="GreaterThan" Type="Double"></asp:CompareValidator>
                                     </td>
-                                    <th>
+                                </tr>
+                                <tr>
+
+                                    <th style="width: 100px;">
                                         任务结束时间
                                     </th>
                                     <td>
@@ -306,6 +307,8 @@
                                         Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
                                         Operator="GreaterThan" Type="Double"></asp:CompareValidator>
                                     </td>
+                                    <th></th>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <th colspan="4" style="text-align: center;">
@@ -527,7 +530,7 @@
     &nbsp;&nbsp;&nbsp;
                 <asp:Button ID="btnFormal"  class="button" runat="server" onclick="btnFormal_Click"
                     Text="转为正式计划" />
-    </div>
+        </div>
     <div style="display: none">
         <asp:HiddenField ID="HfID" runat="server" />
         <asp:HiddenField ID="HfFileIndex" runat="server" />
@@ -719,5 +722,10 @@
                 </td>
             </tr>
         </table>
+    </div>
+    <div id="dialog-sbdh" style="display: none" title="选择喀什站对应的设备代号">
+    <input id="radio1" type="radio" value="喀什站(TS-4217)" checked="checked" 
+            name="kashi" />喀什站(TS-4217)<input id="radio2" 
+            type="radio" value="喀什站(TY-4801)" name="kashi" />喀什站(TY-4801)
     </div>
 </asp:Content>
