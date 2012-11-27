@@ -204,7 +204,12 @@
                                         圈次
                                     </th>
                                     <td>
-                                        <asp:TextBox MaxLength="14" ID="txtQC" CssClass="text" runat="server" Text='<%# Eval("QC")%>' ></asp:TextBox>
+                                        <asp:TextBox MaxLength="14" ID="txtQC" CssClass="text" runat="server" Text='<%# Eval("QC")%>' 
+                                        onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46" 
+                                                        onpaste="return !clipboardData.getData('text').match(/\D/)"
+                                                        ondragenter="return false" style="ime-mode:Disabled"></asp:TextBox>
+                                         <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtQC"
+                                ErrorMessage="只能是数字" ForeColor="Red" ValidationExpression="^[0-9]*$"></asp:RegularExpressionValidator>
                                     </td>
                                     <th style="width: 100px;">
                                     圈标
@@ -226,7 +231,12 @@
                                         同时支持目标数
                                     </th>
                                     <td>
-                                    <asp:TextBox MaxLength="14" ID="txtTNUM" CssClass="text" runat="server" Text='<%# Eval("TNUM")%>' ></asp:TextBox>
+                                    <asp:TextBox MaxLength="14" ID="txtTNUM" CssClass="text" runat="server" Text='<%# Eval("TNUM")%>' 
+                                    onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46" 
+                                                        onpaste="return !clipboardData.getData('text').match(/\D/)"
+                                                        ondragenter="return false" style="ime-mode:Disabled"></asp:TextBox>
+                                     <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtTNUM"
+                                ErrorMessage="只能是数字" ForeColor="Red" ValidationExpression="^[0-9]*$"></asp:RegularExpressionValidator>
                                     </td>
                                 </tr>
                                 <tr>
@@ -331,7 +341,7 @@
                                             <ItemTemplate>
                                                 <tr>
                                                     <td>
-                                                        <asp:TextBox ID="txtFormatFlag" CssClass="text" runat="server" Text='<%# Eval("GBZ")%>'></asp:TextBox>
+                                                        <asp:TextBox ID="txtFormatFlag" MaxLength="8" CssClass="text" runat="server" Text='<%# Eval("GBZ")%>'></asp:TextBox>
                                                     </td>
                                                     <td>
                                                         <asp:TextBox ID="txtInfoFlowFlag" CssClass="text" runat="server" Text='<%# Eval("XBZ")%>'></asp:TextBox>
@@ -401,7 +411,7 @@
                                             <ItemTemplate>
                                                 <tr>
                                                     <td>
-                                                        <asp:TextBox ID="FormatFlag" Width="120px" CssClass="text" runat="server" Text='<%# Eval("GBZ")%>'></asp:TextBox>
+                                                        <asp:TextBox ID="FormatFlag" Width="120px" CssClass="text"  MaxLength="8" runat="server" Text='<%# Eval("GBZ")%>'></asp:TextBox>
                                                     </td>
                                                     <td>
                                                         <asp:TextBox ID="InfoFlowFlag" Width="120px" CssClass="text" runat="server" Text='<%# Eval("XBZ")%>'></asp:TextBox>

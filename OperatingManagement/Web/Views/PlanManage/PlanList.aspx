@@ -100,19 +100,22 @@
                             <table class="list">
                                 <tr>
                                     <th style="width:20px;"><input type="checkbox" onclick="checkAll(this)" /></th>
-                                    <th style="width: 150px;">
+                                    <th style="width: 70px;">
                                         计划编号
                                     </th>
-                                    <th style="width: 150px;">
+                                    <th style="width: 110px;">
                                         任务代号
                                     </th>
                                     <th style="width: 150px;">
                                         计划类别
                                     </th>
-                                    <th style="width: 150px;">
+                                    <th style="width: 140px;">
+                                        创建时间
+                                    </th>
+                                    <th style="width: 140px;">
                                         开始时间
                                     </th>
-                                    <th style="width: 150px;">
+                                    <th style="width: 140px;">
                                         结束时间
                                     </th>
                                     <th style="width: 70px;">
@@ -140,6 +143,9 @@
                                     </td>
                                     <td>
                                         <%# Eval("PlanTypeName")%>
+                                    </td>
+                                    <td>
+                                        <%# Eval("CTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
                                     </td>
                                     <td>
                                         <%# Eval("starttime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
