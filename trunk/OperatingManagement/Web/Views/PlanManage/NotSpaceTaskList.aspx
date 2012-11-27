@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="NotSpaceTaskList.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.NotSpaceTaskList" %>
-<%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
 <%@ Register src="../../ucs/ucGDType.ascx" tagname="ucGDType" tagprefix="uc2" %>
+
+<%@ Register src="../../ucs/ucOutTask.ascx" tagname="ucOutTask" tagprefix="uc1" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -36,8 +37,7 @@
                     任务：
                 </th>
                 <td>
-                   <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="True" 
-                       BlankItemText="全部" BlankItemValue="-1" />
+                    <uc1:ucOutTask ID="ucOutTask1" runat="server" AllowBlankItem="false" />
                 </td>
                 <th>
                     数据类型：

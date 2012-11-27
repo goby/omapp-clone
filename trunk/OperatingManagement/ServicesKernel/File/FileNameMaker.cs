@@ -51,16 +51,15 @@ namespace ServicesKernel.File
         /// <param name="dateType">日期类型U:UTC日期;B:北京日期</param>
         /// <param name="toMark">发送目标</param>
         /// <returns></returns>
-        public static string GenarateFileNameTypeOne(string infotype, string dateType, string toMark)
+        public static string GenarateFileNameTypeOne(string infotype, string dateType, string toMark, string runningMode)
         {
             //版本号用2个字符表示，本版本命名方法固定为“01”，程序中配置为“01”；
             string ver = Param.Version;
             //对象标识用4个字符表示，采用可读性ASCII码字符，本任务固定为“7000”，程序中配置为“7000”；
             string flag = System.Configuration.ConfigurationManager.AppSettings["ObjectCode"];
             //模式标识用2个字符表示，用来标识文件内信息所对应的运行模式。“OP”代表实战，“TS”代表联试；
-            string mode = Param.RunnningMode;
 
-            if (ver == null || flag == null || mode == null)
+            if (ver == null || flag == null)
                 return null;
 
             string DateFlag = "";
@@ -72,7 +71,7 @@ namespace ServicesKernel.File
             {
                 DateFlag = "B" + DateTime.Now.ToString("yyyyMMdd_HHmmss");
             }
-            return GetFileName(infotype, toMark, DateFlag, 1, ver, flag, mode);
+            return GetFileName(infotype, toMark, DateFlag, 1, ver, flag, runningMode);
         }
 
         /// <summary>

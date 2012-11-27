@@ -190,6 +190,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 string SendingFilePaths = "";
                 lblMessage.Text = "";//清空发送信息
                 lblMessage.Visible = false;
+                string runningMode = rbtMode.SelectedValue;
+                string strResult = string.Empty;
                 foreach (ListItem li in ckbDestination.Items)
                 {
                     if (li.Selected)
@@ -204,7 +206,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                                 SendingFilePaths = creater.CreateSendingXXXQFile(txtId.Text, li.Value);
                                 break;
                             case "DJZYSQ":
-                                SendingFilePaths = creater.CreateSendingDJZYSQFile(txtId.Text, li.Value);
+                                SendingFilePaths = creater.CreateSendingDJZYSQFile(txtId.Text, li.Value, runningMode);
                                 break;
                             case "DMJH":
                             case "GZJH":
@@ -236,15 +238,24 @@ namespace OperatingManagement.Web.Views.PlanManage
                         {
                             for (int i = 0; i < filePaths.Length; i++)
                             {
-                                boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), GetFilePathByFilePath(filePaths[i]), protocl, senderid, reveiverid, infotypeid, true);
-                                lblMessage.Visible = true;
-                                if (boolResult)
+                                if (protocl == CommunicationWays.FTP)//将文件移至FTP路径中
                                 {
-                                    lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
+                                    strResult = DataFileHandle.MoveFile(filePaths[i], GetFilePathByFilePath(filePaths[i]) + @"FTP\" + GetFileNameByFilePath(filePaths[i]));
+                                    if (!strResult.Equals(string.Empty))
+                                        lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 路径中已有同名文件。" + "<br />";
                                 }
-                                else
+                                if (strResult.Equals(string.Empty))
                                 {
-                                    lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
+                                    boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), GetFilePathByFilePath(filePaths[i]), protocl, senderid, reveiverid, infotypeid, true);
+                                    lblMessage.Visible = true;
+                                    if (boolResult)
+                                    {
+                                        lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
+                                    }
+                                    else
+                                    {
+                                        lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
+                                    }
                                 }
 
                             }//endfor

@@ -1,8 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
     CodeBehind="OribitalQuantityList.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.OribitalQuantityList" %>
 
-<%@ Register Src="../../ucs/ucTask.ascx" TagName="ucTask" TagPrefix="uc1" %>
 <%@ Register src="../../ucs/ucGDType.ascx" tagname="ucGDType" tagprefix="uc2" %>
+<%@ Register src="../../ucs/ucOutTask.ascx" tagname="ucOutTask" tagprefix="uc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -14,7 +14,7 @@
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
     计划管理 &gt; 轨道根数管理
 </asp:Content>
-<asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
+<asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">    
     <asp:Panel ID="pnlData" runat="server">
         <div class="index_content_search">
             <table cellspacing="0" cellpadding="0" class="searchTable">
@@ -37,8 +37,7 @@
                         任务：
                     </th>
                     <td>
-                        <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="True" BlankItemText="全部"
-                            BlankItemValue="-1" />
+                        <uc1:ucOutTask ID="ucOutTask1" runat="server" AllowBlankItem="False" />
                     </td>
                     <th>
                         数据类型：
@@ -79,7 +78,7 @@
                                 <button class="button" onclick="return selectAll();">
                                     全选</button>&nbsp;&nbsp;
                                 <button class="button" onclick="return sendGD1();">
-                                    发送轨道数据</button>
+                                    发送</button>
                             </td>
                             <td class="listTitle-c2">
                                 <div class="load" id="submitIndicator" style="display: none">
@@ -149,7 +148,7 @@
                                 <button class="button" onclick="return selectAll();">
                                     全选</button>&nbsp;&nbsp;
                                 <button class="button" onclick="return sendGD1();">
-                                    发送轨道数据</button>
+                                    发送</button>
                             </td>
                             <td class="listTitle-c2">
                                 <om:CollectionPager ID="cpPager" runat="server">

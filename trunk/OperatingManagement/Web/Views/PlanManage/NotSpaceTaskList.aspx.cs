@@ -85,10 +85,10 @@ namespace OperatingManagement.Web.Views.PlanManage
             { ViewState["_ICode"] = null; }
             else
             { ViewState["_ICode"] = ucGDType.SelectedValue; }
-            if (ucTask1.SelectedValue == "-1")
+            if (ucOutTask1.SelectedValue == "-1")
             { ViewState["_Task"] = null; }
             else
-            { ViewState["_Task"] = ucTask1.SelectedValue; }
+            { ViewState["_Task"] = ucOutTask1.SelectedValue; }
         }
         //绑定列表
         void BindGridView(bool fromSearch)
@@ -108,7 +108,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     endDate = Convert.ToDateTime(txtEndDate.Text).AddDays(1).AddMilliseconds(-1);   //查询时可查当天
                 }
-                TaskID = ucTask1.SelectedValue;
+                TaskID = ucOutTask1.SelectedValue;
                 iCode = ucGDType.SelectedValue;
             }
             else
@@ -127,6 +127,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 { iCode = ViewState["_ICode"].ToString(); }
             }
 
+            //外部任务代号
             //List<GD> listDatas = (new GD()).GetListByDate(startDate, endDate);
             List<GD> listDatas = (new GD()).GetList(startDate, endDate, TaskID, iCode);
             cpPager.DataSource = listDatas;
@@ -391,7 +392,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
 
                 if (datas != null && datas.Count() > 0)
-                    return new PlanFileCreator().CreateSendingYDSJFile(oGD.TaskID, ykxzCode, datas.ToArray());
+                    return new PlanFileCreator().CreateSendingYDSJFile(oGD.TaskID, oGD.SatID, ykxzCode, datas.ToArray());
                 else
                     return string.Empty;
             }
@@ -399,6 +400,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 return string.Empty;
         }
 
+        //测试代码
         private string ParseFile(string strFullName)
         {
             string strResult = string.Empty;
@@ -433,7 +435,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
 
                 if (datas != null && datas.Count() > 0)
-                    return new PlanFileCreator().CreateSendingYDSJFile("0700", "JYZ1", datas.ToArray());
+                    return new PlanFileCreator().CreateSendingYDSJFile("0700", "074A", "JYZ1", datas.ToArray());
                 else
                     return string.Empty;
             }

@@ -15,7 +15,7 @@ namespace ServicesKernel.GDFX
     /// </summary>
     public class ParamConvertor
     {
-        private const string dllPath = @"E:\YKZX_Manage\";
+        private const string dllPath = @"D:\Deploy\";//E:\YKZX_Manage\
         private const string dllFolder = @"GDDLL\Convert\";
         private const string dllName = @"EleCvtDLL.dll";
         private const string outputPath = @"output\";

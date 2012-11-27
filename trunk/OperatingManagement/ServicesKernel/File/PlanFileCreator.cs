@@ -1385,7 +1385,7 @@ namespace ServicesKernel.File
         /// <param name="desValue">信宿地址值</param>
         /// <param name="destinationName">信宿地址名称</param>
         /// <returns>生成的外发文件完整路径名串</returns>
-        public string CreateSendingSYJHFile(string ids, string desValue)
+        public string CreateSendingSYJHFile(string ids, string desValue, string runningMode)
         {
             XYXSInfo info = new XYXSInfo();
             info = info.GetByAddrMark(desValue);
@@ -1407,6 +1407,7 @@ namespace ServicesKernel.File
 
                 obj = new SYJH();
                 obj.TaskID = jh.TaskID;
+                obj.SatID = jh.SatID;
                 obj.SYJH_SY_List = new List<SYJH_SY>();
                 strFileName = jh.FileIndex.Substring(jh.FileIndex.LastIndexOf(@"\") + 1);
                 if (System.IO.File.Exists(Path.Combine(strFilePath, strFileName)))
@@ -1427,8 +1428,8 @@ namespace ServicesKernel.File
                     {
                         if (n.Name == "试验")
                         {
-                            sysnames = n["系统名称"].InnerText.Split(',');
-                            systasks = n["系统任务"].InnerText.Split(',');
+                            sysnames = n["系统名称"].InnerText.Split('|');
+                            systasks = n["系统任务"].InnerText.Split('|');
 
                             for (int i = 0; i < sysnames.Length; i++)
                             {
@@ -1457,7 +1458,7 @@ namespace ServicesKernel.File
                     if (desValue == PlanParameters.ReadParamValue("XSCCCode"))
                     {
                         #region 写入文件-文件类型一
-                        filename = FileNameMaker.GenarateFileNameTypeOne(dataCode, "B", desValue);
+                        filename = FileNameMaker.GenarateFileNameTypeOne(dataCode, "B", desValue, runningMode);
                         //RenamePlanFile(jh.FileIndex, SendingPath);  //移动并重命名文件到外发目录
                         //当返回值不为0，即创建文件成功时才保存文件路径
                         if (0 != CreateSYJHFile(obj, SendingPath))
@@ -1479,7 +1480,7 @@ namespace ServicesKernel.File
                         sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                         sw.WriteLine("[信源S]：" + this.Source);
                         sw.WriteLine("[信宿D]：" + destinationName);
-                        sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(obj.TaskID) + "(" + oTask.GetObjectFlagByTaskNo(obj.TaskID) + ")");
+                        sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
                         sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                         sw.WriteLine("[数据区行数L]：" + obj.SYJH_SY_List.Count.ToString("0000"));
                         sw.WriteLine("<符号区>");
@@ -1547,6 +1548,7 @@ namespace ServicesKernel.File
                 root = xmlDoc.SelectSingleNode("应用研究工作计划/Task");
                 obj.Task = root.InnerText;
                 obj.TaskID = jh.TaskID;
+                obj.SatID = jh.SatID;
                 #endregion
 
                 
@@ -1562,7 +1564,7 @@ namespace ServicesKernel.File
                     sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                     sw.WriteLine("[信源S]：" + this.Source);
                     sw.WriteLine("[信宿D]：" + destinationName);
-                    sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(obj.TaskID) + "(" + oTask.GetObjectFlagByTaskNo(obj.TaskID) + ")");
+                    sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
                     sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                     sw.WriteLine("[数据区行数L]：0001");
                     sw.WriteLine("<符号区>");
@@ -1614,6 +1616,7 @@ namespace ServicesKernel.File
                 #region 读取计划XML文件，变量赋值
                 obj = new XXXQ();
                 obj.TaskID = jh.TaskID;
+                obj.SatID = jh.SatID;
                 obj.objMBXQ = new MBXQ();
                 obj.objHJXQ = new HJXQ();
                 XmlDocument xmlDoc = new XmlDocument();
@@ -1697,7 +1700,7 @@ namespace ServicesKernel.File
                 sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
-                sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(obj.TaskID) + "(" + oTask.GetObjectFlagByTaskNo(obj.TaskID) + ")");
+                sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
                 sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                 sw.WriteLine("[数据区行数L]：" + (obj.objMBXQ.SatInfos.Count + 1).ToString("0000"));
                 sw.WriteLine("<符号区>");
@@ -1726,7 +1729,7 @@ namespace ServicesKernel.File
                 sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
-                sw.WriteLine("[任务代码M]：" + (new Task()).GetTaskName(obj.TaskID));
+                sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
                 sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                 sw.WriteLine("[数据区行数L]：" + (obj.objHJXQ.SatInfos.Count + 1).ToString("0000"));
                 sw.WriteLine("<符号区>");
@@ -1754,7 +1757,7 @@ namespace ServicesKernel.File
                 sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
-                sw.WriteLine("[任务代码M]：" + (new Task()).GetTaskName(obj.TaskID));
+                sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
                 sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                 sw.WriteLine("[数据区行数L]：0002");
                 sw.WriteLine("<符号区>");
@@ -1800,6 +1803,7 @@ namespace ServicesKernel.File
                 #region 读取计划XML文件，变量赋值
                 obj = new GZJH();
                 obj.TaskID = jh.TaskID;
+                obj.SatID = jh.SatID;
                 obj.GZJHContents = new List<GZJH_Content>();
                 //List<GZJH_Content> list = new List<GZJH_Content>();
                 GZJH_Content c;
@@ -1823,8 +1827,8 @@ namespace ServicesKernel.File
                         if (desValue == n["DW"].InnerText)
                         {
                             c = new GZJH_Content();
-                            //c.DW = n["DW"].InnerText;
-                            c.DW = info.GetByAddrMark(n["DW"].InnerText).ADDRName;
+                            c.DW = n["DW"].InnerText;
+                            //c.DW = info.GetByAddrMark(n["DW"].InnerText).ADDRName;
                             c.SB = n["SB"].InnerText;
                             c.QH = n["QH"].InnerText;
                             c.DH = n["DH"].InnerText;
@@ -1872,7 +1876,7 @@ namespace ServicesKernel.File
                     sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                     sw.WriteLine("[信源S]：" + this.Source);
                     sw.WriteLine("[信宿D]：" + destinationName);
-                    sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(obj.TaskID) + "(" + oTask.GetObjectFlagByTaskNo(obj.TaskID) + ")");
+                    sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
                     sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                     sw.WriteLine("[数据区行数L]：" + Convert.ToInt32(obj.GZJHContents.Count).ToString("0000"));
                     sw.WriteLine("<符号区>");
@@ -1887,8 +1891,6 @@ namespace ServicesKernel.File
                              + "  " + t.KSHX + "  " + t.GSHX + "  " + t.GZJ + "  " + t.JS + "  " + t.BID + "  " + t.SBZ
                              + "  " + t.RTs + "  " + t.RTe + "  " + t.SL + "  " + t.HBID + "  " + t.HBZ + "  " + t.Ts
                              + "  " + t.Te + "  " + t.HRTs + "  " + t.HSL);
-                             //+ "  " + t.RTs + "  " + t.RTe + "  " + t.SL + "  " + t.HBID + "  " + t.HBZ + "  " + t.Ts
-                             //+ "  " + t.Te + "  " + t.HRTs + "  " + t.HSL);
                     }
                     sw.WriteLine("<辅助区>");
                     sw.WriteLine("[备注]：");
@@ -1916,7 +1918,7 @@ namespace ServicesKernel.File
         /// <param name="ids"></param>
         /// <param name="desValue"></param>
         /// <returns></returns>
-        public string CreateSendingDJZYSQFile(string ids, string desValue)
+        public string CreateSendingDJZYSQFile(string ids, string desValue, string runningMode)
         {
             XYXSInfo info = new XYXSInfo();
             info = info.GetByAddrMark(desValue);
@@ -1928,7 +1930,7 @@ namespace ServicesKernel.File
             string dataCode = PlanParameters.ReadParamValue("DJZYSQDataCode");
             foreach (JH jh in listJH)
             {
-                this.filename = FileNameMaker.GenarateFileNameTypeOne(dataCode, "B", desValue);
+                this.filename = FileNameMaker.GenarateFileNameTypeOne(dataCode, "B", desValue, runningMode);
                 CopyFile(jh.FileIndex, this.SendingPath);
                 SendFileNames = SendFileNames + this.SendingPath + ",";
             }
@@ -1994,6 +1996,7 @@ namespace ServicesKernel.File
                 #region 读取计划XML文件，变量赋值
                 obj = new TYSJ();
                 obj.TaskID = jh.TaskID;
+                obj.SatID = jh.SatID;
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(jh.FileIndex);
 
@@ -2022,7 +2025,7 @@ namespace ServicesKernel.File
                 sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
-                sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(obj.TaskID) + "(" + oTask.GetObjectFlagByTaskNo(obj.TaskID) + ")");
+                sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
                 sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                 sw.WriteLine("[数据区行数L]：0001");
                 sw.WriteLine("<符号区>");
@@ -2059,24 +2062,24 @@ namespace ServicesKernel.File
 
             string SendFileNames = "";
             List<GD> listJH = (new GD()).SelectByIDS(ids);
-            Dictionary<string, int> dicTaskID = new Dictionary<string, int>();
-            Task oTask = new Task();
-            foreach (GD obj in listJH)
-            {
-                if (dicTaskID.ContainsKey(obj.TaskID))
-                {
-                    dicTaskID[obj.TaskID] = dicTaskID[obj.TaskID] + 1;
-                }
-                else
-                {
-                    dicTaskID.Add(obj.TaskID, 1);
+            //Dictionary<string, int> dicTaskID = new Dictionary<string, int>();
+            //Task oTask = new Task();
+            //foreach (GD obj in listJH)
+            //{
+            //    if (dicTaskID.ContainsKey(obj.TaskID))
+            //    {
+            //        dicTaskID[obj.TaskID] = dicTaskID[obj.TaskID] + 1;
+            //    }
+            //    else
+            //    {
+            //        dicTaskID.Add(obj.TaskID, 1);
 
-                }
-            }
+            //    }
+            //}
             //相同任务的轨道数据写进一个文件里
             string strGDGSDataCode = PlanParameters.ReadParamValue("GDGSDataCode");
-            foreach (string key in dicTaskID.Keys)
-            {
+            //foreach (string key in dicTaskID.Keys)
+            //{
                 #region 写入文件
                 filename = FileNameMaker.GenarateFileNameTypeThree(strGDGSDataCode, desValue);
                 SendFileNames = SendFileNames + SendingPath + ",";
@@ -2087,19 +2090,20 @@ namespace ServicesKernel.File
                 sw.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
-                sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(key) + "(" + oTask.GetObjectFlagByTaskNo(key) + ")");
+                sw.WriteLine("[任务代码M]：" + GetSendingTaskName(listJH[0].TaskID, listJH[0].SatID));
                 sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
-                sw.WriteLine("[数据区行数L]：" + dicTaskID[key].ToString("0000"));
+                sw.WriteLine("[数据区行数L]：" + listJH.Count().ToString("0000"));
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[格式标识1]：T01  T02  a  e  i  Ω  w  M");
                 sw.WriteLine("[数据区]：");
                 foreach (GD obj in listJH)
                 {
-                    if (obj.TaskID == key)
-                    {
+                    //if (obj.TaskID == key)
+                    //{
                         sw.WriteLine(obj.Times.ToString("yyyyMMdd") + "  " + obj.Times.ToString("HHmmssffff") + "  "
-                            + obj.A.ToString("f4") + "  " + obj.E.ToString("f6") + "  " + obj.I.ToString("f6") + "  " + obj.Q.ToString("f6") + "  " + obj.W.ToString("f6") + "  " + obj.M.ToString("f6"));
-                    }
+                            + (obj.A * 0.001).ToString("f4") + "  " + obj.E.ToString("f6") + "  " + obj.I.ToString("f4") 
+                            + "  " + obj.Q.ToString("f6") + "  " + obj.W.ToString("f6") + "  " + obj.M.ToString("f6"));
+                    //}
                 }
                 sw.WriteLine("<辅助区>");
                 sw.WriteLine("[备注]：");
@@ -2107,7 +2111,7 @@ namespace ServicesKernel.File
 
 
                 #endregion
-            }
+            //}
             sw.Close();
 
             if (SendFileNames[SendFileNames.Length - 1] == ',')
@@ -2131,24 +2135,24 @@ namespace ServicesKernel.File
 
             string SendFileNames = "";
             List<GD> listJH = (new GD()).SelectByIDS(ids);
-            Dictionary<string, int> dicTaskID = new Dictionary<string, int>();
-            Task oTask = new Task();
-            foreach (GD obj in listJH)
-            {
-                if (dicTaskID.ContainsKey(obj.TaskID))
-                {
-                    dicTaskID[obj.TaskID] = dicTaskID[obj.TaskID] + 1;
-                }
-                else
-                {
-                    dicTaskID.Add(obj.TaskID, 1);
+            //Dictionary<string, int> dicTaskID = new Dictionary<string, int>();
+            //Task oTask = new Task();
+            //foreach (GD obj in listJH)
+            //{
+            //    if (dicTaskID.ContainsKey(obj.TaskID))
+            //    {
+            //        dicTaskID[obj.TaskID] = dicTaskID[obj.TaskID] + 1;
+            //    }
+            //    else
+            //    {
+            //        dicTaskID.Add(obj.TaskID, 1);
 
-                }
-            }
+            //    }
+            //}
             //相同任务的轨道数据写进一个文件里
             string strYDSJDataCode = PlanParameters.ReadParamValue("YDSJDataCode");
-            foreach (string key in dicTaskID.Keys)
-            {
+            //foreach (string key in dicTaskID.Keys)
+            //{
                 #region 写入文件
                 filename = FileNameMaker.GenarateFileNameTypeThree(strYDSJDataCode, desValue);
                 SendFileNames = SendFileNames + SendingPath + ",";
@@ -2159,18 +2163,19 @@ namespace ServicesKernel.File
                 sw.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
-                sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(key) + "(" + oTask.GetObjectFlagByTaskNo(key) + ")");
+                sw.WriteLine("[任务代码M]：" + GetSendingTaskName(listJH[0].TaskID, listJH[0].SatID));
                 sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
-                sw.WriteLine("[数据区行数L]：" + dicTaskID[key].ToString("0000"));
+                sw.WriteLine("[数据区行数L]：" + listJH.Count().ToString("0000"));
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[格式标识1]：T01  T02  a  e  i  Ω  w  M");
                 sw.WriteLine("[数据区]：");
                 foreach (GD obj in listJH)
                 {
-                    if (obj.TaskID == key)
+                    //if (obj.TaskID == key)
                     {
                         sw.WriteLine(obj.Times.ToString("yyyyMMdd") + "  " + obj.Times.ToString("HHmmssffff") + "  "
-                            + obj.A + "  " + obj.E + "  " + obj.I + "  " + obj.Q + "  " + obj.W + "  " + obj.M);
+                            + (obj.A * 0.001).ToString("f4") + "  " + obj.E.ToString("f6") + "  " + obj.I.ToString("f4")
+                            + "  " + obj.Q.ToString("f6") + "  " + obj.W.ToString("f6") + "  " + obj.M.ToString("f6"));
                     }
                 }
                 sw.WriteLine("<辅助区>");
@@ -2179,7 +2184,7 @@ namespace ServicesKernel.File
 
 
                 #endregion
-            }
+            //}
             sw.Close();
 
             if (SendFileNames[SendFileNames.Length - 1] == ',')
@@ -2231,7 +2236,7 @@ namespace ServicesKernel.File
                 sw.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
-                sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(key) + "(" + oTask.GetObjectFlagByTaskNo(key) + ")");
+                //sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(key) + "(" + oTask.GetObjectFlagByTaskNo(key) + ")");
                 sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                 sw.WriteLine("[数据区行数L]：" + dicTaskID[key].ToString("0000"));
                 sw.WriteLine("<符号区>");
@@ -2266,7 +2271,7 @@ namespace ServicesKernel.File
         /// </summary>
         /// <param name="desValue"></param>
         /// <returns></returns>
-        public string CreateSendingYDSJFile(string taskNo, string desValue, string[] datas)
+        public string CreateSendingYDSJFile(string taskNo, string satID, string desValue, string[] datas)
         {
             FileBaseInfo oFBInfo = new FileBaseInfo();
             XYXSInfo info = new XYXSInfo();
@@ -2279,8 +2284,7 @@ namespace ServicesKernel.File
             oFBInfo.From = this.Source;
             oFBInfo.To = info.ADDRName +info.ADDRMARK + "(" + info.EXCODE + ")";
             oFBInfo.InfoTypeName = itype.DATANAME + "(" + itype.EXCODE + ")";
-            Task oTask = new Task();
-            oFBInfo.TaskID = oTask.GetTaskName(taskNo) + "(" + oTask.GetObjectFlagByTaskNo(taskNo) + ")";
+            oFBInfo.TaskID = GetSendingTaskName(taskNo, satID);
             oFBInfo.LineCount = datas.Length;
 
             DataFileHandle oDFHandle = new DataFileHandle(oFBInfo.FullName);
@@ -2321,6 +2325,17 @@ namespace ServicesKernel.File
         private bool TestFileName()
         {
             return System.IO.File.Exists(FilePath);
+        }
+
+        /// <summary>
+        /// 通过内部任务号和卫星号获取外部任务代号
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <param name="satID"></param>
+        /// <returns></returns>
+        private string GetSendingTaskName(string taskID, string satID)
+        {
+            return new Task().GetTaskName(taskID, satID) + "(" + new Task().GetObjectFlagByTaskNo(taskID, satID) + ")";
         }
 
     }

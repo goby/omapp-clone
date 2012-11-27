@@ -79,6 +79,10 @@ namespace OperatingManagement.Web.Views.PlanManage
             { ViewState["_EndDate"] = null; }
             else
             { ViewState["_EndDate"] = Convert.ToDateTime(txtEndDate.Text.Trim()).AddDays(1).AddMilliseconds(-1); }
+            if (ucOutTask1.SelectedValue == "-1")
+            { ViewState["_Task"] = null; }
+            else
+            { ViewState["_Task"] = ucOutTask1.SelectedValue; }
         }
 
         //绑定列表
@@ -86,6 +90,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             DateTime startDate = new DateTime();
             DateTime endDate = new DateTime();
+            string TaskID = "-1";
             if (fromSearch)
             {
                 if (!string.IsNullOrEmpty(txtStartDate.Text))
@@ -104,6 +109,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 //{
                 //    endDate = DateTime.Now.AddDays(1).AddMilliseconds(-1);   //查询时可查当天
                 //}
+                TaskID = ucOutTask1.SelectedValue;
             }
             else
             {
@@ -123,9 +129,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     endDate = Convert.ToDateTime(ViewState["_EndDate"].ToString());
                 }
+                if (ViewState["_Task"] != null)
+                { TaskID = ViewState["_Task"].ToString(); }
             }
-
-            List<YDSJ> listDatas = (new YDSJ()).GetListByDate(startDate, endDate);
+            //外部任务代号
+            List<YDSJ> listDatas = (new YDSJ()).GetListByDate(startDate, endDate, TaskID);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
             cpPager.BindToControl = rpDatas;
@@ -170,74 +178,55 @@ namespace OperatingManagement.Web.Views.PlanManage
         //最终发送
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            string cvtFilePath = string.Empty;
+            string taskID = string.Empty;
+            string satID = string.Empty;
+            string outTaskID = string.Empty;
+            int iIdx = 0;
+            string twoSpace = "  ";
+            string[] datas;
+            bool blResult;
             lblMessage.Text = "";
+
+            #region 参数转换计算
             try
             {
-                List<YDSJ> lstYDSJ = (new YDSJ()).SelectByIDS(txtId.Text);
-                string filePath = SystemParameters.GetSystemParameterValue(SystemParametersType.GDJSResult, "result_path")
-                    + SystemParameters.GetSystemParameterValue(SystemParametersType.GDJSResult, "cvt_path");
-                if (!System.IO.Directory.Exists(filePath))
-                    System.IO.Directory.CreateDirectory(filePath);
-                cvtFilePath = System.IO.Path.Combine(filePath, Guid.NewGuid() + ".dat");
-                StreamWriter oWriter = new StreamWriter(cvtFilePath);
-                string strLine = string.Empty;
-                int iIdx = 0;
-                Dictionary<string, List<int>> dicTaskRow = new Dictionary<string, List<int>>();
-                List<int> lstIdx;
-                foreach (YDSJ oYdsj in lstYDSJ)
-                {
-                    strLine = string.Format("  {0}  {1}  {2}  {3}  {4}  {5}.{6}  {7}  {8}  {9}  {10}  {11}  {12}",
-                        oYdsj.Times.Year, oYdsj.Times.Month, oYdsj.Times.Day, oYdsj.Times.Hour, oYdsj.Times.Minute
-                        , oYdsj.Times.Second, oYdsj.Times.Millisecond.ToString("000000"), oYdsj.A.ToString("0000000000.000000")
-                        , oYdsj.E.ToString("0000000000.000000"), oYdsj.I.ToString("0000000000.000000"), oYdsj.O.ToString("0000000000.000000")
-                        , oYdsj.W.ToString("0000000000.000000"), oYdsj.M.ToString("0000000000.000000"));
-                    oWriter.WriteLine(strLine);
-                    //if (dicTaskRow.ContainsKey(oYdsj.SatName))
-                    //    dicTaskRow[oYdsj.SatName].Add(iIdx);
-                    //else
-                    //{
-                    //    lstIdx = new List<int>();
-                    //    dicTaskRow.Add(oYdsj.TaskID, lstIdx);
-                    //}
-                    iIdx++;
-                }
-                oWriter.Close();
                 int iTimeZone = 8;
-                string strResultFile;
-                //瞬时Kepler根数-J2000坐标系
-                string strResult = new GDFXProcessor().ParamConvert(true, true, iTimeZone, "16"
-                , cvtFilePath, cvtFilePath, out strResultFile);
-                if (!strResult.Equals(string.Empty))
+                int cvtType = 16;//瞬时Kepler根数-J2000坐标系
+                int[] iEmitPath = DataValidator.GetIntPath(@"D:\Deploy\GDFiles\Convert\");//这个参数在计算的时候必须提供，但此时无意义
+                int[] iEmitFile = DataValidator.GetIntPath("Launch.dat");//这个参数在计算的时候必须提供，但此时无意义
+                List<YDSJ> lstYDSJ = (new YDSJ()).SelectByIDS(txtId.Text);
+                double[] dblResult;
+                datas = new string[lstYDSJ.Count()];
+                for (int i =0;i<lstYDSJ.Count();i++)
                 {
-                    lblMessage.Text = strResult;
-                    return;
-                }
-                string[] datas = new string[iIdx];
-                StreamReader oReader = new StreamReader(strResultFile);
-                strLine = oReader.ReadLine();
-                iIdx = 0;
-                DateTime dt;
-                while (!string.IsNullOrEmpty(strLine))
-                {
-                    strResult = strLine.Substring(0, 23).Trim();
-                    dt = DateTime.ParseExact(strResult, "yyyy MM dd HH:mm:ss.f", System.Globalization.CultureInfo.InvariantCulture);
-                    while (strLine.IndexOf("   ") >= 0)
+                    iIdx = lstYDSJ[i].Id;
+                    blResult = ParamConvertor.Instance.ParamConvert(true, true, iTimeZone, cvtType
+                        , GetYM(lstYDSJ[i].Times), (lstYDSJ[i].Times.Second + lstYDSJ[i].Times.Millisecond)
+                        , GetData(lstYDSJ[i]), iEmitFile, iEmitPath, out dblResult);
+                    if (!blResult)
                     {
-                        strLine = strLine.Replace("   ", "  ");
+                        lblMessage.Text = string.Format("数据{0}参数转换出现错误", iIdx);
+                        return;
                     }
-                    datas[iIdx] = dt.ToString("yyyyMMdd") + "  " + dt.ToString("HHmmssffff") + strLine.Substring(23);
-                    strLine = oReader.ReadLine();
-                    iIdx++;
+                    datas[i] = lstYDSJ[i].Times.ToString("yyyyMMdd") + twoSpace
+                        + lstYDSJ[i].Times.ToString("HHmmssffff") + twoSpace
+                        + dblResult[0].ToString("f4") + twoSpace + dblResult[1].ToString("f6") + twoSpace
+                        + dblResult[2].ToString("f4") + twoSpace + dblResult[3].ToString("f6") + twoSpace
+                        + dblResult[4].ToString("f6") + twoSpace + dblResult[5].ToString("f6") + twoSpace;
                 }
-                    //foreach (KeyValuePair<string, List<int>> kValue in dicTaskRow)
-                    //{
+                outTaskID = lstYDSJ[0].TaskID;
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("发送引导数据-进行参数转换计算出现异常，异常原因", ex));
+            }
+            #endregion
 
-                    //}
-
+            try
+            {
                 FileSender objFileSender = new FileSender();
-                bool blResult = true; //发送结果
                 XYXSInfo objXYXSInfo = new XYXSInfo();
+                string strResultFile = string.Empty;
                 //发送协议
                 CommunicationWays protocl = (CommunicationWays)Convert.ToInt32(rbtProtocl.SelectedValue);
                 string strYDSJCode = PlanParameters.ReadParamValue("YDSJDataCode");
@@ -247,12 +236,13 @@ namespace OperatingManagement.Web.Views.PlanManage
                 int senderid = objXYXSInfo.GetIdByAddrMark(System.Configuration.ConfigurationManager.AppSettings["ZXBM"]);
                 //接收方ID 
                 int reveiverid;
+                new Task().GetTaskNoSatID(outTaskID, out taskID, out satID);
                 foreach (ListItem li in ckbDestination.Items)
                 {
                     if (li.Selected)
                     {
                         reveiverid = objXYXSInfo.GetIdByAddrMark(li.Value);
-                        strResultFile = new PlanFileCreator().CreateSendingYDSJFile(ConfigurationManager.AppSettings["CurTaskNo"], li.Value, datas);
+                        strResultFile = new PlanFileCreator().CreateSendingYDSJFile(taskID, satID, li.Value, datas);
                         blResult = objFileSender.SendFile(GetFileNameByFilePath(strResultFile), GetFilePathByFilePath(strResultFile), protocl, senderid, reveiverid, infotypeid, true);
                         if (blResult)
                         {
@@ -271,8 +261,6 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             finally
             {
-                if (File.Exists(cvtFilePath))
-                    File.Delete(cvtFilePath); 
             }
 
         }
@@ -320,6 +308,29 @@ namespace OperatingManagement.Web.Views.PlanManage
         private string GetFilePathByFilePath(string filepath)
         {
             return filepath.Substring(0, filepath.LastIndexOf("\\") + 1);
+        }
+
+        private int[] GetYM(DateTime date)
+        {
+            int[] ym = new int[5];
+            ym[0] = date.Year;
+            ym[1] = date.Month;
+            ym[2] = date.Day;
+            ym[3] = date.Hour;
+            ym[4] = date.Minute;
+            return ym;
+        }
+
+        private double[] GetData(YDSJ oYdsj)
+        {
+            double[] data = new double[6];
+            data[0] = oYdsj.A;
+            data[1] = oYdsj.E;
+            data[2] = oYdsj.I;
+            data[3] = oYdsj.O;
+            data[4] = oYdsj.W;
+            data[5] = oYdsj.M;
+            return data;
         }
     }
 }
