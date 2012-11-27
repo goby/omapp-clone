@@ -289,10 +289,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         /// <param name="taskNO">任务代号</param>
         /// <returns>任务名称</returns>
-        protected string GetTaskName(string taskNO)
+        protected string GetTaskName(string taskNO, string satID)
         {
             Task task = new Task();
-            return task.GetTaskName(taskNO);
+            return task.GetTaskName(taskNO, satID);
         }
         #endregion
     }

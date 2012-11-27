@@ -149,7 +149,7 @@ namespace ServicesKernel.File
             oSW.WriteLine("<符号区>");
             for (int i = 0; i < fields.Length; i++)
             {
-                oSW.WriteLine("[格式标识" + i.ToString() + "]：" + fields[i]);
+                oSW.WriteLine("[格式标识" + (i+1).ToString() + "]：" + fields[i]);
             }
             oSW.WriteLine("[数据区]：");
             for (int j = 0; j < datas.Length; j++)

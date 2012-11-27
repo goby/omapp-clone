@@ -39,6 +39,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         public string Source { get; set; }
         public string Destination { get; set; }
         public string TaskID { get; set; }
+        public string SatID { get; set; }
         public string InfoType { get; set; }
         public int LineCount { get; set; }
         public SYJHType PlanType { get; set; }

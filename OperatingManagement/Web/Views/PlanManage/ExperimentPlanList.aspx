@@ -166,6 +166,18 @@
                 </td>
             </tr>
             <tr>
+                <td>
+                    <b>任务运行模式：</b>
+                    <br />
+                    <asp:RadioButtonList ID="rbtMode" runat="server" 
+                    RepeatDirection="Horizontal">
+                            <asp:ListItem Value="OP" Selected="True">实战</asp:ListItem>
+                            <asp:ListItem Value="TS">联试</asp:ListItem>
+                            <asp:ListItem Value="DR">日常运行</asp:ListItem>
+                        </asp:RadioButtonList>
+                </td>
+            </tr>
+            <tr>
                 <td align="center" style="text-align: center">
                     <br />
                     <b>请选择计划待发送的目标系统，可以多选</b>

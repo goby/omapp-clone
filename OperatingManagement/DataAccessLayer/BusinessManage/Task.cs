@@ -245,12 +245,12 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         /// <param name="taskNo"></param>
         /// <returns></returns>
-        public string GetObjectFlagByTaskNo(string taskNo)
+        public string GetObjectFlagByTaskNo(string taskNo, string satID)
         {
             string strResult = string.Empty;
             if (Cache != null)
             {
-                var query = Cache.Where(a => a.TaskNo == taskNo);
+                var query = Cache.Where(a => a.TaskNo == taskNo && a.SatID == satID);
                 if (query != null && query.Count() > 0)
                     strResult = query.FirstOrDefault().ObjectFlag;
             }
@@ -318,12 +318,12 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         /// <param name="taskNO"></param>
         /// <returns></returns>
-        public string GetTaskName(string taskNO)
+        public string GetTaskName(string taskNO, string satID)
         {
             string taskName = string.Empty;
             if (Cache != null)
             {
-                var query = Cache.Where(a => a.TaskNo == taskNO);
+                var query = Cache.Where(a => a.TaskNo == taskNO && a.SatID == satID);
                 if (query != null && query.Count() > 0)
                     taskName = query.FirstOrDefault().TaskName;
             }

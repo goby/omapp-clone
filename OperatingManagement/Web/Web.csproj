@@ -216,6 +216,7 @@
     <Content Include="ucs\ucTask.ascx" />
     <Content Include="ucs\ucTimer.ascx" />
     <Content Include="ucs\ucXYXSInfo.ascx" />
+    <Content Include="ucs\ucOutTask.ascx" />
     <Content Include="Views\Account\MyProfile.aspx" />
     <Content Include="Views\BusinessManage\BDManage\SatAdd.aspx" />
     <Content Include="Views\BusinessManage\BDManage\SatEdit.aspx" />
@@ -390,6 +391,13 @@
     </Compile>
     <Compile Include="ucs\ucXYXSInfo.ascx.designer.cs">
       <DependentUpon>ucXYXSInfo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ucs\ucOutTask.ascx.cs">
+      <DependentUpon>ucOutTask.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ucs\ucOutTask.ascx.designer.cs">
+      <DependentUpon>ucOutTask.ascx</DependentUpon>
     </Compile>
     <Compile Include="Views\Account\MyProfile.aspx.cs">
       <DependentUpon>MyProfile.aspx</DependentUpon>

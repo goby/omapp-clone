@@ -128,11 +128,15 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <param name="taskid"></param>
         /// <param name="itype"></param>
         /// <returns></returns>
-        public List<GD> GetList(DateTime startDate, DateTime endDate,string taskid, string icode)
+        public List<GD> GetList(DateTime startDate, DateTime endDate,string outTaskid, string icode)
         {
 
             object oBeginTime = null;
             object oEndTime = null;
+            string taskID = string.Empty;
+            string satID = string.Empty;
+            new Task().GetTaskNoSatID(outTaskid, out taskID, out satID);
+
             if (startDate == DateTime.MinValue)
                 oBeginTime = DBNull.Value;
             else
@@ -148,7 +152,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             ds = _database.SpExecuteDataSet("up_GD_Getlist", new OracleParameter[]{
                 new OracleParameter("p_startDate", oBeginTime),
                 new OracleParameter("p_endDate", oEndTime),
-                new OracleParameter("p_taskID", taskid), 
+                new OracleParameter("p_taskID", taskID), 
+                new OracleParameter("p_satID", satID), 
                 new OracleParameter("p_iCode", icode), 
                 p
             });

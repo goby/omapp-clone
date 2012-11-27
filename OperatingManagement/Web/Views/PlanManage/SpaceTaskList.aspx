@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
     CodeBehind="SpaceTaskList.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.SpaceTaskList" %>
 
+<%@ Register src="../../ucs/ucOutTask.ascx" tagname="ucOutTask" tagprefix="uc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -31,9 +32,15 @@
                         <asp:TextBox ID="txtEndDate" ClientIDMode="Static" CssClass="text" runat="server"
                             onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                     </td>
+                    <th>
+                        任务：
+                    </th>
+                    <td>
+                        <uc1:ucOutTask ID="ucOutTask1" runat="server" AllowBlankItem="False" />
+                    </td>
                     <td>
                         <asp:Button class="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
-                            Text="查询" Width="69px" />
+                            Text="查询" Width="69px" style="margin-top: 0px" />
                         &nbsp;<%--<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
                     onclick="btnReset_Click" />--%>
                         <button class="button" onclick="return clearField();" style="width: 65px;">
@@ -177,7 +184,7 @@
         </table>
     </div>
     <div id="divMessage" title="消息">
-        <asp:Label ID="lblMessage" runat="server" ForeColor="Red"></asp:Label>
+        <asp:Label ID="lblMessage" runat="server" ForeColor="Red" CssClass="error"></asp:Label>
     </div>
     <div id="dialog-form" style="display: none" title="提示信息">
         <p class="content">

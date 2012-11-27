@@ -96,7 +96,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
-        public List<YDSJ> GetListByDate(DateTime startDate, DateTime endDate)
+        public List<YDSJ> GetListByDate(DateTime startDate, DateTime endDate, string taskID)
         {
             DataSet ds = null;
 
@@ -120,6 +120,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             {
                 _database.AddInParameter(command, "p_endDate", OracleDbType.Date, endDate);
             }
+            _database.AddInParameter(command, "p_TaskID", OracleDbType.Varchar2, taskID);
             using (IDataReader reader = _database.ExecuteReader(command))
             {
                 ds.Tables[0].Load(reader);
