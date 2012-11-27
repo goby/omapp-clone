@@ -1,4 +1,78 @@
-﻿function CheckClientValidate() {
+﻿$(window).ready(function () {
+    $("#TaskList").change(
+        function () {
+            var checkValue = $("#TaskList").val();
+            var obj = document.getElementById("ddlTask");
+            for (var i = 0; i < obj.length; i++) {
+
+                if (obj.options[i].text == checkValue) {
+                    $("#txtSCID").val(obj.options[i].value);
+                    break;
+                }
+            }
+
+        });
+
+    $("#TaskList").change();
+});
+
+function SetSBDH(o, cid , tid) {
+    var index = o.selectedIndex;
+    var selectedValue = o.options[index].value;
+    var selectedText = o.options[index].text;
+
+    var obj = document.getElementById(cid);
+    if (selectedText == "喀什站") {
+        showSBDHForm(cid,tid);
+    }
+    else {
+        for (var i = 0; i < obj.length; i++) {
+
+            if (obj.options[i].text == selectedText) {
+                obj.options[i].selected = true;
+                $("#"+tid).val(obj.options[i].value);
+                break;
+            }
+        }
+    }
+
+}
+
+//弹出喀什站设备代号选择窗口
+function showSBDHForm(cid,tid) {
+    var _dialog;
+    _dialog = $("#dialog-sbdh");
+    _dialog.dialog({
+        autoOpen: false,
+        height: 150,
+        width: 300,
+        modal: true,
+        open:function(){$(".ui-dialog-titlebar-close").hide();},
+        buttons: {
+            '确定': function () {
+                var selectedText;
+                selectedText =  $('input:radio[name="kashi"]:checked').val();
+                var obj = document.getElementById(cid);
+                for (var i = 0; i < obj.length; i++) {
+
+                    if (obj.options[i].text == selectedText) {
+                        obj.options[i].selected = true;
+                        $("#" + tid).val(obj.options[i].value);
+                        break;
+                    }
+                }
+                $(this).dialog("close");
+
+            }
+        }
+    });
+
+    _dialog.dialog('open');
+    _dialog.parent().appendTo($("form:first"));
+    return false;
+}
+
+function CheckClientValidate() {
     Page_ClientValidate();
     if (Page_IsValid) {
         var isvalid = true;
