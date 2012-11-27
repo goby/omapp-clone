@@ -627,7 +627,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                             {
                                 #region GZDP
                                 Repeater rpg = it.FindControl("rpGZDP") as Repeater;
-                                foreach (RepeaterItem itg in rp.Items)
+                                foreach (RepeaterItem itg in rpg.Items)
                                 {
                                     dp = new DJZYSQ_Task_GZDP();
                                     TextBox txtFXH = (TextBox)itg.FindControl("txtFXH");
