@@ -1489,7 +1489,7 @@ namespace ServicesKernel.File
                         sw.WriteLine("[数据区]：");
                         foreach (SYJH_SY sy in obj.SYJH_SY_List)
                         {
-                            sw.WriteLine("ZJ" + "  " + jh.Id + "  " + sy.SYSatName + "  " + sy.SYType + "  " + sy.SYItem + "  " + sy.SYStartTime + "  " + sy.SYEndTime);
+                            sw.WriteLine("ZJ" + "  " + obj.JHID + "  " + sy.SYSatName + "  " + sy.SYType + "  " + sy.SYItem + "  " + sy.SYStartTime + "  " + sy.SYEndTime);
                             sw.WriteLine(sy.SYSysName + "  " + sy.SYSysTask);
                         }
                         sw.WriteLine("<辅助区>");

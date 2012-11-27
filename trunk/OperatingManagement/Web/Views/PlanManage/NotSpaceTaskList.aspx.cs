@@ -181,6 +181,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             string strTarget = string.Empty;
             List<string> targets = new List<string>();
             string strYKXZ = string.Empty;
+            string strResult = string.Empty;
 
             //如果选了4701/4702，进行轨道预报后再发送文件，但只能选择一个任务号和一个遥科学站
             #region 检查必须项
@@ -243,18 +244,28 @@ namespace OperatingManagement.Web.Views.PlanManage
                         SendingFilePaths = ObsPre(strYKXZ);
                         if (string.IsNullOrEmpty(SendingFilePaths))
                             return;
-                        blResult = objFileSender.SendFile(DataFileHandle.GetFileName(SendingFilePaths), DataFileHandle.GetFilePath(SendingFilePaths), protocl, senderid, receiverid, infotypeid, true);
-                        if (blResult)
-                            lblMessage.Text += GetFileNameByFilePath(SendingFilePaths) + " 文件发送请求提交成功。" + "<br />";
-                        else
-                            lblMessage.Text += GetFileNameByFilePath(SendingFilePaths) + " 文件发送请求提交失败。" + "<br />";
+                        if (protocl == CommunicationWays.FTP)//将文件移至FTP路径中
+                        {
+                            strResult = DataFileHandle.MoveFile(SendingFilePaths, GetFilePathByFilePath(SendingFilePaths) + @"FTP\");
+                            if (!strResult.Equals(string.Empty))
+                                lblMessage.Text += GetFileNameByFilePath(SendingFilePaths) + " 路径中已有同名文件。" + "<br />";
+                            else
+                                SendingFilePaths = GetFilePathByFilePath(SendingFilePaths) + @"FTP\" + GetFileNameByFilePath(SendingFilePaths);
+                        }
+                        if (strResult.Equals(string.Empty))
+                        {
+                            blResult = objFileSender.SendFile(DataFileHandle.GetFileName(SendingFilePaths), DataFileHandle.GetFilePath(SendingFilePaths), protocl, senderid, receiverid, infotypeid, true);
+                            if (blResult)
+                                lblMessage.Text += GetFileNameByFilePath(SendingFilePaths) + " 文件发送请求提交成功。" + "<br />";
+                            else
+                                lblMessage.Text += GetFileNameByFilePath(SendingFilePaths) + " 文件发送请求提交失败。" + "<br />";
+                        }
                         #endregion
                     }
                     else if (target == PlanParameters.ReadParamValue("XSCCCode"))
                     {
                         #region Send DataFrame
                         List<GD> lstYDSJ = (new GD()).SelectByIDS(txtId.Text);
-                        string strResult = string.Empty;
                         for (int i = 0; i < lstYDSJ.Count(); i++)
                         {
                             strResult = objSender.SendDF(dfBuilder.BuildYDSJDF(lstYDSJ[i], DateTime.Now), lstYDSJ[i].TaskID, lstYDSJ[i].SatID, infotypeid, senderid, receiverid, DateTime.Now);
@@ -272,14 +283,25 @@ namespace OperatingManagement.Web.Views.PlanManage
                         filePaths = SendingFilePaths.Split(',');
                         for (int i = 0; i < filePaths.Length; i++)
                         {
-                            blResult = objFileSender.SendFile(GetFileNameByFilePath(filePaths[i]), GetFilePathByFilePath(filePaths[i]), protocl, senderid, receiverid, infotypeid, true);
-                            if (blResult)
+                            if (protocl == CommunicationWays.FTP)//将文件移至FTP路径中
                             {
-                                lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
+                                strResult = DataFileHandle.MoveFile(filePaths[i], GetFilePathByFilePath(filePaths[i]) + @"FTP\");
+                                if (!strResult.Equals(string.Empty))
+                                    lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 路径中已有同名文件。" + "<br />";
+                                else
+                                    filePaths[i] = GetFilePathByFilePath(filePaths[i]) + @"FTP\" + GetFileNameByFilePath(filePaths[i]);
                             }
-                            else
+                            if (strResult.Equals(string.Empty))
                             {
-                                lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
+                                blResult = objFileSender.SendFile(GetFileNameByFilePath(filePaths[i]), GetFilePathByFilePath(filePaths[i]), protocl, senderid, receiverid, infotypeid, true);
+                                if (blResult)
+                                {
+                                    lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
+                                }
+                                else
+                                {
+                                    lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
+                                }
                             }
                         }
                         #endregion

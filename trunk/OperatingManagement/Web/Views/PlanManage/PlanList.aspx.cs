@@ -240,9 +240,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                             {
                                 if (protocl == CommunicationWays.FTP)//将文件移至FTP路径中
                                 {
-                                    strResult = DataFileHandle.MoveFile(filePaths[i], GetFilePathByFilePath(filePaths[i]) + @"FTP\" + GetFileNameByFilePath(filePaths[i]));
+                                    strResult = DataFileHandle.MoveFile(filePaths[i], GetFilePathByFilePath(filePaths[i]) + @"FTP\");
                                     if (!strResult.Equals(string.Empty))
                                         lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 路径中已有同名文件。" + "<br />";
+                                    else
+                                        filePaths[i] = GetFilePathByFilePath(filePaths[i]) + @"FTP\" + GetFileNameByFilePath(filePaths[i]);
                                 }
                                 if (strResult.Equals(string.Empty))
                                 {
