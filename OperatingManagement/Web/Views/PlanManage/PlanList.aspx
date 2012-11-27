@@ -210,7 +210,7 @@
             </tr>
             <tr>
                 <td>
-                    <b>任务运行模式：</b>
+                    <b>任务运行模式（仅对测控资源使用申请有效）：</b>
                     <br />
                     <asp:RadioButtonList ID="rbtMode" runat="server" 
                     RepeatDirection="Horizontal">

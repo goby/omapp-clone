@@ -12,6 +12,8 @@ namespace ServicesKernel.File
     public class FileNameMaker
     {
         private static string seperator = "_";
+        private static Dictionary<string, string> dicTypeDates = new Dictionary<string, string>();
+        private static Dictionary<string, int> dicTypeNos = new Dictionary<string, int>();
 
         #region 外部文件命名
         /// <summary>
@@ -169,6 +171,8 @@ namespace ServicesKernel.File
         {
             string strSeqPath = @"~/app_data/sequence.xml";
             string strSeqNo = "";
+            string time = "";
+            int iSeq = 0;
 
             ReaderWriterLock rwl = new ReaderWriterLock();
             try
@@ -178,7 +182,17 @@ namespace ServicesKernel.File
                 XElement root = doc.Root;
                 XElement element = root.Element(infoCode);
                 strSeqNo = element.Value;
-                int iSeq = Convert.ToInt32(strSeqNo);
+                if (element.Attribute("time") != null)
+                {
+                    time = element.Attribute("time").Value;
+                    if (time == DateTime.Now.ToString("yyyyMMdd"))
+                        iSeq = Convert.ToInt32(strSeqNo);
+                    else
+                        element.Attribute("time").Value = DateTime.Now.ToString("yyyyMMdd");
+                }
+                else
+                    element.Add(new XAttribute("time", DateTime.Now.ToString("yyyyMMdd")));
+
                 element.Value = (iSeq + 1).ToString().PadLeft(4, '0');
                 StreamWriter oSW = new StreamWriter(GlobalSettings.MapPath(strSeqPath));
                 oSW.Write(doc.ToString());

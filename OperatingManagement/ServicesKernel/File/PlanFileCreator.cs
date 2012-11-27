@@ -1477,7 +1477,7 @@ namespace ServicesKernel.File
 
                         sw = new StreamWriter(SendingPath);
                         sw.WriteLine("<说明区>");
-                        sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
+                        sw.WriteLine("[生成时间T]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                         sw.WriteLine("[信源S]：" + this.Source);
                         sw.WriteLine("[信宿D]：" + destinationName);
                         sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
@@ -1557,11 +1557,14 @@ namespace ServicesKernel.File
                     #region 写入文件
                     filename = FileNameMaker.GenarateFileNameTypeThree(dataCode, desValue);
                     SendFileNames = SendFileNames + SendingPath + ",";
-                    itype = itype.GetByExMark(dataCode);
+                    if (obj.XXFL.ToUpper() == "ZJ")
+                        itype = itype.GetByExMark(dataCode + "ZJ");
+                    else
+                        itype = itype.GetByExMark(dataCode);
 
                     sw = new StreamWriter(SendingPath);
                     sw.WriteLine("<说明区>");
-                    sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
+                    sw.WriteLine("[生成时间T]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                     sw.WriteLine("[信源S]：" + this.Source);
                     sw.WriteLine("[信宿D]：" + destinationName);
                     sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
@@ -1697,7 +1700,7 @@ namespace ServicesKernel.File
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
-                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
+                sw.WriteLine("[生成时间T]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
@@ -1726,7 +1729,7 @@ namespace ServicesKernel.File
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
-                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
+                sw.WriteLine("[生成时间T]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
@@ -1754,7 +1757,7 @@ namespace ServicesKernel.File
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
-                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
+                sw.WriteLine("[生成时间T]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
@@ -1869,11 +1872,13 @@ namespace ServicesKernel.File
                     #region 写入文件
                     filename = FileNameMaker.GenarateFileNameTypeThree(dataCode, desValue);
                     SendFileNames = SendFileNames + SendingPath + ",";
-                    itype = itype.GetByExMark(dataCode);
-
+                    if (obj.XXFL.ToUpper() == "ZJ")
+                        itype = itype.GetByExMark(dataCode + "ZJ");
+                    else
+                        itype = itype.GetByExMark(dataCode);
                     sw = new StreamWriter(SendingPath);
                     sw.WriteLine("<说明区>");
-                    sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
+                    sw.WriteLine("[生成时间T]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                     sw.WriteLine("[信源S]：" + this.Source);
                     sw.WriteLine("[信宿D]：" + destinationName);
                     sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
@@ -2022,7 +2027,7 @@ namespace ServicesKernel.File
 
                 sw = new StreamWriter(SendingPath);
                 sw.WriteLine("<说明区>");
-                sw.WriteLine("[生成时间]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
+                sw.WriteLine("[生成时间T]：" + obj.CTime.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
@@ -2087,7 +2092,7 @@ namespace ServicesKernel.File
                 sw = new StreamWriter(SendingPath);
 
                 sw.WriteLine("<说明区>");
-                sw.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
+                sw.WriteLine("[生成时间T]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：" + GetSendingTaskName(listJH[0].TaskID, listJH[0].SatID));
@@ -2160,7 +2165,7 @@ namespace ServicesKernel.File
                 sw = new StreamWriter(SendingPath);
 
                 sw.WriteLine("<说明区>");
-                sw.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
+                sw.WriteLine("[生成时间T]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：" + GetSendingTaskName(listJH[0].TaskID, listJH[0].SatID));
@@ -2233,7 +2238,7 @@ namespace ServicesKernel.File
                 sw = new StreamWriter(SendingPath);
 
                 sw.WriteLine("<说明区>");
-                sw.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
+                sw.WriteLine("[生成时间T]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
                 sw.WriteLine("[信源S]：" + this.Source);
                 sw.WriteLine("[信宿D]：" + destinationName);
                 //sw.WriteLine("[任务代码M]：" + oTask.GetTaskName(key) + "(" + oTask.GetObjectFlagByTaskNo(key) + ")");

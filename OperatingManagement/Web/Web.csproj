@@ -95,7 +95,9 @@
     <Content Include="App_Data\PlanParameters.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\sequence.xml" />
+    <Content Include="App_Data\sequence.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\siteSetting.xml" />
     <Content Include="App_Data\menuPlan.xml" />
     <Content Include="App_Data\menuBusiness.xml">
