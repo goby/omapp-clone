@@ -41,6 +41,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                     HfID.Value = sID;
                     hfStatus.Value = "edit";    //编辑
+                    inital(false);
                     BindJhTable(sID);
                     BindXML();
                     hfURL.Value = "?type=GZJH&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"];
@@ -54,13 +55,13 @@ namespace OperatingManagement.Web.Views.PlanManage
                     btnReturn.Visible = false;
                     hfStatus.Value = "new"; //新建
                     btnSaveTo.Visible = false;
-                    inital();
+                    inital(true);
                 }
             }
             
         }
 
-        private void inital()
+        private void inital(bool isNew)
         {
             txtJXH.Attributes.Add("readonly", "true");
             txtQS.Attributes.Add("readonly", "true");
@@ -71,10 +72,13 @@ namespace OperatingManagement.Web.Views.PlanManage
             ddlXXFL.DataValueField = "Value";
             ddlXXFL.DataBind();
 
-            List<GZJH_Content> list = new List<GZJH_Content>();
-            list.Add(new GZJH_Content());
-            rpDatas.DataSource = list;
-            rpDatas.DataBind();            
+            if (isNew)
+            {
+                List<GZJH_Content> list = new List<GZJH_Content>();
+                list.Add(new GZJH_Content());
+                rpDatas.DataSource = list;
+                rpDatas.DataBind();
+            }
         }
         private void BindJhTable(string sID)
         {

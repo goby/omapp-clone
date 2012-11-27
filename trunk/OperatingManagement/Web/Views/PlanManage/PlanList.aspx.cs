@@ -265,6 +265,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                     }//li
                 }
+                BindGridView(false);
             }
             catch (Exception ex)
             {
