@@ -236,6 +236,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 int senderid = objXYXSInfo.GetIdByAddrMark(System.Configuration.ConfigurationManager.AppSettings["ZXBM"]);
                 //接收方ID 
                 int reveiverid;
+                string strResult = string.Empty;
                 new Task().GetTaskNoSatID(outTaskID, out taskID, out satID);
                 foreach (ListItem li in ckbDestination.Items)
                 {
@@ -243,14 +244,24 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         reveiverid = objXYXSInfo.GetIdByAddrMark(li.Value);
                         strResultFile = new PlanFileCreator().CreateSendingYDSJFile(taskID, satID, li.Value, datas);
-                        blResult = objFileSender.SendFile(GetFileNameByFilePath(strResultFile), GetFilePathByFilePath(strResultFile), protocl, senderid, reveiverid, infotypeid, true);
-                        if (blResult)
+
+                        if (protocl == CommunicationWays.FTP)//将文件移至FTP路径中
                         {
-                            lblMessage.Text += GetFileNameByFilePath(strResultFile) + " 文件发送请求提交成功。" + "<br />";
+                            strResult = DataFileHandle.MoveFile(strResultFile, GetFilePathByFilePath(strResultFile) + @"FTP\" + GetFileNameByFilePath(strResultFile));
+                            if (!strResult.Equals(string.Empty))
+                                lblMessage.Text += GetFileNameByFilePath(strResultFile) + " 路径中已有同名文件。" + "<br />";
                         }
-                        else
+                        if (strResult.Equals(string.Empty))
                         {
-                            lblMessage.Text += GetFileNameByFilePath(strResultFile) + " 文件发送请求提交失败。" + "<br />";
+                            blResult = objFileSender.SendFile(GetFileNameByFilePath(strResultFile), GetFilePathByFilePath(strResultFile), protocl, senderid, reveiverid, infotypeid, true);
+                            if (blResult)
+                            {
+                                lblMessage.Text += GetFileNameByFilePath(strResultFile) + " 文件发送请求提交成功。" + "<br />";
+                            }
+                            else
+                            {
+                                lblMessage.Text += GetFileNameByFilePath(strResultFile) + " 文件发送请求提交失败。" + "<br />";
+                            }
                         }
                     }
                 }

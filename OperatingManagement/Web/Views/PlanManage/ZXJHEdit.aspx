@@ -513,7 +513,7 @@
                                         </th>
                                         <td>
                                             <asp:TextBox ID="txtWork_Command_FinishTime" runat="server" CssClass="text" Text='<%# Eval("Work_Command_FinishTime")%>'
-                                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
+                                                onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
