@@ -17,24 +17,6 @@ $(window).ready(function () {
     $("#TaskList").change();
 });
 
-Date.prototype.Format = function (fmt) { //author: meizz   
-    var o = {
-        "M+": this.getMonth() + 1,                 //月份   
-        "d+": this.getDate(),                    //日   
-        "h+": this.getHours(),                   //小时   
-        "m+": this.getMinutes(),                 //分   
-        "s+": this.getSeconds(),                 //秒   
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
-        "S": this.getMilliseconds()             //毫秒   
-    };
-    if (/(y+)/.test(fmt))
-        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
-        if (new RegExp("(" + k + ")").test(fmt))
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-    return fmt;
-}  
-
 function SetSBDH(o, cid , tid) {
     var index = o.selectedIndex;
     var selectedValue = o.options[index].value;
@@ -127,6 +109,54 @@ function showSBDHForm(cid,tid) {
     return false;
 }
 
+function ComparePreTimeAndTrackEndTime(o, tid) {
+    var resultValue = true;
+    var trackdate = o.value;
+    var predate=$("#" + tid).val();
+    var PreTime = new Date(predate.substr(0, 4), predate.substr(4, 2), predate.substr(6, 2), predate.substr(8, 2), predate.substr(10, 2), predate.substr(12, 2));
+    var TrackEndTime = new Date(trackdate.substr(0, 4), trackdate.substr(4, 2), trackdate.substr(6, 2), trackdate.substr(8, 2), trackdate.substr(10, 2), trackdate.substr(12, 2));
+    PreTime.setTime(PreTime.getTime() + 3 * 60 * 60 * 1000);
+    if (PreTime < TrackEndTime) {
+        $(o).css({ "background-color": "#ffcccc" });
+        resultValue = false;
+        $("#hidtracktimeonblur").val($("#hidtracktimeonblur").val()*1+1);//累计错误数，这样只要不为0，就知道有错
+    }
+    else{
+        $(o).css({ "background-color": "#f5f5f5" });
+        resultValue = true;
+        $("#hidtracktimeonblur").val($("#hidtracktimeonblur").val()*1+0);//正确时不累计
+    }
+    return resultValue;
+}
+
+//检查各类时间是否符合规定
+function CheckDateTimes() {
+    $("#hidtracktimeonblur").val("0");   //初始化
+    var result = true;
+    var resulttrack=0;
+    var resulttrans=0;
+    var listEnd = $("input[name*='txtTrackEndTime']");
+    listEnd.each(function () {
+        $(this).blur();
+    });
+
+    var listTrans = $("input[name*='txtTransEndTime']");
+    listTrans.each(function () {
+        $(this).blur();
+       
+    });
+
+    resulttrack = $("#hidtracktimeonblur").val() *1;
+    resulttrans = $("#hidtranstimeonblur").val() *1;
+
+    if (resulttrack >0  || resulttrans>0)
+    {
+        result = false;
+    }
+
+    return result;
+}
+
 function CheckClientValidate() {
     Page_ClientValidate();
     if (Page_IsValid) {
@@ -145,6 +175,7 @@ function CheckClientValidate() {
             showMsg('您填写的计划信息不完整,请检查并填写完善后重新提交!');
         }
 
+        isvalid =  CheckDateTimes();
         return isvalid;
     }
 }
