@@ -108,6 +108,28 @@ function showSBDHForm(cid,tid) {
     _dialog.parent().appendTo($("form:first"));
     return false;
 }
+//实时传送中，数据传输开始时间、结束时间应该落在任务开始时间、任务结束时间之间或重合，不能超出该范围
+function CheckTransTimeRang(o,sid,eid){
+    var resultValue = true;
+    var transdate = o.value;
+    var startdate=$("#" + sid).val();
+    var enddate=$("#" + eid).val();
+    var CurrTime = new Date(transdate.substr(0, 4), transdate.substr(4, 2), transdate.substr(6, 2), transdate.substr(8, 2), transdate.substr(10, 2), transdate.substr(12, 2));
+    var StartTime = new Date(startdate.substr(0, 4), startdate.substr(4, 2), startdate.substr(6, 2), startdate.substr(8, 2), startdate.substr(10, 2), startdate.substr(12, 2));
+    var EndTime = new Date(enddate.substr(0, 4), enddate.substr(4, 2), enddate.substr(6, 2), enddate.substr(8, 2), enddate.substr(10, 2), enddate.substr(12, 2));
+     if (CurrTime < EndTime && CurrTime > StartTime) {
+        $(o).css({ "background-color": "#f5f5f5" });
+        resultValue = true;
+        $("#hidtranstimeonblur").val($("#hidtranstimeonblur").val()*1+0);//正确时不累计
+    }
+    else{
+        
+        $(o).css({ "background-color": "#ffcccc" });
+        resultValue = false;
+        $("#hidtranstimeonblur").val($("#hidtranstimeonblur").val()*1+1);//累计错误数，这样只要不为0，就知道有错
+    }
+    return resultValue;
+}
 
 function ComparePreTimeAndTrackEndTime(o, tid) {
     var resultValue = true;
@@ -174,8 +196,13 @@ function CheckClientValidate() {
         if (!isvalid) {
             showMsg('您填写的计划信息不完整,请检查并填写完善后重新提交!');
         }
-
-        isvalid =  CheckDateTimes();
+        if (isvalid)
+        {
+            isvalid =  CheckDateTimes();
+            if (!isvalid) {
+            showMsg('请检查以下项目并重新提交!<br /> 1. 任务准备开始时间与跟踪结束时间时间差应不大于3小时;<br /> 2.实时传送中，数据传输开始时间、结束时间应该落在任务开始时间、任务结束时间之间或重合;');
+        }
+        }
         return isvalid;
     }
 }
@@ -185,8 +212,8 @@ function showMsg(msg) {
     _dialog = $("#dialog-form");
     _dialog.dialog({
         autoOpen: false,
-        height: 150,
-        width: 350,
+        height: 230,
+        width: 400,
         modal: true,
         buttons: {
             '关闭': function () {
@@ -198,6 +225,7 @@ function showMsg(msg) {
     _dialog.dialog('open');
     return false;
 }
+
 //弹出选择测控资源使用计划窗口
 function showSBJHForm() {
     var _dialog;
