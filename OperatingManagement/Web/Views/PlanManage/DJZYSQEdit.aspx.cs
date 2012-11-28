@@ -789,6 +789,29 @@ namespace OperatingManagement.Web.Views.PlanManage
             finally { }
         }
 
+        protected void Repeater2_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            try
+            {
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                {
+                    TextBox txtTransStartTime = (TextBox)e.Item.FindControl("txtTransStartTime");
+                    TextBox txtTransEndTime = (TextBox)e.Item.FindControl("txtTransEndTime");
+                    TextBox txtStartTime = (TextBox)((RepeaterItem)(e.Item.NamingContainer.NamingContainer)).FindControl("txtStartTime");
+                    TextBox txtEndTime = (TextBox)((RepeaterItem)(e.Item.NamingContainer.NamingContainer)).FindControl("txtEndTime");
+                    txtTransStartTime.Attributes.Add("onblur", "return CheckTransTimeRang(this,'"
+                        + txtStartTime.ClientID + "','" + txtEndTime.ClientID + "')");
+                    txtTransEndTime.Attributes.Add("onblur", "return CheckTransTimeRang(this,'"
+                        + txtStartTime.ClientID + "','" + txtEndTime.ClientID + "')");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("绑定地面计划信息出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
         protected void Repeater2_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             try
