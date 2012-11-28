@@ -308,7 +308,7 @@
                                         Operator="GreaterThan" Type="Double"></asp:CompareValidator>
                                     </td>
                                     <th></th>
-                                    <td></td>
+                                    <td><span style="color:Red;">任务准备开始时间与跟踪结束时间时间差应不大于3小时</span></td>
                                 </tr>
                                 <tr>
                                     <th colspan="4" style="text-align: center;">
@@ -542,6 +542,8 @@
         <asp:TextBox ID="txtIds" runat="server" ClientIDMode="Static"></asp:TextBox>
         <asp:Button ID="btnGetStationData" ClientIDMode="Static" class="button" runat="server" CausesValidation="false"
                     OnClick="btnGetStationData_Click" Text="获取数据" />
+        <input type="hidden" id="hidtracktimeonblur" value="0" />
+        <input type="hidden" id="hidtranstimeonblur" value="0" />
     </div>
     <div id="dialog-form" style="display: none" title="提示信息">
         <p class="content">

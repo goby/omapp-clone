@@ -255,6 +255,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     txtPreStartTime.Attributes.Add("onblur", "SetDateTime(this,'" + txtStartTime.ClientID + "','"
                         + txtTrackStartTime.ClientID + "','" + txtWaveOnStartTime.ClientID + "','" + txtWaveOffStartTime.ClientID + "','"
                         + txtTrackEndTime.ClientID + "','" + txtEndTime.ClientID + "')");
+                    txtTrackEndTime.Attributes.Add("onblur", "return ComparePreTimeAndTrackEndTime(this,'" + txtPreStartTime.ClientID + "')");
                     //任务类别
                     TextBox txtMLB = (TextBox)e.Item.FindControl("txtMLB");
                     txtMLB.Text = PlanParameters.ReadDJZYSQMLB();
