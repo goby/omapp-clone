@@ -317,7 +317,8 @@
                                 </tr>
                                 <tr>
                                     <td colspan="4">
-                                        <asp:Repeater ID="rpReakTimeTransfor" runat="server" OnItemCommand="Repeater2_ItemCommand">
+                                        <asp:Repeater ID="rpReakTimeTransfor" runat="server" OnItemCommand="Repeater2_ItemCommand"
+                                         OnItemDataBound="Repeater2_ItemDataBound">
                                             <HeaderTemplate>
                                                 <table class="list">
                                                     <tr>
