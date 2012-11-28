@@ -1,4 +1,5 @@
-﻿$(window).ready(function () {
+﻿
+$(window).ready(function () {
     $("#TaskList").change(
         function () {
             var checkValue = $("#TaskList").val();
@@ -15,6 +16,24 @@
 
     $("#TaskList").change();
 });
+
+Date.prototype.Format = function (fmt) { //author: meizz   
+    var o = {
+        "M+": this.getMonth() + 1,                 //月份   
+        "d+": this.getDate(),                    //日   
+        "h+": this.getHours(),                   //小时   
+        "m+": this.getMinutes(),                 //分   
+        "s+": this.getSeconds(),                 //秒   
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
+        "S": this.getMilliseconds()             //毫秒   
+    };
+    if (/(y+)/.test(fmt))
+        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}  
 
 function SetSBDH(o, cid , tid) {
     var index = o.selectedIndex;
@@ -36,6 +55,42 @@ function SetSBDH(o, cid , tid) {
         }
     }
 
+}
+
+//任务准备开始时间输入后，跟踪开始时间、任务开始时间、任务结束时间、跟踪结束时间
+//默认分别依次累加30分钟、30秒、10分钟、30秒。
+function SetDateTime(o, startid, trackstartid,waveonid,waveoffid,trackendid,endid) {
+    if (o.value != "") {
+        predate = o.value;
+        $("#" + startid).val(GetDateTimeFormat(predate, 30*60+30));
+        $("#" + trackstartid).val(GetDateTimeFormat(predate, 30*60));
+        //$("#" + waveonid).val(GetDateTimeFormat(predate, 30));
+        //$("#" + waveoffid).val(GetDateTimeFormat(predate, 30));
+        $("#" + trackendid).val(GetDateTimeFormat(predate, 41 * 60));
+        $("#" + endid).val(GetDateTimeFormat(predate, 40 * 60 + 30));
+    }
+}
+//格式化时间
+function GetDateTimeFormat(curr, second) {
+    var formatDate = new Date(curr.substr(0, 4), curr.substr(4, 2), curr.substr(6, 2), curr.substr(8, 2), curr.substr(10, 2), curr.substr(12, 2));
+    formatDate.setTime(formatDate.getTime() + second * 1000);
+
+    var yyyy = formatDate.getFullYear();
+    //var yy = yyyy.toString().substring(2);
+    var m = formatDate.getMonth();
+    var mm = m < 10 ? "0" + m : m;
+    var d = formatDate.getDate();
+    var dd = d < 10 ? "0" + d : d;
+
+    var h = formatDate.getHours();
+    var hh = h < 10 ? "0" + h : h;
+    var n = formatDate.getMinutes();
+    var nn = n < 10 ? "0" + n : n;
+    var s = formatDate.getSeconds();
+    var ss = s < 10 ? "0" + s : s;
+
+    var str = "" +yyyy + mm + dd + hh + nn + ss;
+    return str;
 }
 
 //弹出喀什站设备代号选择窗口

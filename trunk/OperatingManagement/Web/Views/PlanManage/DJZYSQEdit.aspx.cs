@@ -36,6 +36,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 txtSCID.Attributes.Add("readonly", "true");
                 InitialTask();
 
+                txtSequence.Text = long.MaxValue.ToString();
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
@@ -235,11 +236,25 @@ namespace OperatingManagement.Web.Views.PlanManage
                     ddlSHJ.SelectedValue = view.SHJ;
 
                     #endregion
+                    #region 注册脚本事件
+                    //工作单元与设备代号联动
                     ddlSBDH.Enabled = false;
                     TextBox txtSBDH = (TextBox)e.Item.FindControl("txtSBDH");
                     txtSBDH.Attributes.Add("readonly", "true");
-                    ddlGZDY.Attributes.Add("onchange", "SetSBDH(this,'" + ddlSBDH.ClientID + "','" + txtSBDH.ClientID+ "')");
-                    //ddlGZDY.Attributes["onchange"] = "SetSBDH('" + ddlSBDH.ClientID + "');";
+                    ddlGZDY.Attributes.Add("onchange", "SetSBDH(this,'" + ddlSBDH.ClientID + "','" + txtSBDH.ClientID + "')");
+
+                    //任务准备开始时间输入后，跟踪开始时间、任务开始时间、任务结束时间、跟踪结束时间
+                    //默认分别依次累加30分钟、30秒、10分钟、30秒。
+                    TextBox txtPreStartTime = (TextBox)e.Item.FindControl("txtPreStartTime");
+                    TextBox txtStartTime = (TextBox)e.Item.FindControl("txtStartTime");
+                    TextBox txtTrackStartTime = (TextBox)e.Item.FindControl("txtTrackStartTime");
+                    TextBox txtWaveOnStartTime = (TextBox)e.Item.FindControl("txtWaveOnStartTime");
+                    TextBox txtWaveOffStartTime = (TextBox)e.Item.FindControl("txtWaveOffStartTime");
+                    TextBox txtTrackEndTime = (TextBox)e.Item.FindControl("txtTrackEndTime");
+                    TextBox txtEndTime = (TextBox)e.Item.FindControl("txtEndTime");
+                    txtPreStartTime.Attributes.Add("onblur", "SetDateTime(this,'" + txtStartTime.ClientID + "','"
+                        + txtTrackStartTime.ClientID + "','" + txtWaveOnStartTime.ClientID + "','" + txtWaveOffStartTime.ClientID + "','"
+                        + txtTrackEndTime.ClientID + "','" + txtEndTime.ClientID + "')");
                     //任务类别
                     TextBox txtMLB = (TextBox)e.Item.FindControl("txtMLB");
                     txtMLB.Text = PlanParameters.ReadDJZYSQMLB();
@@ -250,6 +265,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     txtQB.Text = PlanParameters.ReadDJZYSQQB();
                     txtQB.Attributes.Add("readonly", "true");
 
+                    #endregion
                     #region 添加,删除任务时，从ViewState里获取页面 “实时传输” 和“事后回放”的值
                     if (ViewState["arrG"] != null && ViewState["arrR"] != null && ViewState["arrA"] != null && ViewState["op"] != null)
                     {
