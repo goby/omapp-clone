@@ -1811,6 +1811,7 @@ namespace ServicesKernel.File
                 obj = new GZJH();
                 obj.TaskID = jh.TaskID;
                 obj.SatID = jh.SatID;
+                obj.CTime = DateTime.Now;
                 obj.GZJHContents = new List<GZJH_Content>();
                 //List<GZJH_Content> list = new List<GZJH_Content>();
                 GZJH_Content c;

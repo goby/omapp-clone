@@ -532,6 +532,9 @@
     &nbsp;&nbsp;&nbsp;
                 <asp:Button ID="btnFormal"  class="button" runat="server" onclick="btnFormal_Click"
                     Text="转为正式计划" />
+        &nbsp;
+                <asp:Button ID="btnWord"  class="button" runat="server" onclick="btnWord_Click" CausesValidation="false"
+                    Text="导出Word文档" />
         </div>
     <div style="display: none">
         <asp:HiddenField ID="HfID" runat="server" />

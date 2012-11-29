@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.Word">
+      <HintPath>..\Libs\Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\log4net.dll</HintPath>
@@ -60,6 +64,7 @@
     <Compile Include="File\FileExchangeConfig.cs" />
     <Compile Include="File\FileSender.cs" />
     <Compile Include="File\FileSenderClientAgent.cs" />
+    <Compile Include="File\WordHandle.cs" />
     <Compile Include="Param.cs" />
     <Compile Include="File\PlanFileCreator.cs" />
     <Compile Include="File\DataFileHandle.cs" />

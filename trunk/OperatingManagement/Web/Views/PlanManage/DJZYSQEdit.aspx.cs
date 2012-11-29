@@ -1972,6 +1972,17 @@ namespace OperatingManagement.Web.Views.PlanManage
 
             System.IO.File.Delete(filepath);    //删除临时文件
         }
+
+        /// <summary>
+        /// 导出Word文档 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnWord_Click(object sender, EventArgs e)
+        {
+            WordHandle objWord = new WordHandle();
+            objWord.CreateDJZYSQFile();
+        }
         //
     }
 }
