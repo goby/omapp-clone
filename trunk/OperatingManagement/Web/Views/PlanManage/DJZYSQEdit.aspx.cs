@@ -261,6 +261,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                     txtMLB.Text = PlanParameters.ReadDJZYSQMLB();
                     txtMLB.Attributes.Add("readonly", "true");
 
+                    //申请序号
+                    TextBox txtSXH = (TextBox)e.Item.FindControl("txtSXH");
+                    txtSXH.Text = (e.Item.ItemIndex + 1).ToString();
+                    txtSXH.Attributes.Add("readonly", "true");
+
                     //圈标
                     TextBox txtQB = (TextBox)e.Item.FindControl("txtQB");
                     txtQB.Text = PlanParameters.ReadDJZYSQQB();
