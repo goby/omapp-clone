@@ -87,7 +87,7 @@
                                     发送所选计划</button>
                             </td>
                             <td class="listTitle-c2">
-                             <asp:Label ID="Label1" runat="server" Text="Label"  CssClass="error">发送计划时如选择多个计划，生成的外发文件后面的计划会覆盖前面的计划</asp:Label>
+                             <asp:Label ID="Label1" runat="server" Text="Label"  CssClass="error">发送时如选择多个计划，生成外发文件时，后面的计划可能会覆盖前面的计划</asp:Label>
                                 <div class="load" id="submitIndicator" style="display: none">
                                     提交中，请稍候。。。</div>
                             </td>

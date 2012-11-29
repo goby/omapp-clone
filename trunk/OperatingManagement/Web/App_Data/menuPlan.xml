@@ -11,7 +11,7 @@
     <item id="1-5" title="新建信息需求计划" roles="OMPLAN_Plan.Add" href="Views/PlanManage/XXXQEdit.aspx" />
     <item id="1-6" title="新建测控资源使用申请" roles="OMPLAN_Plan.Add" href="Views/PlanManage/DJZYSQEdit.aspx" />
     <item id="1-7" title="新建地面站工作计划" roles="OMPLAN_Plan.Add" href="Views/PlanManage/GZJHEdit.aspx" />
-    <item id="1-9" title="新建仿真推演计划" roles="OMPLAN_Plan.Add" href="Views/PlanManage/TYSJEdit.aspx" />
+    <item id="1-9" title="新建仿真推演数据" roles="OMPLAN_Plan.Add" href="Views/PlanManage/TYSJEdit.aspx" />
     <item id="1-10" title="新建中心运行计划" roles="OMPLAN_Plan.Add" href="Views/PlanManage/ZXJHEdit.aspx" />
   </menu>
   <menu title="轨道数据/引导数据"> 
