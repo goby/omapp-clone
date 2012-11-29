@@ -92,17 +92,15 @@
                     Height="40px" TextMode="MultiLine"></asp:TextBox>
             </td>
         </tr>
-        <tr>
+<%--        <tr>
             <th>
                 总圈数
             </th>
             <td colspan="3">
-                <asp:TextBox ID="txtQS" MaxLength="4" CssClass="text" runat="server" Text='<%# Eval("QS")%>'
-                    onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46" onpaste="return !clipboardData.getData('text').match(/\D/)"
-                    ondragenter="return false" Style="ime-mode: Disabled"></asp:TextBox>
-                &nbsp;<span style="color: #3399FF;">自动生成</span>
+                
+               &nbsp;<span style="color: #3399FF;">自动生成</span>
             </td>
-        </tr>
+        </tr>--%>
     </table>
     <asp:Repeater ID="rpDatas" runat="server" OnItemCommand="rpDatas_ItemCommand" OnItemDataBound="rpDatas_ItemDataBound">
         <HeaderTemplate>
@@ -115,18 +113,22 @@
                     工作单位
                 </th>
                 <td style="width: 300px;">
-                    <asp:TextBox ID="txtDW" MaxLength="2" CssClass="text" runat="server" Text='<%# Eval("DW")%>'
+                <asp:DropDownList ID="ddlDW" Width="260px"  runat="server">
+                    </asp:DropDownList>
+                    <%--<asp:TextBox ID="txtDW" MaxLength="2" CssClass="text" runat="server" Text='<%# Eval("DW")%>'
                         onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46" onpaste="return !clipboardData.getData('text').match(/\D/)"
-                        ondragenter="return false" Style="ime-mode: Disabled"></asp:TextBox>
+                        ondragenter="return false" Style="ime-mode: Disabled"></asp:TextBox>--%>
                     &nbsp;
                 </td>
                 <th style="width: 150px;">
                     设备代号
                 </th>
                 <td>
-                    <asp:TextBox ID="txtSB" MaxLength="2" CssClass="text" runat="server" Text='<%# Eval("SB")%>'
+                <asp:DropDownList ID="ddlSB" runat="server">
+                    </asp:DropDownList>
+                    <%--<asp:TextBox ID="txtSB" MaxLength="2" CssClass="text" runat="server" Text='<%# Eval("SB")%>'
                         onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46" onpaste="return !clipboardData.getData('text').match(/\D/)"
-                        ondragenter="return false" Style="ime-mode: Disabled"></asp:TextBox>
+                        ondragenter="return false" Style="ime-mode: Disabled"></asp:TextBox>--%>
                 </td>
             </tr>
             <tr>
@@ -184,6 +186,22 @@
                 </td>
             </tr>
             <tr>
+            <th>总圈数</th>
+            <td>
+                <asp:TextBox ID="txtQS" MaxLength="4" CssClass="text" runat="server" Text='<%# Eval("QS")%>'
+                    onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46" onpaste="return !clipboardData.getData('text').match(/\D/)"
+                    ondragenter="return false" Style="ime-mode: Disabled"></asp:TextBox>
+            </td>
+                <th>
+                    本行计划飞行圈次
+                </th>
+                <td>
+                    <asp:TextBox ID="txtQH" MaxLength="4" CssClass="text" runat="server" Text='<%# Eval("QH")%>'
+                        onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46" onpaste="return !clipboardData.getData('text').match(/\D/)"
+                        ondragenter="return false" Style="ime-mode: Disabled"></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
                 <th>
                     任务准备开始时间
                 </th>
@@ -191,14 +209,8 @@
                     <asp:TextBox MaxLength="14" ID="txtPreStartTime" CssClass="text" runat="server" Text='<%# Eval("ZHB")%>'
                         onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
                 </td>
-                <th>
-                    &nbsp;本行计划飞行圈次
-                </th>
-                <td>
-                    <asp:TextBox ID="txtQH" MaxLength="4" CssClass="text" runat="server" Text='<%# Eval("QH")%>'
-                        onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46" onpaste="return !clipboardData.getData('text').match(/\D/)"
-                        ondragenter="return false" Style="ime-mode: Disabled"></asp:TextBox>
-                </td>
+                <th></th>
+                <td></td>
             </tr>
             <tr>
                 <th>

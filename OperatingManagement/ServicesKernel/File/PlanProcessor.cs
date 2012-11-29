@@ -570,7 +570,7 @@ namespace OperatingManagement.ServicesKernel.File
                 }
                 #endregion
             }
-            oJH.QS = lstContents.Count().ToString();
+            //oJH.QS = lstContents.Count().ToString();
             oJH.GZJHContents = lstContents;
             return oJH;
         }

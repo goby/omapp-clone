@@ -711,9 +711,9 @@ namespace ServicesKernel.File
             xmlWriter.WriteString(obj.XXFL);
             xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("QS");
-            xmlWriter.WriteString(obj.QS);
-            xmlWriter.WriteEndElement();
+            //xmlWriter.WriteStartElement("QS");
+            //xmlWriter.WriteString(obj.QS);
+            //xmlWriter.WriteEndElement();
 
             #region Content
             for (int i = 1; i <= obj.GZJHContents.Count; i++)
@@ -726,6 +726,10 @@ namespace ServicesKernel.File
 
                 xmlWriter.WriteStartElement("SB");
                 xmlWriter.WriteString(obj.GZJHContents[i - 1].SB);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("QS");
+                xmlWriter.WriteString(obj.GZJHContents[i - 1].QS);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("QH");
@@ -1827,12 +1831,13 @@ namespace ServicesKernel.File
                 {
                     if (n.Name == "Content")
                     {
-                        if (desValue == n["DW"].InnerText)
+                        if (info.DWCode == n["DW"].InnerText)
                         {
                             c = new GZJH_Content();
                             c.DW = n["DW"].InnerText;
                             //c.DW = info.GetByAddrMark(n["DW"].InnerText).ADDRName;
                             c.SB = n["SB"].InnerText;
+                            c.QS = n["QS"].InnerText;
                             c.QH = n["QH"].InnerText;
                             c.DH = n["DH"].InnerText;
                             c.FS = n["FS"].InnerText;
@@ -1862,7 +1867,7 @@ namespace ServicesKernel.File
                         }
                     }
                 }
-                obj.QS = obj.GZJHContents.Count.ToString("0000"); //重新计算圈数
+                //obj.QS = obj.GZJHContents.Count.ToString("0000"); //重新计算圈数
                 #endregion
 
                 #endregion
@@ -1885,13 +1890,14 @@ namespace ServicesKernel.File
                     sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
                     sw.WriteLine("[数据区行数L]：" + Convert.ToInt32(obj.GZJHContents.Count).ToString("0000"));
                     sw.WriteLine("<符号区>");
-                    sw.WriteLine("[格式标识1]：JXH  XXFL  QS");
-                    sw.WriteLine("[格式标识2]：DW  SB  QH  DH  FS  JXZ  MS  QB  GXZ  ZHB  RK  GZK  KSHX  GSHX  GZJ  JS  BID  SBZ  RTs  RTe  SL  BID  HBZ  Ts  Te  RTs  SL");
+                    sw.WriteLine("[格式标识1]：JXH  XXFL  DW  SB  QS");
+                    sw.WriteLine("[格式标识2]：QH  DH  FS  JXZ  MS  QB  GXZ  ZHB  RK  GZK  KSHX  GSHX  GZJ  JS  BID  SBZ  RTs  RTe  SL  BID  HBZ  Ts  Te  RTs  SL");
                     sw.WriteLine("[数据区]：");
-                    sw.WriteLine(obj.JXH + "  " + obj.XXFL + "  " + obj.QS);
+                    //sw.WriteLine(obj.JXH + "  " + obj.XXFL + "  " + obj.QS);
                     foreach (GZJH_Content t in obj.GZJHContents)
                     {
-                        sw.WriteLine(t.DW + "  " + t.SB + "  " + t.QH + "  " + t.DH + "  " + t.FS + "  " + t.JXZ + "  "
+                        sw.WriteLine(obj.JXH + "  " + obj.XXFL + "  " +t.DW + "  " + t.SB + "  " +t.QS);
+                        sw.WriteLine( t.QH + "  " + t.DH + "  " + t.FS + "  " + t.JXZ + "  "
                             + t.MS + "  " + t.QB + "  " + t.GXZ + "  " + t.ZHB + "  " + t.RK + "  " + t.GZK + "  " + t.GZJ
                              + "  " + t.KSHX + "  " + t.GSHX + "  " + t.GZJ + "  " + t.JS + "  " + t.BID + "  " + t.SBZ
                              + "  " + t.RTs + "  " + t.RTe + "  " + t.SL + "  " + t.HBID + "  " + t.HBZ + "  " + t.Ts

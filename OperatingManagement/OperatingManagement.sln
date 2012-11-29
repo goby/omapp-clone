@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebKernel", "WebKernel\WebK
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{E06714A0-7718-4C9D-B48E-3761B7B0721D}"
 	ProjectSection(SolutionItems) = preProject
+		Libs\Interop.Word.dll = Libs\Interop.Word.dll
 		Libs\log4net.dll = Libs\log4net.dll
 		Libs\Microsoft.Practices.EnterpriseLibrary.Caching.dll = Libs\Microsoft.Practices.EnterpriseLibrary.Caching.dll
 		Libs\Microsoft.Practices.EnterpriseLibrary.Common.dll = Libs\Microsoft.Practices.EnterpriseLibrary.Common.dll
