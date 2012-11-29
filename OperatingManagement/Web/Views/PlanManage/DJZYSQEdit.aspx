@@ -153,7 +153,8 @@
                                         申请序号
                                     </th>
                                     <td style="width: 350px;">
-                                        <asp:TextBox ID="txtSXH" CssClass="text" runat="server" Text='<%# Eval("SXH")%>'></asp:TextBox>
+                                        <%--<asp:TextBox ID="txtSXH" CssClass="text" runat="server" Text='<%# Eval("SXH")%>'></asp:TextBox>--%>
+                                        <asp:TextBox ID="txtSXH" CssClass="text" runat="server" Text=""></asp:TextBox>
                                     </td>
                                     <th style="width: 100px;">
                                         申请性质
