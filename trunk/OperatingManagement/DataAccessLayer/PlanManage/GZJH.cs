@@ -39,7 +39,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <summary>
         /// 总 QS ，用4位整型数表示
         /// </summary>
-        public string QS { get; set; }
+        //public string QS { get; set; }
 
         public List<GZJH_Content> GZJHContents { get; set; }
         #endregion
@@ -55,6 +55,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         public string DW { get; set; }
         //设备代号，用2位整型数表示
         public string SB { get; set; }
+        /// <summary>
+        /// 总 QS ，用4位整型数表示
+        /// </summary>
+        public string QS { get; set; }
         /// <summary>
         /// 本行计划对应的 WX飞行QC
         /// </summary>

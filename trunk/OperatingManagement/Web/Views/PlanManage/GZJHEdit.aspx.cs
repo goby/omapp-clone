@@ -11,6 +11,7 @@ using OperatingManagement.WebKernel.Route;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.DataAccessLayer.PlanManage;
+using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.Framework;
 using OperatingManagement.Framework.Storage;
 using System.Web.Security;
@@ -64,7 +65,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         private void inital(bool isNew)
         {
             txtJXH.Attributes.Add("readonly", "true");
-            txtQS.Attributes.Add("readonly", "true");
+            //txtQS.Attributes.Add("readonly", "true");
 
             //信息分类
             ddlXXFL.DataSource = PlanParameters.ReadParameters("GZJHXXFL");
@@ -123,8 +124,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 txtJXH.Text = root.InnerText;
                 root = xmlDoc.SelectSingleNode("地面站工作计划/XXFL");
                 ddlXXFL.SelectedValue = root.InnerText;
-                root = xmlDoc.SelectSingleNode("地面站工作计划/QS");
-                txtQS.Text = root.InnerText;
+                //root = xmlDoc.SelectSingleNode("地面站工作计划/QS");
+                //txtQS.Text = root.InnerText;
 
                 #region Content
                 root = xmlDoc.SelectSingleNode("地面站工作计划");
@@ -137,6 +138,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                         c = new GZJH_Content();
                         c.DW = n["DW"].InnerText;
                         c.SB = n["SB"].InnerText;
+                        c.QS = n["QS"].InnerText;
                         c.QH = n["QH"].InnerText;
                         c.DH = n["DH"].InnerText;
                         c.FS = n["FS"].InnerText;
@@ -194,9 +196,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 GZJH obj = new GZJH();
                 obj.SatID = ucSatellite1.SelectedValue;
                 obj.TaskID = ucTask1.SelectedValue;
-                //obj.JXH = txtJXH.Text;
+                obj.JXH = txtJXH.Text;  //修改时用，读取原来的序号
                 obj.XXFL = ddlXXFL.SelectedValue;
-                //obj.QS = txtQS.Text;
                 obj.GZJHContents = new List<GZJH_Content>();
 
                 #region GZJH_Content
@@ -205,8 +206,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     co = new GZJH_Content();
                     #region 赋值
-                    TextBox txtDW = (TextBox)it.FindControl("txtDW");
-                    TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                    //TextBox txtDW = (TextBox)it.FindControl("txtDW");
+                    //TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                    DropDownList ddlDW = (DropDownList)it.FindControl("ddlDW");
+                    DropDownList ddlSB = (DropDownList)it.FindControl("ddlSB");
+                    TextBox txtQS = (TextBox)it.FindControl("txtQS");
                     DropDownList ddlDH = (DropDownList)it.FindControl("ddlDH");
                     DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
                     DropDownList ddlJXZ = (DropDownList)it.FindControl("ddlJXZ");
@@ -233,8 +237,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtSHTransStartTime = (TextBox)it.FindControl("txtSHTransStartTime");
                     TextBox txtHSL = (TextBox)it.FindControl("txtHSL");
 
-                    co.DW = txtDW.Text;
-                    co.SB = txtSB.Text;
+                    co.DW = ddlDW.SelectedValue;
+                    co.SB = ddlSB.SelectedValue;
+                    co.QS = txtQS.Text;
                     co.DH = ddlDH.SelectedItem.Text;
                     co.FS = ddlFS.SelectedItem.Text;
                     co.JXZ = ddlJXZ.SelectedItem.Text;
@@ -263,7 +268,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     #endregion
                     obj.GZJHContents.Add(co);
                 }
-                obj.QS = obj.GZJHContents.Count.ToString(); //圈数，自动计算得到
+                //obj.QS = obj.GZJHContents.Count.ToString(); //圈数，自动计算得到
                 #endregion
                 
                 PlanFileCreator creater = new PlanFileCreator(isTempJH);
@@ -337,7 +342,6 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.TaskID = ucTask1.SelectedValue;
                 //obj.JXH = txtJXH.Text;
                 obj.XXFL = ddlXXFL.SelectedValue;
-                //obj.QS = txtQS.Text;
                 obj.GZJHContents = new List<GZJH_Content>();
 
                 #region GZJH_Content
@@ -346,8 +350,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     co = new GZJH_Content();
                     #region 赋值
-                    TextBox txtDW = (TextBox)it.FindControl("txtDW");
-                    TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                    //TextBox txtDW = (TextBox)it.FindControl("txtDW");
+                    //TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                    DropDownList ddlDW = (DropDownList)it.FindControl("ddlDW");
+                    DropDownList ddlSB = (DropDownList)it.FindControl("ddlSB");
+                    TextBox txtQS = (TextBox)it.FindControl("txtQS");
                     DropDownList ddlDH = (DropDownList)it.FindControl("ddlDH");
                     DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
                     DropDownList ddlJXZ = (DropDownList)it.FindControl("ddlJXZ");
@@ -374,8 +381,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtSHTransStartTime = (TextBox)it.FindControl("txtSHTransStartTime");
                     TextBox txtHSL = (TextBox)it.FindControl("txtHSL");
 
-                    co.DW = txtDW.Text;
-                    co.SB = txtSB.Text;
+                    co.DW = ddlDW.SelectedValue;
+                    co.SB = ddlSB.SelectedValue;
+                    co.QS = txtQS.Text;
                     co.DH = ddlDH.SelectedItem.Text;
                     co.FS = ddlFS.SelectedItem.Text;
                     co.JXZ = ddlJXZ.SelectedItem.Text;
@@ -404,7 +412,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     #endregion
                     obj.GZJHContents.Add(co);
                 }
-                obj.QS = obj.GZJHContents.Count.ToString(); //圈数，自动计算得到
+                //obj.QS = obj.GZJHContents.Count.ToString(); //圈数，自动计算得到
                 #endregion
 
                 //CultureInfo provider = CultureInfo.InvariantCulture;
@@ -503,7 +511,6 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.TaskID = ucTask1.SelectedValue;
                 //obj.JXH = txtJXH.Text;
                 obj.XXFL = ddlXXFL.SelectedValue;
-                //obj.QS = txtQS.Text;
                 obj.GZJHContents = new List<GZJH_Content>();
 
                 #region GZJH_Content
@@ -512,8 +519,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     co = new GZJH_Content();
                     #region 赋值
-                    TextBox txtDW = (TextBox)it.FindControl("txtDW");
-                    TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                    //TextBox txtDW = (TextBox)it.FindControl("txtDW");
+                    //TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                    DropDownList ddlDW = (DropDownList)it.FindControl("ddlDW");
+                    DropDownList ddlSB = (DropDownList)it.FindControl("ddlSB");
+                    TextBox txtQS = (TextBox)it.FindControl("txtQS");
                     DropDownList ddlDH = (DropDownList)it.FindControl("ddlDH");
                     DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
                     DropDownList ddlJXZ = (DropDownList)it.FindControl("ddlJXZ");
@@ -540,8 +550,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtSHTransStartTime = (TextBox)it.FindControl("txtSHTransStartTime");
                     TextBox txtHSL = (TextBox)it.FindControl("txtHSL");
 
-                    co.DW = txtDW.Text;
-                    co.SB = txtSB.Text;
+                    co.DW = ddlDW.SelectedValue;
+                    co.SB = ddlSB.SelectedValue;
+                    co.QS = txtQS.Text;
                     co.DH = ddlDH.SelectedItem.Text;
                     co.FS = ddlFS.SelectedItem.Text;
                     co.JXZ = ddlJXZ.SelectedItem.Text;
@@ -570,7 +581,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     #endregion
                     obj.GZJHContents.Add(co);
                 }
-                obj.QS = obj.GZJHContents.Count.ToString(); //圈数，自动计算得到
+                //obj.QS = obj.GZJHContents.Count.ToString(); //圈数，自动计算得到
                 #endregion
 
 
@@ -640,8 +651,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         #region 赋值
                         co = new GZJH_Content();
-                        TextBox txtDW = (TextBox)it.FindControl("txtDW");
-                        TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                        //TextBox txtDW = (TextBox)it.FindControl("txtDW");
+                        //TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                        DropDownList ddlDW = (DropDownList)it.FindControl("ddlDW");
+                        DropDownList ddlSB = (DropDownList)it.FindControl("ddlSB");
+                        TextBox txtQS = (TextBox)it.FindControl("txtQS");
                         DropDownList ddlDH = (DropDownList)it.FindControl("ddlDH");
                         DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
                         DropDownList ddlJXZ = (DropDownList)it.FindControl("ddlJXZ");
@@ -668,8 +682,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                         TextBox txtSHTransStartTime = (TextBox)it.FindControl("txtSHTransStartTime");
                         TextBox txtHSL = (TextBox)it.FindControl("txtHSL");
 
-                        co.DW = txtDW.Text;
-                        co.SB = txtSB.Text;
+                        co.DW = ddlDW.SelectedValue;
+                        co.SB = ddlSB.SelectedValue;
+                        co.QS = txtQS.Text;
                         co.DH = ddlDH.SelectedItem.Text;
                         co.FS = ddlFS.SelectedItem.Text;
                         co.JXZ = ddlJXZ.SelectedItem.Text;
@@ -702,6 +717,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     co = new GZJH_Content() { 
                         DW="",
                         SB="",
+                        QS="",
                         DH="",
                         FS="",
                         JXZ = "",
@@ -752,8 +768,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                             {
                                 #region 赋值
                                 co = new GZJH_Content();
-                                TextBox txtDW = (TextBox)it.FindControl("txtDW");
-                                TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                                //TextBox txtDW = (TextBox)it.FindControl("txtDW");
+                                //TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                                DropDownList ddlDW = (DropDownList)it.FindControl("ddlDW");
+                                DropDownList ddlSB = (DropDownList)it.FindControl("ddlSB");
+                                TextBox txtQS = (TextBox)it.FindControl("txtQS");
                                 DropDownList ddlDH = (DropDownList)it.FindControl("ddlDH");
                                 DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
                                 DropDownList ddlJXZ = (DropDownList)it.FindControl("ddlJXZ");
@@ -780,8 +799,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                                 TextBox txtSHTransStartTime = (TextBox)it.FindControl("txtSHTransStartTime");
                                 TextBox txtHSL = (TextBox)it.FindControl("txtHSL");
 
-                                co.DW = txtDW.Text;
-                                co.SB = txtSB.Text;
+                                co.DW = ddlDW.SelectedValue;
+                                co.SB = ddlSB.SelectedValue;
+                                co.QS = txtQS.Text;
                                 co.DH = ddlDH.SelectedItem.Text;
                                 co.FS = ddlFS.SelectedItem.Text;
                                 co.JXZ = ddlJXZ.SelectedItem.Text;
@@ -830,7 +850,18 @@ namespace OperatingManagement.Web.Views.PlanManage
                 if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
                     #region 初始化各个下拉列表的值
-
+                    //工作单位
+                    DropDownList ddlDW = (DropDownList)e.Item.FindControl("ddlDW") as DropDownList;
+                    ddlDW.DataSource = (new XYXSInfo()).Cache;
+                    ddlDW.DataTextField = "AddrName";
+                    ddlDW.DataValueField = "DWCODE";
+                    ddlDW.DataBind();
+                    //设备代号
+                    DropDownList ddlSB = (DropDownList)e.Item.FindControl("ddlSB") as DropDownList;
+                    ddlSB.DataSource = (new GroundResource()).SelectAll();
+                    ddlSB.DataTextField = "EQUIPMENTNAME";
+                    ddlSB.DataValueField = "EQUIPMENTCODE";
+                    ddlSB.DataBind();
                     //任务代号
                     DropDownList ddlDH = (DropDownList)e.Item.FindControl("ddlDH") as DropDownList;
                     ddlDH.DataSource = PlanParameters.ReadParameters("GZJHDH");
@@ -880,8 +911,16 @@ namespace OperatingManagement.Web.Views.PlanManage
                     ddlSHBID.DataValueField = "Value";
                     ddlSHBID.DataBind();
                     #endregion
-
+                    #region 绑定下拉列表值
                     GZJH_Content g = (GZJH_Content)e.Item.DataItem;
+                    if (!string.IsNullOrEmpty(g.DW))
+                    {
+                        ddlDW.SelectedValue = g.DW;
+                    }
+                    if (!string.IsNullOrEmpty(g.SB))
+                    {
+                        ddlSB.SelectedValue = g.SB;
+                    }
                     if ( !string.IsNullOrEmpty(g.DH))
                     {
                         ddlDH.SelectedValue = g.DH;
@@ -915,6 +954,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         ddlSHBID.SelectedValue = g.HBID;
                     }
+                    #endregion
                 }
             }
             catch (Exception ex)
