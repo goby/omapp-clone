@@ -41,6 +41,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 BindCheckBoxDestination();
                 DefaultSearch();
+                HiddenMsg();
             }
             cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
         }
@@ -185,7 +186,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             string twoSpace = "  ";
             string[] datas;
             bool blResult;
-            lblMessage.Text = "";
+            HiddenMsg();
 
             #region 参数转换计算
             try
@@ -205,7 +206,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                         , GetData(lstYDSJ[i]), iEmitFile, iEmitPath, out dblResult);
                     if (!blResult)
                     {
-                        lblMessage.Text = string.Format("数据{0}参数转换出现错误", iIdx);
+                        ShowMsg(string.Format("数据{0}参数转换出现错误", iIdx));
                         return;
                     }
                     datas[i] = lstYDSJ[i].Times.ToString("yyyyMMdd") + twoSpace
@@ -237,6 +238,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 //接收方ID 
                 int reveiverid;
                 string strResult = string.Empty;
+                string strMsg = string.Empty;
                 new Task().GetTaskNoSatID(outTaskID, out taskID, out satID);
                 foreach (ListItem li in ckbDestination.Items)
                 {
@@ -249,7 +251,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                         {
                             strResult = DataFileHandle.MoveFile(strResultFile, GetFilePathByFilePath(strResultFile) + @"FTP\");
                             if (!strResult.Equals(string.Empty))
-                                lblMessage.Text += GetFileNameByFilePath(strResultFile) + " 路径中已有同名文件。" + "<br />";
+                                strMsg += GetFileNameByFilePath(strResultFile) + " 路径中已有同名文件。" + "<br />";
                             else
                                 strResultFile = GetFilePathByFilePath(strResultFile) + @"FTP\" + GetFileNameByFilePath(strResultFile);
                         }
@@ -258,15 +260,16 @@ namespace OperatingManagement.Web.Views.PlanManage
                             blResult = objFileSender.SendFile(GetFileNameByFilePath(strResultFile), GetFilePathByFilePath(strResultFile), protocl, senderid, reveiverid, infotypeid, true);
                             if (blResult)
                             {
-                                lblMessage.Text += GetFileNameByFilePath(strResultFile) + " 文件发送请求提交成功。" + "<br />";
+                                strMsg += GetFileNameByFilePath(strResultFile) + " 文件发送请求提交成功。" + "<br />";
                             }
                             else
                             {
-                                lblMessage.Text += GetFileNameByFilePath(strResultFile) + " 文件发送请求提交失败。" + "<br />";
+                                strMsg += GetFileNameByFilePath(strResultFile) + " 文件发送请求提交失败。" + "<br />";
                             }
                         }
                     }
                 }
+                ShowMsg(strMsg);
             }
             catch (Exception ex)
             {
@@ -344,6 +347,18 @@ namespace OperatingManagement.Web.Views.PlanManage
             data[4] = oYdsj.W;
             data[5] = oYdsj.M;
             return data;
+        }
+
+        private void HiddenMsg()
+        {
+            lblMessage.Visible = false;
+            lblMessage.Text = "";
+        }
+
+        private void ShowMsg(string msg)
+        {
+            lblMessage.Visible = true;
+            lblMessage.Text = msg;
         }
     }
 }
