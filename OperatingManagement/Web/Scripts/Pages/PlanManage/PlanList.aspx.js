@@ -13,12 +13,6 @@ function clearField() {
     return false;
 }
 
-function setdayte(o){
-    $(o).datepicker({
-			changeMonth: true,
-			changeYear: true
-		});
-}
 
 function selectAll() {
     $('input:checkbox:not([disabled])').attr('checked', true);
@@ -124,8 +118,8 @@ function showPopSendForm() {
     _dialog = $("#tartgetPanel");
     _dialog.dialog({
         autoOpen: false,
-        height: 350,
-        width: 330,
+        height: 360,
+        width: 390,
         modal: true,
         buttons: {
             '确定': function () {
