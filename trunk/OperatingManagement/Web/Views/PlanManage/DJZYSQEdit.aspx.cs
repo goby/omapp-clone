@@ -36,7 +36,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 txtSCID.Attributes.Add("readonly", "true");
                 InitialTask();
 
-                txtSequence.Text = long.MaxValue.ToString();
+                //txtSequence.Text = long.MaxValue.ToString();
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
@@ -110,14 +110,14 @@ namespace OperatingManagement.Web.Views.PlanManage
                 txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm:ss");
                 txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
                 HfFileIndex.Value = jh[0].FileIndex;
-                hfTaskID.Value = jh[0].TaskID.ToString();
-                ucTask1.SelectedValue = jh[0].TaskID.ToString();
-                string[] strTemp = jh[0].FileIndex.Split('_');
-                if (strTemp.Length >= 2)
-                {
-                    hfSatID.Value = strTemp[strTemp.Length - 2];
-                    ucSatellite1.SelectedValue = strTemp[strTemp.Length - 2];
-                }
+                ucOutTask1.SelectedValue = new Task().GetOutTaskNo(jh[0].TaskID, jh[0].SatID);
+                hfTaskID.Value = ucOutTask1.SelectedValue;
+                //string[] strTemp = jh[0].FileIndex.Split('_');
+                //if (strTemp.Length >= 2)
+                //{
+                //    hfSatID.Value = strTemp[strTemp.Length - 2];
+                //    ucSatellite1.SelectedValue = strTemp[strTemp.Length - 2];
+                //}
                 txtNote.Text = jh[0].Reserve.ToString();
                 //计划启动后不能修改计划
                 if (DateTime.Now > jh[0].StartTime)
@@ -141,7 +141,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(HfFileIndex.Value);
                 XmlNode root = xmlDoc.SelectSingleNode("测控资源使用申请/时间");
-                txtDatetime.Text = root.InnerText;
+                //txtDatetime.Text = root.InnerText;
                 root = xmlDoc.SelectSingleNode("测控资源使用申请/申请序列号");
                 txtSequence.Text = root.InnerText;
                 root = xmlDoc.SelectSingleNode("测控资源使用申请/航天器标识");
@@ -241,6 +241,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     ddlSBDH.Enabled = false;
                     TextBox txtSBDH = (TextBox)e.Item.FindControl("txtSBDH");
                     txtSBDH.Attributes.Add("readonly", "true");
+                    txtSBDH.Text = ddlSBDH.Items.FindByText(ddlGZDY.SelectedItem.Text).Value;
                     ddlGZDY.Attributes.Add("onchange", "SetSBDH(this,'" + ddlSBDH.ClientID + "','" + txtSBDH.ClientID + "')");
 
                     //任务准备开始时间输入后，跟踪开始时间、任务开始时间、任务结束时间、跟踪结束时间
@@ -595,7 +596,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                         TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
                         TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
 
-                        rt.SXH = txtSXH.Text;
+                        rt.SXH = (list2.Count() + 1).ToString();//txtSXH.Text;
                         rt.SXZ = ddlSXZ.SelectedValue;
                         rt.MLB = txtMLB.Text;
                         rt.FS = ddlFS.SelectedValue;
@@ -753,7 +754,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                                 TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
                                 TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
 
-                                rt.SXH = txtSXH.Text;
+                                rt.SXH = (list2.Count() + 1).ToString();//txtSXH.Text;
                                 rt.SXZ = ddlSXZ.SelectedValue;
                                 rt.MLB = txtMLB.Text;
                                 rt.FS = ddlFS.SelectedValue;
@@ -1080,10 +1081,18 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                Task oTask = new Task();
+                string taskNO = string.Empty;
+                string satID = string.Empty;
                 isTempJH = GetIsTempJHValue();
                 DJZYSQ obj = new DJZYSQ();
-                //obj.SNO = txtSequence.Text;
-                obj.SNO = (new Sequence()).GetDJZYSQSequnce().ToString();
+
+                txtSCID.Text = oTask.GetSCID(ucOutTask1.SelectedValue);
+                oTask.GetTaskNoSatID(ucOutTask1.SelectedValue, out taskNO, out satID);
+                if (txtSequence.Text != "")
+                    obj.SNO = txtSequence.Text;
+                else
+                    obj.SNO = (new Sequence()).GetDJZYSQSequnce().ToString();
                 obj.SJ = DateTime.Now.ToString("yyyyMMddHHmmss");
                 obj.SCID = txtSCID.Text;
                 // obj.TaskCount = txtTaskCount.Text;
@@ -1121,7 +1130,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
                     TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
 
-                    rt.SXH = txtSXH.Text;
+                    rt.SXH = (obj.DMJHTasks.Count() + 1).ToString();//txtSXH.Text;
                     rt.SXZ = ddlSXZ.SelectedValue;
                     rt.MLB = txtMLB.Text;
                     rt.FS = ddlFS.SelectedValue;
@@ -1235,8 +1244,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     obj.DMJHTasks.Add(rt);
                 }
                 obj.SNUM = obj.DMJHTasks.Count.ToString();  //申请数量
-                obj.TaskID = ucTask1.SelectedItem.Value;    //任务ID
-                obj.SatID = ucSatellite1.SelectedItem.Value;    //卫星ID
+                obj.TaskID = taskNO;    //任务ID
+                obj.SatID = satID;    //卫星ID
 
                 PlanFileCreator creater = new PlanFileCreator(isTempJH);
                 if (hfStatus.Value == "new")
@@ -1260,7 +1269,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 else
                 {
                     //当任务和卫星更新时，需要更新文件名称
-                    if (hfSatID.Value != ucSatellite1.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
+                    if (hfTaskID.Value != ucOutTask1.SelectedValue)
                     {
                         string filepath = creater.CreateDMJHFile(obj, 1);
 
@@ -1289,7 +1298,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 ltMessage.Text = "计划保存成功";
 
                 txtSequence.Text = obj.SNO;
-                txtDatetime.Text = obj.SJ;
+                //txtDatetime.Text = obj.SJ;
                 txtTaskCount.Text = obj.SNUM;
                 //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
                 //
@@ -1305,6 +1314,13 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                Task oTask = new Task();
+                string taskNO = string.Empty;
+                string satID = string.Empty;
+
+                txtSCID.Text = oTask.GetSCID(ucOutTask1.SelectedValue);
+                oTask.GetTaskNoSatID(ucOutTask1.SelectedValue, out taskNO, out satID);
+
                 isTempJH = GetIsTempJHValue();
                 DJZYSQ obj = new DJZYSQ();
                 //obj.SNO = txtSequence.Text;
@@ -1346,7 +1362,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
                     TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
 
-                    rt.SXH = txtSXH.Text;
+                    rt.SXH = (obj.DMJHTasks.Count() + 1).ToString();//txtSXH.Text;
                     rt.SXZ = ddlSXZ.SelectedValue;
                     rt.MLB = txtMLB.Text;
                     rt.FS = ddlFS.SelectedValue;
@@ -1469,8 +1485,8 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 PlanFileCreator creater = new PlanFileCreator(isTempJH);
 
-                obj.TaskID = ucTask1.SelectedItem.Value;    //任务ID
-                obj.SatID = ucSatellite1.SelectedItem.Value;    //卫星ID
+                obj.TaskID = taskNO;    //任务ID
+                obj.SatID = satID;    //卫星ID
 
                 //检查文件是否已经存在
                 if (creater.TestDMJHFileName(obj))
@@ -1497,7 +1513,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 ltMessage.Text = "计划保存成功";
 
                 txtSequence.Text = obj.SNO;
-                txtDatetime.Text = obj.SJ;
+                //txtDatetime.Text = obj.SJ;
                 txtTaskCount.Text = obj.SNUM;
                 //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
                 //
@@ -1649,7 +1665,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 #region BindtoPage
                 txtSequence.Text = objDMJH.SNO;
-                txtDatetime.Text = objDMJH.SJ;
+                //txtDatetime.Text = objDMJH.SJ;
                 txtSCID.Text = objDMJH.SCID;
                 txtTaskCount.Text = objDMJH.SNUM;
 
@@ -1716,6 +1732,13 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                Task oTask = new Task();
+                string taskNO = string.Empty;
+                string satID = string.Empty;
+
+                txtSCID.Text = oTask.GetSCID(ucOutTask1.SelectedValue);
+                oTask.GetTaskNoSatID(ucOutTask1.SelectedValue, out taskNO, out satID);
+
                 DJZYSQ obj = new DJZYSQ();
                 //obj.SNO = txtSequence.Text;
                 obj.SNO = (new Sequence()).GetDJZYSQSequnce().ToString();
@@ -1756,7 +1779,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtTrackEndTime = (TextBox)it.FindControl("txtTrackEndTime");
                     TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
 
-                    rt.SXH = txtSXH.Text;
+                    rt.SXH = (obj.DMJHTasks.Count() + 1).ToString();//txtSXH.Text;
                     rt.SXZ = ddlSXZ.SelectedValue;
                     rt.MLB = txtMLB.Text;
                     rt.FS = ddlFS.SelectedValue;
@@ -1853,8 +1876,8 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 PlanFileCreator creater = new PlanFileCreator();
 
-                obj.TaskID = ucTask1.SelectedItem.Value;    //任务ID
-                obj.SatID = ucSatellite1.SelectedItem.Value;    //卫星ID
+                obj.TaskID = taskNO;    //任务ID
+                obj.SatID = satID;    //卫星ID
 
                 //检查文件是否已经存在
                 if (creater.TestDMJHFileName(obj))
@@ -1896,7 +1919,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 ltMessage.Text = "计划保存成功";
 
                 txtSequence.Text = obj.SNO;
-                txtDatetime.Text = obj.SJ;
+                //txtDatetime.Text = obj.SJ;
                 txtTaskCount.Text = obj.SNUM;
                 //
             }

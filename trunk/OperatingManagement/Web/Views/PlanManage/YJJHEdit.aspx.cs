@@ -11,6 +11,7 @@ using OperatingManagement.WebKernel.Route;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.DataAccessLayer.PlanManage;
+using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.Framework;
 using System.Web.Security;
 using System.Xml;
@@ -69,15 +70,15 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 List<JH> jh = (new JH(isTempJH)).SelectByIDS(sID);
                 HfFileIndex.Value = jh[0].FileIndex;
-                hfTaskID.Value = jh[0].TaskID.ToString();
                 txtJXH.Text = jh[0].PlanID.ToString("0000");
-                ucTask1.SelectedValue = jh[0].TaskID.ToString();
-                string[] strTemp = jh[0].FileIndex.Split('_');
-                if (strTemp.Length >= 2)
-                {
-                    hfSatID.Value = strTemp[strTemp.Length - 2];
-                    ucSatellite1.SelectedValue = strTemp[strTemp.Length - 2];
-                }
+                ucOutTask1.SelectedValue = new Task().GetOutTaskNo(jh[0].TaskID, jh[0].SatID);
+                hfTaskID.Value = ucOutTask1.SelectedValue;
+                //string[] strTemp = jh[0].FileIndex.Split('_');
+                //if (strTemp.Length >= 2)
+                //{
+                //    hfSatID.Value = strTemp[strTemp.Length - 2];
+                //    ucSatellite1.SelectedValue = strTemp[strTemp.Length - 2];
+                //}
                 txtNote.Text = jh[0].Reserve.ToString();
                 //计划启动后不能修改计划
                 if (DateTime.Now > jh[0].StartTime)
@@ -136,6 +137,9 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                string taskID = string.Empty;
+                string satID = string.Empty;
+                new Task().GetTaskNoSatID(ucOutTask1.SelectedValue, out taskID, out satID);
                 isTempJH = GetIsTempJHValue();
 
                 YJJH obj = new YJJH();
@@ -145,8 +149,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.StartTime = txtStartTime.Text;
                 obj.EndTime = txtEndTime.Text;
                 obj.Task = txtTask.Text;
-                obj.TaskID = ucTask1.SelectedItem.Value;
-                obj.SatID = ucSatellite1.SelectedItem.Value;
+                obj.TaskID = taskID;
+                obj.SatID = satID;
                 CultureInfo provider = CultureInfo.InvariantCulture;
 
                 PlanFileCreator creater = new PlanFileCreator(isTempJH);
@@ -174,7 +178,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 else
                 {
                     //当任务和卫星更新时，需要更新文件名称
-                    if (hfSatID.Value != ucSatellite1.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
+                    if (hfTaskID.Value != ucOutTask1.SelectedValue)
                     {
                         string filepath = creater.CreateYJJHFile(obj, 0);
                         DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
@@ -214,6 +218,9 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                string taskID = string.Empty;
+                string satID = string.Empty;
+                new Task().GetTaskNoSatID(ucOutTask1.SelectedValue, out taskID, out satID);
                 isTempJH = GetIsTempJHValue();
 
                 YJJH obj = new YJJH();
@@ -227,8 +234,8 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 PlanFileCreator creater = new PlanFileCreator(isTempJH);
 
-                obj.TaskID = ucTask1.SelectedItem.Value;
-                obj.SatID = ucSatellite1.SelectedItem.Value;
+                obj.TaskID = taskID;
+                obj.SatID = satID;
                 obj.JXH = (new Sequence()).GetYJJHSequnce().ToString("0000");
 
                 if (creater.TestYJJHFileName(obj))
@@ -317,6 +324,9 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                string taskID = string.Empty;
+                string satID = string.Empty;
+                new Task().GetTaskNoSatID(ucOutTask1.SelectedValue, out taskID, out satID);
                 YJJH obj = new YJJH();
                 obj.XXFL = radBtnXXFL.SelectedValue;
                 //obj.JXH = txtJXH.Text;
@@ -328,8 +338,8 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 PlanFileCreator creater = new PlanFileCreator();
 
-                obj.TaskID = ucTask1.SelectedItem.Value;
-                obj.SatID = ucSatellite1.SelectedItem.Value;
+                obj.TaskID = taskID;
+                obj.SatID = satID;
                 obj.JXH = (new Sequence()).GetYJJHSequnce().ToString("0000");
 
                 if (creater.TestYJJHFileName(obj))

@@ -5,6 +5,8 @@
 
 <%@ Register src="../../ucs/ucTimer.ascx" tagname="ucTimer" tagprefix="uc3" %>
 
+<%@ Register src="../../ucs/ucOutTask.ascx" tagname="ucOutTask" tagprefix="uc4" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
         .text
@@ -35,15 +37,9 @@
             </td>
         </tr>--%>
         <tr>
-            <th class="style1">任务代号(<span class="red">*</span>)</th>
+            <th class="style1">任务(<span class="red">*</span>)</th>
             <td>
-                <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" ClientIDMode="Static" />
-            </td>
-        </tr>
-        <tr>
-            <th class="style1">卫星(<span class="red">*</span>)</th>
-            <td>
-                <uc2:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
+                <uc4:ucOutTask ID="ucOutTask1" runat="server" />
             </td>
         </tr>
         <tr>

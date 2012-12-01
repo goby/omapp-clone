@@ -98,6 +98,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
 
             fileindex = list[0].FileIndex;
             fileindex = sharedPath + fileindex.Substring(fileindex.LastIndexOf(@"\") + 1);
+            result.ID = id;
             result.TaskID = list[0].TaskID;
             result.SatID = list[0].SatID;
 

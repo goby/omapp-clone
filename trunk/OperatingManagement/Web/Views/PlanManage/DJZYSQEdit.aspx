@@ -3,6 +3,7 @@
 
 <%@ Register Src="../../ucs/ucTask.ascx" TagName="ucTask" TagPrefix="uc1" %>
 <%@ Register Src="../../ucs/ucSatellite.ascx" TagName="ucSatellite" TagPrefix="uc2" %>
+<%@ Register src="../../ucs/ucOutTask.ascx" tagname="ucOutTask" tagprefix="uc3" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -51,20 +52,21 @@
                 </tr>
             <tr>
                 <th style="width: 100px;">
-                    任务代号(<span class="red">*</span>)
+                    任务(<span class="red">*</span>)
                 </th>
                 <td style="width: 350px;">
-                    <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" ClientIDMode="Static" />
 
                     <asp:DropDownList ID="ddlTask" ClientIDMode="Static" runat="server" style="display:none;">
                     </asp:DropDownList>
 
+                    <uc3:ucOutTask ID="ucOutTask1" runat="server" AllowBlankItem="False" />
+
                 </td>
-                <th style="width: 100px;">
-                    卫星(<span class="red">*</span>)
-                </th>
+                <th>
+                    航天器标识</th>
                 <td>
-                    <uc2:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
+                    <asp:TextBox ID="txtSCID" CssClass="text" runat="server" ClientIDMode="Static" ></asp:TextBox>
+                    &nbsp;<span style="color:#3399FF;">保存时自动生成</span>
                 </td>
             </tr>
             <tr>
@@ -98,21 +100,6 @@
                 <td>
                     <asp:TextBox ID="txtSequence" CssClass="text" runat="server"  Enabled="false"></asp:TextBox>
                     &nbsp;<span style="color:#3399FF;">保存时自动生成</span>
-                </td>
-                <th>
-                    时间
-                </th>
-                <td>
-                    <asp:TextBox ID="txtDatetime" CssClass="text" runat="server" Enabled="false"></asp:TextBox>
-                    &nbsp;<span style="color:#3399FF;">保存时自动生成</span>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    航天器标识</th>
-                <td>
-                    <asp:TextBox ID="txtSCID" CssClass="text" runat="server" ClientIDMode="Static" ></asp:TextBox><asp:RequiredFieldValidator ID="rfSCID" runat="server" ControlToValidate="txtSCID"
-                        ErrorMessage="航天器标识不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
                 </td>
                 <th>
                     申请数量</th>
@@ -150,13 +137,6 @@
                                 </tr>
                                 <tr>
                                     <th style="width: 100px;">
-                                        申请序号
-                                    </th>
-                                    <td style="width: 350px;">
-                                        <%--<asp:TextBox ID="txtSXH" CssClass="text" runat="server" Text='<%# Eval("SXH")%>'></asp:TextBox>--%>
-                                        <asp:TextBox ID="txtSXH" CssClass="text" runat="server" Text=""></asp:TextBox>
-                                    </td>
-                                    <th style="width: 100px;">
                                         申请性质
                                     </th>
                                     <td>
@@ -164,6 +144,11 @@
                                             Width="154px">
                                         </asp:DropDownList>
                                         <%-- <asp:TextBox ID="txtPlanPropertiy" CssClass="text" runat="server" Text='<%# Eval("PlanPropertiy")%>'></asp:TextBox>--%>
+                                    </td>
+                                    <th style="width: 100px;">
+                                    </th>
+                                    <td style="width: 350px;">
+                                        <asp:TextBox ID="txtSXH" CssClass="text" runat="server" Text='<%# Eval("SXH")%>' Visible="false"></asp:TextBox>
                                     </td>
                                     
                                 </tr>
@@ -269,7 +254,7 @@
                                         开上行载波时间
                                     </th>
                                     <td>
-                                        <asp:TextBox MaxLength="14" ID="txtWaveOnStartTime" CssClass="text" runat="server" Text='<%# Eval("KSHX")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                                        <asp:TextBox MaxLength="14" ID="txtWaveOnStartTime" CssClass="text" runat="server" Text='FFFFFFFFFFFFFF' Enabled="False"></asp:TextBox>
                                     </td>
                                     
                                 </tr>
@@ -279,11 +264,11 @@
                                         关上行载波时间
                                     </th>
                                     <td>
-                                        <asp:TextBox MaxLength="14" ID="txtWaveOffStartTime" CssClass="text" runat="server" Text='<%# Eval("GSHX")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                                        <asp:TextBox MaxLength="14" ID="txtWaveOffStartTime" CssClass="text" runat="server" Text='FFFFFFFFFFFFFF' Enabled="False"></asp:TextBox>
                                     <asp:CompareValidator ID="CompareValidator12" runat="server" 
                     ControlToCompare="txtWaveOnStartTime" ControlToValidate="txtWaveOffStartTime" 
-                    Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
-                    Operator="GreaterThan" Type="Double"></asp:CompareValidator>
+                    Display="Dynamic" ErrorMessage="关上行载波时间应大于开上行载波时间" ForeColor="Red" 
+                    Operator="GreaterThan" Type="Double" Enabled="false"></asp:CompareValidator>
                                     </td>
                                    <th style="width: 100px;">
                                         跟踪结束时间

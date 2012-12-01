@@ -14,32 +14,35 @@ namespace OperatingManagement.Web.ucs
         private string blankItemText = "请选择";
         private string blankItemValue = "0";
         private string valueField = "outtaskNo";
+        public event IndexChangedEventHandler ChangeIndex;
+        public EventHandler SelectChanged;
+        public delegate void IndexChangedEventHandler(object sender, EventArgs e);
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                //TaskList.Items.Clear();
-                //TaskList.DataSource = new Task().Cache;
-                //TaskList.DataTextField = "TaskName";
-                //TaskList.DataValueField = "TaskNo";
-                //TaskList.DataBind();
-                //if (isAllowBlankItem)
-                //    TaskList.Items.Insert(0, new ListItem(blankItemText, blankItemValue));
-            }
+            //this.TaskList.SelectedIndexChanged += new EventHandler(TaskList_SelectedIndexChanged);
+        }
+
+        public virtual void OnIndexChanged(EventArgs e)
+        {
+            if (this.ChangeIndex != null)
+                ChangeIndex(this, e);
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            TaskList.Items.Clear();
-            TaskList.DataSource = new Task().Cache;
-            TaskList.DataTextField = "TaskName";
-            TaskList.DataValueField = this.ValueField;
-            TaskList.DataBind();
-            if (isAllowBlankItem)
-                TaskList.Items.Insert(0, new ListItem(blankItemText, blankItemValue));
+            if (!IsPostBack)
+            {
+                TaskList.Items.Clear();
+                TaskList.DataSource = new Task().Cache;
+                TaskList.DataTextField = "TaskName";
+                TaskList.DataValueField = this.ValueField;
+                TaskList.DataBind();
+                if (isAllowBlankItem)
+                    TaskList.Items.Insert(0, new ListItem(blankItemText, blankItemValue));
+            }
             
         }
 
@@ -87,6 +90,11 @@ namespace OperatingManagement.Web.ucs
         {
             set { TaskList.Enabled = value; }
             get { return TaskList.Enabled; }
+        }
+
+        public void TaskList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            OnIndexChanged(e);
         }
     }
 }
