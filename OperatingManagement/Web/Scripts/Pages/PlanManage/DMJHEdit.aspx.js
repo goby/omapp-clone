@@ -114,19 +114,22 @@ function CheckTransTimeRang(o,sid,eid){
     var transdate = o.value;
     var startdate=$("#" + sid).val();
     var enddate=$("#" + eid).val();
-    var CurrTime = new Date(transdate.substr(0, 4), transdate.substr(4, 2), transdate.substr(6, 2), transdate.substr(8, 2), transdate.substr(10, 2), transdate.substr(12, 2));
-    var StartTime = new Date(startdate.substr(0, 4), startdate.substr(4, 2), startdate.substr(6, 2), startdate.substr(8, 2), startdate.substr(10, 2), startdate.substr(12, 2));
-    var EndTime = new Date(enddate.substr(0, 4), enddate.substr(4, 2), enddate.substr(6, 2), enddate.substr(8, 2), enddate.substr(10, 2), enddate.substr(12, 2));
-     if (CurrTime < EndTime && CurrTime > StartTime) {
+    //var CurrTime = new Date(transdate.substr(0, 4), transdate.substr(4, 2), transdate.substr(6, 2), transdate.substr(8, 2), transdate.substr(10, 2), transdate.substr(12, 2));
+    //var StartTime = new Date(startdate.substr(0, 4), startdate.substr(4, 2), startdate.substr(6, 2), startdate.substr(8, 2), startdate.substr(10, 2), startdate.substr(12, 2));
+    //var EndTime = new Date(enddate.substr(0, 4), enddate.substr(4, 2), enddate.substr(6, 2), enddate.substr(8, 2), enddate.substr(10, 2), enddate.substr(12, 2));
+    if (transdate <= enddate && transdate >= startdate) {
         $(o).css({ "background-color": "#f5f5f5" });
         resultValue = true;
-        $("#hidtranstimeonblur").val($("#hidtranstimeonblur").val()*1+0);//正确时不累计
+        if ($("#hidtranstimeonblur").val().indexOf(o.id) >= 0) {
+            $("#hidtranstimeonblur").val().replace(o.id, "");
+        }
     }
     else{
         
         $(o).css({ "background-color": "#ffcccc" });
         resultValue = false;
-        $("#hidtranstimeonblur").val($("#hidtranstimeonblur").val()*1+1);//累计错误数，这样只要不为0，就知道有错
+        if ($("#hidtranstimeonblur").val().indexOf(o.id) < 0){
+            $("#hidtranstimeonblur").val($("#hidtranstimeonblur").val() + "|" + o.id);}
     }
     return resultValue;
 }
@@ -135,18 +138,21 @@ function ComparePreTimeAndTrackEndTime(o, tid) {
     var resultValue = true;
     var trackdate = o.value;
     var predate=$("#" + tid).val();
-    var PreTime = new Date(predate.substr(0, 4), predate.substr(4, 2), predate.substr(6, 2), predate.substr(8, 2), predate.substr(10, 2), predate.substr(12, 2));
-    var TrackEndTime = new Date(trackdate.substr(0, 4), trackdate.substr(4, 2), trackdate.substr(6, 2), trackdate.substr(8, 2), trackdate.substr(10, 2), trackdate.substr(12, 2));
-    PreTime.setTime(PreTime.getTime() + 3 * 60 * 60 * 1000);
-    if (PreTime < TrackEndTime) {
+//    var PreTime = new Date(predate.substr(0, 4), predate.substr(4, 2), predate.substr(6, 2), predate.substr(8, 2), predate.substr(10, 2), predate.substr(12, 2));
+//    var TrackEndTime = new Date(trackdate.substr(0, 4), trackdate.substr(4, 2), trackdate.substr(6, 2), trackdate.substr(8, 2), trackdate.substr(10, 2), trackdate.substr(12, 2));
+//    PreTime.setTime(PreTime.getTime() + 3 * 60 * 60 * 1000);
+    if (predate < trackdate) {
         $(o).css({ "background-color": "#ffcccc" });
         resultValue = false;
-        $("#hidtracktimeonblur").val($("#hidtracktimeonblur").val()*1+1);//累计错误数，这样只要不为0，就知道有错
+        if ($("#hidtracktimeonblur").val().indexOf(o.id) < 0){
+            $("#hidtracktimeonblur").val($("#hidtracktimeonblur").val() + "|" + o.id);}
     }
     else{
         $(o).css({ "background-color": "#f5f5f5" });
         resultValue = true;
-        $("#hidtracktimeonblur").val($("#hidtracktimeonblur").val()*1+0);//正确时不累计
+        if ($("#hidtracktimeonblur").val().indexOf(o.id) >= 0) {
+            $("#hidtracktimeonblur").val().replace(o.id, "");
+        }
     }
     return resultValue;
 }
@@ -160,16 +166,26 @@ function CheckDateTimes() {
     var listEnd = $("input[name*='txtTrackEndTime']");
     listEnd.each(function () {
         $(this).blur();
+        if ($("#hidtracktimeonblur").val().indexOf($(this).attr("id")) >= 0) {
+            resulttrack++;
+            }
     });
 
     var listTrans = $("input[name*='txtTransEndTime']");
     listTrans.each(function () {
         $(this).blur();
-       
+        if ($("#hidtranstimeonblur").val().indexOf($(this).attr("id")) >= 0) {
+            resulttrans++;
+        }
     });
 
-    resulttrack = $("#hidtracktimeonblur").val() *1;
-    resulttrans = $("#hidtranstimeonblur").val() *1;
+    var listTranStart = $("input[name*='txtTransStartTime']");
+    listTranStart.each(function () {
+        $(this).blur();
+        if ($("#hidtranstimeonblur").val().indexOf($(this).attr("id")) >= 0) {
+            resulttrans++;
+        }
+    });
 
     if (resulttrack >0  || resulttrans>0)
     {
@@ -198,7 +214,7 @@ function CheckClientValidate() {
         }
         if (isvalid)
         {
-            isvalid =  CheckDateTimes();
+            isvalid = CheckDateTimes();
             if (!isvalid) {
             showMsg('请检查以下项目并重新提交!<br /> 1. 任务准备开始时间与跟踪结束时间时间差应不大于3小时;<br /> 2.实时传送中，数据传输开始时间、结束时间应该落在任务开始时间、任务结束时间之间或重合;');
         }

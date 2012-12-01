@@ -31,14 +31,16 @@ namespace OperatingManagement.Web.ucs
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-
-            TaskList.Items.Clear();
-            TaskList.DataSource = new Task().Cache;
-            TaskList.DataTextField = "TaskName";
-            TaskList.DataValueField = "TaskNo";
-            TaskList.DataBind();
-            if (isAllowBlankItem)
-                TaskList.Items.Insert(0, new ListItem(blankItemText, blankItemValue));
+            if (!IsPostBack)
+            {
+                TaskList.Items.Clear();
+                TaskList.DataSource = new Task().Cache;
+                TaskList.DataTextField = "TaskName";
+                TaskList.DataValueField = "TaskNo";
+                TaskList.DataBind();
+                if (isAllowBlankItem)
+                    TaskList.Items.Insert(0, new ListItem(blankItemText, blankItemValue));
+            }
             
         }
 

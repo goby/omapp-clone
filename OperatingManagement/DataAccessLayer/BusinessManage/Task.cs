@@ -314,6 +314,25 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         }
 
         /// <summary>
+        /// 通过外部任务代号获取航天器标识
+        /// </summary>
+        /// <param name="outTaskNo"></param>
+        /// <param name="taskNo"></param>
+        /// <param name="satid"></param>
+        public string GetSCID(string outTaskNo)
+        {
+            if (Cache != null)
+            {
+                var query = Cache.Where(a => a.OutTaskNo == outTaskNo);
+                if (query != null && query.Count() > 0)
+                {
+                    return query.FirstOrDefault().SCID;
+                }
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
         /// 通过任务代号获取任务名称
         /// </summary>
         /// <param name="taskNO"></param>

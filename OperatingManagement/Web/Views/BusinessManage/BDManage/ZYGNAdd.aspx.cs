@@ -166,7 +166,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                 if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
                     DropDownList ddlSY = (DropDownList)e.Item.FindControl("ddlZYSX") as DropDownList;
-                    ddlSY.DataSource = new ZYSX().Cache.Select(t => t.Own == 2);
+                    ddlSY.DataSource = new ZYSX().Cache.Where(t => t.Own == 2).ToList();
                     ddlSY.DataTextField = "PName";
                     ddlSY.DataValueField = "PCode";
                     ddlSY.DataBind();

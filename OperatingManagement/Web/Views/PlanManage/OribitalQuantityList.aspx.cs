@@ -34,6 +34,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 BindCheckBoxDestination();
                 //DefaultSearch();
                 //ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>hideSelectAll();</script>");
+
+                HideMsg();
             }
             cpPager.PostBackPage += new EventHandler(cpPager_PostBackPage);
         }
@@ -42,6 +44,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                HideMsg();
                 SaveCondition();
                 cpPager.CurrentPage = 1;
                 BindGridView(true);
@@ -167,7 +170,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 PlanFileCreator creater = new PlanFileCreator();
                 string SendingFilePaths = "";
-                lblMessage.Text = "";//清空发送信息
+                HideMsg();
                 foreach (ListItem li in ckbDestination.Items)
                 {
                     if (li.Selected)
@@ -213,6 +216,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                     }//li
                 }
+                ShowMsg(lblMessage.Text);
                 BindGridView(false);
             }
             catch (Exception ex)
@@ -269,6 +273,18 @@ namespace OperatingManagement.Web.Views.PlanManage
         private string GetFilePathByFilePath(string filepath)
         {
             return filepath.Substring(0, filepath.LastIndexOf("\\") + 1);
+        }
+
+        private void HideMsg()
+        {
+            lblMessage.Text = "";
+            lblMessage.Visible = false;
+        }
+
+        private void ShowMsg(string msg)
+        {
+            lblMessage.Text = msg;
+            lblMessage.Visible = true;
         }
     }
 }
