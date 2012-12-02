@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Word;
 using System.IO;
+using OperatingManagement.DataAccessLayer.PlanManage;
 
 namespace ServicesKernel.File
 {
@@ -30,7 +31,7 @@ namespace ServicesKernel.File
             }
         }
 
-        public void CreateDJZYSQFile()
+        public string CreateDJZYSQFile(DJZYSQ objSQ)
         {
             //创建Word文档
             oWord = new Word.Application();
@@ -66,8 +67,22 @@ namespace ServicesKernel.File
             newTable.Cell(1, 9).Range.Text = "任务结束时间";
             newTable.Cell(1, 9).Range.Bold = 2;//设置单元格中字体为粗体
             #endregion
-            //在表格中增加行
-            oDoc.Content.Tables[1].Rows.Add(ref oMissing);
+
+            Word.Row row;
+            for (int i = 0; i < objSQ.DMJHTasks.Count; i++)
+            {
+                //在表格中增加行
+               row = oDoc.Content.Tables[1].Rows.Add(ref oMissing);
+               row.Cells[1].Range.Text = objSQ.DMJHTasks[i].ZHB;
+               row.Cells[2].Range.Text = objSQ.DMJHTasks[i].GZDY;
+               row.Cells[3].Range.Text = objSQ.DMJHTasks[i].SBDH;
+               row.Cells[4].Range.Text = objSQ.DMJHTasks[i].ZHB;
+               row.Cells[5].Range.Text = objSQ.DMJHTasks[i].QC;
+               row.Cells[6].Range.Text = objSQ.DMJHTasks[i].RK;
+               row.Cells[7].Range.Text = objSQ.DMJHTasks[i].GZK;
+               row.Cells[8].Range.Text = objSQ.DMJHTasks[i].GZJ;
+               row.Cells[9].Range.Text = objSQ.DMJHTasks[i].JS;
+            }
             //插入换行符
             //newWordDoc.Sections[1].Range.InsertBreak(ref type); 
 
@@ -76,6 +91,7 @@ namespace ServicesKernel.File
             oDoc.Close(ref oMissing, ref oMissing, ref oMissing);
             oWord.Quit(ref oMissing, ref oMissing, ref oMissing);
 
+            return filename.ToString();
         }
         
 
