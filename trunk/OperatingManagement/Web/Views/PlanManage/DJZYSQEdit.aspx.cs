@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.IO;
 
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.WebKernel.Route;
@@ -30,6 +31,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
+                btnWord.Visible = false;
                 btnFormal.Visible = false; 
                 txtPlanStartTime.Attributes.Add("readonly", "true");
                 txtPlanEndTime.Attributes.Add("readonly", "true");
@@ -49,6 +51,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                     HfID.Value = sID;
                     hfStatus.Value = "edit";    //编辑
+                    btnWord.Visible = true;
                     hfSBJHID.Value = "-1";
                     BindJhTable(sID);
                     BindXML();
@@ -2004,7 +2007,35 @@ namespace OperatingManagement.Web.Views.PlanManage
         protected void btnWord_Click(object sender, EventArgs e)
         {
             WordHandle objWord = new WordHandle();
-            objWord.CreateDJZYSQFile();
+            string sid = HfID.Value;
+            DJZYSQ obj = new DJZYSQ();
+            try
+            {
+                string filepath = objWord.CreateDJZYSQFile(obj.GetByID(sid));
+                DownLoadFile(filepath);
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("生成Word文档出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
+        public void DownLoadFile(string filePath)
+        {
+            FileInfo fileInfo = new FileInfo(filePath);
+            string fileName = fileInfo.Name;
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.AddHeader("Content-Disposition", "attachment;filename=" + fileName);
+            Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+            Response.AddHeader("Content-Transfer-Encoding", "binary");
+            Response.ContentType = "application/octet-stream";
+            Response.ContentEncoding = System.Text.Encoding.GetEncoding("gb2312");
+            Response.WriteFile(fileInfo.FullName);
+            Response.Flush();
+            //Response.End();
         }
         //
     }
