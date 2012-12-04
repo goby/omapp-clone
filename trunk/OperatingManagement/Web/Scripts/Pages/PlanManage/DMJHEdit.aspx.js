@@ -121,7 +121,7 @@ function CheckTransTimeRang(o,sid,eid){
         $(o).css({ "background-color": "#f5f5f5" });
         resultValue = true;
         if ($("#hidtranstimeonblur").val().indexOf(o.id) >= 0) {
-            $("#hidtranstimeonblur").val().replace(o.id, "");
+            $("#hidtranstimeonblur").val($("#hidtranstimeonblur").val().replace(o.id, ""));
         }
     }
     else{
@@ -151,7 +151,7 @@ function ComparePreTimeAndTrackEndTime(o, tid) {
         $(o).css({ "background-color": "#f5f5f5" });
         resultValue = true;
         if ($("#hidtracktimeonblur").val().indexOf(o.id) >= 0) {
-            $("#hidtracktimeonblur").val().replace(o.id, "");
+            $("#hidtracktimeonblur").val($("#hidtracktimeonblur").val().replace(o.id, ""));
         }
     }
     return resultValue;
