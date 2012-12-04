@@ -1205,29 +1205,39 @@ namespace ServicesKernel.File
 
             xmlWriter.WriteStartElement("仿真推演试验数据");
 
-            xmlWriter.WriteStartElement("SatName");
-            xmlWriter.WriteString(obj.SatName);
-            xmlWriter.WriteEndElement();
+            #region 内容
+            for (int i = 1; i <= obj.SYContents.Count; i++)
+            {
+                xmlWriter.WriteStartElement("Content");
 
-            xmlWriter.WriteStartElement("Type");
-            xmlWriter.WriteString(obj.Type);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("SatName");
+                xmlWriter.WriteString(obj.SYContents[i - 1].SatName);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("TestItem");
-            xmlWriter.WriteString(obj.TestItem);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("Type");
+                xmlWriter.WriteString(obj.SYContents[i - 1].Type);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("StartTime");
-            xmlWriter.WriteString(obj.StartTime);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("TestItem");
+                xmlWriter.WriteString(obj.SYContents[i - 1].TestItem);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("EndTime");
-            xmlWriter.WriteString(obj.EndTime);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("StartTime");
+                xmlWriter.WriteString(obj.SYContents[i - 1].StartTime);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("Condition");
-            xmlWriter.WriteString(obj.Condition);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("EndTime");
+                xmlWriter.WriteString(obj.SYContents[i - 1].EndTime);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteStartElement("Condition");
+                xmlWriter.WriteString(obj.SYContents[i - 1].Condition);
+                xmlWriter.WriteEndElement();
+
+                xmlWriter.WriteEndElement();
+            }
+
+            #endregion
 
             xmlWriter.WriteEndElement();
 
@@ -2007,24 +2017,30 @@ namespace ServicesKernel.File
             {
                 #region 读取计划XML文件，变量赋值
                 obj = new TYSJ();
+                obj.SYContents = new List<TYSJ_Content>();
+                TYSJ_Content ct;
                 obj.TaskID = jh.TaskID;
                 obj.SatID = jh.SatID;
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(jh.FileIndex);
 
                 obj.CTime = DateTime.Now; //jh.CTime;
-                XmlNode root = xmlDoc.SelectSingleNode("仿真推演试验数据/SatName");
-                obj.SatName = root.InnerText;
-                root = xmlDoc.SelectSingleNode("仿真推演试验数据/Type");
-                obj.Type = root.InnerText;
-                root = xmlDoc.SelectSingleNode("仿真推演试验数据/TestItem");
-                obj.TestItem = root.InnerText;
-                root = xmlDoc.SelectSingleNode("仿真推演试验数据/StartTime");
-                obj.StartTime = root.InnerText;
-                root = xmlDoc.SelectSingleNode("仿真推演试验数据/EndTime");
-                obj.EndTime = root.InnerText;
-                root = xmlDoc.SelectSingleNode("仿真推演试验数据/Condition");
-                obj.Condition = root.InnerText;
+                XmlNode root = xmlDoc.SelectSingleNode("仿真推演试验数据");
+                foreach (XmlNode n in root.ChildNodes)
+                {
+                    if (n.Name == "Content")
+                    {
+                        ct = new TYSJ_Content();
+                        ct.SatName = n["SatName"].InnerText;
+                        ct.Type = n["Type"].InnerText;
+                        ct.TestItem = n["TestItem"].InnerText;
+                        ct.StartTime = n["StartTime"].InnerText;
+                        ct.EndTime = n["EndTime"].InnerText;
+                        ct.Condition = n["Condition"].InnerText;
+                        obj.SYContents.Add(ct);
+                    }
+                }
+
                 #endregion
 
                 #region 写入文件
@@ -2039,11 +2055,14 @@ namespace ServicesKernel.File
                 sw.WriteLine("[信宿D]：" + destinationName);
                 sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
                 sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
-                sw.WriteLine("[数据区行数L]：0001");
+                sw.WriteLine("[数据区行数L]："+obj.SYContents.Count.ToString("0000"));
                 sw.WriteLine("<符号区>");
                 sw.WriteLine("[格式标识1]：SatName  Type  TestItem  StartTime  EndTime  Condition");
                 sw.WriteLine("[数据区]：");
-                sw.WriteLine(obj.SatName + "  " + obj.Type + "  " + obj.TestItem + "  " + obj.StartTime + "  " + obj.EndTime + "  " + obj.Condition);
+                foreach (TYSJ_Content t in obj.SYContents)
+                {
+                    sw.WriteLine(t.SatName + "  " + t.Type + "  " + t.TestItem + "  " + t.StartTime + "  " + t.EndTime + "  " + t.Condition);
+                }
                 sw.WriteLine("<辅助区>");
                 sw.WriteLine("[备注]：");
                 sw.WriteLine("[结束]：END");

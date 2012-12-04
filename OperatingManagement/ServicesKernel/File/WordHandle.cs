@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 using Word;
 using System.IO;
 using OperatingManagement.DataAccessLayer.PlanManage;
+using OperatingManagement.Framework.Storage;
+using OperatingManagement.Framework.Components;
 
 namespace ServicesKernel.File
 {
@@ -68,20 +71,36 @@ namespace ServicesKernel.File
             newTable.Cell(1, 9).Range.Bold = 2;//设置单元格中字体为粗体
             #endregion
 
+            List<PlanParameter> listPara = PlanParameters.ReadParameters("DJZYSQPDXZ");
+            CultureInfo provider = CultureInfo.InvariantCulture;
+            DateTime preTime = new DateTime();
             Word.Row row;
             for (int i = 0; i < objSQ.DMJHTasks.Count; i++)
             {
                 //在表格中增加行
-               row = oDoc.Content.Tables[1].Rows.Add(ref oMissing);
-               row.Cells[1].Range.Text = objSQ.DMJHTasks[i].ZHB;
-               row.Cells[2].Range.Text = objSQ.DMJHTasks[i].GZDY;
-               row.Cells[3].Range.Text = objSQ.DMJHTasks[i].SBDH;
-               row.Cells[4].Range.Text = objSQ.DMJHTasks[i].ZHB;
-               row.Cells[5].Range.Text = objSQ.DMJHTasks[i].QC;
-               row.Cells[6].Range.Text = objSQ.DMJHTasks[i].RK;
-               row.Cells[7].Range.Text = objSQ.DMJHTasks[i].GZK;
-               row.Cells[8].Range.Text = objSQ.DMJHTasks[i].GZJ;
-               row.Cells[9].Range.Text = objSQ.DMJHTasks[i].JS;
+               
+               foreach (DJZYSQ_Task_GZDP dp in objSQ.DMJHTasks[i].GZDPs)
+               {
+                   row = oDoc.Content.Tables[1].Rows.Add(ref oMissing);
+                   preTime = DateTime.ParseExact(objSQ.DMJHTasks[i].ZHB, "yyyyMMddHHmmss", provider);
+                   row.Cells[1].Range.Text = preTime.ToString("yyyy年MM月dd日");
+                   row.Cells[2].Range.Text = objSQ.DMJHTasks[i].GZDY;
+                   row.Cells[3].Range.Text = objSQ.DMJHTasks[i].SBDH;
+                   foreach (PlanParameter p in listPara)
+                   {
+                       if (p.Value == dp.PDXZ)
+                       {
+                           row.Cells[4].Range.Text = p.Text;
+                           break;
+                       }
+                   }
+                   row.Cells[5].Range.Text = objSQ.DMJHTasks[i].QC;
+                   row.Cells[6].Range.Text = objSQ.DMJHTasks[i].RK;
+                   row.Cells[7].Range.Text = objSQ.DMJHTasks[i].GZK;
+                   row.Cells[8].Range.Text = objSQ.DMJHTasks[i].GZJ;
+                   row.Cells[9].Range.Text = objSQ.DMJHTasks[i].JS;
+               }
+               
             }
             //插入换行符
             //newWordDoc.Sections[1].Range.InsertBreak(ref type); 
