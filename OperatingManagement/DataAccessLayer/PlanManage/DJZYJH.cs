@@ -8,6 +8,7 @@ using OperatingManagement.Framework;
 using OperatingManagement.Framework.Core;
 using System.Data;
 using Oracle.DataAccess.Client;
+using System.Xml;
 
 namespace OperatingManagement.DataAccessLayer.PlanManage
 {
@@ -38,10 +39,81 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
 
         public List<DJZYJH_Plan> DJZYJHPlans { get; set; }
         #endregion
+
+        /// <summary>
+        /// 根据ID获取使用申请实例
+        /// </summary>
+        /// <param name="sID"></param>
+        /// <returns></returns>
+        public DJZYJH GetByID(string sID)
+        {
+            List<JH> jh = (new JH()).SelectByIDS(sID);
+            string fileIndex = jh[0].FileIndex;
+
+            DJZYJH obj = new DJZYJH();
+            obj.DJZYJHPlans = new List<DJZYJH_Plan>();
+            DJZYJH_Plan task;
+            DJZYJH_GZDP dp;
+
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(fileIndex);
+            XmlNode root = xmlDoc.SelectSingleNode("测控资源使用计划/时间");
+            obj.SJ = root.InnerText;
+            root = xmlDoc.SelectSingleNode("测控资源使用计划/计划序列号");
+            obj.SNO = root.InnerText;
+            root = xmlDoc.SelectSingleNode("测控资源使用计划/航天器标识");
+            obj.HTQID = root.InnerText;
+            root = xmlDoc.SelectSingleNode("测控资源使用计划/计划数量");
+            obj.SNUM = root.InnerText;
+
+            root = xmlDoc.SelectSingleNode("测控资源使用计划/计划");
+            foreach (XmlNode n in root.ChildNodes)
+            {
+                if (n.Name == "计划内容")
+                {
+                    task = new DJZYJH_Plan();
+                    task.SXH = n["计划序号"].InnerText;
+                    task.DF = n["答复标志"].InnerText;
+                    task.SXZ = n["计划性质"].InnerText;
+                    task.MLB = n["任务类别"].InnerText;
+                    task.FS = n["工作方式"].InnerText;
+                    task.GZDY = n["工作单元"].InnerText;
+                    task.SBDH = n["设备代号"].InnerText;
+                    task.QC = n["圈次"].InnerText;
+                    task.QB = n["圈标"].InnerText;
+                    task.SHJ = n["测控事件类型"].InnerText;
+                    task.FNUM = n["工作点频数量"].InnerText;
+                    task.DJZYJHGZDPs = new List<DJZYJH_GZDP>();
+                    foreach (XmlNode nn in n["工作点频"].ChildNodes)
+                    {
+                        if (nn.Name == "工作点频内容")
+                        {
+                            dp = new DJZYJH_GZDP();
+                            dp.FXH = nn["点频序号"].InnerText;
+                            dp.PDXZ = nn["频段选择"].InnerText;
+                            dp.DPXZ = nn["点频选择"].InnerText;
+                            task.DJZYJHGZDPs.Add(dp);
+                        }
+                    }
+                   
+                    task.TNUM = n["同时支持目标数"].InnerText;
+                    task.ZHB = n["任务准备开始时间"].InnerText;
+                    task.RK = n["任务开始时间"].InnerText;
+                    task.GZK = n["跟踪开始时间"].InnerText;
+                    task.KSHX = n["开上行载波时间"].InnerText;
+                    task.GSHX = n["关上行载波时间"].InnerText;
+                    task.GZJ = n["跟踪结束时间"].InnerText;
+                    task.JS = n["任务结束时间"].InnerText;
+                    obj.DJZYJHPlans.Add(task);
+                }
+            }
+
+            return obj;
+        }
     }
 
     /// <summary>
-    /// 设备工作计划-任务
+    /// 测控资源使用计划-任务
     /// </summary>
     [Serializable]
     public class DJZYJH_Plan
@@ -90,6 +162,10 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 测控事件类型
         /// </summary>
         public string SHJ { get; set; }
+        /// <summary>
+        /// 工作点频数量
+        /// </summary>
+        public string FNUM { get; set; }
         /// <summary>
         /// 工作点频
         /// </summary>
