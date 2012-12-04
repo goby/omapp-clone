@@ -269,6 +269,7 @@
     <Content Include="Views\BusinessManage\XiAnCeKongDataList.aspx" />
     <Content Include="Views\Exp\Exp.aspx" />
     <Content Include="Views\Exp\PNF404.aspx" />
+    <Content Include="Views\PlanManage\DJZYJHDetail.aspx" />
     <Content Include="Views\PlanManage\DJZYSQEdit.aspx" />
     <Content Include="Views\PlanManage\ZZGZJHEdit.aspx" />
     <Content Include="Views\PlanManage\ExperimentPlanDetail.aspx" />
@@ -743,6 +744,13 @@
     </Compile>
     <Compile Include="Views\Exp\PNF404.aspx.designer.cs">
       <DependentUpon>PNF404.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlanManage\DJZYJHDetail.aspx.cs">
+      <DependentUpon>DJZYJHDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\PlanManage\DJZYJHDetail.aspx.designer.cs">
+      <DependentUpon>DJZYJHDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\PlanManage\DJZYSQEdit.aspx.cs">
       <DependentUpon>DJZYSQEdit.aspx</DependentUpon>

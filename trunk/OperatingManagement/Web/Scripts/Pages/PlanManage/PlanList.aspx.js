@@ -40,8 +40,8 @@ function sendPlan() {
     });
 
     var ddlType = $('#ddlType');
-    if (ddlType.val() == "SBJH") {
-        _dialog.find('p.content').eq(0).html('不能发送设备工作计划。');
+    if (ddlType.val() == "DJZYJH") {
+        _dialog.find('p.content').eq(0).html('不能发送测控资源使用计划。');
         _dialog.dialog('open');
         return false;
     }
@@ -76,11 +76,8 @@ function showEdit(planid, plantype) {
             case "XXXQ":
                 window.location.href = "/Views/PlanManage/XXXQEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;
-            case "MBXQ":
-                window.location.href = "/Views/PlanManage/MBXQEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
-                break;
-            case "HJXQ":
-                window.location.href = "/Views/PlanManage/HJXQEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
+            case "DJZYJH":
+                window.location.href = "/Views/PlanManage/DJZYJHDetail.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
                 break;
             case "DJZYSQ":
                 window.location.href = "/Views/PlanManage/DJZYSQEdit.aspx?id=" + planid + "&startDate=" + $('#txtStartDate').val() + "&endDate=" + $('#txtEndDate').val();
