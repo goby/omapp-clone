@@ -125,7 +125,7 @@
                             <%# Eval("T")%>
                         </td>
                         <td>
-                            <%# Eval("CreatedTime","{0:"+this.SiteSetting.DateTimeFormat+"}") %>
+                            <%# Eval("CTime","{0:"+this.SiteSetting.DateTimeFormat+"}") %>
                         </td>
                         <td>
                             <button class="button" onclick="return showDetail('<%# Eval("Id") %>')">

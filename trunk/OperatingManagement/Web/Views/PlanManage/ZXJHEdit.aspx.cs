@@ -230,14 +230,22 @@ namespace OperatingManagement.Web.Views.PlanManage
 
             #region  任务管理
             root = xmlDoc.SelectSingleNode("中心运行计划/工作计划/任务管理");
-            foreach (XmlNode n in root.ChildNodes)
+            if (root.ChildNodes.Count > 0)
+            {
+                foreach (XmlNode n in root.ChildNodes)
+                {
+                    wc = new ZXJH_WorkContent();
+                    wc.Work = n["工作"].InnerText;
+                    wc.SYID = n["对应试验ID"].InnerText;
+                    wc.StartTime = n["开始时间"].InnerText;
+                    wc.MinTime = n["最短持续时间"].InnerText;
+                    wc.MaxTime = n["最长持续时间"].InnerText;
+                    listWC.Add(wc);
+                }
+            }
+            else
             {
                 wc = new ZXJH_WorkContent();
-                wc.Work = n["工作"].InnerText;
-                wc.SYID = n["对应试验ID"].InnerText;
-                wc.StartTime = n["开始时间"].InnerText;
-                wc.MinTime = n["最短持续时间"].InnerText;
-                wc.MaxTime = n["最长持续时间"].InnerText;
                 listWC.Add(wc);
             }
             rpWork.DataSource = listWC;
@@ -246,6 +254,11 @@ namespace OperatingManagement.Web.Views.PlanManage
 
             #region  指令制作
             root = xmlDoc.SelectSingleNode("中心运行计划/工作计划/指令制作");
+            if (root.ChildNodes.Count == 0)
+            {
+                cm = new ZXJH_CommandMake();
+                listCM.Add(cm);
+            }
             foreach (XmlNode n in root.ChildNodes)
             {
                 cm = new ZXJH_CommandMake();
@@ -264,6 +277,11 @@ namespace OperatingManagement.Web.Views.PlanManage
 
             #region 实时试验数据处理
             root = xmlDoc.SelectSingleNode("中心运行计划/工作计划/实时试验数据处理");
+            if (root.ChildNodes.Count == 0)
+            {
+                dh = new ZXJH_SYDataHandle();
+                listDH.Add(dh);
+            }
             foreach (XmlNode n in root.ChildNodes)
             {
                 dh = new ZXJH_SYDataHandle();
@@ -285,6 +303,11 @@ namespace OperatingManagement.Web.Views.PlanManage
 
             #region 指挥与监视
             root = xmlDoc.SelectSingleNode("中心运行计划/工作计划/指挥与监视");
+            if (root.ChildNodes.Count == 0)
+            {
+                dam = new ZXJH_DirectAndMonitor();
+                listDM.Add(dam);
+            }
             foreach (XmlNode n in root.ChildNodes)
             {
                 dam = new ZXJH_DirectAndMonitor();
@@ -300,6 +323,11 @@ namespace OperatingManagement.Web.Views.PlanManage
 
             #region 实时控制
             root = xmlDoc.SelectSingleNode("中心运行计划/工作计划/实时控制");
+            if (root.ChildNodes.Count == 0)
+            {
+                rc = new ZXJH_RealTimeControl();
+                listRC.Add(rc);
+            }
             foreach (XmlNode n in root.ChildNodes)
             {
                 rc = new ZXJH_RealTimeControl();
@@ -315,6 +343,11 @@ namespace OperatingManagement.Web.Views.PlanManage
 
             #region 处理评估
             root = xmlDoc.SelectSingleNode("中心运行计划/工作计划/处理评估");
+            if (root.ChildNodes.Count == 0)
+            {
+                sye = new ZXJH_SYEstimate();
+                listE.Add(sye);
+            }
             foreach (XmlNode n in root.ChildNodes)
             {
                 sye = new ZXJH_SYEstimate();
