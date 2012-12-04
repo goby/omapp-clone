@@ -2008,6 +2008,11 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             WordHandle objWord = new WordHandle();
             string sid = HfID.Value;
+            if (string.IsNullOrEmpty(sid))
+            {
+                ltMessage.Text = "计划尚未保存或不存在该计划,无法导出Word文档";
+                return;
+            }
             DJZYSQ obj = new DJZYSQ();
             try
             {

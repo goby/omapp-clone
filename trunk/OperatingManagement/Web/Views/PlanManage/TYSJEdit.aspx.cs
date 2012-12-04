@@ -27,9 +27,9 @@ namespace OperatingManagement.Web.Views.PlanManage
             if (!IsPostBack)
             {
                 btnFormal.Visible = false; 
-                txtStartTime.Attributes.Add("readonly", "true");
-                txtEndTime.Attributes.Add("readonly", "true");
-                ddlSatName_SelectedIndexChanged(null, null);
+                //txtStartTime.Attributes.Add("readonly", "true");
+                //txtEndTime.Attributes.Add("readonly", "true");
+                //ddlSatName_SelectedIndexChanged(null, null);
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
@@ -55,10 +55,29 @@ namespace OperatingManagement.Web.Views.PlanManage
                     btnReturn.Visible = false;
                     hfStatus.Value = "new"; //新建
                     btnSaveTo.Visible = false;
+                    initial();
                 }
 
             }
         }
+
+        public void initial()
+        {
+            try
+            {
+                List<TYSJ_Content> list = new List<TYSJ_Content>();
+
+                list.Add(new TYSJ_Content());
+                rpData.DataSource = list;
+                rpData.DataBind();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("初始化页面出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
         private void BindJhTable(string sID)
         {
             try
@@ -95,24 +114,28 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                List<TYSJ_Content> list = new List<TYSJ_Content>();
+                TYSJ_Content ct;
                 CultureInfo provider = CultureInfo.InvariantCulture;
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(HfFileIndex.Value);
-                XmlNode root = xmlDoc.SelectSingleNode("仿真推演试验数据/SatName");
-                ddlSatName.SelectedValue = root.InnerText;
-                root = xmlDoc.SelectSingleNode("仿真推演试验数据/Type");
-                ddlType.SelectedValue = root.InnerText;
-                root = xmlDoc.SelectSingleNode("仿真推演试验数据/TestItem");
-                ddlTestItem.SelectedValue = root.InnerText;
-                root = xmlDoc.SelectSingleNode("仿真推演试验数据/StartTime");
-                //txtStartTime.Text = root.InnerText;
-                txtStartTime.Text = root.InnerText;
-                //ucStartTimer.Timer = root.InnerText.Substring(8);
-                root = xmlDoc.SelectSingleNode("仿真推演试验数据/EndTime");
-                txtEndTime.Text = root.InnerText;
-                //ucEndTimer.Timer = root.InnerText.Substring(8);
-                root = xmlDoc.SelectSingleNode("仿真推演试验数据/Condition");
-                txtCondition.Text = root.InnerText;
+                XmlNode root = xmlDoc.SelectSingleNode("仿真推演试验数据");
+                foreach (XmlNode n in root.ChildNodes)
+                {
+                    if (n.Name == "Content")
+                    {
+                        ct = new TYSJ_Content();
+                        ct.SatName = n["SatName"].InnerText;
+                        ct.Type = n["Type"].InnerText;
+                        ct.TestItem = n["TestItem"].InnerText;
+                        ct.StartTime = n["StartTime"].InnerText;
+                        ct.EndTime = n["EndTime"].InnerText;
+                        ct.Condition = n["Condition"].InnerText;
+                        list.Add(ct);
+                    }
+                }
+                rpData.DataSource = list;
+                rpData.DataBind();
             }
             catch (Exception ex)
             {
@@ -135,17 +158,47 @@ namespace OperatingManagement.Web.Views.PlanManage
                 isTempJH = GetIsTempJHValue();
 
                 TYSJ objTYSJ = new TYSJ();
-                objTYSJ.SatName = ddlSatName.SelectedItem.Text;
-                objTYSJ.Type = ddlType.SelectedItem.Text;
-                objTYSJ.TestItem = ddlTestItem.SelectedItem.Text;
-                objTYSJ.StartTime = txtStartTime.Text;
-                objTYSJ.EndTime = txtEndTime.Text;
-                objTYSJ.Condition = txtCondition.Text;
+                objTYSJ.SYContents = new List<TYSJ_Content>();
+                TYSJ_Content sc;
+                DateTime startTime = new DateTime(); //用来保存最小开始时间
+                DateTime endTime = new DateTime();  //用来保存最大结束时间
+                
                 objTYSJ.TaskID = ucTask1.SelectedItem.Value;
-                //objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
-                objTYSJ.SatID = ddlSatName.SelectedItem.Value;
+                objTYSJ.SatID = System.Configuration.ConfigurationManager.AppSettings["TYSJSatID"];
+                
                 CultureInfo provider = CultureInfo.InvariantCulture;
+                #region Content
+                foreach (RepeaterItem it in rpData.Items)
+                {
+                    sc = new TYSJ_Content();
+                    DropDownList ddlSatName = (DropDownList)it.FindControl("ddlSatName");
+                    DropDownList ddlType = (DropDownList)it.FindControl("ddlType");
+                    DropDownList ddlTestItem = (DropDownList)it.FindControl("ddlTestItem");
+                    TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                    TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+                    TextBox txtCondition = (TextBox)it.FindControl("txtCondition");
 
+                    if (it.ItemIndex == 0)
+                    {
+                        startTime = DateTime.ParseExact(txtStartTime.Text, "yyyyMMddHHmmss", provider);
+                        endTime = DateTime.ParseExact(txtEndTime.Text, "yyyyMMddHHmmss", provider);
+                    }
+                    else
+                    {
+                        if (startTime > DateTime.ParseExact(txtStartTime.Text, "yyyyMMddHHmmss", provider))
+                        { startTime = DateTime.ParseExact(txtStartTime.Text, "yyyyMMddHHmmss", provider); }
+                        if (endTime < DateTime.ParseExact(txtEndTime.Text, "yyyyMMddHHmmss", provider))
+                        { endTime = DateTime.ParseExact(txtEndTime.Text, "yyyyMMddHHmmss", provider); }
+                    }
+                    sc.SatName = ddlSatName.SelectedItem.Text;
+                    sc.Type = ddlType.SelectedItem.Text;
+                    sc.TestItem = ddlTestItem.SelectedItem.Text;
+                    sc.StartTime = txtStartTime.Text;
+                    sc.EndTime = txtEndTime.Text;
+                    sc.Condition = txtCondition.Text;
+                    objTYSJ.SYContents.Add(sc);
+                }
+                #endregion
                 PlanFileCreator creater = new PlanFileCreator(isTempJH);
                 if (hfStatus.Value == "new")
                 {
@@ -155,10 +208,10 @@ namespace OperatingManagement.Web.Views.PlanManage
                         TaskID = objTYSJ.TaskID,
                         PlanType = "TYSJ",
                         PlanID = (new Sequence()).GetTYSJSequnce(),
-                        //StartTime = DateTime.ParseExact(txtStartTime.Text.Trim(), "yyyyMMddHHmmss", provider),
-                        //EndTime = DateTime.ParseExact(txtEndTime.Text.Trim(), "yyyyMMddHHmmss", provider),
-                        StartTime = DateTime.ParseExact(objTYSJ.StartTime, "yyyyMMddHHmmss", provider),
-                        EndTime = DateTime.ParseExact(objTYSJ.EndTime, "yyyyMMddHHmmss", provider),
+                        //StartTime = DateTime.ParseExact(objTYSJ.StartTime, "yyyyMMddHHmmss", provider),
+                        //EndTime = DateTime.ParseExact(objTYSJ.EndTime, "yyyyMMddHHmmss", provider),
+                        StartTime = startTime,
+                        EndTime = endTime,
                         SRCType = 0,
                         FileIndex = filepath,
                         SatID = objTYSJ.SatID,
@@ -170,7 +223,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 else
                 {
                     //当任务和卫星更新时，需要更新文件名称
-                    if (hfSatID.Value != ddlSatName.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
+                    if (hfSatID.Value != objTYSJ.SatID || hfTaskID.Value != ucTask1.SelectedValue)
                         //if (hfSatID.Value != ucSatellite1.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
                     {
                         string filepath = creater.CreateTYSJFile(objTYSJ, 0);
@@ -179,8 +232,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                         {
                             Id = Convert.ToInt32(HfID.Value),
                             TaskID = objTYSJ.TaskID,
-                            StartTime = DateTime.ParseExact(objTYSJ.StartTime, "yyyyMMddHHmmss", provider),
-                            EndTime = DateTime.ParseExact(objTYSJ.EndTime, "yyyyMMddHHmmss", provider),
+                            StartTime = startTime,
+                            EndTime = endTime,
                             FileIndex = filepath,
                             SatID = objTYSJ.SatID,
                             Reserve = txtNote.Text
@@ -215,19 +268,49 @@ namespace OperatingManagement.Web.Views.PlanManage
                 isTempJH = GetIsTempJHValue();
 
                 TYSJ objTYSJ = new TYSJ();
-                objTYSJ.SatName = ddlSatName.SelectedItem.Text;
-                objTYSJ.Type = ddlType.SelectedItem.Text;
-                objTYSJ.TestItem = ddlTestItem.SelectedItem.Text;
-                objTYSJ.StartTime = txtStartTime.Text;
-                objTYSJ.EndTime = txtEndTime.Text;
-                objTYSJ.Condition = txtCondition.Text;
-                CultureInfo provider = CultureInfo.InvariantCulture;
-
-                PlanFileCreator creater = new PlanFileCreator(isTempJH);
+                objTYSJ.SYContents = new List<TYSJ_Content>();
+                TYSJ_Content sc;
+                DateTime startTime = new DateTime(); //用来保存最小开始时间
+                DateTime endTime = new DateTime();  //用来保存最大结束时间
 
                 objTYSJ.TaskID = ucTask1.SelectedItem.Value;
-                //objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
-                objTYSJ.SatID = ddlSatName.SelectedItem.Value;
+                objTYSJ.SatID = System.Configuration.ConfigurationManager.AppSettings["TYSJSatID"];
+
+                CultureInfo provider = CultureInfo.InvariantCulture;
+                #region SYContent
+                foreach (RepeaterItem it in rpData.Items)
+                {
+                    sc = new TYSJ_Content();
+                    DropDownList ddlSatName = (DropDownList)it.FindControl("ddlSatName");
+                    DropDownList ddlType = (DropDownList)it.FindControl("ddlType");
+                    DropDownList ddlTestItem = (DropDownList)it.FindControl("ddlTestItem");
+                    TextBox txtWC_SYID = (TextBox)it.FindControl("txtWC_SYID");
+                    TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                    TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+                    TextBox txtCondition = (TextBox)it.FindControl("txtCondition");
+
+                    if (it.ItemIndex == 0)
+                    {
+                        startTime = DateTime.ParseExact(txtStartTime.Text, "yyyyMMddHHmmss", provider);
+                        endTime = DateTime.ParseExact(txtEndTime.Text, "yyyyMMddHHmmss", provider);
+                    }
+                    else
+                    {
+                        if (startTime > DateTime.ParseExact(txtStartTime.Text, "yyyyMMddHHmmss", provider))
+                        { startTime = DateTime.ParseExact(txtStartTime.Text, "yyyyMMddHHmmss", provider); }
+                        if (endTime < DateTime.ParseExact(txtEndTime.Text, "yyyyMMddHHmmss", provider))
+                        { endTime = DateTime.ParseExact(txtEndTime.Text, "yyyyMMddHHmmss", provider); }
+                    }
+                    sc.SatName = ddlSatName.SelectedItem.Text;
+                    sc.Type = ddlType.SelectedItem.Text;
+                    sc.TestItem = ddlTestItem.SelectedItem.Text;
+                    sc.StartTime = txtStartTime.Text;
+                    sc.EndTime = txtEndTime.Text;
+                    sc.Condition = txtCondition.Text;
+                    objTYSJ.SYContents.Add(sc);
+                }
+                #endregion
+                PlanFileCreator creater = new PlanFileCreator(isTempJH);
                 int planid = (new Sequence()).GetTYSJSequnce();
 
                 //检查文件是否已经存在
@@ -243,8 +326,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TaskID = objTYSJ.TaskID,
                     PlanType = "TYSJ",
                     PlanID = planid,
-                    StartTime = DateTime.ParseExact(objTYSJ.StartTime, "yyyyMMddHHmmss", provider),
-                    EndTime = DateTime.ParseExact(objTYSJ.EndTime, "yyyyMMddHHmmss", provider),
+                    StartTime = startTime,
+                    EndTime = endTime,
                     SRCType = 0,
                     FileIndex = filepath,
                     SatID = objTYSJ.SatID,
@@ -252,7 +335,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 };
                 var result = jh.Add();
 
-                txtJXH.Text = planid.ToString();
+                txtJXH.Text = planid.ToString("0000");
                 trMessage.Visible = true;
                 ltMessage.Text = "计划保存成功";
                 //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
@@ -271,26 +354,33 @@ namespace OperatingManagement.Web.Views.PlanManage
         /// <param name="e"></param>
         protected void ddlSatName_SelectedIndexChanged(object sender, EventArgs e)
         {
+            DropDownList ddlSatName = sender as DropDownList;
+            //Repeater rp = ddlSatName.Parent.Parent as Repeater;
+            //int n = ((RepeaterItem)ddlSatName.Parent).ItemIndex;
+            //DropDownList ddlType = rp.Items[n].FindControl("ddlType") as DropDownList;
+            RepeaterItem rpi = (RepeaterItem)ddlSatName.Parent;
+            DropDownList ddlType = rpi.FindControl("ddlType") as DropDownList;
+
             switch (ddlSatName.SelectedItem.Text)
             {
                 case "探索三号卫星":
                     ddlType.Items.Clear();
                     ddlType.Items.Add(new ListItem("GEO目标观测试验"));
                     ddlType.Items.Add(new ListItem("LEO目标成像试验"));
-                    ddlType_SelectedIndexChanged(null, null);
+                    ddlType_SelectedIndexChanged(ddlType, null);
                     break;
                 case "探索四号卫星":
                     ddlType.Items.Clear();
                     ddlType.Items.Add(new ListItem("释放抓捕目标试验"));
                     ddlType.Items.Add(new ListItem("逼近停靠试验"));
                     ddlType.Items.Add(new ListItem("遥操作试验"));
-                    ddlType_SelectedIndexChanged(null, null);
+                    ddlType_SelectedIndexChanged(ddlType, null);
                     break;
                 case "探索五号卫星":
                     ddlType.Items.Clear();
                     ddlType.Items.Add(new ListItem("远程自主快速机动试验"));
                     ddlType.Items.Add(new ListItem("TS-5-B卫星在轨施放试验"));
-                    ddlType_SelectedIndexChanged(null, null);
+                    ddlType_SelectedIndexChanged(ddlType, null);
                     break;
             }
         }
@@ -301,6 +391,13 @@ namespace OperatingManagement.Web.Views.PlanManage
         /// <param name="e"></param>
         protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
         {
+            DropDownList ddlType = sender as DropDownList;
+            //Repeater rp = ddlType.Parent.Parent as Repeater;
+            //int n = ((RepeaterItem)ddlType.Parent).ItemIndex;
+            //DropDownList ddlTestItem = rp.Items[n].FindControl("ddlTestItem") as DropDownList;
+            RepeaterItem rpi = (RepeaterItem)ddlType.Parent;
+            DropDownList ddlTestItem = rpi.FindControl("ddlTestItem") as DropDownList;
+
             switch (ddlType.SelectedItem.Text)
             {
                 case "GEO目标观测试验":
@@ -409,19 +506,49 @@ namespace OperatingManagement.Web.Views.PlanManage
             try
             {
                 TYSJ objTYSJ = new TYSJ();
-                objTYSJ.SatName = ddlSatName.SelectedItem.Text;
-                objTYSJ.Type = ddlType.SelectedItem.Text;
-                objTYSJ.TestItem = ddlTestItem.SelectedItem.Text;
-                objTYSJ.StartTime = txtStartTime.Text;
-                objTYSJ.EndTime = txtEndTime.Text;
-                objTYSJ.Condition = txtCondition.Text;
-                CultureInfo provider = CultureInfo.InvariantCulture;
-
-                PlanFileCreator creater = new PlanFileCreator();
+                objTYSJ.SYContents = new List<TYSJ_Content>();
+                TYSJ_Content sc;
+                DateTime startTime = new DateTime(); //用来保存最小开始时间
+                DateTime endTime = new DateTime();  //用来保存最大结束时间
 
                 objTYSJ.TaskID = ucTask1.SelectedItem.Value;
-                //objTYSJ.SatID = ucSatellite1.SelectedItem.Value;
-                objTYSJ.SatID = ddlSatName.SelectedItem.Value;
+                objTYSJ.SatID = System.Configuration.ConfigurationManager.AppSettings["TYSJSatID"];
+
+                CultureInfo provider = CultureInfo.InvariantCulture;
+                #region Content
+                foreach (RepeaterItem it in rpData.Items)
+                {
+                    sc = new TYSJ_Content();
+                    DropDownList ddlSatName = (DropDownList)it.FindControl("ddlSatName");
+                    DropDownList ddlType = (DropDownList)it.FindControl("ddlType");
+                    DropDownList ddlTestItem = (DropDownList)it.FindControl("ddlTestItem");
+                    TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                    TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+                    TextBox txtCondition = (TextBox)it.FindControl("txtCondition");
+
+                    if (it.ItemIndex == 0)
+                    {
+                        startTime = DateTime.ParseExact(txtStartTime.Text, "yyyyMMddHHmmss", provider);
+                        endTime = DateTime.ParseExact(txtEndTime.Text, "yyyyMMddHHmmss", provider);
+                    }
+                    else
+                    {
+                        if (startTime > DateTime.ParseExact(txtStartTime.Text, "yyyyMMddHHmmss", provider))
+                        { startTime = DateTime.ParseExact(txtStartTime.Text, "yyyyMMddHHmmss", provider); }
+                        if (endTime < DateTime.ParseExact(txtEndTime.Text, "yyyyMMddHHmmss", provider))
+                        { endTime = DateTime.ParseExact(txtEndTime.Text, "yyyyMMddHHmmss", provider); }
+                    }
+                    sc.SatName = ddlSatName.SelectedItem.Text;
+                    sc.Type = ddlType.SelectedItem.Text;
+                    sc.TestItem = ddlTestItem.SelectedItem.Text;
+                    sc.StartTime = txtStartTime.Text;
+                    sc.EndTime = txtEndTime.Text;
+                    sc.Condition = txtCondition.Text;
+                    objTYSJ.SYContents.Add(sc);
+                }
+                #endregion
+                PlanFileCreator creater = new PlanFileCreator();
+
                 int planid = (new Sequence()).GetTYSJSequnce();
 
                 //检查文件是否已经存在
@@ -437,8 +564,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TaskID = objTYSJ.TaskID,
                     PlanType = "TYSJ",
                     PlanID = planid,
-                    StartTime = DateTime.ParseExact(objTYSJ.StartTime, "yyyyMMddHHmmss", provider),
-                    EndTime = DateTime.ParseExact(objTYSJ.EndTime, "yyyyMMddHHmmss", provider),
+                    StartTime = startTime,
+                    EndTime = endTime,
                     SRCType = 0,
                     FileIndex = filepath,
                     SatID = objTYSJ.SatID,
@@ -462,7 +589,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 #endregion
 
-                txtJXH.Text = planid.ToString();
+                txtJXH.Text = planid.ToString("0000");
                 trMessage.Visible = true;
                 ltMessage.Text = "计划保存成功";
                
@@ -472,6 +599,142 @@ namespace OperatingManagement.Web.Views.PlanManage
                 throw (new AspNetException("另存计划信息出现异常，异常原因", ex));
             }
             finally { }
+        }
+
+        protected void rpData_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "Add")
+            {
+                List<TYSJ_Content> list2 = new List<TYSJ_Content>();
+                TYSJ_Content sc;
+                Repeater rp = (Repeater)source;
+                foreach (RepeaterItem it in rp.Items)
+                {
+                    sc = new TYSJ_Content();
+                    DropDownList ddlSatName = (DropDownList)it.FindControl("ddlSatName");
+                    DropDownList ddlType = (DropDownList)it.FindControl("ddlType");
+                    DropDownList ddlTestItem = (DropDownList)it.FindControl("ddlTestItem");
+                    TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                    TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+                    TextBox txtCondition = (TextBox)it.FindControl("txtCondition");
+                    if (CheckCtrlExits(ddlSatName, "卫星名称"))
+                        sc.SatName = ddlSatName.SelectedItem.Text;
+                    else
+                        return;
+                    if (CheckCtrlExits(ddlType, "试验类别"))
+                        sc.Type = ddlType.SelectedItem.Text;
+                    else
+                        return;
+                    if (CheckCtrlExits(ddlTestItem, "试验项目"))
+                        sc.TestItem = ddlTestItem.SelectedItem.Text;
+                    else
+                        return;
+
+                    if (CheckCtrlExits(txtStartTime, "试验开始时间"))
+                        sc.StartTime = txtStartTime.Text;
+                    else
+                        return;
+
+                    if (CheckCtrlExits(txtEndTime, "试验结束时间"))
+                        sc.EndTime = txtEndTime.Text;
+                    else
+                        return;
+
+                    if (CheckCtrlExits(txtCondition, "试验条件"))
+                        sc.Condition = txtCondition.Text;
+                    else
+                        return;
+
+                    list2.Add(sc);
+                }
+                sc = new TYSJ_Content();
+                list2.Add(sc);
+                rp.DataSource = list2;
+                rp.DataBind();
+
+            }
+            if (e.CommandName == "Del")
+            {
+                List<TYSJ_Content> list2 = new List<TYSJ_Content>();
+                TYSJ_Content sc;
+                Repeater rp = (Repeater)source;
+                if (rp.Items.Count <= 1)
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
+                }
+                else
+                {
+                    foreach (RepeaterItem it in rp.Items)
+                    {
+                        if (e.Item.ItemIndex != it.ItemIndex)
+                        {
+                            sc = new TYSJ_Content();
+                            DropDownList ddlSatName = (DropDownList)it.FindControl("ddlSatName");
+                            DropDownList ddlType = (DropDownList)it.FindControl("ddlType");
+                            DropDownList ddlTestItem = (DropDownList)it.FindControl("ddlTestItem");
+                            TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                            TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+                            TextBox txtCondition = (TextBox)it.FindControl("txtCondition");
+
+                            sc.SatName = ddlSatName.SelectedItem.Text;
+                            sc.Type = ddlType.SelectedItem.Text;
+                            sc.TestItem = ddlTestItem.SelectedItem.Text;
+                            sc.StartTime = txtStartTime.Text;
+                            sc.EndTime = txtEndTime.Text;
+                            sc.Condition = txtCondition.Text;
+                            
+                            list2.Add(sc);
+                        }
+                    }
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
+            }
+        }
+
+        private bool CheckCtrlExits(Control ctrl, string msg)
+        {
+            if (ctrl != null)
+                return true;
+            else
+            {
+                ltMessage.Text = string.Format("{0}的内容不能为空", msg);
+                return false;
+            }
+        }
+
+        protected void rpData_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                TYSJ_Content sc = (TYSJ_Content)e.Item.DataItem;
+                DropDownList ddlSatName = (DropDownList)e.Item.FindControl("ddlSatName");
+                if (null != sc && !string.IsNullOrEmpty(sc.SatName))
+                {
+                    ListItem item=ddlSatName.Items.FindByText(sc.SatName);
+                    if (item != null)
+                    { item.Selected = true; }
+                    //ddlSatName.SelectedValue = sc.SatName;
+                }
+                ddlSatName_SelectedIndexChanged(ddlSatName, null);
+                DropDownList ddlType = (DropDownList)e.Item.FindControl("ddlType");
+                if (null != sc && !string.IsNullOrEmpty(sc.Type))
+                {
+                    ListItem item = ddlType.Items.FindByText(sc.Type);
+                    if (item != null)
+                    { item.Selected = true; }
+                    //ddlType.SelectedValue = sc.Type;
+                }
+                ddlType_SelectedIndexChanged(ddlType, null);
+                DropDownList ddlTestItem = (DropDownList)e.Item.FindControl("ddlTestItem");
+                if (null != sc && !string.IsNullOrEmpty(sc.TestItem))
+                {
+                    ListItem item = ddlTestItem.Items.FindByText(sc.TestItem);
+                    if (item != null)
+                    { item.Selected = true; }
+                    //ddlTestItem.SelectedValue = sc.TestItem;
+                }
+            }
         }
     }
 }

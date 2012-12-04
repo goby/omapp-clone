@@ -138,10 +138,10 @@ function ComparePreTimeAndTrackEndTime(o, tid) {
     var resultValue = true;
     var trackdate = o.value;
     var predate=$("#" + tid).val();
-//    var PreTime = new Date(predate.substr(0, 4), predate.substr(4, 2), predate.substr(6, 2), predate.substr(8, 2), predate.substr(10, 2), predate.substr(12, 2));
-//    var TrackEndTime = new Date(trackdate.substr(0, 4), trackdate.substr(4, 2), trackdate.substr(6, 2), trackdate.substr(8, 2), trackdate.substr(10, 2), trackdate.substr(12, 2));
-//    PreTime.setTime(PreTime.getTime() + 3 * 60 * 60 * 1000);
-    if (predate < trackdate) {
+    var PreTime = new Date(predate.substr(0, 4), predate.substr(4, 2), predate.substr(6, 2), predate.substr(8, 2), predate.substr(10, 2), predate.substr(12, 2));
+    var TrackEndTime = new Date(trackdate.substr(0, 4), trackdate.substr(4, 2), trackdate.substr(6, 2), trackdate.substr(8, 2), trackdate.substr(10, 2), trackdate.substr(12, 2));
+    PreTime.setTime(PreTime.getTime() + 3 * 60 * 60 * 1000);
+    if (PreTime < TrackEndTime) {
         $(o).css({ "background-color": "#ffcccc" });
         resultValue = false;
         if ($("#hidtracktimeonblur").val().indexOf(o.id) < 0){
