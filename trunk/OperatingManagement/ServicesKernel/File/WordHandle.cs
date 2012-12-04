@@ -40,6 +40,7 @@ namespace ServicesKernel.File
             oWord = new Word.Application();
             oWord.Visible = false;
             oDoc = oWord.Documents.Add(ref oMissing, ref oMissing, ref oMissing, ref oMissing);
+            object type = WdBreakType.wdSectionBreakContinuous; 
 
             //文档中创建表格
             Word.Table newTable = oDoc.Tables.Add(oWord.Selection.Range, 1, 9, ref oMissing, ref oMissing);
@@ -75,31 +76,34 @@ namespace ServicesKernel.File
             CultureInfo provider = CultureInfo.InvariantCulture;
             DateTime preTime = new DateTime();
             Word.Row row;
+            string strDP = "";
             for (int i = 0; i < objSQ.DMJHTasks.Count; i++)
             {
                 //在表格中增加行
-               
-               foreach (DJZYSQ_Task_GZDP dp in objSQ.DMJHTasks[i].GZDPs)
-               {
-                   row = oDoc.Content.Tables[1].Rows.Add(ref oMissing);
-                   preTime = DateTime.ParseExact(objSQ.DMJHTasks[i].ZHB, "yyyyMMddHHmmss", provider);
-                   row.Cells[1].Range.Text = preTime.ToString("yyyy年MM月dd日");
-                   row.Cells[2].Range.Text = objSQ.DMJHTasks[i].GZDY;
-                   row.Cells[3].Range.Text = objSQ.DMJHTasks[i].SBDH;
-                   foreach (PlanParameter p in listPara)
-                   {
-                       if (p.Value == dp.PDXZ)
-                       {
-                           row.Cells[4].Range.Text = p.Text;
-                           break;
-                       }
-                   }
-                   row.Cells[5].Range.Text = objSQ.DMJHTasks[i].QC;
-                   row.Cells[6].Range.Text = objSQ.DMJHTasks[i].RK;
-                   row.Cells[7].Range.Text = objSQ.DMJHTasks[i].GZK;
-                   row.Cells[8].Range.Text = objSQ.DMJHTasks[i].GZJ;
-                   row.Cells[9].Range.Text = objSQ.DMJHTasks[i].JS;
-               }
+                row = oDoc.Content.Tables[1].Rows.Add(ref oMissing);
+                preTime = DateTime.ParseExact(objSQ.DMJHTasks[i].ZHB, "yyyyMMddHHmmss", provider);
+                row.Cells[1].Range.Text = preTime.ToString("yyyy年MM月dd日");
+                row.Cells[2].Range.Text = objSQ.DMJHTasks[i].GZDY;
+                row.Cells[3].Range.Text = objSQ.DMJHTasks[i].SBDH;
+                for (int j = 0; j < objSQ.DMJHTasks[i].GZDPs.Count;j++ )
+                {
+                    foreach (PlanParameter p in listPara)
+                    {
+                        if (p.Value == objSQ.DMJHTasks[i].GZDPs[j].PDXZ)
+                        {
+                            strDP += p.Text;
+                            break;
+                        }
+                    }
+                    if (j < objSQ.DMJHTasks[i].GZDPs.Count-1)
+                    { strDP += "\r\n"; }
+                }
+               row.Cells[4].Range.Text = strDP;
+               row.Cells[5].Range.Text = objSQ.DMJHTasks[i].QC;
+               row.Cells[6].Range.Text = objSQ.DMJHTasks[i].RK;
+               row.Cells[7].Range.Text = objSQ.DMJHTasks[i].GZK;
+               row.Cells[8].Range.Text = objSQ.DMJHTasks[i].GZJ;
+               row.Cells[9].Range.Text = objSQ.DMJHTasks[i].JS;
                
             }
             //插入换行符
