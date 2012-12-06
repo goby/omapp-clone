@@ -10,6 +10,7 @@ using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.WebKernel.Route;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
+using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.Framework;
 using System.Web.Security;
@@ -87,7 +88,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<JH> jh = (new JH(isTempJH)).SelectByIDS(sID);
                 HfFileIndex.Value = jh[0].FileIndex;
                 hfTaskID.Value = jh[0].TaskID.ToString();
-                ucTask1.SelectedValue = jh[0].TaskID.ToString();
+                string outTaskNo = new Task().GetOutTaskNo(jh[0].TaskID, jh[0].SatID);
+                if (!outTaskNo.Equals(string.Empty))
+                    ucTask1.SelectedValue = outTaskNo;
                 txtJXH.Text = jh[0].PlanID.ToString("0000");
                 hfSatID.Value = jh[0].SatID;
                 //string[] strTemp = jh[0].FileIndex.Split('_');
@@ -711,27 +714,30 @@ namespace OperatingManagement.Web.Views.PlanManage
                 DropDownList ddlSatName = (DropDownList)e.Item.FindControl("ddlSatName");
                 if (null != sc && !string.IsNullOrEmpty(sc.SatName))
                 {
-                    ListItem item=ddlSatName.Items.FindByText(sc.SatName);
-                    if (item != null)
-                    { item.Selected = true; }
+                    ddlSatName.SelectedIndex = ddlSatName.Items.IndexOf(ddlSatName.Items.FindByText(sc.SatName));
+                    //ListItem item=ddlSatName.Items.FindByText(sc.SatName);
+                    //if (item != null)
+                    //{ item.Selected = true; }
                     //ddlSatName.SelectedValue = sc.SatName;
                 }
                 ddlSatName_SelectedIndexChanged(ddlSatName, null);
                 DropDownList ddlType = (DropDownList)e.Item.FindControl("ddlType");
                 if (null != sc && !string.IsNullOrEmpty(sc.Type))
                 {
-                    ListItem item = ddlType.Items.FindByText(sc.Type);
-                    if (item != null)
-                    { item.Selected = true; }
+                    ddlType.SelectedIndex = ddlType.Items.IndexOf(ddlType.Items.FindByText(sc.Type));
+                    //ListItem item = ddlType.Items.FindByText(sc.Type);
+                    //if (item != null)
+                    //{ item.Selected = true; }
                     //ddlType.SelectedValue = sc.Type;
                 }
                 ddlType_SelectedIndexChanged(ddlType, null);
                 DropDownList ddlTestItem = (DropDownList)e.Item.FindControl("ddlTestItem");
                 if (null != sc && !string.IsNullOrEmpty(sc.TestItem))
                 {
-                    ListItem item = ddlTestItem.Items.FindByText(sc.TestItem);
-                    if (item != null)
-                    { item.Selected = true; }
+                    ddlTestItem.SelectedIndex = ddlTestItem.Items.IndexOf(ddlTestItem.Items.FindByText(sc.TestItem));
+                    //ListItem item = ddlTestItem.Items.FindByText(sc.TestItem);
+                    //if (item != null)
+                    //{ item.Selected = true; }
                     //ddlTestItem.SelectedValue = sc.TestItem;
                 }
             }
