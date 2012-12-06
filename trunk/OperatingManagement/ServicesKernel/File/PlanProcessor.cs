@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Configuration;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.DataAccessLayer.BusinessManage;
+using ServicesKernel.GDFX;
 
 namespace OperatingManagement.ServicesKernel.File
 {
@@ -1705,7 +1706,12 @@ namespace OperatingManagement.ServicesKernel.File
                             oAct.NextActionSeqs.Add(strTmp);
                         }
                         #endregion
-                        dicActions.Add(oAct.Code, oAct);
+                        if (!dicActions.ContainsKey(oAct.Code))
+                            dicActions.Add(oAct.Code, oAct);
+                        else
+                        {
+                            Logger.GetLogger().Error(string.Format("出现相同Code:{0}的动作", oAct.Code));
+                        }
                     }
                 }
             }
@@ -1959,15 +1965,15 @@ namespace OperatingManagement.ServicesKernel.File
             if (attr != null)
             {
                 if (attr.Value == string.Empty)
-                    result = string.Format("名为{0}的属性值为空", name);
+                    result = string.Format("名为{0}的属性值为空，ParentNode{1}", name, node.ToString());
                 else
                 {
                     if (!int.TryParse(attr.Value, out value))
-                        result = string.Format("名为{0}的属性值{1}不符合数值格式", name, attr.Value);
+                        result = string.Format("名为{0}的属性值{1}不符合数值格式，ParentNode{1}", name, node.ToString());
                 }
             }
             else
-                result = string.Format("名为{0}的属性获取不到", name);
+                result = string.Format("名为{0}的属性获取不到，ParentNode{1}", name, node.ToString());
             return value;
         }
 
@@ -1987,10 +1993,10 @@ namespace OperatingManagement.ServicesKernel.File
             {
                 value = node.Value;
                 if (value == string.Empty)
-                    result = string.Format("名为{0}的元素值为空", name);
+                    result = string.Format("名为{0}的元素值为空，ParentNode{1}", name, parentNode.ToString());
             }
             else
-                result = string.Format("名为{0}的元素获取不到", name);
+                result = string.Format("名为{0}的元素获取不到，ParentNode{1}", name, parentNode.ToString());
             return value;
         }
 

@@ -39,7 +39,7 @@
         <tr>
             <th class="style1">任务(<span class="red">*</span>)</th>
             <td>
-                <uc4:ucOutTask ID="ucOutTask1" runat="server" />
+                <uc4:ucOutTask ID="ucOutTask1" runat="server" AllowBlankItem="False" />
             </td>
         </tr>
         <tr>
