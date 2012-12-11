@@ -259,6 +259,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                         break;
                     case Framework.FieldVerifyResult.Success:
                         msg = "编辑卫星成功。";
+
                         BindControls();
                         BindZYSXList();
                         BindRepeaterItems();
@@ -476,6 +477,8 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                         {
                             zysx.PValue = ZYSXIDPValueDic[zysx.Id];
                         }
+                        else
+                            zysx.PValue = string.Empty;
                         List<Control> controlsList = zysx.GenerateControls();
                         foreach (Control ctl in controlsList)
                         {

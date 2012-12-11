@@ -43,7 +43,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <summary>
         /// 实验程序类型
         /// </summary>
-        public SYCXType PType { get; set; }
+        public string PType { get; set; }
         /// <summary>
         /// 试验项目
         /// </summary>
@@ -128,7 +128,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                         ID = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
                         TaskID = dr["TASKID"].ToString(),
-                        PType = (SYCXType)(Convert.ToInt32(dr["PTYPE"].ToString())),
+                        PType = dr["PTYPE"].ToString(),
                         PName = dr["PNAME"].ToString(),
                         PNID = Convert.ToInt32(dr["PNID"].ToString()),
                         PlanID = Convert.ToInt32(dr["PLANID"].ToString()),
@@ -168,7 +168,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                         ID = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
                         TaskID = dr["TASKID"].ToString(),
-                        PType = (SYCXType)(Convert.ToInt32(dr["PTYPE"].ToString())),
+                        PType = dr["PTYPE"].ToString(),
                         PName = dr["PNAME"].ToString(),
                         PNID = Convert.ToInt32(dr["PNID"].ToString()),
                         PlanID = Convert.ToInt32(dr["PLANID"].ToString()),

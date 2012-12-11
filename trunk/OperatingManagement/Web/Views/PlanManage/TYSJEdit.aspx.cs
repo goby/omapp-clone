@@ -715,30 +715,18 @@ namespace OperatingManagement.Web.Views.PlanManage
                 if (null != sc && !string.IsNullOrEmpty(sc.SatName))
                 {
                     ddlSatName.SelectedIndex = ddlSatName.Items.IndexOf(ddlSatName.Items.FindByText(sc.SatName));
-                    //ListItem item=ddlSatName.Items.FindByText(sc.SatName);
-                    //if (item != null)
-                    //{ item.Selected = true; }
-                    //ddlSatName.SelectedValue = sc.SatName;
                 }
                 ddlSatName_SelectedIndexChanged(ddlSatName, null);
                 DropDownList ddlType = (DropDownList)e.Item.FindControl("ddlType");
                 if (null != sc && !string.IsNullOrEmpty(sc.Type))
                 {
                     ddlType.SelectedIndex = ddlType.Items.IndexOf(ddlType.Items.FindByText(sc.Type));
-                    //ListItem item = ddlType.Items.FindByText(sc.Type);
-                    //if (item != null)
-                    //{ item.Selected = true; }
-                    //ddlType.SelectedValue = sc.Type;
                 }
                 ddlType_SelectedIndexChanged(ddlType, null);
                 DropDownList ddlTestItem = (DropDownList)e.Item.FindControl("ddlTestItem");
                 if (null != sc && !string.IsNullOrEmpty(sc.TestItem))
                 {
                     ddlTestItem.SelectedIndex = ddlTestItem.Items.IndexOf(ddlTestItem.Items.FindByText(sc.TestItem));
-                    //ListItem item = ddlTestItem.Items.FindByText(sc.TestItem);
-                    //if (item != null)
-                    //{ item.Selected = true; }
-                    //ddlTestItem.SelectedValue = sc.TestItem;
                 }
             }
         }

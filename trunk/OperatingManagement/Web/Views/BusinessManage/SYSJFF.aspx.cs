@@ -160,8 +160,10 @@ namespace OperatingManagement.Web.Views.BusinessManage
             if (fromSearchBtn)
             {
                 sType = ddlDataType.SelectedValue;
-                satID = (ucSatellite1.SelectedIndex == 0 ? "" : ucSatellite1.SelectedValue);
-                taskNo = (ucTask1.SelectedIndex == 0 ? "" : ucTask1.SelectedValue);
+                if (ucOutTask1.SelectedIndex != 0)
+                {
+                    new Task().GetTaskNoSatID(ucOutTask1.SelectedValue, out taskNo, out satID);
+                }
                 cpFZData.CurrentPage = 1;
                 cpUFData.CurrentPage = 1;
                 cpYCData.CurrentPage = 1;
@@ -396,7 +398,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             #endregion
 
             BizFileCreator oBFCreator;
-            string taskNo = ucTask1.SelectedValue;
+            string taskNo = ucOutTask1.SelectedValue;
 
             switch (ddlDataType.SelectedValue)
             {

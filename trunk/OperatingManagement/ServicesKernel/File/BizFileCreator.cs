@@ -273,7 +273,7 @@ namespace ServicesKernel.File
                 oInfo = oInfo.SelectByID();
                 oFile.CTime = ycinfo.CTime;//DateTime.Now;
                 oFile.From = Param.SourceName;
-                oFile.TaskID = taskNo;
+                oFile.TaskID = GetSendingTaskName(taskNo);
                 oFile.InfoTypeName = oInfo.DATANAME + "(" + oInfo.EXCODE + ")";
                 oFile.LineCount = 1;
                 XYXSInfo oXyxs = new XYXSInfo();
@@ -406,9 +406,9 @@ namespace ServicesKernel.File
                 oInfo = oInfo.SelectByID();
                 oFile.CTime = DateTime.Now;
                 oFile.From = Param.SourceName;
-                oFile.TaskID = taskNo;
+                oFile.TaskID = GetSendingTaskName(taskNo);
                 oFile.InfoTypeName = oInfo.DATANAME + "(" + oInfo.EXCODE + ")";
-                oFile.LineCount = 1;
+                oFile.LineCount = datas.Length;
                 XYXSInfo oXyxs = new XYXSInfo();
                 oXyxs = oXyxs.GetByAddrMark(tgtList[0]);
                 oFile.To = oXyxs.ADDRName + tgtList[0] + "(" + oXyxs.EXCODE + ")";
@@ -703,6 +703,21 @@ namespace ServicesKernel.File
                 iIdx += 8;
             }
             return btData;
+        }
+
+        /// <summary>
+        /// 通过内部任务号和卫星号获取外部任务代号
+        /// </summary>
+        /// <param name="taskID"></param>
+        /// <param name="satID"></param>
+        /// <returns></returns>
+        private string GetSendingTaskName(string taskno)
+        {
+            string taskID = string.Empty;
+            string satID = string.Empty;
+            Task otask = new Task();
+            otask.GetTaskNoSatID(taskno, out taskID, out satID);
+            return otask.GetTaskName(taskID, satID) + "(" + otask.GetObjectFlagByTaskNo(taskID, satID) + ")";
         }
     }
 }

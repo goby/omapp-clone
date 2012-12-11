@@ -1,8 +1,8 @@
 ﻿<%@ Page MaintainScrollPositionOnPostback="true" MasterPageFile="~/Site.Master" Language="C#"
     AutoEventWireup="true" CodeBehind="ZXJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.ZXJHEdit" %>
 
-<%@ Register Src="../../ucs/ucTask.ascx" TagName="ucTask" TagPrefix="uc1" %>
 <%@ Register Src="../../ucs/ucSatellite.ascx" TagName="ucSatellite" TagPrefix="uc2" %>
+<%@ Register src="../../ucs/ucOutTask.ascx" tagname="ucOutTask" tagprefix="uc3" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -50,13 +50,14 @@
                         任务代号(<span class="red">*</span>)
                     </th>
                     <td style="width: 332px;">
-                        <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" />
+                        <uc3:ucOutTask ID="ucOutTask1" runat="server" AllowBlankItem="False" />
                     </td>
                     <th style="width: 120px;">
-                        卫星(<span class="red">*</span>)
+                        日期
                     </th>
                     <td>
-                        <uc2:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
+                        <asp:TextBox ID="txtDate" CssClass="text" runat="server" MaxLength="10" ClientIDMode="Static"
+                            onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
@@ -84,17 +85,10 @@
                 </tr>
                 <tr>
                     <th>
-                        日期
-                    </th>
-                    <td>
-                        <asp:TextBox ID="txtDate" CssClass="text" runat="server" MaxLength="10" ClientIDMode="Static"
-                            onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
-                    </td>
-                    <th style="width: 100px;">
                         备注
                     </th>
-                    <td>
-                        <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="100" Width="310px"
+                    <td colspan="3">
+                        <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="100" Width="620px"
                             Height="40px" TextMode="MultiLine"></asp:TextBox>
                     </td>
                 </tr>
@@ -191,6 +185,14 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <th>
+                                            卫星代号
+                                        </th>
+                                        <td colspan="3">
+                                            <uc2:ucSatellite ID="ddlSYSatID" runat="server" AllowBlankItem="False" />
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td colspan="4">
                                             <asp:Repeater ID="rpSYContentSC" runat="server" OnItemCommand="rpSYContentSC_ItemCommand" 
                                              OnItemDataBound="rpSYContentSC_ItemDataBound">
@@ -204,13 +206,14 @@
                                                             数传-站编号
                                                         </th>
                                                         <td style="width: 270px;">
-                                                            <asp:TextBox ID="txtSCStationNO" runat="server" CssClass="text" Text='<%# Eval("SY_SCStationNO")%>'></asp:TextBox>
+                                                            <asp:DropDownList ID="ddlDW" Width="260px"  runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlDW_SelectedIndexChanged">
+                                                                </asp:DropDownList>
                                                         </td>
                                                         <th style="width: 120px;">
                                                             数传-设备编号
                                                         </th>
                                                         <td style="width: 265px;">
-                                                            <asp:TextBox ID="txtSCEquipmentNO" runat="server" CssClass="text" Text='<%# Eval("SY_SCEquipmentNO")%>'></asp:TextBox>
+                                                            <asp:DropDownList ID="ddlSB" runat="server"></asp:DropDownList>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -222,7 +225,6 @@
                                                                 <asp:ListItem Value="S">S</asp:ListItem>
                                                                 <asp:ListItem Value="X">X</asp:ListItem>
                                                             </asp:DropDownList>
-                                                            <%--<asp:TextBox ID="txtSCFrequencyBand" runat="server" CssClass="text" Text='<%# Eval("SY_SCFrequencyBand")%>'></asp:TextBox>--%>
                                                         </td>
                                                         <th>
                                                             数传-圈次
@@ -251,7 +253,8 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="4" style="text-align:right">
+                                                        <td colspan="2"></td>
+                                                        <td colspan="2">
                                                         <asp:Button ID="btnSYSCAdd" CausesValidation="False" CssClass="button" runat="server"
                                                 CommandName="Add" Text="添加" />
                                             <asp:Button ID="btnSYSCDel" CausesValidation="False" CssClass="button" runat="server"
@@ -267,7 +270,8 @@
                                     </tr>
                                     <tr>
                                         <td colspan="4">
-                                            <asp:Repeater ID="rpSYContentCK" runat="server" OnItemCommand="rpSYContentCK_ItemCommand">
+                                            <asp:Repeater ID="rpSYContentCK" runat="server" OnItemCommand="rpSYContentCK_ItemCommand"
+                                             OnItemDataBound="rpSYContentCK_ItemDataBound">
                                                 <HeaderTemplate>
                                                     <table class="list">
                                                         <tbody>
@@ -278,13 +282,14 @@
                                                             测控-站编号
                                                         </th>
                                                         <td style="width: 270px;">
-                                                            <asp:TextBox ID="txtCKStationNO" runat="server" CssClass="text" Text='<%# Eval("SY_CKStationNO")%>'></asp:TextBox>
+                                                            <asp:DropDownList ID="ddlDW" Width="260px"  runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlDW_SelectedIndexChanged">
+                                                                </asp:DropDownList>
                                                         </td>
                                                         <th style="width: 120px;">
                                                             测控-设备编号
                                                         </th>
                                                         <td style="width: 265px;">
-                                                            <asp:TextBox ID="txtCKEquipmentNO" runat="server" CssClass="text" Text='<%# Eval("SY_CKEquipmentNO")%>'></asp:TextBox>
+                                                            <asp:DropDownList ID="ddlSB" runat="server"></asp:DropDownList>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -376,16 +381,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>
-                                            卫星代号
-                                        </th>
-                                        <td>
-                                            <uc2:ucSatellite ID="ddlSYSatID" runat="server" AllowBlankItem="False" />
-                                            <%--<asp:TextBox ID="txtSYSatID" runat="server" CssClass="text" Text='<%# Eval("SatID")%>'></asp:TextBox>--%>
-                                        </td>
-                                        <td colspan="2">
+                                        <td colspan="4">
                                             <asp:Button ID="btnSYAdd" CausesValidation="False" CssClass="button" runat="server"
-                                                CommandName="Add" Text="添加实验内容" />
+                                                CommandName="Add" Text="添加试验内容" />
                                             <asp:Button ID="btnSYDel" CausesValidation="False" CssClass="button" runat="server"
                                                 CommandName="Del" Text="删除" />
                                         </td>
@@ -559,7 +557,8 @@
                             实时试验数据处理
                         </th>
                         <td>
-                            <asp:Repeater ID="rpSYDataHandle" runat="server" OnItemCommand="rpSYDataHandle_ItemCommand">
+                            <asp:Repeater ID="rpSYDataHandle" runat="server" OnItemCommand="rpSYDataHandle_ItemCommand"
+                                OnItemDataBound="rpSYDataHandle_ItemDataBound">
                                 <HeaderTemplate>
                                     <table class="edit1">
                                         <tbody>
@@ -570,7 +569,7 @@
                                             卫星代号
                                         </th>
                                         <td style="width: 270px;">
-                                            <asp:TextBox ID="txtSHSatID" CssClass="text" runat="server" Text='<%# Eval("SatID")%>'></asp:TextBox>
+                                            <uc2:ucSatellite ID="ddlSYDataHandle_SatID" runat="server" AllowBlankItem="False" />
                                         </td>
                                         <th style="width: 120px;">
                                             对应试验ID
@@ -598,13 +597,14 @@
                                             主站
                                         </th>
                                         <td>
-                                            <asp:TextBox ID="txtMainStation" CssClass="text" runat="server" Text='<%# Eval("MainStation")%>'></asp:TextBox>
+                                            <asp:DropDownList ID="ddlMainDW" Width="260px"  runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlMainDW_SelectedIndexChanged">
+                                                </asp:DropDownList>
                                         </td>
                                         <th>
                                             主站设备
                                         </th>
                                         <td>
-                                            <asp:TextBox ID="txtSHMainStationEquipment" CssClass="text" runat="server" Text='<%# Eval("MainStationEquipment")%>'></asp:TextBox>
+                                            <asp:DropDownList ID="ddlMainSB" runat="server"></asp:DropDownList>
                                         </td>
                                     </tr>
                                     <tr>
@@ -612,13 +612,14 @@
                                             备站
                                         </th>
                                         <td>
-                                            <asp:TextBox ID="txtBackStation" CssClass="text" runat="server" Text='<%# Eval("BakStation")%>'></asp:TextBox>
+                                            <asp:DropDownList ID="ddlBakDW" Width="260px"  runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlBakDW_SelectedIndexChanged">
+                                                </asp:DropDownList>
                                         </td>
                                         <th>
                                             备站设备
                                         </th>
                                         <td>
-                                            <asp:TextBox ID="txtSHBakStationEquipment" CssClass="text" runat="server" Text='<%# Eval("BakStationEquipment")%>'></asp:TextBox>
+                                            <asp:DropDownList ID="ddlBakSB" runat="server"></asp:DropDownList>
                                         </td>
                                     </tr>
                                     <tr>
@@ -641,7 +642,8 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="4">
+                                        <td colspan="2"></td>
+                                        <td colspan="2">
                                             <asp:Button ID="btn3" CausesValidation="False" CssClass="button" runat="server" CommandName="Add"
                                                 Text="添加" />
                                             <asp:Button ID="btn4" CausesValidation="False" CssClass="button" runat="server" CommandName="Del"
@@ -728,10 +730,10 @@
                                     <table class="list">
                                         <tr>
                                             <th style="width: 150px;">
-                                                工作
+                                                对应试验ID
                                             </th>
                                             <th style="width: 150px;">
-                                                对应试验ID
+                                                工作
                                             </th>
                                             <th style="width: 150px;">
                                                 开始时间
@@ -747,10 +749,10 @@
                                 <ItemTemplate>
                                     <tr>
                                         <td>
-                                            <asp:TextBox ID="txtRCWork" CssClass="text" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
+                                            <asp:TextBox ID="txtRCSYID" CssClass="text" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtRCSYID" CssClass="text" runat="server" Text='<%# Eval("SYID")%>'></asp:TextBox>
+                                            <asp:TextBox ID="txtRCWork" CssClass="text" runat="server" Text='<%# Eval("Work")%>'></asp:TextBox>
                                         </td>
                                         <td>
                                             <asp:TextBox ID="txtRCStartTime" CssClass="text" runat="server" Text='<%# Eval("StartTime")%>'
@@ -835,7 +837,7 @@
             <br />
             <br />
             <div style="width: 750px; text-align: center;">
-                <asp:Label ID="ltMessage" runat="server" CssClass="error" Text="实验内容与工作计划，所有字段都必须填写。"></asp:Label>
+                <asp:Label ID="ltMessage" runat="server" CssClass="error" Text="试验内容与工作计划，所有字段都必须填写。"></asp:Label>
             </div>
             <div style="width: 750px; text-align: center">
                 <asp:Button ID="btnSubmit" CssClass="button" OnClientClick="return CheckClientValidate();"

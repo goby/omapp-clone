@@ -4,7 +4,12 @@
 <%@ Register Src="../../ucs/ucTask.ascx" TagName="ucTask" TagPrefix="uc1" %>
 <%@ Register Src="../../ucs/ucSatellite.ascx" TagName="ucSatellite" TagPrefix="uc2" %>
 <%@ Register Src="../../ucs/ucTimer.ascx" TagName="ucTimer" TagPrefix="uc3" %>
+<%@ Register src="../../ucs/ucOutTask.ascx" tagname="ucOutTask" tagprefix="uc4" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <style type="text/css">
+        .text
+        {}
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
@@ -13,7 +18,7 @@
     <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-    计划管理 &gt; ZC地面站工作计划
+    计划管理 &gt; 地面站工作计划
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table cellpadding="0" class="edit1" style="width: 900px;">
@@ -32,27 +37,21 @@
             <th style="width: 150px;">
                 任务代号(<span class="red">*</span>)
             </th>
-            <td style="width: 300px;">
-                <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" />
-            </td>
-            <th style="width: 150px;">
-                卫星(<span class="red">*</span>)
-            </th>
-            <td>
-                <uc2:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
+            <td colspan="3">
+                <uc4:ucOutTask ID="ucOutTask1" runat="server" AllowBlankItem="False" />
             </td>
         </tr>
         <tr>
             <th>
                 计划开始时间
             </th>
-            <td>
+            <td style="width: 300px;">
                 <asp:TextBox ID="txtPlanStartTime" runat="server" CssClass="text" MaxLength="10"
                     ClientIDMode="Static" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
                 &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtPlanStartTime"
                     ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
             </td>
-            <th>
+            <th style="width: 150px;">
                 计划结束时间
             </th>
             <td>
@@ -88,7 +87,7 @@
                 备注
             </th>
             <td colspan="3">
-                <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="100" Width="350px"
+                <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="100" Width="607px"
                     Height="40px" TextMode="MultiLine"></asp:TextBox>
             </td>
         </tr>
@@ -113,7 +112,7 @@
                     工作单位
                 </th>
                 <td style="width: 300px;">
-                <asp:DropDownList ID="ddlDW" Width="260px"  runat="server">
+                <asp:DropDownList ID="ddlDW" Width="260px"  runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlDW_SelectedIndexChanged">
                     </asp:DropDownList>
                     <%--<asp:TextBox ID="txtDW" MaxLength="2" CssClass="text" runat="server" Text='<%# Eval("DW")%>'
                         onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46" onpaste="return !clipboardData.getData('text').match(/\D/)"
@@ -133,14 +132,6 @@
             </tr>
             <tr>
                 <th>
-                    任务代号
-                </th>
-                <td>
-                    <asp:DropDownList ID="ddlDH" runat="server" DataTextField="Text" DataValueField="Value"
-                        Width="154px">
-                    </asp:DropDownList>
-                </td>
-                <th>
                     工作方式
                 </th>
                 <td>
@@ -148,8 +139,6 @@
                         Width="154px">
                     </asp:DropDownList>
                 </td>
-            </tr>
-            <tr>
                 <th>
                     计划性质
                 </th>
@@ -158,6 +147,8 @@
                         Width="154px">
                     </asp:DropDownList>
                 </td>
+            </tr>
+            <tr>
                 <th>
                     设备工作模式
                 </th>
@@ -166,8 +157,6 @@
                         Width="154px">
                     </asp:DropDownList>
                 </td>
-            </tr>
-            <tr>
                 <th>
                     本帧计划的圈标识
                 </th>
@@ -176,6 +165,8 @@
                         Width="154px">
                     </asp:DropDownList>
                 </td>
+            </tr>
+            <tr>
                 <th style="width: 150px;">
                     工作性质
                 </th>
@@ -184,16 +175,8 @@
                         Width="154px">
                     </asp:DropDownList>
                 </td>
-            </tr>
-            <tr>
-            <th>总圈数</th>
-            <td>
-                <asp:TextBox ID="txtQS" MaxLength="4" CssClass="text" runat="server" Text='<%# Eval("QS")%>'
-                    onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46" onpaste="return !clipboardData.getData('text').match(/\D/)"
-                    ondragenter="return false" Style="ime-mode: Disabled"></asp:TextBox>
-            </td>
                 <th>
-                    本行计划飞行圈次
+                    本帧计划飞行圈次
                 </th>
                 <td>
                     <asp:TextBox ID="txtQH" MaxLength="4" CssClass="text" runat="server" Text='<%# Eval("QH")%>'
@@ -237,17 +220,17 @@
                 </th>
                 <td>
                     <asp:TextBox MaxLength="14" ID="txtWaveOnStartTime" CssClass="text" runat="server"
-                        Text='<%# Eval("KSHX")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                        Text='FFFFFFFFFFFFFF' Enabled="False"></asp:TextBox>
                 </td>
                 <th>
                     关上行载波时间
                 </th>
                 <td>
                     <asp:TextBox MaxLength="14" ID="txtWaveOffStartTime" CssClass="text" runat="server"
-                        Text='<%# Eval("GSHX")%>' onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                        Text='FFFFFFFFFFFFFF' Enabled="False"></asp:TextBox>
                     <asp:CompareValidator ID="CompareValidator12" runat="server" ControlToCompare="txtWaveOnStartTime"
                         ControlToValidate="txtWaveOffStartTime" Display="Dynamic" ErrorMessage="结束时间应大于开始时间"
-                        ForeColor="Red" Operator="GreaterThan" Type="Double"></asp:CompareValidator>
+                        ForeColor="Red" Operator="GreaterThan" Type="Double" Enabled="false"></asp:CompareValidator>
                 </td>
             </tr>
             <tr>

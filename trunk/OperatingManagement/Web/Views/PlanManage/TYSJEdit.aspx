@@ -5,6 +5,10 @@
 <%@ Register Src="../../ucs/ucSatellite.ascx" TagName="ucSatellite" TagPrefix="uc2" %>
 <%@ Register Src="../../ucs/ucTimer.ascx" TagName="ucTimer" TagPrefix="uc3" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <style type="text/css">
+        .text
+        {}
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
@@ -19,27 +23,27 @@
     <div>
         <table class="edit" style="width: 900px;">
             <tr>
-                <th style="width: 130px;">
+                <th style="width: 120px;">
                     任务代号(<span class="red">*</span>)
                 </th>
-                <td style="width: 320px;">
+                <td style="width: 300px;">
                     <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" />
                 </td>
-                <th style="width: 130px;">
+                <th style="width: 120px;">
                     计划序号
                 </th>
-                <td style="width: 320px;">
+                <td>
                     <asp:TextBox ID="txtJXH" runat="server" Width="100px" CssClass="text" MaxLength="20"
                         Enabled="False"></asp:TextBox>
                     &nbsp;<span style="color: #3399FF;">自动生成，不可编辑</span>
                 </td>
             </tr>
             <tr>
-                <th style="width: 130px;">
+                <th style="width: 120px;">
                     备注
                 </th>
                 <td colspan="3" style=" width:770px;">
-                    <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="100" Width="402px"
+                    <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="100" Width="559px"
                         Height="50px" TextMode="MultiLine"></asp:TextBox>
                 </td>
             </tr>
@@ -53,41 +57,43 @@
                         </HeaderTemplate>
                         <ItemTemplate>
                             <tr>
-                                <th style="width: 120px;">
+                                <th style="width: 110px;">
                                     卫星名称
                                 </th>
-                                <td style="width: 296px;">
+                                <td colspan="3">
                                     <asp:DropDownList ID="ddlSatName" runat="server" AutoPostBack="True" Height="20px"
-                                        OnSelectedIndexChanged="ddlSatName_SelectedIndexChanged" Width="170px">
+                                        OnSelectedIndexChanged="ddlSatName_SelectedIndexChanged" Width="190px">
                                         <asp:ListItem Value="0730">探索三号卫星</asp:ListItem>
                                         <asp:ListItem Value="074A">探索四号卫星</asp:ListItem>
                                         <asp:ListItem Value="075A">探索五号卫星</asp:ListItem>
                                     </asp:DropDownList>
                                 </td>
-                                <th style="width: 120px;">
+                            </tr>
+                            <tr>
+                                <th style="width: 110px;">
                                     试验类别
                                 </th>
-                                <td>
+                                <td style="width: 300px;">
                                     <asp:DropDownList ID="ddlType" runat="server" AutoPostBack="True" Height="20px" OnSelectedIndexChanged="ddlType_SelectedIndexChanged"
-                                        Width="170px">
+                                        Width="190px">
                                         <asp:ListItem>GEO目标观测试验</asp:ListItem>
                                         <asp:ListItem>LEO目标成像试验</asp:ListItem>
                                     </asp:DropDownList>
                                 </td>
-                            </tr>
-                            <tr>
-                                <th style="width: 120px;">
+                                <th style="width: 110px;">
                                     试验项目
                                 </th>
                                 <td>
-                                    <asp:DropDownList ID="ddlTestItem" runat="server" Height="20px" Width="170px">
+                                    <asp:DropDownList ID="ddlTestItem" runat="server" Height="20px" Width="190px">
                                         <asp:ListItem>自然交会观测试验</asp:ListItem>
                                         <asp:ListItem>同步带凝视观测试验</asp:ListItem>
                                         <asp:ListItem>天地基联合观测试验</asp:ListItem>
                                         <asp:ListItem>其它扩展试验项目</asp:ListItem>
                                     </asp:DropDownList>
                                 </td>
-                                <th style="width: 120px;">
+                            </tr>
+                            <tr>
+                                <th>
                                     试验开始时间
                                 </th>
                                 <td>
@@ -96,9 +102,7 @@
                                     <asp:RequiredFieldValidator Display="Dynamic" ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartTime"
                                         ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
                                 </td>
-                            </tr>
-                            <tr>
-                                <th style="width: 120px;">
+                                <th>
                                     试验结束时间
                                 </th>
                                 <td>
@@ -113,16 +117,16 @@
                                                 Operator="GreaterThan" Type="Double"></asp:CompareValidator>
                                         </span></span>
                                 </td>
-                                <th style="width: 120px;">
-                                    试验条件
-                                </th>
-                                <td>
-                                    <asp:TextBox ID="txtCondition" runat="server" Width="230px" CssClass="text" Height="40px"
-                                        TextMode="MultiLine" Text='<%# Eval("Condition")%>'></asp:TextBox>
-                                </td>
                             </tr>
                             <tr>
-                                <td colspan="4" style="text-align:right;">
+                                <th>
+                                    试验条件
+                                </th>
+                                <td colspan="2">
+                                    <asp:TextBox ID="txtCondition" runat="server" Width="390px" CssClass="text" Height="40px"
+                                        TextMode="MultiLine" Text='<%# Eval("Condition")%>'></asp:TextBox>
+                                </td>
+                                <td style="text-align:left;">
                                     <asp:Button ID="btn3" CausesValidation="False" CssClass="button" runat="server" CommandName="Add"
                                         Text="添加" />
                                     <asp:Button ID="btn4" CausesValidation="False" CssClass="button" runat="server" CommandName="Del"

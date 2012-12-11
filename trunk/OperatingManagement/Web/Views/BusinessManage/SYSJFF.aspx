@@ -1,6 +1,7 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="SYSJFF.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.SYSJFF" %>
 <%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
 <%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc2" %>
+<%@ Register src="../../ucs/ucOutTask.ascx" tagname="ucOutTask" tagprefix="uc3" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -16,15 +17,14 @@
     <table class="listTitle">
         <tr>
             <th style="text-align:left;"><span style="padding-left:5px">任务</span></th>
-            <th style="text-align:left;"><span style="padding-left:5px">卫星</span></th>
             <th style="text-align:left;"><span style="padding-left:5px">数据类型</span></th>
             <th style="text-align:left;"><span style="padding-left:5px">开始日期</span></th>
             <th style="text-align:left;"><span style="padding-left:5px">结束日期</span></th>
             <th></th>
         </tr>
         <tr>
-            <td id="tdTask"><uc1:ucTask ID="ucTask1" runat="server" /></td>
-            <td id="tdSat"><uc2:ucSatellite ID="ucSatellite1" runat="server" /></td>
+            <td id="tdTask">
+                <uc3:ucOutTask ID="ucOutTask1" runat="server" AllowBlankItem="False" /></td>
             <td id="tdData"><asp:DropDownList ID="ddlDataType" runat="server" ClientIDMode="Static">
                 <asp:ListItem Value="0">天基目标观测试验数据</asp:ListItem>
                 <asp:ListItem Value="1">空间机动试验数据</asp:ListItem>

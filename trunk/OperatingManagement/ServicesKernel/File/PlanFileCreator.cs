@@ -729,7 +729,7 @@ namespace ServicesKernel.File
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("QS");
-                xmlWriter.WriteString(obj.GZJHContents[i - 1].QS);
+                xmlWriter.WriteString(obj.GZJHContents.Where(t => t.DW == obj.GZJHContents[i - 1].DW && t.SB == obj.GZJHContents[i - 1].SB).ToList().Count().ToString());
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("QH");
@@ -1077,11 +1077,11 @@ namespace ServicesKernel.File
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("主站");
-                xmlWriter.WriteString(obj.SYDataHandles[i - 1].MainStationEquipment);
+                xmlWriter.WriteString(obj.SYDataHandles[i - 1].MainStation);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("主站设备");
-                xmlWriter.WriteString(obj.SYDataHandles[i - 1].MainStation);
+                xmlWriter.WriteString(obj.SYDataHandles[i - 1].MainStationEquipment);
                 xmlWriter.WriteEndElement();
 
                 xmlWriter.WriteStartElement("备站");
@@ -1812,12 +1812,17 @@ namespace ServicesKernel.File
 
             string SendFileNames = "";
             List<JH> listJH = (new JH()).SelectByIDS(ids);
+            List<GZJH_Content> lstContents;
+            List<string> lstDWSB;
+            string strDw = string.Empty;
+            string strSB = string.Empty;
             GZJH obj;
             string dataCode = PlanParameters.ReadParamValue("GZJHDataCode");
             Task oTask = new Task();
             foreach (JH jh in listJH)
             {
                 #region 读取计划XML文件，变量赋值
+                lstDWSB = new List<string>();
                 obj = new GZJH();
                 obj.TaskID = jh.TaskID;
                 obj.SatID = jh.SatID;
@@ -1875,6 +1880,8 @@ namespace ServicesKernel.File
                             c.HRTs = n["HRTs"].InnerText;
                             c.HSL = n["HSL"].InnerText;
                             obj.GZJHContents.Add(c);
+                            if (!lstDWSB.Contains(c.DW + "|" + c.SB))
+                                lstDWSB.Add(c.DW + "|" + c.SB);
                         }
                     }
                 }
@@ -1905,14 +1912,20 @@ namespace ServicesKernel.File
                     sw.WriteLine("[格式标识2]：QH  DH  FS  JXZ  MS  QB  GXZ  ZHB  RK  GZK  KSHX  GSHX  GZJ  JS  BID  SBZ  RTs  RTe  SL  BID  HBZ  Ts  Te  RTs  SL");
                     sw.WriteLine("[数据区]：");
                     //sw.WriteLine(obj.JXH + "  " + obj.XXFL + "  " + obj.QS);
-                    foreach (GZJH_Content t in obj.GZJHContents)
+                    foreach (string key in lstDWSB)
                     {
-                        sw.WriteLine(obj.JXH + "  " + obj.XXFL + "  " +t.DW + "  " + t.SB + "  " +t.QS);
-                        sw.WriteLine( t.QH + "  " + t.DH + "  " + t.FS + "  " + t.JXZ + "  "
-                            + t.MS + "  " + t.QB + "  " + t.GXZ + "  " + t.ZHB + "  " + t.RK + "  " + t.GZK + "  " + t.GZJ
-                             + "  " + t.KSHX + "  " + t.GSHX + "  " + t.GZJ + "  " + t.JS + "  " + t.BID + "  " + t.SBZ
-                             + "  " + t.RTs + "  " + t.RTe + "  " + t.SL + "  " + t.HBID + "  " + t.HBZ + "  " + t.Ts
-                             + "  " + t.Te + "  " + t.HRTs + "  " + t.HSL);
+                        strDw = key.Split(new char[] { '|' })[0];
+                        strSB = key.Split(new char[] { '|' })[1];
+                        lstContents = obj.GZJHContents.Where(t => t.DW == strDw && t.SB == strSB).ToList();
+                        sw.WriteLine(obj.JXH + "  " + obj.XXFL + "  " + strDw + "  " + strSB + "  " + lstContents[0].QS);
+                        foreach (GZJH_Content t in lstContents)
+                        {
+                            sw.WriteLine(t.QH + "  " + t.DH + "  " + t.FS + "  " + t.JXZ + "  "
+                                + t.MS + "  " + t.QB + "  " + t.GXZ + "  " + t.ZHB + "  " + t.RK + "  " + t.GZK + "  " + t.GZJ
+                                 + "  " + t.KSHX + "  " + t.GSHX + "  " + t.GZJ + "  " + t.JS + "  " + t.BID + "  " + t.SBZ
+                                 + "  " + t.RTs + "  " + t.RTe + "  " + t.SL + "  " + t.HBID + "  " + t.HBZ + "  " + t.Ts
+                                 + "  " + t.Te + "  " + t.HRTs + "  " + t.HSL);
+                        }
                     }
                     sw.WriteLine("<辅助区>");
                     sw.WriteLine("[备注]：");
