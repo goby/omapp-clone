@@ -471,6 +471,7 @@ namespace OperatingManagement.ServicesKernel.File
             string strFS = string.Empty;
             string strJXZ = string.Empty;
             string strDH = string.Empty;
+            XYXSInfo oXyxs = new XYXSInfo();
             if (lstActions != null && lstActions.Count() > 0)
             {
                 #region Get WorkingPattern, WorkingQuality, TaskID
@@ -508,6 +509,7 @@ namespace OperatingManagement.ServicesKernel.File
                     {
                         oContent.FS = strFS;
                         oContent.JXZ = strJXZ;
+                        oContent.DW = oXyxs.GetByID(oXyxs.GetIdByInCode(strPCode)).DWCode;
                         oContent.DH = strDH;
                         oContent.QH = lstActions[i].QC.ToString();
                         if (lstActions[i].WorkingParams.ContainsKey(PEDefinition.V_MS))
@@ -736,7 +738,7 @@ namespace OperatingManagement.ServicesKernel.File
                         oTask.FS = strFS;
                         //strTmp = lstActions[i].ParticipatorCode.Split(splitor_hline)[1];
                         oTask.GZDY = dicZYSQ_GZDY[strPCode];
-                        oTask.SBDH = dicZYSQ_SB[strPCode];
+                        oTask.SBDH = strDeviceID;
                         oTask.QC = lstActions[i].QC.ToString();
                         oTask.QB = PEDefinition.V_QB;//默认一般Q
                         oTask.SHJ = "5";//CK事件类型，5为SC
@@ -923,7 +925,7 @@ namespace OperatingManagement.ServicesKernel.File
                 strDMZCodes = new string[xyxs.Count()];
                 for (int i = 0; i < strDMZCodes.Length; i++)
                 {
-                    strDMZCodes[i] = xyxs.ElementAt(i).ADDRMARK;
+                    strDMZCodes[i] = xyxs.ElementAt(i).INCODE;
                 }
             }
             else
@@ -933,7 +935,7 @@ namespace OperatingManagement.ServicesKernel.File
                 strDMZCodes = new string[xyxs.Count()];
                 for (int i = 0; i < strDMZCodes.Length; i++)
                 {
-                    strDMZCodes[i] = xyxs.ElementAt(i).ADDRMARK;
+                    strDMZCodes[i] = xyxs.ElementAt(i).INCODE;
                 }
             }
             return strDMZCodes;
@@ -1853,7 +1855,7 @@ namespace OperatingManagement.ServicesKernel.File
             if (dicActions != null)
             {
                 var actions = dicActions.Values.Where(i => i.Name == value
-                    && i.ParticipatorCode.Substring(0, 5).ToUpper() == "G-CKZ"
+                    && i.ParticipatorCode.Substring(0, 6).ToUpper() == "G-DMZZ"
                     && (i.BeginTime >= beginTime && i.BeginTime <= endTime));
                 if (actions != null && actions.Count() > 0)
                 {

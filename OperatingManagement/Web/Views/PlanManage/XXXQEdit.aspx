@@ -1,8 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
     CodeBehind="XXXQEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.XXXQEdit" %>
 
-<%@ Register Src="../../ucs/ucTask.ascx" TagName="ucTask" TagPrefix="uc1" %>
 <%@ Register Src="../../ucs/ucSatellite.ascx" TagName="ucSatellite" TagPrefix="uc2" %>
+<%@ Register src="../../ucs/ucOutTask.ascx" tagname="ucOutTask" tagprefix="uc3" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
@@ -25,14 +25,8 @@
             <th style="width:100px;">
                 任务代号(<span class="red">*</span>)
             </th>
-            <td  style="width:312px;">
-                <uc1:ucTask ID="ucTask1" runat="server" AllowBlankItem="False" />
-            </td>
-            <th style="width:100px;">
-                卫星(<span class="red">*</span>)
-            </th>
-            <td>
-                <uc2:ucSatellite ID="ucSatellite1" runat="server" AllowBlankItem="False" />
+            <td  colspan="3">
+                <uc3:ucOutTask ID="ucOutTask1" runat="server" AllowBlankItem="False" />
             </td>
         </tr>
         <tr>

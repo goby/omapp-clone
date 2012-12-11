@@ -417,6 +417,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                     {
                         List<Control> controlsList = zysx.GenerateControls();
                         TextBox oTxt;
+                        DropDownList ddlCtrl;
                         foreach (Control ctl in controlsList)
                         {
                             if (ctl.ClientID.Substring(0, 3) == "txt")
@@ -426,7 +427,14 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                                 phPValueControls.Controls.Add(oTxt);
                             }
                             else
+                            {
+                                if (ctl.GetType() == typeof(DropDownList))
+                                {
+                                    ddlCtrl = (DropDownList)ctl;
+                                    ddlCtrl.SelectedIndex = 0;
+                                }
                                 phPValueControls.Controls.Add(ctl);
+                            }
                         }
                     }
                 }

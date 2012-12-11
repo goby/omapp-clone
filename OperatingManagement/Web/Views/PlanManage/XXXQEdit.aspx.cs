@@ -9,6 +9,7 @@ using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.WebKernel.Route;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
+using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.Framework;
 using OperatingManagement.Framework.Storage;
@@ -97,26 +98,23 @@ namespace OperatingManagement.Web.Views.PlanManage
             try
             {
                 isTempJH = GetIsTempJHValue();
+                string outTaskNo = string.Empty;
 
                 List<JH> jh = (new JH(isTempJH)).SelectByIDS(sID);
                 txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm:ss");
                 txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
                 HfFileIndex.Value = jh[0].FileIndex;
-                hfTaskID.Value = jh[0].TaskID.ToString();
-                ucTask1.SelectedValue = jh[0].TaskID.ToString();
-                string[] strTemp = jh[0].FileIndex.Split('_');
-                if (strTemp.Length >= 2)
-                {
-                    hfSatID.Value = strTemp[strTemp.Length - 2];
-                    ucSatellite1.SelectedValue = strTemp[strTemp.Length - 2];
-                }
+                outTaskNo = new Task().GetOutTaskNo(jh[0].TaskID, jh[0].SatID);
+                ucOutTask1.SelectedValue = outTaskNo;
+                hfTaskID.Value = ucOutTask1.SelectedValue;
+                
                 txtNote.Text = jh[0].Reserve.ToString();
                 //计划启动后不能修改计划
-                if (DateTime.Now > jh[0].StartTime)
-                {
-                    //btnSubmit.Visible = false;
-                    //hfOverDate.Value = "true";
-                }
+                //if (DateTime.Now > jh[0].StartTime)
+                //{
+                //    btnSubmit.Visible = false;
+                //    hfOverDate.Value = "true";
+                //}
             }
             catch (Exception ex)
             {
@@ -358,6 +356,9 @@ namespace OperatingManagement.Web.Views.PlanManage
             try
             {
                 isTempJH = GetIsTempJHValue();
+                string taskID = string.Empty;
+                string satID = string.Empty;
+                new Task().GetTaskNoSatID(ucOutTask1.SelectedValue, out taskID, out satID);
 
                 #region MBXQ
                 MBXQ objMB = new MBXQ();
@@ -421,8 +422,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 XXXQ objXXXQ = new XXXQ();
                 objXXXQ.objMBXQ = objMB;
                 objXXXQ.objHJXQ = objHJ;
-                objXXXQ.TaskID = ucTask1.SelectedItem.Value;
-                objXXXQ.SatID = ucSatellite1.SelectedItem.Value;
+                objXXXQ.TaskID = taskID;
+                objXXXQ.SatID = satID;
 
                 PlanFileCreator creater = new PlanFileCreator(isTempJH);
                 if (hfStatus.Value == "new")
@@ -442,11 +443,13 @@ namespace OperatingManagement.Web.Views.PlanManage
                         Reserve = txtNote.Text
                     };
                     var result = jh.Add();
+                    ShowMsg(result == FieldVerifyResult.Success);
+                    HfID.Value = jh.ID.ToString();
                 }
                 else
                 {
                     //当任务和卫星更新时，需要更新文件名称
-                    if (hfSatID.Value != ucSatellite1.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
+                    if (hfTaskID.Value != ucOutTask1.SelectedValue)
                     {
                         string filepath = creater.CreateXXXQFile(objXXXQ, 0);
 
@@ -461,18 +464,15 @@ namespace OperatingManagement.Web.Views.PlanManage
                             Reserve = txtNote.Text
                         };
                         var result = jh.Update();
-                        //更新隐藏域的任务ID和卫星ID
-                        hfTaskID.Value = jh.TaskID;
-                        hfSatID.Value = jh.SatID;
+                        ShowMsg(result == FieldVerifyResult.Success);
                     }
                     else
                     {
                         creater.FilePath = HfFileIndex.Value;
                         creater.CreateXXXQFile(objXXXQ, 1);
+                        ShowMsg(true);
                     }
                 }
-                ltMessage.Text = "计划保存成功";
-                //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
             }
             catch (Exception ex)
             {
@@ -495,6 +495,9 @@ namespace OperatingManagement.Web.Views.PlanManage
             try
             {
                 isTempJH = GetIsTempJHValue();
+                string taskID = string.Empty;
+                string satID = string.Empty;
+                new Task().GetTaskNoSatID(ucOutTask1.SelectedValue, out taskID, out satID);
 
                 #region MBXQ
                 MBXQ objMB = new MBXQ();
@@ -561,8 +564,8 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 PlanFileCreator creater = new PlanFileCreator(isTempJH);
 
-                objXXXQ.TaskID = ucTask1.SelectedItem.Value;
-                objXXXQ.SatID = ucSatellite1.SelectedItem.Value;
+                objXXXQ.TaskID = taskID;
+                objXXXQ.SatID = satID;
 
                 //检查文件是否已经存在
                 if (creater.TestXXXQFileName(objXXXQ))
@@ -585,7 +588,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     Reserve = txtNote.Text
                 };
                 var result = jh.Add();
-                ltMessage.Text = "计划保存成功";
+                ShowMsg(result == FieldVerifyResult.Success);
+                HfID.Value = jh.ID.ToString();
                // ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
             }
             catch (Exception ex)
@@ -712,6 +716,10 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                string taskID = string.Empty;
+                string satID = string.Empty;
+                new Task().GetTaskNoSatID(ucOutTask1.SelectedValue, out taskID, out satID);
+
                 #region MBXQ
                 MBXQ objMB = new MBXQ();
                 objMB.User = txtMBUser.Text;
@@ -777,9 +785,8 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 PlanFileCreator creater = new PlanFileCreator();
 
-                objXXXQ.TaskID = ucTask1.SelectedItem.Value;
-                objXXXQ.SatID = ucSatellite1.SelectedItem.Value;
-
+                objXXXQ.TaskID = taskID;
+                objXXXQ.SatID = satID;
                 //检查文件是否已经存在
                 if (creater.TestXXXQFileName(objXXXQ))
                 {
@@ -801,6 +808,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     Reserve = txtNote.Text
                 };
                 var result = jh.Add();
+                ShowMsg(result == FieldVerifyResult.Success);
+                HfID.Value = jh.ID.ToString();
 
                 //删除当前临时计划
                 DataAccessLayer.PlanManage.JH jhtemp = new DataAccessLayer.PlanManage.JH(true)
@@ -809,15 +818,13 @@ namespace OperatingManagement.Web.Views.PlanManage
                 };
                 var resulttemp = jhtemp.DeleteTempJH();
 
-                #region 转成正式计划之后，禁用除“返回”之外的所有按钮
-                btnSubmit.Visible = false;
-                btnSaveTo.Visible = false;
+                #region 转成正式计划之后，禁用一些按钮
+                btnSubmit.Visible = true;
+                btnSaveTo.Visible = true;
                 btnReset.Visible = false;
                 btnFormal.Visible = false;
 
                 #endregion
-
-                ltMessage.Text = "计划保存成功";
                
             }
             catch (Exception ex)
@@ -825,6 +832,15 @@ namespace OperatingManagement.Web.Views.PlanManage
                 throw (new AspNetException("另存计划信息出现异常，异常原因", ex));
             }
             finally { }
+        }
+
+        private void ShowMsg(bool sucess)
+        {
+            if (sucess)
+                ltMessage.Text = "计划保存成功";
+            else
+                ltMessage.Text = "计划保存失败";
+            hfTaskID.Value = ucOutTask1.SelectedValue;
         }
     }
 }

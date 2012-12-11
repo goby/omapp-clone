@@ -294,7 +294,7 @@
                                         Operator="GreaterThan" Type="Double"></asp:CompareValidator>
                                     </td>
                                     <th></th>
-                                    <td><span style="color:Red;">任务准备开始时间与跟踪结束时间时间差应不大于3小时</span></td>
+                                    <td><span style="color:#3399FF;">任务准备开始时间与跟踪结束时间时间差应不大于3小时</span></td>
                                 </tr>
                                 <tr>
                                     <th colspan="4" style="text-align: center;">

@@ -427,6 +427,8 @@ namespace OperatingManagement.Web.Views.BusinessManage
                         {
                             zysx.PValue = ZYSXIDPValueDic[zysx.Id];
                         }
+                        else
+                            zysx.PValue = string.Empty;
                         List<Control> controlsList = zysx.GenerateControls();
                         foreach (Control ctl in controlsList)
                         {

@@ -10,6 +10,7 @@ using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.WebKernel.Route;
 using OperatingManagement.Framework.Core;
 using OperatingManagement.DataAccessLayer;
+using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.Framework;
 using System.Web.Security;
@@ -116,21 +117,16 @@ namespace OperatingManagement.Web.Views.PlanManage
             txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm:ss");
             txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
             HfFileIndex.Value = jh[0].FileIndex;
-            hfTaskID.Value = jh[0].TaskID.ToString();
-            ucTask1.SelectedValue = jh[0].TaskID.ToString();
-            string[] strTemp = jh[0].FileIndex.Split('_');
-            if (strTemp.Length >= 2)
-            {
-                hfSatID.Value = strTemp[strTemp.Length - 2];
-                ucSatellite1.SelectedValue = strTemp[strTemp.Length - 2];
-            }
+            string outTaskNo = new Task().GetOutTaskNo(jh[0].TaskID, jh[0].SatID);
+            ucOutTask1.SelectedValue = outTaskNo;
+            hfTaskID.Value = ucOutTask1.SelectedValue;
             txtNote.Text = jh[0].Reserve.ToString();
             //计划启动后不能修改计划
-            if (DateTime.Now > jh[0].StartTime)
-            {
-                //btnSubmit.Visible = false;
-                //hfOverDate.Value = "true";
-            }
+            //if (DateTime.Now > jh[0].StartTime)
+            //{
+            //    btnSubmit.Visible = false;
+            //    hfOverDate.Value = "true";
+            //}
         }
         private void BindXML()
         {
@@ -372,41 +368,12 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         protected void rpWork_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            List<ZXJH_WorkContent> list2;
+            Repeater rp = (Repeater)source;
+            ZXJH_WorkContent wc;
             if (e.CommandName == "Add")
             {
-                List<ZXJH_WorkContent> list2 = new List<ZXJH_WorkContent>();
-                ZXJH_WorkContent wc;
-                Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
-                {
-                    wc = new ZXJH_WorkContent();
-                    DropDownList ddlWC_Work = (DropDownList)it.FindControl("ddlWC_Work");
-                    TextBox txtWC_SYID = (TextBox)it.FindControl("txtWC_SYID");
-                    TextBox txtWC_StartTime = (TextBox)it.FindControl("txtWC_StartTime");
-                    TextBox txtWC_MinTime = (TextBox)it.FindControl("txtWC_MinTime");
-                    TextBox txtWC_MaxTime = (TextBox)it.FindControl("txtWC_MaxTime");
-
-                    if (CheckCtrlExits(txtWC_SYID, "试验ID"))
-                        wc.SYID = txtWC_SYID.Text;
-                    else
-                        return;
-
-                    if (CheckCtrlExits(txtWC_StartTime, "开始时间"))
-                        wc.StartTime = txtWC_StartTime.Text;
-                    else
-                        return;
-
-                    if (CheckCtrlExits(txtWC_MinTime, "最短持续时间"))
-                        wc.MinTime = txtWC_MinTime.Text;
-                    else
-                        return;
-
-                    if (CheckCtrlExits(txtWC_MaxTime, "最长持续时间"))
-                        wc.MaxTime = txtWC_MaxTime.Text;
-                    else
-                        return;
-                    list2.Add(wc);
-                }
+                list2 = GetAllWorkInfo(rp, -1);
                 wc = new ZXJH_WorkContent();
                 wc.Work = "";
                 wc.SYID = "";
@@ -420,113 +387,67 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             if (e.CommandName == "Del")
             {
-                Repeater rp = (Repeater)source;
                 if (rp.Items.Count <= 1)
                 {
                     ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
                 }
                 else
                 {
-                    List<ZXJH_WorkContent> list2 = new List<ZXJH_WorkContent>();
-                    ZXJH_WorkContent wc;
-
-                    foreach (RepeaterItem it in rp.Items)
-                    {
-                        if (e.Item.ItemIndex != it.ItemIndex)
-                        {
-                            wc = new ZXJH_WorkContent();
-                            DropDownList ddlWC_Work = (DropDownList)it.FindControl("ddlWC_Work");
-                            TextBox txtWC_SYID = (TextBox)it.FindControl("txtWC_SYID");
-                            TextBox txtWC_StartTime = (TextBox)it.FindControl("txtWC_StartTime");
-                            TextBox txtWC_MinTime = (TextBox)it.FindControl("txtWC_MinTime");
-                            TextBox txtWC_MaxTime = (TextBox)it.FindControl("txtWC_MaxTime");
-
-                            wc.Work = ddlWC_Work.SelectedItem.Text;
-                            wc.SYID = txtWC_SYID.Text;
-                            wc.StartTime = txtWC_StartTime.Text;
-                            wc.MinTime = txtWC_MinTime.Text;
-                            wc.MaxTime = txtWC_MaxTime.Text;
-                            list2.Add(wc);
-                        }
-                    }
+                    list2 = GetAllWorkInfo(rp, e.Item.ItemIndex);
                     rp.DataSource = list2;
                     rp.DataBind();
                 }
             }
         }
 
+        private List<ZXJH_WorkContent> GetAllWorkInfo(Repeater rp, int idx)
+        {
+            List<ZXJH_WorkContent> list2 = new List<ZXJH_WorkContent>();
+            ZXJH_WorkContent wc;
+            foreach (RepeaterItem it in rp.Items)
+            {
+                if (idx != it.ItemIndex)
+                {
+                    wc = new ZXJH_WorkContent();
+                    DropDownList ddlWC_Work = (DropDownList)it.FindControl("ddlWC_Work");
+                    TextBox txtWC_SYID = (TextBox)it.FindControl("txtWC_SYID");
+                    TextBox txtWC_StartTime = (TextBox)it.FindControl("txtWC_StartTime");
+                    TextBox txtWC_MinTime = (TextBox)it.FindControl("txtWC_MinTime");
+                    TextBox txtWC_MaxTime = (TextBox)it.FindControl("txtWC_MaxTime");
+
+                    if (CheckCtrlExits(txtWC_SYID, "试验ID"))
+                        wc.SYID = txtWC_SYID.Text;
+                    else
+                        return null;
+
+                    if (CheckCtrlExits(txtWC_StartTime, "开始时间"))
+                        wc.StartTime = txtWC_StartTime.Text;
+                    else
+                        return null;
+
+                    if (CheckCtrlExits(txtWC_MinTime, "最短持续时间"))
+                        wc.MinTime = txtWC_MinTime.Text;
+                    else
+                        return null;
+
+                    if (CheckCtrlExits(txtWC_MaxTime, "最长持续时间"))
+                        wc.MaxTime = txtWC_MaxTime.Text;
+                    else
+                        return null;
+                    list2.Add(wc);
+                }
+            }
+            return list2;
+        }
+
         protected void rpSYDataHandle_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            Repeater rp = (Repeater)source;
+            ZXJH_SYDataHandle dh;
+            List<ZXJH_SYDataHandle> list2;
             if (e.CommandName == "Add")
             {
-                List<ZXJH_SYDataHandle> list2 = new List<ZXJH_SYDataHandle>();
-                ZXJH_SYDataHandle dh;
-                Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
-                {
-                    dh = new ZXJH_SYDataHandle();
-                    TextBox txtSHSYID = (TextBox)it.FindControl("txtSHSYID");
-                    TextBox txtSHSatID = (TextBox)it.FindControl("txtSHSatID");
-                    TextBox txtSHLaps = (TextBox)it.FindControl("txtSHLaps");
-                    TextBox txtMainStation = (TextBox)it.FindControl("txtMainStation");
-                    TextBox txtSHMainStationEquipment = (TextBox)it.FindControl("txtSHMainStationEquipment");
-                    TextBox txtBackStation = (TextBox)it.FindControl("txtBackStation");
-                    TextBox txtSHBakStationEquipment = (TextBox)it.FindControl("txtSHBakStationEquipment");
-                    TextBox txtSHContent = (TextBox)it.FindControl("txtSHContent");
-                    TextBox txtSHStartTime = (TextBox)it.FindControl("txtSHStartTime");
-                    TextBox txtSHEndTime = (TextBox)it.FindControl("txtSHEndTime");
-
-                    if (CheckCtrlExits(txtSHSYID, "试验ID"))
-                        dh.SYID = txtSHSYID.Text;
-                    else
-                        return;
-
-                    if (CheckCtrlExits(txtSHSatID, "卫星代号"))
-                        dh.SatID = txtSHSatID.Text;
-                    else
-                        return;
-
-                    if (CheckCtrlExits(txtSHLaps, "圈次"))
-                        dh.Laps = txtSHLaps.Text;
-                    else
-                        return;
-
-                    if (CheckCtrlExits(txtSHContent, "工作内容"))
-                        dh.Content = txtSHContent.Text;
-                    else
-                        return;
-
-                    if (CheckCtrlExits(txtMainStation, "主站"))
-                        dh.MainStation = txtMainStation.Text;
-                    else
-                        return;
-
-                    if (CheckCtrlExits(txtSHMainStationEquipment, "主站设备"))
-                        dh.MainStationEquipment = txtSHMainStationEquipment.Text;
-                    else
-                        return;
-
-                    if (CheckCtrlExits(txtBackStation, "备站"))
-                    dh.BakStation = txtBackStation.Text;
-                    else
-                        return;
-
-                    if (CheckCtrlExits(txtSHBakStationEquipment, "备站设备"))
-                    dh.BakStationEquipment = txtSHBakStationEquipment.Text;
-                    else
-                        return;
-
-                    if (CheckCtrlExits(txtSHStartTime, "实时开始处理时间"))
-                    dh.StartTime = txtSHStartTime.Text;
-                    else
-                        return;
-
-                    if (CheckCtrlExits(txtSHEndTime, "实时结束处理时间"))
-                    dh.EndTime = txtSHEndTime.Text;
-                    else
-                        return;
-                    list2.Add(dh);
-                }
+                list2 = GetAllSYDataHandleInfos(rp, -1);
                 dh = new ZXJH_SYDataHandle();
                 list2.Add(dh);
                 rp.DataSource = list2;
@@ -535,58 +456,131 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             if (e.CommandName == "Del")
             {
-                List<ZXJH_SYDataHandle> list2 = new List<ZXJH_SYDataHandle>();
-                ZXJH_SYDataHandle dh;
-                Repeater rp = (Repeater)source;
                 if (rp.Items.Count <= 1)
                 {
                     ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
                 }
                 else
                 {
-                    foreach (RepeaterItem it in rp.Items)
-                    {
-                        if (e.Item.ItemIndex != it.ItemIndex)
-                        {
-                            dh = new ZXJH_SYDataHandle();
-                            TextBox txtSHSYID = (TextBox)it.FindControl("txtSHSYID");
-                            TextBox txtSHSatID = (TextBox)it.FindControl("txtSHSatID");
-                            TextBox txtSHLaps = (TextBox)it.FindControl("txtSHLaps");
-                            TextBox txtMainStation = (TextBox)it.FindControl("txtMainStation");
-                            TextBox txtSHMainStationEquipment = (TextBox)it.FindControl("txtSHMainStationEquipment");
-                            TextBox txtBackStation = (TextBox)it.FindControl("txtBackStation");
-                            TextBox txtSHBakStationEquipment = (TextBox)it.FindControl("txtSHBakStationEquipment");
-                            TextBox txtSHContent = (TextBox)it.FindControl("txtSHContent");
-                            TextBox txtSHStartTime = (TextBox)it.FindControl("txtSHStartTime");
-                            TextBox txtSHEndTime = (TextBox)it.FindControl("txtSHEndTime");
-
-                            dh.SYID = txtSHSYID.Text;
-                            dh.SatID = txtSHSatID.Text;
-                            dh.Laps = txtSHLaps.Text;
-                            dh.Content = txtSHContent.Text;
-                            dh.MainStation = txtMainStation.Text;
-                            dh.MainStationEquipment = txtSHMainStationEquipment.Text;
-                            dh.BakStation = txtBackStation.Text;
-                            dh.BakStationEquipment = txtSHBakStationEquipment.Text;
-                            dh.StartTime = txtSHStartTime.Text;
-                            dh.EndTime = txtSHEndTime.Text;
-                            list2.Add(dh);
-                        }
-                    }
+                    list2 = GetAllSYDataHandleInfos(rp, e.Item.ItemIndex);
                     rp.DataSource = list2;
                     rp.DataBind();
                 }
             }
         }
 
+        private List<ZXJH_SYDataHandle> GetAllSYDataHandleInfos(Repeater rp, int idx)
+        {
+            List<ZXJH_SYDataHandle> list2 = new List<ZXJH_SYDataHandle>();
+            ZXJH_SYDataHandle dh;
+            foreach (RepeaterItem it in rp.Items)
+            {
+                if (idx != it.ItemIndex)
+                {
+                    dh = new ZXJH_SYDataHandle();
+                    TextBox txtSHSYID = (TextBox)it.FindControl("txtSHSYID");
+                    ucs.ucSatellite ddlSatID = (ucs.ucSatellite)it.FindControl("ddlSYDataHandle_SatID");
+                    TextBox txtSHLaps = (TextBox)it.FindControl("txtSHLaps");
+                    DropDownList ddlMainDW = (DropDownList)it.FindControl("ddlMainDW");
+                    DropDownList ddlMainSB = (DropDownList)it.FindControl("ddlMainSB");
+                    DropDownList ddlBakDW = (DropDownList)it.FindControl("ddlBakDW");
+                    DropDownList ddlBakSB = (DropDownList)it.FindControl("ddlBakSB");
+                    TextBox txtSHContent = (TextBox)it.FindControl("txtSHContent");
+                    TextBox txtSHStartTime = (TextBox)it.FindControl("txtSHStartTime");
+                    TextBox txtSHEndTime = (TextBox)it.FindControl("txtSHEndTime");
+
+                    if (CheckCtrlExits(txtSHSYID, "试验ID"))
+                        dh.SYID = txtSHSYID.Text;
+                    else
+                        return null;
+
+                    if (CheckCtrlExits(ddlSatID, "卫星代号"))
+                        dh.SatID = ddlSatID.SelectedValue;
+                    else
+                        return null;
+
+                    if (CheckCtrlExits(txtSHLaps, "圈次"))
+                        dh.Laps = txtSHLaps.Text;
+                    else
+                        return null;
+
+                    if (CheckCtrlExits(txtSHContent, "工作内容"))
+                        dh.Content = txtSHContent.Text;
+                    else
+                        return null;
+
+                    if (CheckCtrlExits(ddlMainDW, "主站"))
+                        dh.MainStation = ddlMainDW.SelectedValue;
+                    else
+                        return null;
+
+                    if (CheckCtrlExits(ddlMainSB, "主站设备"))
+                        dh.MainStationEquipment = ddlMainSB.SelectedValue;
+                    else
+                        return null;
+
+                    if (CheckCtrlExits(ddlBakDW, "备站"))
+                        dh.BakStation = ddlBakDW.SelectedValue;
+                    else
+                        return null;
+
+                    if (CheckCtrlExits(ddlBakSB, "备站设备"))
+                        dh.BakStationEquipment = ddlBakSB.SelectedValue;
+                    else
+                        return null;
+
+                    if (CheckCtrlExits(txtSHStartTime, "实时开始处理时间"))
+                        dh.StartTime = txtSHStartTime.Text;
+                    else
+                        return null;
+
+                    if (CheckCtrlExits(txtSHEndTime, "实时结束处理时间"))
+                        dh.EndTime = txtSHEndTime.Text;
+                    else
+                        return null;
+                    list2.Add(dh);
+                }
+            }
+            return list2;
+
+        }
+
         protected void rpDirectAndMonitor_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            List<ZXJH_DirectAndMonitor> list2;
+            ZXJH_DirectAndMonitor dm;
+            Repeater rp = (Repeater)source;
             if (e.CommandName == "Add")
             {
-                List<ZXJH_DirectAndMonitor> list2 = new List<ZXJH_DirectAndMonitor>();
-                ZXJH_DirectAndMonitor dm;
-                Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
+                list2 = GetAllDirectAndMonitorInfos(rp, -1);
+                dm = new ZXJH_DirectAndMonitor();
+                list2.Add(dm);
+                rp.DataSource = list2;
+                rp.DataBind();
+
+            }
+            if (e.CommandName == "Del")
+            {
+                if (rp.Items.Count <= 1)
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
+                }
+                else
+                {
+                    list2 = GetAllDirectAndMonitorInfos(rp, e.Item.ItemIndex);
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
+            }
+        }
+
+        private List<ZXJH_DirectAndMonitor> GetAllDirectAndMonitorInfos(Repeater rp, int idx)
+        {
+            List<ZXJH_DirectAndMonitor> list2 = new List<ZXJH_DirectAndMonitor>();
+            ZXJH_DirectAndMonitor dm;
+            foreach (RepeaterItem it in rp.Items)
+            {
+                if (idx != it.ItemIndex)
                 {
                     dm = new ZXJH_DirectAndMonitor();
                     TextBox txtDMSYID = (TextBox)it.FindControl("txtDMSYID");
@@ -597,94 +591,33 @@ namespace OperatingManagement.Web.Views.PlanManage
                     if (CheckCtrlExits(txtDMSYID, "试验ID"))
                         dm.SYID = txtDMSYID.Text;
                     else
-                        return;
+                        return null;
 
                     if (CheckCtrlExits(txtDMStartTime, "开始时间"))
                         dm.StartTime = txtDMStartTime.Text;
                     else
-                        return;
+                        return null;
 
                     if (CheckCtrlExits(txtDMEndTime, "结束时间"))
                         dm.EndTime = txtDMEndTime.Text;
                     else
-                        return;
+                        return null;
 
                     dm.RealTimeDemoTask = ddlDMRTTask.SelectedItem.Text;
                     list2.Add(dm);
                 }
-                dm = new ZXJH_DirectAndMonitor();
-                list2.Add(dm);
-                rp.DataSource = list2;
-                rp.DataBind();
-
             }
-            if (e.CommandName == "Del")
-            {
-                List<ZXJH_DirectAndMonitor> list2 = new List<ZXJH_DirectAndMonitor>();
-                ZXJH_DirectAndMonitor dm;
-                Repeater rp = (Repeater)source;
-                if (rp.Items.Count <= 1)
-                {
-                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
-                }
-                else
-                {
-                    foreach (RepeaterItem it in rp.Items)
-                    {
-                        if (e.Item.ItemIndex != it.ItemIndex)
-                        {
-                            dm = new ZXJH_DirectAndMonitor();
-                            TextBox txtDMSYID = (TextBox)it.FindControl("txtDMSYID");
-                            TextBox txtDMStartTime = (TextBox)it.FindControl("txtDMStartTime");
-                            TextBox txtDMEndTime = (TextBox)it.FindControl("txtDMEndTime");
-                            DropDownList ddlDMRTTask = (DropDownList)it.FindControl("ddlDMRTTask");
-
-                            dm.SYID = txtDMSYID.Text;
-                            dm.StartTime = txtDMStartTime.Text;
-                            dm.EndTime = txtDMEndTime.Text;
-                            dm.RealTimeDemoTask = ddlDMRTTask.SelectedItem.Text;
-                            list2.Add(dm);
-                        }
-                    }
-                    rp.DataSource = list2;
-                    rp.DataBind();
-                }
-            }
+            return list2;
         }
 
         protected void rpRealTimeControl_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            List<ZXJH_RealTimeControl> list2 = new List<ZXJH_RealTimeControl>();
+            ZXJH_RealTimeControl rc;
+            Repeater rp = (Repeater)source;
             if (e.CommandName == "Add")
             {
-                List<ZXJH_RealTimeControl> list2 = new List<ZXJH_RealTimeControl>();
-                ZXJH_RealTimeControl rc;
-                Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
-                {
-                    rc = new ZXJH_RealTimeControl();
-                    TextBox txtRCWork = (TextBox)it.FindControl("txtRCWork");
-                    TextBox txtRCSYID = (TextBox)it.FindControl("txtRCSYID");
-                    TextBox txtRCStartTime = (TextBox)it.FindControl("txtRCStartTime");
-                    TextBox txtRCEndTime = (TextBox)it.FindControl("txtRCEndTime");
-
-                    if (CheckCtrlExits(txtRCWork, "工作"))
-                        rc.Work = txtRCWork.Text;
-                    else
-                        return;
-                    if (CheckCtrlExits(txtRCSYID, "试验ID"))
-                        rc.SYID = txtRCSYID.Text;
-                    else
-                        return;
-                    if (CheckCtrlExits(txtRCStartTime, "开始时间"))
-                        rc.StartTime = txtRCStartTime.Text;
-                    else
-                        return;
-                    if (CheckCtrlExits(txtRCEndTime, "结束时间"))
-                        rc.EndTime = txtRCEndTime.Text;
-                    else
-                        return;
-                    list2.Add(rc);
-                }
+                list2 = GetAllRealTimeControlInfos(rp, -1);
                 rc = new ZXJH_RealTimeControl();
                 rc.Work = "";
                 rc.SYID = "";
@@ -697,66 +630,63 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             if (e.CommandName == "Del")
             {
-                List<ZXJH_RealTimeControl> list2 = new List<ZXJH_RealTimeControl>();
-                ZXJH_RealTimeControl rc;
-                Repeater rp = (Repeater)source;
                 if (rp.Items.Count <= 1)
                 {
                     ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
                 }
                 else
                 {
-                    foreach (RepeaterItem it in rp.Items)
-                    {
-                        if (e.Item.ItemIndex != it.ItemIndex)
-                        {
-                            rc = new ZXJH_RealTimeControl();
-                            TextBox txtRCWork = (TextBox)it.FindControl("txtRCWork");
-                            TextBox txtRCSYID = (TextBox)it.FindControl("txtRCSYID");
-                            TextBox txtRCStartTime = (TextBox)it.FindControl("txtRCStartTime");
-                            TextBox txtRCEndTime = (TextBox)it.FindControl("txtRCEndTime");
-
-                            rc.Work = txtRCWork.Text;
-                            rc.SYID = txtRCSYID.Text;
-                            rc.StartTime = txtRCStartTime.Text;
-                            rc.EndTime = txtRCEndTime.Text;
-                            list2.Add(rc);
-                        }
-                    }
+                    list2 = GetAllRealTimeControlInfos(rp, e.Item.ItemIndex);
                     rp.DataSource = list2;
                     rp.DataBind();
                 }
             }
         }
 
+        private List<ZXJH_RealTimeControl> GetAllRealTimeControlInfos(Repeater rp, int idx)
+        {
+            List<ZXJH_RealTimeControl> list2 = new List<ZXJH_RealTimeControl>();
+            ZXJH_RealTimeControl rc;
+            foreach (RepeaterItem it in rp.Items)
+            {
+                if (idx != it.ItemIndex)
+                {
+                    rc = new ZXJH_RealTimeControl();
+                    TextBox txtRCWork = (TextBox)it.FindControl("txtRCWork");
+                    TextBox txtRCSYID = (TextBox)it.FindControl("txtRCSYID");
+                    TextBox txtRCStartTime = (TextBox)it.FindControl("txtRCStartTime");
+                    TextBox txtRCEndTime = (TextBox)it.FindControl("txtRCEndTime");
+
+                    if (CheckCtrlExits(txtRCWork, "工作"))
+                        rc.Work = txtRCWork.Text;
+                    else
+                        return null;
+                    if (CheckCtrlExits(txtRCSYID, "试验ID"))
+                        rc.SYID = txtRCSYID.Text;
+                    else
+                        return null;
+                    if (CheckCtrlExits(txtRCStartTime, "开始时间"))
+                        rc.StartTime = txtRCStartTime.Text;
+                    else
+                        return null;
+                    if (CheckCtrlExits(txtRCEndTime, "结束时间"))
+                        rc.EndTime = txtRCEndTime.Text;
+                    else
+                        return null;
+                    list2.Add(rc);
+                }
+            }
+            return list2;
+        }
+
         protected void SYEstimate_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            List<ZXJH_SYEstimate> list2;
+            ZXJH_SYEstimate sye;
+            Repeater rp = (Repeater)source;
             if (e.CommandName == "Add")
             {
-                List<ZXJH_SYEstimate> list2 = new List<ZXJH_SYEstimate>();
-                ZXJH_SYEstimate sye;
-                Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
-                {
-                    sye = new ZXJH_SYEstimate();
-                    TextBox txtESYID = (TextBox)it.FindControl("txtESYID");
-                    TextBox txtEStartTime = (TextBox)it.FindControl("txtEStartTime");
-                    TextBox txtEEndTime = (TextBox)it.FindControl("txtEEndTime");
-
-                    if (CheckCtrlExits(txtESYID, "试验ID"))
-                        sye.SYID = txtESYID.Text;
-                    else
-                        return;
-                    if (CheckCtrlExits(txtEStartTime, "开始时间"))
-                        sye.StartTime = txtEStartTime.Text;
-                    else
-                        return;
-                    if (CheckCtrlExits(txtEEndTime, "完成时间"))
-                        sye.EndTime = txtEEndTime.Text;
-                    else
-                        return;
-                    list2.Add(sye);
-                }
+                list2 = GetAllSYEstimateInfos(rp, -1);
                 sye = new ZXJH_SYEstimate();
                 sye.SYID = "";
                 sye.StartTime = "";
@@ -768,717 +698,203 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             if (e.CommandName == "Del")
             {
-                List<ZXJH_SYEstimate> list2 = new List<ZXJH_SYEstimate>();
-                ZXJH_SYEstimate sye;
-                Repeater rp = (Repeater)source;
                 if (rp.Items.Count <= 1)
                 {
                     ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
                 }
                 else
                 {
-                    foreach (RepeaterItem it in rp.Items)
-                    {
-                        if (e.Item.ItemIndex != it.ItemIndex)
-                        {
-                            sye = new ZXJH_SYEstimate();
-                            TextBox txtESYID = (TextBox)it.FindControl("txtESYID");
-                            TextBox txtEStartTime = (TextBox)it.FindControl("txtEStartTime");
-                            TextBox txtEEndTime = (TextBox)it.FindControl("txtEEndTime");
-
-                            sye.SYID = txtESYID.Text;
-                            sye.StartTime = txtEStartTime.Text;
-                            sye.EndTime = txtEEndTime.Text;
-                            list2.Add(sye);
-                        }
-                    }
+                    list2 = GetAllSYEstimateInfos(rp, e.Item.ItemIndex);
                     rp.DataSource = list2;
                     rp.DataBind();
                 }
             }
         }
 
-        /// <summary>
-        /// 保存计划
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnSubmit_Click(object sender, EventArgs e)
+        private List<ZXJH_SYEstimate> GetAllSYEstimateInfos(Repeater rp, int idx)
         {
-            try
+            List<ZXJH_SYEstimate> list2 = new List<ZXJH_SYEstimate>();
+            ZXJH_SYEstimate sye;
+            foreach (RepeaterItem it in rp.Items)
             {
-                isTempJH = GetIsTempJHValue();
-
-                #region basic
-                ZXJH obj = new ZXJH();
-                obj.Date = txtDate.Text;
-                //obj.SYCount = txtSYCount.Text;
-
-                obj.SYContents = new List<ZXJH_SYContent>();
-                obj.WorkContents = new List<ZXJH_WorkContent>();
-                obj.CommandMakes = new List<ZXJH_CommandMake>();
-                obj.SYDataHandles = new List<ZXJH_SYDataHandle>();
-                obj.DirectAndMonitors = new List<ZXJH_DirectAndMonitor>();
-                obj.RealTimeControls = new List<ZXJH_RealTimeControl>();
-                obj.SYEstimates = new List<ZXJH_SYEstimate>();
-                #endregion
-
-                ZXJH_SYContent sy;
-                ZXJH_SYContent_SC sy_sc;
-                ZXJH_SYContent_CK sy_ck;
-                ZXJH_SYContent_ZS sy_zs;
-                ZXJH_WorkContent wc;
-                ZXJH_CommandMake cm;
-                ZXJH_SYDataHandle dh;
-                ZXJH_DirectAndMonitor dam;
-                ZXJH_RealTimeControl rc;
-                ZXJH_SYEstimate sye;
-
-                #region SYContent
-                foreach (RepeaterItem it in rpSYContent.Items)
-                {
-                    sy = new ZXJH_SYContent();
-                    sy.SCList = new List<ZXJH_SYContent_SC>();
-                    sy.CKList = new List<ZXJH_SYContent_CK>();
-                    sy.ZSList = new List<ZXJH_SYContent_ZS>();
-                    //TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
-                    //sy.SatID = txtSYSatID.Text;
-                    ucs.ucSatellite ddlSYSatID = (ucs.ucSatellite)it.FindControl("ddlSYSatID");
-                    sy.SatID = ddlSYSatID.SelectedValue;
-                    #region 试验
-                    TextBox txtSYID = (TextBox)it.FindControl("txtSYID");
-                    TextBox txtSYName = (TextBox)it.FindControl("txtSYName");
-                    TextBox txtSYStartDateTime = (TextBox)it.FindControl("txtSYStartDateTime");
-                    TextBox txtSYEndDateTime = (TextBox)it.FindControl("txtSYEndDateTime");
-                    TextBox txtSYDays = (TextBox)it.FindControl("txtSYDays");
-                    TextBox txtSYNote = (TextBox)it.FindControl("txtSYNote");
-
-                    sy.SYID = txtSYID.Text;
-                    sy.SYName = txtSYName.Text;
-                    sy.SYStartTime = txtSYStartDateTime.Text;
-                    sy.SYEndTime = txtSYEndDateTime.Text;
-                    sy.SYDays = txtSYDays.Text;
-                    sy.SYNote = txtSYNote.Text;
-                    #endregion
-                    #region 数传
-                    Repeater rpsc = it.FindControl("rpSYContentSC") as Repeater;
-                    foreach (RepeaterItem its in rpsc.Items)
-                    {
-                        sy_sc = new ZXJH_SYContent_SC();
-                        TextBox txtSCStationNO = (TextBox)its.FindControl("txtSCStationNO");
-                        TextBox txtSCEquipmentNO = (TextBox)its.FindControl("txtSCEquipmentNO");
-                        DropDownList ddlSCFrequencyBand = (DropDownList)its.FindControl("ddlSCFrequencyBand");
-                        //TextBox txtSCFrequencyBand = (TextBox)it.FindControl("txtSCFrequencyBand");
-                        TextBox txtSCLaps = (TextBox)its.FindControl("txtSCLaps");
-                        TextBox txtSCStartTime = (TextBox)its.FindControl("txtSCStartTime");
-                        TextBox txtSCEndTime = (TextBox)its.FindControl("txtSCEndTime");
-
-                        sy_sc.SY_SCStationNO = txtSCStationNO.Text;
-                        sy_sc.SY_SCEquipmentNO = txtSCEquipmentNO.Text;
-                        sy_sc.SY_SCFrequencyBand = ddlSCFrequencyBand.SelectedValue;
-                        sy_sc.SY_SCLaps = txtSCLaps.Text;
-                        sy_sc.SY_SCStartTime = txtSCStartTime.Text;
-                        sy_sc.SY_SCEndTime = txtSCEndTime.Text;
-                        sy.SCList.Add(sy_sc);
-                    }
-                    #endregion
-                    #region 测控
-                    Repeater rpck = it.FindControl("rpSYContentCK") as Repeater;
-                    foreach (RepeaterItem its in rpck.Items)
-                    {
-                        sy_ck = new ZXJH_SYContent_CK();
-                        TextBox txtCKStationNO = (TextBox)its.FindControl("txtCKStationNO");
-                        TextBox txtCKEquipmentNO = (TextBox)its.FindControl("txtCKEquipmentNO");
-                        TextBox txtCKStartTime = (TextBox)its.FindControl("txtCKStartTime");
-                        TextBox txtCKEndTime = (TextBox)its.FindControl("txtCKEndTime");
-                        TextBox txtCKLaps = (TextBox)its.FindControl("txtCKLaps");
-
-                        sy_ck.SY_CKStationNO = txtCKStationNO.Text;
-                        sy_ck.SY_CKEquipmentNO = txtCKEquipmentNO.Text;
-                        sy_ck.SY_CKStartTime = txtCKStartTime.Text;
-                        sy_ck.SY_CKEndTime = txtCKEndTime.Text;
-                        sy_ck.SY_CKLaps = txtCKLaps.Text;
-                        sy.CKList.Add(sy_ck);
-                    }
-                    #endregion
-                    #region 注数
-                    Repeater rpzs = it.FindControl("rpSYContentZS") as Repeater;
-                    foreach (RepeaterItem its in rpzs.Items)
-                    {
-                        sy_zs = new ZXJH_SYContent_ZS();
-                        TextBox txtZSFirst = (TextBox)its.FindControl("txtZSFirst");
-                        TextBox txtZSLast = (TextBox)its.FindControl("txtZSLast");
-                        TextBox txtZSContent = (TextBox)its.FindControl("txtZSContent");
-
-                        sy_zs.SY_ZSFirst = txtZSFirst.Text;
-                        sy_zs.SY_ZSLast = txtZSLast.Text;
-                        sy_zs.SY_ZSContent = txtZSContent.Text;
-                        sy.ZSList.Add(sy_zs);
-                    }
-                    #endregion
-                    obj.SYContents.Add(sy);
-                }
-
-                obj.SYCount = obj.SYContents.Count.ToString();  //对应日期的试验个数=试验内容的个数
-                #endregion
-                #region workContent
-                foreach (RepeaterItem it in rpWork.Items)
-                {
-                    wc = new ZXJH_WorkContent();
-                    DropDownList ddlWC_Work = (DropDownList)it.FindControl("ddlWC_Work");
-                    TextBox txtWC_SYID = (TextBox)it.FindControl("txtWC_SYID");
-                    TextBox txtWC_StartTime = (TextBox)it.FindControl("txtWC_StartTime");
-                    TextBox txtWC_MinTime = (TextBox)it.FindControl("txtWC_MinTime");
-                    TextBox txtWC_MaxTime = (TextBox)it.FindControl("txtWC_MaxTime");
-
-                    wc.Work = ddlWC_Work.SelectedItem.Text;
-                    wc.SYID = txtWC_SYID.Text;
-                    wc.StartTime = txtWC_StartTime.Text;
-                    wc.MinTime = txtWC_MinTime.Text;
-                    wc.MaxTime = txtWC_MaxTime.Text;
-                    obj.WorkContents.Add(wc);
-                }
-                #endregion
-                #region CommandMake
-                foreach (RepeaterItem it in rpCommandMake.Items)
-                {
-                    cm = new ZXJH_CommandMake();
-                    ucs.ucSatellite txtWork_Command_SatID = (ucs.ucSatellite)it.FindControl("txtWork_Command_SatID");
-                    TextBox txtWork_Command_SYID = (TextBox)it.FindControl("txtWork_Command_SYID");
-                    TextBox txtWork_Command_Programe = (TextBox)it.FindControl("txtWork_Command_Programe");
-                    TextBox txtWork_Command_FinishTime = (TextBox)it.FindControl("txtWork_Command_FinishTime");
-                    TextBox txtWork_Command_UpWay = (TextBox)it.FindControl("txtWork_Command_UpWay");
-                    TextBox txtWork_Command_UpTime = (TextBox)it.FindControl("txtWork_Command_UpTime");
-                    TextBox txtWork_Command_Note = (TextBox)it.FindControl("txtWork_Command_Note");
-
-                    cm.Work_Command_SatID = txtWork_Command_SatID.SelectedValue;
-                    cm.Work_Command_SYID = txtWork_Command_SYID.Text;
-                    cm.Work_Command_Programe = txtWork_Command_Programe.Text;
-                    cm.Work_Command_FinishTime = txtWork_Command_FinishTime.Text;
-                    cm.Work_Command_UpWay = txtWork_Command_UpWay.Text;
-                    cm.Work_Command_UpTime = txtWork_Command_UpTime.Text;
-                    cm.Work_Command_Note = txtWork_Command_Note.Text;
-                    obj.CommandMakes.Add(cm);
-                }
-                #endregion
-                #region SYDataHandle
-                foreach (RepeaterItem it in rpSYDataHandle.Items)
-                {
-                    dh = new ZXJH_SYDataHandle();
-                    TextBox txtSHSYID = (TextBox)it.FindControl("txtSHSYID");
-                    TextBox txtSHSatID = (TextBox)it.FindControl("txtSHSatID");
-                    TextBox txtSHLaps = (TextBox)it.FindControl("txtSHLaps");
-                    TextBox txtMainStation = (TextBox)it.FindControl("txtMainStation");
-                    TextBox txtSHMainStationEquipment = (TextBox)it.FindControl("txtSHMainStationEquipment");
-                    TextBox txtBackStation = (TextBox)it.FindControl("txtBackStation");
-                    TextBox txtSHBakStationEquipment = (TextBox)it.FindControl("txtSHBakStationEquipment");
-                    TextBox txtSHContent = (TextBox)it.FindControl("txtSHContent");
-                    TextBox txtSHStartTime = (TextBox)it.FindControl("txtSHStartTime");
-                    TextBox txtSHEndTime = (TextBox)it.FindControl("txtSHEndTime");
-
-                    dh.SYID = txtSHSYID.Text;
-                    dh.SatID = txtSHSatID.Text;
-                    dh.Laps = txtSHLaps.Text;
-                    dh.Content = txtSHContent.Text;
-                    dh.MainStation = txtMainStation.Text;
-                    dh.MainStationEquipment = txtSHMainStationEquipment.Text;
-                    dh.BakStation = txtBackStation.Text;
-                    dh.BakStationEquipment = txtSHBakStationEquipment.Text;
-                    dh.StartTime = txtSHStartTime.Text;
-                    dh.EndTime = txtSHEndTime.Text;
-                    obj.SYDataHandles.Add(dh);
-                }
-                #endregion
-                #region DirectAndMonitor
-                foreach (RepeaterItem it in rpDirectAndMonitor.Items)
-                {
-                    dam = new ZXJH_DirectAndMonitor();
-                    TextBox txtDMSYID = (TextBox)it.FindControl("txtDMSYID");
-                    TextBox txtDMStartTime = (TextBox)it.FindControl("txtDMStartTime");
-                    TextBox txtDMEndTime = (TextBox)it.FindControl("txtDMEndTime");
-                    DropDownList ddlDMRTTask = (DropDownList)it.FindControl("ddlDMRTTask");
-
-                    dam.SYID = txtDMSYID.Text;
-                    dam.StartTime = txtDMStartTime.Text;
-                    dam.EndTime = txtDMEndTime.Text;
-                    dam.RealTimeDemoTask = ddlDMRTTask.SelectedItem.Text;
-                    obj.DirectAndMonitors.Add(dam);
-                }
-                #endregion
-                #region RealTimeControl
-                foreach (RepeaterItem it in rpRealTimeControl.Items)
-                {
-                    rc = new ZXJH_RealTimeControl();
-                    TextBox txtRCWork = (TextBox)it.FindControl("txtRCWork");
-                    TextBox txtRCSYID = (TextBox)it.FindControl("txtRCSYID");
-                    TextBox txtRCStartTime = (TextBox)it.FindControl("txtRCStartTime");
-                    TextBox txtRCEndTime = (TextBox)it.FindControl("txtRCEndTime");
-
-                    rc.Work = txtRCWork.Text;
-                    rc.SYID = txtRCSYID.Text;
-                    rc.StartTime = txtRCStartTime.Text;
-                    rc.EndTime = txtRCEndTime.Text;
-                    obj.RealTimeControls.Add(rc);
-                }
-                #endregion
-                #region SYEstimate
-                foreach (RepeaterItem it in rpSYEstimate.Items)
+                if (it.ItemIndex != idx)
                 {
                     sye = new ZXJH_SYEstimate();
                     TextBox txtESYID = (TextBox)it.FindControl("txtESYID");
                     TextBox txtEStartTime = (TextBox)it.FindControl("txtEStartTime");
                     TextBox txtEEndTime = (TextBox)it.FindControl("txtEEndTime");
 
-                    sye.SYID = txtESYID.Text;
-                    sye.StartTime = txtEStartTime.Text;
-                    sye.EndTime = txtEEndTime.Text;
-                    obj.SYEstimates.Add(sye);
-                }
-                #endregion
-
-                obj.TaskID = ucTask1.SelectedItem.Value;    //任务ID
-                obj.SatID = ucSatellite1.SelectedItem.Value;    //卫星ID
-
-                PlanFileCreator creater = new PlanFileCreator(isTempJH);
-                if (hfStatus.Value == "new")
-                {
-                    string filepath = creater.CreateZXJHFile(obj, 0);
-
-                    DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
-                    {
-                        TaskID = obj.TaskID,
-                        PlanType = "ZXJH",
-                        PlanID = (new Sequence()).GetZXJHSequnce(),
-                        StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
-                        EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
-                        SRCType = 0,
-                        FileIndex = filepath,
-                        SatID = obj.SatID,
-                        Reserve = txtNote.Text
-                    };
-                    var result = jh.Add();
-                }
-                else
-                {
-                    //当任务和卫星更新时，需要更新文件名称
-                    if (hfSatID.Value != ucSatellite1.SelectedValue || hfTaskID.Value != ucTask1.SelectedValue)
-                    {
-                        string filepath = creater.CreateZXJHFile(obj, 0);
-
-                        DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
-                        {
-                            Id = Convert.ToInt32(HfID.Value),
-                            TaskID = obj.TaskID,
-                            StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
-                            EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
-                            FileIndex = filepath,
-                            SatID = obj.SatID,
-                            Reserve = txtNote.Text
-                        };
-                        var result = jh.Update();
-                        //更新隐藏域的任务ID和卫星ID
-                        hfTaskID.Value = jh.TaskID;
-                        hfSatID.Value = jh.SatID;
-                    }
+                    if (CheckCtrlExits(txtESYID, "试验ID"))
+                        sye.SYID = txtESYID.Text;
                     else
-                    {
-                        creater.FilePath = HfFileIndex.Value;
-                        creater.CreateZXJHFile(obj, 1);
-                    }
+                        return null;
+                    if (CheckCtrlExits(txtEStartTime, "开始时间"))
+                        sye.StartTime = txtEStartTime.Text;
+                    else
+                        return null;
+                    if (CheckCtrlExits(txtEEndTime, "完成时间"))
+                        sye.EndTime = txtEEndTime.Text;
+                    else
+                        return null;
+                    list2.Add(sye);
                 }
-                ltMessage.Text = "计划保存成功";
-                txtSYCount.Text = obj.SYCount;
-                //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
             }
-            catch (Exception ex)
-            {
-                throw (new AspNetException("保存计划信息出现异常，异常原因", ex));
-            }
-            finally { }
+            return list2;
         }
 
-        protected void btnSaveTo_Click(object sender, EventArgs e)
+        protected void rpSYContentSC_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            try
-            {
-                isTempJH = GetIsTempJHValue();
-
-                #region basic
-                ZXJH obj = new ZXJH();
-                obj.Date = txtDate.Text;
-               // obj.SYCount = txtSYCount.Text;
-
-                obj.SYContents = new List<ZXJH_SYContent>();
-                obj.WorkContents = new List<ZXJH_WorkContent>();
-                obj.CommandMakes = new List<ZXJH_CommandMake>();
-                obj.SYDataHandles = new List<ZXJH_SYDataHandle>();
-                obj.DirectAndMonitors = new List<ZXJH_DirectAndMonitor>();
-                obj.RealTimeControls = new List<ZXJH_RealTimeControl>();
-                obj.SYEstimates = new List<ZXJH_SYEstimate>();
-                #endregion
-
-                ZXJH_SYContent sy;
-                ZXJH_SYContent_SC sy_sc;
-                ZXJH_SYContent_CK sy_ck;
-                ZXJH_SYContent_ZS sy_zs;
-                ZXJH_WorkContent wc;
-                ZXJH_CommandMake cm;
-                ZXJH_SYDataHandle dh;
-                ZXJH_DirectAndMonitor dam;
-                ZXJH_RealTimeControl rc;
-                ZXJH_SYEstimate sye;
-
-                #region SYContent
-                foreach (RepeaterItem it in rpSYContent.Items)
-                {
-                    sy = new ZXJH_SYContent();
-                    sy.SCList = new List<ZXJH_SYContent_SC>();
-                    sy.CKList = new List<ZXJH_SYContent_CK>();
-                    sy.ZSList = new List<ZXJH_SYContent_ZS>();
-                    //TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
-                    //sy.SatID = txtSYSatID.Text;
-                    ucs.ucSatellite ddlSYSatID = (ucs.ucSatellite)it.FindControl("ddlSYSatID");
-                    sy.SatID = ddlSYSatID.SelectedValue;
-                    #region 试验
-                    TextBox txtSYID = (TextBox)it.FindControl("txtSYID");
-                    TextBox txtSYName = (TextBox)it.FindControl("txtSYName");
-                    TextBox txtSYStartDateTime = (TextBox)it.FindControl("txtSYStartDateTime");
-                    TextBox txtSYEndDateTime = (TextBox)it.FindControl("txtSYEndDateTime");
-                    TextBox txtSYDays = (TextBox)it.FindControl("txtSYDays");
-                    TextBox txtSYNote = (TextBox)it.FindControl("txtSYNote");
-
-                    sy.SYID = txtSYID.Text;
-                    sy.SYName = txtSYName.Text;
-                    sy.SYStartTime = txtSYStartDateTime.Text;
-                    sy.SYEndTime = txtSYEndDateTime.Text;
-                    sy.SYDays = txtSYDays.Text;
-                    sy.SYNote = txtSYNote.Text;
-                    #endregion
-                    #region 数传
-                    Repeater rpsc = it.FindControl("rpSYContentSC") as Repeater;
-                    foreach (RepeaterItem its in rpsc.Items)
-                    {
-                        sy_sc = new ZXJH_SYContent_SC();
-                        TextBox txtSCStationNO = (TextBox)its.FindControl("txtSCStationNO");
-                        TextBox txtSCEquipmentNO = (TextBox)its.FindControl("txtSCEquipmentNO");
-                        DropDownList ddlSCFrequencyBand = (DropDownList)its.FindControl("ddlSCFrequencyBand");
-                        //TextBox txtSCFrequencyBand = (TextBox)its.FindControl("txtSCFrequencyBand");
-                        TextBox txtSCLaps = (TextBox)its.FindControl("txtSCLaps");
-                        TextBox txtSCStartTime = (TextBox)its.FindControl("txtSCStartTime");
-                        TextBox txtSCEndTime = (TextBox)its.FindControl("txtSCEndTime");
-
-                        sy_sc.SY_SCStationNO = txtSCStationNO.Text;
-                        sy_sc.SY_SCEquipmentNO = txtSCEquipmentNO.Text;
-                        sy_sc.SY_SCFrequencyBand = ddlSCFrequencyBand.SelectedValue;
-                        sy_sc.SY_SCLaps = txtSCLaps.Text;
-                        sy_sc.SY_SCStartTime = txtSCStartTime.Text;
-                        sy_sc.SY_SCEndTime = txtSCEndTime.Text;
-                        sy.SCList.Add(sy_sc);
-                    }
-                    #endregion
-                    #region 测控
-                    Repeater rpck = it.FindControl("rpSYContentCK") as Repeater;
-                    foreach (RepeaterItem its in rpck.Items)
-                    {
-                        sy_ck = new ZXJH_SYContent_CK();
-                        TextBox txtCKStationNO = (TextBox)its.FindControl("txtCKStationNO");
-                        TextBox txtCKEquipmentNO = (TextBox)its.FindControl("txtCKEquipmentNO");
-                        TextBox txtCKStartTime = (TextBox)its.FindControl("txtCKStartTime");
-                        TextBox txtCKEndTime = (TextBox)its.FindControl("txtCKEndTime");
-                        TextBox txtCKLaps = (TextBox)its.FindControl("txtCKLaps");
-
-                        sy_ck.SY_CKStationNO = txtCKStationNO.Text;
-                        sy_ck.SY_CKEquipmentNO = txtCKEquipmentNO.Text;
-                        sy_ck.SY_CKStartTime = txtCKStartTime.Text;
-                        sy_ck.SY_CKEndTime = txtCKEndTime.Text;
-                        sy_ck.SY_CKLaps = txtCKLaps.Text;
-                        sy.CKList.Add(sy_ck);
-                    }
-                    #endregion
-                    #region 注数
-                    Repeater rpzs = it.FindControl("rpSYContentZS") as Repeater;
-                    foreach (RepeaterItem its in rpzs.Items)
-                    {
-                        sy_zs = new ZXJH_SYContent_ZS();
-                        TextBox txtZSFirst = (TextBox)its.FindControl("txtZSFirst");
-                        TextBox txtZSLast = (TextBox)its.FindControl("txtZSLast");
-                        TextBox txtZSContent = (TextBox)its.FindControl("txtZSContent");
-
-                        sy_zs.SY_ZSFirst = txtZSFirst.Text;
-                        sy_zs.SY_ZSLast = txtZSLast.Text;
-                        sy_zs.SY_ZSContent = txtZSContent.Text;
-                        sy.ZSList.Add(sy_zs);
-                    }
-                    #endregion
-                    obj.SYContents.Add(sy);
-                }
-
-                obj.SYCount = obj.SYContents.Count.ToString();  //对应日期的试验个数=试验内容的个数
-                #endregion
-                #region workContent
-                foreach (RepeaterItem it in rpWork.Items)
-                {
-                    wc = new ZXJH_WorkContent();
-                    DropDownList ddlWC_Work = (DropDownList)it.FindControl("ddlWC_Work");
-                    TextBox txtWC_SYID = (TextBox)it.FindControl("txtWC_SYID");
-                    TextBox txtWC_StartTime = (TextBox)it.FindControl("txtWC_StartTime");
-                    TextBox txtWC_MinTime = (TextBox)it.FindControl("txtWC_MinTime");
-                    TextBox txtWC_MaxTime = (TextBox)it.FindControl("txtWC_MaxTime");
-
-                    wc.Work = ddlWC_Work.SelectedItem.Text;
-                    wc.SYID = txtWC_SYID.Text;
-                    wc.StartTime = txtWC_StartTime.Text;
-                    wc.MinTime = txtWC_MinTime.Text;
-                    wc.MaxTime = txtWC_MaxTime.Text;
-                    obj.WorkContents.Add(wc);
-                }
-                #endregion
-                #region CommandMake
-                foreach (RepeaterItem it in rpCommandMake.Items)
-                {
-                    cm = new ZXJH_CommandMake();
-                    ucs.ucSatellite txtWork_Command_SatID = (ucs.ucSatellite)it.FindControl("txtWork_Command_SatID");
-                    TextBox txtWork_Command_SYID = (TextBox)it.FindControl("txtWork_Command_SYID");
-                    TextBox txtWork_Command_Programe = (TextBox)it.FindControl("txtWork_Command_Programe");
-                    TextBox txtWork_Command_FinishTime = (TextBox)it.FindControl("txtWork_Command_FinishTime");
-                    TextBox txtWork_Command_UpWay = (TextBox)it.FindControl("txtWork_Command_UpWay");
-                    TextBox txtWork_Command_UpTime = (TextBox)it.FindControl("txtWork_Command_UpTime");
-                    TextBox txtWork_Command_Note = (TextBox)it.FindControl("txtWork_Command_Note");
-
-                    cm.Work_Command_SatID = txtWork_Command_SatID.SelectedValue;
-                    cm.Work_Command_SYID = txtWork_Command_SYID.Text;
-                    cm.Work_Command_Programe = txtWork_Command_Programe.Text;
-                    cm.Work_Command_FinishTime = txtWork_Command_FinishTime.Text;
-                    cm.Work_Command_UpWay = txtWork_Command_UpWay.Text;
-                    cm.Work_Command_UpTime = txtWork_Command_UpTime.Text;
-                    cm.Work_Command_Note = txtWork_Command_Note.Text;
-                    obj.CommandMakes.Add(cm);
-                }
-                #endregion
-                #region SYDataHandle
-                foreach (RepeaterItem it in rpSYDataHandle.Items)
-                {
-                    dh = new ZXJH_SYDataHandle();
-                    TextBox txtSHSYID = (TextBox)it.FindControl("txtSHSYID");
-                    TextBox txtSHSatID = (TextBox)it.FindControl("txtSHSatID");
-                    TextBox txtSHLaps = (TextBox)it.FindControl("txtSHLaps");
-                    TextBox txtMainStation = (TextBox)it.FindControl("txtMainStation");
-                    TextBox txtSHMainStationEquipment = (TextBox)it.FindControl("txtSHMainStationEquipment");
-                    TextBox txtBackStation = (TextBox)it.FindControl("txtBackStation");
-                    TextBox txtSHBakStationEquipment = (TextBox)it.FindControl("txtSHBakStationEquipment");
-                    TextBox txtSHContent = (TextBox)it.FindControl("txtSHContent");
-                    TextBox txtSHStartTime = (TextBox)it.FindControl("txtSHStartTime");
-                    TextBox txtSHEndTime = (TextBox)it.FindControl("txtSHEndTime");
-
-                    dh.SYID = txtSHSYID.Text;
-                    dh.SatID = txtSHSatID.Text;
-                    dh.Laps = txtSHLaps.Text;
-                    dh.Content = txtSHContent.Text;
-                    dh.MainStation = txtMainStation.Text;
-                    dh.MainStationEquipment = txtSHMainStationEquipment.Text;
-                    dh.BakStation = txtBackStation.Text;
-                    dh.BakStationEquipment = txtSHBakStationEquipment.Text;
-                    dh.StartTime = txtSHStartTime.Text;
-                    dh.EndTime = txtSHEndTime.Text;
-                    obj.SYDataHandles.Add(dh);
-                }
-                #endregion
-                #region DirectAndMonitor
-                foreach (RepeaterItem it in rpDirectAndMonitor.Items)
-                {
-                    dam = new ZXJH_DirectAndMonitor();
-                    TextBox txtDMSYID = (TextBox)it.FindControl("txtDMSYID");
-                    TextBox txtDMStartTime = (TextBox)it.FindControl("txtDMStartTime");
-                    TextBox txtDMEndTime = (TextBox)it.FindControl("txtDMEndTime");
-                    DropDownList ddlDMRTTask = (DropDownList)it.FindControl("ddlDMRTTask");
-
-                    dam.SYID = txtDMSYID.Text;
-                    dam.StartTime = txtDMStartTime.Text;
-                    dam.EndTime = txtDMEndTime.Text;
-                    dam.RealTimeDemoTask = ddlDMRTTask.SelectedItem.Text;
-                    obj.DirectAndMonitors.Add(dam);
-                }
-                #endregion
-                #region RealTimeControl
-                foreach (RepeaterItem it in rpRealTimeControl.Items)
-                {
-                    rc = new ZXJH_RealTimeControl();
-                    TextBox txtRCWork = (TextBox)it.FindControl("txtRCWork");
-                    TextBox txtRCSYID = (TextBox)it.FindControl("txtRCSYID");
-                    TextBox txtRCStartTime = (TextBox)it.FindControl("txtRCStartTime");
-                    TextBox txtRCEndTime = (TextBox)it.FindControl("txtRCEndTime");
-
-                    rc.Work = txtRCWork.Text;
-                    rc.SYID = txtRCSYID.Text;
-                    rc.StartTime = txtRCStartTime.Text;
-                    rc.EndTime = txtRCEndTime.Text;
-                    obj.RealTimeControls.Add(rc);
-                }
-                #endregion
-                #region SYEstimate
-                foreach (RepeaterItem it in rpSYEstimate.Items)
-                {
-                    sye = new ZXJH_SYEstimate();
-                    TextBox txtESYID = (TextBox)it.FindControl("txtESYID");
-                    TextBox txtEStartTime = (TextBox)it.FindControl("txtEStartTime");
-                    TextBox txtEEndTime = (TextBox)it.FindControl("txtEEndTime");
-
-                    sye.SYID = txtESYID.Text;
-                    sye.StartTime = txtEStartTime.Text;
-                    sye.EndTime = txtEEndTime.Text;
-                    obj.SYEstimates.Add(sye);
-                }
-                #endregion
-
-                PlanFileCreator creater = new PlanFileCreator(isTempJH);
-
-                obj.TaskID = ucTask1.SelectedItem.Value;
-                obj.SatID = ucSatellite1.SelectedItem.Value;
-                //检查文件是否已经存在
-                if (creater.TestZXJHFileName(obj))
-                {
-                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('存在同名文件，请一分钟后重试');</script>");
-                    return;
-                }
-                string filepath = creater.CreateZXJHFile(obj, 0);
-
-                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
-                {
-                    TaskID = obj.TaskID,
-                    PlanType = "ZXJH",
-                    PlanID = (new Sequence()).GetZXJHSequnce(),
-                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
-                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
-                    SRCType = 0,
-                    FileIndex = filepath,
-                    SatID = obj.SatID,
-                    Reserve = txtNote.Text
-                };
-                var result = jh.Add();
-
-                ltMessage.Text = "计划保存成功";
-                txtSYCount.Text = obj.SYCount;
-                //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
-            }
-            catch (Exception ex)
-            {
-                throw (new AspNetException("保存计划信息出现异常，异常原因", ex));
-            }
-            finally { }
-        }
-
-        protected void btnReset_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(HfID.Value))
-                {
-                    Page.Response.Redirect(Request.CurrentExecutionFilePath, false);
-                }
-                else
-                {
-                    string sID = HfID.Value;
-                    HfID.Value = sID;
-                    hfStatus.Value = "edit";    //编辑
-                    BindJhTable(sID);
-                    BindXML();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw (new AspNetException("重置页面出现异常，异常原因", ex));
-            }
-            finally { }
-        }
-
-        protected void btnReturn_Click(object sender, EventArgs e)
-        {
-            isTempJH = GetIsTempJHValue();
-            if (isTempJH)
-            {
-                Response.Redirect("PlanTempList.aspx" + hfURL.Value);
-            }
-            else
-            {
-                Response.Redirect("PlanList.aspx" + hfURL.Value);
-            }
-        }
-
-        protected bool GetIsTempJHValue()
-        {
-            bool returnvalue = false;
-            if (null != ViewState["isTempJH"])
-            {
-                returnvalue = Convert.ToBoolean(ViewState["isTempJH"]);
-            }
-            return returnvalue;
-        }
-
-        /// <summary>
-        /// 试验内容
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="e"></param>
-        protected void rpSYContent_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
+            List<ZXJH_SYContent_SC> list2;
+            ZXJH_SYContent_SC sy;
+            Repeater rp = (Repeater)source;
             if (e.CommandName == "Add")
             {
-                List<ZXJH_SYContent> list2 = new List<ZXJH_SYContent>();
-                ZXJH_SYContent sy;
-                Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
-                {
-                    sy = new ZXJH_SYContent();
-                    //TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
-                    //sy.SatID = txtSYSatID.Text;
-                    ucs.ucSatellite ddlSYSatID = (ucs.ucSatellite)it.FindControl("ddlSYSatID");
-                    sy.SatID = ddlSYSatID.SelectedValue;
-                    #region 试验
-                    TextBox txtSYID = (TextBox)it.FindControl("txtSYID");
-                    TextBox txtSYName = (TextBox)it.FindControl("txtSYName");
-                    TextBox txtSYStartDateTime = (TextBox)it.FindControl("txtSYStartDateTime");
-                    TextBox txtSYEndDateTime = (TextBox)it.FindControl("txtSYEndDateTime");
-                    TextBox txtSYDays = (TextBox)it.FindControl("txtSYDays");
-                    TextBox txtSYNote = (TextBox)it.FindControl("txtSYNote");
+                list2 = GetAllSYContentSCInfos(rp, -1);
+                sy = new ZXJH_SYContent_SC();
+                list2.Add(sy);
+                rp.DataSource = list2;
+                rp.DataBind();
 
-                    sy.SYID = txtSYID.Text;
-                    sy.SYName = txtSYName.Text;
-                    sy.SYStartTime = txtSYStartDateTime.Text;
-                    sy.SYEndTime = txtSYEndDateTime.Text;
-                    sy.SYDays = txtSYDays.Text;
-                    sy.SYNote = txtSYNote.Text;
-                    #endregion
+            }
+            if (e.CommandName == "Del")
+            {
+                if (rp.Items.Count <= 1)
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
+                }
+                else
+                {
+                    list2 = GetAllSYContentSCInfos(rp, e.Item.ItemIndex);
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
+            }
+        }
+
+        private List<ZXJH_SYContent_SC> GetAllSYContentSCInfos(Repeater rp, int idx)
+        {
+            List<ZXJH_SYContent_SC> list2 = new List<ZXJH_SYContent_SC>();
+            ZXJH_SYContent_SC sy;
+            foreach (RepeaterItem it in rp.Items)
+            {
+                if (it.ItemIndex != idx)
+                {
+                    sy = new ZXJH_SYContent_SC();
                     #region 数传
-                    TextBox txtSCStationNO = (TextBox)it.FindControl("txtSCStationNO");
-                    TextBox txtSCEquipmentNO = (TextBox)it.FindControl("txtSCEquipmentNO");
+                    DropDownList ddlDW = (DropDownList)it.FindControl("ddlDW");
+                    DropDownList ddlSB = (DropDownList)it.FindControl("ddlSB");
                     DropDownList ddlSCFrequencyBand = (DropDownList)it.FindControl("ddlSCFrequencyBand");
-                    //TextBox txtSCFrequencyBand = (TextBox)it.FindControl("txtSCFrequencyBand");
                     TextBox txtSCLaps = (TextBox)it.FindControl("txtSCLaps");
                     TextBox txtSCStartTime = (TextBox)it.FindControl("txtSCStartTime");
                     TextBox txtSCEndTime = (TextBox)it.FindControl("txtSCEndTime");
-                    if (txtSCStationNO == null)
-                        return;
 
-                    sy.SY_SCStationNO = txtSCStationNO.Text;
-                    sy.SY_SCEquipmentNO = txtSCEquipmentNO.Text;
+                    sy.SY_SCStationNO = ddlDW.SelectedValue;
+                    sy.SY_SCEquipmentNO = ddlSB.SelectedValue;
                     sy.SY_SCFrequencyBand = ddlSCFrequencyBand.SelectedValue;
                     sy.SY_SCLaps = txtSCLaps.Text;
                     sy.SY_SCStartTime = txtSCStartTime.Text;
                     sy.SY_SCEndTime = txtSCEndTime.Text;
                     #endregion
+                    list2.Add(sy);
+                }
+            }
+            return list2;
+        }
+
+        protected void rpSYContentCK_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            List<ZXJH_SYContent_CK> list2 = new List<ZXJH_SYContent_CK>();
+            ZXJH_SYContent_CK sy;
+            Repeater rp = (Repeater)source;
+            if (e.CommandName == "Add")
+            {
+                list2 = GetAllSYContentCKInfos(rp, -1);
+                sy = new ZXJH_SYContent_CK();
+                list2.Add(sy);
+                rp.DataSource = list2;
+                rp.DataBind();
+            }
+            if (e.CommandName == "Del")
+            {
+                if (rp.Items.Count <= 1)
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
+                }
+                else
+                {
+                    list2 = GetAllSYContentCKInfos(rp, e.Item.ItemIndex);
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
+            }
+        }
+
+        private List<ZXJH_SYContent_CK> GetAllSYContentCKInfos(Repeater rp, int idx)
+        {
+            List<ZXJH_SYContent_CK> list2 = new List<ZXJH_SYContent_CK>();
+            ZXJH_SYContent_CK sy;
+            foreach (RepeaterItem it in rp.Items)
+            {
+                if (it.ItemIndex != idx)
+                {
+                    sy = new ZXJH_SYContent_CK();
                     #region 测控
-                    TextBox txtCKStationNO = (TextBox)it.FindControl("txtCKStationNO");
-                    TextBox txtCKEquipmentNO = (TextBox)it.FindControl("txtCKEquipmentNO");
+                    DropDownList ddlDW = (DropDownList)it.FindControl("ddlDW");
+                    DropDownList ddlSB = (DropDownList)it.FindControl("ddlSB");
                     TextBox txtCKStartTime = (TextBox)it.FindControl("txtCKStartTime");
                     TextBox txtCKEndTime = (TextBox)it.FindControl("txtCKEndTime");
                     TextBox txtCKLaps = (TextBox)it.FindControl("txtCKLaps");
 
-                    sy.SY_CKStationNO = txtCKStationNO.Text;
-                    sy.SY_CKEquipmentNO = txtCKEquipmentNO.Text;
+                    sy.SY_CKStationNO = ddlDW.SelectedValue;
+                    sy.SY_CKEquipmentNO = ddlSB.SelectedValue;
                     sy.SY_CKStartTime = txtCKStartTime.Text;
                     sy.SY_CKEndTime = txtCKEndTime.Text;
                     sy.SY_CKLaps = txtCKLaps.Text;
                     #endregion
+                    list2.Add(sy);
+                }
+            }
+            return list2;
+        }
+
+        protected void rpSYContentZS_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            List<ZXJH_SYContent_ZS> list2;
+            ZXJH_SYContent_ZS sy;
+            Repeater rp = (Repeater)source;
+            if (e.CommandName == "Add")
+            {
+                list2 = GetAllSYContentZSInfos(rp, -1);
+                sy = new ZXJH_SYContent_ZS();
+                list2.Add(sy);
+                rp.DataSource = list2;
+                rp.DataBind();
+
+            }
+            if (e.CommandName == "Del")
+            {
+                if (rp.Items.Count <= 1)
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
+                }
+                else
+                {
+                    list2 = GetAllSYContentZSInfos(rp, e.Item.ItemIndex);
+                    rp.DataSource = list2;
+                    rp.DataBind();
+                }
+            }
+        }
+
+        private List<ZXJH_SYContent_ZS> GetAllSYContentZSInfos(Repeater rp, int idx)
+        {
+            List<ZXJH_SYContent_ZS> list2 = new List<ZXJH_SYContent_ZS>();
+            ZXJH_SYContent_ZS sy;
+            foreach (RepeaterItem it in rp.Items)
+            {
+                if (it.ItemIndex != idx)
+                {
+                    sy = new ZXJH_SYContent_ZS();
                     #region 注数
                     TextBox txtZSFirst = (TextBox)it.FindControl("txtZSFirst");
                     TextBox txtZSLast = (TextBox)it.FindControl("txtZSLast");
@@ -1491,7 +907,30 @@ namespace OperatingManagement.Web.Views.PlanManage
                     #endregion
                     list2.Add(sy);
                 }
+            }
+            return list2;
+        }
+
+        /// <summary>
+        /// 试验内容
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void rpSYContent_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            List<ZXJH_SYContent> list2;
+            ZXJH_SYContent sy;
+            Repeater rp = (Repeater)source;
+            if (e.CommandName == "Add")
+            {
+                list2 = GetAllSYContentInfos(rp, -1);
                 sy = new ZXJH_SYContent();
+                sy.ZSList = new List<ZXJH_SYContent_ZS>();
+                sy.ZSList.Add(new ZXJH_SYContent_ZS());
+                sy.SCList = new List<ZXJH_SYContent_SC>();
+                sy.SCList.Add(new ZXJH_SYContent_SC());
+                sy.CKList = new List<ZXJH_SYContent_CK>();
+                sy.CKList.Add(new ZXJH_SYContent_CK());
                 list2.Add(sy);
                 rp.DataSource = list2;
                 rp.DataBind();
@@ -1499,85 +938,54 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             if (e.CommandName == "Del")
             {
-                List<ZXJH_SYContent> list2 = new List<ZXJH_SYContent>();
-                ZXJH_SYContent sy;
-                Repeater rp = (Repeater)source;
                 if (rp.Items.Count <= 1)
                 {
                     ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
                 }
                 else
                 {
-                    foreach (RepeaterItem it in rp.Items)
-                    {
-                        if (e.Item.ItemIndex != it.ItemIndex)
-                        {
-                            sy = new ZXJH_SYContent();
-                            //TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
-                            //sy.SatID = txtSYSatID.Text;
-                            ucs.ucSatellite ddlSYSatID = (ucs.ucSatellite)it.FindControl("ddlSYSatID");
-                            sy.SatID = ddlSYSatID.SelectedValue;
-                            #region 试验
-                            TextBox txtSYID = (TextBox)it.FindControl("txtSYID");
-                            TextBox txtSYName = (TextBox)it.FindControl("txtSYName");
-                            TextBox txtSYStartDateTime = (TextBox)it.FindControl("txtSYStartDateTime");
-                            TextBox txtSYEndDateTime = (TextBox)it.FindControl("txtSYEndDateTime");
-                            TextBox txtSYDays = (TextBox)it.FindControl("txtSYDays");
-                            TextBox txtSYNote = (TextBox)it.FindControl("txtSYNote");
-
-                            sy.SYID = txtSYID.Text;
-                            sy.SYName = txtSYName.Text;
-                            sy.SYStartTime = txtSYStartDateTime.Text;
-                            sy.SYEndTime = txtSYEndDateTime.Text;
-                            sy.SYDays = txtSYDays.Text;
-                            sy.SYNote = txtSYNote.Text;
-                            #endregion
-                            #region 数传
-                            TextBox txtSCStationNO = (TextBox)it.FindControl("txtSCStationNO");
-                            TextBox txtSCEquipmentNO = (TextBox)it.FindControl("txtSCEquipmentNO");
-                            DropDownList ddlSCFrequencyBand = (DropDownList)it.FindControl("ddlSCFrequencyBand");
-                            //TextBox txtSCFrequencyBand = (TextBox)it.FindControl("txtSCFrequencyBand");
-                            TextBox txtSCLaps = (TextBox)it.FindControl("txtSCLaps");
-                            TextBox txtSCStartTime = (TextBox)it.FindControl("txtSCStartTime");
-                            TextBox txtSCEndTime = (TextBox)it.FindControl("txtSCEndTime");
-
-                            sy.SY_SCStationNO = txtSCStationNO.Text;
-                            sy.SY_SCEquipmentNO = txtSCEquipmentNO.Text;
-                            sy.SY_SCFrequencyBand = ddlSCFrequencyBand.SelectedValue;
-                            sy.SY_SCLaps = txtSCLaps.Text;
-                            sy.SY_SCStartTime = txtSCStartTime.Text;
-                            sy.SY_SCEndTime = txtSCEndTime.Text;
-                            #endregion
-                            #region 测控
-                            TextBox txtCKStationNO = (TextBox)it.FindControl("txtCKStationNO");
-                            TextBox txtCKEquipmentNO = (TextBox)it.FindControl("txtCKEquipmentNO");
-                            TextBox txtCKStartTime = (TextBox)it.FindControl("txtCKStartTime");
-                            TextBox txtCKEndTime = (TextBox)it.FindControl("txtCKEndTime");
-                            TextBox txtCKLaps = (TextBox)it.FindControl("txtCKLaps");
-
-                            sy.SY_CKStationNO = txtCKStationNO.Text;
-                            sy.SY_CKEquipmentNO = txtCKEquipmentNO.Text;
-                            sy.SY_CKStartTime = txtCKStartTime.Text;
-                            sy.SY_CKEndTime = txtCKEndTime.Text;
-                            sy.SY_CKLaps = txtCKLaps.Text;
-                            #endregion
-                            #region 注数
-                            TextBox txtZSFirst = (TextBox)it.FindControl("txtZSFirst");
-                            TextBox txtZSLast = (TextBox)it.FindControl("txtZSLast");
-                            TextBox txtZSContent = (TextBox)it.FindControl("txtZSContent");
-
-                            sy.SY_ZSFirst = txtZSFirst.Text;
-                            sy.SY_ZSLast = txtZSLast.Text;
-                            sy.SY_ZSContent = txtZSContent.Text;
-
-                            #endregion
-                            list2.Add(sy);
-                        }
-                    }
+                    list2 = GetAllSYContentInfos(rp, e.Item.ItemIndex);
                     rp.DataSource = list2;
                     rp.DataBind();
                 }
             }
+        }
+
+        private List<ZXJH_SYContent> GetAllSYContentInfos(Repeater rp, int idx)
+        {
+            List<ZXJH_SYContent> list2 = new List<ZXJH_SYContent>();
+            ZXJH_SYContent sy;
+            foreach (RepeaterItem it in rp.Items)
+            {
+                if (it.ItemIndex != idx)
+                {
+                    sy = new ZXJH_SYContent();
+                    ucs.ucSatellite ddlSYSatID = (ucs.ucSatellite)it.FindControl("ddlSYSatID");
+                    sy.SatID = ddlSYSatID.SelectedValue;
+                    #region 试验
+                    TextBox txtSYID = (TextBox)it.FindControl("txtSYID");
+                    TextBox txtSYName = (TextBox)it.FindControl("txtSYName");
+                    TextBox txtSYStartDateTime = (TextBox)it.FindControl("txtSYStartDateTime");
+                    TextBox txtSYEndDateTime = (TextBox)it.FindControl("txtSYEndDateTime");
+                    TextBox txtSYDays = (TextBox)it.FindControl("txtSYDays");
+                    TextBox txtSYNote = (TextBox)it.FindControl("txtSYNote");
+
+                    sy.SYID = txtSYID.Text;
+                    sy.SYName = txtSYName.Text;
+                    sy.SYStartTime = txtSYStartDateTime.Text;
+                    sy.SYEndTime = txtSYEndDateTime.Text;
+                    sy.SYDays = txtSYDays.Text;
+                    sy.SYNote = txtSYNote.Text;
+                    #endregion
+
+                    //数传
+                    sy.SCList = GetAllSYContentSCInfos((Repeater)it.FindControl("rpSYContentSC"), -1);
+                    sy.CKList = GetAllSYContentCKInfos((Repeater)it.FindControl("rpSYContentCK"), -1);
+                    sy.ZSList = GetAllSYContentZSInfos((Repeater)it.FindControl("rpSYContentZS"), -1);
+                    list2.Add(sy);
+                }
+            }
+            return list2;
         }
 
         protected void rpCommandMake_ItemCommand(object source, RepeaterCommandEventArgs e)
@@ -1656,44 +1064,35 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
         }
 
-        protected void rpDirectAndMonitor_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        private List<ZXJH_CommandMake> GetAllCommandMakeInfos(Repeater rp, int idx)
         {
-            try
+            List<ZXJH_CommandMake> list2 = new List<ZXJH_CommandMake>();
+            ZXJH_CommandMake obj;
+            foreach (RepeaterItem it in rp.Items)
             {
-                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                if (it.ItemIndex != idx)
                 {
-                    //DataRowView rowv = (DataRowView)e.Item.DataItem;
-                    ZXJH_DirectAndMonitor dm = (ZXJH_DirectAndMonitor)e.Item.DataItem;
-                    DropDownList ddlDMRTTask = (DropDownList)e.Item.FindControl("ddlDMRTTask") as DropDownList;
+                    obj = new ZXJH_CommandMake();
+                    ucs.ucSatellite txtWork_Command_SatID = (ucs.ucSatellite)it.FindControl("txtWork_Command_SatID");
+                    TextBox txtWork_Command_SYID = (TextBox)it.FindControl("txtWork_Command_SYID");
+                    TextBox txtWork_Command_Programe = (TextBox)it.FindControl("txtWork_Command_Programe");
+                    TextBox txtWork_Command_FinishTime = (TextBox)it.FindControl("txtWork_Command_FinishTime");
+                    TextBox txtWork_Command_UpWay = (TextBox)it.FindControl("txtWork_Command_UpWay");
+                    TextBox txtWork_Command_UpTime = (TextBox)it.FindControl("txtWork_Command_UpTime");
+                    TextBox txtWork_Command_Note = (TextBox)it.FindControl("txtWork_Command_Note");
 
-                    ddlDMRTTask.SelectedValue = dm.RealTimeDemoTask;
+                    obj.Work_Command_SatID = txtWork_Command_SatID.SelectedValue;
+                    obj.Work_Command_SYID = txtWork_Command_SYID.Text;
+                    obj.Work_Command_Programe = txtWork_Command_Programe.Text;
+                    obj.Work_Command_FinishTime = txtWork_Command_FinishTime.Text;
+                    obj.Work_Command_UpWay = txtWork_Command_UpWay.Text;
+                    obj.Work_Command_UpTime = txtWork_Command_UpTime.Text;
+                    obj.Work_Command_Note = txtWork_Command_Note.Text;
+
+                    list2.Add(obj);
                 }
             }
-            catch (Exception ex)
-            {
-                throw (new AspNetException("绑定地面计划信息出现异常，异常原因", ex));
-            }
-            finally { }
-        }
-
-        protected void rpWork_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            try
-            {
-                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-                {
-                    //DataRowView rowv = (DataRowView)e.Item.DataItem;
-                    ZXJH_WorkContent wc = (ZXJH_WorkContent)e.Item.DataItem;
-                    DropDownList ddlWC_Work = (DropDownList)e.Item.FindControl("ddlWC_Work") as DropDownList;
-
-                    ddlWC_Work.SelectedValue = wc.Work;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw (new AspNetException("绑定地面计划信息出现异常，异常原因", ex));
-            }
-            finally { }
+            return list2;
         }
 
         protected void rpSYContent_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -1722,7 +1121,300 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             catch (Exception ex)
             {
-                throw (new AspNetException("绑定地面计划信息出现异常，异常原因", ex));
+                throw (new AspNetException("绑定中心计划信息-试验内容出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
+        protected void rpSYContentSC_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            try
+            {
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                {
+                    ZXJH_SYContent_SC sy = (ZXJH_SYContent_SC)e.Item.DataItem;
+                    InitialDWSB("数传", "ddlDW", "ddlSB", e, sy.SY_SCStationNO, sy.SY_SCEquipmentNO);
+                    DropDownList ddlSCFrequencyBand = (DropDownList)e.Item.FindControl("ddlSCFrequencyBand") as DropDownList;
+                    ddlSCFrequencyBand.SelectedValue = sy.SY_SCFrequencyBand;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("绑定中心计划信息-试验内容之数传出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
+        private void InitialDWSB(string source, string ctrlDWName, string ctrlSBName, RepeaterItemEventArgs e
+            , string dwValue, string sbValue)
+        {
+            XYXSInfo oXyxs = new XYXSInfo();
+            try
+            {
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                {
+                    //工作单位
+                    DropDownList ddlDW = (DropDownList)e.Item.FindControl(ctrlDWName) as DropDownList;
+                    ddlDW.DataSource = oXyxs.Cache.Where(t => t.Type == 0).ToList();
+                    ddlDW.DataTextField = "AddrName";
+                    ddlDW.DataValueField = "DWCODE";
+                    ddlDW.DataBind();
+                    ddlDW.SelectedValue = dwValue;
+
+                    //设备代号
+                    List<XYXSInfo> lstResult = oXyxs.Cache.Where(t => t.DWCode == ddlDW.SelectedValue).ToList();
+                    string strTmp = string.Empty;
+                    DropDownList ddlSB = (DropDownList)e.Item.FindControl(ctrlSBName) as DropDownList;
+                    if (lstResult.Count > 0)
+                    {
+                        strTmp = lstResult[0].ADDRMARK;
+                        ddlSB.DataSource = (new GroundResource()).SelectAll().Where(t => t.AddrMark == strTmp).ToList();
+                        ddlSB.DataTextField = "EQUIPMENTNAME";
+                        ddlSB.DataValueField = "EQUIPMENTCODE";
+                        ddlSB.DataBind();
+                    }
+                    ddlSB.SelectedValue = sbValue;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException(string.Format("绑定中心计划-{0}站设备信息出现异常，异常原因", source), ex));
+            }
+        }
+
+        protected void rpSYContentCK_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            try
+            {
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                {
+                    ZXJH_SYContent_CK sy = (ZXJH_SYContent_CK)e.Item.DataItem;
+                    InitialDWSB("测控", "ddlDW", "ddlSB", e, sy.SY_CKStationNO, sy.SY_CKEquipmentNO);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("绑定中心计划信息-试验内容之测控信息出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
+        protected void rpCommandMake_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            try
+            {
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                {
+                    ZXJH_CommandMake wc = (ZXJH_CommandMake)e.Item.DataItem;
+                    ucs.ucSatellite txtWork_Command_SatID = (ucs.ucSatellite)e.Item.FindControl("txtWork_Command_SatID") as ucs.ucSatellite;
+
+                    txtWork_Command_SatID.SelectedValue = wc.Work_Command_SatID;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("绑定中心计划信息-指令制作出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
+        protected void rpDirectAndMonitor_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            try
+            {
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                {
+                    ZXJH_DirectAndMonitor dm = (ZXJH_DirectAndMonitor)e.Item.DataItem;
+                    DropDownList ddlDMRTTask = (DropDownList)e.Item.FindControl("ddlDMRTTask") as DropDownList;
+                    ddlDMRTTask.SelectedValue = dm.RealTimeDemoTask;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("绑定中心计划信息-指挥与监视出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
+        protected void rpWork_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            try
+            {
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                {
+                    ZXJH_WorkContent wc = (ZXJH_WorkContent)e.Item.DataItem;
+                    DropDownList ddlWC_Work = (DropDownList)e.Item.FindControl("ddlWC_Work") as DropDownList;
+                    ddlWC_Work.SelectedValue = wc.Work;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("绑定中心计划信息-任务管理出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
+        protected void rpSYDataHandle_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            try
+            {
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                {
+                    ZXJH_SYDataHandle sy = (ZXJH_SYDataHandle)e.Item.DataItem;
+                    InitialDWSB("实时试验数据处理主站", "ddlMainDW", "ddlMainSB", e, sy.MainStation, sy.MainStationEquipment);
+                    InitialDWSB("实时试验数据处理备站", "ddlBakDW", "ddlBakSB", e, sy.BakStation, sy.BakStationEquipment);
+                    ucs.ucSatellite ddlSYDataHandle_SatID = (ucs.ucSatellite)e.Item.FindControl("ddlSYDataHandle_SatID") as ucs.ucSatellite;
+                    ddlSYDataHandle_SatID.SelectedValue = sy.SatID;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("绑定中心计划信息-实时试验数据处理出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
+        /// <summary>
+        /// 保存计划
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                isTempJH = GetIsTempJHValue();
+                string taskID = string.Empty;
+                string satID = string.Empty;
+                new Task().GetTaskNoSatID(ucOutTask1.SelectedValue, out taskID, out satID);
+
+                #region basic
+                ZXJH obj = new ZXJH();
+                obj.Date = txtDate.Text;
+                obj.SYContents = GetAllSYContentInfos(rpSYContent, -1);
+                obj.WorkContents = GetAllWorkInfo(rpWork, -1);
+                obj.CommandMakes = GetAllCommandMakeInfos(rpCommandMake, -1);
+                obj.SYDataHandles = GetAllSYDataHandleInfos(rpSYDataHandle, -1);
+                obj.DirectAndMonitors = GetAllDirectAndMonitorInfos(rpDirectAndMonitor, -1);
+                obj.RealTimeControls = GetAllRealTimeControlInfos(rpRealTimeControl, -1);
+                obj.SYEstimates = GetAllSYEstimateInfos(rpSYEstimate, -1);
+                obj.SYCount = obj.SYContents.Count.ToString();  //对应日期的试验个数=试验内容的个数
+                #endregion
+
+                obj.TaskID = taskID;    //任务ID
+                obj.SatID = satID;    //卫星ID
+
+                PlanFileCreator creater = new PlanFileCreator(isTempJH);
+                if (hfStatus.Value == "new")
+                {
+                    string filepath = creater.CreateZXJHFile(obj, 0);
+
+                    DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
+                    {
+                        TaskID = obj.TaskID,
+                        PlanType = "ZXJH",
+                        PlanID = (new Sequence()).GetZXJHSequnce(),
+                        StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                        EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                        SRCType = 0,
+                        FileIndex = filepath,
+                        SatID = obj.SatID,
+                        Reserve = txtNote.Text
+                    };
+                    var result = jh.Add();
+                    ShowMsg(result == FieldVerifyResult.Success, obj);
+                    HfID.Value = jh.ID.ToString();
+                }
+                else
+                {
+                    //当任务和卫星更新时，需要更新文件名称
+                    if (hfTaskID.Value != ucOutTask1.SelectedValue)
+                    {
+                        string filepath = creater.CreateZXJHFile(obj, 0);
+
+                        DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
+                        {
+                            Id = Convert.ToInt32(HfID.Value),
+                            TaskID = obj.TaskID,
+                            StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                            EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                            FileIndex = filepath,
+                            SatID = obj.SatID,
+                            Reserve = txtNote.Text
+                        };
+                        var result = jh.Update();
+                        ShowMsg(result == FieldVerifyResult.Success, obj);
+                        HfID.Value = jh.ID.ToString();
+                    }
+                    else
+                    {
+                        creater.FilePath = HfFileIndex.Value;
+                        creater.CreateZXJHFile(obj, 1);
+                        ShowMsg(true, obj);
+                    }
+                }
+                //更新隐藏域的任务ID
+                hfTaskID.Value = ucOutTask1.SelectedValue;
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("保存计划信息出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
+        protected void btnSaveTo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                isTempJH = GetIsTempJHValue();
+                string taskID = string.Empty;
+                string satID = string.Empty;
+                new Task().GetTaskNoSatID(ucOutTask1.SelectedValue, out taskID, out satID);
+
+                #region basic
+                ZXJH obj = new ZXJH();
+                obj.Date = txtDate.Text;
+                obj.SYContents = GetAllSYContentInfos(rpSYContent, -1);
+                obj.WorkContents = GetAllWorkInfo(rpWork, -1);
+                obj.CommandMakes = GetAllCommandMakeInfos(rpCommandMake, -1);
+                obj.SYDataHandles = GetAllSYDataHandleInfos(rpSYDataHandle, -1);
+                obj.DirectAndMonitors = GetAllDirectAndMonitorInfos(rpDirectAndMonitor, -1);
+                obj.RealTimeControls = GetAllRealTimeControlInfos(rpRealTimeControl, -1);
+                obj.SYEstimates = GetAllSYEstimateInfos(rpSYEstimate, -1);
+                obj.SYCount = obj.SYContents.Count.ToString();  //对应日期的试验个数=试验内容的个数
+                #endregion
+
+                obj.TaskID = taskID;
+                obj.SatID = satID;
+                //检查文件是否已经存在
+                PlanFileCreator creater = new PlanFileCreator(isTempJH);
+                if (creater.TestZXJHFileName(obj))
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "File", "<script type='text/javascript'>showMsg('存在同名文件，请一分钟后重试');</script>");
+                    return;
+                }
+                string filepath = creater.CreateZXJHFile(obj, 0);
+
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
+                {
+                    TaskID = obj.TaskID,
+                    PlanType = "ZXJH",
+                    PlanID = (new Sequence()).GetZXJHSequnce(),
+                    StartTime = Convert.ToDateTime(txtPlanStartTime.Text.Trim()),
+                    EndTime = Convert.ToDateTime(txtPlanEndTime.Text.Trim()),
+                    SRCType = 0,
+                    FileIndex = filepath,
+                    SatID = obj.SatID,
+                    Reserve = txtNote.Text
+                };
+                var result = jh.Add();
+                ShowMsg(result == FieldVerifyResult.Success, obj);
+                HfID.Value = jh.ID.ToString();
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("保存计划信息出现异常，异常原因", ex));
             }
             finally { }
         }
@@ -1731,238 +1423,26 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                string taskID = string.Empty;
+                string satID = string.Empty;
+                new Task().GetTaskNoSatID(ucOutTask1.SelectedValue, out taskID, out satID);
+
                 #region basic
                 ZXJH obj = new ZXJH();
                 obj.Date = txtDate.Text;
-                //obj.SYCount = txtSYCount.Text;
-
-                obj.SYContents = new List<ZXJH_SYContent>();
-                obj.WorkContents = new List<ZXJH_WorkContent>();
-                obj.CommandMakes = new List<ZXJH_CommandMake>();
-                obj.SYDataHandles = new List<ZXJH_SYDataHandle>();
-                obj.DirectAndMonitors = new List<ZXJH_DirectAndMonitor>();
-                obj.RealTimeControls = new List<ZXJH_RealTimeControl>();
-                obj.SYEstimates = new List<ZXJH_SYEstimate>();
-                #endregion
-
-                ZXJH_SYContent sy;
-                ZXJH_SYContent_SC sy_sc;
-                ZXJH_SYContent_CK sy_ck;
-                ZXJH_SYContent_ZS sy_zs;
-                ZXJH_WorkContent wc;
-                ZXJH_CommandMake cm;
-                ZXJH_SYDataHandle dh;
-                ZXJH_DirectAndMonitor dam;
-                ZXJH_RealTimeControl rc;
-                ZXJH_SYEstimate sye;
-
-                #region SYContent
-                foreach (RepeaterItem it in rpSYContent.Items)
-                {
-                    sy = new ZXJH_SYContent();
-                    sy.SCList = new List<ZXJH_SYContent_SC>();
-                    sy.CKList = new List<ZXJH_SYContent_CK>();
-                    sy.ZSList = new List<ZXJH_SYContent_ZS>();
-                    //TextBox txtSYSatID = (TextBox)it.FindControl("txtSYSatID");
-                    //sy.SatID = txtSYSatID.Text;
-                    ucs.ucSatellite ddlSYSatID = (ucs.ucSatellite)it.FindControl("ddlSYSatID");
-                    sy.SatID = ddlSYSatID.SelectedValue;
-                    #region 试验
-                    TextBox txtSYID = (TextBox)it.FindControl("txtSYID");
-                    TextBox txtSYName = (TextBox)it.FindControl("txtSYName");
-                    TextBox txtSYStartDateTime = (TextBox)it.FindControl("txtSYStartDateTime");
-                    TextBox txtSYEndDateTime = (TextBox)it.FindControl("txtSYEndDateTime");
-                    TextBox txtSYDays = (TextBox)it.FindControl("txtSYDays");
-                    TextBox txtSYNote = (TextBox)it.FindControl("txtSYNote");
-
-                    sy.SYID = txtSYID.Text;
-                    sy.SYName = txtSYName.Text;
-                    sy.SYStartTime = txtSYStartDateTime.Text;
-                    sy.SYEndTime = txtSYEndDateTime.Text;
-                    sy.SYDays = txtSYDays.Text;
-                    sy.SYNote = txtSYNote.Text;
-                    #endregion
-                    #region 数传
-                    Repeater rpsc = it.FindControl("rpSYContentSC") as Repeater;
-                    foreach (RepeaterItem its in rpsc.Items)
-                    {
-                        sy_sc = new ZXJH_SYContent_SC();
-                        TextBox txtSCStationNO = (TextBox)it.FindControl("txtSCStationNO");
-                        TextBox txtSCEquipmentNO = (TextBox)it.FindControl("txtSCEquipmentNO");
-                        DropDownList ddlSCFrequencyBand = (DropDownList)it.FindControl("ddlSCFrequencyBand");
-                        //TextBox txtSCFrequencyBand = (TextBox)it.FindControl("txtSCFrequencyBand");
-                        TextBox txtSCLaps = (TextBox)it.FindControl("txtSCLaps");
-                        TextBox txtSCStartTime = (TextBox)it.FindControl("txtSCStartTime");
-                        TextBox txtSCEndTime = (TextBox)it.FindControl("txtSCEndTime");
-
-                        sy_sc.SY_SCStationNO = txtSCStationNO.Text;
-                        sy_sc.SY_SCEquipmentNO = txtSCEquipmentNO.Text;
-                        sy_sc.SY_SCFrequencyBand = ddlSCFrequencyBand.SelectedValue;
-                        sy_sc.SY_SCLaps = txtSCLaps.Text;
-                        sy_sc.SY_SCStartTime = txtSCStartTime.Text;
-                        sy_sc.SY_SCEndTime = txtSCEndTime.Text;
-                        sy.SCList.Add(sy_sc);
-                    }
-                    #endregion
-                    #region 测控
-                    Repeater rpck = it.FindControl("rpSYContentCK") as Repeater;
-                    foreach (RepeaterItem its in rpck.Items)
-                    {
-                        sy_ck = new ZXJH_SYContent_CK();
-                        TextBox txtCKStationNO = (TextBox)it.FindControl("txtCKStationNO");
-                        TextBox txtCKEquipmentNO = (TextBox)it.FindControl("txtCKEquipmentNO");
-                        TextBox txtCKStartTime = (TextBox)it.FindControl("txtCKStartTime");
-                        TextBox txtCKEndTime = (TextBox)it.FindControl("txtCKEndTime");
-                        TextBox txtCKLaps = (TextBox)it.FindControl("txtCKLaps");
-
-                        sy_ck.SY_CKStationNO = txtCKStationNO.Text;
-                        sy_ck.SY_CKEquipmentNO = txtCKEquipmentNO.Text;
-                        sy_ck.SY_CKStartTime = txtCKStartTime.Text;
-                        sy_ck.SY_CKEndTime = txtCKEndTime.Text;
-                        sy_ck.SY_CKLaps = txtCKLaps.Text;
-                        sy.CKList.Add(sy_ck);
-                    }
-                    #endregion
-                    #region 注数
-                    Repeater rpzs = it.FindControl("rpReakTimeTransfor") as Repeater;
-                    foreach (RepeaterItem its in rpzs.Items)
-                    {
-                        sy_zs = new ZXJH_SYContent_ZS();
-                        TextBox txtZSFirst = (TextBox)it.FindControl("txtZSFirst");
-                        TextBox txtZSLast = (TextBox)it.FindControl("txtZSLast");
-                        TextBox txtZSContent = (TextBox)it.FindControl("txtZSContent");
-
-                        sy_zs.SY_ZSFirst = txtZSFirst.Text;
-                        sy_zs.SY_ZSLast = txtZSLast.Text;
-                        sy_zs.SY_ZSContent = txtZSContent.Text;
-                        sy.ZSList.Add(sy_zs);
-                    }
-                    #endregion
-                    obj.SYContents.Add(sy);
-                }
-
+                obj.SYContents = GetAllSYContentInfos(rpSYContent, -1);
+                obj.WorkContents = GetAllWorkInfo(rpWork, -1);
+                obj.CommandMakes = GetAllCommandMakeInfos(rpCommandMake, -1);
+                obj.SYDataHandles = GetAllSYDataHandleInfos(rpSYDataHandle, -1);
+                obj.DirectAndMonitors = GetAllDirectAndMonitorInfos(rpDirectAndMonitor, -1);
+                obj.RealTimeControls = GetAllRealTimeControlInfos(rpRealTimeControl, -1);
+                obj.SYEstimates = GetAllSYEstimateInfos(rpSYEstimate, -1);
                 obj.SYCount = obj.SYContents.Count.ToString();  //对应日期的试验个数=试验内容的个数
-                #endregion
-                #region workContent
-                foreach (RepeaterItem it in rpWork.Items)
-                {
-                    wc = new ZXJH_WorkContent();
-                    DropDownList ddlWC_Work = (DropDownList)it.FindControl("ddlWC_Work");
-                    TextBox txtWC_SYID = (TextBox)it.FindControl("txtWC_SYID");
-                    TextBox txtWC_StartTime = (TextBox)it.FindControl("txtWC_StartTime");
-                    TextBox txtWC_MinTime = (TextBox)it.FindControl("txtWC_MinTime");
-                    TextBox txtWC_MaxTime = (TextBox)it.FindControl("txtWC_MaxTime");
-
-                    wc.Work = ddlWC_Work.SelectedItem.Text;
-                    wc.SYID = txtWC_SYID.Text;
-                    wc.StartTime = txtWC_StartTime.Text;
-                    wc.MinTime = txtWC_MinTime.Text;
-                    wc.MaxTime = txtWC_MaxTime.Text;
-                    obj.WorkContents.Add(wc);
-                }
-                #endregion
-                #region CommandMake
-                foreach (RepeaterItem it in rpCommandMake.Items)
-                {
-                    cm = new ZXJH_CommandMake();
-                    //TextBox txtWork_Command_SatID = (TextBox)it.FindControl("txtWork_Command_SatID");
-                    ucs.ucSatellite txtWork_Command_SatID = (ucs.ucSatellite)it.FindControl("txtWork_Command_SatID");
-                    TextBox txtWork_Command_SYID = (TextBox)it.FindControl("txtWork_Command_SYID");
-                    TextBox txtWork_Command_Programe = (TextBox)it.FindControl("txtWork_Command_Programe");
-                    TextBox txtWork_Command_FinishTime = (TextBox)it.FindControl("txtWork_Command_FinishTime");
-                    TextBox txtWork_Command_UpWay = (TextBox)it.FindControl("txtWork_Command_UpWay");
-                    TextBox txtWork_Command_UpTime = (TextBox)it.FindControl("txtWork_Command_UpTime");
-                    TextBox txtWork_Command_Note = (TextBox)it.FindControl("txtWork_Command_Note");
-
-                    cm.Work_Command_SatID = txtWork_Command_SatID.SelectedValue;
-                    cm.Work_Command_SYID = txtWork_Command_SYID.Text;
-                    cm.Work_Command_Programe = txtWork_Command_Programe.Text;
-                    cm.Work_Command_FinishTime = txtWork_Command_FinishTime.Text;
-                    cm.Work_Command_UpWay = txtWork_Command_UpWay.Text;
-                    cm.Work_Command_UpTime = txtWork_Command_UpTime.Text;
-                    cm.Work_Command_Note = txtWork_Command_Note.Text;
-                    obj.CommandMakes.Add(cm);
-                }
-                #endregion
-                #region SYDataHandle
-                foreach (RepeaterItem it in rpSYDataHandle.Items)
-                {
-                    dh = new ZXJH_SYDataHandle();
-                    TextBox txtSHSYID = (TextBox)it.FindControl("txtSHSYID");
-                    TextBox txtSHSatID = (TextBox)it.FindControl("txtSHSatID");
-                    TextBox txtSHLaps = (TextBox)it.FindControl("txtSHLaps");
-                    TextBox txtMainStation = (TextBox)it.FindControl("txtMainStation");
-                    TextBox txtSHMainStationEquipment = (TextBox)it.FindControl("txtSHMainStationEquipment");
-                    TextBox txtBackStation = (TextBox)it.FindControl("txtBackStation");
-                    TextBox txtSHBakStationEquipment = (TextBox)it.FindControl("txtSHBakStationEquipment");
-                    TextBox txtSHContent = (TextBox)it.FindControl("txtSHContent");
-                    TextBox txtSHStartTime = (TextBox)it.FindControl("txtSHStartTime");
-                    TextBox txtSHEndTime = (TextBox)it.FindControl("txtSHEndTime");
-
-                    dh.SYID = txtSHSYID.Text;
-                    dh.SatID = txtSHSatID.Text;
-                    dh.Laps = txtSHLaps.Text;
-                    dh.Content = txtSHContent.Text;
-                    dh.MainStation = txtMainStation.Text;
-                    dh.MainStationEquipment = txtSHMainStationEquipment.Text;
-                    dh.BakStation = txtBackStation.Text;
-                    dh.BakStationEquipment = txtSHBakStationEquipment.Text;
-                    dh.StartTime = txtSHStartTime.Text;
-                    dh.EndTime = txtSHEndTime.Text;
-                    obj.SYDataHandles.Add(dh);
-                }
-                #endregion
-                #region DirectAndMonitor
-                foreach (RepeaterItem it in rpDirectAndMonitor.Items)
-                {
-                    dam = new ZXJH_DirectAndMonitor();
-                    TextBox txtDMSYID = (TextBox)it.FindControl("txtDMSYID");
-                    TextBox txtDMStartTime = (TextBox)it.FindControl("txtDMStartTime");
-                    TextBox txtDMEndTime = (TextBox)it.FindControl("txtDMEndTime");
-                    DropDownList ddlDMRTTask = (DropDownList)it.FindControl("ddlDMRTTask");
-
-                    dam.SYID = txtDMSYID.Text;
-                    dam.StartTime = txtDMStartTime.Text;
-                    dam.EndTime = txtDMEndTime.Text;
-                    dam.RealTimeDemoTask = ddlDMRTTask.SelectedItem.Text;
-                    obj.DirectAndMonitors.Add(dam);
-                }
-                #endregion
-                #region RealTimeControl
-                foreach (RepeaterItem it in rpRealTimeControl.Items)
-                {
-                    rc = new ZXJH_RealTimeControl();
-                    TextBox txtRCWork = (TextBox)it.FindControl("txtRCWork");
-                    TextBox txtRCSYID = (TextBox)it.FindControl("txtRCSYID");
-                    TextBox txtRCStartTime = (TextBox)it.FindControl("txtRCStartTime");
-                    TextBox txtRCEndTime = (TextBox)it.FindControl("txtRCEndTime");
-
-                    rc.Work = txtRCWork.Text;
-                    rc.SYID = txtRCSYID.Text;
-                    rc.StartTime = txtRCStartTime.Text;
-                    rc.EndTime = txtRCEndTime.Text;
-                    obj.RealTimeControls.Add(rc);
-                }
-                #endregion
-                #region SYEstimate
-                foreach (RepeaterItem it in rpSYEstimate.Items)
-                {
-                    sye = new ZXJH_SYEstimate();
-                    TextBox txtESYID = (TextBox)it.FindControl("txtESYID");
-                    TextBox txtEStartTime = (TextBox)it.FindControl("txtEStartTime");
-                    TextBox txtEEndTime = (TextBox)it.FindControl("txtEEndTime");
-
-                    sye.SYID = txtESYID.Text;
-                    sye.StartTime = txtEStartTime.Text;
-                    sye.EndTime = txtEEndTime.Text;
-                    obj.SYEstimates.Add(sye);
-                }
                 #endregion
 
                 PlanFileCreator creater = new PlanFileCreator();
-
-                obj.TaskID = ucTask1.SelectedItem.Value;
-                obj.SatID = ucSatellite1.SelectedItem.Value;
+                obj.TaskID = taskID;
+                obj.SatID = satID;
                 //检查文件是否已经存在
                 if (creater.TestZXJHFileName(obj))
                 {
@@ -1984,6 +1464,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     Reserve = txtNote.Text
                 };
                 var result = jh.Add();
+                ShowMsg(result == FieldVerifyResult.Success, obj);
+                HfID.Value = jh.ID.ToString();
 
                 //删除当前临时计划
                 DataAccessLayer.PlanManage.JH jhtemp = new DataAccessLayer.PlanManage.JH(true)
@@ -1991,23 +1473,57 @@ namespace OperatingManagement.Web.Views.PlanManage
                     Id = Convert.ToInt32(HfID.Value),
                 };
                 var resulttemp = jhtemp.DeleteTempJH();
+                txtSYCount.Text = obj.SYCount;
 
-                #region 转成正式计划之后，禁用除“返回”之外的所有按钮
-                btnSubmit.Visible = false;
-                btnSaveTo.Visible = false;
+                #region 转成正式计划之后，禁用一些按钮
+                btnSubmit.Visible = true;
+                btnSaveTo.Visible = true;
                 btnReset.Visible = false;
                 btnFormal.Visible = false;
-
                 #endregion
-
-                ltMessage.Text = "计划保存成功";
-                txtSYCount.Text = obj.SYCount;
             }
             catch (Exception ex)
             {
                 throw (new AspNetException("保存计划信息出现异常，异常原因", ex));
             }
             finally { }
+        }
+
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(HfID.Value))
+                {
+                    Page.Response.Redirect(Request.CurrentExecutionFilePath, false);
+                }
+                else
+                {
+                    string sID = HfID.Value;
+                    HfID.Value = sID;
+                    hfStatus.Value = "edit";    //编辑
+                    BindJhTable(sID);
+                    BindXML();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("重置页面出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
+        protected void btnReturn_Click(object sender, EventArgs e)
+        {
+            isTempJH = GetIsTempJHValue();
+            if (isTempJH)
+            {
+                Response.Redirect("PlanTempList.aspx" + hfURL.Value);
+            }
+            else
+            {
+                Response.Redirect("PlanList.aspx" + hfURL.Value);
+            }
         }
 
         /// <summary>
@@ -2070,227 +1586,14 @@ namespace OperatingManagement.Web.Views.PlanManage
             System.IO.File.Delete(filepath);    //删除临时文件
         }
 
-        protected void rpSYContentSC_ItemCommand(object source, RepeaterCommandEventArgs e)
+        protected bool GetIsTempJHValue()
         {
-            if (e.CommandName == "Add")
+            bool returnvalue = false;
+            if (null != ViewState["isTempJH"])
             {
-                List<ZXJH_SYContent_SC> list2 = new List<ZXJH_SYContent_SC>();
-                ZXJH_SYContent_SC sy;
-                Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
-                {
-                    sy = new ZXJH_SYContent_SC();
-                    #region 数传
-                    TextBox txtSCStationNO = (TextBox)it.FindControl("txtSCStationNO");
-                    TextBox txtSCEquipmentNO = (TextBox)it.FindControl("txtSCEquipmentNO");
-                    DropDownList ddlSCFrequencyBand = (DropDownList)it.FindControl("ddlSCFrequencyBand");
-                    TextBox txtSCLaps = (TextBox)it.FindControl("txtSCLaps");
-                    TextBox txtSCStartTime = (TextBox)it.FindControl("txtSCStartTime");
-                    TextBox txtSCEndTime = (TextBox)it.FindControl("txtSCEndTime");
-
-                    sy.SY_SCStationNO = txtSCStationNO.Text;
-                    sy.SY_SCEquipmentNO = txtSCEquipmentNO.Text;
-                    sy.SY_SCFrequencyBand = ddlSCFrequencyBand.SelectedValue;
-                    sy.SY_SCLaps = txtSCLaps.Text;
-                    sy.SY_SCStartTime = txtSCStartTime.Text;
-                    sy.SY_SCEndTime = txtSCEndTime.Text;
-                    #endregion
-                    list2.Add(sy);
-                }
-                sy = new ZXJH_SYContent_SC();
-                list2.Add(sy);
-                rp.DataSource = list2;
-                rp.DataBind();
-
+                returnvalue = Convert.ToBoolean(ViewState["isTempJH"]);
             }
-            if (e.CommandName == "Del")
-            {
-                List<ZXJH_SYContent_SC> list2 = new List<ZXJH_SYContent_SC>();
-                ZXJH_SYContent_SC sy;
-                Repeater rp = (Repeater)source;
-                if (rp.Items.Count <= 1)
-                {
-                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
-                }
-                else
-                {
-                    foreach (RepeaterItem it in rp.Items)
-                    {
-                        if (e.Item.ItemIndex != it.ItemIndex)
-                        {
-                            sy = new ZXJH_SYContent_SC();
-                            #region 数传
-                            TextBox txtSCStationNO = (TextBox)it.FindControl("txtSCStationNO");
-                            TextBox txtSCEquipmentNO = (TextBox)it.FindControl("txtSCEquipmentNO");
-                            DropDownList ddlSCFrequencyBand = (DropDownList)it.FindControl("ddlSCFrequencyBand");
-                            //TextBox txtSCFrequencyBand = (TextBox)it.FindControl("txtSCFrequencyBand");
-                            TextBox txtSCLaps = (TextBox)it.FindControl("txtSCLaps");
-                            TextBox txtSCStartTime = (TextBox)it.FindControl("txtSCStartTime");
-                            TextBox txtSCEndTime = (TextBox)it.FindControl("txtSCEndTime");
-
-                            sy.SY_SCStationNO = txtSCStationNO.Text;
-                            sy.SY_SCEquipmentNO = txtSCEquipmentNO.Text;
-                            sy.SY_SCFrequencyBand = ddlSCFrequencyBand.SelectedValue;
-                            sy.SY_SCLaps = txtSCLaps.Text;
-                            sy.SY_SCStartTime = txtSCStartTime.Text;
-                            sy.SY_SCEndTime = txtSCEndTime.Text;
-                            #endregion
-                            list2.Add(sy);
-                        }
-                    }
-                    rp.DataSource = list2;
-                    rp.DataBind();
-                }
-            }
-        }
-        protected void rpSYContentSC_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            try
-            {
-                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-                {
-                    //DataRowView rowv = (DataRowView)e.Item.DataItem;
-                    ZXJH_SYContent_SC sy = (ZXJH_SYContent_SC)e.Item.DataItem;
-                    DropDownList ddlSCFrequencyBand = (DropDownList)e.Item.FindControl("ddlSCFrequencyBand") as DropDownList;
-
-                    ddlSCFrequencyBand.SelectedValue = sy.SY_SCFrequencyBand;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw (new AspNetException("绑定地面计划信息出现异常，异常原因", ex));
-            }
-            finally { }
-        }
-        protected void rpSYContentCK_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            if (e.CommandName == "Add")
-            {
-                List<ZXJH_SYContent_CK> list2 = new List<ZXJH_SYContent_CK>();
-                ZXJH_SYContent_CK sy;
-                Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
-                {
-                    sy = new ZXJH_SYContent_CK();
-                    #region 测控
-                    TextBox txtCKStationNO = (TextBox)it.FindControl("txtCKStationNO");
-                    TextBox txtCKEquipmentNO = (TextBox)it.FindControl("txtCKEquipmentNO");
-                    TextBox txtCKStartTime = (TextBox)it.FindControl("txtCKStartTime");
-                    TextBox txtCKEndTime = (TextBox)it.FindControl("txtCKEndTime");
-                    TextBox txtCKLaps = (TextBox)it.FindControl("txtCKLaps");
-
-                    sy.SY_CKStationNO = txtCKStationNO.Text;
-                    sy.SY_CKEquipmentNO = txtCKEquipmentNO.Text;
-                    sy.SY_CKStartTime = txtCKStartTime.Text;
-                    sy.SY_CKEndTime = txtCKEndTime.Text;
-                    sy.SY_CKLaps = txtCKLaps.Text;
-                    #endregion
-                    list2.Add(sy);
-                }
-                sy = new ZXJH_SYContent_CK();
-                list2.Add(sy);
-                rp.DataSource = list2;
-                rp.DataBind();
-
-            }
-            if (e.CommandName == "Del")
-            {
-                List<ZXJH_SYContent_CK> list2 = new List<ZXJH_SYContent_CK>();
-                ZXJH_SYContent_CK sy;
-                Repeater rp = (Repeater)source;
-                if (rp.Items.Count <= 1)
-                {
-                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
-                }
-                else
-                {
-                    foreach (RepeaterItem it in rp.Items)
-                    {
-                        if (e.Item.ItemIndex != it.ItemIndex)
-                        {
-                            sy = new ZXJH_SYContent_CK();
-                            #region 测控
-                            TextBox txtCKStationNO = (TextBox)it.FindControl("txtCKStationNO");
-                            TextBox txtCKEquipmentNO = (TextBox)it.FindControl("txtCKEquipmentNO");
-                            TextBox txtCKStartTime = (TextBox)it.FindControl("txtCKStartTime");
-                            TextBox txtCKEndTime = (TextBox)it.FindControl("txtCKEndTime");
-                            TextBox txtCKLaps = (TextBox)it.FindControl("txtCKLaps");
-
-                            sy.SY_CKStationNO = txtCKStationNO.Text;
-                            sy.SY_CKEquipmentNO = txtCKEquipmentNO.Text;
-                            sy.SY_CKStartTime = txtCKStartTime.Text;
-                            sy.SY_CKEndTime = txtCKEndTime.Text;
-                            sy.SY_CKLaps = txtCKLaps.Text;
-                            #endregion
-                            list2.Add(sy);
-                        }
-                    }
-                    rp.DataSource = list2;
-                    rp.DataBind();
-                }
-            }
-        }
-        protected void rpSYContentZS_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            if (e.CommandName == "Add")
-            {
-                List<ZXJH_SYContent_ZS> list2 = new List<ZXJH_SYContent_ZS>();
-                ZXJH_SYContent_ZS sy;
-                Repeater rp = (Repeater)source;
-                foreach (RepeaterItem it in rp.Items)
-                {
-                    sy = new ZXJH_SYContent_ZS();
-                    #region 注数
-                    TextBox txtZSFirst = (TextBox)it.FindControl("txtZSFirst");
-                    TextBox txtZSLast = (TextBox)it.FindControl("txtZSLast");
-                    TextBox txtZSContent = (TextBox)it.FindControl("txtZSContent");
-
-                    sy.SY_ZSFirst = txtZSFirst.Text;
-                    sy.SY_ZSLast = txtZSLast.Text;
-                    sy.SY_ZSContent = txtZSContent.Text;
-
-                    #endregion
-                    list2.Add(sy);
-                }
-                sy = new ZXJH_SYContent_ZS();
-                list2.Add(sy);
-                rp.DataSource = list2;
-                rp.DataBind();
-
-            }
-            if (e.CommandName == "Del")
-            {
-                List<ZXJH_SYContent_ZS> list2 = new List<ZXJH_SYContent_ZS>();
-                ZXJH_SYContent_ZS sy;
-                Repeater rp = (Repeater)source;
-                if (rp.Items.Count <= 1)
-                {
-                    ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
-                }
-                else
-                {
-                    foreach (RepeaterItem it in rp.Items)
-                    {
-                        if (e.Item.ItemIndex != it.ItemIndex)
-                        {
-                            sy = new ZXJH_SYContent_ZS();
-                            #region 注数
-                            TextBox txtZSFirst = (TextBox)it.FindControl("txtZSFirst");
-                            TextBox txtZSLast = (TextBox)it.FindControl("txtZSLast");
-                            TextBox txtZSContent = (TextBox)it.FindControl("txtZSContent");
-
-                            sy.SY_ZSFirst = txtZSFirst.Text;
-                            sy.SY_ZSLast = txtZSLast.Text;
-                            sy.SY_ZSContent = txtZSContent.Text;
-
-                            #endregion
-                            list2.Add(sy);
-                        }
-                    }
-                    rp.DataSource = list2;
-                    rp.DataBind();
-                }
-            }
+            return returnvalue;
         }
 
         private bool CheckCtrlExits(Control ctrl, string msg)
@@ -2304,23 +1607,66 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
         }
 
-        protected void rpCommandMake_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        private void ShowMsg(bool sucess, ZXJH obj)
         {
-            try
-            {
-                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-                {
-                    ZXJH_CommandMake wc = (ZXJH_CommandMake)e.Item.DataItem;
-                    ucs.ucSatellite txtWork_Command_SatID = (ucs.ucSatellite)e.Item.FindControl("txtWork_Command_SatID") as ucs.ucSatellite;
+            if (sucess)
+                ltMessage.Text = "计划保存成功";
+            else
+                ltMessage.Text = "计划保存失败";
+            txtSYCount.Text = obj.SYCount;
+            hfTaskID.Value = ucOutTask1.SelectedValue;
+        }
 
-                    txtWork_Command_SatID.SelectedValue = wc.Work_Command_SatID;
-                }
-            }
-            catch (Exception ex)
+        /// <summary>
+        /// 单位改变
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlDW_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DropDownList ddlDW = sender as DropDownList;
+            RepeaterItem rpi = (RepeaterItem)ddlDW.Parent;
+            SetDdlSB(ddlDW, rpi, "ddlSB");
+        }
+
+        /// <summary>
+        /// 主站单位改变
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlMainDW_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DropDownList ddlDW = sender as DropDownList;
+            RepeaterItem rpi = (RepeaterItem)ddlDW.Parent;
+            SetDdlSB(ddlDW, rpi, "ddlMainSB");
+        }
+
+        /// <summary>
+        /// 备站单位改变
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlBakDW_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DropDownList ddlDW = sender as DropDownList;
+            RepeaterItem rpi = (RepeaterItem)ddlDW.Parent;
+            SetDdlSB(ddlDW, rpi, "ddlBakSB");
+        }
+
+        private void SetDdlSB(DropDownList ddlDW, RepeaterItem rpi, string ctrlSBName)
+        {
+            DropDownList ddlSB = rpi.FindControl(ctrlSBName) as DropDownList;
+
+            List<XYXSInfo> lstResult = new XYXSInfo().Cache.Where(t => t.DWCode == ddlDW.SelectedValue).ToList();
+            string strTmp = string.Empty;
+            if (lstResult.Count > 0)
             {
-                throw (new AspNetException("绑定地面计划信息出现异常，异常原因", ex));
+                strTmp = lstResult[0].ADDRMARK;
+                ddlSB.DataSource = (new GroundResource()).SelectAll().Where(t => t.AddrMark == strTmp).ToList();
+                ddlSB.DataTextField = "EQUIPMENTNAME";
+                ddlSB.DataValueField = "EQUIPMENTCODE";
+                ddlSB.DataBind();
             }
-            finally { }
         }
     }
 }
