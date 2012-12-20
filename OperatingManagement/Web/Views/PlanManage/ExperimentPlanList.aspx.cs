@@ -108,6 +108,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             List<JH> listDatas= (new JH()).GetSYJHList(startDate, endDate);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
+            if (listDatas.Count > this.SiteSetting.PageSize)
+                cpPager.Visible = true;
             cpPager.BindToControl = rpDatas;
             rpDatas.DataSource = cpPager.DataSourcePaged;
             rpDatas.DataBind();

@@ -43,19 +43,15 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <summary>
         /// 实验程序类型
         /// </summary>
-        public string PType { get; set; }
-        /// <summary>
-        /// 试验项目
-        /// </summary>
-        public string PName { get; set; }
+        public string Version { get; set; }
         /// <summary>
         /// 试验程序编号
         /// </summary>
-        public int PNID { get; set; }
+        public int PNo { get; set; }
         /// <summary>
         /// 对应计划编号
         /// </summary>
-        public int PlanID { get; set; }
+        public int PCount { get; set; }
         /// <summary>
         /// 试验开始时间
         /// </summary>
@@ -128,10 +124,9 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                         ID = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
                         TaskID = dr["TASKID"].ToString(),
-                        PType = dr["PTYPE"].ToString(),
-                        PName = dr["PNAME"].ToString(),
-                        PNID = Convert.ToInt32(dr["PNID"].ToString()),
-                        PlanID = Convert.ToInt32(dr["PLANID"].ToString()),
+                        Version = dr["Version"].ToString(),
+                        PNo = Convert.ToInt32(dr["PNO"].ToString()),
+                        PCount = Convert.ToInt32(dr["PCount"].ToString()),
                         StartTime = Convert.ToDateTime(dr["STARTTIME"].ToString()),
                         EndTime = Convert.ToDateTime(dr["ENDTIME"].ToString()),
                         InfoType = dr["INFOTYPE"].ToString(),
@@ -168,10 +163,9 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                         ID = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
                         TaskID = dr["TASKID"].ToString(),
-                        PType = dr["PTYPE"].ToString(),
-                        PName = dr["PNAME"].ToString(),
-                        PNID = Convert.ToInt32(dr["PNID"].ToString()),
-                        PlanID = Convert.ToInt32(dr["PLANID"].ToString()),
+                        Version = dr["Version"].ToString(),
+                        PNo = Convert.ToInt32(dr["PNO"].ToString()),
+                        PCount = Convert.ToInt32(dr["PCount"].ToString()),
                         StartTime = Convert.ToDateTime(dr["STARTTIME"].ToString()),
                         EndTime = Convert.ToDateTime(dr["ENDTIME"].ToString()),
                         InfoType = dr["INFOTYPE"].ToString(),

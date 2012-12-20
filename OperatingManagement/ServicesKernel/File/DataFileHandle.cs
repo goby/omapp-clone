@@ -140,7 +140,7 @@ namespace ServicesKernel.File
 
             StreamWriter oSW = new StreamWriter(oFileInfo.FullName);
             oSW.WriteLine("<说明区>");
-            oSW.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm"));
+            oSW.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
             oSW.WriteLine("[信源S]：" + oFileInfo.From);
             oSW.WriteLine("[信宿D]：" + oFileInfo.To);
             oSW.WriteLine("[任务代码M]：" + oFileInfo.TaskID);

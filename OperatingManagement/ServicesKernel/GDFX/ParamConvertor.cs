@@ -15,7 +15,7 @@ namespace ServicesKernel.GDFX
     /// </summary>
     public class ParamConvertor
     {
-        private const string dllPath = @"D:\Deploy\";//E:\YKZX_Manage\
+        private const string dllPath = @"E:\YKZX_Manage\";//D:\Deploy\
         private const string dllFolder = @"GDDLL\Convert\";
         private const string dllName = @"EleCvtDLL.dll";
         private const string outputPath = @"output\";
@@ -24,7 +24,7 @@ namespace ServicesKernel.GDFX
         //private IntPtr handle;
         private static ParamConvertor _instance = null;
         private static object _locker = new object();
-        private bool isCaculating = false;
+        public bool isCaculating = false;
 
         /// <summary>
         /// 使用唯一实例是为了控制同一时间只能有一个计算在进行

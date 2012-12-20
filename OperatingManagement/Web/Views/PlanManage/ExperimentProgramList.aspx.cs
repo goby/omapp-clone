@@ -105,6 +105,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             List<SYCX> listDatas = (new SYCX()).GetListByDate(startDate, endDate);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
+            if (listDatas.Count > this.SiteSetting.PageSize)
+                cpPager.Visible = true;
             cpPager.BindToControl = rpDatas;
             rpDatas.DataSource = cpPager.DataSourcePaged;
             rpDatas.DataBind();
@@ -123,6 +125,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                HideMessage();
                 string ConfigSYCXPath = System.Configuration.ConfigurationManager.AppSettings["SYCXPath"];
                 string fileIndex = "";  //文件路径
                 PlanFileCreator creater = new PlanFileCreator(false);
@@ -147,8 +150,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<GZJH> gjhs= pp.SYCXFile2ZCDMZGZJHs(fileIndex, xxfl, beginTime, endTime, out result);
                 if (!result.Equals(string.Empty))
                 {
-                    ShowMessage(string.Format("生成总参地面站工作计划出错，原因：{0}", result));
-                    return;
+                    ShowMessage(string.Format("生成总参地面站工作计划出错，原因：<br>{0}", result), false);
+                    //return;
                 }
                 if (gjhs.Count > 0)
                 {
@@ -168,8 +171,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 else
                 {
-                    ShowMessage("未能生成地面站工作计划");
-                    return;
+                    ShowMessage("未能生成地面站工作计划<br>", true);
+                    //return;
                 }
                 #endregion
 
@@ -177,8 +180,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 ZXJH zjh = pp.SYCXFile2ZXJH(fileIndex, xxfl, beginTime, endTime, out result);
                 if (!result.Equals(string.Empty))
                 {
-                    ShowMessage(string.Format("生成中心运行计划出错，原因：{0}", result));
-                    return;
+                    ShowMessage(string.Format("生成中心运行计划出错，原因：<br>{0}", result), true);
+                    //return;
                 }
 
                 if (null != zjh && zjh.SYContents != null)
@@ -194,8 +197,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 else
                 {
-                    ShowMessage("未能生成中心运行计划");
-                    return;
+                    ShowMessage("未能生成中心运行计划<br>", true);
+                    //return;
                 }
                 #endregion
 
@@ -203,8 +206,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 List<DJZYSQ> djhs = pp.SYCXFile2CKZYSYSQ(fileIndex, xxfl, beginTime, endTime, out result);
                 if (!result.Equals(string.Empty))
                 {
-                    ShowMessage(string.Format("生成测控资源申请出错，原因：{0}", result));
-                    return;
+                    ShowMessage(string.Format("生成测控资源申请出错，原因：<br>{0}", result), true);
+                    //return;
                 }
                 if (djhs.Count > 0)
                 {
@@ -223,12 +226,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 else
                 {
-                    ShowMessage("未能生成测控资源使用申请");
+                    ShowMessage("未能生成测控资源使用申请", true);
                     return;
                 }
 
                 #endregion
-                ShowMessage("计划生成成功。");
+                ShowMessage("计划生成成功。", false);
             }
             catch (Exception ex)
             {
@@ -257,10 +260,13 @@ namespace OperatingManagement.Web.Views.PlanManage
             CreatePlans(id);
         }
 
-        private void ShowMessage(string msg)
+        private void ShowMessage(string msg, bool join)
         {
             trMessage.Visible = true;
-            ltMessage.Text = msg;
+            if (join)
+                ltMessage.Text += msg;
+            else
+                ltMessage.Text = msg;
         }
 
         private void HideMessage()
