@@ -399,6 +399,8 @@
                     <asp:TextBox ID="txtIds" runat="server" ClientIDMode="Static"></asp:TextBox>
                     <asp:Button ID="btnGetStationData" ClientIDMode="Static" class="button" runat="server"
                         CausesValidation="false" OnClick="btnGetStationData_Click" Text="获取数据" />
+                        <input type="hidden" id="hidtracktimeonblur" value="0" />
+                        <input type="hidden" id="hidtranstimeonblur" value="0" />
                 </div>
             </td>
         </tr>

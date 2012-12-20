@@ -585,6 +585,32 @@ namespace OperatingManagement.Web.Views.PlanManage
                         ddlSHBID.SelectedValue = g.HBID;
                     }
                     #endregion
+
+                    #region 注册脚本事件
+
+                    //任务准备开始时间输入后，跟踪开始时间、任务开始时间、任务结束时间、跟踪结束时间
+                    //默认分别依次累加30分钟、30秒、10分钟、30秒。
+                    TextBox txtPreStartTime = (TextBox)e.Item.FindControl("txtPreStartTime");
+                    TextBox txtStartTime = (TextBox)e.Item.FindControl("txtStartTime");
+                    TextBox txtTrackStartTime = (TextBox)e.Item.FindControl("txtTrackStartTime");
+                    TextBox txtWaveOnStartTime = (TextBox)e.Item.FindControl("txtWaveOnStartTime");
+                    TextBox txtWaveOffStartTime = (TextBox)e.Item.FindControl("txtWaveOffStartTime");
+                    TextBox txtTrackEndTime = (TextBox)e.Item.FindControl("txtTrackEndTime");
+                    TextBox txtEndTime = (TextBox)e.Item.FindControl("txtEndTime");
+                    txtPreStartTime.Attributes.Add("onblur", "SetDateTime(this,'" + txtStartTime.ClientID + "','"
+                        + txtTrackStartTime.ClientID + "','" + txtWaveOnStartTime.ClientID + "','" + txtWaveOffStartTime.ClientID + "','"
+                        + txtTrackEndTime.ClientID + "','" + txtEndTime.ClientID + "')");
+                    txtTrackEndTime.Attributes.Add("onblur", "return ComparePreTimeAndTrackEndTime(this,'" + txtPreStartTime.ClientID + "')");
+
+                    TextBox txtTransStartTime = (TextBox)e.Item.FindControl("txtTransStartTime");
+                    TextBox txtTransEndTime = (TextBox)e.Item.FindControl("txtTransEndTime");
+                    //TextBox txtStartTime = (TextBox)((RepeaterItem)(e.Item.NamingContainer.NamingContainer)).FindControl("txtStartTime");
+                    //TextBox txtEndTime = (TextBox)((RepeaterItem)(e.Item.NamingContainer.NamingContainer)).FindControl("txtEndTime");
+                    txtTransStartTime.Attributes.Add("onblur", "return CheckTransTimeRang(this,'"
+                        + txtStartTime.ClientID + "','" + txtEndTime.ClientID + "')");
+                    txtTransEndTime.Attributes.Add("onblur", "return CheckTransTimeRang(this,'"
+                        + txtStartTime.ClientID + "','" + txtEndTime.ClientID + "')");
+                    #endregion
                 }
             }
             catch (Exception ex)
