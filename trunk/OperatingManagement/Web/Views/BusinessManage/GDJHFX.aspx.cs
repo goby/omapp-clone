@@ -78,7 +78,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 {
                     resultFilePath = filePath + @"output\" + resultFileName;
                     lblResultPath.Text = resultFilePath;
-                    lblResultFilePath.Text = string.Format("{0}<br>{1}", resultFilePath.ToLower(),
+                    lblResultFilePath.Text = string.Format("{0}|{1}", resultFilePath.ToLower(),
                         resultFilePath.ToLower().Replace("unw", "stw"));
                     divCalResult.Visible = true;
                 }
@@ -127,7 +127,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             try
             {
                 string resultFilePath = lblResultPath.Text.Trim();
-                if (string.IsNullOrEmpty(resultFilePath) || !File.Exists(resultFilePath + "_UNW.dat"))
+                if (string.IsNullOrEmpty(resultFilePath) || !File.Exists(resultFilePath.Split(new char[]{'|'})[0]))
                 {
                     ShowMessage("UNW计算结果文件不存在。");
                     return;
@@ -161,7 +161,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             try
             {
                 string resultFilePath = lblResultPath.Text.Trim();
-                if (string.IsNullOrEmpty(resultFilePath) || !File.Exists(resultFilePath + "_STW.dat"))
+                if (string.IsNullOrEmpty(resultFilePath) || !File.Exists(resultFilePath.Split(new char[] { '|' })[1]))
                 {
                     ShowMessage("STW计算结果文件不存在。");
                     return;

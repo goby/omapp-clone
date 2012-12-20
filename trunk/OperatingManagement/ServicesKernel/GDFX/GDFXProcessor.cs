@@ -137,6 +137,7 @@ namespace ServicesKernel.GDFX
             catch (Exception ex)
             {
                 strResult = "进行交会分析计算中出现异常";
+                CutAnalyzer.Instance.isCaculating = false;
                 Logger.GetLogger().Error("CutAnalyze:" + strResult, ex);
                 return strResult;
             }
@@ -193,6 +194,7 @@ namespace ServicesKernel.GDFX
             catch (Exception ex)
             {
                 strResult = "检查待转换文件出现异常";
+                ParamConvertor.Instance.isCaculating = false;
                 Logger.GetLogger().Error("ParamConvert:" + strResult, ex);
             }
             finally { }
@@ -263,6 +265,7 @@ namespace ServicesKernel.GDFX
             catch (Exception ex)
             {
                 strResult = "进行参数转换中出现异常";
+                Intepolater.Instance.isCaculating = false;
                 Logger.GetLogger().Error("Intepolate:" + strResult, ex);
             }
             finally { }
@@ -284,16 +287,16 @@ namespace ServicesKernel.GDFX
              * 5、进行交会预报计算
              */
             string strResult = string.Empty;
-            try
-            {
-                strResult = CutPrer.Instance.IsAllFileExist();
-            }
-            catch (Exception ex)
-            {
-                strResult = "检查参数文件是否都存在时出现异常";
-                Logger.GetLogger().Error("CutPre:" + strResult, ex);
-            }
-            finally { }
+            //try
+            //{
+            //    strResult = CutPrer.Instance.IsAllFileExist();
+            //}
+            //catch (Exception ex)
+            //{
+            //    strResult = "检查参数文件是否都存在时出现异常";
+            //    Logger.GetLogger().Error("CutPre:" + strResult, ex);
+            //}
+            //finally { }
             if (!strResult.Equals(string.Empty))
                 return strResult;
 
@@ -343,6 +346,7 @@ namespace ServicesKernel.GDFX
             catch (Exception ex)
             {
                 strResult = "进行交会预报计算中异常";
+                CutPrer.Instance.isCaculating = false;
                 Logger.GetLogger().Error("CutPre:" + strResult, ex);
             }
             finally { }

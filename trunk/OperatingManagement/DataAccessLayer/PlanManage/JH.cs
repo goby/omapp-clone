@@ -347,6 +347,7 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             };
             _database.SpExecuteNonQuery(sqlcommand, new OracleParameter[]{
                 new OracleParameter("p_TaskID",this.TaskID),
+                new OracleParameter("p_SatID",this.SatID),
                 new OracleParameter("p_PlanType",this.PlanType),
                 new OracleParameter("p_PlanID",(int)this.PlanID),
                 new OracleParameter("p_StartTime",(DateTime)this.StartTime),

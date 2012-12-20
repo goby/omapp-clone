@@ -215,6 +215,21 @@ namespace OperatingManagement.Web.Views.PlanManage
                                 break;
                         }
                     }
+                    if (sy.SCList == null)
+                    {
+                        sy.SCList = new List<ZXJH_SYContent_SC>();
+                        sy.SCList.Add(new ZXJH_SYContent_SC());
+                    }
+                    if (sy.CKList == null)
+                    {
+                        sy.CKList = new List<ZXJH_SYContent_CK>();
+                        sy.CKList.Add(new ZXJH_SYContent_CK());
+                    }
+                    if (sy.ZSList == null)
+                    {
+                        sy.ZSList = new List<ZXJH_SYContent_ZS>();
+                        sy.ZSList.Add(new ZXJH_SYContent_ZS());
+                    }
                     listSY.Add(sy);
                 }
 
@@ -415,6 +430,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     TextBox txtWC_MinTime = (TextBox)it.FindControl("txtWC_MinTime");
                     TextBox txtWC_MaxTime = (TextBox)it.FindControl("txtWC_MaxTime");
 
+                    wc.Work = ddlWC_Work.SelectedValue;
                     if (CheckCtrlExits(txtWC_SYID, "试验ID"))
                         wc.SYID = txtWC_SYID.Text;
                     else

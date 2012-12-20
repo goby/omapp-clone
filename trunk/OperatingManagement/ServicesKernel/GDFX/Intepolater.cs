@@ -25,7 +25,7 @@ namespace ServicesKernel.GDFX
         //private IntPtr handle;
         private static Intepolater _instance = null;
         private static object _locker = new object();
-        private bool isCaculating = false;
+        public bool isCaculating = false;
 
         /// <summary>
         /// 使用唯一实例是为了控制同一时间只能有一个计算在进行

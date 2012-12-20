@@ -158,46 +158,44 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 p
             });
 
-                List<GD> objDatas = new List<GD>();
-                if (ds != null && ds.Tables.Count == 1)
+            List<GD> objDatas = new List<GD>();
+            if (ds != null && ds.Tables.Count == 1)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    objDatas.Add(new GD()
                     {
-                        objDatas.Add(new GD()
-                        {
-                            Id = Convert.ToInt32(dr["ID"].ToString()),
-                            CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
-                            TaskID = dr["TaskID"].ToString(),
-                            TaskName = dr["TaskName"].ToString(),
-                            SatID = dr["Satid"].ToString(),
-                            SatellteName = dr["WXMC"].ToString(),
-                            DataName = dr["DataName"].ToString(),
-                            ICode = dr["icode"].ToString(),
-                            D = Convert.ToInt32(dr["D"].ToString()),
-                            T = Convert.ToInt32(dr["T"].ToString()),
-                            Times = Convert.ToDateTime(dr["Times"].ToString()),
-                            A = Convert.ToDouble(dr["A"].ToString()),
-                            E = Convert.ToDouble(dr["E"].ToString()),
-                            I = Convert.ToDouble(dr["I"].ToString()),
-                            Q = Convert.ToDouble(dr["Q"].ToString()),
-                            W = Convert.ToDouble(dr["W"].ToString()),
-                            M = Convert.ToDouble(dr["M"].ToString()),
-                            P = Convert.ToDouble(dr["P"].ToString()),
-                            PP = Convert.ToDouble(dr["PP"].ToString()),
-                            Ra = Convert.ToDouble(dr["Ra"].ToString()),
-                            Rp = Convert.ToDouble(dr["Rp"].ToString()),
-                            CDSM = Convert.ToDouble(dr["CDSM"].ToString()),
-                            KSM = Convert.ToDouble(dr["KSM"].ToString()),
-                            KZ1 = Convert.ToDouble(dr["KZ1"].ToString()),
-                            KZ2 = Convert.ToDouble(dr["KZ2"].ToString()),
-                            Reserve = dr["Reserve"].ToString(),
-                            DFInfoID = Convert.ToInt32(dr["DFInfoID"].ToString())
-                        });
-                    }
+                        Id = Convert.ToInt32(dr["ID"].ToString()),
+                        CTime = Convert.ToDateTime(dr["CTIME"].ToString()),
+                        TaskID = dr["TaskID"].ToString(),
+                        TaskName = dr["TaskName"].ToString(),
+                        SatID = dr["Satid"].ToString(),
+                        SatellteName = dr["WXMC"].ToString(),
+                        DataName = dr["DataName"].ToString(),
+                        ICode = dr["icode"].ToString(),
+                        D = Convert.ToInt32(dr["D"].ToString()),
+                        T = Convert.ToInt32(dr["T"].ToString()),
+                        Times = Convert.ToDateTime(dr["Times"].ToString()),
+                        A = Convert.ToDouble(dr["A"].ToString()),
+                        E = Convert.ToDouble(dr["E"].ToString()),
+                        I = Convert.ToDouble(dr["I"].ToString()),
+                        Q = Convert.ToDouble(dr["Q"].ToString()),
+                        W = Convert.ToDouble(dr["W"].ToString()),
+                        M = Convert.ToDouble(dr["M"].ToString()),
+                        P = Convert.ToDouble(dr["P"].ToString()),
+                        PP = Convert.ToDouble(dr["PP"].ToString()),
+                        Ra = Convert.ToDouble(dr["Ra"].ToString()),
+                        Rp = Convert.ToDouble(dr["Rp"].ToString()),
+                        CDSM = Convert.ToDouble(dr["CDSM"].ToString()),
+                        KSM = Convert.ToDouble(dr["KSM"].ToString()),
+                        KZ1 = Convert.ToDouble(dr["KZ1"].ToString()),
+                        KZ2 = Convert.ToDouble(dr["KZ2"].ToString()),
+                        Reserve = dr["Reserve"].ToString(),
+                        DFInfoID = Convert.ToInt32(dr["DFInfoID"].ToString())
+                    });
                 }
-
-
-                return objDatas;
+            }
+            return objDatas;
         }
         /// <summary>
         /// 根据时间获取轨道根数列表

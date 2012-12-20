@@ -129,9 +129,6 @@
         <item text="863-YZ4701机动站(JYZ1)" value="JYZ1"></item>
         <item text="863-YZ4702机动站(JYZ2)" value="JYZ2"></item>
         <!--<item text="西安卫星测控中心(XSCC)" value="XSCC"></item>-->
-        <item text="总参二部信息处理中心(CLZX)" value="CLZX"></item>
-        <item text="总参三部技侦中心(JZZX)" value="JZZX"></item>
-        <item text="总参气象水文空间天气总站资料处理中心(ZLZX)" value="ZLZX"></item>
     </YDSJNOSTTargetList>
   <YDSJSTTargetList description="引导数据空间机动任务发送目标列表">
     <item text="863-YZ4701机动站(JYZ1)" value="JYZ1"></item>

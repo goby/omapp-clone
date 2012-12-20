@@ -126,6 +126,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 txtJXH.Text = root.InnerText;
                 root = xmlDoc.SelectSingleNode("地面站工作计划/XXFL");
                 ddlXXFL.SelectedValue = root.InnerText;
+                bool hasChilds = false;
                 //root = xmlDoc.SelectSingleNode("地面站工作计划/QS");
                 //txtQS.Text = root.InnerText;
 
@@ -137,6 +138,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 {
                     if (n.Name == "Content")
                     {
+                        hasChilds = true;
                         c = new GZJH_Content();
                         c.DW = n["DW"].InnerText;
                         c.SB = n["SB"].InnerText;
@@ -168,6 +170,11 @@ namespace OperatingManagement.Web.Views.PlanManage
                         c.HSL = n["HSL"].InnerText;
                         list.Add(c);
                     }
+                }
+                if (!hasChilds)
+                {
+                    c = new GZJH_Content();
+                    list.Add(c);
                 }
                 rpDatas.DataSource = list;
                 rpDatas.DataBind();

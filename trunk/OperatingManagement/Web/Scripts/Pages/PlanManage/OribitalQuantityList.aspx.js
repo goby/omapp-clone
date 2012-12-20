@@ -88,7 +88,7 @@ function showPopSendForm() {
     _dialog = $("#tartgetPanel");
     _dialog.dialog({
         autoOpen: false,
-        height: 350,
+        height: 400,
         width: 330,
         modal: true,
         buttons: {

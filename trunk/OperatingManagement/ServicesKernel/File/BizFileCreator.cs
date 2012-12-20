@@ -359,6 +359,8 @@ namespace ServicesKernel.File
 
             string fileFullName = Param.OutPutPath + fileName;
             string strUFFilePath = System.Configuration.ConfigurationManager.AppSettings["UFFilePath"];
+            strUFFilePath += ufInfo.Directory.Substring(3).Replace('/', '\\');
+            Log(strUFFilePath);
             if (dataType == "PLEO")//LEO成像 相机图像数据
             {
                 if (string.IsNullOrEmpty(strUFFilePath))
@@ -717,7 +719,7 @@ namespace ServicesKernel.File
             string satID = string.Empty;
             Task otask = new Task();
             otask.GetTaskNoSatID(taskno, out taskID, out satID);
-            return otask.GetTaskName(taskID, satID) + "(" + otask.GetObjectFlagByTaskNo(taskID, satID) + ")";
+            return otask.GetTaskName(taskID, satID) + "(" + otask.GetOutTaskNo(taskID, satID) + ")";
         }
     }
 }

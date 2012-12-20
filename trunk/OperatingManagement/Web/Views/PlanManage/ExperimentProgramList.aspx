@@ -54,25 +54,31 @@
                 <table class="list">
                     <tr>
                         <%--<th style="width:20px;"><input type="checkbox" onclick="checkAll(this)" /></th>--%>
-                        <th style="width: 150px;">
-                            项目名称
+                        <th style="width: 5%;">
+                            任务代号
                         </th>
-                        <th style="width: 150px;">
-                            类型
+                        <th style="width: 5%;">
+                            试验程序序号
                         </th>
-                        <th style="width: 150px;">
-                            编号
+                        <th style="width: 5%;">
+                            版本号
                         </th>
-                        <th style="width: 150px;">
+                        <th style="width: 5%;">
+                            项目数
+                        </th>
+                        <th style="width: 10%;">
                             开始时间
                         </th>
-                        <th style="width: 150px;">
+                        <th style="width: 10%;">
                             结束时间
                         </th>
-                        <th style="width: 60px;">
+                        <th style="width: 48%;">
+                            文件路径
+                        </th>
+                        <th style="width: 6%;">
                             明细
                         </th>
-                        <th style="width: 80px;">
+                        <th style="width: 6%;">
                             生成计划
                         </th>
                     </tr>
@@ -82,13 +88,16 @@
                 <tr>
                     <%--<td><input type="checkbox" <%# Eval("LoginName").ToString().Equals(this.Profile.UserName,StringComparison.InvariantCultureIgnoreCase)?"disabled=\"true\"":"" %> name="chkDelete" value="<%# Eval("Id") %>" /></td>--%>
                     <td>
-                        <%# Eval("pname")%>
+                        <%# Eval("TaskID")%>
                     </td>
                     <td>
-                        <%# Eval("ptype")%>
+                        <%# Eval("pno")%>
                     </td>
                     <td>
-                        <%# Eval("pnid")%>
+                        <%# Eval("version")%>
+                    </td>
+                    <td>
+                        <%# Eval("PCount")%>
                     </td>
                     <td>
                         <%# Eval("starttime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
@@ -97,12 +106,15 @@
                         <%# Eval("endtime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
                     </td>
                     <td>
+                        <%# Eval("FileIndex")%>
+                    </td>
+                    <td>
                         <button class="button" onclick="return showDetail('<%# Eval("ID") %>')">
                             明细</button>
                     </td>
                     <td>
                         <button class="button" onclick="return showPopForm('<%# Eval("ID") %>')">
-                            生成计划</button>
+                            生成</button>
                     </td>
                 </tr>
             </ItemTemplate>

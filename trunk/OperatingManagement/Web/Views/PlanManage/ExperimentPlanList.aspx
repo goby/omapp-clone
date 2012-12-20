@@ -144,7 +144,7 @@
                                     发送所选计划</button>
                             </td>
                             <td class="listTitle-c2">
-                                <om:CollectionPager ID="cpPager" runat="server" PageSize="1">
+                                <om:CollectionPager ID="cpPager" runat="server">
                                 </om:CollectionPager>
                             </td>
                         </tr>

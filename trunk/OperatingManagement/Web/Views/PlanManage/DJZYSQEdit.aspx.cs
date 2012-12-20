@@ -406,6 +406,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                         DJZYSQ_Task_GZDP dp;
                         DJZYSQ_Task_ReakTimeTransfor rt;
                         DJZYSQ_Task_AfterFeedBack afb;
+                        bool hasDP = false;
+                        bool hasSC = false;
+                        bool hasHF = false;
                         if (hfStatus.Value == "new")
                         {
                             list0.Add(new DJZYSQ_Task_GZDP());
@@ -437,6 +440,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                                                     dp.PDXZ = ndd["频段选择"].InnerText;
                                                     dp.DPXZ = ndd["点频选择"].InnerText;
                                                     list0.Add(dp);
+                                                    hasDP = true;
                                                 }
                                             }
                                             if (nd.Name == "实时传输")
@@ -448,6 +452,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                                                 rt.RTe = nd["数据传输结束时间"].InnerText;
                                                 rt.SL = nd["数据传输速率"].InnerText;
                                                 list1.Add(rt);
+                                                hasSC = true;
                                             }
                                             if (nd.Name == "事后回放")
                                             {
@@ -459,6 +464,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                                                 afb.RTs = nd["数据传输开始时间"].InnerText;
                                                 afb.SL = nd["数据传输速率"].InnerText;
                                                 list2.Add(afb);
+                                                hasHF = true;
                                             }
                                         }
                                     }
@@ -467,6 +473,22 @@ namespace OperatingManagement.Web.Views.PlanManage
                                 #endregion
 
                             }
+                        }
+
+                        if (!hasDP)
+                        {
+                            dp = new DJZYSQ_Task_GZDP();
+                            list0.Add(dp);
+                        }
+                        if (!hasSC)
+                        {
+                            rt = new DJZYSQ_Task_ReakTimeTransfor();
+                            list1.Add(rt);
+                        }
+                        if (!hasHF)
+                        {
+                            afb = new DJZYSQ_Task_AfterFeedBack();
+                            list2.Add(afb);
                         }
                         rpG.DataSource = list0;
                         rpG.DataBind();
