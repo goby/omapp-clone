@@ -54,13 +54,15 @@ function SetDateTime(o, startid, trackstartid,waveonid,waveoffid,trackendid,endi
 }
 //格式化时间
 function GetDateTimeFormat(curr, second) {
-    var formatDate = new Date(curr.substr(0, 4), curr.substr(4, 2), curr.substr(6, 2), curr.substr(8, 2), curr.substr(10, 2), curr.substr(12, 2));
+    //var formatDate = new Date(curr.substr(0, 4), curr.substr(4, 2), curr.substr(6, 2), curr.substr(8, 2), curr.substr(10, 2), curr.substr(12, 2));
+    var formatDate = new Date(curr.substr(4, 2) + "/" + curr.substr(6, 2) + "/" + curr.substr(0, 4) + " " + curr.substr(8, 2) + ":" + curr.substr(10, 2) + ":" + curr.substr(12, 2));
     formatDate.setTime(formatDate.getTime() + second * 1000);
 
     var yyyy = formatDate.getFullYear();
     //var yy = yyyy.toString().substring(2);
     var m = formatDate.getMonth();
     var mm = m < 10 ? "0" + m : m;
+    mm = mm * 1 + 1;
     var d = formatDate.getDate();
     var dd = d < 10 ? "0" + d : d;
 
