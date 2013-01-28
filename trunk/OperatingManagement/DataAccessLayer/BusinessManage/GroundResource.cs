@@ -30,6 +30,27 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             _dataBase = OracleDatabase.FromConfiguringNode("ApplicationServices");
         }
 
+        public GroundResource(DataRow dr)
+        {
+            _dataBase = OracleDatabase.FromConfiguringNode("ApplicationServices");
+            Id = Convert.ToInt32(dr["GRID"]);
+            RID = Convert.ToInt32(dr["RID"]);
+            EquipmentName = dr["EquipmentName"].ToString();
+            EquipmentCode = dr["EquipmentCode"].ToString();
+            OpticalEquipment = Convert.ToInt32(dr["OpticalEquipment"]);
+            FunctionType = dr["FunctionType"].ToString();
+            Status = Convert.ToInt32(dr["Status"]);
+            ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString();
+            CreatedTime = Convert.ToDateTime(dr["CreatedTime"]);
+            CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["CreatedUserID"]);
+            UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]);
+            UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"]);
+
+            AddrName = dr["AddrName"].ToString();
+            AddrMark = dr["AddrMark"] == DBNull.Value ? string.Empty : dr["AddrMark"].ToString();
+            Own = dr["Own"] == DBNull.Value ? string.Empty : dr["Own"].ToString();
+            Coordinate = dr["Coordinate"] == DBNull.Value ? string.Empty : dr["Coordinate"].ToString();
+        }
         #region Properties
         private OracleDatabase _dataBase = null;
         /// <summary>
@@ -122,26 +143,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             GroundResource info = null;
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
-                info = new GroundResource()
-                {
-                    Id = Convert.ToInt32(ds.Tables[0].Rows[0]["GRID"]),
-                    RID = Convert.ToInt32(ds.Tables[0].Rows[0]["RID"]),
-                    EquipmentName = ds.Tables[0].Rows[0]["EquipmentName"].ToString(),
-                    EquipmentCode = ds.Tables[0].Rows[0]["EquipmentCode"].ToString(),
-                    OpticalEquipment = Convert.ToInt32(ds.Tables[0].Rows[0]["OpticalEquipment"]),
-                    FunctionType = ds.Tables[0].Rows[0]["FunctionType"].ToString(),
-                    Status = Convert.ToInt32(ds.Tables[0].Rows[0]["Status"]),
-                    ExtProperties = ds.Tables[0].Rows[0]["ExtProperties"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["ExtProperties"].ToString(),
-                    CreatedTime = Convert.ToDateTime(ds.Tables[0].Rows[0]["CreatedTime"]),
-                    CreatedUserID = ds.Tables[0].Rows[0]["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(ds.Tables[0].Rows[0]["CreatedUserID"]),
-                    UpdatedTime = ds.Tables[0].Rows[0]["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(ds.Tables[0].Rows[0]["UpdatedTime"]),
-                    UpdatedUserID = ds.Tables[0].Rows[0]["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(ds.Tables[0].Rows[0]["UpdatedUserID"]),
-
-                    AddrName = ds.Tables[0].Rows[0]["AddrName"].ToString(),
-                    AddrMark = ds.Tables[0].Rows[0]["AddrMark"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["AddrMark"].ToString(),
-                    Own = ds.Tables[0].Rows[0]["Own"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["Own"].ToString(),
-                    Coordinate = ds.Tables[0].Rows[0]["Coordinate"] == DBNull.Value ? string.Empty : ds.Tables[0].Rows[0]["Coordinate"].ToString()
-                };
+                info = new GroundResource(ds.Tables[0].Rows[0]);
             }
             return info;
         }
@@ -156,31 +158,12 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             DataSet ds = _dataBase.SpExecuteDataSet("UP_GroundRes_SelectAll", new OracleParameter[] { o_Cursor });
 
             List<GroundResource> infoList = new List<GroundResource>();
+            GroundResource info;
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    GroundResource info = new GroundResource()
-                    {
-                        Id = Convert.ToInt32(dr["GRID"]),
-                        RID = Convert.ToInt32(dr["RID"]),
-                        EquipmentName = dr["EquipmentName"].ToString(),
-                        EquipmentCode = dr["EquipmentCode"].ToString(),
-                        OpticalEquipment = Convert.ToInt32(dr["OpticalEquipment"]),
-                        FunctionType = dr["FunctionType"].ToString(),
-                        Status = Convert.ToInt32(dr["Status"]),
-                        ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
-                        CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
-                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["CreatedUserID"]),
-                        UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
-                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"]),
-
-                        AddrName = dr["AddrName"].ToString(),
-                        AddrMark = dr["AddrMark"] == DBNull.Value ? string.Empty : dr["AddrMark"].ToString(),
-                        Own = dr["Own"] == DBNull.Value ? string.Empty : dr["Own"].ToString(),
-                        Coordinate = dr["Coordinate"] == DBNull.Value ? string.Empty : dr["Coordinate"].ToString()
-                    };
-
+                    info = new GroundResource(dr);
                     infoList.Add(info);
                 }
             }
@@ -193,7 +176,46 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <returns>地面站资源实体</returns>
         public GroundResource SelectByEquipmentCode()
         {
-            return SelectAll().Where(a => a.Status == 1 && a.EquipmentCode.ToLower() == EquipmentCode.ToLower()).FirstOrDefault<GroundResource>();
+            OracleParameter o_Cursor = PrepareRefCursor();
+            DataSet ds = _dataBase.SpExecuteDataSet("UP_GroundRes_SearchByCode"
+                , new OracleParameter[] { 
+                    new OracleParameter("p_DMZIncode", "")
+                    , new OracleParameter("p_EqCode", this.EquipmentCode)
+                    , o_Cursor });
+
+            GroundResource info = null;
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                info = new GroundResource(ds.Tables[0].Rows[0]);
+            }
+            return info;
+        }
+
+        /// <summary>
+        /// 通过地面站内部编码获取地面站资源
+        /// </summary>
+        /// <param name="dmzIncode"></param>
+        /// <returns></returns>
+        public List<GroundResource> SelectByDMZIncode(string dmzIncode)
+        {
+            OracleParameter o_Cursor = PrepareRefCursor();
+            DataSet ds = _dataBase.SpExecuteDataSet("UP_GroundRes_SearchByCode"
+                , new OracleParameter[] { 
+                    new OracleParameter("p_DMZIncode", dmzIncode)
+                    , new OracleParameter("p_EqCode", "")
+                    , o_Cursor });
+
+            List<GroundResource> infoList = new List<GroundResource>();
+            GroundResource info;
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    info = new GroundResource(dr);
+                    infoList.Add(info);
+                }
+            }
+            return infoList;
         }
 
         /// <summary>
@@ -225,31 +247,12 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 o_Cursor });
 
             List<GroundResource> infoList = new List<GroundResource>();
+            GroundResource info = null;
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    GroundResource info = new GroundResource()
-                    {
-                        Id = Convert.ToInt32(dr["GRID"]),
-                        RID = Convert.ToInt32(dr["RID"]),
-                        EquipmentName = dr["EquipmentName"].ToString(),
-                        EquipmentCode = dr["EquipmentCode"].ToString(),
-                        OpticalEquipment = Convert.ToInt32(dr["OpticalEquipment"]),
-                        FunctionType = dr["FunctionType"].ToString(),
-                        Status = Convert.ToInt32(dr["Status"]),
-                        ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
-                        CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
-                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["CreatedUserID"]),
-                        UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
-                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"]),
-
-                        AddrName = dr["AddrName"].ToString(),
-                        AddrMark = dr["AddrMark"] == DBNull.Value ? string.Empty : dr["AddrMark"].ToString(),
-                        Own = dr["Own"] == DBNull.Value ? string.Empty : dr["Own"].ToString(),
-                        Coordinate = dr["Coordinate"] == DBNull.Value ? string.Empty : dr["Coordinate"].ToString()
-                    };
-
+                    info = new GroundResource(dr);
                     infoList.Add(info);
                 }
             }
@@ -273,31 +276,12 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 o_Cursor });
 
             List<GroundResource> infoList = new List<GroundResource>();
+            GroundResource info = null;
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    GroundResource info = new GroundResource()
-                    {
-                        Id = Convert.ToInt32(dr["GRID"]),
-                        RID = Convert.ToInt32(dr["RID"]),
-                        EquipmentName = dr["EquipmentName"].ToString(),
-                        EquipmentCode = dr["EquipmentCode"].ToString(),
-                        OpticalEquipment = Convert.ToInt32(dr["OpticalEquipment"]),
-                        FunctionType = dr["FunctionType"].ToString(),
-                        Status = Convert.ToInt32(dr["Status"]),
-                        ExtProperties = dr["ExtProperties"] == DBNull.Value ? string.Empty : dr["ExtProperties"].ToString(),
-                        CreatedTime = Convert.ToDateTime(dr["CreatedTime"]),
-                        CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["CreatedUserID"]),
-                        UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]),
-                        UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"]),
-
-                        AddrName = dr["AddrName"].ToString(),
-                        AddrMark = dr["AddrMark"] == DBNull.Value ? string.Empty : dr["AddrMark"].ToString(),
-                        Own = dr["Own"] == DBNull.Value ? string.Empty : dr["Own"].ToString(),
-                        Coordinate = dr["Coordinate"] == DBNull.Value ? string.Empty : dr["Coordinate"].ToString()
-                    };
-
+                    info = new GroundResource(dr);
                     infoList.Add(info);
                 }
             }

@@ -499,6 +499,7 @@ namespace OperatingManagement.ServicesKernel.File
             string strJXZ = string.Empty;
             string strDH = string.Empty;
             XYXSInfo oXyxs = new XYXSInfo();
+            Task oTask = new Task();
             if (lstActions != null && lstActions.Count() > 0)
             {
                 #region Get WorkingPattern, WorkingQuality, TaskID
@@ -518,11 +519,12 @@ namespace OperatingManagement.ServicesKernel.File
 
                 oJH.TaskID = strDH;
                 oJH.CTime = DateTime.Now;
-                oJH.SatID = satids;
+                oJH.SatID = "AAAA";
 
                 #endregion
                 string strPCode = string.Empty;
                 string strDeviceID = string.Empty;
+                string strSCID = string.Empty;
 
                 #region Set Content Value
                 for (int i = 0; i < lstActions.Count(); i++)
@@ -531,13 +533,17 @@ namespace OperatingManagement.ServicesKernel.File
                     //工作单位 & 设备
                     strPCode = GetDMZID(lstActions[i].ParticipatorCode, out strDeviceID);
                     oContent.DW = strPCode;
+                    if (lstActions[i].WorkingParams.ContainsKey(PEDefinition.V_SCID))
+                        strSCID = lstActions[i].WorkingParams[PEDefinition.V_SCID].Value;
+                    if (string.IsNullOrEmpty(strSCID))
+                        strSCID = "AAAA";
                     //属于总can的dmz才生成计划
                     if (ZCDMZList.Contains(oContent.DW))
                     {
                         oContent.FS = strFS;
                         oContent.JXZ = strJXZ;
                         oContent.DW = oXyxs.GetByID(oXyxs.GetIdByInCode(strPCode)).DWCode;
-                        oContent.DH = strDH;
+                        oContent.DH = oTask.GetOutTaskNo(strDH, strSCID);
                         oContent.QH = lstActions[i].QC.ToString();
                         if (lstActions[i].WorkingParams.ContainsKey(PEDefinition.V_MS))
                             oContent.MS = lstActions[i].WorkingParams[PEDefinition.V_MS].Value;
@@ -770,6 +776,7 @@ namespace OperatingManagement.ServicesKernel.File
                                 oSQ.SatID = satids;
                             else
                                 oSQ.SatID = strSCID;
+                            oSQ.SCID = oSQ.SatID;
                         }
                         if (dicZYSQ_GZDY.ContainsKey(strPCode))
                             oTask.GZDY = dicZYSQ_GZDY[strPCode];
@@ -812,7 +819,7 @@ namespace OperatingManagement.ServicesKernel.File
                         oTask.KSHX = "FFFFFFFFFFFFFF";
                         oTask.GSHX = "FFFFFFFFFFFFFF";
                         oTask.JS = lstActions[i].EndTime.ToString("yyyyMMddHHmmss");
-                        oTask.GZJ = lstActions[i].EndTime.AddSeconds(30).ToString("yyyyMMddHHmmss"); oTask.RK = string.Empty;
+                        oTask.GZJ = lstActions[i].EndTime.AddSeconds(30).ToString("yyyyMMddHHmmss");
 
                         List<DJZYSQ_Task_ReakTimeTransfor> lstRtTrans = new List<DJZYSQ_Task_ReakTimeTransfor>();
                         DJZYSQ_Task_ReakTimeTransfor oRtTrans = new DJZYSQ_Task_ReakTimeTransfor();
@@ -995,13 +1002,14 @@ namespace OperatingManagement.ServicesKernel.File
             #region variant declare
             string[] lIDs = lines.Split(new char[] { ',' });
             string[] strLines = new string[lIDs.Length];
-            int[] vPos = new int[] { 21, 54, 77, 169, 192 };//值在文件行中的起始位置,QC\GZK\RK\RJ\GZJ
-            int[] vLen = new int[] { 10, 21, 21, 21, 21 };//值长度
+            int[] vPos = new int[] { 21, 54, 77, 169, 192, 0 };//值在文件行中的起始位置,QC\GZK\RK\RJ\GZJ\ZM
+            int[] vLen = new int[] { 10, 21, 21, 21, 21, 10 };//值长度
             string strLine = string.Empty;
             string result = string.Empty;
             int iRow = 0;
             int iIdx = 0;
             bool blNewJH = false;
+            XYXSInfo oXyxs = new XYXSInfo();
             #endregion
 
             #region ReadFile
@@ -1044,6 +1052,7 @@ namespace OperatingManagement.ServicesKernel.File
             string strGZK = string.Empty;
             string strGZJ = string.Empty;
             string strRJ = string.Empty;
+            string strZM = string.Empty;
             GZJH_Content oContent;
             for (int i = 0; i < strLines.Length; i++)
             {
@@ -1058,9 +1067,12 @@ namespace OperatingManagement.ServicesKernel.File
                 strGZJ = strLines[i].Substring(vPos[4], vLen[4]).Replace(": ", ":0").Replace(" ", "").Replace(":", "").Substring(0, 14);
                 //if (strGZJ.Substring(0, 1).ToUpper() == "F")
                 //    strGZJ = DateTime.MinValue.ToString(PEDefinition.LongTimeFormat14);
+                strZM = strLines[i].Substring(vPos[5], vLen[5]).Trim();
+                strZM = oXyxs.GetByID(oXyxs.GetIdByInCode(strZM)).DWCode;
                 if (blNewJH)//为新计划读值
                 {
                     oContent = new GZJH_Content();
+                    oContent.DW = strZM;
                     oContent.QH = strQC;
                     //准备开始时间=开始时间-30分钟
                     if (strRK.Substring(0, 1).ToUpper() != "F")
@@ -1098,7 +1110,7 @@ namespace OperatingManagement.ServicesKernel.File
                                     //oJH.GZJHContents.ElementAt(j).ZHB = DateTime.MinValue.ToString(PEDefinition.LongTimeFormat14);
                                     //oJH.GZJHContents.ElementAt(j).RK = DateTime.MinValue.ToString(PEDefinition.LongTimeFormat14);
                                 }
-
+                                oJH.GZJHContents.ElementAt(j).DW = strZM;
                                 oJH.GZJHContents.ElementAt(j).GZK = strGZK;
                                 oJH.GZJHContents.ElementAt(j).GZJ = strGZJ;
                                 oJH.GZJHContents.ElementAt(j).JS = strRJ;
@@ -1132,8 +1144,8 @@ namespace OperatingManagement.ServicesKernel.File
             #region variant declare
             string[] lIDs = lines.Split(new char[] { ',' });
             string[] strLines = new string[lIDs.Length];
-            int[] vPos = new int[] { 21, 54, 77, 169, 192 };//值在文件行中的起始位置,QC\GZK\RK\RJ\GZJ
-            int[] vLen = new int[] { 10, 21, 21, 21, 21 };//值长度
+            int[] vPos = new int[] { 21, 54, 77, 169, 192, 0 };//值在文件行中的起始位置,QC\GZK\RK\RJ\GZJ\ZM
+            int[] vLen = new int[] { 10, 21, 21, 21, 21, 10 };//值长度
             string strLine = string.Empty;
             string result = string.Empty;
             int iRow = 0;
@@ -1181,7 +1193,10 @@ namespace OperatingManagement.ServicesKernel.File
             string strGZK = string.Empty;
             string strGZJ = string.Empty;
             string strRJ = string.Empty;
+            string strZM = string.Empty;
             DJZYSQ_Task oContent;
+            if (dicZYSQ_GZDY == null || dicZYSQ_GZDY.Count == 0)
+                GetGZDYandSB();
             for (int i = 0; i < strLines.Length; i++)
             {
                 strQC = strLines[i].Substring(vPos[0], vLen[0]).Trim();
@@ -1195,9 +1210,12 @@ namespace OperatingManagement.ServicesKernel.File
                 strGZJ = strLines[i].Substring(vPos[4], vLen[4]).Replace(": ", ":0").Replace(" ", "").Replace(":", "").Substring(0, 14);
                 //if (strGZJ.Substring(0, 1).ToUpper() == "F")
                 //    strGZJ = DateTime.MinValue.ToString(PEDefinition.LongTimeFormat14);
+                strZM = strLines[i].Substring(vPos[5], vLen[5]).Trim();
+                strZM = dicZYSQ_GZDY[strZM];
                 if (blNewJH)//为新计划读值
                 {
                     oContent = new DJZYSQ_Task();
+                    oContent.GZDY = strZM;
                     oContent.QC = strQC;
                     //ZHB = RK - 30min
                     if (strRK.Substring(0, 1).ToUpper() != "F")
@@ -1224,6 +1242,7 @@ namespace OperatingManagement.ServicesKernel.File
                         {
                             if (strQC == oJH.DMJHTasks.ElementAt(j).QC)
                             {
+                                oJH.DMJHTasks.ElementAt(j).GZDY = strZM;
                                 if (strRK.Substring(0, 1).ToUpper() != "F")
                                 {
                                     oJH.DMJHTasks.ElementAt(j).ZHB = DateTime.Parse(strRK.Replace(": ", ":0")).AddMinutes(-30).ToString(PEDefinition.LongTimeFormat14);

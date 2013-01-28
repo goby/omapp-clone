@@ -1164,11 +1164,11 @@ namespace OperatingManagement.Web.Views.PlanManage
         private void InitialDWSB(string source, string ctrlDWName, string ctrlSBName, RepeaterItemEventArgs e
             , string dwValue, string sbValue)
         {
-            XYXSInfo oXyxs = new XYXSInfo();
             try
             {
                 if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
+                    XYXSInfo oXyxs = new XYXSInfo();
                     //工作单位
                     DropDownList ddlDW = (DropDownList)e.Item.FindControl(ctrlDWName) as DropDownList;
                     ddlDW.DataSource = oXyxs.Cache.Where(t => t.Type == 0).ToList();
@@ -1183,8 +1183,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     DropDownList ddlSB = (DropDownList)e.Item.FindControl(ctrlSBName) as DropDownList;
                     if (lstResult.Count > 0)
                     {
-                        strTmp = lstResult[0].ADDRMARK;
-                        ddlSB.DataSource = (new GroundResource()).SelectAll().Where(t => t.AddrMark == strTmp).ToList();
+                        strTmp = lstResult[0].INCODE;
+                        ddlSB.DataSource = (new GroundResource()).SelectByDMZIncode(strTmp);
                         ddlSB.DataTextField = "EQUIPMENTNAME";
                         ddlSB.DataValueField = "EQUIPMENTCODE";
                         ddlSB.DataBind();

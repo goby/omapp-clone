@@ -8,14 +8,6 @@
 <%@ Register src="../../ucs/ucOutTask.ascx" tagname="ucOutTask" tagprefix="uc4" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <style type="text/css">
-        .text
-        {}
-        .style1
-        {
-            width: 130px;
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
@@ -37,13 +29,13 @@
             </td>
         </tr>--%>
         <tr>
-            <th class="style1">任务(<span class="red">*</span>)</th>
+            <th style="width:130px;">任务(<span class="red">*</span>)</th>
             <td>
                 <uc4:ucOutTask ID="ucOutTask1" runat="server" AllowBlankItem="False" />
             </td>
         </tr>
         <tr>
-            <th class="style1">信息分类</th>
+            <th>信息分类</th>
             <td>
                 <asp:RadioButtonList ID="radBtnXXFL" runat="server" 
                     RepeatDirection="Horizontal" ClientIDMode="Static">
@@ -53,7 +45,7 @@
             </td>
         </tr>
         <tr>
-            <th class="style1">计划序号</th>
+            <th>计划序号</th>
             <td>
                 <asp:TextBox ID="txtJXH" runat="server" Width="300px" CssClass="text" 
                     MaxLength="20" Enabled="False"></asp:TextBox>
@@ -61,7 +53,7 @@
             </td>
         </tr>
         <tr>
-            <th class="style1">系统名称</th>
+            <th>系统名称</th>
             <td>
                 <asp:DropDownList ID="ddlSysName" runat="server" Height="20px" Width="305px" ClientIDMode="Static">
                     <asp:ListItem Value="天基目标观测应用研究分系统">天基目标观测应用研究分系统</asp:ListItem>
@@ -72,39 +64,61 @@
             </td>
         </tr>
         <tr>
-            <th class="style1">试验开始时间</th>
-            <td>
-                <asp:TextBox ID="txtStartTime" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="14" ClientIDMode="Static"   onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
-            &nbsp;
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartTime"
-                        ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
-                </td>
-        </tr>
-        <tr>
-            <th class="style1">试验结束时间</th>
-            <td>
-                <asp:TextBox ID="txtEndTime" runat="server" Width="300px" CssClass="text" 
-                    MaxLength="14" ClientIDMode="Static"   onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
-            &nbsp;<span style="color:#3399FF;">
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndTime"
-                        ErrorMessage="结束时间不能为空" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
-                </span><span style="color:#3399FF;">
-                <asp:CompareValidator ID="CompareValidator1" runat="server" 
-                    ControlToCompare="txtStartTime" ControlToValidate="txtEndTime" 
-                    Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
-                    Operator="GreaterThan" Type="Double"></asp:CompareValidator>
-                </span></td>
-        </tr>
-        <tr>
-            <th class="style1">系统任务</th>
-            <td>
-                <asp:TextBox ID="txtTask" runat="server" Width="390px"  CssClass="text" 
-                    MaxLength="128" Height="47px" TextMode="MultiLine"></asp:TextBox>
+            <td colspan="2">
+        <asp:Repeater ID="rpTasks" runat="server" OnItemCommand="rpTasks_ItemCommand">
+            <HeaderTemplate>
+                <table class="edit1" style="width: 900px;" cellpadding="0" id="detailtable">
+                    <tbody>
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <th  style="width:125px;">试验开始时间</th>
+                    <td>
+                        <asp:TextBox ID="txtStartTime" runat="server" Width="300px" CssClass="text" 
+                            Text='<%# Eval("StartTime")%>' 
+                            MaxLength="14" ClientIDMode="Static"   onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                    &nbsp;
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartTime"
+                                ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
+                        </td>
+                </tr>
+                <tr>
+                    <th>试验结束时间</th>
+                    <td>
+                        <asp:TextBox ID="txtEndTime" runat="server" Width="300px" CssClass="text" 
+                            MaxLength="14" ClientIDMode="Static" 
+                        Text='<%# Eval("EndTime")%>'   onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
+                    &nbsp;<span style="color:#3399FF;">
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndTime"
+                                ErrorMessage="结束时间不能为空" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
+                        </span><span style="color:#3399FF;">
+                        <asp:CompareValidator ID="CompareValidator1" runat="server" 
+                            ControlToCompare="txtStartTime" ControlToValidate="txtEndTime" 
+                            Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
+                            Operator="GreaterThan" Type="Double"></asp:CompareValidator>
+                        </span></td>
+                </tr>
+                <tr>
+                    <th>系统任务</th>
+                    <td>
+                        <asp:TextBox ID="txtTask" runat="server" Width="390px"  CssClass="text" 
+                            Text='<%# Eval("Task")%>' 
+                            MaxLength="128" Height="47px" TextMode="MultiLine"></asp:TextBox>
+                        <asp:Button ID="btn1" CausesValidation="False" CssClass="button" runat="server" CommandName="Add"
+                            Text="添加" />
+                        <asp:Button ID="btn2" CausesValidation="False" CssClass="button" runat="server" CommandName="Del"
+                            Text="删除" />
+                    </td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                </tbody> </table>
+            </FooterTemplate>
+        </asp:Repeater>
             </td>
         </tr>
         <tr>
-            <th class="style1">备注</th>
+            <th>备注</th>
             <td>
                 <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="50" 
                     Width="390px" Height="75px" TextMode="MultiLine"></asp:TextBox>
@@ -117,7 +131,7 @@
             </td>
         </tr>
         <tr>
-            <th class="style1">&nbsp;</th>
+            <th>&nbsp;</th>
             <td>
                 <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" 
                     onclick="btnSubmit_Click" />

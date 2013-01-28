@@ -115,6 +115,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         protected void cpPager_PostBackPage(object sender, EventArgs e)
         {
             BindGridView(false);
+            HideMessage();
         }
 
         /// <summary>
@@ -258,6 +259,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             int id = Convert.ToInt32(txtID.Text);
             CreatePlans(id);
+            BindGridView(true);
         }
 
         private void ShowMessage(string msg, bool join)

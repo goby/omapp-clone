@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 using OperatingManagement.Framework.Basic;
 using OperatingManagement.Framework;
@@ -38,6 +39,44 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// </summary>
         public string SysName { get; set; }
         /// <summary>
+        /// 系统任务
+        /// </summary>
+        public List<YJJH_Task> Tasks { get; set; }
+        #endregion
+
+        public void ReadXML(string path)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(path);
+            XmlNode root = xmlDoc.SelectSingleNode("应用研究工作计划/XXFL");
+            this.XXFL = root.InnerText;
+            root = xmlDoc.SelectSingleNode("应用研究工作计划/JXH");
+            this.JXH = root.InnerText;
+            root = xmlDoc.SelectSingleNode("应用研究工作计划/SysName");
+            this.SysName = root.InnerText;
+
+
+            root = xmlDoc.SelectSingleNode("应用研究工作计划");
+            List<YJJH_Task> list = new List<YJJH_Task>();
+            YJJH_Task c;
+            foreach (XmlNode n in root.ChildNodes)
+            {
+                if (n.Name == "Work")
+                {
+                    c = new YJJH_Task();
+                    c.StartTime = n["StartTime"].InnerText;
+                    c.EndTime = n["EndTime"].InnerText;
+                    c.Task = n["Task"].InnerText;
+                    list.Add(c);
+                }
+            }
+            this.Tasks = list;
+        }
+    }
+
+    public class YJJH_Task
+    {
+        /// <summary>
         /// 试验开始时间
         /// </summary>
         public string StartTime { get; set; }
@@ -49,6 +88,5 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// 系统任务
         /// </summary>
         public string Task { get; set; }
-        #endregion
     }
 }

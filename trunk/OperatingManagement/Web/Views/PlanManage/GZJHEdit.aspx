@@ -38,7 +38,8 @@
                 任务代号(<span class="red">*</span>)
             </th>
             <td colspan="3">
-                <uc4:ucOutTask ID="ucOutTask1" runat="server" AllowBlankItem="False" />
+                <asp:DropDownList ID="ddlMutiSatTask" runat="server">
+                </asp:DropDownList>
             </td>
         </tr>
         <tr>
@@ -91,15 +92,9 @@
                     Height="40px" TextMode="MultiLine"></asp:TextBox>
             </td>
         </tr>
-<%--        <tr>
-            <th>
-                总圈数
-            </th>
-            <td colspan="3">
-                
-               &nbsp;<span style="color: #3399FF;">自动生成</span>
-            </td>
-        </tr>--%>
+        <%--<asp:TextBox ID="txtSB" MaxLength="2" CssClass="text" runat="server" Text='<%# Eval("SB")%>'
+                        onkeypress="return event.keyCode>=48&&event.keyCode<=57||event.keyCode==46" onpaste="return !clipboardData.getData('text').match(/\D/)"
+                        ondragenter="return false" Style="ime-mode: Disabled"></asp:TextBox>--%>
     </table>
     <asp:Repeater ID="rpDatas" runat="server" OnItemCommand="rpDatas_ItemCommand" OnItemDataBound="rpDatas_ItemDataBound">
         <HeaderTemplate>
@@ -107,6 +102,10 @@
                 <tbody>
         </HeaderTemplate>
         <ItemTemplate>
+            <tr>
+                <th>任务</th>
+                <td colspan="3"><asp:DropDownList ID="ddlTask" runat="server"></asp:DropDownList></td>
+            </tr>
             <tr>
                 <th style="width: 150px;">
                     工作单位
