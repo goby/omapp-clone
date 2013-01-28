@@ -28,8 +28,8 @@ namespace OperatingManagement.Web.Views.PlanManage
             if (!IsPostBack)
             {
                 btnFormal.Visible = false; 
-                txtStartTime.Attributes.Add("readonly", "true");
-                txtEndTime.Attributes.Add("readonly", "true");
+                //txtStartTime.Attributes.Add("readonly", "true");
+                //txtEndTime.Attributes.Add("readonly", "true");
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
@@ -43,6 +43,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                     HfID.Value = sID;   //自增ID
                     hfStatus.Value = "edit";    //编辑
+                    inital(false);
                     BindJhTable(sID);
                     BindXML();
                     hfURL.Value = "?type=YJJH&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"];
@@ -56,10 +57,23 @@ namespace OperatingManagement.Web.Views.PlanManage
                     btnReturn.Visible = false;
                     hfStatus.Value = "new"; //新建
                     btnSaveTo.Visible = false;
+                    inital(true);
                     //txtJXH.Text = (new Sequence()).GetYJJHSequnce().ToString("0000");   //新建时先给出计划序号
                 }
             }
             
+        }
+
+        private void inital(bool isNew)
+        {
+            txtJXH.Attributes.Add("readonly", "true");
+            if (isNew)
+            {
+                List<YJJH_Task> list = new List<YJJH_Task>();
+                list.Add(new YJJH_Task());
+                rpTasks.DataSource = list;
+                rpTasks.DataBind();
+            }
         }
 
         private void BindJhTable(string sID)
@@ -93,29 +107,20 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             finally { }
         }
+
         private void BindXML()
         {
             try
             {
-                CultureInfo provider = CultureInfo.InvariantCulture;
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load(HfFileIndex.Value);
-                XmlNode root = xmlDoc.SelectSingleNode("应用研究工作计划/XXFL");
-                //txtXXFL.Text = root.InnerText;
-                radBtnXXFL.SelectedValue = root.InnerText;
-                root = xmlDoc.SelectSingleNode("应用研究工作计划/JXH");
-                txtJXH.Text = root.InnerText;
-                root = xmlDoc.SelectSingleNode("应用研究工作计划/SysName");
-                //txtSysName.Text = root.InnerText;
-                ddlSysName.SelectedValue = root.InnerText;
-                root = xmlDoc.SelectSingleNode("应用研究工作计划/StartTime");
-                txtStartTime.Text = root.InnerText;
-                // ucStartTimer.Timer = root.InnerText.Substring(8);
-                root = xmlDoc.SelectSingleNode("应用研究工作计划/EndTime");
-                txtEndTime.Text = root.InnerText;
-                //ucEndTimer.Timer = root.InnerText.Substring(8);
-                root = xmlDoc.SelectSingleNode("应用研究工作计划/Task");
-                txtTask.Text = root.InnerText;
+                YJJH oYJ = new YJJH();
+                oYJ.ReadXML(HfFileIndex.Value);
+                radBtnXXFL.SelectedValue = oYJ.XXFL;
+                txtJXH.Text = oYJ.JXH;
+                ddlSysName.SelectedValue = oYJ.SysName;
+                if (oYJ.Tasks.Count == 0)
+                    oYJ.Tasks.Add(new YJJH_Task());
+                rpTasks.DataSource = oYJ.Tasks;
+                rpTasks.DataBind();
             }
             catch (Exception ex)
             {
@@ -137,6 +142,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                HideMsg();
                 string taskID = string.Empty;
                 string satID = string.Empty;
                 new Task().GetTaskNoSatID(ucOutTask1.SelectedValue, out taskID, out satID);
@@ -146,15 +152,15 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.XXFL = radBtnXXFL.SelectedValue;
                 obj.JXH = txtJXH.Text;
                 obj.SysName = ddlSysName.SelectedValue;
-                obj.StartTime = txtStartTime.Text;
-                obj.EndTime = txtEndTime.Text;
-                obj.Task = txtTask.Text;
+                obj.Tasks = GetRPContents("保存", rpTasks, -1);
                 obj.TaskID = taskID;
                 obj.SatID = satID;
                 CultureInfo provider = CultureInfo.InvariantCulture;
 
                 PlanFileCreator creater = new PlanFileCreator(isTempJH);
-
+                DateTime startTime;
+                DateTime endTime;
+                GetTimes(obj.Tasks, out startTime, out endTime);
                 if (hfStatus.Value == "new")
                 {
                     //保存时才生成计划序号
@@ -166,14 +172,15 @@ namespace OperatingManagement.Web.Views.PlanManage
                         TaskID = obj.TaskID,
                         PlanType = "YJJH",
                         PlanID = Convert.ToInt32(obj.JXH),
-                        StartTime = DateTime.ParseExact(obj.StartTime, "yyyyMMddHHmmss", provider),
-                        EndTime = DateTime.ParseExact(obj.EndTime, "yyyyMMddHHmmss", provider),
+                        StartTime = startTime,
+                        EndTime = endTime,
                         SRCType = 0,
                         FileIndex = filepath,
                         SatID = obj.SatID,
                         Reserve = txtNote.Text
                     };
                     var result = jh.Add();
+                    ShowMsg(result == FieldVerifyResult.Success);
                 }
                 else
                 {
@@ -185,13 +192,14 @@ namespace OperatingManagement.Web.Views.PlanManage
                         {
                             Id = Convert.ToInt32(HfID.Value),
                             TaskID = obj.TaskID,
-                            StartTime = DateTime.ParseExact(obj.StartTime, "yyyyMMddHHmmss", provider),
-                            EndTime = DateTime.ParseExact(obj.EndTime, "yyyyMMddHHmmss", provider),
+                            StartTime = startTime,
+                            EndTime = endTime,
                             FileIndex = filepath,
                             SatID = obj.SatID,
                             Reserve = txtNote.Text
                         };
                         var result = jh.Update();
+                        ShowMsg(result == FieldVerifyResult.Success);
                         //更新隐藏域的任务ID和卫星ID
                         hfTaskID.Value = jh.TaskID;
                         hfSatID.Value = jh.SatID;
@@ -200,11 +208,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         creater.FilePath = HfFileIndex.Value;
                         creater.CreateYJJHFile(obj, 1);
+                        ShowMsg(true);
                     }
                 }
-
-                trMessage.Visible = true;
-                ltMessage.Text = "计划保存成功";
                 //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
             }
             catch (Exception ex)
@@ -227,9 +233,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.XXFL = radBtnXXFL.SelectedValue;
                 //obj.JXH = txtJXH.Text;
                 obj.SysName = ddlSysName.SelectedValue;
-                obj.StartTime = txtStartTime.Text;
-                obj.EndTime = txtEndTime.Text;
-                obj.Task = txtTask.Text;
+                obj.Tasks = GetRPContents("另存", rpTasks, -1);
                 CultureInfo provider = CultureInfo.InvariantCulture;
 
                 PlanFileCreator creater = new PlanFileCreator(isTempJH);
@@ -245,14 +249,17 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
 
                 string filepath = creater.CreateYJJHFile(obj, 0);
+                DateTime startTime;
+                DateTime endTime;
+                GetTimes(obj.Tasks, out startTime, out endTime);
 
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
                 {
                     TaskID = obj.TaskID,
                     PlanType = "YJJH",
                     PlanID = Convert.ToInt32(obj.JXH),
-                    StartTime = DateTime.ParseExact(obj.StartTime, "yyyyMMddHHmmss", provider),
-                    EndTime = DateTime.ParseExact(obj.EndTime, "yyyyMMddHHmmss", provider),
+                    StartTime = startTime,
+                    EndTime = endTime,
                     SRCType = 0,
                     FileIndex = filepath,
                     SatID = obj.SatID,
@@ -262,7 +269,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                 txtJXH.Text = obj.JXH;  //另存后显示新的序号
                 trMessage.Visible = true;
-                ltMessage.Text = "计划保存成功";
+                ltMessage.Text = "计划另存成功";
                // ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
             }
             catch (Exception ex)
@@ -331,9 +338,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.XXFL = radBtnXXFL.SelectedValue;
                 //obj.JXH = txtJXH.Text;
                 obj.SysName = ddlSysName.SelectedValue;
-                obj.StartTime = txtStartTime.Text;
-                obj.EndTime = txtEndTime.Text;
-                obj.Task = txtTask.Text;
+                obj.Tasks = GetRPContents("准存正式计划", rpTasks, -1);
                 CultureInfo provider = CultureInfo.InvariantCulture;
 
                 PlanFileCreator creater = new PlanFileCreator();
@@ -349,14 +354,17 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
 
                 string filepath = creater.CreateYJJHFile(obj, 0);
+                DateTime startTime;
+                DateTime endTime;
+                GetTimes(obj.Tasks, out startTime, out endTime);
 
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH()
                 {
                     TaskID = obj.TaskID,
                     PlanType = "YJJH",
                     PlanID = Convert.ToInt32(obj.JXH),
-                    StartTime = DateTime.ParseExact(obj.StartTime, "yyyyMMddHHmmss", provider),
-                    EndTime = DateTime.ParseExact(obj.EndTime, "yyyyMMddHHmmss", provider),
+                    StartTime = startTime,
+                    EndTime = endTime,
                     SRCType = 0,
                     FileIndex = filepath,
                     SatID = obj.SatID,
@@ -502,6 +510,116 @@ namespace OperatingManagement.Web.Views.PlanManage
             finally { }
         }
 
+        protected void rpTasks_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            Repeater rp = (Repeater)source;
+            List<YJJH_Task> list;
+            try
+            {
+                if (e.CommandName == "Add")
+                {
+                    list = GetRPContents("添加", rp, -1);
+                    YJJH_Task co;
+                    ViewState["op"] = "Add";
+                    #region new a GZJH_Content
+                    co = new YJJH_Task()
+                    {
+                        StartTime = "",
+                        EndTime = "",
+                        Task = ""
+                    };
+                    #endregion
+                    list.Add(co);
+                    rp.DataSource = list;
+                    rp.DataBind();
+                }
+                if (e.CommandName == "Del")
+                {
+                    list = new List<YJJH_Task>();
+                    ViewState["op"] = "Del";
+                    if (rp.Items.Count <= 1)
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "del", "<script type='text/javascript'>showMsg('最后一条，无法删除!');</script>");
+                    }
+                    else
+                    {
+                        list = GetRPContents("删除", rp, e.Item.ItemIndex);
+                        rp.DataSource = list;
+                        rp.DataBind();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("绑定应用研究计划信息出现异常，异常原因", ex));
+            }
+            finally { }
+        }
+
+        private List<YJJH_Task> GetRPContents(string from, Repeater rp, int idx)
+        {
+            List<YJJH_Task> list = new List<YJJH_Task>();
+            YJJH_Task co;
+            try
+            {
+                foreach (RepeaterItem it in rp.Items)
+                {
+                    if (idx != it.ItemIndex)
+                    {
+                        #region 赋值
+                        co = new YJJH_Task();
+                        TextBox txtStartTime = (TextBox)it.FindControl("txtStartTime");
+                        TextBox txtEndTime = (TextBox)it.FindControl("txtEndTime");
+                        TextBox txtTask = (TextBox)it.FindControl("txtTask");
+                        co.StartTime = txtStartTime.Text;
+                        co.EndTime = txtEndTime.Text;
+                        co.Task = txtTask.Text;
+                        #endregion
+                        list.Add(co);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException(from + "计划，获取应用研究计划信息出现异常，异常原因", ex));
+            }
+            return list;
+        }
+
+        private void GetTimes(List<YJJH_Task> tasks, out DateTime startTime, out DateTime endTime)
+        {
+            startTime = DateTime.MaxValue;
+            endTime = DateTime.MinValue;
+            DateTime dt;
+            if (tasks != null && tasks.Count > 0)
+            {
+                foreach (YJJH_Task task in tasks)
+                {
+                    dt = DateTime.ParseExact(task.StartTime, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture);
+                    if (startTime > dt)
+                        startTime = dt;
+                    dt = DateTime.ParseExact(task.EndTime, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture);
+                    if (endTime < dt)
+                        endTime = dt;
+                }
+            }
+        }
+
+        private void ShowMsg(bool sucess)
+        {
+            trMessage.Visible = true;
+            if (sucess)
+                ltMessage.Text = "计划保存成功";
+            else
+                ltMessage.Text = "计划保存失败";
+            hfTaskID.Value = ucOutTask1.SelectedValue;
+        }
+
+        private void HideMsg()
+        {
+            trMessage.Visible = false;
+            ltMessage.Text = "";
+        }
 
     }
 }

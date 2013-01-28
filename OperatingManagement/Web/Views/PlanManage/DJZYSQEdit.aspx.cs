@@ -108,13 +108,15 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                string stmp = string.Empty;
                 isTempJH = GetIsTempJHValue();
                 List<JH> jh = (new JH(isTempJH)).SelectByIDS(sID);
                 txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm:ss");
                 txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
                 HfFileIndex.Value = jh[0].FileIndex;
-                ucOutTask1.SelectedValue = new Task().GetOutTaskNo(jh[0].TaskID, jh[0].SatID);
-                hfTaskID.Value = ucOutTask1.SelectedValue;
+                stmp = new Task().GetOutTaskNo(jh[0].TaskID, jh[0].SatID);
+                hfTaskID.Value = stmp;
+                ucOutTask1.SelectedValue = stmp;
                 //string[] strTemp = jh[0].FileIndex.Split('_');
                 //if (strTemp.Length >= 2)
                 //{
@@ -472,23 +474,22 @@ namespace OperatingManagement.Web.Views.PlanManage
                                 }
                                 #endregion
 
+                                if (!hasDP)
+                                {
+                                    dp = new DJZYSQ_Task_GZDP();
+                                    list0.Add(dp);
+                                }
+                                if (!hasSC)
+                                {
+                                    rt = new DJZYSQ_Task_ReakTimeTransfor();
+                                    list1.Add(rt);
+                                }
+                                if (!hasHF)
+                                {
+                                    afb = new DJZYSQ_Task_AfterFeedBack();
+                                    list2.Add(afb);
+                                }
                             }
-                        }
-
-                        if (!hasDP)
-                        {
-                            dp = new DJZYSQ_Task_GZDP();
-                            list0.Add(dp);
-                        }
-                        if (!hasSC)
-                        {
-                            rt = new DJZYSQ_Task_ReakTimeTransfor();
-                            list1.Add(rt);
-                        }
-                        if (!hasHF)
-                        {
-                            afb = new DJZYSQ_Task_AfterFeedBack();
-                            list2.Add(afb);
                         }
                         rpG.DataSource = list0;
                         rpG.DataBind();
@@ -1293,6 +1294,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 else
                 {
+                    creater.FilePath = obj.FileIndex;
                     //当任务和卫星更新时，需要更新文件名称
                     if (hfTaskID.Value != ucOutTask1.SelectedValue)
                     {
@@ -1832,6 +1834,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     #endregion
                     #region GZDP
                     Repeater rpg = it.FindControl("rpGZDP") as Repeater;
+                    rt.GZDPs = new List<DJZYSQ_Task_GZDP>();
                     foreach (RepeaterItem its in rpg.Items)
                     {
 
@@ -1849,6 +1852,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     #endregion
                     #region ReakTimeTransfor
                     Repeater rps = it.FindControl("rpReakTimeTransfor") as Repeater;
+                    rt.ReakTimeTransfors = new List<DJZYSQ_Task_ReakTimeTransfor>();
                     foreach (RepeaterItem its in rps.Items)
                     {
 
@@ -1871,6 +1875,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                     #endregion
                     #region AfterFeedBack
                     Repeater rpa = it.FindControl("rpAfterFeedBack") as Repeater;
+                    rt.AfterFeedBacks = new List<DJZYSQ_Task_AfterFeedBack>();
                     foreach (RepeaterItem its in rpa.Items)
                     {
 

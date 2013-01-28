@@ -10,6 +10,7 @@ using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 using OperatingManagement.Framework.Storage;
 using OperatingManagement.Framework.Components;
+using ServicesKernel.GDFX;
 
 namespace ServicesKernel.File
 {
@@ -174,17 +175,22 @@ namespace ServicesKernel.File
             xmlWriter.WriteString(obj.SysName);
             xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("StartTime");
-            xmlWriter.WriteString(obj.StartTime);
-            xmlWriter.WriteEndElement();
+            foreach (YJJH_Task task in obj.Tasks)
+            {
+                xmlWriter.WriteStartElement("Work");
+                xmlWriter.WriteStartElement("StartTime");
+                xmlWriter.WriteString(task.StartTime);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("EndTime");
-            xmlWriter.WriteString(obj.EndTime);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("EndTime");
+                xmlWriter.WriteString(task.EndTime);
+                xmlWriter.WriteEndElement();
 
-            xmlWriter.WriteStartElement("Task");
-            xmlWriter.WriteString(obj.Task);
-            xmlWriter.WriteEndElement();
+                xmlWriter.WriteStartElement("Task");
+                xmlWriter.WriteString(task.Task);
+                xmlWriter.WriteEndElement();
+                xmlWriter.WriteEndElement();
+            }
 
             xmlWriter.WriteEndElement();
             xmlWriter.Close();
@@ -493,7 +499,7 @@ namespace ServicesKernel.File
                 filename = (new FileNameMaker()).GenarateInternalFileNameTypeOne("DJZYSQ", obj.TaskID, obj.SatID);
                 FilePath = SavePath + filename;
             }
-
+            Logger.GetLogger().Error("DJZYSQ:" + filename + " | SatID" + obj.SatID + " | TaskID" + obj.TaskID);
             xmlWriter = new XmlTextWriter(FilePath, Encoding.UTF8);
             xmlWriter.Formatting = Formatting.Indented;
             xmlWriter.WriteStartDocument();
@@ -1573,26 +1579,11 @@ namespace ServicesKernel.File
             {
                 #region 读取计划XML文件，变量赋值
                 obj = new YJJH();
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load(jh.FileIndex);
-
+                obj.ReadXML(jh.FileIndex);
                 obj.CTime = DateTime.Now;
-                XmlNode root = xmlDoc.SelectSingleNode("应用研究工作计划/XXFL");
-                obj.XXFL = root.InnerText;
-                root = xmlDoc.SelectSingleNode("应用研究工作计划/JXH");
-                obj.JXH = root.InnerText;
-                root = xmlDoc.SelectSingleNode("应用研究工作计划/SysName");
-                obj.SysName = root.InnerText;
-                root = xmlDoc.SelectSingleNode("应用研究工作计划/StartTime");
-                obj.StartTime = root.InnerText;
-                root = xmlDoc.SelectSingleNode("应用研究工作计划/EndTime");
-                obj.EndTime = root.InnerText;
-                root = xmlDoc.SelectSingleNode("应用研究工作计划/Task");
-                obj.Task = root.InnerText;
                 obj.TaskID = jh.TaskID;
                 obj.SatID = jh.SatID;
                 #endregion
-
                 
                 if (obj.SysName == info.ADDRName)   //系统名称和发送目标一致时才发送
                 {
@@ -1611,11 +1602,14 @@ namespace ServicesKernel.File
                     sw.WriteLine("[信宿D]：" + destinationName);
                     sw.WriteLine("[任务代码M]：" + GetSendingTaskName(obj.TaskID, obj.SatID));
                     sw.WriteLine("[信息类别B]：" + itype.DATANAME + "(" + itype.EXCODE + ")");
-                    sw.WriteLine("[数据区行数L]：0001");
+                    sw.WriteLine("[数据区行数L]：" + obj.Tasks.Count.ToString("X4"));
                     sw.WriteLine("<符号区>");
                     sw.WriteLine("[格式标识1]：XXFL  JXH  SysName  StartTime  EndTime  Task");
                     sw.WriteLine("[数据区]：");
-                    sw.WriteLine(obj.XXFL + "  " + obj.JXH + "  " + obj.SysName + "  " + obj.StartTime + "  " + obj.EndTime + "  " + obj.Task);
+                    foreach (YJJH_Task task  in obj.Tasks)
+                    {
+                        sw.WriteLine(obj.XXFL + "  " + obj.JXH + "  " + obj.SysName + "  " + task.StartTime + "  " + task.EndTime + "  " + task.Task);
+                    }
                     sw.WriteLine("<辅助区>");
                     sw.WriteLine("[备注]：");
                     sw.WriteLine("[结束]：END");

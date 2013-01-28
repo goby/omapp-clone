@@ -54,7 +54,11 @@ namespace OperatingManagement.Web.ucs
         public string SelectedValue
         {
             get { return TaskList.SelectedValue; }
-            set { TaskList.SelectedValue = value; }
+            set 
+            {
+                if (TaskList.Items.FindByValue(value) != null)
+                    TaskList.SelectedValue = value; 
+            }
         }
 
         public bool AllowBlankItem

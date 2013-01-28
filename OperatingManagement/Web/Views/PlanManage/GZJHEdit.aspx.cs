@@ -73,6 +73,11 @@ namespace OperatingManagement.Web.Views.PlanManage
             ddlXXFL.DataValueField = "Value";
             ddlXXFL.DataBind();
 
+            ddlMutiSatTask.DataSource = new Task().Cache.Where(t => t.SatID == "AAAA").ToList();
+            ddlMutiSatTask.DataTextField = "TaskName";
+            ddlMutiSatTask.DataValueField = "OutTaskNo";
+            ddlMutiSatTask.DataBind();
+
             if (isNew)
             {
                 List<GZJH_Content> list = new List<GZJH_Content>();
@@ -93,8 +98,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 txtJXH.Text = jh[0].PlanID.ToString("0000");
                 txtPlanStartTime.Text = jh[0].StartTime.ToString("yyyy-MM-dd HH:mm:ss");
                 txtPlanEndTime.Text = jh[0].EndTime.ToString("yyyy-MM-dd HH:mm:ss");
-                ucOutTask1.SelectedValue = outTaskID;
-                hfTaskID.Value = ucOutTask1.SelectedValue;
+                ddlMutiSatTask.SelectedValue = outTaskID;
+                hfTaskID.Value = ddlMutiSatTask.SelectedValue;
                 //string[] strTemp = jh[0].FileIndex.Split('_');
                 //if (strTemp.Length >= 2)
                 //{
@@ -208,6 +213,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 if (hfStatus.Value == "new")
                 {
                     //新建时才生成计划序号
+                    //保存时才生成计划序号
                     obj.JXH = (new Sequence()).GetGZJHSequnce().ToString("0000");
                     txtJXH.Text = obj.JXH;
                     string filepath = creater.CreateGZJHFile(obj, 0);
@@ -230,7 +236,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 else
                 {
                     //当任务更新时，需要更新文件名称
-                    if (hfTaskID.Value != ucOutTask1.SelectedValue)
+                    if (hfTaskID.Value != ddlMutiSatTask.SelectedValue)
                     {
                         string filepath = creater.CreateGZJHFile(obj, 0);
                         DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
@@ -245,6 +251,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                         };
                         var result = jh.Update();
                         ShowMsg(result == FieldVerifyResult.Success);
+                        //更新隐藏域的任务ID和卫星ID
+                        hfTaskID.Value = jh.TaskID;
+                        hfSatID.Value = jh.SatID;
                     }
                     else
                     {
@@ -477,13 +486,27 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         protected void rpDatas_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            XYXSInfo oXyxs = new XYXSInfo();
             try
             {
                 if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
+                    XYXSInfo oXyxs = new XYXSInfo();
+                    Task oTask = new Task();
                     GZJH_Content g = (GZJH_Content)e.Item.DataItem;
                     #region 初始化各个下拉列表的值
+                    //任务代号
+                    string satID = string.Empty;
+                    string taskID = string.Empty;
+                    oTask.GetTaskNoSatID(ddlMutiSatTask.SelectedValue, out taskID, out satID);
+                    DropDownList ddlTask = (DropDownList)e.Item.FindControl("ddlTask") as DropDownList;
+                    ddlTask.DataSource = new Task().Cache.Where(t => t.TaskNo == taskID).ToList();
+                    ddlTask.DataTextField = "TaskName";
+                    ddlTask.DataValueField = "OutTaskNo";
+                    ddlTask.DataBind();
+                    if (!string.IsNullOrEmpty(g.DH))
+                    {
+                        ddlTask.SelectedValue = g.DH;
+                    }
                     //工作单位
                     DropDownList ddlDW = (DropDownList)e.Item.FindControl("ddlDW") as DropDownList;
                     ddlDW.DataSource = oXyxs.Cache.Where(t=>t.Type == 0 && t.Own != "02").ToList();
@@ -500,8 +523,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     DropDownList ddlSB = (DropDownList)e.Item.FindControl("ddlSB") as DropDownList;
                     if (lstResult.Count > 0)
                     {
-                        strTmp = lstResult[0].ADDRMARK;
-                        ddlSB.DataSource = (new GroundResource()).SelectAll().Where(t => t.AddrMark == strTmp).ToList();
+                        strTmp = lstResult[0].INCODE;
+                        ddlSB.DataSource = (new GroundResource()).SelectByDMZIncode(strTmp);
                         ddlSB.DataTextField = "EQUIPMENTNAME";
                         ddlSB.DataValueField = "EQUIPMENTCODE";
                         ddlSB.DataBind();
@@ -585,7 +608,6 @@ namespace OperatingManagement.Web.Views.PlanManage
                         ddlSHBID.SelectedValue = g.HBID;
                     }
                     #endregion
-
                     #region 注册脚本事件
 
                     //任务准备开始时间输入后，跟踪开始时间、任务开始时间、任务结束时间、跟踪结束时间
@@ -708,7 +730,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             try
             {
                 isTempJH = GetIsTempJHValue();
-                new Task().GetTaskNoSatID(ucOutTask1.SelectedValue, out taskID, out satID);
+                new Task().GetTaskNoSatID(ddlMutiSatTask.SelectedValue, out taskID, out satID);
                 obj.SatID = satID;
                 obj.TaskID = taskID;
                 obj.JXH = txtJXH.Text;  //修改时用，读取原来的序号
@@ -736,12 +758,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         #region 赋值
                         co = new GZJH_Content();
-                        //TextBox txtDW = (TextBox)it.FindControl("txtDW");
-                        //TextBox txtSB = (TextBox)it.FindControl("txtSB");
+                        DropDownList ddlTask = (DropDownList)it.FindControl("ddlTask");
                         DropDownList ddlDW = (DropDownList)it.FindControl("ddlDW");
                         DropDownList ddlSB = (DropDownList)it.FindControl("ddlSB");
-                        //TextBox txtQS = (TextBox)it.FindControl("txtQS");
-                        //DropDownList ddlDH = (DropDownList)it.FindControl("ddlDH");
                         DropDownList ddlFS = (DropDownList)it.FindControl("ddlFS");
                         DropDownList ddlJXZ = (DropDownList)it.FindControl("ddlJXZ");
                         DropDownList ddlMS = (DropDownList)it.FindControl("ddlMS");
@@ -769,8 +788,7 @@ namespace OperatingManagement.Web.Views.PlanManage
 
                         co.DW = ddlDW.SelectedValue;
                         co.SB = ddlSB.SelectedValue;
-                        //co.QS = txtQS.Text;
-                        co.DH = ucOutTask1.SelectedValue;
+                        co.DH = ddlTask.SelectedValue;
                         co.FS = ddlFS.SelectedItem.Value;
                         co.JXZ = ddlJXZ.SelectedItem.Value;
                         co.MS = ddlMS.SelectedItem.Value;
@@ -837,7 +855,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 ltMessage.Text = "计划保存成功";
             else
                 ltMessage.Text = "计划保存失败";
-            hfTaskID.Value = ucOutTask1.SelectedValue;
+            hfTaskID.Value = ddlMutiSatTask.SelectedValue;
         }
 
         private void HideMsg()

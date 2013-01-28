@@ -1,4 +1,5 @@
-﻿var _dialog;
+﻿
+var _dialog;
 $(window).ready(function () {
     _dialog = $("#dialog-form");
 });
@@ -42,6 +43,11 @@ function sendPlan() {
     var ddlType = $('#ddlType');
     if (ddlType.val() == "DJZYJH") {
         _dialog.find('p.content').eq(0).html('不能发送测控资源使用计划。');
+        _dialog.dialog('open');
+        return false;
+    }
+    if (ddlType.val() == "ZXJH") {
+        _dialog.find('p.content').eq(0).html('不能发送中心运行计划。');
         _dialog.dialog('open');
         return false;
     }
