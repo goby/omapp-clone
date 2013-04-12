@@ -88,6 +88,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// 表面光滑或者粗糙
         /// </summary>
         public int RG { get; set; }
+        /// <summary>
+        /// 国内六编码
+        /// </summary>
+        public string GNLBM { get; set; }
 
         public static List<Satellite> _satelliteCache = null;
         public List<Satellite> Cache
@@ -100,7 +104,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 }
                 return _satelliteCache;
             }
-            set{}
+            set
+            {
+                _satelliteCache = value;
+            }
         }
         #endregion
 
@@ -159,7 +166,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     Shape = Convert.ToInt32(ds.Tables[0].Rows[0]["Shape"]),
                     D = Math.Round(Convert.ToDouble(ds.Tables[0].Rows[0]["D"]), 3),
                     L = Math.Round(Convert.ToDouble(ds.Tables[0].Rows[0]["L"]), 3),
-                    RG = Convert.ToInt32(ds.Tables[0].Rows[0]["RG"])
+                    RG = Convert.ToInt32(ds.Tables[0].Rows[0]["RG"]),
+                    GNLBM = ds.Tables[0].Rows[0]["GNLBM"].ToString()
                 };
             }
             return info;
@@ -194,7 +202,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         Shape = Convert.ToInt32(dr["Shape"]),
                         D = Math.Round(Convert.ToDouble(dr["D"]), 3),
                         L = Math.Round(Convert.ToDouble(dr["L"]), 3),
-                        RG = Convert.ToInt32(dr["RG"])
+                        RG = Convert.ToInt32(dr["RG"]),
+                        GNLBM = ds.Tables[0].Rows[0]["GNLBM"].ToString()
                     };
 
                     infoList.Add(info);
@@ -241,7 +250,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         Shape = Convert.ToInt32(dr["Shape"]),
                         D = Math.Round(Convert.ToDouble(dr["D"]), 3),
                         L = Math.Round(Convert.ToDouble(dr["L"]), 3),
-                        RG = Convert.ToInt32(dr["RG"])
+                        RG = Convert.ToInt32(dr["RG"]),
+                        GNLBM = ds.Tables[0].Rows[0]["GNLBM"].ToString()
                     };
 
                     infoList.Add(info);
@@ -276,6 +286,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_D",this.D),
                 new OracleParameter("p_L",this.L),
                 new OracleParameter("p_RG",this.RG),
+                new OracleParameter("p_GNLBM",this.GNLBM),
                 p
             });
             //清除缓存
@@ -304,6 +315,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_D",this.D),
                 new OracleParameter("p_L",this.L),
                 new OracleParameter("p_RG",this.RG),
+                new OracleParameter("p_GNLBM",this.GNLBM),
                 p
             });
             //清除缓存

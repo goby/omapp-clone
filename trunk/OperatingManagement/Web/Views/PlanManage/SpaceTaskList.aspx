@@ -5,10 +5,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
-    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="ykinfoman" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuYKInfo" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
     计划管理 &gt; 引导数据-空间机动任务
@@ -18,24 +18,24 @@
         <div class="index_content_search">
             <table cellspacing="0" cellpadding="0" class="searchTable">
                 <tr>
-                    <th>
+                    <th style="width:10%;text-align:left;">
                         起始时间：
                     </th>
-                    <td>
+                    <td style="width:20%;">
                         <asp:TextBox ID="txtStartDate" ClientIDMode="Static" CssClass="text" runat="server"
                             onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                     </td>
-                    <th>
+                    <th style="width:10%;text-align:left;">
                         结束时间：
                     </th>
-                    <td>
+                    <td style="width:20%;">
                         <asp:TextBox ID="txtEndDate" ClientIDMode="Static" CssClass="text" runat="server"
                             onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
                     </td>
-                    <th>
+                    <th style="width:5%;">
                         任务：
                     </th>
-                    <td>
+                    <td style="width:10%;">
                         <uc1:ucOutTask ID="ucOutTask1" runat="server" AllowBlankItem="False" />
                     </td>
                     <td>
@@ -66,11 +66,26 @@
             <asp:Panel ID="pnlAll1" runat="server">
                 <table class="listTitle">
                     <tr>
+                        <th style="width:10%;text-align:left;" >
+                            发送起始时间：
+                        </th>
+                        <td style="width:20%;">
+                            <asp:TextBox ID="txtSStartDate" ClientIDMode="Static" CssClass="text" runat="server"
+                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
+                        </td>
+                        <th style="width:10%;text-align:left;">
+                            发送结束时间：
+                        </th>
+                        <td style="width:20%;">
+                            <asp:TextBox ID="txtSEndDate" ClientIDMode="Static" CssClass="text" runat="server"
+                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></asp:TextBox>
+                        </td>
                         <td class="listTitle-c1">
-                            <button class="button" onclick="return selectAll();">
-                                全选</button>&nbsp;&nbsp;
                             <button class="button" onclick="return sendYDSJ1();">
                                 发送</button>
+                        &nbsp;<asp:CompareValidator ID="cv2" runat="server" ControlToCompare="txtSStartDate"
+                            ControlToValidate="txtSEndDate" Display="Dynamic" ErrorMessage="结束时间应大于起始时间" ForeColor="Red"
+                            Operator="GreaterThan"></asp:CompareValidator>
                         </td>
                         <td class="listTitle-c2">
                             <div class="load" id="submitIndicator" style="display: none">
@@ -86,23 +101,23 @@
                             <th style="width: 20px;">
                                 <input type="checkbox" onclick="checkAll(this)" />
                             </th>
-                            <th style="width: 150px;">
-                                任务代号
+                            <th style="width: 80px;">
+                                任务名称
                             </th>
                             <th style="width: 150px;">
-                                卫星名称
+                                数据开始时间
                             </th>
                             <th style="width: 150px;">
-                                历元日期
+                                数据结束时间
                             </th>
                             <th style="width: 150px;">
-                                历元时刻
+                                文件名称
+                            </th>
+                            <th style="width: 200px;">
+                                文件路径
                             </th>
                             <th>
                                 创建时间
-                            </th>
-                            <th style="width: 110px;">
-                                明细
                             </th>
                         </tr>
                         <tbody id="tbYDSJs">
@@ -116,20 +131,19 @@
                             <%# Eval("TaskName")%>
                         </td>
                         <td>
-                            <%# Eval("SatName")%>
+                            <%# Eval("DataBTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
                         </td>
                         <td>
-                            <%# Eval("D")%>
+                            <%# Eval("DataETime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
                         </td>
                         <td>
-                            <%# Eval("T")%>
+                            <%# Eval("FileName")%>
+                        </td>
+                        <td>
+                            <%# Eval("FilePath")%>
                         </td>
                         <td>
                             <%# Eval("CTime","{0:"+this.SiteSetting.DateTimeFormat+"}") %>
-                        </td>
-                        <td>
-                            <button class="button" onclick="return showDetail('<%# Eval("Id") %>')">
-                                明细</button>
                         </td>
                     </tr>
                 </ItemTemplate>
@@ -141,10 +155,6 @@
                 <table class="listTitle">
                     <tr>
                         <td class="listTitle-c1">
-                            <button class="button" onclick="return selectAll();">
-                                全选</button>&nbsp;&nbsp;
-                            <button class="button" onclick="return sendYDSJ1();">
-                                发送</button>
                         </td>
                         <td class="listTitle-c2">
                             <om:CollectionPager ID="cpPager" runat="server">

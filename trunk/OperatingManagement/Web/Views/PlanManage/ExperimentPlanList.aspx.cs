@@ -24,10 +24,10 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
-                txtStartDate.Attributes.Add("readonly", "true");
-                txtEndDate.Attributes.Add("readonly", "true");
-
-                pnlAll1.Visible = false;
+                txtCStartDate.Attributes.Add("readonly", "true");
+                txtCEndDate.Attributes.Add("readonly", "true");
+                txtJHStartDate.Attributes.Add("readonly", "true");
+                txtJHEndDate.Attributes.Add("readonly", "true");
                 pnlAll2.Visible = false;
 
                 lblMessage.Text = ""; //文件发送消息清空
@@ -43,9 +43,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         /// </summary>
         private void DefaultSearch()
         {
-            txtStartDate.Text = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
-            txtEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
-            //btnSearch_Click(new Object(), new EventArgs());
+            txtCStartDate.Text = DateTime.Now.AddDays(-6).ToString("yyyy-MM-dd");
+            txtCEndDate.Text = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
@@ -65,14 +64,24 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         private void SaveCondition()
         {
-            if (string.IsNullOrEmpty(txtStartDate.Text))
-            { ViewState["_StartDate"] = null; }
+            if (string.IsNullOrEmpty(txtCStartDate.Text))
+                ViewState["_StartDate"] = null;
             else
-            { ViewState["_StartDate"] = txtStartDate.Text.Trim(); }
-            if (string.IsNullOrEmpty(txtEndDate.Text))
-            { ViewState["_EndDate"] = null; }
+                ViewState["_StartDate"] = txtCStartDate.Text.Trim();
+            if (string.IsNullOrEmpty(txtCEndDate.Text))
+                ViewState["_EndDate"] = null;
             else
-            { ViewState["_EndDate"] = Convert.ToDateTime(txtEndDate.Text.Trim()).AddDays(1).AddMilliseconds(-1); }
+                ViewState["_EndDate"] = Convert.ToDateTime(txtCEndDate.Text.Trim()).AddDays(1).AddMilliseconds(-1);
+
+
+            if (string.IsNullOrEmpty(txtJHStartDate.Text))
+                ViewState["_JHStartDate"] = null;
+            else
+                ViewState["_JHStartDate"] = txtJHStartDate.Text.Trim();
+            if (string.IsNullOrEmpty(txtJHEndDate.Text))
+                ViewState["_JHEndDate"] = null;
+            else
+                ViewState["_JHEndDate"] = Convert.ToDateTime(txtJHEndDate.Text.Trim()).AddDays(1).AddMilliseconds(-1);
         }
 
         //绑定列表
@@ -80,32 +89,35 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             DateTime startDate = new DateTime();
             DateTime endDate = new DateTime();
+            DateTime jhStartDate = new DateTime();
+            DateTime jhEndDate = new DateTime();
             if (fromSearch)
             {
-                if (!string.IsNullOrEmpty(txtStartDate.Text))
-                {
-                    startDate = Convert.ToDateTime(txtStartDate.Text);
-                }
+                if (!string.IsNullOrEmpty(txtCStartDate.Text))
+                    startDate = Convert.ToDateTime(txtCStartDate.Text);
+                if (!string.IsNullOrEmpty(txtCEndDate.Text))
+                    endDate = Convert.ToDateTime(txtCEndDate.Text).AddDays(1).AddMilliseconds(-1); //查询时可查当天
 
-                if (!string.IsNullOrEmpty(txtEndDate.Text))
-                {
-                    endDate = Convert.ToDateTime(txtEndDate.Text).AddDays(1).AddMilliseconds(-1);   //查询时可查当天
-                }
+                if (!string.IsNullOrEmpty(txtJHStartDate.Text))
+                    jhStartDate = Convert.ToDateTime(txtJHStartDate.Text);
+                if (!string.IsNullOrEmpty(txtJHEndDate.Text))
+                    jhEndDate = Convert.ToDateTime(txtJHEndDate.Text).AddDays(1).AddMilliseconds(-1);
             }
             else
             {
                 if (ViewState["_StartDate"] != null)
-                {
                     startDate = Convert.ToDateTime(ViewState["_StartDate"].ToString());
-                }
                 if (ViewState["_EndDate"] != null)
-                {
                     endDate = Convert.ToDateTime(ViewState["_EndDate"].ToString());
-                }
+
+                if (ViewState["_JHStartDate"] != null)
+                    jhStartDate = Convert.ToDateTime(ViewState["_JHStartDate"].ToString());
+                if (ViewState["_JHEndDate"] != null)
+                    jhEndDate = Convert.ToDateTime(ViewState["_JHEndDate"].ToString());
             }
             
 
-            List<JH> listDatas= (new JH()).GetSYJHList(startDate, endDate);
+            List<JH> listDatas= (new JH()).GetSYJHList(startDate, endDate,jhStartDate, jhEndDate);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
             if (listDatas.Count > this.SiteSetting.PageSize)
@@ -115,15 +127,9 @@ namespace OperatingManagement.Web.Views.PlanManage
             rpDatas.DataBind();
 
             if (listDatas.Count > 0)
-            {
-                pnlAll1.Visible = true;
                 pnlAll2.Visible = true;
-            }
             else
-            {
-                pnlAll1.Visible = false;
                 pnlAll2.Visible = false;
-            }
         }
 
         protected void cpPager_PostBackPage(object sender, EventArgs e)
@@ -199,18 +205,12 @@ namespace OperatingManagement.Web.Views.PlanManage
                                     boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), GetFilePathByFilePath(filePaths[i]), protocl, senderid, reveiverid, infotypeid, true);
                                     lblMessage.Visible = true;
                                     if (boolResult)
-                                    {
                                         lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
-                                    }
                                     else
-                                    {
                                         lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
-                                    }
                                 }
-
                             }//endfor
                         }
-
                     }//li
                 }
             }
@@ -223,8 +223,6 @@ namespace OperatingManagement.Web.Views.PlanManage
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-            //pnlDestination.Visible = false;
-            //pnlData.Visible = true;
         }
 
         protected void btnHidden_Click(object sender, EventArgs e)
@@ -244,11 +242,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                 btnSubmit.Visible = true;
             }
             else
-            {
                 btnSubmit.Visible = false;
-            }
             ClientScript.RegisterStartupScript(this.GetType(), "pop", "<script type='text/javascript'>showPopSendForm();</script>");
-
         }
 
         /// <summary>
@@ -270,7 +265,5 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             return filepath.Substring(0, filepath.LastIndexOf("\\") + 1);
         }
-
-
     }
 }

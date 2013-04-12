@@ -44,7 +44,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     btnWord.Visible = true;
                     BindJhTable(sID);
                     BindXML();
-                    hfURL.Value = "?type=DJZYJH&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"];
+                    hfURL.Value = "?type=DJZYJH&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"]
+                         + "&jhStartDate=" + Request.QueryString["jhStartDate"] + "&jhEndDate=" + Request.QueryString["jhEndDate"];
                     if ("detail" == Request.QueryString["op"])
                     {
                         ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");

@@ -37,6 +37,18 @@
         </tr>
         <tr>
             <th>
+                国内六位编码(<span class="red">*</span>)
+            </th>
+            <td>
+                <asp:TextBox ID="txtGNLBM" runat="server" Width="300px" CssClass="text" MaxLength="10"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfv10" runat="server" Display="Dynamic" ForeColor="Red"
+                    ControlToValidate="txtGNLBM" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <asp:RegularExpressionValidator ID="rv10" runat="server" Display="Dynamic" ForeColor="Red"
+                    ControlToValidate="txtGNLBM" ErrorMessage="（请输入6位数字）" ValidationExpression="\d{1,6}"></asp:RegularExpressionValidator>
+            </td>
+        </tr>
+        <tr>
+            <th>
                 卫星标识(<span class="red">*</span>)
             </th>
             <td>

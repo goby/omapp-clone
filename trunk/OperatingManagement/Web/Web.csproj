@@ -88,6 +88,7 @@
     </Content>
     <Content Include="App_Data\menuRes.xml" />
     <Content Include="App_Data\menuUserNRole.xml" />
+    <Content Include="App_Data\menuYKInfo.xml" />
     <Content Include="App_Data\navigator.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -194,7 +195,6 @@
     <Content Include="Scripts\Pages\PlanManage\HJXQEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\MBXQEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\PlanAdd.aspx.js" />
-    <Content Include="Scripts\Pages\PlanManage\PlanEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\TYSJEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\XXXQEdit.aspx.js" />
     <Content Include="Scripts\Pages\PlanManage\PlanTempList.aspx.js" />
@@ -220,6 +220,9 @@
     <Content Include="ucs\ucTimer.ascx" />
     <Content Include="ucs\ucXYXSInfo.ascx" />
     <Content Include="Views\Account\MyProfile.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\DMZAdd.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\DMZEdit.aspx" />
+    <Content Include="Views\BusinessManage\BDManage\DMZManage.aspx" />
     <Content Include="Views\BusinessManage\BDManage\SatAdd.aspx" />
     <Content Include="Views\BusinessManage\BDManage\SatEdit.aspx" />
     <Content Include="Views\BusinessManage\BDManage\SatManage.aspx" />
@@ -239,6 +242,9 @@
     <Content Include="Views\BusinessManage\CenterResourceEdit.aspx" />
     <Content Include="Views\BusinessManage\CommunicationResourceAdd.aspx" />
     <Content Include="Views\BusinessManage\CommunicationResourceEdit.aspx" />
+    <Content Include="Views\BusinessManage\ComResourceMan.aspx" />
+    <Content Include="Views\BusinessManage\CResourceMan.aspx" />
+    <Content Include="Views\BusinessManage\DMZResourceMan.aspx" />
     <Content Include="Views\BusinessManage\GDJHFX.aspx" />
     <Content Include="Views\BusinessManage\GDJSCurves.aspx" />
     <Content Include="Views\BusinessManage\GDJSDataType.xml" />
@@ -271,6 +277,7 @@
     <Content Include="Views\Exp\PNF404.aspx" />
     <Content Include="Views\PlanManage\DJZYJHDetail.aspx" />
     <Content Include="Views\PlanManage\DJZYSQEdit.aspx" />
+    <Content Include="Views\PlanManage\PlanList.aspx" />
     <Content Include="Views\PlanManage\ZZGZJHEdit.aspx" />
     <Content Include="Views\PlanManage\ExperimentPlanDetail.aspx" />
     <Content Include="Views\PlanManage\ExperimentPlanList.aspx" />
@@ -280,9 +287,6 @@
     <Content Include="Views\PlanManage\NotSpaceTaskList.aspx" />
     <Content Include="Views\PlanManage\OribitalQuantityDetail.aspx" />
     <Content Include="Views\PlanManage\OribitalQuantityList.aspx" />
-    <Content Include="Views\PlanManage\PlanDetail.aspx" />
-    <Content Include="Views\PlanManage\PlanEdit.aspx" />
-    <Content Include="Views\PlanManage\PlanList.aspx" />
     <Content Include="Views\PlanManage\SpaceTaskList.aspx" />
     <Content Include="Views\PlanManage\TYSJEdit.aspx" />
     <Content Include="Views\PlanManage\XXXQEdit.aspx" />
@@ -408,6 +412,27 @@
     </Compile>
     <Compile Include="Views\Account\MyProfile.aspx.designer.cs">
       <DependentUpon>MyProfile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\DMZAdd.aspx.cs">
+      <DependentUpon>DMZAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\DMZAdd.aspx.designer.cs">
+      <DependentUpon>DMZAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\DMZEdit.aspx.cs">
+      <DependentUpon>DMZEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\DMZEdit.aspx.designer.cs">
+      <DependentUpon>DMZEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\DMZManage.aspx.cs">
+      <DependentUpon>DMZManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\BDManage\DMZManage.aspx.designer.cs">
+      <DependentUpon>DMZManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\BDManage\SatAdd.aspx.cs">
       <DependentUpon>SatAdd.aspx</DependentUpon>
@@ -541,6 +566,27 @@
     </Compile>
     <Compile Include="Views\BusinessManage\CommunicationResourceEdit.aspx.designer.cs">
       <DependentUpon>CommunicationResourceEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ComResourceMan.aspx.cs">
+      <DependentUpon>ComResourceMan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\ComResourceMan.aspx.designer.cs">
+      <DependentUpon>ComResourceMan.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\CResourceMan.aspx.cs">
+      <DependentUpon>CResourceMan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\CResourceMan.aspx.designer.cs">
+      <DependentUpon>CResourceMan.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusinessManage\DMZResourceMan.aspx.cs">
+      <DependentUpon>DMZResourceMan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\BusinessManage\DMZResourceMan.aspx.designer.cs">
+      <DependentUpon>DMZResourceMan.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\BusinessManage\GDJHFX.aspx.cs">
       <DependentUpon>GDJHFX.aspx</DependentUpon>
@@ -759,6 +805,13 @@
     <Compile Include="Views\PlanManage\DJZYSQEdit.aspx.designer.cs">
       <DependentUpon>DJZYSQEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\PlanManage\PlanList.aspx.cs">
+      <DependentUpon>PlanList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\PlanManage\PlanList.aspx.designer.cs">
+      <DependentUpon>PlanList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\PlanManage\ZZGZJHEdit.aspx.cs">
       <DependentUpon>ZZGZJHEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -821,27 +874,6 @@
     </Compile>
     <Compile Include="Views\PlanManage\OribitalQuantityList.aspx.designer.cs">
       <DependentUpon>OribitalQuantityList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PlanManage\PlanDetail.aspx.cs">
-      <DependentUpon>PlanDetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\PlanManage\PlanDetail.aspx.designer.cs">
-      <DependentUpon>PlanDetail.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PlanManage\PlanEdit.aspx.cs">
-      <DependentUpon>PlanEdit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\PlanManage\PlanEdit.aspx.designer.cs">
-      <DependentUpon>PlanEdit.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PlanManage\PlanList.aspx.cs">
-      <DependentUpon>PlanList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\PlanManage\PlanList.aspx.designer.cs">
-      <DependentUpon>PlanList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\PlanManage\SpaceTaskList.aspx.cs">
       <DependentUpon>SpaceTaskList.aspx</DependentUpon>

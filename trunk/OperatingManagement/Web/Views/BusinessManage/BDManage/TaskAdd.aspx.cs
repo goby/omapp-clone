@@ -41,10 +41,10 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                 ObjectFlag = txtObjectFlag.Text.Trim(),
                 SatID = ucCBLSats.SelectedValues.ToString(),
                 SCID = txtSCID.Text.Trim(),
-                IsCurTask = rblCurTask.SelectedValue.ToString(),
-                BeginTime = DateTime.ParseExact(txtFrom.Text.Trim(), "yyyy-MM-dd", provider),
-                EndTime = DateTime.ParseExact(txtTo.Text.Trim(), "yyyy-MM-dd", provider)
+                IsEffective = rblIsEffective.SelectedValue.ToString(),
+                EmitTime = DateTime.ParseExact(txtEmitTime.Text.Trim(), "yyyyMMddHHmmss", provider)
             };
+            t.EmitTime = t.EmitTime.AddMilliseconds(int.Parse(txtMiniSeconds.Text));
             var result = Framework.FieldVerifyResult.Error;
             try
             {

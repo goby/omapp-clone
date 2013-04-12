@@ -140,7 +140,7 @@ namespace ServicesKernel.File
 
             StreamWriter oSW = new StreamWriter(oFileInfo.FullName);
             oSW.WriteLine("<说明区>");
-            oSW.WriteLine("[生成时间]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
+            oSW.WriteLine("[生成时间T]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
             oSW.WriteLine("[信源S]：" + oFileInfo.From);
             oSW.WriteLine("[信宿D]：" + oFileInfo.To);
             oSW.WriteLine("[任务代码M]：" + oFileInfo.TaskID);
@@ -151,10 +151,50 @@ namespace ServicesKernel.File
             {
                 oSW.WriteLine("[格式标识" + (i+1).ToString() + "]：" + fields[i]);
             }
-            oSW.WriteLine("[数据区]：");
+            oSW.WriteLine("<数据区>");
             for (int j = 0; j < datas.Length; j++)
             {
                 oSW.WriteLine(datas[j]);
+            }
+            oSW.WriteLine("<辅助区>");
+            oSW.WriteLine("[备注]：");
+            oSW.WriteLine("[结束]：END");
+
+            oSW.Close();
+            return FileCreateResult.CreateSuccess;
+        }
+        /// <summary>
+        /// 创建文件格式三的文件
+        /// </summary>
+        /// <param name="oFileInfo"></param>
+        /// <param name="fields"></param>
+        /// <param name="datas">数组中的每个表示每行数据</param>
+        /// <returns></returns>
+        public FileCreateResult CreateFormat3FileForYDSJ(FileBaseInfo oFileInfo, string[] fields, string[] datas, string satName)
+        {
+            if (oFileInfo == null || oFileInfo.FullName == string.Empty)
+                return FileCreateResult.LackFileInfo;
+
+            if (System.IO.File.Exists(oFileInfo.FullName))
+                DeleteFile(oFileInfo.FullName);
+
+            StreamWriter oSW = new StreamWriter(oFileInfo.FullName);
+            oSW.WriteLine("<说明区>");
+            oSW.WriteLine("[生成时间T]：" + DateTime.Now.ToString("yyyy-MM-dd-HH:mm"));
+            oSW.WriteLine("[信源S]：" + oFileInfo.From);
+            oSW.WriteLine("[信宿D]：" + oFileInfo.To);
+            oSW.WriteLine("[任务代码M]：" + oFileInfo.TaskID);
+            oSW.WriteLine("[信息类别B]：" + oFileInfo.InfoTypeName);
+            oSW.WriteLine("[数据区行数L]：" + oFileInfo.LineCount);
+            oSW.WriteLine("<符号区>");
+            for (int i = 0; i < fields.Length; i++)
+            {
+                oSW.WriteLine("[格式标识" + (i + 1).ToString() + "]：" + fields[i]);
+            }
+            oSW.WriteLine("<数据区>");
+            for (int j = 0; j < datas.Length; j++)
+            {
+                oSW.WriteLine(satName + "  " + datas[j]);
             }
             oSW.WriteLine("<辅助区>");
             oSW.WriteLine("[备注]：");
@@ -181,7 +221,7 @@ namespace ServicesKernel.File
                 if (nextline.Trim() == "<说明区>")
                 {
                     nextline = sr.ReadLine();
-                    ctime = nextline.Replace("[生成时间]：", "").Trim();
+                    ctime = nextline.Replace("[生成时间T]：", "").Trim();
                     nextline = sr.ReadLine();
                     source = nextline.Replace("[信源S]：", "").Trim();
                     nextline = sr.ReadLine();
@@ -197,6 +237,128 @@ namespace ServicesKernel.File
             }
 
             sr.Close();
+        }
+
+        /// <summary>
+        /// 从数据文件中获取说明区基本信息（文件格式三）
+        /// </summary>
+        /// <param name="ctime"></param>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <param name="taskid"></param>
+        /// <param name="infotype"></param>
+        /// <param name="linecount"></param>
+        /// <param name="datas"></param>
+        public void GetDataFileBaseInfo(out DateTime ctime, out string source, out string destination, out string taskid,
+            out string infotype, out int linecount, out string[] datas, out string msg)
+        {
+            msg = string.Empty;
+            ctime = DateTime.MinValue; source = ""; destination = ""; taskid = ""; infotype = ""; linecount = 0; datas = null;
+            if (String.IsNullOrEmpty(_filepath))
+            { return; }
+
+            sr = new StreamReader(FilePath, Encoding.Default);
+            string nextline = null;
+
+            sr.BaseStream.Seek(0, SeekOrigin.Begin);
+            nextline = sr.ReadLine();
+            while (nextline != null)
+            {
+                if (nextline.Trim() == "<说明区>")
+                {
+                    nextline = sr.ReadLine();
+                    try
+                    {
+                        ctime = DateTime.ParseExact(nextline.Replace("[生成时间T]：", "").Trim()
+                            , "yyyy-MM-dd-HH:mm", System.Globalization.CultureInfo.InvariantCulture);
+                    }
+                    catch (Exception ex)
+                    {
+                        msg = string.Format("解析的日期内容出错{0}", nextline.Replace("[生成时间T]：", "").Trim());
+                        GDFX.Logger.GetLogger().Error(msg, ex);
+                    }
+                    nextline = sr.ReadLine();
+                    try
+                    {
+                        source = nextline.Replace("[信源S]：", "").Trim();
+                        source = source.Substring(source.IndexOf("(") - 4, 4);
+                    }
+                    catch (Exception ex)
+                    {
+                        GDFX.Logger.GetLogger().Error(string.Format("解析信源异常，行记录{0}", nextline), ex);
+                    }
+                    nextline = sr.ReadLine();
+                    try
+                    {
+                        destination = nextline.Replace("[信宿D]：", "").Trim();
+                        destination = destination.Substring(destination.IndexOf("(") - 4, 4);
+                    }
+                    catch (Exception ex)
+                    {
+                        GDFX.Logger.GetLogger().Error(string.Format("解析信宿异常，行记录{0}", nextline), ex);
+                    }
+                    nextline = sr.ReadLine();
+                    try
+                    {
+                        taskid = nextline.Replace("[任务代码M]：", "").Trim();
+                        taskid = taskid.Substring(taskid.IndexOf("(") + 1, 4);
+                    }
+                    catch (Exception ex)
+                    {
+                        GDFX.Logger.GetLogger().Error(string.Format("解析任务代码异常，行记录{0}", nextline), ex);
+                    }
+                    nextline = sr.ReadLine();
+                    try
+                    {
+                        infotype = nextline.Replace("[信息类别B]：", "").Trim();
+                        infotype = infotype.Substring(0, infotype.IndexOf("("));
+                    }
+                    catch (Exception ex)
+                    {
+                        GDFX.Logger.GetLogger().Error(string.Format("解析信息类别异常，行记录{0}", nextline), ex);
+                    }
+                    nextline = sr.ReadLine();
+                    try
+                    {
+                        linecount = Convert.ToInt32(nextline.Replace("[数据区行数L]：", "").Trim());
+                        GetPartion(sr, "<数据区>");
+                    }
+                    catch (Exception ex)
+                    {
+                        GDFX.Logger.GetLogger().Error(string.Format("解析数据区行数异常，行记录{0}", nextline), ex);
+                    }
+                    datas = new string[linecount];
+                    for (int i = 0; i < linecount; i++)
+                    {
+                        nextline = sr.ReadLine();
+                        if (!string.IsNullOrEmpty(nextline))
+                            datas[i] = nextline.Trim().Replace("  ", " ");
+                        else
+                            break;
+                    }
+                    break;
+                }
+                else
+                    break;
+            }
+
+            sr.Close();
+        }
+
+
+        /// <summary>
+        /// 获取文件格式三中区域数据
+        /// </summary>
+        /// <param name="sr"></param>
+        /// <param name="partName"></param>
+        private void GetPartion(StreamReader sr, string partName)
+        {
+            string nextLine = "";
+            nextLine = sr.ReadLine();
+            if (nextLine.Trim() == partName)
+                return;
+            else
+                GetPartion(sr, partName);
         }
 
         /// <summary>
@@ -417,7 +579,7 @@ namespace ServicesKernel.File
             {
                 case 1:
                     strLine = reader.ReadLine();
-                    strLineText = strLine.Replace("[生成时间]", "");
+                    strLineText = strLine.Replace("[生成时间T]", "");
                     if (strLine.Length == strLineText.Length)
                     { result = false; }
                     strLine = reader.ReadLine();

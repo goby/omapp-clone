@@ -82,5 +82,65 @@ namespace OperatingManagement.Web.Views.PlanManage
             base.OnPageLoaded();
         }
 
+        protected void btnCreateFile_Click(object sender, EventArgs e)
+        {
+            string SendingFilePaths = string.Empty;
+            PlanFileCreator creater = new PlanFileCreator();
+            HideMsg();
+            divFiles.Visible = false;
+            try
+            {
+                SendingFilePaths = creater.CreateSendingSYJHFile(HfID.Value
+                    , System.Configuration.ConfigurationManager.AppSettings["ZXBM"]
+                    , "OP");
+                lblFilePath.Text = SendingFilePaths;
+                lbtFilePath_Click(null, null);
+                //ShowMsg("文件生成成功。");
+                //divFiles.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                throw new AspNetException("试验计划-生成文件出现异常，异常原因", ex);
+            }
+        }
+
+        protected void lbtFilePath_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string strFilePath = lblFilePath.Text.Trim();
+                if (string.IsNullOrEmpty(strFilePath) || !File.Exists(strFilePath))
+                {
+                    ShowMsg("文件不存在。");
+                    return;
+                }
+
+                Response.Clear();
+                Response.Buffer = false;
+                Response.ContentType = "application/octet-stream";
+                Response.AppendHeader("content-disposition", "attachment;filename=" + Path.GetFileName(strFilePath) + ";");
+                Response.Write(File.ReadAllText(strFilePath));
+                Response.Flush();
+                Response.End();
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("试验计划-生成文件出现异常，异常原因", ex));
+            }
+        }
+
+        private void HideMsg()
+        {
+            trMsg.Visible = false;
+            lblMessage.Text = "";
+        }
+
+        private void ShowMsg(string msg)
+        {
+            trMsg.Visible = true;
+            lblMessage.Text = msg;
+        }
     }
 }

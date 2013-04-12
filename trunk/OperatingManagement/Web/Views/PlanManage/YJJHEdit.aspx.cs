@@ -8,11 +8,13 @@ using System.Globalization;
 
 using OperatingManagement.WebKernel.Basic;
 using OperatingManagement.WebKernel.Route;
+using OperatingManagement.Framework;
 using OperatingManagement.Framework.Core;
+using OperatingManagement.Framework.Components;
+using OperatingManagement.Framework.Storage;
 using OperatingManagement.DataAccessLayer;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.DataAccessLayer.BusinessManage;
-using OperatingManagement.Framework;
 using System.Web.Security;
 using System.Xml;
 using ServicesKernel.File;
@@ -27,9 +29,14 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
-                btnFormal.Visible = false; 
+                btnFormal.Visible = false;
+                if (Request.QueryString["view"] == "1")
+                    this.IsViewOrEdit = true; 
                 //txtStartTime.Attributes.Add("readonly", "true");
                 //txtEndTime.Attributes.Add("readonly", "true");
+                BindSysDdlSource();
+                DropDownList ddlTask = ucOutTask1.FindControl("TaskList") as DropDownList;
+                ddlTask.Attributes.Add("onchange", "SetSysName(this,'" + ddlSysName.ClientID + "','" + txtSysName.ClientID + "')");
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
                     string sID = Request.QueryString["id"];
@@ -39,6 +46,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                         isTempJH = true;
                         ViewState["isTempJH"] = true;
                         btnFormal.Visible = true;   //只有临时计划才能转为正式计划
+                        btnSurePlan.Visible = !(btnFormal.Visible);
+                        btnCreateFile.Visible = !(btnFormal.Visible);
                     }
 
                     HfID.Value = sID;   //自增ID
@@ -46,7 +55,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     inital(false);
                     BindJhTable(sID);
                     BindXML();
-                    hfURL.Value = "?type=YJJH&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"];
+                    hfURL.Value = "?type=YJJH&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"]
+                         + "&jhStartDate=" + Request.QueryString["jhStartDate"] + "&jhEndDate=" + Request.QueryString["jhEndDate"];
                     if ("detail" == Request.QueryString["op"])
                     {
                         ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");
@@ -55,10 +65,18 @@ namespace OperatingManagement.Web.Views.PlanManage
                 else
                 {
                     btnReturn.Visible = false;
-                    hfStatus.Value = "new"; //新建
                     btnSaveTo.Visible = false;
+                    btnSurePlan.Visible = false;
+                    btnCreateFile.Visible = false;
+                    hfStatus.Value = "new"; //新建
                     inital(true);
                     //txtJXH.Text = (new Sequence()).GetYJJHSequnce().ToString("0000");   //新建时先给出计划序号
+                }
+
+                if (this.IsViewOrEdit)
+                {
+                    SetControlsEnabled(Page, ControlNameEnum.All);
+                    btnReturn.Visible = true;
                 }
             }
             
@@ -87,6 +105,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 txtJXH.Text = jh[0].PlanID.ToString("0000");
                 ucOutTask1.SelectedValue = new Task().GetOutTaskNo(jh[0].TaskID, jh[0].SatID);
                 hfTaskID.Value = ucOutTask1.SelectedValue;
+                txtSysName.Text = ddlSysName.Items.FindByText(ucOutTask1.SelectedValue).Value;
                 //string[] strTemp = jh[0].FileIndex.Split('_');
                 //if (strTemp.Length >= 2)
                 //{
@@ -152,6 +171,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 obj.XXFL = radBtnXXFL.SelectedValue;
                 obj.JXH = txtJXH.Text;
                 obj.SysName = ddlSysName.SelectedValue;
+                txtSysName.Text = ddlSysName.SelectedValue;
                 obj.Tasks = GetRPContents("保存", rpTasks, -1);
                 obj.TaskID = taskID;
                 obj.SatID = satID;
@@ -208,7 +228,14 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         creater.FilePath = HfFileIndex.Value;
                         creater.CreateYJJHFile(obj, 1);
-                        ShowMsg(true);
+                        DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
+                        {
+                            Id = Convert.ToInt32(HfID.Value),
+                            SENDSTATUS = 0,
+                            USESTATUS = 0
+                        };
+                        var result = jh.UpdateStatus();
+                        ShowMsg(result == FieldVerifyResult.Success);
                     }
                 }
                 //ClientScript.RegisterStartupScript(this.GetType(), "OK", "<script type='text/javascript'>showMsg('计划保存成功');</script>");
@@ -417,12 +444,12 @@ namespace OperatingManagement.Web.Views.PlanManage
             startDate = new DateTime(1900, 1, 1);
             endDate = DateTime.Now.AddDays(1);
 
-            List<JH> listDatas = (new JH()).GetSYJHList(startDate, endDate);
-            cpPager.DataSource = listDatas;
-            cpPager.PageSize = 5;
-            cpPager.BindToControl = rpDatas;
-            rpDatas.DataSource = cpPager.DataSourcePaged;
-            rpDatas.DataBind();
+            //List<JH> listDatas = (new JH()).GetSYJHList(startDate, endDate);
+            //cpPager.DataSource = listDatas;
+            //cpPager.PageSize = 5;
+            //cpPager.BindToControl = rpDatas;
+            //rpDatas.DataSource = cpPager.DataSourcePaged;
+            //rpDatas.DataBind();
         }
 
         /// <summary>
@@ -607,11 +634,16 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         private void ShowMsg(bool sucess)
         {
-            trMessage.Visible = true;
             if (sucess)
-                ltMessage.Text = "计划保存成功";
+                ShowMsg(sucess, "计划保存成功");
             else
-                ltMessage.Text = "计划保存失败";
+                ShowMsg(sucess, "计划保存失败");
+        }
+
+        private void ShowMsg(bool sucess, string msg)
+        {
+            trMessage.Visible = true;
+            ltMessage.Text = msg;
             hfTaskID.Value = ucOutTask1.SelectedValue;
         }
 
@@ -619,6 +651,104 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             trMessage.Visible = false;
             ltMessage.Text = "";
+        }
+
+        /// <summary>
+        /// 确认计划
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSurePlan_Click(object sender, EventArgs e)
+        {
+            if (hfStatus.Value != "new")
+            {
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
+                {
+                    Id = Convert.ToInt32(HfID.Value),
+                    SENDSTATUS = 0,
+                    USESTATUS = 1
+                };
+                var result = jh.UpdateStatus();
+                bool success = result == FieldVerifyResult.Success;
+                ShowMsg(success, (success ? "计划确认成功" : "计划确认失败"));
+            }
+        }
+
+        /// <summary>
+        /// 绑定隐藏下拉框的数据源
+        /// </summary>
+        private void BindSysDdlSource()
+        {
+            List<Task> taskList = new List<Task>();
+            taskList = new Task().SelectAll();
+            List<PlanParameter> targetList = PlanParameters.ReadParameters("YJJHSendTargetMapping");
+            XYXSInfo oInfo = new XYXSInfo();
+            foreach (Task oTask in taskList)
+            {
+                for (int i=0;i<targetList.Count;i++)
+                {
+                    if (oTask.SatID.Substring(0, 3) == targetList[i].Text)
+                    {
+                        oTask.TaskName = oInfo.GetByAddrMark(targetList[i].Value).ADDRName;
+                        break;
+                    }
+                    else
+                        oTask.TaskName = "";
+                }
+            }
+            ddlSysName.DataSource = taskList;
+            ddlSysName.DataTextField = "OutTaskNo";
+            ddlSysName.DataValueField = "TaskName";
+            ddlSysName.DataBind();
+            txtSysName.Text = ddlSysName.Items.FindByText(ucOutTask1.SelectedValue).Value;
+        }
+
+        protected void btnCreateFile_Click(object sender, EventArgs e)
+        {
+            string SendingFilePaths = string.Empty;
+            PlanFileCreator creater = new PlanFileCreator();
+            string targets = string.Empty;
+            HideMsg();
+            divFiles.Visible = false;
+            try
+            {
+                SendingFilePaths = creater.CreateSendingYJJHFile(HfID.Value, out targets, true);
+                lblFilePath.Text = SendingFilePaths;
+                lbtFilePath_Click(null, null);
+                //ShowMsg(true, "文件生成成功。");
+                //divFiles.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                throw new AspNetException("应用研究计划-生成文件出现异常，异常原因", ex);
+            }
+        }
+
+        protected void lbtFilePath_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string strFilePath = lblFilePath.Text.Trim();
+                if (string.IsNullOrEmpty(strFilePath) || !System.IO.File.Exists(strFilePath))
+                {
+                    ShowMsg(true, "文件不存在。");
+                    return;
+                }
+
+                Response.Clear();
+                Response.Buffer = false;
+                Response.ContentType = "application/octet-stream";
+                Response.AppendHeader("content-disposition", "attachment;filename=" + System.IO.Path.GetFileName(strFilePath) + ";");
+                Response.Write(System.IO.File.ReadAllText(strFilePath));
+                Response.Flush();
+                Response.End();
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("应用研究计划-生成文件出现异常，异常原因", ex));
+            }
         }
 
     }

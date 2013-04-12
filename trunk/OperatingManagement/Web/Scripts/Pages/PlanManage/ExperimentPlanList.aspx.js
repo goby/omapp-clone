@@ -4,7 +4,10 @@ $(window).ready(function () {
 });
 
 function clearField() {
-    $('input:text').val('');
+    $('#txtCStartDate').val("");
+    $('#txtCEndDate').val("");
+    $('#txtJHStartDate').val("");
+    $('#txtJHEndDate').val("");
     return false;
 }
 

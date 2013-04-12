@@ -32,7 +32,6 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 txtStartDate.Attributes.Add("readonly", "true");
                 txtEndDate.Attributes.Add("readonly", "true");
-                //btnSend.Attributes.Add("onclick", "javascript:return confirm('确定要发送所选数据吗?');");
                 pnlAll1.Visible = false;
                 pnlAll2.Visible = false;
 
@@ -51,7 +50,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         /// </summary>
         private void DefaultSearch()
         {
-            txtStartDate.Text = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
+            txtStartDate.Text = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
             txtEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
             btnSearch_Click(new Object(), new EventArgs());
         }
@@ -181,47 +180,16 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             string taskID = string.Empty;
             string satID = string.Empty;
-            string outTaskID = string.Empty;
-            int iIdx = 0;
-            string twoSpace = "  ";
+            string outTaskID = ucOutTask1.SelectedValue;
             string[] datas;
             bool blResult;
             HiddenMsg();
-
-            #region 参数转换计算
-            try
+            string msg = GenYDSJData(out datas);
+            if (!msg.Equals(string.Empty))
             {
-                int iTimeZone = 8;
-                int cvtType = 16;//瞬时Kepler根数-J2000坐标系
-                int[] iEmitPath = DataValidator.GetIntPath(@"D:\Deploy\GDFiles\Convert\");//这个参数在计算的时候必须提供，但此时无意义
-                int[] iEmitFile = DataValidator.GetIntPath("Launch.dat");//这个参数在计算的时候必须提供，但此时无意义
-                List<YDSJ> lstYDSJ = (new YDSJ()).SelectByIDS(txtId.Text);
-                double[] dblResult;
-                datas = new string[lstYDSJ.Count()];
-                for (int i =0;i<lstYDSJ.Count();i++)
-                {
-                    iIdx = lstYDSJ[i].Id;
-                    blResult = ParamConvertor.Instance.ParamConvert(true, true, iTimeZone, cvtType
-                        , GetYM(lstYDSJ[i].Times), (lstYDSJ[i].Times.Second + lstYDSJ[i].Times.Millisecond)
-                        , GetData(lstYDSJ[i]), iEmitFile, iEmitPath, out dblResult);
-                    if (!blResult)
-                    {
-                        ShowMsg(string.Format("数据{0}参数转换出现错误", iIdx));
-                        return;
-                    }
-                    datas[i] = lstYDSJ[i].Times.ToString("yyyyMMdd") + twoSpace
-                        + lstYDSJ[i].Times.ToString("HHmmssffff") + twoSpace
-                        + dblResult[0].ToString("f4") + twoSpace + dblResult[1].ToString("f6") + twoSpace
-                        + dblResult[2].ToString("f4") + twoSpace + dblResult[3].ToString("f6") + twoSpace
-                        + dblResult[4].ToString("f6") + twoSpace + dblResult[5].ToString("f6") + twoSpace;
-                }
-                outTaskID = lstYDSJ[0].TaskID;
+                ShowMsg(msg);
+                return;
             }
-            catch (Exception ex)
-            {
-                throw (new AspNetException("发送引导数据-进行参数转换计算出现异常，异常原因", ex));
-            }
-            #endregion
 
             try
             {
@@ -240,6 +208,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 string strResult = string.Empty;
                 string strMsg = string.Empty;
                 new Task().GetTaskNoSatID(outTaskID, out taskID, out satID);
+                datas = datas.Where(t => t != null).ToArray();
                 foreach (ListItem li in ckbDestination.Items)
                 {
                     if (li.Selected)
@@ -280,6 +249,100 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
 
         }
+
+        /// <summary>
+        /// 生成引导数据文件
+        /// 1、从引导数据文件中挑出符合筛选时间条件的数据
+        /// 2、对这些数据进行参数转换
+        /// </summary>
+        private string GenYDSJData(out string[] datas)
+        {
+            datas = null;
+            int iIdx = 0;
+            string twoSpace = "  ";
+            string[] fileDatas;
+            YDSJ oData = new YDSJ();
+            string msg = string.Empty;
+            DateTime from;
+            DateTime to;
+            #region 获取引导数据文件内容
+            try
+            {
+                iIdx ++;
+                from = DateTime.Parse(txtSStartDate.Text);
+                iIdx ++;
+                to = DateTime.Parse(txtSEndDate.Text);
+                oData.Id = Convert.ToInt32(txtId.Text);
+                iIdx ++;
+                oData = oData.SelectById();
+
+                DataFileHandle oHandle = new DataFileHandle(Path.Combine(oData.FilePath, oData.FileName));
+                DateTime ctime;
+                string source = string.Empty;
+                string target = string.Empty;
+                string taskid = string.Empty;
+                string infotype = string.Empty;
+                int lineCount = 0;
+                iIdx ++;
+                oHandle.GetDataFileBaseInfo(out ctime, out source, out target, out taskid
+                    , out infotype, out lineCount, out fileDatas, out msg);
+                if (!msg.Equals(string.Empty))
+                    return msg;
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException(string.Format("发送引导数据-读取引导数据文件Step:{0}出现异常，异常原因", iIdx), ex));
+            }
+            #endregion
+
+            #region 参数转换计算
+            int iTimeZone = 8;
+            int cvtType = 16;//瞬时Kepler根数-J2000坐标系
+            int[] iEmitPath = DataValidator.GetIntPath(@"D:\Deploy\GDFiles\Convert\");//这个参数在计算的时候必须提供，路径必须存在
+            int[] iEmitFile = DataValidator.GetIntPath("Launch.dat");//这个参数在计算的时候必须提供，文件也必须存在
+            double[] dblResult = null;
+            datas = new string[fileDatas.Length];
+            string[] ydsj;
+            bool blResult = false;
+            DateTime times;
+            //判断日期是否符合条件，解析行数据，参数转换
+            for (int m = 0; m < fileDatas.Length; m++)
+            {
+                ydsj = fileDatas[m].Split(new char[] { ' ' });
+                if (ydsj.Length != 9)//数据格式非法
+                {
+                    msg = string.Format("行{0}，引导数据格式非法", m);
+                    Logger.GetLogger().Error(msg);
+                    return msg;
+                }
+                else
+                {
+                    times = GetDTTime(ydsj[1], ydsj[2]);
+                    if (times >= from && times <= to)
+                    {
+                        int[] ym = GetYM(times);
+                        double[] data = GetData(ydsj);
+                        blResult = ParamConvertor.Instance.ParamConvert(true, true, iTimeZone, cvtType
+                            , GetYM(times), (times.Second + times.Millisecond / 1000)
+                            , GetData(ydsj), iEmitFile, iEmitPath, out dblResult);
+                        if (!blResult)
+                        {
+                            msg = string.Format("数据行{0}参数转换出现错误", m);
+                            ShowMsg(msg);
+                            return msg;
+                        }
+                        datas[m] = times.ToString("yyyyMMdd") + twoSpace
+                            + times.ToString("HHmmssffff") + twoSpace
+                            + dblResult[0].ToString("f4") + twoSpace + dblResult[1].ToString("f6") + twoSpace
+                            + dblResult[2].ToString("f4") + twoSpace + dblResult[3].ToString("f6") + twoSpace
+                            + dblResult[4].ToString("f6") + twoSpace + dblResult[5].ToString("f6") + twoSpace;
+                    }
+                }
+            }
+            #endregion
+            return string.Empty;
+        }
+
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)
         {
@@ -337,15 +400,15 @@ namespace OperatingManagement.Web.Views.PlanManage
             return ym;
         }
 
-        private double[] GetData(YDSJ oYdsj)
+        private double[] GetData(string[] ydsj)
         {
             double[] data = new double[6];
-            data[0] = oYdsj.A;
-            data[1] = oYdsj.E;
-            data[2] = oYdsj.I;
-            data[3] = oYdsj.O;
-            data[4] = oYdsj.W;
-            data[5] = oYdsj.M;
+            data[0] = Convert.ToDouble(ydsj[3]);
+            data[1] = Convert.ToDouble(ydsj[4]);
+            data[2] = Convert.ToDouble(ydsj[5]);
+            data[3] = Convert.ToDouble(ydsj[6]);
+            data[4] = Convert.ToDouble(ydsj[7]);
+            data[5] = Convert.ToDouble(ydsj[8]);
             return data;
         }
 
@@ -359,6 +422,14 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             lblMessage.Visible = true;
             lblMessage.Text = msg;
+        }
+
+        private DateTime GetDTTime(string D, string T)
+        {
+            DateTime dt;
+            dt = DateTime.ParseExact(D + " " + T
+                , "yyyyMMdd HHmmssffff", System.Globalization.CultureInfo.InvariantCulture);
+            return dt;
         }
     }
 }

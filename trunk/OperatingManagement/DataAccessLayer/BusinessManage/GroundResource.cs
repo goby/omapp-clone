@@ -34,7 +34,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         {
             _dataBase = OracleDatabase.FromConfiguringNode("ApplicationServices");
             Id = Convert.ToInt32(dr["GRID"]);
-            RID = Convert.ToInt32(dr["RID"]);
+            DMZCode = dr["DMZCode"].ToString();
             EquipmentName = dr["EquipmentName"].ToString();
             EquipmentCode = dr["EquipmentCode"].ToString();
             OpticalEquipment = Convert.ToInt32(dr["OpticalEquipment"]);
@@ -46,17 +46,18 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]);
             UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"]);
 
-            AddrName = dr["AddrName"].ToString();
-            AddrMark = dr["AddrMark"] == DBNull.Value ? string.Empty : dr["AddrMark"].ToString();
-            Own = dr["Own"] == DBNull.Value ? string.Empty : dr["Own"].ToString();
+            DMZName = dr["DMZName"].ToString();
+            DWCode = dr["DWCode"] == DBNull.Value ? string.Empty : dr["DWCode"].ToString();
+            XYXSID = dr["XYXSID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["XYXSID"].ToString());
+            //Own = dr["Own"] == DBNull.Value ? string.Empty : dr["Own"].ToString();
             Coordinate = dr["Coordinate"] == DBNull.Value ? string.Empty : dr["Coordinate"].ToString();
         }
         #region Properties
         private OracleDatabase _dataBase = null;
         /// <summary>
-        /// 地面站序号
+        /// 地面站编码
         /// </summary>
-        public int RID { get; set; }
+        public string DMZCode { get; set; }
         /// <summary>
         /// 设备名称
         /// </summary>
@@ -93,11 +94,15 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// <summary>
         /// 地面站名称
         /// </summary>
-        public string AddrName { get; set; }
+        public string DMZName { get; set; }
         /// <summary>
-        /// 地面站编号
+        /// 信源信宿编码
         /// </summary>
-        public string AddrMark { get; set; }
+        public int XYXSID { get; set; }
+        /// <summary>
+        /// 地面站单位编号
+        /// </summary>
+        public string DWCode { get; set; }
         /// <summary>
         /// 管理单位
         /// </summary>
@@ -179,7 +184,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             OracleParameter o_Cursor = PrepareRefCursor();
             DataSet ds = _dataBase.SpExecuteDataSet("UP_GroundRes_SearchByCode"
                 , new OracleParameter[] { 
-                    new OracleParameter("p_DMZIncode", "")
+                    new OracleParameter("p_DMZCode", "")
                     , new OracleParameter("p_EqCode", this.EquipmentCode)
                     , o_Cursor });
 
@@ -196,12 +201,12 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         /// <param name="dmzIncode"></param>
         /// <returns></returns>
-        public List<GroundResource> SelectByDMZIncode(string dmzIncode)
+        public List<GroundResource> SelectByDMZCode()
         {
             OracleParameter o_Cursor = PrepareRefCursor();
             DataSet ds = _dataBase.SpExecuteDataSet("UP_GroundRes_SearchByCode"
                 , new OracleParameter[] { 
-                    new OracleParameter("p_DMZIncode", dmzIncode)
+                    new OracleParameter("p_DMZCode", DMZCode)
                     , new OracleParameter("p_EqCode", "")
                     , o_Cursor });
 
@@ -216,6 +221,31 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 }
             }
             return infoList;
+        }
+
+        /// <summary>
+        /// 获得指定IDs的信源信宿ID
+        /// </summary>
+        /// <returns>设备编号与信源信宿ID映射关系</returns>
+        public Dictionary<string,List<string>> SelectXyxsIDsInCodes(string codes)
+        {
+            OracleParameter o_Cursor = PrepareRefCursor();
+            DataSet ds = _dataBase.SpExecuteDataSet("up_GroundRes_SelectXXInIDS"
+                , new OracleParameter[] { 
+                    new OracleParameter("p_codes", codes)
+                    , o_Cursor });
+
+            Dictionary<string, List<string>> dicResult = new Dictionary<string, List<string>>();
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if (!dicResult.ContainsKey(dr["XyxsID"].ToString()))
+                        dicResult.Add(dr["XyxsID"].ToString(), new List<string>());
+                    dicResult[dr["XyxsID"].ToString()].Add(dr["EquipmentCode"].ToString());
+                }
+            }
+            return dicResult;
         }
 
         /// <summary>
@@ -303,7 +333,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             };
 
             _dataBase.SpExecuteNonQuery("UP_GroundRes_Insert", new OracleParameter[]{
-                                        new OracleParameter("p_RID",RID),
+                                        new OracleParameter("p_DMZCode", DMZCode),
                                         new OracleParameter("p_EquipmentName",EquipmentName),
                                         new OracleParameter("p_EquipmentCode",EquipmentCode),
                                         new OracleParameter("p_OpticalEquipment",OpticalEquipment),
@@ -314,6 +344,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                                         new OracleParameter("p_CreatedUserID",CreatedUserID == 0.0 ? DBNull.Value as object : CreatedUserID),
                                         new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
                                         new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0.0 ? DBNull.Value as object : UpdatedUserID),
+                                        new OracleParameter("p_Coordinate", Coordinate),
+                                        new OracleParameter("p_XYXSID", XYXSID),
                                         v_ID,
                                         v_Result});
             if (v_ID.Value != null && v_ID.Value != DBNull.Value)
@@ -331,7 +363,7 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
 
             _dataBase.SpExecuteNonQuery("UP_GroundRes_Update", new OracleParameter[]{
                                         new OracleParameter("p_GRID",Id),
-                                        new OracleParameter("p_RID",RID),
+                                        new OracleParameter("p_DMZCode", DMZCode),
                                         new OracleParameter("p_EquipmentName",EquipmentName),
                                         new OracleParameter("p_EquipmentCode",EquipmentCode),
                                         new OracleParameter("p_OpticalEquipment",OpticalEquipment),
@@ -342,6 +374,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                                         new OracleParameter("p_CreatedUserID",CreatedUserID == 0.0 ? DBNull.Value as object : CreatedUserID),
                                         new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
                                         new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0.0 ? DBNull.Value as object : UpdatedUserID),
+                                        new OracleParameter("p_Coordinate", Coordinate),
+                                        new OracleParameter("p_XYXSID", XYXSID),
                                         v_Result});
             return (FieldVerifyResult)Convert.ToInt32(v_Result.Value);
         }

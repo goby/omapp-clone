@@ -48,9 +48,9 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
             txtObjectFlag.Text = task.ObjectFlag;
             ucCBLSats.SelectedValues = task.SatID;
             txtSCID.Text = task.SCID;
-            rblCurTask.SelectedValue = task.IsCurTask;
-            txtFrom.Text = task.BeginTime.ToString("yyyy-MM-dd");
-            txtTo.Text = task.EndTime.ToString("yyyy-MM-dd");
+            rblIsEffective.SelectedValue = task.IsEffective;
+            txtEmitTime.Text = task.EmitTime.ToString("yyyyMMddHHmmss");
+            txtMiniSeconds.Text = task.EmitTime.Millisecond.ToString();
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -71,10 +71,10 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                 ObjectFlag = txtObjectFlag.Text.Trim(),
                 SatID = ucCBLSats.SelectedValues.ToString(),
                 SCID = txtSCID.Text.Trim(),
-                IsCurTask = rblCurTask.SelectedValue.ToString(),
-                BeginTime = DateTime.ParseExact(txtFrom.Text.Trim(), "yyyy-MM-dd", provider),
-                EndTime = DateTime.ParseExact(txtTo.Text.Trim(), "yyyy-MM-dd", provider)
+                IsEffective = rblIsEffective.SelectedValue.ToString(),
+                EmitTime = DateTime.ParseExact(txtEmitTime.Text.Trim(), "yyyyMMddHHmmss", provider)
             };
+            t.EmitTime = t.EmitTime.AddMilliseconds(int.Parse(txtMiniSeconds.Text));
             var result = Framework.FieldVerifyResult.Error;
             try
             {

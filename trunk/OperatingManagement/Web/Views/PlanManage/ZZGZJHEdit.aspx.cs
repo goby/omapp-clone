@@ -1051,7 +1051,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             endDate = DateTime.Now.AddDays(1);
             string planType = "DJZYJH";
 
-            List<JH> listDatas = (new JH()).GetJHList(planType, startDate, endDate);
+            List<JH> listDatas = (new JH()).GetJHList(planType, startDate, endDate, DateTime.MinValue, DateTime.MinValue);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = 7;
             cpPager.BindToControl = rpDatas;

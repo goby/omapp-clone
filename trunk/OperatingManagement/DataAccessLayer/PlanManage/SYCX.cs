@@ -85,29 +85,33 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
-        public List<SYCX> GetListByDate(DateTime startDate, DateTime endDate)
+        public List<SYCX> GetListByDate(DateTime startDate, DateTime endDate, DateTime jhStartDate, DateTime jhEndDate)
         {
             DataSet ds = null;
 
             ds = new DataSet();
             ds.Tables.Add();
             OracleCommand command = _database.GetStoreProcCommand(GET_SYCXList_ByDate);
+
             if (startDate == DateTime.MinValue)
-            {
                 _database.AddInParameter(command, "p_startDate", OracleDbType.Date, DBNull.Value);
-            }
             else
-            {
                 _database.AddInParameter(command, "p_startDate", OracleDbType.Date, startDate);
-            }
             if (endDate == DateTime.MinValue)
-            {
                 _database.AddInParameter(command, "p_endDate", OracleDbType.Date, DBNull.Value);
-            }
             else
-            {
                 _database.AddInParameter(command, "p_endDate", OracleDbType.Date, endDate);
-            }
+
+
+            if (jhStartDate == DateTime.MinValue)
+                _database.AddInParameter(command, "p_jhStartDate", OracleDbType.Date, DBNull.Value);
+            else
+                _database.AddInParameter(command, "p_jhStartDate", OracleDbType.Date, jhStartDate);
+            if (jhEndDate == DateTime.MinValue)
+                _database.AddInParameter(command, "p_jhEndDate", OracleDbType.Date, DBNull.Value);
+            else
+                _database.AddInParameter(command, "p_jhEndDate", OracleDbType.Date, jhEndDate);
+
             using (IDataReader reader = _database.ExecuteReader(command))
             {
                 ds.Tables[0].Load(reader);

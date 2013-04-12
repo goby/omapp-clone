@@ -32,7 +32,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 pnlAll1.Visible = false;
                 pnlAll2.Visible = false;
                 BindCheckBoxDestination();
-                //DefaultSearch();
+                DefaultSearch();
                 //ClientScript.RegisterStartupScript(this.GetType(), "error", "<script type='text/javascript'>hideSelectAll();</script>");
 
                 HideMsg();
@@ -60,7 +60,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         /// </summary>
         private void DefaultSearch()
         {
-            txtStartDate.Text = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
+            txtStartDate.Text = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
             txtEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
             btnSearch_Click(new Object(), new EventArgs());
         }

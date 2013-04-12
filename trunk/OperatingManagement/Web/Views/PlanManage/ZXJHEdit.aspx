@@ -118,7 +118,7 @@
                 <table class="edit1" style="width: 950px">
                     <tr>
                         <th colspan="2" style="color: Black; text-align: left;">
-                            试验计划
+                            <b>试验计划</b>
                         </th>
                     </tr>
                     <tr>
@@ -839,21 +839,33 @@
             <div style="width: 750px; text-align: center;">
                 <asp:Label ID="ltMessage" runat="server" CssClass="error" Text="试验内容与工作计划，所有字段都必须填写。"></asp:Label>
             </div>
-            <div style="width: 750px; text-align: center">
-                <asp:Button ID="btnSubmit" CssClass="button" OnClientClick="return CheckClientValidate();"
-                    runat="server" Text="保存计划" OnClick="btnSubmit_Click" />
-                &nbsp;&nbsp;&nbsp;
-                <asp:Button ID="btnSaveTo" runat="server" OnClientClick="return CheckClientValidate();"
-                    CssClass="button" Text="另存计划" OnClick="btnSaveTo_Click" />
-                &nbsp;&nbsp;
-                <asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" OnClick="btnReset_Click"
-                    CausesValidation="False" />
-                &nbsp;&nbsp;
-                <asp:Button ID="btnReturn" class="button" runat="server" Text="返回" Width="65px" OnClick="btnReturn_Click"
-                    CausesValidation="False" />
-                &nbsp;&nbsp;
-                <asp:Button ID="btnFormal" class="button" runat="server" OnClick="btnFormal_Click"
-                    Text="转为正式计划" />
+            <div style="width: 100%; text-align: center">
+                <asp:Button ID="btnSubmit" CssClass="button" OnClientClick="return CheckClientValidate();" runat="server" Text="保存计划" OnClick="btnSubmit_Click" />&nbsp;&nbsp;
+                <asp:Button ID="btnSaveTo" runat="server" OnClientClick="return CheckClientValidate();" CssClass="button" Text="另存计划" OnClick="btnSaveTo_Click" />&nbsp;&nbsp;
+                <asp:Button ID="btnReset" CssClass="button" runat="server" Text="重置" Width="65px" OnClick="btnReset_Click" CausesValidation="False" />&nbsp;&nbsp;
+                <asp:Button ID="btnReturn" CssClass="button" runat="server" Text="返回" Width="65px" OnClick="btnReturn_Click" CausesValidation="False" />&nbsp;&nbsp;
+                <asp:Button ID="btnSurePlan" CssClass="button" runat="server" Text="确认计划" onclick="btnSurePlan_Click" />&nbsp;&nbsp;
+                <asp:Button ID="btnCreateFile" class="button" runat="server" Text="生成文件" Width="65px" onclick="btnCreateFile_Click" />&nbsp;&nbsp;
+                <asp:Button ID="btnFormal" CssClass="button" runat="server" OnClick="btnFormal_Click" Text="转为正式计划" />
+            </div>
+            <div id="divFiles" runat="server" visible="false">
+            <table>
+                <tr style="width: 120px;height:24px;">
+                    <th>
+                        文件路径
+                    </th>
+                    <td class="style1">
+                        <asp:Label ID="lblFilePath" runat="server" Text="Label"></asp:Label>
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        <asp:LinkButton ID="lbtFilePath" runat="server" CausesValidation="false" 
+                            onclick="lbtFilePath_Click" Visible="false">保存文件</asp:LinkButton>
+                    </td>
+                </tr>
+            </table>
             </div>
             <div style="display: none">
                 <asp:HiddenField ID="HfID" runat="server" />

@@ -109,10 +109,46 @@
                         系统任务
                     </th>
                     <td>
-                        <asp:TextBox Width="200px" ID="txtSYSysTask" CssClass="text" runat="server" Text='<%# Eval("SYSysTask")%>'></asp:TextBox>
+                        <asp:TextBox Width="300px" ID="txtSYSysTask" CssClass="text" runat="server" Text='<%# Eval("SYSysTask")%>' 
+                            Height="47px" TextMode="MultiLine"></asp:TextBox>
                     </td>
                 </tr>
             </table>
         </ItemTemplate>
     </asp:Repeater>
+    <asp:Panel ID ="pnlAll2" runat="server">
+        <table class="edit1"  style="width: 700px;">
+            <tr>
+                <th style="width: 120px;">
+                </th>
+                <td align="left">
+                    <asp:Button class="button" ID="btnCreateFile" runat="server" Text="生成文件" 
+                        Width="65px" onclick="btnCreateFile_Click" />
+                </td>
+            </tr>
+            <tr runat="server" id="trMsg" visible="false">
+                <th></th>
+                <td>
+                    <asp:Label ID="lblMessage" runat="server" CssClass="error" Text=""></asp:Label>
+                </td>
+            </tr>
+        <div id="divFiles" runat="server" visible="false">
+            <tr style="height:24px;">
+                <th>
+                    文件路径
+                </th>
+                <td class="style1">
+                    <asp:Label ID="lblFilePath" runat="server" Text="Label"></asp:Label>
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>
+                    <asp:LinkButton ID="lbtFilePath" runat="server" CausesValidation="false" 
+                        onclick="lbtFilePath_Click">保存文件</asp:LinkButton>
+                </td>
+            </tr>
+        </div>
+        </table>
+    </asp:Panel>
 </asp:Content>

@@ -26,8 +26,11 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
-                txtStartDate.Attributes.Add("readonly", "true");
-                txtEndDate.Attributes.Add("readonly", "true");
+                txtCStartDate.Attributes.Add("readonly", "true");
+                txtCEndDate.Attributes.Add("readonly", "true");
+                txtJHStartDate.Attributes.Add("readonly", "true");
+                txtJHEndDate.Attributes.Add("readonly", "true");
+                pnlAll2.Visible = false;
                 DefaultSearch();
                 HideMessage();
             }
@@ -52,14 +55,24 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         private void SaveCondition()
         {
-            if (string.IsNullOrEmpty(txtStartDate.Text))
-            { ViewState["_StartDate"] = null; }
+            if (string.IsNullOrEmpty(txtCStartDate.Text))
+                ViewState["_StartDate"] = null;
             else
-            { ViewState["_StartDate"] = txtStartDate.Text.Trim(); }
-            if (string.IsNullOrEmpty(txtEndDate.Text))
-            { ViewState["_EndDate"] = null; }
+                ViewState["_StartDate"] = txtCStartDate.Text.Trim();
+            if (string.IsNullOrEmpty(txtCEndDate.Text))
+                ViewState["_EndDate"] = null;
             else
-            { ViewState["_EndDate"] = Convert.ToDateTime(txtEndDate.Text.Trim()).AddDays(1).AddMilliseconds(-1); }
+                ViewState["_EndDate"] = Convert.ToDateTime(txtCEndDate.Text.Trim()).AddDays(1).AddMilliseconds(-1);
+
+
+            if (string.IsNullOrEmpty(txtJHStartDate.Text))
+                ViewState["_JHStartDate"] = null;
+            else
+                ViewState["_JHStartDate"] = txtJHStartDate.Text.Trim();
+            if (string.IsNullOrEmpty(txtJHEndDate.Text))
+                ViewState["_JHEndDate"] = null;
+            else
+                ViewState["_JHEndDate"] = Convert.ToDateTime(txtJHEndDate.Text.Trim()).AddDays(1).AddMilliseconds(-1);
         }
 
         /// <summary>
@@ -67,9 +80,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         /// </summary>
         private void DefaultSearch()
         {
-            txtStartDate.Text = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
-            txtEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
-            //btnSearch_Click(new Object(), new EventArgs());
+            txtCStartDate.Text = DateTime.Now.AddDays(-6).ToString("yyyy-MM-dd");
+            txtCEndDate.Text = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
         }
 
         //绑定列表
@@ -77,32 +89,34 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             DateTime startDate = new DateTime();
             DateTime endDate = new DateTime();
-
+            DateTime jhStartDate = new DateTime();
+            DateTime jhEndDate = new DateTime();
             if (fromSearch)
             {
-                if (!string.IsNullOrEmpty(txtStartDate.Text))
-                {
-                    startDate = Convert.ToDateTime(txtStartDate.Text);
-                }
-                if (!string.IsNullOrEmpty(txtEndDate.Text))
-                {
-                    endDate = Convert.ToDateTime(txtEndDate.Text).AddDays(1).AddMilliseconds(-1); //查询时可查当天
+                if (!string.IsNullOrEmpty(txtCStartDate.Text))
+                    startDate = Convert.ToDateTime(txtCStartDate.Text);
+                if (!string.IsNullOrEmpty(txtCEndDate.Text))
+                    endDate = Convert.ToDateTime(txtCEndDate.Text).AddDays(1).AddMilliseconds(-1); //查询时可查当天
 
-                }
+                if (!string.IsNullOrEmpty(txtJHStartDate.Text))
+                    jhStartDate = Convert.ToDateTime(txtJHStartDate.Text);
+                if (!string.IsNullOrEmpty(txtJHEndDate.Text))
+                    jhEndDate = Convert.ToDateTime(txtJHEndDate.Text).AddDays(1).AddMilliseconds(-1);
             }
             else
             {
                 if (ViewState["_StartDate"] != null)
-                {
                     startDate = Convert.ToDateTime(ViewState["_StartDate"].ToString());
-                }
                 if (ViewState["_EndDate"] != null)
-                {
                     endDate = Convert.ToDateTime(ViewState["_EndDate"].ToString());
-                }
+
+                if (ViewState["_JHStartDate"] != null)
+                    jhStartDate = Convert.ToDateTime(ViewState["_JHStartDate"].ToString());
+                if (ViewState["_JHEndDate"] != null)
+                    jhEndDate = Convert.ToDateTime(ViewState["_JHEndDate"].ToString());
             }
 
-            List<SYCX> listDatas = (new SYCX()).GetListByDate(startDate, endDate);
+            List<SYCX> listDatas = (new SYCX()).GetListByDate(startDate, endDate, jhStartDate, jhEndDate);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
             if (listDatas.Count > this.SiteSetting.PageSize)
@@ -110,6 +124,11 @@ namespace OperatingManagement.Web.Views.PlanManage
             cpPager.BindToControl = rpDatas;
             rpDatas.DataSource = cpPager.DataSourcePaged;
             rpDatas.DataBind();
+
+            if (listDatas.Count > 0)
+                pnlAll2.Visible = true;
+            else
+                pnlAll2.Visible = false;
         }
 
         protected void cpPager_PostBackPage(object sender, EventArgs e)
@@ -140,6 +159,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 string xxfl = radBtnXXFL.SelectedValue;
                 DateTime beginTime = Convert.ToDateTime(txtStartTime.Text);
                 DateTime endTime = Convert.ToDateTime(txtEndTime.Text);
+                FieldVerifyResult oResult;
 
                 JH objJH = new JH(true);
                 objJH.SRCType = 1; //试验程序
@@ -167,7 +187,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                         objJH.TaskID = gjhs[i].TaskID;
                         objJH.FileIndex = savefilepath;
                         objJH.SatID = gjhs[i].SatID;
-                        objJH.Add();
+                        oResult = objJH.Add();
+                        if (oResult != FieldVerifyResult.Success)
+                            ShowMessage(string.Format("生成的地面站工作计划保存失败，原因：{0}", oResult.ToString()), true);
                     }
                 }
                 else
@@ -194,7 +216,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                     objJH.TaskID = zjh.TaskID;
                     objJH.FileIndex = savefilepath;
                     objJH.SatID = zjh.SatID;
-                    objJH.Add();
+                    oResult = objJH.Add();
+                    if (oResult != FieldVerifyResult.Success)
+                        ShowMessage(string.Format("生成的中心工作计划保存失败，原因：{0}", oResult.ToString()), true);
                 }
                 else
                 {
@@ -222,12 +246,45 @@ namespace OperatingManagement.Web.Views.PlanManage
                         objJH.TaskID = djhs[i].TaskID;
                         objJH.FileIndex = savefilepath;
                         objJH.SatID = djhs[i].SatID;
-                        objJH.Add();
+                        oResult = objJH.Add();
+                        if (oResult != FieldVerifyResult.Success)
+                            ShowMessage(string.Format("生成的测控资源使用申请保存失败，原因：{0}", oResult.ToString()), true);
                     }
                 }
                 else
                 {
                     ShowMessage("未能生成测控资源使用申请", true);
+                    return;
+                }
+
+                #endregion
+
+                #region 应用研究计划
+                List<YJJH> yjhs = pp.SYCXFile2YJJH(fileIndex, xxfl, beginTime, endTime, out result);
+                if (!result.Equals(string.Empty))
+                {
+                    ShowMessage(string.Format("生成应用研究计划出错，原因：<br>{0}", result), true);
+                }
+                if (yjhs.Count > 0)
+                {
+                    objJH.PlanType = "YJJH";
+                    for (int i = 0; i < yjhs.Count(); i++)
+                    {
+                        objJH.PlanID = (new Sequence()).GetYJJHSequnce();
+                        yjhs[i].JXH = objJH.PlanID.ToString();
+                        savefilepath = creater.CreateYJJHFile(yjhs[i], 0);
+                        yjhs[i].SatID = "AAAA";
+                        objJH.TaskID = yjhs[i].TaskID;
+                        objJH.FileIndex = savefilepath;
+                        objJH.SatID = yjhs[i].SatID;
+                        oResult = objJH.Add();
+                        if (oResult != FieldVerifyResult.Success)
+                            ShowMessage(string.Format("生成的应用研究计划保存失败，原因：{0}", oResult.ToString()), true);
+                    }
+                }
+                else
+                {
+                    ShowMessage("未能生成应用研究计划", true);
                     return;
                 }
 
@@ -244,7 +301,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         public override void OnPageLoaded()
         {
             this.PagePermission = "OMPLAN_ExProgram.View";
-            this.ShortTitle = "查看试验程序";
+            this.ShortTitle = "生成初步计划";
             this.SetTitle();
             this.AddJavaScriptInclude("scripts/pages/PlanManage/ExperimentProgramList.aspx.js");
         }

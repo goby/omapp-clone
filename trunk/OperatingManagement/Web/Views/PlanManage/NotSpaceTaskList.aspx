@@ -6,13 +6,13 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
-    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="ykinfoman" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuYKInfo" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
-计划管理 &gt; 引导数据-非空间机动任务
+计划管理 &gt; 引导数据
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <asp:Panel ID="pnlData" runat="server">

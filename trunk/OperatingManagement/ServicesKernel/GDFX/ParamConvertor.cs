@@ -346,6 +346,8 @@ namespace ServicesKernel.GDFX
             bool blResult = true;
             int iResult = 0;
             Convert(deg, km, convertType, timezone, ref YM[0], s, ref da[0], ref result[0], ref emitFileName[0], emitFileName.Length, ref emitFilePath[0], emitFilePath.Length, ref iResult);
+            if (iResult == 0)
+                blResult = false;
             return blResult;
         }
 

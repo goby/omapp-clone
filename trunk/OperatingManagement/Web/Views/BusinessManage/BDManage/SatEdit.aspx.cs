@@ -205,6 +205,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                 satellite.L = dblL;
                 satellite.RG = int.Parse(rblRG.SelectedValue);
                 satellite.GN = hfWXGNs.Value;
+                satellite.GNLBM = txtGNLBM.Text;
                 //satellite.CreatedTime = DateTime.Now;
 
                 if (ZYSXIDPValueDic != null && ZYSXIDPValueDic.Count > 0)
@@ -392,6 +393,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                 rblShape.SelectedIndex = rblShape.Items.IndexOf(rblShape.Items.FindByValue(satellite.Shape.ToString()));
                 rblRG.SelectedIndex = rblRG.Items.IndexOf(rblRG.Items.FindByValue(satellite.RG.ToString()));
                 hfWXGNs.Value = satellite.GN;
+                txtGNLBM.Text = satellite.GNLBM;
                 lblCreatedTime.Text = satellite.CTime == DateTime.MinValue ? satellite.CTime.ToString("yyyy-MM-dd HH:mm:ss") : satellite.CTime.ToString("yyyy-MM-dd HH:mm:ss");
 
                 if (!string.IsNullOrEmpty(satellite.SX))

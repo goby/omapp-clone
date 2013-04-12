@@ -151,7 +151,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
 
                 double dblL = 0;
                 if (rblShape.SelectedValue == "0")
-                    txtL.Text = "";
+                    txtL.Text = "0";
                 else
                 {
                     if (!double.TryParse(txtL.Text.Trim(), out dblL))
@@ -181,6 +181,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
                 satellite.L = dblL;
                 satellite.RG = int.Parse(rblRG.SelectedValue);
                 satellite.GN = hfWXGNs.Value;
+                satellite.GNLBM = txtGNLBM.Text;
                 satellite.CreatedTime = DateTime.Now;
 
                 if (ZYSXIDPValueDic != null && ZYSXIDPValueDic.Count > 0)
@@ -387,7 +388,7 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage
             txtMZB.Text = string.Empty;
             txtBMFSXS.Text = string.Empty;
             txtD.Text = string.Empty;
-            txtL.Text = string.Empty;
+            txtL.Text = "0";
 
             ViewState["ZYSXIDPValueDic"] = null;
             BindZYSXList();

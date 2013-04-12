@@ -130,22 +130,31 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv6;
         
         /// <summary>
-        /// rblCurTask 控件。
+        /// rblIsEffective 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblCurTask;
+        protected global::System.Web.UI.WebControls.RadioButtonList rblIsEffective;
         
         /// <summary>
-        /// txtFrom 控件。
+        /// txtEmitTime 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFrom;
+        protected global::System.Web.UI.WebControls.TextBox txtEmitTime;
+        
+        /// <summary>
+        /// txtMiniSeconds 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMiniSeconds;
         
         /// <summary>
         /// rv2 控件。
@@ -157,15 +166,6 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rv2;
         
         /// <summary>
-        /// txtTo 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTo;
-        
-        /// <summary>
         /// rv3 控件。
         /// </summary>
         /// <remarks>
@@ -173,6 +173,15 @@ namespace OperatingManagement.Web.Views.BusinessManage.BDManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rv3;
+        
+        /// <summary>
+        /// rv4 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator rv4;
         
         /// <summary>
         /// hfUserId 控件。

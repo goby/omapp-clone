@@ -157,7 +157,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                string url = @"~/Views/BusinessManage/ResourceManage.aspx?resourcetype=" + Server.UrlEncode("3");
+                string url = @"~/Views/BusinessManage/CResourceMan.aspx";
                 Response.Redirect(url);
             }
             catch (System.Threading.ThreadAbortException ex1)

@@ -8,6 +8,8 @@ using System.Globalization;
 using System.Configuration;
 using OperatingManagement.DataAccessLayer.PlanManage;
 using OperatingManagement.DataAccessLayer.BusinessManage;
+using OperatingManagement.Framework.Storage;
+using OperatingManagement.Framework.Components;
 using ServicesKernel.GDFX;
 
 namespace OperatingManagement.ServicesKernel.File
@@ -122,7 +124,7 @@ namespace OperatingManagement.ServicesKernel.File
             strTmp = GetAttributeValue(PEDefinition.P_Code, node, out result);
             if (!result.Equals(string.Empty))
                 return;
-            if (strTmp.Split(splitor_hline).Length < 3)
+            if (strTmp.Split(splitor_hline).Length < 4)
             {
                 result = string.Format("编码{0}格式不符", strTmp);//应为TP-TaskID-No
                 return;
@@ -137,10 +139,11 @@ namespace OperatingManagement.ServicesKernel.File
             ZXJH_SYContent oSYContent = new ZXJH_SYContent();
             oSYContent.SatID = satids;
             oSYContent.SYID = strSYID;
-            strTmp = GetElementValue(PEDefinition.E_ExperimentItem, node, out result);
-            if (!result.Equals(string.Empty))
-                return;
-            oSYContent.SYName = strTmp;//试验项目——>试验.试验项目名称
+
+            List<PlanParameter> lstSYXMDef = PlanParameters.ReadParameters("SYXMDef");
+            List<PlanParameter> lstParam = lstSYXMDef.Where(t=>t.Value == strTmp.Split(splitor_hline)[2].Substring(0, 3)).ToList();
+            if (lstParam.Count > 0)
+                oSYContent.SYName = lstParam[0].Text;//试验项目——>试验.试验项目名称
             //有疑问，待确认，这个时间应该是谁的？？
             oSYContent.SYStartTime = from.ToString(PEDefinition.LongTimeFormat14);
             oSYContent.SYEndTime = to.ToString(PEDefinition.LongTimeFormat14);
@@ -154,7 +157,6 @@ namespace OperatingManagement.ServicesKernel.File
             if (!result.Equals(string.Empty))
                 return;
             ZXJH_SYContent_SC oSC;
-            string[] strCodes;
             for (int i = 0; i < lstSCActions.Count(); i++)
             {
                 oSC = new ZXJH_SYContent_SC();
@@ -394,7 +396,7 @@ namespace OperatingManagement.ServicesKernel.File
         }
         #endregion
 
-        #region 试验CX转ZC DMZ 工作计划，只有SC动作
+        #region 试验CX 转 ZC DMZ 工作计划，只有SC动作
 
         /// <summary>
         /// 试验CX文件转DMZ工作计划（ZC），一个试验CX生成一个DMZ计划
@@ -498,7 +500,7 @@ namespace OperatingManagement.ServicesKernel.File
             string strFS = string.Empty;
             string strJXZ = string.Empty;
             string strDH = string.Empty;
-            XYXSInfo oXyxs = new XYXSInfo();
+            DMZ oDMZ = new DMZ();
             Task oTask = new Task();
             if (lstActions != null && lstActions.Count() > 0)
             {
@@ -542,7 +544,8 @@ namespace OperatingManagement.ServicesKernel.File
                     {
                         oContent.FS = strFS;
                         oContent.JXZ = strJXZ;
-                        oContent.DW = oXyxs.GetByID(oXyxs.GetIdByInCode(strPCode)).DWCode;
+                        oDMZ.DMZCode = strPCode;
+                        oContent.DW = oDMZ.GetByCode().DWCode;
                         oContent.DH = oTask.GetOutTaskNo(strDH, strSCID);
                         oContent.QH = lstActions[i].QC.ToString();
                         if (lstActions[i].WorkingParams.ContainsKey(PEDefinition.V_MS))
@@ -614,7 +617,7 @@ namespace OperatingManagement.ServicesKernel.File
         }
         #endregion
 
-        #region 试验CX转CK 资源使用申请，只有SC动作
+        #region 试验CX 转 CK 资源使用申请，SC\上行YK\SJCS\YCJS动作
 
         /// <summary>
         /// 试验CX文件转CK 资源使用申请，一个试验CX生成一个CK 资源使用申请
@@ -677,7 +680,7 @@ namespace OperatingManagement.ServicesKernel.File
         }
 
         /// <summary>
-        /// 一个试验CX元素转多个CK 资源使用申请（一个航天器对应一个），只取SC动作
+        /// 一个试验CX元素转多个CK 资源使用申请（一个航天器对应一个），取SC\上行YK\SJCS\YCJS动作
         /// </summary>
         /// <param name="node"></param>
         /// <param name="xxfl"></param>
@@ -722,6 +725,10 @@ namespace OperatingManagement.ServicesKernel.File
             GetSCIDs();
             #endregion
 
+            List<string> lstFilter = new List<string>();
+            lstFilter.Add(PEDefinition.V_SC);
+            lstFilter.Add(PEDefinition.V_SXYK);
+            lstFilter.Add(PEDefinition.V_YC);
             List<Action> lstActions = GetSomeDMZActions(PEDefinition.V_SC, fromTime, toTime, out result);
             if (!result.Equals(string.Empty))
                 return null;
@@ -752,7 +759,9 @@ namespace OperatingManagement.ServicesKernel.File
                 strDH = strDH.Split(splitor_hline)[1];
                 #endregion
                 string strPCode = string.Empty;
+                string strPName = string.Empty;
                 string strDeviceID = string.Empty;
+                DMZ oDMZ = new DMZ();
 
                 #region Set Task Value
                 for (int i = 0; i < lstActions.Count(); i++)
@@ -778,8 +787,10 @@ namespace OperatingManagement.ServicesKernel.File
                                 oSQ.SatID = strSCID;
                             oSQ.SCID = oSQ.SatID;
                         }
-                        if (dicZYSQ_GZDY.ContainsKey(strPCode))
-                            oTask.GZDY = dicZYSQ_GZDY[strPCode];
+                        oDMZ.DMZCode = strPCode;
+                        strPName = oDMZ.GetByCode().DMZName;
+                        if (dicZYSQ_GZDY.ContainsKey(strPName))
+                            oTask.GZDY = dicZYSQ_GZDY[strPName];
                         oTask.SXH = (i + 1).ToString();
                         oTask.SXZ = strSXZ;
                         oTask.MLB = "TT";
@@ -789,7 +800,12 @@ namespace OperatingManagement.ServicesKernel.File
                         oTask.SBDH = strDeviceID;
                         oTask.QC = lstActions[i].QC.ToString();
                         oTask.QB = PEDefinition.V_QB;//默认一般Q
-                        oTask.SHJ = "5";//CK事件类型，5为SC
+                        if (lstActions[i].Name == PEDefinition.V_SC)
+                            oTask.SHJ = "5";//CK事件类型，5为SC
+                        else if (lstActions[i].Name == PEDefinition.V_SXYK)
+                            oTask.SHJ = "2";//CK事件类型，2为SXYK
+                        else if (lstActions[i].Name == PEDefinition.V_YC)
+                            oTask.SHJ = "4";//CK事件类型，2为状态监视(遥测)
                         if (lstActions[i].WorkingParams.ContainsKey(PEDefinition.V_SHJ))
                             oTask.SHJ = lstActions[i].WorkingParams[PEDefinition.V_SHJ].Value;
 
@@ -864,6 +880,117 @@ namespace OperatingManagement.ServicesKernel.File
                 #endregion
             }
             return dicSQs.Values.ToList();
+        }
+        #endregion
+
+        #region 试验CX 转 YJJH
+
+        /// <summary>
+        /// 试验CX文件转YJJH，一个类试验项目生成一个YJJH
+        /// </summary>
+        /// <param name="fileFullName"></param>
+        /// <param name="xxfl"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public List<YJJH> SYCXFile2YJJH(string fileFullName, string xxfl, DateTime fromTime, DateTime toTime, out string result)
+        {
+            result = string.Empty;
+            string strResult = string.Empty;
+            string strTmp = string.Empty;
+            Dictionary<string, YJJH> dicYJJHs = new Dictionary<string, YJJH>();
+            XElement root = LoadXmlDoc(fileFullName, out result);
+            if (!result.Equals(string.Empty))
+                return null;
+
+            YJJH oYJJH = new YJJH();
+            var eps = root.Elements(PEDefinition.E_ExperimentProcedure);
+            for (int i = 0; i < eps.Count(); i++)
+            {
+                oYJJH = SYCXElement2YJJH(eps.ElementAt(i), xxfl, fromTime, toTime, out strResult);
+                if (oYJJH != null)
+                {
+                    if (!dicYJJHs.ContainsKey(oYJJH.SatID))
+                        dicYJJHs.Add(oYJJH.SatID, oYJJH);
+                    else
+                    {
+                        foreach (YJJH_Task oTask in oYJJH.Tasks)
+                        {
+                            dicYJJHs[oYJJH.SatID].Tasks.Add(oTask);
+                        }
+                    }
+                }
+                if (!string.IsNullOrEmpty(strResult))
+                {
+                    result += string.Format("ID=\"{0}\"的试验程序生成应用研究计划时出现问题：{1}<br>"
+                        , GetAttributeValue(PEDefinition.P_ID, eps.ElementAt(i), out strTmp)
+                        , strResult);
+                }
+            }
+
+            return dicYJJHs.Values.ToList();
+        }
+
+        /// <summary>
+        /// 从一个试验程序节点生成一个应用研究工作计划
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="xxfl"></param>
+        /// <param name="fromTime"></param>
+        /// <param name="toTime"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        private YJJH SYCXElement2YJJH(XElement node, string xxfl, DateTime fromTime, DateTime toTime, out string result)
+        {
+            result = string.Empty;
+            string strTmp = string.Empty;
+            #region 检查时间段
+            //Get BeginTime & EndTime
+            DateTime from = GetElementDTValue(PEDefinition.P_BeginTime, node, out result);
+            if (!result.Equals(string.Empty))
+                return null;
+            DateTime to = GetElementDTValue(PEDefinition.P_EndTime, node, out result);
+            if (!result.Equals(string.Empty))
+                return null;
+            //时间段不在目标范围内
+            if (fromTime > to || toTime < from)
+            {
+                result = string.Format("没有符合{0}~{1}的试验程序", fromTime, toTime);
+                return null;
+            }
+            #endregion
+            
+            strTmp = GetAttributeValue(PEDefinition.P_Code, node, out result);
+            if (!result.Equals(string.Empty))
+                return null;
+            if (strTmp.Split(splitor_hline).Length < 4)
+            {
+                result = string.Format("编码{0}格式不符", strTmp);//应为TP-TaskID-No
+                return null;
+            }
+
+            YJJH oYJJH = new YJJH();
+            oYJJH.CTime = DateTime.Now;
+            oYJJH.SatID = "";//这个从哪里来
+            List<PlanParameter> lstSYXMDef = PlanParameters.ReadParameters("SYXMDef");
+            List<PlanParameter> lstParam = lstSYXMDef.Where(t=>t.Value == strTmp.Split(splitor_hline)[2].Substring(0, 3)).ToList();
+            if (lstParam.Count > 0)
+            {
+                oYJJH.Tasks = new List<YJJH_Task>();
+                YJJH_Task oTask = new YJJH_Task();
+                oTask.StartTime = from.ToString("yyyyMMddHHmmss");
+                oTask.EndTime = to.ToString("yyyyMMddHHmmss");
+                oTask.Task = lstParam[0].Text;
+                oYJJH.Tasks.Add(oTask);
+            }
+
+            lstSYXMDef = PlanParameters.ReadParameters("YJJHSendTargetMapping");
+            lstParam = lstSYXMDef.Where(t=>t.Text == strTmp.Split(splitor_hline)[2].Substring(0, 3)).ToList();
+            if (lstParam.Count > 0)
+                oYJJH.SysName = lstParam[0].Value;
+
+            oYJJH.TaskID = strTmp.Split(splitor_hline)[1];
+            oYJJH.XXFL = xxfl;
+            return oYJJH;
         }
         #endregion
 
@@ -951,10 +1078,38 @@ namespace OperatingManagement.ServicesKernel.File
         {
             string[] strDMZCodes = null;
             result = string.Empty;
+            List<DMZ> lstDMZ = new DMZ().Cache;
+            if (lstDMZ == null)
+            {
+                result = "无法获取地面站列表信息";
+                return null;
+            }
+            if (dmzType == 1)
+            {
+                var dmz = lstDMZ.Where(x => x.Owner == 1 || x.Owner == 3);
+
+                strDMZCodes = new string[dmz.Count()];
+                for (int i = 0; i < strDMZCodes.Length; i++)
+                {
+                    strDMZCodes[i] = dmz.ElementAt(i).DMZCode;
+                }
+            }
+            else
+            {
+                var dmz = lstDMZ.Where(x => x.Owner == 1 || x.Owner == 3);
+
+                strDMZCodes = new string[dmz.Count()];
+                for (int i = 0; i < strDMZCodes.Length; i++)
+                {
+                    strDMZCodes[i] = dmz.ElementAt(i).DMZCode;
+                }
+            }
+            #region old code, no use
+            /*
             List<XYXSInfo> lstXyxs = new XYXSInfo().Cache;
             if (lstXyxs == null)
             {
-                result = "无法获取总参地面站列表信息";
+                result = "无法获取地面站列表信息";
                 return null;
             }
             if (dmzType == 1)
@@ -976,7 +1131,8 @@ namespace OperatingManagement.ServicesKernel.File
                 {
                     strDMZCodes[i] = xyxs.ElementAt(i).INCODE;
                 }
-            }
+            }*/
+            #endregion
             return strDMZCodes;
         }
 
@@ -1010,6 +1166,7 @@ namespace OperatingManagement.ServicesKernel.File
             int iIdx = 0;
             bool blNewJH = false;
             XYXSInfo oXyxs = new XYXSInfo();
+            DMZ oDMZ = new DMZ();
             #endregion
 
             #region ReadFile
@@ -1053,6 +1210,7 @@ namespace OperatingManagement.ServicesKernel.File
             string strGZJ = string.Empty;
             string strRJ = string.Empty;
             string strZM = string.Empty;
+            string strSB = string.Empty;
             GZJH_Content oContent;
             for (int i = 0; i < strLines.Length; i++)
             {
@@ -1068,11 +1226,17 @@ namespace OperatingManagement.ServicesKernel.File
                 //if (strGZJ.Substring(0, 1).ToUpper() == "F")
                 //    strGZJ = DateTime.MinValue.ToString(PEDefinition.LongTimeFormat14);
                 strZM = strLines[i].Substring(vPos[5], vLen[5]).Trim();
-                strZM = oXyxs.GetByID(oXyxs.GetIdByInCode(strZM)).DWCode;
+                strSB = strZM.Substring(strZM.IndexOf('_') + 1);
+                strZM = strZM.Substring(0, strZM.IndexOf('_'));
+                oDMZ.DMZCode = strZM;
+                oDMZ = oDMZ.GetByCode();
+                if (oDMZ != null)
+                    strZM = oDMZ.DWCode ;
                 if (blNewJH)//为新计划读值
                 {
                     oContent = new GZJH_Content();
                     oContent.DW = strZM;
+                    oContent.SB = strSB;
                     oContent.QH = strQC;
                     //准备开始时间=开始时间-30分钟
                     if (strRK.Substring(0, 1).ToUpper() != "F")
@@ -1111,6 +1275,7 @@ namespace OperatingManagement.ServicesKernel.File
                                     //oJH.GZJHContents.ElementAt(j).RK = DateTime.MinValue.ToString(PEDefinition.LongTimeFormat14);
                                 }
                                 oJH.GZJHContents.ElementAt(j).DW = strZM;
+                                oJH.GZJHContents.ElementAt(j).SB = strSB;
                                 oJH.GZJHContents.ElementAt(j).GZK = strGZK;
                                 oJH.GZJHContents.ElementAt(j).GZJ = strGZJ;
                                 oJH.GZJHContents.ElementAt(j).JS = strRJ;
@@ -1194,7 +1359,9 @@ namespace OperatingManagement.ServicesKernel.File
             string strGZJ = string.Empty;
             string strRJ = string.Empty;
             string strZM = string.Empty;
+            string strSB = string.Empty;
             DJZYSQ_Task oContent;
+            DMZ oDMZ = new DMZ();
             if (dicZYSQ_GZDY == null || dicZYSQ_GZDY.Count == 0)
                 GetGZDYandSB();
             for (int i = 0; i < strLines.Length; i++)
@@ -1210,12 +1377,18 @@ namespace OperatingManagement.ServicesKernel.File
                 strGZJ = strLines[i].Substring(vPos[4], vLen[4]).Replace(": ", ":0").Replace(" ", "").Replace(":", "").Substring(0, 14);
                 //if (strGZJ.Substring(0, 1).ToUpper() == "F")
                 //    strGZJ = DateTime.MinValue.ToString(PEDefinition.LongTimeFormat14);
-                strZM = strLines[i].Substring(vPos[5], vLen[5]).Trim();
+                strZM = strLines[i].Substring(vPos[5], vLen[5]).Trim();//地面站编码_设备编码
+                strZM = strZM.Substring(0, strZM.IndexOf('_'));
+                //strSB = strZM.Substring(strZM.IndexOf('_') + 1);
+                oDMZ.DMZCode = strZM;
+                strZM = oDMZ.GetByCode().DMZName;
+                strSB = dicZYSQ_SB[strZM];
                 strZM = dicZYSQ_GZDY[strZM];
                 if (blNewJH)//为新计划读值
                 {
                     oContent = new DJZYSQ_Task();
                     oContent.GZDY = strZM;
+                    oContent.SBDH = strSB;
                     oContent.QC = strQC;
                     //ZHB = RK - 30min
                     if (strRK.Substring(0, 1).ToUpper() != "F")
@@ -1243,6 +1416,7 @@ namespace OperatingManagement.ServicesKernel.File
                             if (strQC == oJH.DMJHTasks.ElementAt(j).QC)
                             {
                                 oJH.DMJHTasks.ElementAt(j).GZDY = strZM;
+                                oJH.DMJHTasks.ElementAt(j).SBDH = strSB;
                                 if (strRK.Substring(0, 1).ToUpper() != "F")
                                 {
                                     oJH.DMJHTasks.ElementAt(j).ZHB = DateTime.Parse(strRK.Replace(": ", ":0")).AddMinutes(-30).ToString(PEDefinition.LongTimeFormat14);
@@ -1932,6 +2106,41 @@ namespace OperatingManagement.ServicesKernel.File
             }
         }
 
+
+
+        /// <summary>
+        /// 获取参与者是DMZ的指定的Actions
+        /// </summary>
+        /// <param name="actionName"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        private List<Action> GetSomeDMZActions(List<string> valueList, DateTime beginTime, DateTime endTime, out string result)
+        {
+            result = string.Empty;
+            string info = string.Empty;
+            if (dicActions != null)
+            {
+                List<Action> lstResult = new List<Action>();
+                List<Action> lstActions = new List<Action>();
+                for (int i = 0; i < valueList.Count; i++)
+                {
+                    lstActions = GetSomeDMZActions(valueList[i], beginTime, endTime, out info);
+                }
+                if (lstActions != null)
+                    lstResult.AddRange(lstActions);
+                result += info + ";";
+                if (lstResult != null)
+                    return lstResult;
+                else
+                    return null;
+            }
+            else
+            {
+                result = "解析不到动作信息";
+                return null;
+            }
+        }
+
         /// <summary>
         /// 获取地面站编码
         /// </summary>
@@ -2348,7 +2557,7 @@ namespace OperatingManagement.ServicesKernel.File
         public const string LongTimeFormat = "yyyy-MM-dd HH:mm:ss";
         public const string ShortTimeFormat = "yyyy-MM-dd";
         public const string LongTimeFormat14 = "yyyyMMddHHmmss";
-        public const string GZDYName = "4102,5101,2202,2102,6202,2402,2502,2302,6301,6401";//"东风站,大树里站,青岛站,喀什站,厦门站,三亚站,佳木斯站,瑞典站,远望五号测量船,远望六号测量船";
+        public const string GZDYName = "东风站,大树里站,青岛站,喀什站,厦门站,三亚站,佳木斯站,瑞典站,远望五号测量船,远望六号测量船";//"东风站,大树里站,青岛站,喀什站,厦门站,三亚站,佳木斯站,瑞典站,远望五号测量船,远望六号测量船";
         public const string GZDYCode = "20-DF,20-DSL,26-QD,26-KS,26-XM,26-SY,26-JMS,26-RD,23-YW5,23-YW6";
         public const string SBDH = "TS-4216,YQ-2512,TY-4801,TS-4217/TS-4801,TS-4222,TS-4205,TS-4205,瑞典站设备,TS-4203,TS-4210";
         public const string SCIDKeys = "TS3,TS4A,TS4B,TS5A,TS5B";

@@ -63,9 +63,9 @@
                 </div>
                 <div class="content">
                     <div class="ctnx" style="width:auto;height:auto">
-                        <table style="width:1000px;height:500px">
+                        <table style="width:95%;height:500px">
                         <tr>
-                            <td valign="top" style="width:1000px" align="left">
+                            <td valign="top" style="width:100%" align="left">
                         <asp:ContentPlaceHolder ID="BodyContent" runat="server"></asp:ContentPlaceHolder>
                         </td>
                         </tr></table>

@@ -52,6 +52,7 @@ namespace OperatingManagement.WebKernel.Basic
 
         #region -Properties-
         private bool _IsPopOrIFrame = false;
+        private bool _IsViewOrEdit = false;
         /// <summary>
         /// Gets/Sets whether the inherit page is pop windows or in a iframe.
         /// </summary>
@@ -128,6 +129,15 @@ namespace OperatingManagement.WebKernel.Basic
                 }
                 return user;
             }
+        }
+
+        /// <summary>
+        /// true for view, false for edit
+        /// </summary>
+        public bool IsViewOrEdit
+        {
+            get { return _IsViewOrEdit; }
+            set { _IsViewOrEdit = value; }
         }
         #endregion
 
@@ -354,6 +364,84 @@ namespace OperatingManagement.WebKernel.Basic
                 }
             }
             return true;
+        }
+
+        public void SetControlsEnabled(Control ctrl, ControlNameEnum ctrlType)
+        {
+            foreach (Control item in ctrl.Controls)
+            {
+                //Panel
+                if (item is Panel && (ctrlType == ControlNameEnum.Panel || ctrlType == ControlNameEnum.All))
+                    ((Panel)item).Enabled = !IsViewOrEdit;
+
+                //TextBox
+                if (ctrlType == ControlNameEnum.Panel || ctrlType == ControlNameEnum.All)
+                {
+                    if (item is TextBox)
+                        ((TextBox)item).Enabled = !IsViewOrEdit;
+                    else if (item is HtmlInputText)
+                        ((HtmlInputText)item).Disabled = IsViewOrEdit;
+                    else if (item is HtmlTextArea)
+                        ((HtmlTextArea)item).Disabled = IsViewOrEdit;
+                }
+
+                //Button
+                if (item is Button && (ctrlType == ControlNameEnum.Button || ctrlType == ControlNameEnum.All))
+                {
+                    if (item is Button)
+                        ((Button)item).Visible = !IsViewOrEdit;
+                    else if (item is HtmlInputButton)
+                        ((HtmlInputButton)item).Disabled = IsViewOrEdit;
+                    else if (item is ImageButton)
+                        ((ImageButton)item).Enabled = !IsViewOrEdit;
+                    else if (item is LinkButton)
+                        ((LinkButton)item).Enabled = !IsViewOrEdit;
+                }
+
+                //CheckBox
+                if (ctrlType == ControlNameEnum.CheckBox || ctrlType == ControlNameEnum.All)
+                {
+                    if (item is CheckBox)
+                        ((CheckBox)item).Enabled = !IsViewOrEdit;
+                    else if (item is HtmlInputCheckBox)
+                        ((HtmlInputCheckBox)item).Disabled = IsViewOrEdit;
+                }
+
+                //List Controls
+                if (ctrlType == ControlNameEnum.ListControl || ctrlType == ControlNameEnum.All)
+                {
+                    if (item is DropDownList)
+                        ((DropDownList)item).Enabled = !IsViewOrEdit;
+                    else if (item is RadioButtonList)
+                        ((RadioButtonList)item).Enabled = !IsViewOrEdit;
+                    else if (item is CheckBoxList)
+                        ((CheckBoxList)item).Enabled = !IsViewOrEdit;
+                    else if (item is ListBox)
+                        ((ListBox)item).Enabled = !IsViewOrEdit;
+                    else if (item is HtmlSelect)
+                        ((HtmlSelect)item).Disabled = IsViewOrEdit;
+                }
+
+                //File Upload Controls
+                if (item is FileUpload && (ctrlType == ControlNameEnum.FileUpload || ctrlType == ControlNameEnum.All))
+                {
+                    ((FileUpload)item).Enabled = !IsViewOrEdit;
+                }
+
+                if (item.Controls.Count > 0)
+                    SetControlsEnabled(item, ctrlType);
+            }
+        }
+
+        public enum ControlNameEnum
+        {
+            Panel = 0,
+            TextBox = 1,
+            CheckBox = 2,
+            ListControl = 3,
+            Button = 4,
+            FileUpload = 5,
+            All = 100//
         }
         #endregion
 

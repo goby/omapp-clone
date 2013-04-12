@@ -27,6 +27,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
+                if (Request.QueryString["view"] == "1")
+                    this.IsViewOrEdit = true; 
                 initial();
                 btnFormal.Visible = false; 
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
@@ -37,13 +39,15 @@ namespace OperatingManagement.Web.Views.PlanManage
                         isTempJH = true;
                         ViewState["isTempJH"] = true;
                         btnFormal.Visible = true;   //只有临时计划才能转为正式计划
+                        btnSurePlan.Visible = !(btnFormal.Visible);
                     }
 
                     HfID.Value = sID;
                     hfStatus.Value = "edit";    //编辑
                     BindJhTable(sID);
                     BindXML();
-                    hfURL.Value = "?type=XXXQ&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"];
+                    hfURL.Value = "?type=XXXQ&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"]
+                         + "&jhStartDate=" + Request.QueryString["jhStartDate"] + "&jhEndDate=" + Request.QueryString["jhEndDate"];
                     if ("detail" == Request.QueryString["op"])
                     {
                         ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");
@@ -52,8 +56,14 @@ namespace OperatingManagement.Web.Views.PlanManage
                 else
                 {
                     btnReturn.Visible = false;
-                    hfStatus.Value = "new"; //新建
                     btnSaveTo.Visible = false;
+                    btnSurePlan.Visible = false;
+                    hfStatus.Value = "new"; //新建
+                }
+                if (this.IsViewOrEdit)
+                {
+                    SetControlsEnabled(Page, ControlNameEnum.All);
+                    btnReturn.Visible = true;
                 }
             }
         }
@@ -470,7 +480,14 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         creater.FilePath = HfFileIndex.Value;
                         creater.CreateXXXQFile(objXXXQ, 1);
-                        ShowMsg(true);
+                        DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
+                        {
+                            Id = Convert.ToInt32(HfID.Value),
+                            SENDSTATUS = 0,
+                            USESTATUS = 0
+                        };
+                        var result = jh.UpdateStatus();
+                        ShowMsg(result == FieldVerifyResult.Success);
                     }
                 }
             }
@@ -837,10 +854,33 @@ namespace OperatingManagement.Web.Views.PlanManage
         private void ShowMsg(bool sucess)
         {
             if (sucess)
-                ltMessage.Text = "计划保存成功";
+                ShowMsg(sucess, "计划保存成功");
             else
-                ltMessage.Text = "计划保存失败";
+                ShowMsg(sucess, "计划保存失败");
+        }
+        private void ShowMsg(bool sucess, string msg)
+        {
+            if (sucess)
+                ltMessage.Text = msg;
+            else
+                ltMessage.Text = msg;
             hfTaskID.Value = ucOutTask1.SelectedValue;
+        }
+
+        protected void btnSurePlan_Click(object sender, EventArgs e)
+        {
+            if (hfStatus.Value != "new")
+            {
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
+                {
+                    Id = Convert.ToInt32(HfID.Value),
+                    SENDSTATUS = 0,
+                    USESTATUS = 1
+                };
+                var result = jh.UpdateStatus();
+                bool sucess = result == FieldVerifyResult.Success;
+                ShowMsg(sucess, (sucess ? "计划确认成功" : "计划确认失败"));
+            }
         }
     }
 }

@@ -36,14 +36,14 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             DataAccessLayer.PlanManage.YDSJ y = new DataAccessLayer.PlanManage.YDSJ { Id = id };
             DataAccessLayer.PlanManage.YDSJ obj = y.SelectById();
-            lblD.Text = obj.Times.ToString("yyyyMMdd HH:mm:ss.fff");
-            lblT.Text = obj.T.ToString();
-            lblA.Text = obj.A.ToString();
-            lblE.Text = obj.E.ToString();
-            lblI.Text = obj.I.ToString();
-            lblOhm.Text = obj.O.ToString();
-            lblOmega.Text = obj.W.ToString();
-            lblM.Text = obj.M.ToString();
+            //lblD.Text = obj.Times.ToString("yyyyMMdd HH:mm:ss.fff");
+            //lblT.Text = obj.T.ToString();
+            //lblA.Text = obj.A.ToString();
+            //lblE.Text = obj.E.ToString();
+            //lblI.Text = obj.I.ToString();
+            //lblOhm.Text = obj.O.ToString();
+            //lblOmega.Text = obj.W.ToString();
+            //lblM.Text = obj.M.ToString();
         }
 
         public override void OnPageLoaded()

@@ -57,7 +57,9 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         ZYSXType = 41,
         SatelliteState =42,
         SatelliteShape = 43,
-        SatelliteFace = 44
+        SatelliteFace = 44,
+
+        DMZOwner = 45
     }
 
     [Serializable]

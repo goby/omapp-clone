@@ -1,6 +1,10 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="TaskAdd.aspx.cs" Inherits="OperatingManagement.Web.Views.BusinessManage.BDManage.TaskAdd" %>
 <%@ Register src="../../../ucs/ucCBLSat.ascx" tagname="ucCBLSat" tagprefix="uc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <style type="text/css">
+        .text
+        {}
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="bizmanage" />
@@ -60,9 +64,9 @@
             </td>
         </tr>
         <tr>
-            <th style="width:100px;">当前任务(<span class="red">*</span>)</th>
+            <th style="width:100px;">是否有效(<span class="red">*</span>)</th>
             <td>
-                <asp:RadioButtonList ID="rblCurTask" runat="server" BorderColor="White" 
+                <asp:RadioButtonList ID="rblIsEffective" runat="server" BorderColor="White" 
                     BorderStyle="Double" BorderWidth="2px" RepeatDirection="Horizontal">
                     <asp:ListItem Value="1" Selected="True">是</asp:ListItem>
                     <asp:ListItem Value="0">否</asp:ListItem>
@@ -70,18 +74,18 @@
             </td>
         </tr>
         <tr>
-            <th style="width:100px;">开始时间(<span class="red">*</span>)</th>
-            <td><asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"  
-                    runat="server" Width="300px"></asp:TextBox><asp:RequiredFieldValidator ID="rv2" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtFrom" ErrorMessage="必须填写“开始日期”。"></asp:RequiredFieldValidator></td>
-        </tr>
-        <tr>
-            <th style="width:100px;">结束时间</th>
-            <td>
-                <asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"  
-                    runat="server" Width="300px"></asp:TextBox><asp:RequiredFieldValidator ID="rv3" runat="server" Display="Dynamic" ForeColor="Red"
-                     ControlToValidate="txtTo" ErrorMessage="必须填写“结束日期”。"></asp:RequiredFieldValidator>
-            </td>
+            <th style="width:100px;">发射时间(<span class="red">*</span>)</th>
+            <td><asp:TextBox ID="txtEmitTime" ClientIDMode="Static" CssClass="text"  onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"  
+                    runat="server" Width="179px"></asp:TextBox><span style="color:#3399FF;">毫秒数</span><asp:TextBox ID="txtMiniSeconds" 
+                    ClientIDMode="Static" CssClass="text" 
+                    runat="server" Width="48px"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rv2" runat="server" Display="Dynamic" ForeColor="Red"
+                     ControlToValidate="txtEmitTime" ErrorMessage="必须填写“发射时间”。"></asp:RequiredFieldValidator>
+                     <asp:RequiredFieldValidator ID="rv3" runat="server" Display="Dynamic" ForeColor="Red"
+                     ControlToValidate="txtMiniSeconds" ErrorMessage="必须填写“毫秒数”，3位数字。"></asp:RequiredFieldValidator>
+                    <asp:RangeValidator ID="rv4" runat="server" Display="Dynamic" MinimumValue="0"
+                    MaximumValue="999" ControlToValidate="txtMiniSeconds" Type="Integer" ForeColor="Red"
+                    ErrorMessage="毫秒数必须在0至999之间"></asp:RangeValidator></td>
         </tr>
         <tr>
             <th>&nbsp;</th>

@@ -81,12 +81,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 }
 
                 int rid = 0;
-                if (!int.TryParse(dplGroundStation.SelectedValue, out rid))
-                {
-                    trMessage.Visible = true;
-                    lblMessage.Text = "地面站序号格式错误";
-                    return;
-                }
+                //if (!int.TryParse(dplGroundStation.SelectedValue, out rid))
+                //{
+                //    trMessage.Visible = true;
+                //    lblMessage.Text = "地面站序号格式错误";
+                //    return;
+                //}
 
                 if (string.IsNullOrEmpty(txtEquipmentName.Text.Trim()))
                 {
@@ -139,12 +139,14 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
                 Framework.FieldVerifyResult result;
                 GroundResource groundResource = new GroundResource();
-                groundResource.RID = rid;
+                groundResource.DMZCode = dplGroundStation.SelectedValue;
                 groundResource.EquipmentName = txtEquipmentName.Text.Trim();
                 groundResource.EquipmentCode = txtEquipmentCode.Text.Trim();
                 groundResource.OpticalEquipment = opticalEquipment;
                 groundResource.FunctionType = functionType;
                 groundResource.Status = 1;//正常
+                groundResource.XYXSID = Convert.ToInt32(dplXyxs.SelectedValue);
+                groundResource.Coordinate = txtLongitude.Text.ToString() + "," + txtLatitude.Text.ToString() + "," + txtGaoCheng.Text.ToString();
                 groundResource.CreatedTime = DateTime.Now;
                 groundResource.CreatedUserID = LoginUserInfo.Id;
 
@@ -235,7 +237,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             try
             {
-                string url = @"~/Views/BusinessManage/ResourceManage.aspx?resourcetype=" + Server.UrlEncode("1");
+                string url = @"~/Views/BusinessManage/DMZResourceMan.aspx";
                 Response.Redirect(url);
             }
             catch (System.Threading.ThreadAbortException ex1)
@@ -277,24 +279,29 @@ namespace OperatingManagement.Web.Views.BusinessManage
         private void BindDataSource()
         {
             dplGroundStation.Items.Clear();
-            dplGroundStation.DataSource = new XYXSInfo().GetGrountStationList();
-            dplGroundStation.DataTextField = "AddrName";
-            dplGroundStation.DataValueField = "Id";
+            dplGroundStation.DataSource = new DMZ().SelectAll();
+            dplGroundStation.DataTextField = "DMZName";
+            dplGroundStation.DataValueField = "DMZCode";
             dplGroundStation.DataBind();
-            //dplGrountStation.Items.Insert(0, new ListItem("请选择", ""));
 
             dplOpticalEquipment.Items.Clear();
             dplOpticalEquipment.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.GroundResourceOpticalEquipment);
             dplOpticalEquipment.DataTextField = "key";
             dplOpticalEquipment.DataValueField = "value";
             dplOpticalEquipment.DataBind();
-            //dplOpticalEquipment.Items.Insert(0, new ListItem("请选择", ""));
 
             cblFunctionType.Items.Clear();
             cblFunctionType.DataSource = SystemParameters.GetSystemParameters(SystemParametersType.GroundResourceFunctionType);
             cblFunctionType.DataTextField = "key";
             cblFunctionType.DataValueField = "value";
             cblFunctionType.DataBind();
+
+            dplXyxs.Items.Clear();
+            dplXyxs.DataSource = new XYXSInfo().Cache.Where(t => t.Type == 0).ToList();
+            dplXyxs.DataTextField = "AddrName";
+            dplXyxs.DataValueField = "Id";
+            dplXyxs.DataBind();
+            dplXyxs.Items.Insert(0, new ListItem("请选择", "0"));
         }
         /// <summary>
         /// 绑定资源属性列表
@@ -316,9 +323,13 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             dplGroundStation.SelectedIndex = 0;
             dplOpticalEquipment.SelectedIndex = 0;
+            dplXyxs.SelectedIndex = 0;
 
             txtEquipmentName.Text = string.Empty;
             txtEquipmentCode.Text = string.Empty;
+            txtLatitude.Text = string.Empty;
+            txtLongitude.Text = string.Empty;
+            txtGaoCheng.Text = string.Empty;
 
             foreach (ListItem item in cblFunctionType.Items)
             {

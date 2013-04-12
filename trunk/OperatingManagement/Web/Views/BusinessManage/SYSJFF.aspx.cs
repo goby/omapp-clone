@@ -17,6 +17,7 @@ using OperatingManagement.Framework.Components;
 using OperatingManagement.DataAccessLayer.BusinessManage;
 using ServicesKernel.File;
 using ServicesKernel;
+using ServicesKernel.GDFX;
 
 namespace OperatingManagement.Web.Views.BusinessManage
 {
@@ -31,9 +32,15 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 txtTo.Attributes.Add("readonly", "true");
                 HidControl();
             }
+            else
+            {
+                if (this.ViewState["showfile"] != null)
+                    AddLinkButton();
+            }
             cpFZData.PostBackPage += new EventHandler(cpFZData_PostBackPage);
             cpUFData.PostBackPage += new EventHandler(cpUFData_PostBackPage);
             cpYCData.PostBackPage += new EventHandler(cpYCData_PostBackPage);
+            cpGDData.PostBackPage += new EventHandler(cpGDData_PostBackPage);
         }
 
         protected void cpFZData_PostBackPage(object sender, EventArgs e)
@@ -50,6 +57,12 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             BindData(false);
         }
+
+        protected void cpGDData_PostBackPage(object sender, EventArgs e)
+        {
+            BindData(false);
+        }
+
         /// <summary>
         /// 绑定YC控件数据源
         /// </summary>
@@ -99,6 +112,22 @@ namespace OperatingManagement.Web.Views.BusinessManage
         }
 
         /// <summary>
+        /// 绑定GD控件数据源
+        /// </summary>
+        /// <param name="listDatas"></param>
+        private void BindGDDataSource(List<GD> listDatas)
+        {
+            vGDData.Visible = true;
+            cpGDData.DataSource = listDatas;
+            cpGDData.PageSize = this.SiteSetting.PageSize;
+            if (listDatas.Count > this.SiteSetting.PageSize)
+                cpGDData.Visible = true;
+            cpGDData.BindToControl = rpGDData;
+            rpGDData.DataSource = cpGDData.DataSourcePaged;
+            rpGDData.DataBind();
+        }
+
+        /// <summary>
         /// 隐藏提示信息
         /// </summary>
         private void HideMessage()
@@ -112,6 +141,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
             vUFData.Visible = false;
             vYCData.Visible = false;
             vFZData.Visible = false;
+            vGDData.Visible = false;
         }
 
         /// <summary>
@@ -138,6 +168,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
+            ClearLinkButton();
             BindData(true);
             //string path = System.Configuration.ConfigurationManager.AppSettings["YCPGFilePath"];
             //System.IO.FileStream oFile = System.IO.File.Create(path + "1.txt");
@@ -149,6 +180,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
         {
             List<YCPG> listYCData = null;
             List<UserFrame> listUFData = null;
+            List<GD> listGDData = null;
             HidControl();
 
             #region 取查询条件
@@ -167,6 +199,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 cpFZData.CurrentPage = 1;
                 cpUFData.CurrentPage = 1;
                 cpYCData.CurrentPage = 1;
+                cpGDData.CurrentPage = 1;
                 if (txtFrom.Text != "")
                 {
                     if (!DateTime.TryParse(txtFrom.Text.Trim(), out dtFrom))
@@ -253,7 +286,7 @@ namespace OperatingManagement.Web.Views.BusinessManage
                 case "2"://FZ
                     try
                     {
-                        List<JH> listFZData = new JH().GetJHList("TYSJ", dtFrom, dtTo);
+                        List<JH> listFZData = new JH().GetJHList("TYSJ", dtFrom, dtTo, DateTime.MinValue, DateTime.MinValue);
                         BindFZDataSource(listFZData);
                     }
                     catch (Exception ex)
@@ -263,22 +296,26 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     finally { }
                     break;
             }
+            listGDData = (new GD()).GetList(dtFrom, dtTo, ucOutTask1.SelectedValue, "");
+            BindGDDataSource(listGDData);
         }
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
+            ClearLinkButton();
             BindData(false);
 
             string strYCIds = hfycids.Value;
             string strUFIds = hfufids.Value;
             string strFZIds = hffzids.Value;
+            string strGDIds = hfgdids.Value;
 
-            if (strYCIds.Equals(string.Empty) && strUFIds.Equals(string.Empty) && strFZIds.Equals(string.Empty))
+            if (strYCIds.Equals(string.Empty) && strUFIds.Equals(string.Empty) 
+                && strFZIds.Equals(string.Empty) && strGDIds.Equals(string.Empty))
             {
                 ShowMessage("没有选择要发送的数据。");
                 return;
             }
-            //return;
 
             #region 判断是否多选了，一种类型试验数据的子类只允许选一个（不要做限制了）
             /*
@@ -344,9 +381,39 @@ namespace OperatingManagement.Web.Views.BusinessManage
             */
             #endregion
 
-            Thread oThread = new Thread(new ThreadStart(Data2File));
-            oThread.Start();
-            ShowMessage("已提交后台进行处理。");
+            //Thread oThread = new Thread(new ThreadStart(Data2FileAndSend));
+            //oThread.Start();
+            //ShowMessage("已提交后台进行处理。");
+            Data2FileAndSend();
+        }
+
+        private void Data2FileAndSend()
+        {
+            string[] filePaths;
+            string[] gdFilePaths;
+            string msg = string.Empty;
+            Data2File(true, out filePaths, out gdFilePaths, out msg);
+            if (!msg.Equals(string.Empty))
+                ShowMessage("文件发送请求提交失败<br>失败原因：" + msg);
+            else
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                if (filePaths != null)
+                {
+                    for (int i = 0; i < filePaths.Length; i++)
+                    {
+                        sb.Append(filePaths[i] + "<br>");
+                    }
+                }
+                if (gdFilePaths != null)
+                {
+                    for (int i = 0; i < gdFilePaths.Length; i++)
+                    {
+                        sb.Append(gdFilePaths[i] + "<br>");
+                    }
+                }
+                ShowMessage("文件发送请求已提交成功，文件路径如下：<br>" + sb.ToString());
+            }
         }
 
         /// <summary>
@@ -354,12 +421,16 @@ namespace OperatingManagement.Web.Views.BusinessManage
         /// </summary>
         /// <param name="ids"></param>
         /// <param name="dataType"></param>
-        private void Data2File()
+        private void Data2File(bool send, out string[] filePaths, out string[] gdFilePaths, out string msg)
         {
             string strYCIds = hfycids.Value;
             string strUFIds = hfufids.Value;
             string strFZIds = hffzids.Value;
+            string strGDIds = hfgdids.Value;
             string sendWay = hfsendway.Value;
+            msg = string.Empty;
+            filePaths = null;
+            gdFilePaths = null;
             DateTime dt = DateTime.Now;
             string[] ycids = new string[0];
             if (!strYCIds.Equals(string.Empty))
@@ -391,40 +462,172 @@ namespace OperatingManagement.Web.Views.BusinessManage
                     }
                     break;
                 case "2"://FZ
-                    //if (fzids.Length == 1)
+                    if (fzids.Length == 1)
                         fzids[0] = fzids[0].Substring(0, fzids[0].IndexOf(';'));
                     break;
             }
             #endregion
+            if (sendWay.Equals(string.Empty))
+                sendWay = "0";
 
             BizFileCreator oBFCreator;
             string taskNo = ucOutTask1.SelectedValue;
-
+            int desID = 0;
+            string dataType = string.Empty;
             switch (ddlDataType.SelectedValue)
             {
                 case "0"://TJ
                     oBFCreator = new BizFileCreator();
-                    oBFCreator.CreateAndSendGCSJDataFile(ycids, ufids, taskNo, (CommunicationWays)Convert.ToInt32(sendWay));
+                    dataType = "GCSJ";
+                    desID = new XYXSInfo().GetByAddrMark(FileExchangeConfig.GetTgtListForSending(dataType)[0]).Id;
+                    if ((ycids != null && ycids.Length > 0) || (ufids != null && ufids.Length > 0))
+                        oBFCreator.CreateAndSendGCSJDataFile(dataType, ycids, ufids, taskNo
+                            , (CommunicationWays)Convert.ToInt32(sendWay), send, desID, out filePaths, out msg);
                     break;
                 case "1"://KJ
                     oBFCreator = new BizFileCreator();
-                    oBFCreator.CreateAndSendJDSJDataFile(ycids, taskNo, (CommunicationWays)Convert.ToInt32(sendWay));
+                    dataType = "JDSJ";
+                    desID = new XYXSInfo().GetByAddrMark(FileExchangeConfig.GetTgtListForSending(dataType)[0]).Id;
+                    if (ycids != null && ycids.Length > 0)
+                        oBFCreator.CreateAndSendJDSJDataFile(dataType, ycids, taskNo
+                            , (CommunicationWays)Convert.ToInt32(sendWay), send, desID, out filePaths, out msg);
                     break;
                 case "2"://FZ
-                    string dataType = "TYSJ";
+                    dataType = "TYSJ";
                     PlanFileCreator oPFCreator = new PlanFileCreator();
                     XYXSInfo oXyxs =  new XYXSInfo().GetByAddrMark(FileExchangeConfig.GetTgtListForSending(dataType)[0]);
+                    desID = oXyxs.Id;
+                    if (strFZIds.Equals(string.Empty))
+                        break;
                     //string filename = oPFCreator.CreateSendingTYSJFile(strFZIds, oXyxs.ADDRMARK, oXyxs.ADDRName + "(" + oXyxs.EXCODE + ")");
                     string filename = oPFCreator.CreateSendingTYSJFile(strFZIds, oXyxs.ADDRMARK);
-                    int desID = oXyxs.Id;
+                    if (!send)
+                        return;//不发送
+
                     int sourceID = new XYXSInfo().GetByAddrMark(Param.SourceCode).Id;
                     int infoId = new InfoType().GetIDByExMark(dataType);
-
                     FileSender oSender = new FileSender();
+                    filePaths = new string[1];
+                    filePaths[0] = Param.OutPutPath + filename;
                     oSender.SendFile(filename, Param.OutPutPath, (CommunicationWays)Convert.ToInt32(sendWay), sourceID, desID, infoId, true);
                     break;
             }
+            if (msg.Equals(string.Empty))//上面的执行都没有出错
+                CreateAndSendGDFile(send, strGDIds, desID, out gdFilePaths);
         }
 
+        private void CreateAndSendGDFile(bool send, string ids, int desID, out string[] filePaths)
+        {
+            filePaths = null;
+            try
+            {
+                PlanFileCreator creater = new PlanFileCreator();
+                string SendingFilePaths = creater.CreateSendingGDGSFile(ids, desID);
+                filePaths = SendingFilePaths.Split(new char[] { ',' });
+                if (send && !ids.Equals(string.Empty))
+                {
+                    int sourceID = new XYXSInfo().GetByAddrMark(Param.SourceCode).Id;
+                    int infoId = new InfoType().GetIDByExMark("GD");
+                    string sendWay = hfsendway.Value;
+                    if (sendWay.Equals(string.Empty))
+                        sendWay = "0";
+                    FileSender oSender = new FileSender();
+                    for (int i = 0; i < filePaths.Length; i++)
+                    {
+                        oSender.SendFile(filePaths[i], Param.OutPutPath, (CommunicationWays)Convert.ToInt32(sendWay)
+                            , sourceID, desID, infoId, true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("试验数据分发-生成轨道数据文件出现异常，异常原因", ex));
+            }
+        }
+
+        protected void btnCreate_Click(object sender, EventArgs e)
+        {
+            string[] filePaths;
+            string[] gdFilePaths;
+            string msg = string.Empty;
+            BindData(false);
+            Data2File(false, out filePaths, out gdFilePaths, out msg);
+            if (!msg.Equals(string.Empty))
+                ShowMessage("文件生成失败<br>失败原因：" + msg);
+            else
+            {
+                string paths = string.Empty;
+                if (filePaths != null)
+                {
+                    for (int i = 0; i < filePaths.Length; i++)
+                    {
+                        paths += filePaths[i] + ",";
+                    }
+                }
+                if (gdFilePaths != null)
+                {
+                    for (int i = 0; i < gdFilePaths.Length; i++)
+                    {
+                        paths += gdFilePaths[i] + ",";
+                    }
+                }
+                if (!paths.Equals(string.Empty))
+                {
+                    ShowMessage("文件已生成成功");
+                    this.ViewState["showfile"] = "1";
+                    this.ViewState["filepath"] = paths.TrimEnd(new char[]{','}).Split(new char[]{','});
+                    AddLinkButton();
+                }
+                else
+                    ShowMessage("没有生成如何文件");
+            }
+        }
+
+        private void ClearLinkButton()
+        {
+            this.ViewState["showfile"] = null;
+            divFilePath.Visible = false;
+        }
+
+        private void AddLinkButton()
+        {
+            string[] filePaths = (string[])this.ViewState["filepath"];
+            LinkButton lbFile;
+            for (int i = 0; i < filePaths.Length; i++)
+            {
+                lbFile = new LinkButton();
+                lbFile.Text = filePaths[i];
+                lbFile.Click += new EventHandler(lbtFilePath_Click);
+                divFilePath.Controls.Add(lbFile);
+            }
+            divFilePath.Visible = true;
+        }
+
+        protected void lbtFilePath_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string strFilePath = ((LinkButton)sender).Text.Trim();
+                if (string.IsNullOrEmpty(strFilePath) || !System.IO.File.Exists(strFilePath))
+                {
+                    ShowMessage("文件不存在。");
+                    return;
+                }
+
+                Response.Clear();
+                Response.Buffer = false;
+                Response.ContentType = "application/octet-stream";
+                Response.AppendHeader("content-disposition", "attachment;filename=" + System.IO.Path.GetFileName(strFilePath) + ";");
+                Response.Write(System.IO.File.ReadAllText(strFilePath));
+                Response.Flush();
+                Response.End();
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("试验数据分发-生成文件出现异常，异常原因", ex));
+            }
+        }
     }
 }

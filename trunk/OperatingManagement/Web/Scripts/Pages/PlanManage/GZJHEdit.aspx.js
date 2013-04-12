@@ -111,9 +111,8 @@ function GetDateTimeFormat(curr, second) {
 
     var yyyy = formatDate.getFullYear();
     //var yy = yyyy.toString().substring(2);
-    var m = formatDate.getMonth();
+    var m = formatDate.getMonth() + 1;
     var mm = m < 10 ? "0" + m : m;
-    mm = mm * 1 + 1;
     var d = formatDate.getDate();
     var dd = d < 10 ? "0" + d : d;
 
