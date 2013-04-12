@@ -58,6 +58,10 @@ function sendYDSJ1() {
         showMsg('请选择您要发送的引导数据。');
         return false;
     }
+    if (chks.length > 1) {
+        showMsg('只能选择一条引导数据。');
+        return false;
+    }
 
     var ids = chks.map(function () { return this.value; }).get().join(',');
     showSend(ids);

@@ -75,11 +75,27 @@ namespace OperatingManagement.Framework
         /// <summary>
         /// 接收成功
         /// </summary>
-        Successs = 2,
+        ReceiveSuccesss = 2,
         /// <summary>
         /// 接收失败
         /// </summary>
-        Failed = 3
+        Failed = 3,
+        /// <summary>
+        /// 待处理
+        /// </summary>
+        ToProcess = 4,
+        /// <summary>
+        /// 处理成功
+        /// </summary>
+        ProcessSuccess =5,
+        /// <summary>
+        /// 无法识别
+        /// </summary>
+        UnRecognized = 6,
+        /// <summary>
+        /// 处理失败
+        /// </summary>
+        ProcessFailed= 7
     }
 
     /// <summary>

@@ -43,14 +43,14 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
             BakIP = dr["BakIP"] == DBNull.Value ? string.Empty : dr["BakIP"].ToString();
             UDPPort = dr["UDPPort"] == DBNull.Value ? 0 : Convert.ToInt32(dr["UDPPort"].ToString());
             Type = Convert.ToInt32(dr["Type"]);
-            Own = dr["Own"] == DBNull.Value ? string.Empty : dr["Own"].ToString();
-            Coordinate = dr["Coordinate"] == DBNull.Value ? string.Empty : dr["Coordinate"].ToString();
+            //Own = dr["Own"] == DBNull.Value ? string.Empty : dr["Own"].ToString();
+            //Coordinate = dr["Coordinate"] == DBNull.Value ? string.Empty : dr["Coordinate"].ToString();
             Status = Convert.ToInt32(dr["Status"]);
-            CreatedTime = Convert.ToDateTime(dr["CreatedTime"]);
-            CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["CreatedUserID"]);
-            UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]);
-            UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"]);
-            DWCode = dr["DWCODE"].ToString();
+            //CreatedTime = Convert.ToDateTime(dr["CreatedTime"]);
+            //CreatedUserID = dr["CreatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["CreatedUserID"]);
+            //UpdatedTime = dr["UpdatedTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["UpdatedTime"]);
+            //UpdatedUserID = dr["UpdatedUserID"] == DBNull.Value ? 0.0 : Convert.ToDouble(dr["UpdatedUserID"]);
+            //DWCode = dr["DWCODE"].ToString();
 
             if (dr["FTPPath"] != DBNull.Value && dr["FTPPath"] != null)
             {
@@ -282,14 +282,14 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                                         new OracleParameter("p_UDPPort",UDPPort == 0 ? DBNull.Value as object : UDPPort),
                                         new OracleParameter("p_FTPPath",string.IsNullOrEmpty(FTPPath + FTPUser + FTPPwd) ? DBNull.Value as object : FTPPath + "@" + FTPUser + "@" + FTPPwd),
                                         new OracleParameter("p_Type",Type),
-                                        new OracleParameter("p_Own",string.IsNullOrEmpty(Own) ? DBNull.Value as object : Own),
-                                        new OracleParameter("p_Coordinate",string.IsNullOrEmpty(Coordinate) ? DBNull.Value as object : Coordinate),
+                                        //new OracleParameter("p_Own",string.IsNullOrEmpty(Own) ? DBNull.Value as object : Own),
+                                        //new OracleParameter("p_Coordinate",string.IsNullOrEmpty(Coordinate) ? DBNull.Value as object : Coordinate),
                                         new OracleParameter("p_Status",Status),
-                                        new OracleParameter("p_CreatedTime",CreatedTime),
-                                        new OracleParameter("p_CreatedUserID",CreatedUserID == 0.0 ? DBNull.Value as object : CreatedUserID),
-                                        new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
-                                        new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0.0 ? DBNull.Value as object : UpdatedUserID),
-                                        new OracleParameter("p_DWCode",DWCode),
+                                        //new OracleParameter("p_CreatedTime",CreatedTime),
+                                        //new OracleParameter("p_CreatedUserID",CreatedUserID == 0.0 ? DBNull.Value as object : CreatedUserID),
+                                        //new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
+                                        //new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0.0 ? DBNull.Value as object : UpdatedUserID),
+                                        //new OracleParameter("p_DWCode",DWCode),
                                         v_ID,
                                         v_Result});
             if (v_ID.Value != null && v_ID.Value != DBNull.Value)
@@ -317,14 +317,14 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                                         new OracleParameter("p_UDPPort",UDPPort == 0 ? DBNull.Value as object : UDPPort),
                                         new OracleParameter("p_FTPPath",string.IsNullOrEmpty(FTPPath) ? DBNull.Value as object : FTPPath + "@" + FTPUser + "@" + FTPPwd),
                                         new OracleParameter("p_Type",Type),
-                                        new OracleParameter("p_Own",string.IsNullOrEmpty(Own) ? DBNull.Value as object : Own),
-                                        new OracleParameter("p_Coordinate",string.IsNullOrEmpty(Coordinate) ? DBNull.Value as object : Coordinate),
+                                        //new OracleParameter("p_Own",string.IsNullOrEmpty(Own) ? DBNull.Value as object : Own),
+                                        //new OracleParameter("p_Coordinate",string.IsNullOrEmpty(Coordinate) ? DBNull.Value as object : Coordinate),
                                         new OracleParameter("p_Status",Status),
-                                        new OracleParameter("p_CreatedTime",CreatedTime),
-                                        new OracleParameter("p_CreatedUserID",CreatedUserID == 0.0 ? DBNull.Value as object : CreatedUserID),
-                                        new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
-                                        new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0.0 ? DBNull.Value as object : UpdatedUserID),
-                                        new OracleParameter("p_DWCode",DWCode),
+                                        //new OracleParameter("p_CreatedTime",CreatedTime),
+                                        //new OracleParameter("p_CreatedUserID",CreatedUserID == 0.0 ? DBNull.Value as object : CreatedUserID),
+                                        //new OracleParameter("p_UpdatedTime",UpdatedTime == DateTime.MinValue ? DBNull.Value as object : UpdatedTime),
+                                        //new OracleParameter("p_UpdatedUserID",UpdatedUserID == 0.0 ? DBNull.Value as object : UpdatedUserID),
+                                        //new OracleParameter("p_DWCode",DWCode),
                                         v_Result});
             RefreshCache();
             return (FieldVerifyResult)Convert.ToInt32(v_Result.Value);

@@ -13,84 +13,80 @@
     计划管理 &gt; 查看试验计划
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="BodyContent" runat="server">
-    <div class="index_content_search">
-        <table cellspacing="0" cellpadding="0" class="searchTable">
-            <tr>
-                <th>
-                    起始时间：
-                </th>
-                <td>
-                    <asp:TextBox ID="txtStartDate" ClientIDMode="Static" CssClass="text" runat="server"
-                        onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
-                </td>
-                <th>
-                    结束时间：
-                </th>
-                <td>
-                    <asp:TextBox ID="txtEndDate" ClientIDMode="Static" CssClass="text" runat="server"
-                        onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
-                </td>
-                <td>
-                    <asp:Button class="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
-                        Text="查询" Width="69px" />
-                    &nbsp;<%--<asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
-                    onclick="btnReset_Click" />--%>
-                    <button class="button" onclick="return clearField();" style="width: 65px;">
-                        清空</button>
-                    &nbsp;<asp:CompareValidator ID="CompareValidator1" runat="server" ControlToCompare="txtStartDate"
-                        ControlToValidate="txtEndDate" Display="Dynamic" ErrorMessage="结束时间应大于起始时间" ForeColor="Red"
-                        Operator="GreaterThanEqual" Type="Date"></asp:CompareValidator>
-                        <div style="display:none;">
-                        <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
-<%--                        <asp:TextBox ID="txtPlanID" runat="server" ClientIDMode="Static"></asp:TextBox>
-                        <asp:TextBox ID="txtPlanType" runat="server" ClientIDMode="Static"></asp:TextBox>--%>
-                        <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" 
-                                OnClick="btnHidden_Click" />
-                                <div>
-                    <asp:Button ClientIDMode="Static"  ID="btnSubmit" class="button" runat="server" OnClick="btnSubmit_Click"
-                        Text="发送" />
-                    &nbsp;&nbsp;
-                    <asp:Button ID="btnCancel" class="button" runat="server" OnClick="btnCancel_Click"
+    <table cellspacing="0" cellpadding="0" class="searchTable">
+        <tr>
+            <th style="width:10%;">创建时间</th>
+            <th style="width:10%;">起始时间：</th>
+            <td style="width:25%;">
+                <asp:TextBox ID="txtCStartDate" ClientIDMode="Static" Width="200px"  CssClass="text" runat="server" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+            </td>
+            <th style="width:10%;">结束时间：</th>
+            <td style="width:25%;">
+                <asp:TextBox ID="txtCEndDate" ClientIDMode="Static" Width="200px"  CssClass="text" runat="server" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+            </td>
+            <td style="width:20%;">
+                <asp:CompareValidator ID="cv1" runat="server" 
+                    ControlToCompare="txtCStartDate" ControlToValidate="txtCEndDate" 
+                    Display="Dynamic" ErrorMessage="结束时间应大于起始时间" ForeColor="Red" 
+                    Operator="GreaterThanEqual" Type="Date"></asp:CompareValidator></td>
+        </tr>
+        <tr>
+            <th>计划时间</th>
+            <th>起始时间：</th>
+            <td>
+                <asp:TextBox ID="txtJHStartDate" ClientIDMode="Static" Width="200px"  CssClass="text" runat="server" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+            </td>
+            <th>结束时间：</th>
+            <td>
+                <asp:TextBox ID="txtJHEndDate" ClientIDMode="Static" Width="200px"  CssClass="text" runat="server" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+            </td>
+            <td>
+                <asp:CompareValidator ID="cv2" runat="server" 
+                    ControlToCompare="txtJHStartDate" ControlToValidate="txtJHEndDate" 
+                    Display="Dynamic" ErrorMessage="计划时间的结束时间应大于起始时间" ForeColor="Red" 
+                    Operator="GreaterThanEqual" Type="Date"></asp:CompareValidator>
+                    
+                <asp:Button class="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
+                    Text="查询" Width="69px" />
+                <button class="button" onclick="return clearField();" style="width: 65px;">清空</button>&nbsp;
+                <div style="display:none;">
+                    <asp:TextBox ID="txtId" runat="server" ClientIDMode="Static"></asp:TextBox>
+                    <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" OnClick="btnHidden_Click" />
+                    <div>
+                        <asp:Button ClientIDMode="Static"  ID="btnSubmit" class="button" runat="server" OnClick="btnSubmit_Click"
+                        Text="发送" />&nbsp;&nbsp;
+                        <asp:Button ID="btnCancel" class="button" runat="server" OnClick="btnCancel_Click"
                         Text="取消" />
-                        </div>
-                        </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div id="divResourceStatus" class="index_content_view">
-    <asp:Panel ID ="pnlAll1" runat="server">
-                    <div id="selectAll1" >
-                    <table class="listTitle">
-                        <tr>
-                            <td class="listTitle-c1">
-                                <button class="button" onclick="return selectAll();">
-                                    全选</button>&nbsp;&nbsp;
-                                <button class="button" onclick="return sendPlan();">
-                                    发送所选计划</button>
-                            </td>
-                            <td class="listTitle-c2">
-                             <asp:Label ID="Label1" runat="server" Text="Label"  CssClass="error">发送计划时如选择多个计划，生成的外发文件后面的计划会覆盖前面的计划</asp:Label>
-                                <div class="load" id="submitIndicator" style="display: none">
-                                    提交中，请稍候。。。</div>
-                            </td>
-                        </tr>
-                    </table>
                     </div>
-         </asp:Panel>
-        <asp:Repeater ID="rpDatas" runat="server">
+                </div>
+            </td>
+        </tr>
+    </table>
+    <asp:Repeater ID="rpDatas" runat="server">
             <HeaderTemplate>
                 <table class="list">
                     <tr>
                         <th style="width:20px;"><input type="checkbox" onclick="checkAll(this)" /></th>
-                        <th style="width: 150px;">
+                        <th style="width: 80px;">
                             计划编号
                         </th>
                         <th style="width: 150px;">
                             任务名称
                         </th>
-                        <th style="width: 150px;">
+                        <th style="width: 80px;">
                             计划类别
+                        </th>
+                        <th style="width: 80px;">
+                            源类型
+                        </th>
+                        <th style="width: 70px;">
+                            源序号
+                        </th>
+                        <th style="width: 150px;">
+                            创建时间
+                        </th>
+                        <th style="width: 180px;">
+                            文件路径
                         </th>
                         <th style="width: 150px;">
                             开始时间
@@ -118,6 +114,18 @@
                         <%# Eval("plantype")%>
                     </td>
                     <td>
+                        <%# (Eval("SRCType").ToString() == "1" ? "试验程序" : (Eval("SRCType").ToString() == "0"? "空白计划" : "其他"))%>
+                    </td>
+                    <td>
+                        <%# Eval("SRCID")%>
+                    </td>
+                    <td>
+                        <%# Eval("CTime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
+                    </td>
+                    <td>
+                        <%# Eval("FileIndex")%>
+                    </td>
+                    <td>
                         <%# Eval("starttime", "{0:" + this.SiteSetting.DateTimeFormat + "}")%>
                     </td>
                     <td>
@@ -133,25 +141,22 @@
                 </tbody> </table>
             </FooterTemplate>
         </asp:Repeater>
-        <asp:Panel ID ="pnlAll2" runat="server">
-                    <div id="selectAll2" >
-                    <table class="listTitle">
-                        <tr>
-                            <td class="listTitle-c1">
-                                <button class="button" onclick="return selectAll();">
-                                    全选</button>&nbsp;&nbsp;
-                                <button class="button" onclick="return sendPlan();">
-                                    发送所选计划</button>
-                            </td>
-                            <td class="listTitle-c2">
-                                <om:CollectionPager ID="cpPager" runat="server">
-                                </om:CollectionPager>
-                            </td>
-                        </tr>
-                    </table>
-                    </div>
-                    </asp:Panel>
-    </div>
+    <asp:Panel ID ="pnlAll2" runat="server">
+        <table class="listTitle">
+            <tr>
+                <td class="listTitle-c1">
+                    <button class="button" onclick="return selectAll();">
+                        全选</button>&nbsp;&nbsp;
+                    <button class="button" onclick="return sendPlan();">
+                        发送计划</button>
+                </td>
+                <td class="listTitle-c2">
+                    <om:CollectionPager ID="cpPager" runat="server">
+                    </om:CollectionPager>
+                </td>
+            </tr>
+        </table>
+    </asp:Panel>
     <div id="tartgetPanel" style="display: none">
         <table style="text-align: center;">
             <tr>

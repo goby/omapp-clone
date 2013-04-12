@@ -29,6 +29,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
+                if (Request.QueryString["view"] == "1")
+                    this.IsViewOrEdit = true; 
                 btnFormal.Visible = false; 
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 {
@@ -38,6 +40,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                         isTempJH = true;
                         ViewState["isTempJH"] = true;
                         btnFormal.Visible = true;   //只有临时计划才能转为正式计划
+                        btnSurePlan.Visible = !(btnFormal.Visible);
                     }
 
                     HfID.Value = sID;
@@ -45,7 +48,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     inital(false);
                     BindJhTable(sID);
                     BindXML();
-                    hfURL.Value = "?type=GZJH&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"];
+                    hfURL.Value = "?type=GZJH&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"]
+                         + "&jhStartDate=" + Request.QueryString["jhStartDate"] + "&jhEndDate=" + Request.QueryString["jhEndDate"];
                     if ("detail" == Request.QueryString["op"])
                     {
                         ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");
@@ -54,9 +58,15 @@ namespace OperatingManagement.Web.Views.PlanManage
                 else
                 {
                     btnReturn.Visible = false;
-                    hfStatus.Value = "new"; //新建
                     btnSaveTo.Visible = false;
+                    btnSurePlan.Visible = false;
+                    hfStatus.Value = "new"; //新建
                     inital(true);
+                }
+                if (this.IsViewOrEdit)
+                {
+                    SetControlsEnabled(Page, ControlNameEnum.All);
+                    btnReturn.Visible = true;
                 }
             }
             
@@ -260,6 +270,17 @@ namespace OperatingManagement.Web.Views.PlanManage
                         creater.FilePath = HfFileIndex.Value;
                         creater.CreateGZJHFile(obj, 1);
                         ShowMsg(true);
+                        if (!isTempJH)
+                        {
+                            DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
+                            {
+                                Id = Convert.ToInt32(HfID.Value),
+                                SENDSTATUS = 0,
+                                USESTATUS = 0
+                            };
+                            var result = jh.UpdateStatus();
+                            ShowMsg(result == FieldVerifyResult.Success);
+                        }
                     }
                 }
             }
@@ -287,6 +308,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
 
                 string filepath = creater.CreateGZJHFile(obj, 0);
+                
                 DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
                 {
                     TaskID = obj.TaskID,
@@ -402,7 +424,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 btnSaveTo.Visible = true;
                 btnReset.Visible = false;
                 btnFormal.Visible = false;
-
+                btnSurePlan.Visible = !(btnFormal.Visible);
                 #endregion
 
                 txtJXH.Text = obj.JXH;  //另存后显示新的序号
@@ -490,7 +512,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
-                    XYXSInfo oXyxs = new XYXSInfo();
+                    DMZ oDMZ = new DMZ();
                     Task oTask = new Task();
                     GZJH_Content g = (GZJH_Content)e.Item.DataItem;
                     #region 初始化各个下拉列表的值
@@ -509,22 +531,24 @@ namespace OperatingManagement.Web.Views.PlanManage
                     }
                     //工作单位
                     DropDownList ddlDW = (DropDownList)e.Item.FindControl("ddlDW") as DropDownList;
-                    ddlDW.DataSource = oXyxs.Cache.Where(t=>t.Type == 0 && t.Own != "02").ToList();
-                    ddlDW.DataTextField = "AddrName";
-                    ddlDW.DataValueField = "DWCODE";
+                    ddlDW.DataSource = oDMZ.Cache.Where(t=>t.Owner != 2).ToList();
+                    ddlDW.DataTextField = "DMZName";
+                    ddlDW.DataValueField = "DWCode";
                     ddlDW.DataBind();
                     if (!string.IsNullOrEmpty(g.DW))
                     {
                         ddlDW.SelectedValue = g.DW;
                     }
                     //设备代号
-                    List<XYXSInfo> lstResult = oXyxs.Cache.Where(t => t.DWCode == ddlDW.SelectedValue).ToList();
+                    List<DMZ> lstResult = oDMZ.Cache.Where(t => t.DWCode == ddlDW.SelectedValue).ToList();
                     string strTmp = string.Empty;
                     DropDownList ddlSB = (DropDownList)e.Item.FindControl("ddlSB") as DropDownList;
                     if (lstResult.Count > 0)
                     {
-                        strTmp = lstResult[0].INCODE;
-                        ddlSB.DataSource = (new GroundResource()).SelectByDMZIncode(strTmp);
+                        strTmp = lstResult[0].DMZCode;
+                        GroundResource oGR = new GroundResource();
+                        oGR.DMZCode = strTmp;
+                        ddlSB.DataSource = oGR.SelectByDMZCode();
                         ddlSB.DataTextField = "EQUIPMENTNAME";
                         ddlSB.DataValueField = "EQUIPMENTCODE";
                         ddlSB.DataBind();
@@ -701,6 +725,11 @@ namespace OperatingManagement.Web.Views.PlanManage
             return path;
         }
 
+        /// <summary>
+        /// 导入航捷进出站数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnGetStationData_Click(object sender, EventArgs e)
         {
             GZJH ojh =null;
@@ -836,12 +865,14 @@ namespace OperatingManagement.Web.Views.PlanManage
             RepeaterItem rpi = (RepeaterItem)ddlDW.Parent;
             DropDownList ddlSB = rpi.FindControl("ddlSB") as DropDownList;
 
-            List<XYXSInfo> lstResult = new XYXSInfo().Cache.Where(t => t.DWCode == ddlDW.SelectedValue).ToList();
+            List<DMZ> lstResult = new DMZ().Cache.Where(t => t.DWCode == ddlDW.SelectedValue).ToList();
             string strTmp = string.Empty;
             if (lstResult.Count > 0)
             {
-                strTmp = lstResult[0].ADDRMARK;
-                ddlSB.DataSource = (new GroundResource()).SelectAll().Where(t => t.AddrMark == strTmp).ToList();
+                strTmp = lstResult[0].DMZCode;
+                GroundResource oGR = new GroundResource();
+                oGR.DMZCode = strTmp;
+                ddlSB.DataSource = oGR.SelectByDMZCode();
                 ddlSB.DataTextField = "EQUIPMENTNAME";
                 ddlSB.DataValueField = "EQUIPMENTCODE";
                 ddlSB.DataBind();
@@ -850,18 +881,98 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         private void ShowMsg(bool sucess)
         {
-            trMessage.Visible = true;
             if (sucess)
-                ltMessage.Text = "计划保存成功";
+                ShowMsg(sucess, "计划保存成功");
             else
-                ltMessage.Text = "计划保存失败";
+                ShowMsg(sucess, "计划保存失败");
+        }
+
+        private void ShowMsg(bool sucess, string msg)
+        {
+            trMessage.Visible = true;
+            ltMessage.Text = msg;
             hfTaskID.Value = ddlMutiSatTask.SelectedValue;
+        }
+
+        private void ShowMsg(string msg)
+        {
+            trMessage.Visible = true;
+            ltMessage.Text = msg;
         }
 
         private void HideMsg()
         {
             trMessage.Visible = false;
             ltMessage.Text = "";
+        }
+
+        /// <summary>
+        /// 确认计划
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSurePlan_Click(object sender, EventArgs e)
+        {
+            if (hfStatus.Value != "new")
+            {
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
+                {
+                    Id = Convert.ToInt32(HfID.Value),
+                    SENDSTATUS = 0,
+                    USESTATUS = 1
+                };
+                var result = jh.UpdateStatus();
+                bool success = result == FieldVerifyResult.Success;
+                ShowMsg(success, (success?"计划确认成功":"计划确认失败"));
+            }
+        }
+
+        protected void btnCreateFile_Click(object sender, EventArgs e)
+        {
+            string SendingFilePaths = string.Empty;
+            PlanFileCreator creater = new PlanFileCreator();
+            HideMsg();
+            divFiles.Visible = false;
+            try
+            {
+                string targets = string.Empty;
+                SendingFilePaths = creater.CreateSendingGZJHFile(HfID.Value, out targets, true);
+                lblFilePath.Text = SendingFilePaths;
+                lbtFilePath_Click(null, null);
+                //ShowMsg("文件生成成功。");
+                //divFiles.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                throw new AspNetException("地面站计划-生成文件出现异常，异常原因", ex);
+            }
+        }
+
+        protected void lbtFilePath_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string strFilePath = lblFilePath.Text.Trim();
+                if (string.IsNullOrEmpty(strFilePath) || !System.IO.File.Exists(strFilePath))
+                {
+                    ShowMsg("文件不存在。");
+                    return;
+                }
+
+                Response.Clear();
+                Response.Buffer = false;
+                Response.ContentType = "application/octet-stream";
+                Response.AppendHeader("content-disposition", "attachment;filename=" + System.IO.Path.GetFileName(strFilePath) + ";");
+                Response.Write(System.IO.File.ReadAllText(strFilePath));
+                Response.Flush();
+                Response.End();
+            }
+            catch (System.Threading.ThreadAbortException ex1)
+            { }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("地面站计划-生成文件出现异常，异常原因", ex));
+            }
         }
     }
 }

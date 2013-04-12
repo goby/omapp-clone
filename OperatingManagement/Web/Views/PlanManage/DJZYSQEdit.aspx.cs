@@ -31,6 +31,8 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             if (!IsPostBack)
             {
+                if (Request.QueryString["view"] == "1")
+                    this.IsViewOrEdit = true;
                 btnWord.Visible = false;
                 btnFormal.Visible = false; 
                 txtPlanStartTime.Attributes.Add("readonly", "true");
@@ -47,6 +49,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                         isTempJH = true;
                         ViewState["isTempJH"] = true;
                         btnFormal.Visible = true;   //只有临时计划才能转为正式计划
+                        btnSurePlan.Visible = !(btnFormal.Visible);
                     }
 
                     HfID.Value = sID;
@@ -55,7 +58,8 @@ namespace OperatingManagement.Web.Views.PlanManage
                     hfSBJHID.Value = "-1";
                     BindJhTable(sID);
                     BindXML();
-                    hfURL.Value = "?type=DJZYSQ&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"];
+                    hfURL.Value = "?type=DJZYSQ&startDate=" + Request.QueryString["startDate"] + "&endDate=" + Request.QueryString["endDate"]
+                         + "&jhStartDate=" + Request.QueryString["jhStartDate"] + "&jhEndDate=" + Request.QueryString["jhEndDate"];
                     if ("detail" == Request.QueryString["op"])
                     {
                         ClientScript.RegisterStartupScript(this.GetType(), "hide", "<script type='text/javascript'>hideAllButton();</script>");
@@ -64,11 +68,16 @@ namespace OperatingManagement.Web.Views.PlanManage
                 else
                 {
                     btnReturn.Visible = false;
-                    hfStatus.Value = "new"; //新建
                     btnSaveTo.Visible = false;
+                    btnSurePlan.Visible = false;
+                    hfStatus.Value = "new"; //新建
                     initial();
                 }
-
+                if (this.IsViewOrEdit)
+                {
+                    SetControlsEnabled(Page, ControlNameEnum.All);
+                    btnReturn.Visible = true;
+                }
             }
         }
 
@@ -1319,6 +1328,16 @@ namespace OperatingManagement.Web.Views.PlanManage
                     {
                         creater.FilePath = HfFileIndex.Value;
                         creater.CreateDMJHFile(obj, 1);
+                        if (!isTempJH)
+                        {
+                            DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
+                            {
+                                Id = Convert.ToInt32(HfID.Value),
+                                SENDSTATUS = 0,
+                                USESTATUS = 0
+                            };
+                            var result = jh.UpdateStatus();
+                        }
                     }
                 }
 
@@ -1568,7 +1587,7 @@ namespace OperatingManagement.Web.Views.PlanManage
             endDate = DateTime.Now.AddDays(1);
             string planType = "DJZYJH";
 
-            List<JH> listDatas = (new JH()).GetJHList(planType, startDate, endDate);
+            List<JH> listDatas = (new JH()).GetJHList(planType, startDate, endDate, DateTime.MinValue, DateTime.MinValue);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = 7;
             cpPager.BindToControl = rpDatas;
@@ -1943,7 +1962,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 btnSaveTo.Visible = false;
                 btnReset.Visible = false;
                 btnFormal.Visible = false;
-
+                btnSurePlan.Visible = !(btnFormal.Visible);
                 #endregion
 
                 ltMessage.Text = "计划保存成功";
@@ -2069,6 +2088,30 @@ namespace OperatingManagement.Web.Views.PlanManage
             Response.Flush();
             //Response.End();
         }
-        //
+
+        protected void btnSurePlan_Click(object sender, EventArgs e)
+        {
+            if (hfStatus.Value != "new")
+            {
+                DataAccessLayer.PlanManage.JH jh = new DataAccessLayer.PlanManage.JH(isTempJH)
+                {
+                    Id = Convert.ToInt32(HfID.Value),
+                    SENDSTATUS = 0,
+                    USESTATUS = 1
+                };
+                try
+                {
+                    var result = jh.UpdateStatus();
+                    if (result == FieldVerifyResult.Success)
+                        ltMessage.Text = "计划确认成功";
+                    else
+                        ltMessage.Text = "计划确认失败";
+                }
+                catch (Exception ex)
+                {
+                    throw (new AspNetException("确认测控资源使用申请出现异常，异常原因", ex));
+                }
+            }
+        }
     }
 }

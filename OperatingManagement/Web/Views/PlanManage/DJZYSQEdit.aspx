@@ -500,25 +500,28 @@
         </table>
     </div>
     <br />
-   <div style="width: 750px; text-align: center;">
+   <div style="width: 850px; text-align: center;">
     <asp:Label ID="ltMessage" runat="server" CssClass="error" Text="任务基本信息字段都必须填写。"></asp:Label>
    </div>
-    <div style="width: 750px; text-align: center;">
+    <div style="width: 850px; text-align: center;">
         <asp:Button ID="btnSubmit" runat="server" OnClientClick="return CheckClientValidate();" CssClass="button" Text="保存计划" OnClick="btnSubmit_Click" />
-        &nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;
         <asp:Button ID="btnSaveTo" runat="server" OnClientClick="return CheckClientValidate();" CssClass="button" Text="另存计划" OnClick="btnSaveTo_Click" />
     &nbsp;&nbsp;
-        <asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
+        <asp:Button ID="btnReset" CssClass="button" runat="server" Text="重置" Width="65px" 
                     onclick="btnReset_Click" CausesValidation="False" />
                     &nbsp;&nbsp; 
-        <asp:Button ID="btnReturn" class="button" runat="server" 
+        <asp:Button ID="btnReturn" CssClass="button" runat="server" 
                     Text="返回" Width="65px" 
                     onclick="btnReturn_Click" CausesValidation="False" />
-    &nbsp;&nbsp;&nbsp;
-                <asp:Button ID="btnFormal"  class="button" runat="server" onclick="btnFormal_Click"
+    &nbsp;&nbsp;
+                <asp:Button ID="btnFormal"  CssClass="button" runat="server" onclick="btnFormal_Click"
                     Text="转为正式计划" />
-        &nbsp;
-                <asp:Button ID="btnWord"  class="button" runat="server" onclick="btnWord_Click" CausesValidation="false"
+        &nbsp;&nbsp;
+                <asp:Button ID="btnSurePlan"  CssClass="button" runat="server"
+                    Text="确认计划" onclick="btnSurePlan_Click" />
+        &nbsp;&nbsp;
+                <asp:Button ID="btnWord"  CssClass="button" runat="server" onclick="btnWord_Click" CausesValidation="false"
                     Text="导出Word文档" />
         </div>
     <div style="display: none">

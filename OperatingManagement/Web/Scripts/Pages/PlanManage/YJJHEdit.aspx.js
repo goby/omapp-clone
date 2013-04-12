@@ -62,3 +62,18 @@ function setdayte(o){
 			changeYear: true
 		});
 }
+
+function SetSysName(o, cid, tid) {
+    var index = o.selectedIndex;
+    var selectedValue = o.options[index].value;
+    var selectedText = o.options[index].text;
+
+    var obj = document.getElementById(cid);
+    for (var i = 0; i < obj.length; i++) {
+        if (obj.options[i].text == selectedValue) {
+            obj.options[i].selected = true;
+            $("#" + tid).val(obj.options[i].value);
+            break;
+        }
+    }
+}

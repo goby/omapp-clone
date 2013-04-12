@@ -1,14 +1,9 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="YJJHEdit.aspx.cs" Inherits="OperatingManagement.Web.Views.PlanManage.YJJHEdit" %>
-
 <%@ Register src="../../ucs/ucTask.ascx" tagname="ucTask" tagprefix="uc1" %>
 <%@ Register src="../../ucs/ucSatellite.ascx" tagname="ucSatellite" tagprefix="uc2" %>
-
 <%@ Register src="../../ucs/ucTimer.ascx" tagname="ucTimer" tagprefix="uc3" %>
-
 <%@ Register src="../../ucs/ucOutTask.ascx" tagname="ucOutTask" tagprefix="uc4" %>
-
-<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-</asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
     <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
 </asp:Content>
@@ -20,14 +15,7 @@
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="BodyContent" runat="server">
     <table class="edit1" style="width:800px;">
-        <%--<tr>
-            <th class="style1">
-                <asp:Button ID="btnImport" runat="server" Text="导入试验计划"  CssClass="button"  
-                    CausesValidation="False" onclick="btnImport_Click"  />
-            </th>
-            <td>
-            </td>
-        </tr>--%>
+        <%# Eval("planid")%>
         <tr>
             <th style="width:130px;">任务(<span class="red">*</span>)</th>
             <td>
@@ -38,7 +26,8 @@
             <th>信息分类</th>
             <td>
                 <asp:RadioButtonList ID="radBtnXXFL" runat="server" 
-                    RepeatDirection="Horizontal" ClientIDMode="Static">
+                    RepeatDirection="Horizontal" ClientIDMode="Static" BorderColor="White" 
+                    BorderStyle="Double" BorderWidth="1px">
                     <asp:ListItem Value="ZJ" Selected="True">周计划</asp:ListItem>
                     <asp:ListItem Value="RJ">日计划</asp:ListItem> 
                 </asp:RadioButtonList>
@@ -55,12 +44,11 @@
         <tr>
             <th>系统名称</th>
             <td>
-                <asp:DropDownList ID="ddlSysName" runat="server" Height="20px" Width="305px" ClientIDMode="Static">
-                    <asp:ListItem Value="天基目标观测应用研究分系统">天基目标观测应用研究分系统</asp:ListItem>
-                    <asp:ListItem Value="空间遥操作应用研究分系统">空间遥操作应用研究分系统</asp:ListItem>
-                    <asp:ListItem Value="空间机动应用研究分系统">空间机动应用研究分系统</asp:ListItem>
-                    <asp:ListItem Value="仿真推演分系统">仿真推演分系统</asp:ListItem>
+                <asp:DropDownList ID="ddlSysName" runat="server" Height="20px" Width="300px" ClientIDMode="Static" style="display:none;">
                 </asp:DropDownList>
+                <asp:TextBox ID="txtSysName" runat="server" Enabled="False" Width="300px" CssClass="text" ></asp:TextBox>&nbsp;
+                <asp:RequiredFieldValidator ID="rfv1" runat="server" ControlToValidate="txtSysName"
+                        ErrorMessage="系统名称不能为空" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
@@ -74,29 +62,24 @@
                 <tr>
                     <th  style="width:125px;">试验开始时间</th>
                     <td>
-                        <asp:TextBox ID="txtStartTime" runat="server" Width="300px" CssClass="text" 
-                            Text='<%# Eval("StartTime")%>' 
+                        <asp:TextBox ID="txtStartTime" runat="server" Width="300px" CssClass="text" Text='<%# Eval("StartTime")%>' 
                             MaxLength="14" ClientIDMode="Static"   onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
-                    &nbsp;
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartTime"
+                    &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartTime"
                                 ErrorMessage="开始时间不能为空" ForeColor="Red"></asp:RequiredFieldValidator>
                         </td>
                 </tr>
                 <tr>
                     <th>试验结束时间</th>
                     <td>
-                        <asp:TextBox ID="txtEndTime" runat="server" Width="300px" CssClass="text" 
-                            MaxLength="14" ClientIDMode="Static" 
+                        <asp:TextBox ID="txtEndTime" runat="server" Width="300px" CssClass="text" MaxLength="14" ClientIDMode="Static" 
                         Text='<%# Eval("EndTime")%>'   onfocus="WdatePicker({dateFmt:'yyyyMMddHHmmss'})"></asp:TextBox>
-                    &nbsp;<span style="color:#3399FF;">
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndTime"
+                    &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndTime"
                                 ErrorMessage="结束时间不能为空" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
-                        </span><span style="color:#3399FF;">
                         <asp:CompareValidator ID="CompareValidator1" runat="server" 
                             ControlToCompare="txtStartTime" ControlToValidate="txtEndTime" 
                             Display="Dynamic" ErrorMessage="结束时间应大于开始时间" ForeColor="Red" 
                             Operator="GreaterThan" Type="Double"></asp:CompareValidator>
-                        </span></td>
+                        </td>
                 </tr>
                 <tr>
                     <th>系统任务</th>
@@ -121,7 +104,7 @@
             <th>备注</th>
             <td>
                 <asp:TextBox ID="txtNote" runat="server" CssClass="text" MaxLength="50" 
-                    Width="390px" Height="75px" TextMode="MultiLine"></asp:TextBox>
+                    Width="390px" Height="47px" TextMode="MultiLine"></asp:TextBox>
             </td>
         </tr>
         <tr id="trMessage" runat="server" visible="false">
@@ -133,21 +116,13 @@
         <tr>
             <th>&nbsp;</th>
             <td>
-                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" 
-                    onclick="btnSubmit_Click" />
-                    &nbsp;&nbsp;&nbsp;
-                    <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" 
-                    onclick="btnSaveTo_Click" />
-                     &nbsp;&nbsp; <asp:Button ID="btnReset" class="button" runat="server" 
-                    Text="重置" Width="65px" 
-                    onclick="btnReset_Click" CausesValidation="False" />
-                    &nbsp;&nbsp; 
-                <asp:Button ID="btnReturn" class="button" runat="server" 
-                    Text="返回" Width="65px" 
-                    onclick="btnReturn_Click" CausesValidation="False" />
-                    &nbsp;&nbsp;&nbsp;
-                <asp:Button ID="btnFormal"  class="button" runat="server" onclick="btnFormal_Click" 
-                    Text="转为正式计划" />
+                <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" onclick="btnSubmit_Click" />&nbsp;&nbsp;
+                <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" onclick="btnSaveTo_Click" />&nbsp;&nbsp; 
+                <asp:Button ID="btnReset" CssClass="button" runat="server" Text="重置" Width="65px" onclick="btnReset_Click" CausesValidation="False" />&nbsp;&nbsp; 
+                <asp:Button ID="btnReturn" CssClass="button" runat="server" Text="返回" Width="65px" onclick="btnReturn_Click" CausesValidation="False" />&nbsp;&nbsp;
+                <asp:Button ID="btnSurePlan"  CssClass="button" runat="server" Text="确认计划" onclick="btnSurePlan_Click" />&nbsp;&nbsp;
+                <asp:Button ID="btnFormal"  CssClass="button" runat="server" onclick="btnFormal_Click" Text="转为正式计划" />&nbsp;&nbsp;
+                <asp:Button class="button" ID="btnCreateFile" runat="server" Text="生成文件" Width="65px" onclick="btnCreateFile_Click" />
                 <asp:HiddenField ID="HfID" runat="server" />
                 <asp:HiddenField ID="HfFileIndex" runat="server" />
                 <asp:HiddenField ID="hfTaskID" runat="server" />
@@ -156,6 +131,23 @@
                 <asp:HiddenField ID="hfURL" runat="server" />
             </td>
         </tr>
+        <div id="divFiles" runat="server" visible="false">
+            <tr style="height:24px;">
+                <th>
+                    文件路径
+                </th>
+                <td class="style1">
+                    <asp:Label ID="lblFilePath" runat="server" Text="Label"></asp:Label>
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>
+                    <asp:LinkButton ID="lbtFilePath" runat="server" CausesValidation="false" 
+                        onclick="lbtFilePath_Click">保存文件</asp:LinkButton>
+                </td>
+            </tr>
+        </div>
     </table>
     <div id="dialog-form" style="display:none" title="提示信息">
 	    <p class="content"></p>
@@ -224,8 +216,8 @@
                                             系统名称
                                         </th>
                                         <th  style="width: 150px;">
-                                        系统任务
-                                        </th   style="width: 60px;">
+                                            系统任务
+                                        </th>
                                         <th></th>
                                     </tr>
                                     <tbody>

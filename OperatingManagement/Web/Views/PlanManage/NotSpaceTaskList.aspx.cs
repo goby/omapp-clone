@@ -67,7 +67,7 @@ namespace OperatingManagement.Web.Views.PlanManage
         /// </summary>
         private void DefaultSearch()
         {
-            txtStartDate.Text = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
+            txtStartDate.Text = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
             txtEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
             btnSearch_Click(new Object(), new EventArgs());
         }
@@ -360,7 +360,7 @@ namespace OperatingManagement.Web.Views.PlanManage
                 }
                 else
                 {
-                    lblMessage.Text = "轨道预报成功，结果路径" + resultPath;
+                    lblMessage.Text = "轨道预报成功，结果路径" + resultPath + "<br>";
                     string strFName = string.Empty;
                     for (int i = 0; i < oPrer.ResultFileNames.Length; i++)
                     {
@@ -368,7 +368,9 @@ namespace OperatingManagement.Web.Views.PlanManage
                         strFName = strFName.Substring(strFName.LastIndexOf(@"\") + 1);
                         if (strFName.Substring(0, 5).ToUpper() == "MAPJ_")
                         {
-                            strFullName = Path.Combine(Param.GDYBResultFilePath, resultPath.Substring(resultPath.LastIndexOf(@"\") + 1), strFName);
+                            strResult = resultPath.Substring(resultPath.IndexOf(@"\", 3) + 1);
+                            strResult = strResult.Substring(strResult.IndexOf(@"\") + 1);
+                            strFullName = Path.Combine(Param.GDYBResultFilePath, strResult, strFName);
                             break;
                         }
                     }

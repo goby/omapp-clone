@@ -85,6 +85,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.Button btnSend;
         
         /// <summary>
+        /// btnCreate 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCreate;
+        
+        /// <summary>
         /// vYCData 控件。
         /// </summary>
         /// <remarks>
@@ -166,6 +175,33 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpFZData;
         
         /// <summary>
+        /// vGDData 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl vGDData;
+        
+        /// <summary>
+        /// rpGDData 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpGDData;
+        
+        /// <summary>
+        /// cpGDData 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::OperatingManagement.WebKernel.Controls.CollectionPager cpGDData;
+        
+        /// <summary>
         /// trMessage 控件。
         /// </summary>
         /// <remarks>
@@ -211,6 +247,15 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         protected global::System.Web.UI.WebControls.HiddenField hffzids;
         
         /// <summary>
+        /// hfgdids 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfgdids;
+        
+        /// <summary>
         /// hfsendway 控件。
         /// </summary>
         /// <remarks>
@@ -227,5 +272,14 @@ namespace OperatingManagement.Web.Views.BusinessManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnHidden;
+        
+        /// <summary>
+        /// divFilePath 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divFilePath;
     }
 }

@@ -40,38 +40,38 @@ namespace ServicesKernel.DataFrame
             //A，量化单位0.1m
             iIdx += iLen;
             iLen = 4;
-            btTmp = Utility.IntToNetByte(Convert.ToInt32(ydsj.A * 10));
-            Array.Copy(btTmp, 0, data, iIdx, iLen);
+            //btTmp = Utility.IntToNetByte(Convert.ToInt32(ydsj.A * 10));
+            //Array.Copy(btTmp, 0, data, iIdx, iLen);
 
-            //E，量化单位2-31
-            iIdx += iLen;
-            iLen = 4;
-            btTmp = Utility.IntToNetByte(Convert.ToInt32(ydsj.E / Math.Pow(2, -31)));
-            Array.Copy(btTmp, 0, data, iIdx, iLen);
+            ////E，量化单位2-31
+            //iIdx += iLen;
+            //iLen = 4;
+            //btTmp = Utility.IntToNetByte(Convert.ToInt32(ydsj.E / Math.Pow(2, -31)));
+            //Array.Copy(btTmp, 0, data, iIdx, iLen);
 
-            //I，量化单位2-24
-            iIdx += iLen;
-            iLen = 4;
-            btTmp = Utility.IntToNetByte(Convert.ToInt32(ydsj.I / Math.Pow(2, -24)));
-            Array.Copy(btTmp, 0, data, iIdx, iLen);
+            ////I，量化单位2-24
+            //iIdx += iLen;
+            //iLen = 4;
+            //btTmp = Utility.IntToNetByte(Convert.ToInt32(ydsj.I / Math.Pow(2, -24)));
+            //Array.Copy(btTmp, 0, data, iIdx, iLen);
 
-            //Q，量化单位2-22
-            iIdx += iLen;
-            iLen = 4;
-            btTmp = Utility.IntToNetByte(Convert.ToInt32(ydsj.O / Math.Pow(2, -22)));
-            Array.Copy(btTmp, 0, data, iIdx, iLen);
+            ////Q，量化单位2-22
+            //iIdx += iLen;
+            //iLen = 4;
+            //btTmp = Utility.IntToNetByte(Convert.ToInt32(ydsj.O / Math.Pow(2, -22)));
+            //Array.Copy(btTmp, 0, data, iIdx, iLen);
 
-            //W，量化单位2-22
-            iIdx += iLen;
-            iLen = 4;
-            btTmp = Utility.IntToNetByte(Convert.ToInt32(ydsj.W / Math.Pow(2, -22)));
-            Array.Copy(btTmp, 0, data, iIdx, iLen);
+            ////W，量化单位2-22
+            //iIdx += iLen;
+            //iLen = 4;
+            //btTmp = Utility.IntToNetByte(Convert.ToInt32(ydsj.W / Math.Pow(2, -22)));
+            //Array.Copy(btTmp, 0, data, iIdx, iLen);
 
-            //M，量化单位2-22
-            iIdx += iLen;
-            iLen = 4;
-            btTmp = Utility.IntToNetByte(Convert.ToInt32(ydsj.W / Math.Pow(2, -22)));
-            Array.Copy(btTmp, 0, data, iIdx, iLen);
+            ////M，量化单位2-22
+            //iIdx += iLen;
+            //iLen = 4;
+            //btTmp = Utility.IntToNetByte(Convert.ToInt32(ydsj.W / Math.Pow(2, -22)));
+            //Array.Copy(btTmp, 0, data, iIdx, iLen);
             return data;
         }
 

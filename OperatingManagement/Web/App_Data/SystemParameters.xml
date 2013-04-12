@@ -153,4 +153,9 @@
     <item text="粗糙" value="0"></item>
     <item text="光滑" value="1"></item>
   </SatelliteFace>
+  <DMZOwner description="管理单位">
+    <item text="总参" value="1"></item>
+    <item text="总装" value="2"></item>
+    <item text="遥科学站" value="3"></item>
+  </DMZOwner>
 </SystemParameters>

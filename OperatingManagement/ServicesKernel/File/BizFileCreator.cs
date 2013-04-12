@@ -40,12 +40,14 @@ namespace ServicesKernel.File
         /// <param name="ufids"></param>
         /// <param name="taskNo"></param>
         /// <param name="sendWay"></param>
-        public void CreateAndSendGCSJDataFile(string[] ycids, string[] ufids, string taskNo, CommunicationWays sendWay)
+        public void CreateAndSendGCSJDataFile(string dataType, string[] ycids, string[] ufids, string taskNo
+            , CommunicationWays sendWay , bool send, int desID, out string[] filePaths, out string msg)
         {
-            string dataType = "GCSJ";
             string subDataType;
             string fileName;
             string dataFileName = string.Empty;
+            msg = string.Empty;
+            filePaths = null;
             Dictionary<string, string> fileList = new Dictionary<string,string>();
             YCPG oYc;
             UserFrame oUF;
@@ -57,7 +59,7 @@ namespace ServicesKernel.File
             for (int i = 0; i < ycids.Length; i++)
             {
                 oYc = new YCPG().GetByID(Convert.ToInt32(ycids[i]));
-                oFCResult = CreateYCPGFile(oYc, out subDataType, taskNo, out fileName);
+                oFCResult = CreateYCPGFile(oYc, out subDataType, taskNo, out fileName, out msg);
                 if (oFCResult != FileCreateResult.CreateSuccess)
                 {
                     blResult = false;
@@ -72,7 +74,7 @@ namespace ServicesKernel.File
                 for (int j = 0; j < ufids.Length; j++)
                 {
                     oUF = new UserFrame().GetByID(Convert.ToInt32(ufids[j]));
-                    oFCResult = CreateUFFile(oUF, out fileName, out subDataType);
+                    oFCResult = CreateUFFile(oUF, out fileName, out subDataType, out msg);
                     if (oFCResult != FileCreateResult.CreateSuccess)
                     {
                         blResult = false;
@@ -85,7 +87,7 @@ namespace ServicesKernel.File
                 if (blResult)
                 {
                     string[] subFiles = ListKey2Array(fileList);
-                    oFCResult = CreateTestDataFile(dataType, taskNo, subFiles, out dataFileName);
+                    oFCResult = CreateTestDataFile(dataType, taskNo, subFiles, out dataFileName, out msg);
                     if (oFCResult != FileCreateResult.CreateSuccess)
                         blResult = false;
                     else
@@ -94,19 +96,25 @@ namespace ServicesKernel.File
             }
             #endregion
 
+            if (!send)
+                return;//不发送
             //都创建成功了，调用文件发送服务器逐个进行发送
             int senderID = new XYXSInfo().GetByAddrMark(Param.SourceCode).Id;
-            int desID = new XYXSInfo().GetByAddrMark(FileExchangeConfig.GetTgtListForSending(dataType)[0]).Id;
             int infoTypeID = new InfoType().GetIDByExMark(dataType);
             if (blResult)
             {
                 FileSender oSender = new FileSender();
                 int infoID = 0;
+                filePaths = new string[fileList.Count];
+                int i = 0;
                 foreach (KeyValuePair<string, string> kval in fileList)
                 {
                     infoID = new InfoType().GetIDByExMark(kval.Value);
                     oSender.SendFile(kval.Key, Param.OutPutPath, sendWay, senderID, desID
                         , infoID, true);
+                    filePaths[i] = Path.Combine(Param.OutPutPath, kval.Key);
+                    GDFX.Logger.GetLogger().Error(string.Format("GCSJ Path{0}:  {1}", i, filePaths[i]));
+                    i++;
                 }
             }
             else//有创建失败的，就删除已创建文件，并在文件发送记录里写一条总记录
@@ -115,6 +123,7 @@ namespace ServicesKernel.File
                 {
                     dataFileName = kval.Key;
                     DataFileHandle.DeleteFile(Param.OutPutPath + kval.Key);
+                    GDFX.Logger.GetLogger().Error(string.Format("Delete GCSJ Path:  {0}", Param.OutPutPath + kval.Key));
                 }
                 #region 插入一条发送记录
                 FileSendInfo oSendInfo = new FileSendInfo();
@@ -135,11 +144,13 @@ namespace ServicesKernel.File
                     FieldVerifyResult oResult = oSendInfo.Add();
                     if (oResult != FieldVerifyResult.Success)
                     {
-                        Log(string.Format("删除文件完成，插入发送记录失败，{0}", oResult.ToString()));
+                        msg = string.Format("删除文件完成，插入发送记录失败，{0}", oResult.ToString());
+                        Log(msg);
                     }
                 }
                 catch (Exception ex)
                 {
+                    msg = string.Format("删除文件完成，插入发送记录异常，异常信息：{0}", ex.Message);
                     Log("删除文件完成，插入发送记录异常", ex);
                 }
                 finally { }
@@ -154,23 +165,25 @@ namespace ServicesKernel.File
         /// <param name="ufids"></param>
         /// <param name="taskNo"></param>
         /// <param name="sendWay"></param>
-        public void CreateAndSendJDSJDataFile(string[] ycids, string taskNo, CommunicationWays sendWay)
+        public void CreateAndSendJDSJDataFile(string dataType, string[] ycids, string taskNo, CommunicationWays sendWay, bool send
+            , int desID, out string[] filePaths, out string msg)
         {
-            string dataType = "JDSJ";
             string subDataType;
             string fileName;
             string dataFileName = string.Empty;
+            filePaths = null;
             Dictionary<string, string> fileList = new Dictionary<string, string>();
             YCPG oYc;
             bool blResult = true;
             FileCreateResult oFCResult = FileCreateResult.CreateSuccess;
+            msg = string.Empty;
 
             #region 逐个创建文件
             //生成状态数据文件
             for (int i = 0; i < ycids.Length; i++)
             {
                 oYc = new YCPG().GetByID(Convert.ToInt32(ycids[i]));
-                oFCResult = CreateYCPGFile(oYc, out subDataType, taskNo, out fileName);
+                oFCResult = CreateYCPGFile(oYc, out subDataType, taskNo, out fileName, out msg);
                 if (oFCResult != FileCreateResult.CreateSuccess)
                 {
                     blResult = false;
@@ -183,7 +196,7 @@ namespace ServicesKernel.File
             if (blResult)
             {
                 string[] subFiles = ListKey2Array(fileList);
-                oFCResult = CreateTestDataFile(dataType, taskNo, subFiles, out dataFileName);
+                oFCResult = CreateTestDataFile(dataType, taskNo, subFiles, out dataFileName, out msg);
                 if (oFCResult != FileCreateResult.CreateSuccess)
                     blResult = false;
                 else
@@ -191,19 +204,25 @@ namespace ServicesKernel.File
             }
             #endregion
 
+            if (!send)
+                return;//不发送
             //都创建成功了，调用文件发送服务器逐个进行发送
             int senderID = new XYXSInfo().GetByAddrMark(Param.SourceCode).Id;
-            int desID = new XYXSInfo().GetByAddrMark(FileExchangeConfig.GetTgtListForSending(dataType)[0]).Id;
             int infoTypeID = new InfoType().GetIDByExMark(dataType);
             if (blResult)//都创建成功标志
             {
                 FileSender oSender = new FileSender();
                 int infoID = 0;
+                int i = 0;
+                filePaths = new string[fileList.Count];
                 foreach (KeyValuePair<string, string> kval in fileList)
                 {
                     infoID = new InfoType().GetIDByExMark(kval.Value);
                     oSender.SendFile(kval.Key, Param.OutPutPath, sendWay, senderID, desID
                         , infoID, true);
+                    filePaths[i] = Path.Combine(Param.OutPutPath, kval.Key);
+                    GDFX.Logger.GetLogger().Error(string.Format("JDSJ Path{0}:  {1}", i, filePaths[i]));
+                    i++;
                 }
             }
             else//有创建失败的，就删除已创建文件，并在文件发送记录里写一条总记录
@@ -212,6 +231,7 @@ namespace ServicesKernel.File
                 {
                     dataFileName = kval.Key;
                     DataFileHandle.DeleteFile(Param.OutPutPath + kval.Key);
+                    GDFX.Logger.GetLogger().Error(string.Format("Delete JDSJ Path:  {0}", Param.OutPutPath + kval.Key));
                 }
                 #region 插入一条发送记录
                 FileSendInfo oSendInfo = new FileSendInfo();
@@ -232,11 +252,13 @@ namespace ServicesKernel.File
                     FieldVerifyResult oResult = oSendInfo.Add();
                     if (oResult != FieldVerifyResult.Success)
                     {
-                        Log(string.Format("删除文件完成，插入发送记录失败", oResult.ToString()));
+                        msg = string.Format("删除文件完成，插入发送记录失败", oResult.ToString());
+                        Log(msg);
                     }
                 }
                 catch (Exception ex)
                 {
+                    msg = string.Format("删除文件完成，插入发送记录异常，异常信息：{0}", ex.Message);
                     Log("删除文件完成，插入发送记录异常", ex);
                 }
                 finally { }
@@ -252,14 +274,16 @@ namespace ServicesKernel.File
         /// <param name="taskNo">任务代号</param>
         /// <param name="fileName">文件名</param>
         /// <returns></returns>
-        private FileCreateResult CreateYCPGFile(YCPG ycinfo, out string dataType, string taskNo, out string fileName)
+        private FileCreateResult CreateYCPGFile(YCPG ycinfo, out string dataType, string taskNo, out string fileName, out string msg)
         {
             FileCreateResult oResult = FileCreateResult.CreateSuccess;
             dataType = GetInfoTypeFromYCPG(ycinfo);
             fileName = string.Empty;
+            msg = string.Empty;
             if (string.IsNullOrEmpty(dataType))
             {
-                Log("获取不到dataType");
+                msg = "获取不到dataType";
+                Log(msg);
                 return FileCreateResult.LackFileInfo;
             }
 
@@ -285,7 +309,8 @@ namespace ServicesKernel.File
             }
             catch (Exception ex)
             {
-                Log(string.Format("构建{0}文件基本信息异常", dataType), ex);
+                msg = string.Format("构建{0}文件基本信息异常", dataType);
+                Log(msg, ex);
             }
             finally { }
 
@@ -322,7 +347,8 @@ namespace ServicesKernel.File
                 }
                 catch (Exception ex)
                 {
-                    Log(string.Format("创建{0}文件异常，文件路径{1}", dataType, oFile.FullName), ex);
+                    msg = string.Format("创建{0}文件异常，文件路径{1}", dataType, oFile.FullName);
+                    Log(msg, ex);
                 }
                 finally { }
             }
@@ -335,14 +361,16 @@ namespace ServicesKernel.File
         /// </summary>
         /// <param name="ufInfo"></param>
         /// <returns></returns>
-        private FileCreateResult CreateUFFile(UserFrame ufInfo, out string fileName, out string dataType)
+        private FileCreateResult CreateUFFile(UserFrame ufInfo, out string fileName, out string dataType, out string msg)
         {
             FileCreateResult oResult = FileCreateResult.CreateSuccess;
+            msg = string.Empty;
             dataType = GetInfoTypeFromUserFrame(ufInfo);
             fileName = string.Empty;
             if (string.IsNullOrEmpty(dataType))
             {
-                Log("获取不到dataType");
+                msg = "获取不到dataType";
+                Log(msg);
                 return FileCreateResult.LackFileInfo;
             }
 
@@ -353,7 +381,8 @@ namespace ServicesKernel.File
             }
             catch (Exception ex)
             {
-                Log("生成图像数据文件名异常", ex);
+                msg = "生成图像数据文件名异常";
+                Log(msg, ex);
             }
             finally { }
 
@@ -365,12 +394,13 @@ namespace ServicesKernel.File
             {
                 if (string.IsNullOrEmpty(strUFFilePath))
                 {
-                    Log("无法获取UFFilePath");
+                    msg = "无法获取UFFilePath";
+                    Log(msg);
                     oResult = FileCreateResult.LackFileInfo;
                 }
                 else
                 {
-                    if (ConvertPLEOData(strUFFilePath + ufInfo.FileName, fileFullName))
+                    if (ConvertPLEOData(strUFFilePath + ufInfo.FileName, fileFullName, out msg))
                         oResult = FileCreateResult.CreateSuccess;
                     else
                         oResult = FileCreateResult.SomethingError;
@@ -380,7 +410,10 @@ namespace ServicesKernel.File
             {
                 string stmp = DataFileHandle.CopyFile(strUFFilePath + ufInfo.FileName, Param.OutPutPath, fileName);
                 if (stmp != string.Empty)
-                    Log(string.Format("复制图像数据失败：{0}", stmp));
+                {
+                    msg = string.Format("复制图像数据失败：{0}", stmp);
+                    Log(msg);
+                }
             }
             return oResult;
         }
@@ -394,9 +427,10 @@ namespace ServicesKernel.File
         /// <param name="fileName"></param>
         /// <returns></returns>
         private FileCreateResult CreateTestDataFile(string dataType, string taskNo, 
-            string[] datas, out string fileName)
+            string[] datas, out string fileName, out string msg)
         {
             FileCreateResult oResult = FileCreateResult.CreateSuccess;
+            msg = string.Empty;
             fileName = string.Empty;
             List<string> tgtList = FileExchangeConfig.GetTgtListForSending(dataType);
             FileBaseInfo oFile = new FileBaseInfo();
@@ -420,7 +454,8 @@ namespace ServicesKernel.File
             }
             catch (Exception ex)
             {
-                Log(string.Format("构建试验数据{0}文件基本信息异常", dataType), ex);
+                msg = string.Format("构建试验数据{0}文件基本信息异常", dataType);
+                Log(msg, ex);
             }
             finally { }
 
@@ -432,7 +467,8 @@ namespace ServicesKernel.File
             }
             catch (Exception ex)
             {
-                Log(string.Format("创建试验数据{0}文件异常，文件路径{1}", dataType, oFile.FullName), ex);
+                msg = string.Format("创建试验数据{0}文件异常，文件路径{1}，异常信息：{2}", dataType, oFile.FullName, ex.Message);
+                Log(msg, ex);
             }
             finally { }
             return oResult;
@@ -532,9 +568,10 @@ namespace ServicesKernel.File
         /// <param name="srcDataFilePath"></param>
         /// <param name="tgtDataFilePath"></param>
         /// <returns></returns>
-        private bool ConvertPLEOData(string srcDataFilePath, string tgtDataFilePath)
+        private bool ConvertPLEOData(string srcDataFilePath, string tgtDataFilePath, out string msg)
         {
             //文件总大小：41944000b / 8 = 5243000B
+            msg = string.Empty;
             long iFileSize = 5243000;
             bool blResult = false;
             FileStream oFRStream = new FileStream(srcDataFilePath, FileMode.Open, FileAccess.Read);
@@ -620,6 +657,7 @@ namespace ServicesKernel.File
             catch (Exception ex)
             {
                 blResult = false;
+                msg = "转换LEO引导 相机成像文件出现异常" + ex.Message;
                 Log("转换LEO引导 相机成像文件出现异常", ex);
             }
             finally 

@@ -4,17 +4,12 @@
 <%@ Register Src="../../ucs/ucTask.ascx" TagName="ucTask" TagPrefix="uc1" %>
 <%@ Register Src="../../ucs/ucSatellite.ascx" TagName="ucSatellite" TagPrefix="uc2" %>
 <%@ Register Src="../../ucs/ucTimer.ascx" TagName="ucTimer" TagPrefix="uc3" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <style type="text/css">
-        .text
-        {}
-    </style>
-</asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
-    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="ykinfoman" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuYKInfo" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
     计划管理 &gt; 仿真推演试验数据
@@ -152,18 +147,12 @@
                     &nbsp;
                 </th>
                 <td colspan="3">
-                    <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" OnClick="btnSubmit_Click" />
-                    &nbsp;&nbsp;&nbsp;
-                    <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" OnClick="btnSaveTo_Click" />
-                    &nbsp;&nbsp;
-                    <asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" OnClick="btnReset_Click"
-                        CausesValidation="False" />
-                    &nbsp;&nbsp;
-                    <asp:Button ID="btnReturn" class="button" runat="server" Text="返回" Width="65px" OnClick="btnReturn_Click"
-                        CausesValidation="False" />
-                    &nbsp;&nbsp;
-                    <asp:Button ID="btnFormal" class="button" runat="server" OnClick="btnFormal_Click"
-                        Text="转为正式计划" />
+                    <asp:Button ID="btnSubmit" runat="server" CssClass="button" Text="保存计划" OnClick="btnSubmit_Click" />&nbsp;&nbsp;
+                    <asp:Button ID="btnSaveTo" runat="server" CssClass="button" Text="另存计划" OnClick="btnSaveTo_Click" />&nbsp;&nbsp;
+                    <asp:Button ID="btnReset" CssClass="button" runat="server" Text="重置" Width="65px" OnClick="btnReset_Click" CausesValidation="False" />&nbsp;&nbsp;
+                    <asp:Button ID="btnReturn" CssClass="button" runat="server" Text="返回" Width="65px" OnClick="btnReturn_Click" CausesValidation="False" />&nbsp;&nbsp;
+                    <asp:Button ID="btnSurePlan"  CssClass="button" runat="server" Text="确认计划" onclick="btnSurePlan_Click" />&nbsp;&nbsp;
+                    <asp:Button ID="btnFormal" CssClass="button" runat="server" OnClick="btnFormal_Click" Text="转为正式计划" />
                     <asp:HiddenField ID="HfID" runat="server" />
                     <asp:HiddenField ID="HfFileIndex" runat="server" />
                     <asp:HiddenField ID="hfTaskID" runat="server" />

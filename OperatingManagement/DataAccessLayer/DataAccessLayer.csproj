@@ -54,6 +54,7 @@
     <Compile Include="BusinessManage\DFInfo.cs" />
     <Compile Include="BusinessManage\DFRecvInfo.cs" />
     <Compile Include="BusinessManage\DFSendInfo.cs" />
+    <Compile Include="BusinessManage\DMZ.cs" />
     <Compile Include="BusinessManage\GroundResource.cs" />
     <Compile Include="BusinessManage\HealthStatus.cs" />
     <Compile Include="BusinessManage\FileReceiveInfo.cs" />

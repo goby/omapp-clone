@@ -17,6 +17,7 @@
       <SrcCode>YKZX</SrcCode>
       <TgtList>
         <TgtCode>XXZX</TgtCode>
+        <TgtCode>YKZX</TgtCode>
       </TgtList>
     </Info>
     <Info>
@@ -26,7 +27,6 @@
       <SrcCode>YKZX</SrcCode>
       <TgtList>
         <TgtCode>XSCC</TgtCode>
-          <TgtCode>XXZX</TgtCode>
       </TgtList>
     </Info>
     <Info>
@@ -40,6 +40,7 @@
         <TgtCode>ZLZX</TgtCode>
         <TgtCode>JYZ1</TgtCode>
         <TgtCode>JYZ2</TgtCode>
+        <TgtCode>YKZX</TgtCode>
       </TgtList>
     </Info>
     <Info>
@@ -52,6 +53,7 @@
         <TgtCode>JDYJ</TgtCode>
         <TgtCode>CZYJ</TgtCode>
         <TgtCode>FZTY</TgtCode>
+        <TgtCode>YKZX</TgtCode>
       </TgtList>
     </Info>
     <Info>

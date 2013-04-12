@@ -52,17 +52,13 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
         /// </summary>
         public string SatID { get; set; }
         /// <summary>
-        /// 是否当前任务，1是，0否，表中只有一个为1的
+        /// 是否有效，1是，0否
         /// </summary>
-        public string IsCurTask { get; set; }
+        public string IsEffective { get; set; }
         /// <summary>
-        /// 任务开始时间
+        /// emit时间
         /// </summary>
-        public DateTime BeginTime { get; set; }
-        /// <summary>
-        /// 任务结束时间
-        /// </summary>
-        public DateTime EndTime { get; set; }
+        public DateTime EmitTime { get; set; }
         /// <summary>
         /// 任务创建时间
         /// </summary>
@@ -79,7 +75,10 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 }
                 return _taskCache;
             }
-            set { }
+            set 
+            {
+                _taskCache = value;
+            }
         }
         #endregion
 
@@ -131,9 +130,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         ObjectFlag = dr["ObjectFlag"].ToString(),
                         SatID = dr["SatID"].ToString(),
                         SCID = dr["SCID"].ToString(),
-                        IsCurTask = dr["IsCurTask"].ToString(),
-                        BeginTime = dr["BeginTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["BeginTime"]),
-                        EndTime = dr["EndTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["EndTime"]),
+                        IsEffective = dr["IsEffective"].ToString(),
+                        EmitTime = dr["EmitTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["EmitTime"]),
                         CTime = dr["CTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["CTime"])
                     };
 
@@ -169,9 +167,8 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                         ObjectFlag = dr["ObjectFlag"].ToString(),
                         SatID = dr["SatID"].ToString(),
                         SCID = dr["SCID"].ToString(),
-                        IsCurTask = dr["IsCurTask"].ToString(),
-                        BeginTime = dr["BeginTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["BeginTime"]),
-                        EndTime = dr["EndTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["EndTime"]),
+                        IsEffective = dr["IsEffective"].ToString(),
+                        EmitTime = dr["EmitTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["EmitTime"]),
                         CTime = dr["CTime"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["CTime"])
                     };
                 }
@@ -204,15 +201,15 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_ObjectFlag",this.ObjectFlag),
                 new OracleParameter("p_SatID",this.SatID),
                 new OracleParameter("p_SCID",this.SCID),
-                new OracleParameter("p_IsCurTask",this.IsCurTask),
-                new OracleParameter("p_BeginTime",this.BeginTime),
-                new OracleParameter("p_EndTime",this.EndTime),
+                new OracleParameter("IsEffective",this.IsEffective),
+                new OracleParameter("EmitTime",this.EmitTime.ToString("yyyy/MM/dd HH:mm:ss fff")),
                 new OracleParameter("p_CTime",DateTime.Now),
                 opId,
                 p
             });
             if (opId.Value != null && opId.Value != DBNull.Value)
                 this.Id = Convert.ToInt32(opId.Value.ToString());
+            RefreshCache();
             return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
@@ -232,11 +229,11 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                 new OracleParameter("p_ObjectFlag", this.ObjectFlag),
                 new OracleParameter("p_SatID", this.SatID),
                 new OracleParameter("p_SCID",this.SCID),
-                new OracleParameter("p_IsCurTask", Convert.ToInt32(this.IsCurTask)),
-                new OracleParameter("p_BeginTime", this.BeginTime),
-                new OracleParameter("p_EndTime", this.EndTime),
+                new OracleParameter("IsEffective",this.IsEffective),
+                new OracleParameter("EmitTime",this.EmitTime.ToString("yyyy/MM/dd HH:mm:ss fff")),
                 p
             });
+            RefreshCache();
             return (FieldVerifyResult)Convert.ToInt32(p.Value.ToString());
         }
 
@@ -347,6 +344,11 @@ namespace OperatingManagement.DataAccessLayer.BusinessManage
                     taskName = query.FirstOrDefault().TaskName;
             }
             return taskName;
+        }
+
+        private void RefreshCache()
+        {
+            this.Cache = SelectAll();
         }
         #endregion
 

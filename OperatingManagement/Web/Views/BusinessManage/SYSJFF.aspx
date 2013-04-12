@@ -5,10 +5,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
-    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="fileserver" />
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="ykinfoman" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuFS" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuYKInfo" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
     业务管理 &gt; 试验数据分发
@@ -31,12 +31,16 @@
                 <asp:ListItem Value="2">仿真推演试验数据</asp:ListItem>
                 </asp:DropDownList></td>
             <td><asp:TextBox ID="txtFrom" ClientIDMode="Static" CssClass="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" 
-                    runat="server"></asp:TextBox></td>
+                runat="server"></asp:TextBox></td>
             <td><asp:TextBox ID="txtTo" ClientIDMode="Static" CssClass="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
-                    runat="server"></asp:TextBox></td>
-            <td><asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click"
-                        Text="查询" />&nbsp;&nbsp;<button class="button" onclick="return clearField();">清空</button>&nbsp;&nbsp;<asp:Button CssClass="button" ID="btnSend" 
-                    runat="server" Text="发送数据" OnClientClick="return SendFile();"  /></td>
+                runat="server"></asp:TextBox></td>
+            <td><asp:Button CssClass="button" ID="btnSearch" runat="server" OnClick="btnSearch_Click" Text="查询" />
+                &nbsp;&nbsp;<button class="button" onclick="return clearField();">清空</button>
+                &nbsp;&nbsp;<asp:Button CssClass="button" 
+                    ID="btnSend" runat="server" Text="发送数据" OnClientClick="return SendFile();" 
+                    onclick="btnSend_Click"  />
+                &nbsp;&nbsp;<asp:Button CssClass="button" ID="btnCreate" runat="server" 
+                    Text="生成数据" OnClientClick="return createFile();" onclick="btnCreate_Click"  /></td>
         </tr>
     </table>
     <div runat="server" id="vYCData">
@@ -44,7 +48,7 @@
         <HeaderTemplate>
             <table class="list">
                 <tr>
-                    <th style="width:3%;"><input type="checkbox" /></th>
+                    <th style="width:3%;"></th>
                     <th style="width:20%;">创建时间</th>
                     <th style="width:12%;">任务代号</th>
                     <th style="width:10%;">卫星编号</th>
@@ -85,7 +89,7 @@
         <HeaderTemplate>
             <table class="list">
                 <tr>
-                    <th style="width:3%;"><input type="checkbox" /></th>
+                    <th style="width:3%;"></th>
                     <th style="width:7%;">创建时间</th>
                     <th style="width:5%;">任务代号</th>
                     <th style="width:5%;">卫星编号</th>
@@ -136,7 +140,7 @@
         <HeaderTemplate>
             <table class="list">
                 <tr>
-                    <th style="width:5px;"><input type="checkbox" /></th>
+                    <th style="width:5px;"></th>
                     <th style="width:15%;">创建时间</th>
                     <th style="width:10%;">任务代号</th>
                     <th style="width:15%;">开始时间</th>
@@ -170,6 +174,66 @@
         </tr>
     </table>
     </div>
+    <div runat="server" id="vGDData">
+        <asp:Repeater ID="rpGDData" runat="server">
+            <HeaderTemplate>
+                    <table class="list">
+                        <tr>
+                            <th style="width: 20px;">
+                            </th>
+                            <th style="width: 200px;">
+                                信息标识
+                            </th>
+                            <th style="width: 100px;">
+                                信息代号
+                            </th>
+                            <th style="width: 100px;">
+                                卫星编号
+                            </th>
+                            <th>
+                                创建时间
+                            </th>
+                            <th style="width: 100px;">
+                                明细
+                            </th>
+                        </tr>
+                        <tbody id="tbGDs">
+                </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="chkDelete" value="<%# Eval("Id") %>" />
+                    </td>
+                    <td>
+                        <%# Eval("DataName")%>
+                    </td>
+                    <td>
+                        <%# Eval("ICODE")%>
+                    </td>
+                    <td>
+                        <%# Eval("SatellteName")%>
+                    </td>
+                    <td>
+                        <%# Eval("CTIME","{0:"+this.SiteSetting.DateTimeFormat+"}") %>
+                    </td>
+                    <td>
+                        <button class="button" onclick="return showDetail('<%# Eval("Id") %>')">
+                            明细</button>
+                    </td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                </tbody> </table>
+            </FooterTemplate>
+        </asp:Repeater>
+        <table class="listTitle">
+            <tr>
+                <td class="listTitle-c2">
+                    <om:CollectionPager ID="cpGDData" runat="server"></om:CollectionPager>
+                </td>
+            </tr>
+        </table>
+    </div>
     <table class="listTitle">
         <tr id="trMessage" runat="server" visible="false">
             <td><asp:Label ID="lblMessage" runat="server" CssClass="error" Text=""></asp:Label></td>
@@ -179,10 +243,13 @@
                 <asp:HiddenField ID="hfycids" runat="server" ClientIDMode="Static"/>
                 <asp:HiddenField ID="hfufids" runat="server" ClientIDMode="Static"/>
                 <asp:HiddenField ID="hffzids" runat="server" ClientIDMode="Static"/>
+                <asp:HiddenField ID="hfgdids" runat="server" ClientIDMode="Static"/>
                 <asp:HiddenField ID="hfsendway" runat="server" ClientIDMode="Static"/>
                     <asp:Button ID="btnHidden" runat="server" ClientIDMode="Static" Text="btnHidden" 
                                 OnClick="btnSend_Click" /></div></td></tr>
     </table>
+    <div id="divFilePath"  runat="server"  visible="false">
+    </div>
     <div id="SendPanel" style="display:none">
         <table id="rblProtocol">
             <tr>

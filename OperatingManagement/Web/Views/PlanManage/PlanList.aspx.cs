@@ -35,25 +35,28 @@ namespace OperatingManagement.Web.Views.PlanManage
             {
                 try
                 {
-                    //pnlDestination.Visible = false;
-                    //pnlData.Visible = true;
+                    txtCStartDate.Attributes.Add("readonly", "true");
+                    txtCEndDate.Attributes.Add("readonly", "true");
+                    txtJHStartDate.Attributes.Add("readonly", "true");
+                    txtJHEndDate.Attributes.Add("readonly", "true");
 
-                    txtStartDate.Attributes.Add("readonly", "true");
-                    txtEndDate.Attributes.Add("readonly", "true");
-
-                    pnlAll1.Visible = false;
                     pnlAll2.Visible = false;
 
                     lblMessage.Text = ""; //文件发送消息清空
                     lblMessage.Visible = false;
                     DefaultSearch();
-                    //由计划页面返回时，重新载入之前的查询结果
-                    if (Request.QueryString["startDate"] != null || Request.QueryString["endDate"] != null || Request.QueryString["type"] != null)
+                    //由计划详细页面返回时，重新载入之前的查询结果
+                    if (Request.QueryString["startDate"] != null || Request.QueryString["endDate"] != null || Request.QueryString["type"] != null
+                        || Request.QueryString["jhStartDate"] != null || Request.QueryString["jhEndDate"] != null)
                     {
                         if (Request.QueryString["startDate"] != null)
-                        { txtStartDate.Text = Request.QueryString["startDate"]; }
+                            txtCStartDate.Text = Request.QueryString["startDate"];
                         if (Request.QueryString["endDate"] != null)
-                        { txtEndDate.Text = Request.QueryString["endDate"]; }
+                            txtCEndDate.Text = Request.QueryString["endDate"];
+                        if (Request.QueryString["jhStartDate"] != null)
+                            txtJHStartDate.Text = Request.QueryString["jhStartDate"];
+                        if (Request.QueryString["jhEndDate"] != null)
+                            txtJHEndDate.Text = Request.QueryString["jhEndDate"];
                         ddlType.SelectedValue = Request.QueryString["type"];
                         btnSearch_Click(new object(), new EventArgs());
                     }
@@ -91,69 +94,78 @@ namespace OperatingManagement.Web.Views.PlanManage
 
         private void SaveCondition()
         {
-            if (string.IsNullOrEmpty(txtStartDate.Text))
-            { ViewState["_StartDate"] = null; }
+            if (string.IsNullOrEmpty(txtCStartDate.Text))
+                ViewState["_StartDate"] = null;
             else
-            { ViewState["_StartDate"] = txtStartDate.Text.Trim(); }
-            if (string.IsNullOrEmpty(txtEndDate.Text))
-            { ViewState["_EndDate"] = null; }
+                ViewState["_StartDate"] = txtCStartDate.Text.Trim();
+            if (string.IsNullOrEmpty(txtCEndDate.Text))
+                ViewState["_EndDate"] = null;
             else
-            { ViewState["_EndDate"] = Convert.ToDateTime(txtEndDate.Text.Trim()).AddDays(1).AddMilliseconds(-1); }
+                ViewState["_EndDate"] = Convert.ToDateTime(txtCEndDate.Text.Trim()).AddDays(1).AddMilliseconds(-1);
+
+
+            if (string.IsNullOrEmpty(txtJHStartDate.Text))
+                ViewState["_JHStartDate"] = null;
+            else
+                ViewState["_JHStartDate"] = txtJHStartDate.Text.Trim();
+            if (string.IsNullOrEmpty(txtJHEndDate.Text))
+                ViewState["_JHEndDate"] = null;
+            else
+                ViewState["_JHEndDate"] = Convert.ToDateTime(txtJHEndDate.Text.Trim()).AddDays(1).AddMilliseconds(-1);
+
             ViewState["_PlanType"] = ddlType.SelectedItem.Value;
         }
         /// <summary>
-        /// 默认查询两周内的数据
+        /// 默认查询一周内（明天到6天前）的数据
         /// </summary>
         private void DefaultSearch()
         {
-            txtStartDate.Text = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
-            txtEndDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
-            //btnSearch_Click(new Object(), new EventArgs());
+            txtCStartDate.Text = DateTime.Now.AddDays(-6).ToString("yyyy-MM-dd");
+            txtCEndDate.Text = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
         }
         /// <summary>
-        /// 绑定列表
+        /// 绑定数据列表
         /// </summary>
         void BindGridView(bool fromSearch)
         {
             DateTime startDate = new DateTime();
             DateTime endDate = new DateTime();
+            DateTime jhStartDate = new DateTime();
+            DateTime jhEndDate = new DateTime();
             string planType = null;
             if (fromSearch)
             {
-                if (!string.IsNullOrEmpty(txtStartDate.Text))
-                {
-                    startDate = Convert.ToDateTime(txtStartDate.Text);
-                }
+                if (!string.IsNullOrEmpty(txtCStartDate.Text))
+                    startDate = Convert.ToDateTime(txtCStartDate.Text);
+                if (!string.IsNullOrEmpty(txtCEndDate.Text))
+                    endDate = Convert.ToDateTime(txtCEndDate.Text).AddDays(1).AddMilliseconds(-1); //查询时可查当天
 
-                if (!string.IsNullOrEmpty(txtEndDate.Text))
-                {
-                    endDate = Convert.ToDateTime(txtEndDate.Text).AddDays(1).AddMilliseconds(-1); //查询时可查当天
-                }
+                if (!string.IsNullOrEmpty(txtJHStartDate.Text))
+                    jhStartDate = Convert.ToDateTime(txtJHStartDate.Text);
+                if (!string.IsNullOrEmpty(txtJHEndDate.Text))
+                    jhEndDate = Convert.ToDateTime(txtJHEndDate.Text).AddDays(1).AddMilliseconds(-1);
 
                 if (ddlType.SelectedItem.Value != "0")
-                {
                     planType = ddlType.SelectedItem.Value;
-                }
             }
             else
             {
                 if (ViewState["_StartDate"] != null)
-                {
                     startDate = Convert.ToDateTime(ViewState["_StartDate"].ToString());
-                }
                 if (ViewState["_EndDate"] != null)
-                {
                     endDate = Convert.ToDateTime(ViewState["_EndDate"].ToString());
-                }
+
+                if (ViewState["_JHStartDate"] != null)
+                    jhStartDate = Convert.ToDateTime(ViewState["_JHStartDate"].ToString());
+                if (ViewState["_JHEndDate"] != null)
+                    jhEndDate = Convert.ToDateTime(ViewState["_JHEndDate"].ToString());
 
                 if (ViewState["_PlanType"].ToString() != "0")
-                {
                     planType = ViewState["_PlanType"].ToString();
-                }
             }
             
 
-            List<JH> listDatas = (new JH()).GetJHList(planType, startDate, endDate);
+            List<JH> listDatas = (new JH()).GetJHList(planType, startDate, endDate, jhStartDate, jhEndDate);
             cpPager.DataSource = listDatas;
             cpPager.PageSize = this.SiteSetting.PageSize;
             cpPager.BindToControl = rpDatas;
@@ -161,24 +173,23 @@ namespace OperatingManagement.Web.Views.PlanManage
             rpDatas.DataBind();
 
             if (listDatas.Count > 0)
-            {
-                pnlAll1.Visible = true;
                 pnlAll2.Visible = true;
-            }
             else
-            {
-                pnlAll1.Visible = false;
                 pnlAll2.Visible = false;
-            }
         }
 
+        /// <summary>
+        /// 翻页控件绑定数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void cpPager_PostBackPage(object sender, EventArgs e)
         {
             BindGridView(false);
         }
 
         /// <summary>
-        /// 最终发送
+        /// 最终发送，按钮提交发送
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -186,83 +197,60 @@ namespace OperatingManagement.Web.Views.PlanManage
         {
             try
             {
+                string plantype = ddlType.SelectedValue;
                 PlanFileCreator creater = new PlanFileCreator();
                 string SendingFilePaths = "";
                 lblMessage.Text = "";//清空发送信息
                 lblMessage.Visible = false;
                 string runningMode = rbtMode.SelectedValue;
-                string strResult = string.Empty;
+                string targets = string.Empty;
+                JH oJH = new JH();
+
+                //应用研究工作计划\DMZ工作计划，自动进行批发送
+                if (plantype == "YJJH" || plantype == "GZJH")
+                {
+                    if (plantype == "YJJH")
+                        SendingFilePaths = creater.CreateSendingYJJHFile(txtId.Text, out targets, false);
+                    else
+                        SendingFilePaths = creater.CreateSendingGZJHFile(txtId.Text, out targets, false);
+                    if (!SendingFilePaths.Equals(string.Empty))
+                    {
+                        string[] filePaths = SendingFilePaths.Split(new char[] { ',' });
+                        string[] tgtMarks = targets.Split(new char[] { ',' });
+                        for (int i = 0; i < filePaths.Length; i++)
+                        {
+                            SendFiles(filePaths[i], null, tgtMarks[i]);
+                        }
+                        oJH.SENDSTATUS = 1;
+                        oJH.UpdateSendStatusByIds(txtId.Text);
+                    }
+                    else
+                    {
+                        lblMessage.Visible = true;
+                        lblMessage.Text = "计划不包含指定发送目标的数据。";
+                    }   
+                }
+
+                //非YJJH\GZJH才能走到foreach中
                 foreach (ListItem li in ckbDestination.Items)
                 {
                     if (li.Selected)
                     {
-
-                        switch (txtPlanType.Text)
+                        switch (plantype)
                         {
-                            case "YJJH":
-                                SendingFilePaths = creater.CreateSendingYJJHFile(txtId.Text, li.Value);
-                                break;
                             case "XXXQ":
                                 SendingFilePaths = creater.CreateSendingXXXQFile(txtId.Text, li.Value);
                                 break;
                             case "DJZYSQ":
                                 SendingFilePaths = creater.CreateSendingDJZYSQFile(txtId.Text, li.Value, runningMode);
                                 break;
-                            case "DMJH":
-                            case "GZJH":
-                                SendingFilePaths = creater.CreateSendingGZJHFile(txtId.Text, li.Value);
-                                break;
                             case "TYSJ":
                                 SendingFilePaths = creater.CreateSendingTYSJFile(txtId.Text, li.Value);
                                 break;
                         }
-
-                        XYXSInfo objXYXSInfo = new XYXSInfo();
-                        //发送协议
-                        CommunicationWays protocl = (CommunicationWays)Convert.ToInt32(rbtProtocl.SelectedValue);
-                        //发送方ID （运控中心 YKZX）
-                        int senderid = objXYXSInfo.GetIdByAddrMark(System.Configuration.ConfigurationManager.AppSettings["ZXBM"]);
-                        //接收方ID 
-                        int reveiverid = objXYXSInfo.GetIdByAddrMark(li.Value);
-                        //信息类型id
-                        int infotypeid = (new InfoType()).GetIDByExMark(txtPlanType.Text);
-                        bool boolResult = true; //文件发送结果
-                        FileSender objSender = new FileSender();
-                        string[] filePaths = SendingFilePaths.Split(',');
-                        if (string.IsNullOrEmpty(SendingFilePaths) || filePaths.Length <= 0)
-                        {
-                            lblMessage.Visible = true;
-                            lblMessage.Text += " 所选计划不包含发送目标\"" + li.Text + "\" 的数据。" + "<br />";
-                        }
-                        else
-                        {
-                            for (int i = 0; i < filePaths.Length; i++)
-                            {
-                                if (protocl == CommunicationWays.FTP)//将文件移至FTP路径中
-                                {
-                                    strResult = DataFileHandle.MoveFile(filePaths[i], GetFilePathByFilePath(filePaths[i]) + @"FTP\");
-                                    if (!strResult.Equals(string.Empty))
-                                        lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 路径中已有同名文件。" + "<br />";
-                                    else
-                                        filePaths[i] = GetFilePathByFilePath(filePaths[i]) + @"FTP\" + GetFileNameByFilePath(filePaths[i]);
-                                }
-                                if (strResult.Equals(string.Empty))
-                                {
-                                    boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), GetFilePathByFilePath(filePaths[i]), protocl, senderid, reveiverid, infotypeid, true);
-                                    lblMessage.Visible = true;
-                                    if (boolResult)
-                                    {
-                                        lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
-                                    }
-                                    else
-                                    {
-                                        lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
-                                    }
-                                }
-
-                            }//endfor
-                        }
-
+                        SendFiles(SendingFilePaths, li, string.Empty);
+                        oJH.SENDSTATUS = 1;
+                        oJH.UpdateSendStatusByIds(txtId.Text);   
                     }//li
                 }
                 BindGridView(false);
@@ -273,76 +261,113 @@ namespace OperatingManagement.Web.Views.PlanManage
             }
             finally { }
         }
+
+        /// <summary>
+        /// 发送文件，应用研究计划自动映射发送目标
+        /// </summary>
+        /// <param name="sendingFilePaths"></param>
+        /// <param name="liTarget"></param>
+        /// <param name="targetAddrMark"></param>
+        private void SendFiles(string sendingFilePaths, ListItem liTarget, string targetAddrMark)
+        {
+            string strResult = string.Empty;
+            XYXSInfo objXYXSInfo = new XYXSInfo();
+            //发送协议
+            CommunicationWays protocl = (CommunicationWays)Convert.ToInt32(rbtProtocl.SelectedValue);
+            //发送方ID （运控中心 YKZX）
+            int senderid = objXYXSInfo.GetIdByAddrMark(System.Configuration.ConfigurationManager.AppSettings["ZXBM"]);
+            //接收方ID 
+            int reveiverid;
+            string targetName = string.Empty;
+            if (liTarget != null)
+            {
+                reveiverid = objXYXSInfo.GetIdByAddrMark(liTarget.Value);
+                targetName = liTarget.Text;
+            }
+            else
+            {
+                reveiverid = objXYXSInfo.GetByAddrMark(targetAddrMark).Id;
+                targetName = objXYXSInfo.GetByAddrMark(targetAddrMark).ADDRName;
+            }
+            //信息类型id
+            int infotypeid = (new InfoType()).GetIDByExMark(txtPlanType.Text);
+            bool boolResult = true; //文件发送结果
+            FileSender objSender = new FileSender();
+            string[] filePaths = sendingFilePaths.Split(',');
+            if (string.IsNullOrEmpty(sendingFilePaths) || filePaths.Length <= 0)
+            {
+                lblMessage.Visible = true;
+                lblMessage.Text += " 所选计划不包含发送目标\"" + targetName + "\" 的数据。" + "<br />";
+            }
+            else
+            {
+                for (int i = 0; i < filePaths.Length; i++)
+                {
+                    if (protocl == CommunicationWays.FTP)//将文件移至FTP路径中
+                    {
+                        strResult = DataFileHandle.MoveFile(filePaths[i], GetFilePathByFilePath(filePaths[i]) + @"FTP\");
+                        if (!strResult.Equals(string.Empty))
+                            lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 路径中已有同名文件。" + "<br />";
+                        else
+                            filePaths[i] = GetFilePathByFilePath(filePaths[i]) + @"FTP\" + GetFileNameByFilePath(filePaths[i]);
+                    }
+                    if (strResult.Equals(string.Empty))
+                    {
+                        boolResult = objSender.SendFile(GetFileNameByFilePath(filePaths[i]), GetFilePathByFilePath(filePaths[i]), protocl, senderid, reveiverid, infotypeid, true);
+                        lblMessage.Visible = true;
+                        if (boolResult)
+                            lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交成功。" + "<br />";
+                        else
+                            lblMessage.Text += GetFileNameByFilePath(filePaths[i]) + " 文件发送请求提交失败。" + "<br />";
+                    }
+                }//endfor
+            }
+        }
+
         //取消
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-            //pnlDestination.Visible = false;
-            //pnlData.Visible = true;
         }
 
+        /// <summary>
+        /// 弹出发送小窗口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnHidden_Click(object sender, EventArgs e)
         {
-            //pnlDestination.Visible = true;
-            //pnlData.Visible = false;
-            //string plantype = txtPlanType.Text;
             string plantype = ddlType.SelectedValue;
             if (plantype =="DMJH")
             { plantype = "GZJH"; }
             txtPlanType.Text = plantype;
-            List<string> targetList;
-            ckbDestination.Items.Clear();
-            targetList = FileExchangeConfig.GetTgtListForSending(plantype);
-            foreach (string tgt in targetList)
+            switch (plantype)
             {
-                ckbDestination.Items.Add(new ListItem(FileExchangeConfig.GetNameForType(tgt), tgt));
-            }
+                case "YJJH":
+                    trSendTarget.Visible = false;
+                    break;
+                case "GZJH":
+                    trSendTarget.Visible = false;
+                    break;
+                default:
+                    trSendTarget.Visible = true;
+                    List<string> targetList;
+                    ckbDestination.Items.Clear();
+                    targetList = FileExchangeConfig.GetTgtListForSending(plantype);
+                    foreach (string tgt in targetList)
+                    {
+                        ckbDestination.Items.Add(new ListItem(FileExchangeConfig.GetNameForType(tgt), tgt));
+                    }
 
-            #region Add Destination 
-            //switch (plantype)
-            //{
-            //    case "YJJH":
-            //        ckbDestination.Items.Clear();
-            //        ckbDestination.Items.Add(new ListItem("天基目标观测应用研究分系统（GCYJ）", "GCYJ"));
-            //        ckbDestination.Items.Add(new ListItem("遥操作应用研究分系统（CZYJ）", "CZYJ"));
-            //        ckbDestination.Items.Add(new ListItem("空间机动应用研究分系统（JDYJ）", "JDYJ"));
-            //        ckbDestination.Items.Add(new ListItem("仿真推演分系统（FZTY）", "FZTY"));
-            //        break;
-            //    case "XXXQ":
-            //        ckbDestination.Items.Clear();
-            //        ckbDestination.Items.Add(new ListItem("空间信息综合应用中心(XXZX)", "XXZX"));
-            //        break;
-            //    case "DMJH":
-            //    case "GZJH":
-            //        ckbDestination.Items.Clear();
-            //        ckbDestination.Items.Add(new ListItem("西安中心（XSCC）", "XSCC"));
-            //        ckbDestination.Items.Add(new ListItem("总参二部信息处理中心（XXZX）", "XXZX"));
-            //        ckbDestination.Items.Add(new ListItem("总参三部技侦中心（JZZX）", "JZZX"));
-            //        ckbDestination.Items.Add(new ListItem("总参气象水文空间天气总站资料处理中心（ZLZX）", "ZLZX"));
-            //        ckbDestination.Items.Add(new ListItem("863-YZ4701遥科学综合站（JYZ1）", "JYZ1"));
-            //        ckbDestination.Items.Add(new ListItem("863-YZ4702遥科学综合站（JYZ2）", "JYZ2"));
-            //        break;
-            //    case "ZXJH":
-            //        ckbDestination.Items.Clear();
-            //        break;
-            //    case "TYSJ":
-            //        ckbDestination.Items.Clear();
-            //        ckbDestination.Items.Add(new ListItem("仿真推演分系统(FZTY)", "FZTY"));
-            //        break;
-            //    case "SBJH":
-            //        ckbDestination.Items.Clear();
-            //        //ckbDestination.Items.Add(new ListItem("运控评估中心YKZX(02 04 00 00)", "YKZX"));
-            //        break;
-            //}
-            #endregion
-            if (ckbDestination.Items.Count > 0)
-            {
-                ckbDestination.SelectedIndex = 0;
-                btnSubmit.Visible = true;
+                    if (ckbDestination.Items.Count > 0)
+                    {
+                        ckbDestination.SelectedIndex = 0;
+                        btnSubmit.Visible = true;
+                    }
+                    else
+                        btnSubmit.Visible = false;
+                    break;
             }
-            else
-            {
-                btnSubmit.Visible = false;
-            }
+            BindGridView(true);
             ClientScript.RegisterStartupScript(this.GetType(), "pop", "<script type='text/javascript'>showPopSendForm();</script>");
             
         }
@@ -370,6 +395,45 @@ namespace OperatingManagement.Web.Views.PlanManage
         private string GetFilePathByFilePath(string filepath)
         {
             return filepath.Substring(0, filepath.LastIndexOf("\\") + 1);
+        }
+
+        protected void rpDatas_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            try
+            {
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                {
+                    JH oJH = (JH)e.Item.DataItem;
+                    HtmlInputCheckBox chkDelete = (e.Item.FindControl("chkDelete") as HtmlInputCheckBox);;
+                    chkDelete.Disabled = !GetChkboxStatus(oJH.USESTATUS, oJH.SENDSTATUS);
+                    chkDelete.Value = oJH.ID.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw (new AspNetException("计划列表数据绑定出现异常，异常原因", ex));
+            }
+            finally { }
+
+        }
+
+        protected bool GetChkboxStatus(int useStatus, int sendStatus)
+        {
+            switch (ddlType.SelectedValue)
+            {
+                case "ZXJH":
+                    return false;
+                case "DJZYJH":
+                    return false;
+                default:
+                    break;
+            }
+            if (useStatus == 0)
+                return false;
+            else if (useStatus == 1)
+                return true;
+            else
+                return false;
         }
     }
 }

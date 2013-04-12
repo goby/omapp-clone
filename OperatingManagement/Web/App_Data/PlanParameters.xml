@@ -87,14 +87,14 @@
         <item text="周计划" value="ZJ"></item>
         <item text="日计划" value="RJ"></item>
     </GZJHXXFL>
-    <GZJHDH description="地面站工作计划任务代号">
+    <!--<GZJHDH description="地面站工作计划任务代号">
         <item text="700任务" value="0501"></item>
         <item text="TS-3卫星" value="5701"></item>
         <item text="TS-4-A卫星" value="5702"></item>
         <item text="TS-4-B卫星" value="5703"></item>
         <item text="TS-5-A卫星" value="5704"></item>
         <item text="TS-5-B卫星" value="5705"></item>
-    </GZJHDH>
+    </GZJHDH>-->
     <GZJHMS description="地面站工作计划设备工作模式">
         <item text="标准TTC模式" value="01"></item>
         <item text="扩频模式1" value="02"></item>
@@ -147,4 +147,19 @@
   <YJJHDataCode description="应用研究计划数据编码">YJJH</YJJHDataCode>
   <SYJHDataCode description="试验计划数据编码">SYJH</SYJHDataCode>
   <GZJHDataCode description="地面站工作计划数据编码">GZJH</GZJHDataCode>
+  <YJJHSendTargetMapping description="应用研究计划发送目标与卫星映射关系">
+    <item text="073" value="GCYJ"></item>
+    <item text="074" value="CZYJ"></item>
+    <item text="075" value="JDYJ"></item>
+    <item text="AAA" value="FZTY"></item>
+  </YJJHSendTargetMapping>
+  <SYXMDef description="试验项目编码定义">
+    <item text="GEO目标观测试验" value="GEO"></item>
+    <item text="LEO目标成像试验" value="LEO"></item>
+    <item text="释放抓捕目标试验" value="SFZ"></item>
+    <item text="逼近停靠试验" value="BJT"></item>
+    <item text="遥操作试验" value="YCZ"></item>
+    <item text="远程自主快速轨道机动试验" value="GJD"></item>
+    <item text="ORTS在轨施放试验" value="ZGF"></item>
+  </SYXMDef>
 </PlanParameters>

@@ -46,47 +46,69 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
         /// <summary>
         /// 卫星名称
         /// </summary>
+        public string SatID { get; set; }
+        /// <summary>
+        /// 卫星名称
+        /// </summary>
         public string SatName { get; set; }
         /// <summary>
-        /// 历元日期
+        /// 文件数据开始时间
         /// </summary>
-        public int D { get; set; }
+        public DateTime DataBTime { get; set; }
         /// <summary>
-        /// 历元时刻
+        /// 文件数据结束时间
         /// </summary>
-        public int T { get; set; }
+        public DateTime DataETime { get; set; }
         /// <summary>
-        /// 历元时间
+        /// 文件名称
         /// </summary>
-        public DateTime Times { get; set; }
+        public string FileName { get; set; }
         /// <summary>
-        /// 轨道半长径
+        /// 文件路径
         /// </summary>
-        public double A { get; set; }
-        /// <summary>
-        /// 轨道偏心率
-        /// </summary>
-        public double E { get; set; }
-        /// <summary>
-        /// 轨道倾角
-        /// </summary>
-        public double I { get; set; }
-        /// <summary>
-        /// 轨道升交点赤径 
-        /// </summary>
-        public double O { get; set; }
-        /// <summary>
-        /// 轨道近地点幅角
-        /// </summary>
-        public double W { get; set; }
-        /// <summary>
-        /// 平近点角
-        /// </summary>
-        public double M { get; set; }
-        /// <summary>
-        /// 备注
-        /// </summary>
-        public string Reserve { get; set; }
+        public string FilePath { get; set; }
+        #region 不用的属性
+        ///// <summary>
+        ///// 历元日期
+        ///// </summary>
+        //public int D { get; set; }
+        ///// <summary>
+        ///// 历元时刻
+        ///// </summary>
+        //public int T { get; set; }
+        ///// <summary>
+        ///// 历元时间
+        ///// </summary>
+        //public DateTime Times { get; set; }
+        ///// <summary>
+        ///// 轨道半长径
+        ///// </summary>
+        //public double A { get; set; }
+        ///// <summary>
+        ///// 轨道偏心率
+        ///// </summary>
+        //public double E { get; set; }
+        ///// <summary>
+        ///// 轨道倾角
+        ///// </summary>
+        //public double I { get; set; }
+        ///// <summary>
+        ///// 轨道升交点赤径 
+        ///// </summary>
+        //public double O { get; set; }
+        ///// <summary>
+        ///// 轨道近地点幅角
+        ///// </summary>
+        //public double W { get; set; }
+        ///// <summary>
+        ///// 平近点角
+        ///// </summary>
+        //public double M { get; set; }
+        ///// <summary>
+        ///// 备注
+        ///// </summary>
+        //public string Reserve { get; set; }
+        #endregion
         #endregion
 
         #region -Methods-
@@ -138,16 +160,21 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                         TaskID = dr["TaskID"].ToString(),
                         TaskName = dr["TaskName"].ToString(),
                         SatName = dr["SatName"].ToString(),
-                        D = Convert.ToInt32(dr["D"].ToString()),
-                        T = Convert.ToInt32(dr["T"].ToString()),
-                        Times = DateTime.Parse(dr["Times"].ToString()),
-                        A = Convert.ToDouble(dr["A"].ToString()),
-                        E = Convert.ToDouble(dr["E"].ToString()),
-                        I = Convert.ToDouble(dr["I"].ToString()),
-                        O = Convert.ToDouble(dr["O"].ToString()),
-                        W = Convert.ToDouble(dr["W"].ToString()),
-                        M = Convert.ToDouble(dr["M"].ToString()),
-                        Reserve = dr["RESERVE"].ToString()
+                        SatID = dr["SatID"].ToString(),
+                        DataBTime = DateTime.Parse(dr["DataBTime"].ToString()),
+                        DataETime = DateTime.Parse(dr["DataETime"].ToString()),
+                        FileName = dr["FileName"].ToString(),
+                        FilePath = dr["FilePath"].ToString()
+                        //D = Convert.ToInt32(dr["D"].ToString()),
+                        //T = Convert.ToInt32(dr["T"].ToString()),
+                        //Times = DateTime.Parse(dr["Times"].ToString()),
+                        //A = Convert.ToDouble(dr["A"].ToString()),
+                        //E = Convert.ToDouble(dr["E"].ToString()),
+                        //I = Convert.ToDouble(dr["I"].ToString()),
+                        //O = Convert.ToDouble(dr["O"].ToString()),
+                        //W = Convert.ToDouble(dr["W"].ToString()),
+                        //M = Convert.ToDouble(dr["M"].ToString()),
+                        //Reserve = dr["RESERVE"].ToString()
                     });
                 }
             }
@@ -176,17 +203,11 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                         Id = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = DateTime.Parse(dr["CTIME"].ToString()),
                         TaskID = dr["TaskID"].ToString(),
-                        SatName = dr["SatName"].ToString(),
-                        D = Convert.ToInt32(dr["D"].ToString()),
-                        T = Convert.ToInt32(dr["T"].ToString()),
-                        Times = DateTime.Parse(dr["Times"].ToString()),
-                        A = Convert.ToDouble(dr["A"].ToString()),
-                        E = Convert.ToDouble(dr["E"].ToString()),
-                        I = Convert.ToDouble(dr["I"].ToString()),
-                        O = Convert.ToDouble(dr["O"].ToString()),
-                        W = Convert.ToDouble(dr["W"].ToString()),
-                        M = Convert.ToDouble(dr["M"].ToString()),
-                        Reserve = dr["RESERVE"].ToString()
+                        SatID = dr["SatID"].ToString(),
+                        DataBTime = DateTime.Parse(dr["DataBTime"].ToString()),
+                        DataETime = DateTime.Parse(dr["DataETime"].ToString()),
+                        FileName = dr["FileName"].ToString(),
+                        FilePath = dr["FilePath"].ToString()
                     };
                 }
             }
@@ -215,17 +236,11 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
                         Id = Convert.ToInt32(dr["ID"].ToString()),
                         CTime = DateTime.Parse(dr["CTIME"].ToString()),
                         TaskID = dr["TaskID"].ToString(),
-                        SatName = dr["SatName"].ToString(),
-                        D = Convert.ToInt32(dr["D"].ToString()),
-                        T = Convert.ToInt32(dr["T"].ToString()),
-                        Times = DateTime.Parse(dr["Times"].ToString()),
-                        A = Convert.ToDouble(dr["A"].ToString()),
-                        E = Convert.ToDouble(dr["E"].ToString()),
-                        I = Convert.ToDouble(dr["I"].ToString()),
-                        O = Convert.ToDouble(dr["O"].ToString()),
-                        W = Convert.ToDouble(dr["W"].ToString()),
-                        M = Convert.ToDouble(dr["M"].ToString()),
-                        Reserve = dr["RESERVE"].ToString()
+                        SatID = dr["SatID"].ToString(),
+                        DataBTime = DateTime.Parse(dr["DataBTime"].ToString()),
+                        DataETime = DateTime.Parse(dr["DataETime"].ToString()),
+                        FileName = dr["FileName"].ToString(),
+                        FilePath = dr["FilePath"].ToString()
                     });
                 }
             }
@@ -252,17 +267,21 @@ namespace OperatingManagement.DataAccessLayer.PlanManage
             _database.SpExecuteNonQuery(s_up_ydsj_insert, new OracleParameter[]{
                 new OracleParameter("p_CTime", DateTime.Now),
                 new OracleParameter("p_TaskID", this.TaskID),
-                new OracleParameter("p_SatName", this.SatName),
-                new OracleParameter("p_D", this.D),
-                new OracleParameter("p_T", this.T),
-                new OracleParameter("p_Times", this.Times),
-                new OracleParameter("p_A", this.A),
-                new OracleParameter("p_E", this.E),
-                new OracleParameter("p_I", this.I),
-                new OracleParameter("p_O", this.O),
-                new OracleParameter("p_W", this.W),
-                new OracleParameter("p_M", this.M),
-                new OracleParameter("p_Reserve", this.Reserve),
+                new OracleParameter("p_SatID", this.SatID),
+                new OracleParameter("p_DataBTime", this.DataBTime),
+                new OracleParameter("p_DataETime", this.DataETime),
+                new OracleParameter("p_FileName", this.FileName),
+                new OracleParameter("p_FilePath", this.FilePath),
+                //new OracleParameter("p_D", this.D),
+                //new OracleParameter("p_T", this.T),
+                //new OracleParameter("p_Times", this.Times),
+                //new OracleParameter("p_A", this.A),
+                //new OracleParameter("p_E", this.E),
+                //new OracleParameter("p_I", this.I),
+                //new OracleParameter("p_O", this.O),
+                //new OracleParameter("p_W", this.W),
+                //new OracleParameter("p_M", this.M),
+                //new OracleParameter("p_Reserve", this.Reserve),
                 opId,
                 p
             });

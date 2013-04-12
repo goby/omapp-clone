@@ -20,7 +20,7 @@
             </th>
             <td>
                 <asp:TextBox ID="txtEquipmentName" runat="server" CssClass="norText"></asp:TextBox>
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" Display="Dynamic"
+                <asp:RequiredFieldValidator ID="rfv1" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtEquipmentName" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
@@ -30,7 +30,7 @@
             </th>
             <td>
                 <asp:TextBox ID="txtEquipmentCode" runat="server" CssClass="norText"></asp:TextBox>
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" Display="Dynamic"
+                <asp:RequiredFieldValidator ID="rfv2" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="txtEquipmentCode" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
@@ -41,7 +41,7 @@
             <td>
                 <asp:DropDownList ID="dplGroundStation" runat="server" CssClass="norDpl">
                 </asp:DropDownList>
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic"
+                <asp:RequiredFieldValidator ID="rfv3" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="dplGroundStation" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
@@ -52,7 +52,7 @@
             <td>
                 <asp:DropDownList ID="dplOpticalEquipment" runat="server" CssClass="norDpl">
                 </asp:DropDownList>
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic"
+                <asp:RequiredFieldValidator ID="rfv4" runat="server" Display="Dynamic"
                     ForeColor="Red" ControlToValidate="dplOpticalEquipment" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
@@ -63,6 +63,59 @@
             <td>
                 <asp:CheckBoxList ID="cblFunctionType" runat="server" BorderWidth="0" RepeatColumns="4" BorderStyle="None">
                 </asp:CheckBoxList>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                经度坐标值(<span class="red">*</span>)
+            </th>
+            <td>
+                <asp:TextBox ID="txtLongitude" runat="server" CssClass="norText"></asp:TextBox>度（地心系BLH，东经正值西经负值）
+                <asp:RequiredFieldValidator ID="rfv6" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtLongitude" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <asp:RangeValidator ID="rv1" runat="server" Display="Dynamic" MinimumValue="-180"
+                    MaximumValue="180" ControlToValidate="txtLongitude" Type="Double" ForeColor="Red"
+                    ErrorMessage="（-180至180）"></asp:RangeValidator>
+                <asp:RegularExpressionValidator ID="rev1" runat="server" ValidationExpression="^(-?\d+)(\.\d{1,6})?$"
+                    Display="Dynamic" ForeColor="Red" ControlToValidate="txtLongitude" ErrorMessage="（最多含有六位小数的数字）"></asp:RegularExpressionValidator>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                纬度坐标值(<span class="red">*</span>)
+            </th>
+            <td>
+                <asp:TextBox ID="txtLatitude" runat="server" CssClass="norText"></asp:TextBox>度（地心系BLH，北纬正值南纬负值）
+                <asp:RequiredFieldValidator ID="rfv7" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtLatitude" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <asp:RangeValidator ID="rv2" runat="server" Display="Dynamic" MinimumValue="-90"
+                    MaximumValue="90" ControlToValidate="txtLatitude" Type="Double" ForeColor="Red"
+                    ErrorMessage="（-90至90）"></asp:RangeValidator>
+                <asp:RegularExpressionValidator ID="rev2" runat="server" ValidationExpression="^(-?\d+)(\.\d{1,6})?$"
+                    Display="Dynamic" ForeColor="Red" ControlToValidate="txtLatitude" ErrorMessage="（最多含有六位小数的数字）"></asp:RegularExpressionValidator>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                高程坐标值(<span class="red">*</span>)
+            </th>
+            <td>
+                <asp:TextBox ID="txtGaoCheng" runat="server" CssClass="norText" MaxLength="12"></asp:TextBox>米（地心系BLH）
+                <asp:RequiredFieldValidator ID="rfv8" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="txtGaoCheng" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
+                <asp:RegularExpressionValidator ID="rev3" runat="server" ValidationExpression="^\d+(\.\d{1,1})?$"
+                    Display="Dynamic" ForeColor="Red" ControlToValidate="txtGaoCheng" ErrorMessage="（>=0且最多含有一位小数的数字）"></asp:RegularExpressionValidator>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                信源信宿(<span class="red">*</span>)
+            </th>
+            <td>
+                <asp:DropDownList ID="dplXyxs" runat="server" CssClass="norDpl">
+                </asp:DropDownList>
+                <asp:RequiredFieldValidator ID="rfv9" runat="server" Display="Dynamic"
+                    ForeColor="Red" ControlToValidate="dplXyxs" ErrorMessage="（必填）"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>

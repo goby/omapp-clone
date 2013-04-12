@@ -6,10 +6,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="NavigatorContent" runat="server">
-    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="planmanage" />
+    <om:PageNavigator ID="navMain" runat="server" CssName="menu-top" SelectedId="ykinfoman" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MenuContent" runat="server">
-    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuPlan" />
+    <om:PageMenu ID="PageMenu1" runat="Server" XmlFileName="menuYKInfo" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MapPathContent" runat="server">
     计划管理 &gt; 空间信息需求
@@ -297,19 +297,12 @@
     <asp:Label ID="ltMessage" runat="server" CssClass="error" Text="空间目标信息及空间环境信息所有字段都必须填写。"></asp:Label>
    </div>
     <div style="width: 950px; text-align: center">
-        <asp:Button ID="btnSubmit" runat="server" OnClientClick="return CheckClientValidate();" CssClass="button" Text="保存计划" OnClick="btnSubmit_Click" />
-        &nbsp;&nbsp;&nbsp;
-        <asp:Button ID="btnSaveTo" runat="server" OnClientClick="return CheckClientValidate();" CssClass="button" Text="另存计划" OnClick="btnSaveTo_Click" />
-    &nbsp;&nbsp;
-        <asp:Button ID="btnReset" class="button" runat="server" Text="重置" Width="65px" 
-                    onclick="btnReset_Click" CausesValidation="False" />
-                    &nbsp;&nbsp; 
-        <asp:Button ID="btnReturn" class="button" runat="server" 
-                    Text="返回" Width="65px" 
-                    onclick="btnReturn_Click" CausesValidation="False" />
-    &nbsp;&nbsp;
-                <asp:Button ID="btnFormal"  class="button" runat="server" onclick="btnFormal_Click" 
-                    Text="转为正式计划" />
+        <asp:Button ID="btnSubmit" runat="server" OnClientClick="return CheckClientValidate();" CssClass="button" Text="保存计划" OnClick="btnSubmit_Click" />&nbsp;&nbsp;
+        <asp:Button ID="btnSaveTo" runat="server" OnClientClick="return CheckClientValidate();" CssClass="button" Text="另存计划" OnClick="btnSaveTo_Click" />&nbsp;&nbsp;
+        <asp:Button ID="btnReset" CssClass="button" runat="server" Text="重置" Width="65px" onclick="btnReset_Click" CausesValidation="False" />&nbsp;&nbsp; 
+        <asp:Button ID="btnReturn" CssClass="button" runat="server" Text="返回" Width="65px" onclick="btnReturn_Click" CausesValidation="False" />&nbsp;&nbsp;
+        <asp:Button ID="btnSurePlan"  CssClass="button" runat="server" Text="确认计划" onclick="btnSurePlan_Click" />&nbsp;&nbsp;
+        <asp:Button ID="btnFormal"  CssClass="button" runat="server" onclick="btnFormal_Click" Text="转为正式计划" />
     </div>
     <div style="display: none">
         <asp:HiddenField ID="HfID" runat="server" />

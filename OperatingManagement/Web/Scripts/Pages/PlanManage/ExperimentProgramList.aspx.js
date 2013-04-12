@@ -1,7 +1,9 @@
 ﻿
 function clearField() {
-    $('#divsearch').find('input:text').val('');
-    //$('input:text').val('');
+    $('#txtCStartDate').val("");
+    $('#txtCEndDate').val("");
+    $('#txtJHStartDate').val("");
+    $('#txtJHEndDate').val("");
     return false;
 }
 
